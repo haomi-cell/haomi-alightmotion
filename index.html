@@ -237,7 +237,6 @@
           <i class="fa-solid fa-arrow-right text-[10px]"></i>
         </button>
         
-        <!-- TOMBOL MENU MASUK KE DASHBOARD OWNER -->
         <button onclick="openOwnerLoginModal()" class="w-full pt-1 text-[10px] text-slate-400 hover:text-sky-400 font-mono transition-colors">
           Login khusus Owner (Admin)
         </button>
@@ -296,8 +295,10 @@
             <input id="newGenToken" type="text" placeholder="KODE-TOKEN" class="px-3 py-2.5 text-[11px] uppercase font-mono" />
           </div>
           <div>
-            <label class="block text-[10px] text-slate-400 mb-1">Masa Aktif (Hari)</label>
+            <label class="block text-[10px] text-slate-400 mb-1">Masa Aktif (Durasi)</label>
             <select id="newGenDays" class="px-3 py-2.5 text-[11px]">
+              <option value="1">1 Hari</option>
+              <option value="3">3 Hari</option>
               <option value="7">7 Hari</option>
               <option value="30" selected>30 Hari (1 Bulan)</option>
               <option value="365">365 Hari (Permanen / 1 Tahun)</option>
@@ -526,7 +527,7 @@
     <!-- FOOTER -->
     <footer class="text-center">
       <p class="text-[11px] text-slate-500 font-medium">
-        Web Am Premium <span class="mx-1.5 text-white/20">•</span> Owner Dashboard Enabled <span class="mx-1.5 text-white/20">•</span> 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞
+        Web Am Premium <span class="mx-1.5 text-white/20">•</span> Border Glow Theme <span class="mx-1.5 text-white/20">•</span> 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞
       </p>
     </footer>
 
@@ -536,14 +537,12 @@
   <div id="toast" class="toast fixed z-50 bottom-6 left-1/2 rounded-[16px] px-5 py-3 text-[11px] text-white shadow-2xl max-w-[calc(100vw-32px)]"></div>
 
 <script>
-  // KATA SANDI RAHASIA OWNER (Ganti "haomiowner123" sesuai keinginan Anda)
   const OWNER_SECRET_KEY = "haomiowner123";
 
   window.addEventListener("DOMContentLoaded", () => {
     const savedToken = localStorage.getItem("verified_token");
     const savedExpiry = localStorage.getItem("token_expiry");
 
-    // Cek jika owner sedang login sesi admin
     const ownerSession = localStorage.getItem("owner_logged_in");
     if (ownerSession === "true") {
       document.getElementById("tokenModal").classList.add("hidden");
@@ -559,7 +558,6 @@
     loadLoginCount();
   });
 
-  // Modal Login Owner
   function openOwnerLoginModal() {
     document.getElementById("tokenModal").classList.add("hidden");
     document.getElementById("ownerLoginModal").classList.remove("hidden");
@@ -587,7 +585,6 @@
     location.reload();
   }
 
-  // Fungsi Generator Token Admin langsung dari web
   function generateOwnerToken() {
     const tokenCode = document.getElementById("newGenToken").value.trim().toUpperCase();
     const days = Number(document.getElementById("newGenDays").value);
@@ -596,12 +593,10 @@
       return showToast("Masukkan kode token terlebih dahulu.");
     }
 
-    // Hitung tanggal kedaluwarsa otomatis
     const expiryDate = new Date();
     expiryDate.setDate(expiryDate.getDate() + days);
     const expiryString = expiryDate.toISOString().split('T')[0] + "T23:59:59";
 
-    // Simpan ke localStorage khusus admin (agar terbaca oleh API check-token / frontend)
     let customTokens = JSON.parse(localStorage.getItem("custom_db_tokens") || "{}");
     customTokens[tokenCode] = expiryString;
     localStorage.setItem("custom_db_tokens", JSON.stringify(customTokens));
@@ -639,7 +634,6 @@
 
     showToast("Memverifikasi token...");
 
-    // Cek token bawaan atau token custom yang dibuat owner lewat dashboard
     const defaultTokens = {
       "HAO-PREMIUM-30D": "2026-09-15T23:59:59",
       "VIP-CUY-7DAYS": "2026-08-25T23:59:59"
