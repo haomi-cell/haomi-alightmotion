@@ -2,7 +2,7 @@
 // Anda bisa menambahkan token default di sini
 let serverTokens = {
   "HAO-PREMIUM-30D": "2027-09-15T23:59:59",
-  "VIP-CUY-7DAYS": "2027-08-25T23:59:59"
+  "VIP-FREE-3DAYS": "2027-08-18T23:59:59"
 };
 
 export default function handler(req, res) {
