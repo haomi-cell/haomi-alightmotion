@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#090a0f" />
+  <meta name="theme-color" content="#030712" />
   <meta name="description" content="BY HAOMI" />
   <title>Web Am Premium | 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞</title>
 
@@ -30,11 +30,9 @@
 
   <style>
     :root {
-      --bg: #090a0f;
-      --panel: rgba(18, 20, 28, 0.85);
-      --border: rgba(255, 255, 255, 0.12);
-      --text: #ffffff;
-      --muted: #94a3b8;
+      --bg: #030712;
+      --panel: rgba(10, 14, 23, 0.85);
+      --text: #f8fafc;
     }
 
     * {
@@ -64,36 +62,57 @@
       height: 100vh;
     }
 
+    /* ANIMASI RGB HALUS BERGERAK (SMOOTH RGB TRANSITION) */
+    @keyframes smoothRgbGlow {
+      0% { border-color: rgba(255, 50, 150, 0.6); box-shadow: 0 0 30px rgba(255, 50, 150, 0.2); }
+      25% { border-color: rgba(100, 100, 255, 0.6); box-shadow: 0 0 30px rgba(100, 100, 255, 0.2); }
+      50% { border-color: rgba(0, 220, 255, 0.6); box-shadow: 0 0 30px rgba(0, 220, 255, 0.2); }
+      75% { border-color: rgba(180, 50, 255, 0.6); box-shadow: 0 0 30px rgba(180, 50, 255, 0.2); }
+      100% { border-color: rgba(255, 50, 150, 0.6); box-shadow: 0 0 30px rgba(255, 50, 150, 0.2); }
+    }
+
+    @keyframes smoothRgbText {
+      0% { color: #ff3296; }
+      25% { color: #6464ff; }
+      50% { color: #00dcff; }
+      75% { color: #b432ff; }
+      100% { color: #ff3296; }
+    }
+
+    @keyframes smoothRgbBackground {
+      0% { background: linear-gradient(135deg, #ff3296, #b432ff); }
+      33% { background: linear-gradient(135deg, #6464ff, #00dcff); }
+      66% { background: linear-gradient(135deg, #00dcff, #ff3296); }
+      100% { background: linear-gradient(135deg, #ff3296, #b432ff); }
+    }
+
     .glass {
       background: var(--panel);
-      border: 1px solid var(--border);
+      border: 2px solid rgba(255, 50, 150, 0.6);
+      animation: smoothRgbGlow 10s infinite ease-in-out;
       backdrop-filter: blur(25px) saturate(180%);
       -webkit-backdrop-filter: blur(25px) saturate(180%);
-      box-shadow: 
-        0 20px 50px rgba(0, 0, 0, 0.8),
-        0 0 35px rgba(255, 255, 255, 0.03),
-        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
     }
 
     .glass-card {
       background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      transition: all .3s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all .3s ease;
     }
 
     .glass-card:hover {
       background: rgba(255, 255, 255, 0.06);
-      border-color: rgba(255, 255, 255, 0.25);
-      box-shadow: 0 0 25px rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.3);
     }
 
     input, select {
       width: 100%;
       color: #ffffff !important;
-      background: rgba(12, 14, 20, 0.95) !important;
-      border: 1px solid rgba(255, 255, 255, 0.15) !important;
+      background: rgba(10, 14, 23, 0.95) !important;
+      border: 1px solid rgba(255, 255, 255, 0.2) !important;
       border-radius: 14px !important;
       outline: none;
       transition: all .25s ease;
@@ -105,13 +124,12 @@
     }
 
     input:focus, select:focus {
-      border-color: #ffffff !important;
-      background: rgba(12, 14, 20, 1) !important;
-      box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1), 0 0 20px rgba(255, 255, 255, 0.15) !important;
+      border-color: #00dcff !important;
+      box-shadow: 0 0 0 4px rgba(0, 220, 255, 0.15), 0 0 20px rgba(0, 220, 255, 0.25) !important;
     }
 
     select option {
-      background: #12141c;
+      background: #0a0e17;
       color: white;
     }
 
@@ -127,16 +145,16 @@
       transform: scale(0.97);
     }
 
-    .btn-primary {
-      background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
-      color: #090a0f;
-      border: 1px solid rgba(255, 255, 255, 0.5);
-      box-shadow: 0 4px 25px rgba(255, 255, 255, 0.2);
+    .btn-rgb {
+      animation: smoothRgbBackground 8s infinite ease-in-out;
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 4px 20px rgba(0, 220, 255, 0.2);
     }
 
-    .btn-primary:hover {
-      background: linear-gradient(135deg, #ffffff 0%, #ffffff 100%);
-      box-shadow: 0 6px 30px rgba(255, 255, 255, 0.35);
+    .btn-rgb:hover {
+      opacity: 0.92;
+      box-shadow: 0 6px 25px rgba(255, 50, 150, 0.4);
       transform: translateY(-1px);
     }
 
@@ -144,35 +162,18 @@
       background: rgba(16, 185, 129, 0.1);
       color: #34d399;
       border: 1px solid rgba(16, 185, 129, 0.3);
-      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.15);
-    }
-
-    .btn-whatsapp:hover {
-      background: rgba(16, 185, 129, 0.2);
-      border-color: rgba(16, 185, 129, 0.5);
     }
 
     .btn-owner {
-      background: rgba(255, 255, 255, 0.05);
-      color: #f1f5f9;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 4px 20px rgba(255, 255, 255, 0.05);
-    }
-
-    .btn-owner:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.4);
+      background: rgba(168, 85, 247, 0.1);
+      color: #c084fc;
+      border: 1px solid rgba(168, 85, 247, 0.3);
     }
 
     .btn-secondary {
-      background: rgba(255, 255, 255, 0.04);
+      background: rgba(255, 255, 255, 0.05);
       color: #f8fafc;
       border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(255, 255, 255, 0.25);
     }
 
     .nav-pill {
@@ -181,15 +182,15 @@
       transition: all .25s ease;
     }
 
-    .nav-pill:hover {
+    .nav-pill.active {
       color: #ffffff;
+      animation: smoothRgbBackground 8s infinite ease-in-out;
+      font-weight: 700;
+      box-shadow: 0 0 15px rgba(0, 220, 255, 0.25);
     }
 
-    .nav-pill.active {
-      color: #090a0f;
-      background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
-      font-weight: 700;
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.25);
+    .rgb-text {
+      animation: smoothRgbText 8s infinite ease-in-out;
     }
 
     .toast {
@@ -197,10 +198,10 @@
       opacity: 0;
       pointer-events: none;
       transition: all .3s cubic-bezier(0.16, 1, 0.3, 1);
-      background: rgba(18, 20, 28, 0.95);
-      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: rgba(10, 14, 23, 0.95);
+      border: 1px solid rgba(0, 220, 255, 0.6);
       backdrop-filter: blur(20px);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.8), 0 0 25px rgba(255, 255, 255, 0.1);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.8), 0 0 25px rgba(0, 220, 255, 0.2);
     }
 
     .toast.show {
@@ -230,9 +231,9 @@
 
   <!-- MODAL LOGIN / MASUKKAN TOKEN AKSES BERDURASI -->
   <div id="tokenModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-xl animate-fade">
-    <div class="glass w-full max-w-sm rounded-[28px] p-6 text-center space-y-4 border border-white/20 shadow-[0_0_50px_rgba(255,255,255,0.1)]">
-      <div class="w-14 h-14 mx-auto rounded-[18px] bg-white/10 border border-white/30 flex items-center justify-center text-white text-xl shadow-[0_0_20px_rgba(255,255,255,0.15)]">
-        <i class="fa-solid fa-key animate-pulse"></i>
+    <div class="glass w-full max-w-sm rounded-[28px] p-6 text-center space-y-4">
+      <div class="w-14 h-14 mx-auto rounded-[18px] bg-white/10 border border-white/30 flex items-center justify-center text-white text-xl shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+        <i class="fa-solid fa-key animate-pulse rgb-text"></i>
       </div>
       <div class="space-y-1">
         <h2 class="text-[16px] font-bold text-white tracking-tight">Verifikasi Token Akses</h2>
@@ -241,7 +242,7 @@
       
       <div class="space-y-3 pt-1">
         <input id="inputTokenAccess" type="text" placeholder="Ketik token Anda di sini..." class="px-4 py-3 text-[12px] text-center uppercase tracking-widest font-mono" />
-        <button onclick="verifyTokenAccess()" class="btn btn-primary w-full py-3.5 text-[12px] font-bold flex items-center justify-center gap-2">
+        <button onclick="verifyTokenAccess()" class="btn btn-rgb w-full py-3.5 text-[12px] font-bold flex items-center justify-center gap-2">
           <span>Verifikasi & Masuk</span>
           <i class="fa-solid fa-arrow-right text-[10px]"></i>
         </button>
@@ -251,7 +252,7 @@
 
   <!-- JENDELA MODAL SELAMAT DATANG DENGAN LOGO WHATSAPP & INFORMASI -->
   <div id="welcomeModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-xl animate-fade hidden">
-    <div class="glass w-full max-w-md rounded-[28px] p-6 text-center space-y-4 border border-emerald-500/40 shadow-[0_0_50px_rgba(16,185,129,0.2)]">
+    <div class="glass w-full max-w-md rounded-[28px] p-6 text-center space-y-4">
       <div class="w-16 h-16 mx-auto rounded-[20px] bg-gradient-to-br from-emerald-500/30 to-teal-600/30 border border-emerald-400/50 flex items-center justify-center text-emerald-400 text-2xl shadow-[0_0_25px_rgba(16,185,129,0.4)]">
         <i class="fa-brands fa-whatsapp animate-pulse"></i>
       </div>
@@ -265,7 +266,7 @@
       </div>
       
       <div class="space-y-2.5 pt-1">
-        <button onclick="closeWelcomeModal()" class="btn btn-primary w-full py-3.5 text-[12px] font-bold flex items-center justify-center gap-2">
+        <button onclick="closeWelcomeModal()" class="btn btn-rgb w-full py-3.5 text-[12px] font-bold flex items-center justify-center gap-2">
           <span>Masuk ke Beranda Utama</span>
           <i class="fa-solid fa-arrow-right text-[10px]"></i>
         </button>
@@ -279,11 +280,11 @@
 
   <div class="w-full max-w-md flex flex-col gap-4 my-auto">
 
-    <!-- HEADER MINIMALIS -->
+    <!-- HEADER RGB -->
     <header class="glass rounded-[24px] p-4 flex items-center justify-between">
       <div class="flex items-center gap-3.5">
-        <div class="w-11 h-11 rounded-[14px] bg-white/10 border border-white/20 flex items-center justify-center text-white text-lg shadow-[0_0_20px_rgba(255,255,255,0.1)]">
-          <i class="fa-solid fa-wand-magic-sparkles animate-pulse"></i>
+        <div class="w-11 h-11 rounded-[14px] bg-white/10 border border-white/20 flex items-center justify-center text-white text-lg">
+          <i class="fa-solid fa-wand-magic-sparkles animate-pulse rgb-text"></i>
         </div>
         <div>
           <h1 class="font-bold text-[15px] tracking-tight text-white flex items-center gap-2">
@@ -294,7 +295,7 @@
       </div>
 
       <div class="flex items-center gap-2">
-        <div class="w-2.5 h-2.5 rounded-full bg-white shadow-[0_0_12px_#ffffff] animate-pulse"></div>
+        <div class="w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_12px_#00dcff] animate-pulse"></div>
         <span class="text-[11px] font-mono font-medium text-slate-300 hidden sm:inline">ONLINE</span>
       </div>
     </header>
@@ -304,20 +305,20 @@
 
       <!-- PENGUMUMAN / PERINGATAN PENGECUALIAN WEB -->
       <div class="p-3.5 rounded-[16px] bg-white/5 border border-white/15 text-slate-200 text-[11px] leading-relaxed flex items-start gap-3">
-        <i class="fa-solid fa-circle-exclamation text-white mt-0.5 text-sm flex-shrink-0"></i>
+        <i class="fa-solid fa-circle-exclamation rgb-text mt-0.5 text-sm flex-shrink-0"></i>
         <span>Web ini tidak di jual melalui pihak ke 3, jika ada yg menjual web ini selain HAO bisa lapor ke OWNER, harga asli web 40k permanen, Tolong hargai yg buat COK🖕🏻</span>
       </div>
 
-      <!-- DASHBOARD STATUS ADMIN DENGAN JAM REAL-TIME -->
+      <!-- DASHBOARD STATUS ADMIN -->
       <div class="glass-card rounded-[20px] p-3.5 flex items-center justify-between border-white/10">
         <div class="flex items-center gap-3">
           <div class="w-11 h-11 rounded-[14px] bg-white/15 text-white flex items-center justify-center font-bold text-base shadow-[0_0_20px_rgba(255,255,255,0.15)] border border-white/30">
-            <i class="fa-solid fa-users"></i>
+            <i class="fa-solid fa-users rgb-text"></i>
           </div>
           <div>
             <div class="text-[12px] font-bold text-white tracking-wide">TOTAL LOGIN</div>
             <div class="text-[10px] text-slate-400 flex items-center gap-1 mt-0.5 font-mono">
-              <i class="fa-solid fa-signal text-[9px]"></i> <span id="loginCountDisplay">0</span> Orang Berhasil Masuk
+              <i class="fa-solid fa-signal text-[9px] rgb-text"></i> <span id="loginCountDisplay">0</span> Orang Berhasil Masuk
             </div>
           </div>
         </div>
@@ -339,7 +340,7 @@
         </a>
       </div>
 
-      <!-- NAVIGASI TAB PILL MINIMALIS -->
+      <!-- NAVIGASI TAB PILL -->
       <div class="grid grid-cols-3 gap-1.5 p-1 bg-black/40 border border-white/10 rounded-[18px]">
         <button id="tabSend" onclick="switchTab('send')" class="nav-pill active py-2.5 rounded-[14px] text-[11px] font-semibold transition-all">
           <i class="fa-solid fa-wand-magic-sparkles mr-1"></i> Aktivasi
@@ -369,7 +370,7 @@
             </span>
             <input id="inputEmail" type="email" placeholder="masukan gmail mu" class="pl-11 pr-4 py-3.5 text-[12px]" />
           </div>
-          <button onclick="handleSendMagicLink()" class="btn btn-primary w-full py-3.5 text-[12px] flex items-center justify-center gap-2">
+          <button onclick="handleSendMagicLink()" class="btn btn-rgb w-full py-3.5 text-[12px] flex items-center justify-center gap-2">
             <span>minta link</span>
             <i class="fa-solid fa-arrow-right text-[10px]"></i>
           </button>
@@ -383,7 +384,7 @@
             <input id="inputLink" type="text" placeholder="Tempel link verifikasi https://..." class="pl-11 pr-4 py-3.5 text-[12px]" />
           </div>
           <div class="grid grid-cols-[1fr_auto] gap-2">
-            <button onclick="handleVerifyMagicLink()" class="btn btn-primary py-3.5 text-[12px] font-bold">
+            <button onclick="handleVerifyMagicLink()" class="btn btn-rgb py-3.5 text-[12px] font-bold">
               Verifikasi & Eksekusi
             </button>
             <button onclick="resetInjectFlow()" class="btn btn-secondary px-4 text-white">
@@ -408,7 +409,7 @@
             <label class="block text-[10px] uppercase font-bold text-slate-400 mb-1.5 font-mono">Jumlah Akun (1 - 100)</label>
             <input id="inputBulkAmount" type="number" min="1" max="100" value="5" class="px-4 py-3.5 text-[12px]" />
           </div>
-          <button onclick="runBulkInject()" class="btn btn-primary w-full py-3.5 text-[12px]">
+          <button onclick="runBulkInject()" class="btn btn-rgb w-full py-3.5 text-[12px]">
             Mulai Generate Bulk
           </button>
         </div>
@@ -431,7 +432,7 @@
             </span>
             <input id="inputInboxEmail" type="email" placeholder="email@tempmail.com" class="pl-11 pr-4 py-3.5 text-[12px]" />
           </div>
-          <button onclick="runInboxCheck()" class="btn btn-primary w-full py-3.5 text-[12px] flex items-center justify-center gap-2">
+          <button onclick="runInboxCheck()" class="btn btn-rgb w-full py-3.5 text-[12px] flex items-center justify-center gap-2">
             <i class="fa-solid fa-radar"></i>
             <span>Pindai Pesan Masuk</span>
           </button>
@@ -454,7 +455,7 @@
     <!-- FOOTER -->
     <footer class="text-center">
       <p class="text-[11px] text-slate-500 font-medium">
-        Web Am Premium <span class="mx-1.5 text-white/20">•</span> Monochrome Theme <span class="mx-1.5 text-white/20">•</span> 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞
+        Web Am Premium <span class="mx-1.5 text-white/20">•</span> Smooth RGB Theme <span class="mx-1.5 text-white/20">•</span> 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞
       </p>
     </footer>
 
@@ -464,7 +465,6 @@
   <div id="toast" class="toast fixed z-50 bottom-6 left-1/2 rounded-[16px] px-5 py-3 text-[11px] text-white shadow-2xl max-w-[calc(100vw-32px)]"></div>
 
 <script>
-  // Cek apakah token sudah pernah diverifikasi sebelumnya di browser ini
   window.addEventListener("DOMContentLoaded", () => {
     const savedToken = localStorage.getItem("verified_token");
     const savedExpiry = localStorage.getItem("token_expiry");
@@ -472,16 +472,12 @@
     if (savedToken && savedExpiry) {
       const now = new Date().getTime();
       if (now < Number(savedExpiry)) {
-        // Token masih aktif, sembunyikan modal token
         document.getElementById("tokenModal").classList.add("hidden");
       }
     }
-    
-    // Muat jumlah total login saat halaman dibuka
     loadLoginCount();
   });
 
-  // Fungsi mengambil jumlah total login
   async function loadLoginCount() {
     try {
       const res = await fetch('https://api.countapi.xyz/get/web-am-premium-haomi-login/success');
@@ -496,7 +492,6 @@
     }
   }
 
-  // Fungsi verifikasi token berdurasi
   async function verifyTokenAccess() {
     const tokenInput = document.getElementById("inputTokenAccess").value.trim();
     if (!tokenInput) {
@@ -523,12 +518,10 @@
         throw new Error(json.message || "Token tidak valid atau salah.");
       }
 
-      // Catat penambahan jumlah sukses login ke server penghitung
       try {
         fetch('https://api.countapi.xyz/hit/web-am-premium-haomi-login/success');
       } catch (err) {}
 
-      // Simpan masa aktif token di localStorage
       const expiryTime = new Date(json.expires_at).getTime();
       localStorage.setItem("verified_token", tokenInput);
       localStorage.setItem("token_expiry", expiryTime);
@@ -545,7 +538,6 @@
     }
   }
 
-  // Fungsi Log Out Token
   function logoutToken() {
     localStorage.removeItem("verified_token");
     localStorage.removeItem("token_expiry");
@@ -555,11 +547,10 @@
     }, 800);
   }
 
-  // Efek Partikel Salju (Snow Animation)
   const snowCanvas = document.getElementById('snowCanvas');
   const snowCtx = snowCanvas.getContext('2d');
   let snowParticles = [];
-  const numSnowflakes = 50;
+  const numSnowflakes = 40;
 
   function resizeSnowCanvas() {
     snowCanvas.width = window.innerWidth;
@@ -614,7 +605,6 @@
   }
   animateSnow();
 
-  // Fungsi Jam Digital Real-Time
   function updateRealtimeClock() {
     const now = new Date();
     const hours = String(now.getHours()).padStart(2, '0');
@@ -628,17 +618,15 @@
   setInterval(updateRealtimeClock, 1000);
   updateRealtimeClock();
 
-  // Fungsi Menutup Jendela Modal Selamat Datang
   function closeWelcomeModal() {
     const modal = document.getElementById("welcomeModal");
     modal.classList.add("hidden");
   }
 
-  // Efek Partikel Gerak Interaktif pada Canvas
   const canvas = document.getElementById('particleCanvas');
   const ctx = canvas.getContext('2d');
   let particlesArray = [];
-  let numParticles = 40;
+  let numParticles = 35;
 
   function resizeCanvas() {
     canvas.width = window.innerWidth;
@@ -951,7 +939,7 @@
                 <div class="p-2.5 rounded-[10px] bg-black/60 border border-white/20 text-slate-200 text-[10px] break-all font-mono">
                   ${escapeHtml(link)}
                 </div>
-                <button class="btn btn-primary w-full py-2.5 text-[10px] font-bold">
+                <button class="btn btn-rgb w-full py-2.5 text-[10px] font-bold">
                   Salin Link Verifikasi
                 </button>
               `
