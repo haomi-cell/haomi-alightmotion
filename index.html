@@ -62,7 +62,7 @@
       height: 100vh;
     }
 
-    /* EFEK GLOW / GLITCH BIRU PUTIH BERGERAK HALUS */
+    /* EFEK GLOW / GLITCH BIRU PUTIH BERGERAK HANYA PADA BINGKAI (BLUR TETAP AMAN) */
     @keyframes blueGlesGlow {
       0% { border-color: rgba(255, 255, 255, 0.3); box-shadow: 0 0 20px rgba(0, 140, 255, 0.15); }
       33% { border-color: rgba(0, 150, 255, 0.7); box-shadow: 0 0 35px rgba(0, 150, 255, 0.35); }
@@ -76,12 +76,6 @@
       100% { color: #ffffff; text-shadow: 0 0 10px rgba(0, 150, 255, 0.5); }
     }
 
-    @keyframes blueGlesBackground {
-      0% { background: linear-gradient(135deg, #0f172a, #1e3a8a); }
-      50% { background: linear-gradient(135deg, #1e3a8a, #0284c7); }
-      100% { background: linear-gradient(135deg, #0f172a, #1e3a8a); }
-    }
-
     .glass {
       background: var(--panel);
       border: 2px solid rgba(0, 150, 255, 0.5);
@@ -89,6 +83,7 @@
       backdrop-filter: blur(25px) saturate(180%);
       -webkit-backdrop-filter: blur(25px) saturate(180%);
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9);
+      transform: translateZ(0);
     }
 
     .glass-card {
@@ -141,16 +136,17 @@
       transform: scale(0.97);
     }
 
-    .btn-blue-gles {
-      animation: blueGlesBackground 6s infinite ease-in-out;
+    /* TOMBOL DENGAN WARNA BIRU GELAP ELEGAN YANG STABIL */
+    .btn-blue-solid {
+      background: linear-gradient(135deg, #0284c7 0%, #1e40af 100%);
       color: #ffffff;
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      box-shadow: 0 4px 20px rgba(0, 140, 255, 0.3);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      box-shadow: 0 4px 20px rgba(0, 140, 255, 0.25);
     }
 
-    .btn-blue-gles:hover {
-      opacity: 0.95;
-      box-shadow: 0 6px 25px rgba(56, 189, 248, 0.6);
+    .btn-blue-solid:hover {
+      background: linear-gradient(135deg, #0369a1 100%, #1e3a8a 0%);
+      box-shadow: 0 6px 25px rgba(56, 189, 248, 0.5);
       transform: translateY(-1px);
     }
 
@@ -180,7 +176,7 @@
 
     .nav-pill.active {
       color: #ffffff;
-      animation: blueGlesBackground 6s infinite ease-in-out;
+      background: linear-gradient(135deg, #0284c7 0%, #1e40af 100%);
       font-weight: 700;
       box-shadow: 0 0 15px rgba(0, 150, 255, 0.35);
     }
@@ -238,7 +234,7 @@
       
       <div class="space-y-3 pt-1">
         <input id="inputTokenAccess" type="text" placeholder="Ketik token Anda di sini..." class="px-4 py-3 text-[12px] text-center uppercase tracking-widest font-mono" />
-        <button onclick="verifyTokenAccess()" class="btn btn-blue-gles w-full py-3.5 text-[12px] font-bold flex items-center justify-center gap-2">
+        <button onclick="verifyTokenAccess()" class="btn btn-blue-solid w-full py-3.5 text-[12px] font-bold flex items-center justify-center gap-2">
           <span>Verifikasi & Masuk</span>
           <i class="fa-solid fa-arrow-right text-[10px]"></i>
         </button>
@@ -262,7 +258,7 @@
       </div>
       
       <div class="space-y-2.5 pt-1">
-        <button onclick="closeWelcomeModal()" class="btn btn-blue-gles w-full py-3.5 text-[12px] font-bold flex items-center justify-center gap-2">
+        <button onclick="closeWelcomeModal()" class="btn btn-blue-solid w-full py-3.5 text-[12px] font-bold flex items-center justify-center gap-2">
           <span>Masuk ke Beranda Utama</span>
           <i class="fa-solid fa-arrow-right text-[10px]"></i>
         </button>
@@ -366,7 +362,7 @@
             </span>
             <input id="inputEmail" type="email" placeholder="masukan gmail mu" class="pl-11 pr-4 py-3.5 text-[12px]" />
           </div>
-          <button onclick="handleSendMagicLink()" class="btn btn-blue-gles w-full py-3.5 text-[12px] flex items-center justify-center gap-2">
+          <button onclick="handleSendMagicLink()" class="btn btn-blue-solid w-full py-3.5 text-[12px] flex items-center justify-center gap-2">
             <span>minta link</span>
             <i class="fa-solid fa-arrow-right text-[10px]"></i>
           </button>
@@ -380,7 +376,7 @@
             <input id="inputLink" type="text" placeholder="Tempel link verifikasi https://..." class="pl-11 pr-4 py-3.5 text-[12px]" />
           </div>
           <div class="grid grid-cols-[1fr_auto] gap-2">
-            <button onclick="handleVerifyMagicLink()" class="btn btn-blue-gles py-3.5 text-[12px] font-bold">
+            <button onclick="handleVerifyMagicLink()" class="btn btn-blue-solid py-3.5 text-[12px] font-bold">
               Verifikasi & Eksekusi
             </button>
             <button onclick="resetInjectFlow()" class="btn btn-secondary px-4 text-white">
@@ -405,7 +401,7 @@
             <label class="block text-[10px] uppercase font-bold text-slate-400 mb-1.5 font-mono">Jumlah Akun (1 - 100)</label>
             <input id="inputBulkAmount" type="number" min="1" max="100" value="5" class="px-4 py-3.5 text-[12px]" />
           </div>
-          <button onclick="runBulkInject()" class="btn btn-blue-gles w-full py-3.5 text-[12px]">
+          <button onclick="runBulkInject()" class="btn btn-blue-solid w-full py-3.5 text-[12px]">
             Mulai Generate Bulk
           </button>
         </div>
@@ -428,7 +424,7 @@
             </span>
             <input id="inputInboxEmail" type="email" placeholder="email@tempmail.com" class="pl-11 pr-4 py-3.5 text-[12px]" />
           </div>
-          <button onclick="runInboxCheck()" class="btn btn-blue-gles w-full py-3.5 text-[12px] flex items-center justify-center gap-2">
+          <button onclick="runInboxCheck()" class="btn btn-blue-solid w-full py-3.5 text-[12px] flex items-center justify-center gap-2">
             <i class="fa-solid fa-radar"></i>
             <span>Pindai Pesan Masuk</span>
           </button>
@@ -451,7 +447,7 @@
     <!-- FOOTER -->
     <footer class="text-center">
       <p class="text-[11px] text-slate-500 font-medium">
-        Web Am Premium <span class="mx-1.5 text-white/20">•</span> Black White Blue Gles Theme <span class="mx-1.5 text-white/20">•</span> 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞
+        Web Am Premium <span class="mx-1.5 text-white/20">•</span> Border Glow Theme <span class="mx-1.5 text-white/20">•</span> 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞
       </p>
     </footer>
 
@@ -935,7 +931,7 @@
                 <div class="p-2.5 rounded-[10px] bg-black/60 border border-white/20 text-slate-200 text-[10px] break-all font-mono">
                   ${escapeHtml(link)}
                 </div>
-                <button class="btn btn-blue-gles w-full py-2.5 text-[10px] font-bold">
+                <button class="btn btn-blue-solid w-full py-2.5 text-[10px] font-bold">
                   Salin Link Verifikasi
                 </button>
               `
