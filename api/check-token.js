@@ -1,7 +1,7 @@
 // Database penyimpanan token sementara di memori server
 let serverTokens = {
-  "HAO-PREMIUM-30D": "2027-09-15T23:59:59",
-  "VIP-FREE-3DAYS": "2027-08-18T23:59:59"
+  "HAOMI_XML": "2050-09-15T23:59:59",
+  "VIP-FREE-3DAYS": "2026-08-18T23:59:59"
 };
 
 export default function handler(req, res) {
