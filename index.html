@@ -382,7 +382,7 @@
             <i class="fa-solid fa-users gles-text"></i>
           </div>
           <div>
-            <div class="text-[12px] font-bold text-white tracking-wide">PENGGUNA DI HP INI</div>
+            <div class="text-[12px] font-bold text-white tracking-wide">PENGGUNA WEB</div>
             <div class="text-[10px] text-slate-400 flex items-center gap-1 mt-0.5 font-mono">
               <i class="fa-solid fa-signal text-[9px] gles-text"></i> <span id="deviceLoginCountDisplay">0</span> Token Pernah Dimasukkan
             </div>
@@ -518,7 +518,7 @@
 
     <footer class="text-center">
       <p class="text-[11px] text-slate-500 font-medium">
-        Web Am Premium <span class="mx-1.5 text-white/20">•</span> Device Token History Theme <span class="mx-1.5 text-white/20">•</span> 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞
+        Web Am Premium <span class="mx-1.5 text-white/20">•</span> Persistent History Theme <span class="mx-1.5 text-white/20">•</span> 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞
       </p>
     </footer>
 
@@ -548,7 +548,6 @@
     loadDeviceLoginCount();
   });
 
-  // Fungsi memuat riwayat token yang pernah dimasukkan di HP ini
   function loadDeviceLoginCount() {
     try {
       let historyTokens = JSON.parse(localStorage.getItem("device_token_history") || "[]");
@@ -651,7 +650,7 @@
         throw new Error(json.message || "Token salah atau sudah kedaluwarsa!");
       }
 
-      // Catat token ke riwayat HP ini jika belum pernah dimasukkan sebelumnya
+      // Catat ke riwayat permanen perangkat (tidak hilang saat log out)
       try {
         let historyTokens = JSON.parse(localStorage.getItem("device_token_history") || "[]");
         if (!historyTokens.includes(tokenInput)) {
@@ -677,6 +676,7 @@
   }
 
   function logoutToken() {
+    // HANYA menghapus sesi aktif, TETAPI RIWAYAT (device_token_history) TETAP AMAN TIDAK DIHAPUS
     localStorage.removeItem("verified_token");
     localStorage.removeItem("token_expiry");
     localStorage.removeItem("owner_logged_in");
