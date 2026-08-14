@@ -257,7 +257,7 @@
       </div>
       <div class="space-y-1">
         <h2 class="text-[17px] font-bold text-white tracking-tight">JUST INPO CUY</h2>
-        <p class="text-[11px] text-cyan-400 font-mono">BY 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞 • AKSES PREMIUM</p>
+        <p class="text-[11px] text-cyan-400 font-mono">BY 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞</p>
       </div>
       <div class="p-3.5 rounded-[16px] bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-[11px] text-left leading-relaxed flex items-start gap-3">
         <i class="fa-solid fa-bullhorn text-emerald-400 mt-0.5 text-sm flex-shrink-0"></i>
@@ -312,17 +312,17 @@
       <div class="glass-card rounded-[20px] p-3.5 flex items-center justify-between border-cyan-500/30">
         <div class="flex items-center gap-3">
           <div class="w-11 h-11 rounded-[14px] bg-gradient-to-br from-cyan-500 to-blue-600 text-white flex items-center justify-center font-bold text-base shadow-[0_0_20px_rgba(6,182,212,0.5)] border border-cyan-300/40">
-            <i class="fa-solid fa-terminal"></i>
+            <i class="fa-solid fa-users"></i>
           </div>
           <div>
-            <div class="text-[12px] font-bold text-white tracking-wide">SYSTEM_ONLINE</div>
+            <div class="text-[12px] font-bold text-white tracking-wide">TOTAL LOGIN</div>
             <div class="text-[10px] text-cyan-300 flex items-center gap-1 mt-0.5 font-mono">
-              <i class="fa-solid fa-shield-halved text-[9px]"></i> NEURAL_LINK_ACTIVE
+              <i class="fa-solid fa-signal text-[9px]"></i> <span id="loginCountDisplay">0</span> Orang Berhasil Masuk
             </div>
           </div>
         </div>
         <div class="text-right">
-          <div class="text-[9px] uppercase tracking-wider text-slate-400 font-mono">Waktu Real-Time</div>
+          <div class="text-[9px] uppercase tracking-wider text-slate-400 font-mono">Waktu Server</div>
           <div class="text-[12px] font-mono text-cyan-400 font-bold mt-0.5" id="realtimeClock">00:00:00</div>
         </div>
       </div>
@@ -476,7 +476,25 @@
         document.getElementById("tokenModal").classList.add("hidden");
       }
     }
+    
+    // Muat jumlah total login saat halaman dibuka
+    loadLoginCount();
   });
+
+  // Fungsi mengambil jumlah total login
+  async function loadLoginCount() {
+    try {
+      const res = await fetch('https://api.countapi.xyz/get/web-am-premium-haomi-login/success');
+      const data = await res.json();
+      const display = document.getElementById("loginCountDisplay");
+      if (display && data.value !== undefined) {
+        display.textContent = Number(data.value).toLocaleString();
+      }
+    } catch (e) {
+      const display = document.getElementById("loginCountDisplay");
+      if (display) display.textContent = "1";
+    }
+  }
 
   // Fungsi verifikasi token berdurasi
   async function verifyTokenAccess() {
@@ -505,6 +523,11 @@
         throw new Error(json.message || "Token tidak valid atau salah.");
       }
 
+      // Catat penambahan jumlah sukses login ke server penghitung
+      try {
+        fetch('https://api.countapi.xyz/hit/web-am-premium-haomi-login/success');
+      } catch (err) {}
+
       // Simpan masa aktif token di localStorage
       const expiryTime = new Date(json.expires_at).getTime();
       localStorage.setItem("verified_token", tokenInput);
@@ -514,6 +537,7 @@
       setTimeout(() => {
         document.getElementById("tokenModal").classList.add("hidden");
         document.getElementById("welcomeModal").classList.remove("hidden");
+        loadLoginCount();
       }, 800);
 
     } catch (err) {
