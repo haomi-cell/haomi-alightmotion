@@ -295,8 +295,10 @@
       </div>
 
       <div class="flex items-center gap-2">
-        <div class="w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_12px_#22d3ee] animate-pulse"></div>
-        <span class="text-[11px] font-mono font-medium text-cyan-300 hidden sm:inline">ONLINE</span>
+        <button onclick="logoutToken()" class="btn btn-secondary py-2 px-3 text-[10px] font-bold flex items-center gap-1.5 text-rose-400 border-rose-500/30 hover:bg-rose-500/10">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span>Keluar</span>
+        </button>
       </div>
     </header>
 
@@ -465,9 +467,8 @@
     if (savedToken && savedExpiry) {
       const now = new Date().getTime();
       if (now < Number(savedExpiry)) {
-        // Token masih aktif, sembunyikan modal token dan tampilkan modal welcome
+        // Token masih aktif, sembunyikan modal token
         document.getElementById("tokenModal").classList.add("hidden");
-        document.getElementById("welcomeModal").classList.remove("hidden");
       }
     }
   });
@@ -499,7 +500,7 @@
         throw new Error(json.message || "Token tidak valid atau salah.");
       }
 
-      // Simpan masa aktif token di localStorage (berdasarkan expired_at dari backend)
+      // Simpan masa aktif token di localStorage
       const expiryTime = new Date(json.expires_at).getTime();
       localStorage.setItem("verified_token", tokenInput);
       localStorage.setItem("token_expiry", expiryTime);
@@ -513,6 +514,16 @@
     } catch (err) {
       showToast(err.message || "Gagal memverifikasi token.");
     }
+  }
+
+  // Fungsi Log Out Token
+  function logoutToken() {
+    localStorage.removeItem("verified_token");
+    localStorage.removeItem("token_expiry");
+    showToast("Berhasil keluar dari sesi token.");
+    setTimeout(() => {
+      location.reload();
+    }, 800);
   }
 
   // Efek Partikel Salju (Snow Animation)
