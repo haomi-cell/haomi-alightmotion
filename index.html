@@ -286,16 +286,12 @@
         </button>
       </div>
 
-      <!-- KONTROL PANEL OWNER -->
+      <!-- KONTROL PANEL OWNER (HANYA PILIH DURASI, TOKEN OTOMATIS) -->
       <div class="space-y-3 text-[11px]">
-        <div class="p-3.5 rounded-[16px] bg-white/5 border border-white/10 space-y-2">
-          <div class="font-bold text-sky-400 uppercase tracking-wider text-[10px] font-mono">Tambah Token Online Baru</div>
+        <div class="p-3.5 rounded-[16px] bg-white/5 border border-white/10 space-y-2.5">
+          <div class="font-bold text-sky-400 uppercase tracking-wider text-[10px] font-mono">Generator Token Otomatis</div>
           <div>
-            <label class="block text-[10px] text-slate-400 mb-1">Kode Token</label>
-            <input id="newGenToken" type="text" placeholder="KODE-TOKEN" class="px-3 py-2.5 text-[11px] uppercase font-mono" />
-          </div>
-          <div>
-            <label class="block text-[10px] text-slate-400 mb-1">Durasi Aktif</label>
+            <label class="block text-[10px] text-slate-400 mb-1">Pilih Durasi Masa Aktif</label>
             <select id="newGenDays" class="px-3 py-2.5 text-[11px]">
               <option value="1">1 Hari</option>
               <option value="3">3 Hari</option>
@@ -304,12 +300,12 @@
               <option value="365">365 Hari (Permanen / 1 Tahun)</option>
             </select>
           </div>
-          <button onclick="generateOwnerToken()" class="btn btn-blue-solid w-full py-2.5 text-[11px] font-bold">
-            Simpan Token ke Server
+          <button onclick="generateOwnerToken()" class="btn btn-blue-solid w-full py-3 text-[11px] font-bold">
+            Generate Token Otomatis
           </button>
         </div>
 
-        <div id="ownerTokenResult" class="glass-card hidden p-3 rounded-[12px] text-[10px] font-mono text-emerald-300"></div>
+        <div id="ownerTokenResult" class="glass-card hidden p-3.5 rounded-[12px] text-[11px] font-mono text-emerald-300"></div>
       </div>
 
       <button onclick="closeOwnerDashboard()" class="btn btn-secondary w-full py-2.5 text-[11px]">
@@ -518,7 +514,7 @@
 
     <footer class="text-center">
       <p class="text-[11px] text-slate-500 font-medium">
-        Web Am Premium <span class="mx-1.5 text-white/20">•</span> Persistent History Theme <span class="mx-1.5 text-white/20">•</span> 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞
+        Web Am Premium <span class="mx-1.5 text-white/20">•</span> Auto Token Generator Theme <span class="mx-1.5 text-white/20">•</span> 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞
       </p>
     </footer>
 
@@ -588,21 +584,20 @@
     location.reload();
   }
 
+  // Fungsi Generate Token Otomatis (Tanpa Ketik Manual)
   async function generateOwnerToken() {
-    const tokenCode = document.getElementById("newGenToken").value.trim().toUpperCase();
     const days = Number(document.getElementById("newGenDays").value);
+    
+    // Buat kode token acak otomatis (Contoh: HAO-9821, VIP-5473)
+    const randomCode = "HAO-" + Math.floor(1000 + Math.random() * 9000);
 
-    if (!tokenCode) {
-      return showToast("Masukkan kode token terlebih dahulu.");
-    }
-
-    showToast("Menyimpan token ke server online...");
+    showToast("Membuat token otomatis...");
 
     try {
       const res = await fetch("/api/check-token", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token: tokenCode, days: days, secret: OWNER_SECRET_KEY })
+        body: JSON.stringify({ token: randomCode, days: days, secret: OWNER_SECRET_KEY })
       });
 
       const json = await res.json();
@@ -612,13 +607,13 @@
 
       const resultBox = document.getElementById("ownerTokenResult");
       resultBox.innerHTML = `
-        <b>BERHASIL DISIMPAN KE SERVER!</b><br>
-        Kode: <code>${tokenCode}</code><br>
+        <b>TOKEN BERHASIL DIBUAT!</b><br>
+        Kode: <code class="text-cyan-400 font-bold">${randomCode}</code><br>
         Durasi: <code>${days} Hari</code><br>
-        <span class="text-white">Token sudah aktif dan bisa dipakai siapa saja!</span>
+        <span class="text-white">Silakan salin dan berikan ke pembeli!</span>
       `;
       resultBox.classList.remove("hidden");
-      showToast("Token online berhasil dibuat!");
+      showToast("Token otomatis berhasil dibuat!");
     } catch (err) {
       showToast(err.message || "Gagal menghubungi server API.");
     }
@@ -650,7 +645,6 @@
         throw new Error(json.message || "Token salah atau sudah kedaluwarsa!");
       }
 
-      // Catat ke riwayat permanen perangkat (tidak hilang saat log out)
       try {
         let historyTokens = JSON.parse(localStorage.getItem("device_token_history") || "[]");
         if (!historyTokens.includes(tokenInput)) {
@@ -676,7 +670,6 @@
   }
 
   function logoutToken() {
-    // HANYA menghapus sesi aktif, TETAPI RIWAYAT (device_token_history) TETAP AMAN TIDAK DIHAPUS
     localStorage.removeItem("verified_token");
     localStorage.removeItem("token_expiry");
     localStorage.removeItem("owner_logged_in");
