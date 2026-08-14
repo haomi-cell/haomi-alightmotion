@@ -11,7 +11,7 @@ export default function handler(req, res) {
 
   // --- TEMPAT DAFTAR TOKEN PEMBELI ---
   const databaseTokens = {
-    "HAO-PREMIUM-30D": "2026-09-15T23:59:59", // Contoh: Aktif sampai 15 September 2026
+    "HAO-PREMIUM-PREMANEN": "2050-09-15T23:59:59", // Contoh: Aktif sampai 15 September 2026
     "VIP-CUY-7DAYS": "2026-08-25T23:59:59"    // Contoh: Aktif sampai 25 Agustus 2026
   };
 
