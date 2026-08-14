@@ -286,7 +286,7 @@
         </button>
       </div>
 
-      <!-- KONTROL PANEL OWNER (HANYA PILIH DURASI, KODE DIGENERATE OTOMATIS) -->
+      <!-- KONTROL PANEL OWNER -->
       <div class="space-y-3 text-[11px]">
         <div class="p-3.5 rounded-[16px] bg-white/5 border border-white/10 space-y-2.5">
           <div class="font-bold text-sky-400 uppercase tracking-wider text-[10px] font-mono">Generator Token Otomatis</div>
@@ -385,8 +385,8 @@
           </div>
         </div>
         <div class="text-right">
-          <div class="text-[9px] uppercase tracking-wider text-slate-400 font-mono">Waktu Server</div>
-          <div class="text-[12px] font-mono text-white font-bold mt-0.5" id="realtimeClock">00:00:00</div>
+          <div class="text-[9px] uppercase tracking-wider text-slate-400 font-mono">Sisa Waktu Token</div>
+          <div class="text-[12px] font-mono text-white font-bold mt-0.5" id="tokenCountdown">--:--:--</div>
         </div>
       </div>
 
@@ -737,18 +737,56 @@
   }
   animateSnow();
 
-  function updateRealtimeClock() {
-    const now = new Date();
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    const seconds = String(now.getSeconds()).padStart(2, '0');
-    const clockElement = document.getElementById("realtimeClock");
-    if (clockElement) {
-      clockElement.textContent = `${hours}:${minutes}:${seconds}`;
+  // MENGUBAH WAKTU SERVER MENJADI COUNTDOWN MASA AKTIF TOKEN
+  function updateTokenCountdown() {
+    const countdownElement = document.getElementById("tokenCountdown");
+    if (!countdownElement) return;
+
+    const isOwner = localStorage.getItem("owner_logged_in") === "true";
+    if (isOwner) {
+      countdownElement.textContent = "OWNER (PERMANEN)";
+      countdownElement.classList.add("text-sky-400");
+      countdownElement.classList.remove("text-white", "text-rose-400");
+      return;
     }
+
+    const savedExpiry = localStorage.getItem("token_expiry");
+    if (!savedExpiry) {
+      countdownElement.textContent = "--:--:--";
+      return;
+    }
+
+    const expiryTime = Number(savedExpiry);
+    const now = new Date().getTime();
+    const diff = expiryTime - now;
+
+    if (diff <= 0) {
+      countdownElement.textContent = "KEDALUWARSA";
+      countdownElement.classList.add("text-rose-400");
+      countdownElement.classList.remove("text-white");
+      return;
+    }
+
+    // Hitung sisa waktu
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    let timeString = "";
+    if (days > 0) {
+      timeString += `${days} Hari, `;
+    }
+    timeString += `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+    countdownElement.textContent = timeString;
+    countdownElement.classList.remove("text-rose-400");
+    countdownElement.classList.add("text-white");
   }
-  setInterval(updateRealtimeClock, 1000);
-  updateRealtimeClock();
+
+  // Jalankan interval setiap 1 detik
+  setInterval(updateTokenCountdown, 1000);
+  updateTokenCountdown(); // Panggil sekali di awal
 
   function closeWelcomeModal() {
     const modal = document.getElementById("welcomeModal");
@@ -1112,4 +1150,3 @@
 </script>
 </body>
 </html>
-
