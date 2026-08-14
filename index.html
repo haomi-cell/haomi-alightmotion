@@ -382,9 +382,9 @@
             <i class="fa-solid fa-users gles-text"></i>
           </div>
           <div>
-            <div class="text-[12px] font-bold text-white tracking-wide">TOTAL LOGIN</div>
+            <div class="text-[12px] font-bold text-white tracking-wide">PENGGUNA DI HP INI</div>
             <div class="text-[10px] text-slate-400 flex items-center gap-1 mt-0.5 font-mono">
-              <i class="fa-solid fa-signal text-[9px] gles-text"></i> <span id="loginCountDisplay">0</span> Orang Berhasil Masuk
+              <i class="fa-solid fa-signal text-[9px] gles-text"></i> <span id="deviceLoginCountDisplay">0</span> Token Pernah Dimasukkan
             </div>
           </div>
         </div>
@@ -518,7 +518,7 @@
 
     <footer class="text-center">
       <p class="text-[11px] text-slate-500 font-medium">
-        Web Am Premium <span class="mx-1.5 text-white/20">•</span> Cloud Token API Theme <span class="mx-1.5 text-white/20">•</span> 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞
+        Web Am Premium <span class="mx-1.5 text-white/20">•</span> Device Token History Theme <span class="mx-1.5 text-white/20">•</span> 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞
       </p>
     </footer>
 
@@ -527,7 +527,6 @@
   <div id="toast" class="toast fixed z-50 bottom-6 left-1/2 rounded-[16px] px-5 py-3 text-[11px] text-white shadow-2xl max-w-[calc(100vw-32px)]"></div>
 
 <script>
-  // KATA SANDI RAHASIA OWNER DIPERBARUI MENJADI HAOMI_XML
   const OWNER_SECRET_KEY = "HAOMI_XML";
 
   window.addEventListener("DOMContentLoaded", () => {
@@ -546,8 +545,22 @@
         document.getElementById("tokenModal").classList.add("hidden");
       }
     }
-    loadLoginCount();
+    loadDeviceLoginCount();
   });
+
+  // Fungsi memuat riwayat token yang pernah dimasukkan di HP ini
+  function loadDeviceLoginCount() {
+    try {
+      let historyTokens = JSON.parse(localStorage.getItem("device_token_history") || "[]");
+      const display = document.getElementById("deviceLoginCountDisplay");
+      if (display) {
+        display.textContent = historyTokens.length.toLocaleString();
+      }
+    } catch (e) {
+      const display = document.getElementById("deviceLoginCountDisplay");
+      if (display) display.textContent = "0";
+    }
+  }
 
   function openOwnerLoginModal() {
     document.getElementById("tokenModal").classList.add("hidden");
@@ -612,20 +625,6 @@
     }
   }
 
-  async function loadLoginCount() {
-    try {
-      const res = await fetch('https://api.countapi.xyz/get/web-am-premium-haomi-login/success');
-      const data = await res.json();
-      const display = document.getElementById("loginCountDisplay");
-      if (display && data.value !== undefined) {
-        display.textContent = Number(data.value).toLocaleString();
-      }
-    } catch (e) {
-      const display = document.getElementById("loginCountDisplay");
-      if (display) display.textContent = "1";
-    }
-  }
-
   async function verifyTokenAccess() {
     const tokenInput = document.getElementById("inputTokenAccess").value.trim().toUpperCase();
     if (!tokenInput) {
@@ -652,8 +651,13 @@
         throw new Error(json.message || "Token salah atau sudah kedaluwarsa!");
       }
 
+      // Catat token ke riwayat HP ini jika belum pernah dimasukkan sebelumnya
       try {
-        fetch('https://api.countapi.xyz/hit/web-am-premium-haomi-login/success');
+        let historyTokens = JSON.parse(localStorage.getItem("device_token_history") || "[]");
+        if (!historyTokens.includes(tokenInput)) {
+          historyTokens.push(tokenInput);
+          localStorage.setItem("device_token_history", JSON.stringify(historyTokens));
+        }
       } catch (err) {}
 
       const expiryTime = new Date(json.expires_at).getTime();
@@ -664,7 +668,7 @@
       setTimeout(() => {
         document.getElementById("tokenModal").classList.add("hidden");
         document.getElementById("welcomeModal").classList.remove("hidden");
-        loadLoginCount();
+        loadDeviceLoginCount();
       }, 800);
 
     } catch (err) {
