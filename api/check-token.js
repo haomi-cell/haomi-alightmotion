@@ -1,12 +1,10 @@
 // Database penyimpanan token sementara di memori server
-// Anda bisa menambahkan token default di sini
 let serverTokens = {
   "HAO-PREMIUM-30D": "2027-09-15T23:59:59",
   "VIP-FREE-3DAYS": "2027-08-18T23:59:59"
 };
 
 export default function handler(req, res) {
-  // Atur Header CORS agar bisa diakses dari frontend web Anda
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, PUT, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
@@ -15,7 +13,7 @@ export default function handler(req, res) {
     return res.status(200).end();
   }
 
-  // METHOD 1: POST untuk mengecek / memverifikasi token
+  // METHOD 1: POST untuk verifikasi token
   if (req.method === 'POST') {
     const { token } = req.body;
     const cleanToken = String(token || "").trim().toUpperCase();
@@ -47,7 +45,7 @@ export default function handler(req, res) {
   // METHOD 2: PUT untuk menambahkan token baru dari panel owner
   if (req.method === 'PUT') {
     const { token, days, secret } = req.body;
-    const OWNER_SECRET_KEY = "haomiowner123"; // Sesuaikan dengan password owner Anda
+    const OWNER_SECRET_KEY = "HAOMI_XML"; // Key owner diperbarui menjadi HAOMI_XML
 
     if (secret !== OWNER_SECRET_KEY) {
       return res.status(401).json({ status: false, message: "Otorisasi ditolak. Kata sandi owner salah." });
@@ -60,12 +58,10 @@ export default function handler(req, res) {
       return res.status(400).json({ status: false, message: "Kode token wajib diisi." });
     }
 
-    // Hitung tanggal kedaluwarsa baru
     const expiryDate = new Date();
     expiryDate.setDate(expiryDate.getDate() + activeDays);
     const expiryString = expiryDate.toISOString().split('T')[0] + "T23:59:59";
 
-    // Simpan ke database memori server
     serverTokens[cleanToken] = expiryString;
 
     return res.status(200).json({
