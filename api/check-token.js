@@ -1,5 +1,3 @@
-// api/check-token.js
-
 export default function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ status: false, message: 'Metode tidak diizinkan.' });
@@ -11,11 +9,10 @@ export default function handler(req, res) {
     return res.status(400).json({ status: false, message: 'Token tidak boleh kosong.' });
   }
 
-  // Database Token & Tanggal Kedaluwarsa (Format: YYYY-MM-DD)
-  // Anda bisa mengubah atau menambah daftar token di sini sesuai pembeli.
+  // --- TEMPAT DAFTAR TOKEN PEMBELI ---
   const databaseTokens = {
-    "HAO-PREMIUM-30D": "2026-09-15T23:59:59", // Contoh token aktif sampai 15 September 2026
-    "VIP-CUY-7DAYS": "2026-08-25T23:59:59"    // Contoh token aktif sampai 25 Agustus 2026
+    "HAO-PREMIUM-30D": "2026-09-15T23:59:59", // Contoh: Aktif sampai 15 September 2026
+    "VIP-CUY-7DAYS": "2026-08-25T23:59:59"    // Contoh: Aktif sampai 25 Agustus 2026
   };
 
   const expiryString = databaseTokens[token.trim().toUpperCase()];
