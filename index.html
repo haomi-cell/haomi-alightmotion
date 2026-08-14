@@ -1,11 +1,12 @@
+```html
 <!DOCTYPE html>
 <html lang="id" class="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#000000" />
-  <meta name="description" content="AM Pro Toolkit — Modern Monochrome Edition" />
-  <title>AM Pro Toolkit | 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞</title>
+  <meta name="theme-color" content="#030712" />
+  <meta name="description" content="Web Am Premium — Pure Cyberpunk Neon Edition" />
+  <title>Web Am Premium | 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
@@ -30,13 +31,11 @@
 
   <style>
     :root {
-      --bg: #000000;
-      --panel: rgba(18, 18, 20, 0.65);
-      --panel-hover: rgba(28, 28, 32, 0.75);
-      --border: rgba(255, 255, 255, 0.12);
-      --border-focus: rgba(255, 255, 255, 0.4);
-      --text: #f4f4f5;
-      --muted: #a1a1aa;
+      --bg: #030712;
+      --panel: rgba(15, 23, 42, 0.75);
+      --border: rgba(6, 182, 212, 0.25);
+      --text: #f8fafc;
+      --muted: #94a3b8;
     }
 
     * {
@@ -54,80 +53,72 @@
       min-height: 100vh;
       overflow-x: hidden;
       color: var(--text);
-      background: 
-        radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.08), transparent 50%),
-        #000000;
+      background: var(--bg);
       font-family: 'Plus Jakarta Sans', sans-serif;
     }
 
-    /* Efek Grid Abstrak di Background */
-    body::before {
-      content: "";
+    #particleCanvas {
       position: fixed;
       inset: 0;
-      z-index: -2;
+      z-index: -1;
       pointer-events: none;
-      background-image: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-      background-size: 32px 32px;
-      mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
     }
 
-    /* Glassmorphism Utama */
     .glass {
       background: var(--panel);
       border: 1px solid var(--border);
-      backdrop-filter: blur(30px) saturate(150%);
-      -webkit-backdrop-filter: blur(30px) saturate(150%);
+      backdrop-filter: blur(25px) saturate(180%);
+      -webkit-backdrop-filter: blur(25px) saturate(180%);
       box-shadow: 
-        0 24px 48px rgba(0, 0, 0, 0.8),
-        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        0 20px 50px rgba(0, 0, 0, 0.7),
+        0 0 35px rgba(6, 182, 212, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
     }
 
     .glass-card {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(30, 41, 59, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.07);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      transition: all .25s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all .3s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .glass-card:hover {
-      background: rgba(255, 255, 255, 0.04);
-      border-color: rgba(255, 255, 255, 0.18);
+      background: rgba(30, 41, 59, 0.6);
+      border-color: rgba(6, 182, 212, 0.4);
+      box-shadow: 0 0 25px rgba(6, 182, 212, 0.15);
     }
 
     input, select {
       width: 100%;
       color: #ffffff !important;
-      background: rgba(10, 10, 12, 0.8) !important;
-      border: 1px solid rgba(255, 255, 255, 0.12) !important;
+      background: rgba(15, 23, 42, 0.9) !important;
+      border: 1px solid rgba(148, 163, 184, 0.2) !important;
       border-radius: 14px !important;
       outline: none;
-      transition: all .2s ease;
+      transition: all .25s ease;
       font-family: 'Plus Jakarta Sans', sans-serif;
     }
 
     input::placeholder {
-      color: #52525b;
+      color: #64748b;
     }
 
     input:focus, select:focus {
-      border-color: #ffffff !important;
-      background: rgba(18, 18, 22, 0.95) !important;
-      box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.08), 0 0 20px rgba(255, 255, 255, 0.05) !important;
+      border-color: #06b6d4 !important;
+      background: rgba(15, 23, 42, 0.95) !important;
+      box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.15), 0 0 20px rgba(6, 182, 212, 0.2) !important;
     }
 
     select option {
-      background: #121214;
+      background: #0f172a;
       color: white;
     }
 
-    /* Tombol Kustom */
     .btn {
       border-radius: 14px;
       font-weight: 600;
-      transition: all .2s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all .25s cubic-bezier(0.16, 1, 0.3, 1);
       position: relative;
       overflow: hidden;
     }
@@ -137,45 +128,57 @@
     }
 
     .btn-primary {
-      background: #ffffff;
-      color: #000000;
-      border: 1px solid #ffffff;
-      box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
+      background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 4px 25px rgba(6, 182, 212, 0.35);
     }
 
     .btn-primary:hover {
-      background: #e4e4e7;
-      box-shadow: 0 6px 25px rgba(255, 255, 255, 0.35);
+      background: linear-gradient(135deg, #22d3ee 0%, #60a5fa 100%);
+      box-shadow: 0 6px 30px rgba(6, 182, 212, 0.5);
+      transform: translateY(-1px);
+    }
+
+    .btn-whatsapp {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 4px 25px rgba(16, 185, 129, 0.35);
+    }
+
+    .btn-whatsapp:hover {
+      background: linear-gradient(135deg, #34d399 0%, #047857 100%);
+      box-shadow: 0 6px 30px rgba(16, 185, 129, 0.5);
       transform: translateY(-1px);
     }
 
     .btn-secondary {
-      background: rgba(255, 255, 255, 0.06);
-      color: #ffffff;
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.05);
+      color: #f8fafc;
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.12);
-      border-color: rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(6, 182, 212, 0.3);
     }
 
-    /* Navigasi / Dock Style Baru */
     .nav-pill {
       position: relative;
-      color: #71717a;
+      color: #94a3b8;
       transition: all .25s ease;
     }
 
     .nav-pill:hover {
-      color: #d4d4d8;
+      color: #f8fafc;
     }
 
     .nav-pill.active {
-      color: #000000;
-      background: #ffffff;
+      color: #ffffff;
+      background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
       font-weight: 700;
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
     }
 
     .toast {
@@ -183,10 +186,10 @@
       opacity: 0;
       pointer-events: none;
       transition: all .3s cubic-bezier(0.16, 1, 0.3, 1);
-      background: rgba(18, 18, 22, 0.9);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(6, 182, 212, 0.4);
       backdrop-filter: blur(20px);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.8), 0 0 20px rgba(255,255,255,0.1);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.8), 0 0 25px rgba(6, 182, 212, 0.2);
     }
 
     .toast.show {
@@ -211,54 +214,89 @@
 
 <body class="min-h-screen px-4 py-5 flex flex-col items-center justify-between">
 
-  <!-- WRAPPER UTAMA -->
+  <canvas id="particleCanvas"></canvas>
+
+  <!-- JENDELA MODAL SELAMAT DATANG DENGAN LOGO WHATSAPP & INFORMASI -->
+  <div id="welcomeModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-xl animate-fade">
+    <div class="glass w-full max-w-md rounded-[28px] p-6 text-center space-y-4 border border-emerald-500/40 shadow-[0_0_50px_rgba(16,185,129,0.25)]">
+      <div class="w-16 h-16 mx-auto rounded-[20px] bg-gradient-to-br from-emerald-500/30 to-teal-600/30 border border-emerald-400/50 flex items-center justify-center text-emerald-400 text-2xl shadow-[0_0_25px_rgba(16,185,129,0.5)]">
+        <i class="fa-brands fa-whatsapp animate-pulse"></i>
+      </div>
+      <div class="space-y-1">
+        <h2 class="text-[17px] font-bold text-white tracking-tight">JUST INPO CUY</h2>
+        <p class="text-[11px] text-cyan-400 font-mono">BY 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞 • AKSES PREMIUM</p>
+      </div>
+      <div class="p-3.5 rounded-[16px] bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-[11px] text-left leading-relaxed flex items-start gap-3">
+        <i class="fa-solid fa-bullhorn text-emerald-400 mt-0.5 text-sm flex-shrink-0"></i>
+        <span>JOIN SALURAN WA CUY BIAR GK KETINGGALAN INFO MENARIK LAINYA</span>
+      </div>
+      
+      <div class="space-y-2.5 pt-1">
+        <button onclick="closeWelcomeModal()" class="btn btn-primary w-full py-3.5 text-[12px] font-bold flex items-center justify-center gap-2">
+          <span>Masuk ke Beranda Utama</span>
+          <i class="fa-solid fa-arrow-right text-[10px]"></i>
+        </button>
+        <a href="https://whatsapp.com/channel/0029Vaf0GfTJ3jv2hhFz1j2K" target="_blank" class="btn btn-whatsapp w-full py-3.5 text-[12px] font-bold flex items-center justify-center gap-2 no-underline">
+          <i class="fa-brands fa-whatsapp text-sm"></i>
+          <span>Join Saluran WA</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
   <div class="w-full max-w-lg flex flex-col gap-5 my-auto">
 
-    <!-- HEADER / KEPALA MINIMALIS -->
+    <!-- HEADER CYBERPUNK -->
     <header class="glass rounded-[24px] p-4 flex items-center justify-between">
       <div class="flex items-center gap-3.5">
-        <div class="w-11 h-11 rounded-[16px] bg-white/10 border border-white/20 flex items-center justify-center text-white text-base shadow-[0_0_15px_rgba(255,255,255,0.1)]">
-          <i class="fa-solid fa-cube"></i>
+        <div class="w-11 h-11 rounded-[14px] bg-gradient-to-br from-cyan-500/30 to-blue-600/30 border border-cyan-400/50 flex items-center justify-center text-cyan-400 text-lg shadow-[0_0_20px_rgba(6,182,212,0.4)]">
+          <i class="fa-solid fa-wand-magic-sparkles animate-pulse"></i>
         </div>
         <div>
           <h1 class="font-bold text-[15px] tracking-tight text-white flex items-center gap-2">
-            AM Pro Toolkit
-            <span class="text-[9px] px-2 py-0.5 rounded-full bg-white/10 text-white border border-white/20 font-mono">v3.0</span>
+            Web Am Premium
+            <span class="text-[9px] px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 font-mono">AKSES PREMIUM</span>
           </h1>
-          <p class="text-[11px] text-zinc-400 mt-0.5">𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞 Enterprise System</p>
+          <p class="text-[11px] text-cyan-400/80 font-mono mt-0.5">BY 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞</p>
         </div>
       </div>
 
       <div class="flex items-center gap-2">
-        <div class="w-2.5 h-2.5 rounded-full bg-white shadow-[0_0_10px_#ffffff] animate-pulse"></div>
-        <span class="text-[11px] font-medium text-zinc-300 hidden sm:inline">Active</span>
+        <div class="w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_12px_#22d3ee] animate-pulse"></div>
+        <span class="text-[11px] font-mono font-medium text-cyan-300 hidden sm:inline">ONLINE</span>
       </div>
     </header>
 
-    <!-- PANEL UTAMA DENGAN TATA LETAK BARU -->
+    <!-- PANEL UTAMA -->
     <main class="glass rounded-[28px] p-5 sm:p-6 flex flex-col gap-5">
 
-      <!-- DASHBOARD / STATUS PANEL KECIL -->
-      <div class="glass-card rounded-[20px] p-4 flex items-center justify-between">
+      <!-- PENGUMUMAN / PERINGATAN PENGECUALIAN WEB -->
+      <div class="p-3.5 rounded-[16px] bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-[11px] leading-relaxed flex items-start gap-3">
+        <i class="fa-solid fa-circle-exclamation text-cyan-400 mt-0.5 text-sm flex-shrink-0"></i>
+        <span>Web ini tidak di jual melalui pihak ke 3, jika ada yg menjual web ini selain HAO bisa lapor ke OWNER, harga asli web 40k permanen, Tolong hargai yg buat COK🖕🏻</span>
+      </div>
+
+      <!-- DASHBOARD STATUS ADMIN CYBER DENGAN JAM REAL-TIME -->
+      <div class="glass-card rounded-[20px] p-4 flex items-center justify-between border-cyan-500/30">
         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-[14px] bg-white text-black flex items-center justify-center font-bold text-sm shadow-[0_0_15px_rgba(255,255,255,0.3)]">
-            A
+          <div class="w-12 h-12 rounded-[14px] bg-gradient-to-br from-cyan-500 to-blue-600 text-white flex items-center justify-center font-bold text-base shadow-[0_0_20px_rgba(6,182,212,0.5)] border border-cyan-300/40">
+            <i class="fa-solid fa-terminal"></i>
           </div>
           <div>
-            <div class="text-[13px] font-bold text-white" id="displayUsername">Administrator</div>
-            <div class="text-[10px] text-zinc-400 flex items-center gap-1 mt-0.5">
-              <i class="fa-solid fa-shield-halved text-[9px]"></i> Unlimited Access Mode
+            <div class="text-[13px] font-bold text-white tracking-wide" id="displayUsername">AKSES PREMIUM</div>
+            <div class="text-[10px] text-cyan-300 flex items-center gap-1 mt-0.5 font-mono">
+              <i class="fa-solid fa-shield-halved text-[9px]"></i> NEURAL_LINK_ACTIVE
             </div>
           </div>
         </div>
         <div class="text-right">
-          <div class="text-[9px] uppercase tracking-wider text-zinc-500 font-bold">Status</div>
-          <div class="text-[11px] font-mono text-white font-semibold mt-0.5">ONLINE</div>
+          <div class="text-[9px] uppercase tracking-wider text-slate-400 font-mono">Waktu Real-Time</div>
+          <div class="text-[13px] font-mono text-cyan-400 font-bold mt-0.5" id="realtimeClock">00:00:00</div>
         </div>
       </div>
 
-      <!-- NAVIGASI TAB PILL BERGAYA ISLAND -->
-      <div class="grid grid-cols-3 gap-1.5 p-1 bg-white/[0.03] border border-white/10 rounded-[18px]">
+      <!-- NAVIGASI TAB PILL CYBERPUNK -->
+      <div class="grid grid-cols-3 gap-1.5 p-1 bg-slate-900/60 border border-cyan-500/30 rounded-[18px]">
         <button id="tabSend" onclick="switchTab('send')" class="nav-pill active py-2.5 rounded-[14px] text-[11px] font-semibold transition-all">
           <i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i> Aktivasi
         </button>
@@ -273,29 +311,29 @@
       <!-- KONTEN TAB: AKTIVASI -->
       <div id="contentSend" class="animate-fade space-y-4">
         <div>
-          <div class="text-[10px] uppercase font-bold tracking-widest text-zinc-400 mb-1">Secure Protocol</div>
+          <div class="text-[10px] uppercase font-bold tracking-widest text-cyan-400 mb-1 font-mono">Secure Protocol</div>
           <h2 class="text-[16px] font-bold text-white">Aktivasi Alight Motion</h2>
-          <p id="flowInstruction" class="text-[11px] text-zinc-400 mt-1 leading-relaxed">
-            Kirimkan magic link ke alamat email aktif Anda untuk memulai proses sinkronisasi.
+          <p id="flowInstruction" class="text-[11px] text-slate-400 mt-1 leading-relaxed">
+            Kirimkan magic link ke alamat email aktif Anda untuk memulai proses sinkronisasi neural.
           </p>
         </div>
 
         <div id="stepEmailBox" class="space-y-3">
           <div class="relative">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-zinc-500">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-cyan-400/70">
               <i class="fa-regular fa-envelope"></i>
             </span>
-            <input id="inputEmail" type="email" placeholder="nama@domain.com" class="pl-11 pr-4 py-3.5 text-[12px]" />
+            <input id="inputEmail" type="email" placeholder="masukan gmail mu" class="pl-11 pr-4 py-3.5 text-[12px]" />
           </div>
           <button onclick="handleSendMagicLink()" class="btn btn-primary w-full py-3.5 text-[12px] flex items-center justify-center gap-2">
-            <span>Kirim Magic Link</span>
+            <span>minta link</span>
             <i class="fa-solid fa-arrow-right text-[10px]"></i>
           </button>
         </div>
 
         <div id="stepVerifyBox" class="hidden space-y-3">
           <div class="relative">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-zinc-500">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-cyan-400/70">
               <i class="fa-solid fa-link"></i>
             </span>
             <input id="inputLink" type="text" placeholder="Tempel link verifikasi https://..." class="pl-11 pr-4 py-3.5 text-[12px]" />
@@ -310,20 +348,20 @@
           </div>
         </div>
 
-        <div id="sendResult" class="glass-card hidden p-4 rounded-[16px] text-[11px] border border-white/10"></div>
+        <div id="sendResult" class="glass-card hidden p-4 rounded-[16px] text-[11px] border border-cyan-500/30"></div>
       </div>
 
       <!-- KONTEN TAB: BULK -->
       <div id="contentBulk" class="animate-fade space-y-4 hidden">
         <div>
-          <div class="text-[10px] uppercase font-bold tracking-widest text-zinc-400 mb-1">Batch Automation</div>
+          <div class="text-[10px] uppercase font-bold tracking-widest text-cyan-400 mb-1 font-mono">Batch Automation</div>
           <h2 class="text-[16px] font-bold text-white">Bulk Generator</h2>
-          <p class="text-[11px] text-zinc-400 mt-1">Buat banyak token akun premium secara simultan dengan cepat.</p>
+          <p class="text-[11px] text-slate-400 mt-1">Buat banyak token akun premium secara simultan dengan cepat.</p>
         </div>
 
         <div class="space-y-3">
           <div>
-            <label class="block text-[10px] uppercase font-bold text-zinc-400 mb-1.5">Jumlah Akun (1 - 100)</label>
+            <label class="block text-[10px] uppercase font-bold text-slate-400 mb-1.5 font-mono">Jumlah Akun (1 - 100)</label>
             <input id="inputBulkAmount" type="number" min="1" max="100" value="5" class="px-4 py-3.5 text-[12px]" />
           </div>
           <button onclick="runBulkInject()" class="btn btn-primary w-full py-3.5 text-[12px]">
@@ -331,20 +369,20 @@
           </button>
         </div>
 
-        <div id="bulkResult" class="glass-card hidden p-4 rounded-[16px] text-[11px] max-h-48 overflow-y-auto font-mono"></div>
+        <div id="bulkResult" class="glass-card hidden p-4 rounded-[16px] text-[11px] max-h-48 overflow-y-auto font-mono text-cyan-300 border border-cyan-500/30"></div>
       </div>
 
       <!-- KONTEN TAB: INBOX -->
       <div id="contentInbox" class="animate-fade space-y-4 hidden">
         <div>
-          <div class="text-[10px] uppercase font-bold tracking-widest text-zinc-400 mb-1">Mail Scanner</div>
+          <div class="text-[10px] uppercase font-bold tracking-widest text-cyan-400 mb-1 font-mono">Mail Scanner</div>
           <h2 class="text-[16px] font-bold text-white">Pindai Kotak Masuk</h2>
-          <p class="text-[11px] text-zinc-400 mt-1">Ambil link verifikasi langsung dari mail server secara otomatis.</p>
+          <p class="text-[11px] text-slate-400 mt-1">Ambil link verifikasi langsung dari mail server secara otomatis.</p>
         </div>
 
         <div class="space-y-3">
           <div class="relative">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-zinc-500">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-cyan-400/70">
               <i class="fa-solid fa-at"></i>
             </span>
             <input id="inputInboxEmail" type="email" placeholder="email@tempmail.com" class="pl-11 pr-4 py-3.5 text-[12px]" />
@@ -355,7 +393,7 @@
           </button>
         </div>
 
-        <div id="inboxNotice" class="hidden p-3 rounded-[12px] text-[11px] bg-white/5 border border-white/10 text-zinc-300"></div>
+        <div id="inboxNotice" class="hidden p-3 rounded-[12px] text-[11px] bg-cyan-500/10 border border-cyan-500/30 text-cyan-300"></div>
         <div id="inboxResult" class="space-y-2.5 max-h-48 overflow-y-auto"></div>
       </div>
 
@@ -363,8 +401,8 @@
 
     <!-- FOOTER -->
     <footer class="text-center">
-      <p class="text-[11px] text-zinc-500 font-medium">
-        AM Pro Toolkit <span class="mx-1.5 text-zinc-700">•</span> Secure Monochrome <span class="mx-1.5 text-zinc-700">•</span> 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞
+      <p class="text-[11px] text-slate-500 font-medium">
+        Web Am Premium <span class="mx-1.5 text-cyan-500/40">•</span> Cyber Neon Theme <span class="mx-1.5 text-cyan-500/40">•</span> 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞
       </p>
     </footer>
 
@@ -374,6 +412,95 @@
   <div id="toast" class="toast fixed z-50 bottom-6 left-1/2 rounded-[16px] px-5 py-3 text-[11px] text-white shadow-2xl max-w-[calc(100vw-32px)]"></div>
 
 <script>
+  // Fungsi Jam Digital Real-Time
+  function updateRealtimeClock() {
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    const clockElement = document.getElementById("realtimeClock");
+    if (clockElement) {
+      clockElement.textContent = `${hours}:${minutes}:${seconds}`;
+    }
+  }
+  setInterval(updateRealtimeClock, 1000);
+  updateRealtimeClock();
+
+  // Fungsi Menutup Jendela Modal Selamat Datang
+  function closeWelcomeModal() {
+    const modal = document.getElementById("welcomeModal");
+    modal.classList.add("hidden");
+  }
+
+  // Efek Partikel Gerak Interaktif pada Canvas
+  const canvas = document.getElementById('particleCanvas');
+  const ctx = canvas.getContext('2d');
+  let particlesArray = [];
+  let numParticles = 45;
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  class Particle {
+    constructor() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.size = Math.random() * 2 + 1;
+      this.speedX = (Math.random() - 0.5) * 0.6;
+      this.speedY = (Math.random() - 0.5) * 0.6;
+      this.color = Math.random() > 0.3 ? 'rgba(6, 182, 212, ' : 'rgba(59, 130, 246, ';
+      this.alpha = Math.random() * 0.6 + 0.2;
+    }
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+      if (this.x < 0 || this.x > canvas.width) this.speedX = -this.speedX;
+      if (this.y < 0 || this.y > canvas.height) this.speedY = -this.speedY;
+    }
+    draw() {
+      ctx.fillStyle = this.color + this.alpha + ')';
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  function initParticles() {
+    particlesArray = [];
+    for (let i = 0; i < numParticles; i++) {
+      particlesArray.push(new Particle());
+    }
+  }
+  initParticles();
+
+  function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let i = 0; i < particlesArray.length; i++) {
+      particlesArray[i].update();
+      particlesArray[i].draw();
+
+      for (let j = i + 1; j < particlesArray.length; j++) {
+        let dx = particlesArray[i].x - particlesArray[j].x;
+        let dy = particlesArray[i].y - particlesArray[j].y;
+        let distance = Math.sqrt(dx * dx + dy * dy);
+        if (distance < 110) {
+          ctx.strokeStyle = `rgba(6, 182, 212, ${0.15 * (1 - distance / 110)})`;
+          ctx.lineWidth = 0.8;
+          ctx.beginPath();
+          ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
+          ctx.lineTo(particlesArray[j].x, particlesArray[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(animateParticles);
+  }
+  animateParticles();
+
   let activeInjectEmail = "";
 
   function showToast(message) {
@@ -478,10 +605,10 @@
 
       const result = document.getElementById("sendResult");
       result.innerHTML = `
-        <div class="font-bold ${success ? "text-white" : "text-zinc-400"}">
+        <div class="font-bold ${success ? "text-cyan-400" : "text-slate-400"}">
           ${success ? "STATUS: BERHASIL" : "STATUS: GAGAL"}
         </div>
-        <div class="text-[11px] text-zinc-300 mt-1 leading-relaxed">
+        <div class="text-[11px] text-slate-300 mt-1 leading-relaxed">
           ${escapeHtml(resultMessage)}
         </div>
       `;
@@ -509,7 +636,7 @@
     document.getElementById("stepEmailBox").classList.remove("hidden");
 
     document.getElementById("flowInstruction").textContent =
-      "Kirimkan magic link ke alamat email aktif Anda untuk memulai proses sinkronisasi.";
+      "Kirimkan magic link ke alamat email aktif Anda untuk memulai proses sinkronisasi neural.";
 
     document.getElementById("sendResult").classList.add("hidden");
   }
@@ -547,10 +674,10 @@
       const result = document.getElementById("bulkResult");
 
       result.innerHTML = `
-        <div class="font-bold ${success ? "text-white" : "text-zinc-400"}">
+        <div class="font-bold ${success ? "text-cyan-400" : "text-slate-400"}">
           ${success ? "BULK GENERATE SUCCESS" : "BULK GENERATE FAILED"}
         </div>
-        <pre class="whitespace-pre-wrap text-[10px] text-zinc-300 mt-1">${escapeHtml(resultMessage)}</pre>
+        <pre class="whitespace-pre-wrap text-[10px] text-slate-300 mt-1">${escapeHtml(resultMessage)}</pre>
       `;
 
       result.classList.remove("hidden");
@@ -603,7 +730,7 @@
 
       if (!messages.length) {
         container.innerHTML =
-          '<div class="text-[11px] text-zinc-500 p-4 text-center">Tidak ada pesan ditemukan.</div>';
+          '<div class="text-[11px] text-slate-500 p-4 text-center">Tidak ada pesan ditemukan.</div>';
         return;
       }
 
@@ -620,7 +747,7 @@
           ${
             link
               ? `
-                <div class="p-2.5 rounded-[10px] bg-black/40 border border-white/10 text-zinc-300 text-[10px] break-all font-mono">
+                <div class="p-2.5 rounded-[10px] bg-slate-950/60 border border-cyan-500/20 text-cyan-300 text-[10px] break-all font-mono">
                   ${escapeHtml(link)}
                 </div>
                 <button class="btn btn-primary w-full py-2.5 text-[10px] font-bold">
@@ -628,7 +755,7 @@
                 </button>
               `
               : `
-                <div class="text-[10px] text-zinc-500">
+                <div class="text-[10px] text-slate-500">
                   Link verifikasi belum tersedia.
                 </div>
               `
@@ -664,3 +791,5 @@
 </script>
 </body>
 </html>
+
+```
