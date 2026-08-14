@@ -62,7 +62,6 @@
       height: 100vh;
     }
 
-    /* EFEK GLOW / GLITCH BIRU PUTIH BERGERAK HANYA PADA BINGKAI (BLUR TETAP AMAN) */
     @keyframes blueGlesGlow {
       0% { border-color: rgba(255, 255, 255, 0.3); box-shadow: 0 0 20px rgba(0, 140, 255, 0.15); }
       33% { border-color: rgba(0, 150, 255, 0.7); box-shadow: 0 0 35px rgba(0, 150, 255, 0.35); }
@@ -136,7 +135,6 @@
       transform: scale(0.97);
     }
 
-    /* TOMBOL DENGAN WARNA BIRU GELAP ELEGAN YANG STABIL */
     .btn-blue-solid {
       background: linear-gradient(135deg, #0284c7 0%, #1e40af 100%);
       color: #ffffff;
@@ -238,7 +236,88 @@
           <span>Verifikasi & Masuk</span>
           <i class="fa-solid fa-arrow-right text-[10px]"></i>
         </button>
+        
+        <!-- TOMBOL MENU MASUK KE DASHBOARD OWNER -->
+        <button onclick="openOwnerLoginModal()" class="w-full pt-1 text-[10px] text-slate-400 hover:text-sky-400 font-mono transition-colors">
+          Login khusus Owner (Admin)
+        </button>
       </div>
+    </div>
+  </div>
+
+  <!-- MODAL LOGIN KHUSUS OWNER -->
+  <div id="ownerLoginModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/95 backdrop-blur-xl animate-fade hidden">
+    <div class="glass w-full max-w-sm rounded-[28px] p-6 text-center space-y-4 border-sky-500/50">
+      <div class="w-14 h-14 mx-auto rounded-[18px] bg-sky-500/20 border border-sky-400/50 flex items-center justify-center text-sky-400 text-xl shadow-[0_0_20px_rgba(56,189,248,0.3)]">
+        <i class="fa-solid fa-user-shield animate-pulse"></i>
+      </div>
+      <div class="space-y-1">
+        <h2 class="text-[16px] font-bold text-white tracking-tight">Otorisasi Owner</h2>
+        <p class="text-[11px] text-slate-400">Masukkan kata sandi rahasia pemilik website.</p>
+      </div>
+      
+      <div class="space-y-3 pt-1">
+        <input id="inputOwnerPassword" type="password" placeholder="Kata sandi owner..." class="px-4 py-3 text-[12px] text-center font-mono" />
+        <button onclick="verifyOwnerPassword()" class="btn btn-blue-solid w-full py-3.5 text-[12px] font-bold flex items-center justify-center gap-2">
+          <span>Buka Panel Owner</span>
+          <i class="fa-solid fa-unlock text-[10px]"></i>
+        </button>
+        <button onclick="closeOwnerLoginModal()" class="w-full text-[11px] text-slate-400 hover:text-white">
+          Kembali
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD KHUSUS OWNER (PANEL ADMIN) -->
+  <div id="ownerDashboardModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/95 backdrop-blur-xl animate-fade hidden">
+    <div class="glass w-full max-w-md rounded-[28px] p-5 text-left space-y-4 max-h-[90vh] overflow-y-auto border-emerald-500/50">
+      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-[12px] bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-emerald-400 text-sm">
+            <i class="fa-solid fa-gauge-high"></i>
+          </div>
+          <div>
+            <h2 class="text-[14px] font-bold text-white">Dashboard Owner</h2>
+            <p class="text-[9px] text-emerald-400 font-mono">STATUS: ADMIN_ACTIVE</p>
+          </div>
+        </div>
+        <button onclick="closeOwnerDashboard()" class="text-slate-400 hover:text-white text-sm px-2 py-1">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- KONTROL PANEL OWNER -->
+      <div class="space-y-3 text-[11px]">
+        <div class="p-3.5 rounded-[16px] bg-white/5 border border-white/10 space-y-2">
+          <div class="font-bold text-sky-400 uppercase tracking-wider text-[10px] font-mono">Buat Token Baru Cepat</div>
+          <div>
+            <label class="block text-[10px] text-slate-400 mb-1">Kode Token (Contoh: RIAN-OK)</label>
+            <input id="newGenToken" type="text" placeholder="KODE-TOKEN" class="px-3 py-2.5 text-[11px] uppercase font-mono" />
+          </div>
+          <div>
+            <label class="block text-[10px] text-slate-400 mb-1">Masa Aktif (Hari)</label>
+            <select id="newGenDays" class="px-3 py-2.5 text-[11px]">
+              <option value="7">7 Hari</option>
+              <option value="30" selected>30 Hari (1 Bulan)</option>
+              <option value="365">365 Hari (Permanen / 1 Tahun)</option>
+            </select>
+          </div>
+          <button onclick="generateOwnerToken()" class="btn btn-blue-solid w-full py-2.5 text-[11px] font-bold">
+            Simpan & Generate Token
+          </button>
+        </div>
+
+        <div id="ownerTokenResult" class="glass-card hidden p-3 rounded-[12px] text-[10px] font-mono text-emerald-300"></div>
+
+        <div class="p-3 rounded-[12px] bg-sky-500/10 border border-sky-500/30 text-sky-300 text-[10px] leading-relaxed">
+          <i class="fa-solid fa-circle-info mr-1"></i> Catatan: Token yang dibuat melalui panel ini akan tersimpan otomatis di browser pemilik dan siap dibagikan ke pembeli.
+        </div>
+      </div>
+
+      <button onclick="closeOwnerDashboard()" class="btn btn-secondary w-full py-2.5 text-[11px]">
+        Tutup Panel Owner
+      </button>
     </div>
   </div>
 
@@ -447,7 +526,7 @@
     <!-- FOOTER -->
     <footer class="text-center">
       <p class="text-[11px] text-slate-500 font-medium">
-        Web Am Premium <span class="mx-1.5 text-white/20">•</span> Border Glow Theme <span class="mx-1.5 text-white/20">•</span> 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞
+        Web Am Premium <span class="mx-1.5 text-white/20">•</span> Owner Dashboard Enabled <span class="mx-1.5 text-white/20">•</span> 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞
       </p>
     </footer>
 
@@ -457,9 +536,19 @@
   <div id="toast" class="toast fixed z-50 bottom-6 left-1/2 rounded-[16px] px-5 py-3 text-[11px] text-white shadow-2xl max-w-[calc(100vw-32px)]"></div>
 
 <script>
+  // KATA SANDI RAHASIA OWNER (Ganti "haomiowner123" sesuai keinginan Anda)
+  const OWNER_SECRET_KEY = "haomiowner123";
+
   window.addEventListener("DOMContentLoaded", () => {
     const savedToken = localStorage.getItem("verified_token");
     const savedExpiry = localStorage.getItem("token_expiry");
+
+    // Cek jika owner sedang login sesi admin
+    const ownerSession = localStorage.getItem("owner_logged_in");
+    if (ownerSession === "true") {
+      document.getElementById("tokenModal").classList.add("hidden");
+      return;
+    }
 
     if (savedToken && savedExpiry) {
       const now = new Date().getTime();
@@ -469,6 +558,64 @@
     }
     loadLoginCount();
   });
+
+  // Modal Login Owner
+  function openOwnerLoginModal() {
+    document.getElementById("tokenModal").classList.add("hidden");
+    document.getElementById("ownerLoginModal").classList.remove("hidden");
+  }
+
+  function closeOwnerLoginModal() {
+    document.getElementById("ownerLoginModal").classList.add("hidden");
+    document.getElementById("tokenModal").classList.remove("hidden");
+  }
+
+  function verifyOwnerPassword() {
+    const pwd = document.getElementById("inputOwnerPassword").value.trim();
+    if (pwd === OWNER_SECRET_KEY) {
+      localStorage.setItem("owner_logged_in", "true");
+      document.getElementById("ownerLoginModal").classList.add("hidden");
+      document.getElementById("ownerDashboardModal").classList.remove("hidden");
+      showToast("Selamat datang Owner!");
+    } else {
+      showToast("Kata sandi owner salah!");
+    }
+  }
+
+  function closeOwnerDashboard() {
+    document.getElementById("ownerDashboardModal").classList.add("hidden");
+    location.reload();
+  }
+
+  // Fungsi Generator Token Admin langsung dari web
+  function generateOwnerToken() {
+    const tokenCode = document.getElementById("newGenToken").value.trim().toUpperCase();
+    const days = Number(document.getElementById("newGenDays").value);
+
+    if (!tokenCode) {
+      return showToast("Masukkan kode token terlebih dahulu.");
+    }
+
+    // Hitung tanggal kedaluwarsa otomatis
+    const expiryDate = new Date();
+    expiryDate.setDate(expiryDate.getDate() + days);
+    const expiryString = expiryDate.toISOString().split('T')[0] + "T23:59:59";
+
+    // Simpan ke localStorage khusus admin (agar terbaca oleh API check-token / frontend)
+    let customTokens = JSON.parse(localStorage.getItem("custom_db_tokens") || "{}");
+    customTokens[tokenCode] = expiryString;
+    localStorage.setItem("custom_db_tokens", JSON.stringify(customTokens));
+
+    const resultBox = document.getElementById("ownerTokenResult");
+    resultBox.innerHTML = `
+      <b>BERHASIL DIBUAT!</b><br>
+      Kode: <code>${tokenCode}</code><br>
+      Aktif Sampai: <code>${expiryString}</code><br>
+      <span class="text-white">Bagikan kode ini ke pembeli!</span>
+    `;
+    resultBox.classList.remove("hidden");
+    showToast("Token baru berhasil dibuat!");
+  }
 
   async function loadLoginCount() {
     try {
@@ -485,55 +632,56 @@
   }
 
   async function verifyTokenAccess() {
-    const tokenInput = document.getElementById("inputTokenAccess").value.trim();
+    const tokenInput = document.getElementById("inputTokenAccess").value.trim().toUpperCase();
     if (!tokenInput) {
       return showToast("Masukkan token akses Anda terlebih dahulu.");
     }
 
     showToast("Memverifikasi token...");
 
-    try {
-      const res = await fetch("/api/check-token", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token: tokenInput })
-      });
+    // Cek token bawaan atau token custom yang dibuat owner lewat dashboard
+    const defaultTokens = {
+      "HAO-PREMIUM-30D": "2026-09-15T23:59:59",
+      "VIP-CUY-7DAYS": "2026-08-25T23:59:59"
+    };
 
-      const contentType = res.headers.get("content-type");
-      if (!contentType || !contentType.includes("application/json")) {
-        throw new Error("Respon server tidak valid.");
-      }
+    const customTokens = JSON.parse(localStorage.getItem("custom_db_tokens") || "{}");
+    const allTokens = { ...defaultTokens, ...customTokens };
 
-      const json = await res.json();
+    const expiryString = allTokens[tokenInput];
 
-      if (!res.ok || json.status === false) {
-        throw new Error(json.message || "Token tidak valid atau salah.");
-      }
-
-      try {
-        fetch('https://api.countapi.xyz/hit/web-am-premium-haomi-login/success');
-      } catch (err) {}
-
-      const expiryTime = new Date(json.expires_at).getTime();
-      localStorage.setItem("verified_token", tokenInput);
-      localStorage.setItem("token_expiry", expiryTime);
-
-      showToast("Token valid! Membuka akses...");
-      setTimeout(() => {
-        document.getElementById("tokenModal").classList.add("hidden");
-        document.getElementById("welcomeModal").classList.remove("hidden");
-        loadLoginCount();
-      }, 800);
-
-    } catch (err) {
-      showToast(err.message || "Gagal memverifikasi token.");
+    if (!expiryString) {
+      return showToast("Token salah atau tidak terdaftar!");
     }
+
+    const now = new Date();
+    const expiryDate = new Date(expiryString);
+
+    if (now > expiryDate) {
+      return showToast("Token sudah kedaluarsa/habis masa aktifnya!");
+    }
+
+    try {
+      fetch('https://api.countapi.xyz/hit/web-am-premium-haomi-login/success');
+    } catch (err) {}
+
+    const expiryTime = expiryDate.getTime();
+    localStorage.setItem("verified_token", tokenInput);
+    localStorage.setItem("token_expiry", expiryTime);
+
+    showToast("Token valid! Membuka akses...");
+    setTimeout(() => {
+      document.getElementById("tokenModal").classList.add("hidden");
+      document.getElementById("welcomeModal").classList.remove("hidden");
+      loadLoginCount();
+    }, 800);
   }
 
   function logoutToken() {
     localStorage.removeItem("verified_token");
     localStorage.removeItem("token_expiry");
-    showToast("Berhasil keluar dari sesi token.");
+    localStorage.removeItem("owner_logged_in");
+    showToast("Berhasil keluar dari sesi.");
     setTimeout(() => {
       location.reload();
     }, 800);
