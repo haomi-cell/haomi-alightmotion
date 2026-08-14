@@ -228,8 +228,29 @@
   <canvas id="particleCanvas"></canvas>
   <canvas id="snowCanvas"></canvas>
 
+  <!-- MODAL LOGIN / MASUKKAN TOKEN AKSES BERDURASI -->
+  <div id="tokenModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-xl animate-fade">
+    <div class="glass w-full max-w-sm rounded-[28px] p-6 text-center space-y-4 border border-cyan-500/40 shadow-[0_0_50px_rgba(6,182,212,0.25)]">
+      <div class="w-14 h-14 mx-auto rounded-[18px] bg-gradient-to-br from-cyan-500/30 to-blue-600/30 border border-cyan-400/50 flex items-center justify-center text-cyan-400 text-xl shadow-[0_0_20px_rgba(6,182,212,0.4)]">
+        <i class="fa-solid fa-key animate-pulse"></i>
+      </div>
+      <div class="space-y-1">
+        <h2 class="text-[16px] font-bold text-white tracking-tight">Verifikasi Token Akses</h2>
+        <p class="text-[11px] text-slate-400">Masukkan token resmi berdurasi untuk melanjutkan.</p>
+      </div>
+      
+      <div class="space-y-3 pt-1">
+        <input id="inputTokenAccess" type="text" placeholder="Ketik token Anda di sini..." class="px-4 py-3 text-[12px] text-center uppercase tracking-widest font-mono" />
+        <button onclick="verifyTokenAccess()" class="btn btn-primary w-full py-3.5 text-[12px] font-bold flex items-center justify-center gap-2">
+          <span>Verifikasi & Masuk</span>
+          <i class="fa-solid fa-arrow-right text-[10px]"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- JENDELA MODAL SELAMAT DATANG DENGAN LOGO WHATSAPP & INFORMASI -->
-  <div id="welcomeModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-xl animate-fade">
+  <div id="welcomeModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-xl animate-fade hidden">
     <div class="glass w-full max-w-md rounded-[28px] p-6 text-center space-y-4 border border-emerald-500/40 shadow-[0_0_50px_rgba(16,185,129,0.25)]">
       <div class="w-16 h-16 mx-auto rounded-[20px] bg-gradient-to-br from-emerald-500/30 to-teal-600/30 border border-emerald-400/50 flex items-center justify-center text-emerald-400 text-2xl shadow-[0_0_25px_rgba(16,185,129,0.5)]">
         <i class="fa-brands fa-whatsapp animate-pulse"></i>
@@ -436,6 +457,64 @@
   <div id="toast" class="toast fixed z-50 bottom-6 left-1/2 rounded-[16px] px-5 py-3 text-[11px] text-white shadow-2xl max-w-[calc(100vw-32px)]"></div>
 
 <script>
+  // Cek apakah token sudah pernah diverifikasi sebelumnya di browser ini
+  window.addEventListener("DOMContentLoaded", () => {
+    const savedToken = localStorage.getItem("verified_token");
+    const savedExpiry = localStorage.getItem("token_expiry");
+
+    if (savedToken && savedExpiry) {
+      const now = new Date().getTime();
+      if (now < Number(savedExpiry)) {
+        // Token masih aktif, sembunyikan modal token dan tampilkan modal welcome
+        document.getElementById("tokenModal").classList.add("hidden");
+        document.getElementById("welcomeModal").classList.remove("hidden");
+      }
+    }
+  });
+
+  // Fungsi verifikasi token berdurasi
+  async function verifyTokenAccess() {
+    const tokenInput = document.getElementById("inputTokenAccess").value.trim();
+    if (!tokenInput) {
+      return showToast("Masukkan token akses Anda terlebih dahulu.");
+    }
+
+    showToast("Memverifikasi token...");
+
+    try {
+      const res = await fetch("/api/check-token", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: tokenInput })
+      });
+
+      const contentType = res.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        throw new Error("Respon server tidak valid.");
+      }
+
+      const json = await res.json();
+
+      if (!res.ok || json.status === false) {
+        throw new Error(json.message || "Token tidak valid atau salah.");
+      }
+
+      // Simpan masa aktif token di localStorage (berdasarkan expired_at dari backend)
+      const expiryTime = new Date(json.expires_at).getTime();
+      localStorage.setItem("verified_token", tokenInput);
+      localStorage.setItem("token_expiry", expiryTime);
+
+      showToast("Token valid! Membuka akses...");
+      setTimeout(() => {
+        document.getElementById("tokenModal").classList.add("hidden");
+        document.getElementById("welcomeModal").classList.remove("hidden");
+      }, 800);
+
+    } catch (err) {
+      showToast(err.message || "Gagal memverifikasi token.");
+    }
+  }
+
   // Efek Partikel Salju (Snow Animation)
   const snowCanvas = document.getElementById('snowCanvas');
   const snowCtx = snowCanvas.getContext('2d');
