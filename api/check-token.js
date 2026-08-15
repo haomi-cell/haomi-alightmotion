@@ -1,75 +1,34 @@
-// Database penyimpanan token sementara di memori server
-let serverTokens = {
-  "HAOMI_XML": "2050-09-15T23:59:59",
-  "VIP-FREE-3DAYS": "2026-08-18T23:59:59"
-};
+  // Taruh ini di bagian atas file check-token.js
+  if (!global.activeUsers) global.activeUsers = [];
+  if (!global.blockedIPs) global.blockedIPs = [];
 
-export default function handler(req, res) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST, PUT, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  // ... (Di dalam fungsi handler Anda) ...
+  const ipAddress = req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'IP Tidak Dikenal';
 
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
+  // 1. Cek Blokir
+  if (global.blockedIPs.includes(ipAddress)) {
+    return sendJson(res, 403, { status: false, message: "IP Anda telah diblokir oleh Admin." });
   }
 
-  // METHOD 1: POST untuk verifikasi token
-  if (req.method === 'POST') {
-    const { token } = req.body;
-    const cleanToken = String(token || "").trim().toUpperCase();
+  // 2. Jika Token VALID, catat user ke daftar aktif
+  // (Letakkan kode di bawah ini setelah logika verifikasi token berhasil)
+  const now = new Date();
+  const timeString = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+  
+  const randomId = "USR-" + Math.random().toString(36).substring(2, 6).toUpperCase();
 
-    if (!cleanToken) {
-      return res.status(400).json({ status: false, message: "Token tidak boleh kosong." });
-    }
+  // Hapus data lama dengan IP/Token yang sama agar tidak double
+  global.activeUsers = global.activeUsers.filter(u => u.token !== tokenInput);
+  
+  // Simpan data login baru
+  global.activeUsers.push({
+    id: randomId,
+    token: tokenInput,
+    ip: ipAddress,
+    lastLogin: `Hari ini, ${timeString}`
+  });
 
-    const expiryString = serverTokens[cleanToken];
-
-    if (!expiryString) {
-      return res.status(400).json({ status: false, message: "Token salah atau tidak terdaftar!" });
-    }
-
-    const now = new Date();
-    const expiryDate = new Date(expiryString);
-
-    if (now > expiryDate) {
-      return res.status(400).json({ status: false, message: "Masa aktif token sudah kedaluarsa!" });
-    }
-
-    return res.status(200).json({
-      status: true,
-      message: "Token valid dan aktif.",
-      expires_at: expiryString
-    });
-  }
-
-  // METHOD 2: PUT untuk menambahkan token baru dari panel owner
-  if (req.method === 'PUT') {
-    const { token, days, secret } = req.body;
-    const OWNER_SECRET_KEY = "HAOMI_XML"; // Key owner diperbarui menjadi HAOMI_XML
-
-    if (secret !== OWNER_SECRET_KEY) {
-      return res.status(401).json({ status: false, message: "Otorisasi ditolak. Kata sandi owner salah." });
-    }
-
-    const cleanToken = String(token || "").trim().toUpperCase();
-    const activeDays = Number(days || 30);
-
-    if (!cleanToken) {
-      return res.status(400).json({ status: false, message: "Kode token wajib diisi." });
-    }
-
-    const expiryDate = new Date();
-    expiryDate.setDate(expiryDate.getDate() + activeDays);
-    const expiryString = expiryDate.toISOString().split('T')[0] + "T23:59:59";
-
-    serverTokens[cleanToken] = expiryString;
-
-    return res.status(200).json({
-      status: true,
-      message: `Token ${cleanToken} berhasil dibuat untuk ${activeDays} hari!`,
-      expires_at: expiryString
-    });
-  }
-
-  return res.status(405).json({ status: false, message: "Method tidak diizinkan." });
-}
+Dengan penyesuaian ini:
+1. Setiap orang yang login, akan masuk ke Panel Admin.
+2. Saat orang itu klik **Keluar Sesi Token**, datanya akan **HILANG** dari panel Admin.
+3. Owner bisa menekan **Cabut Token** untuk mematikan sesi orang tersebut (jika dikombinasikan dengan database).
