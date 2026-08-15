@@ -298,7 +298,14 @@
             Buat Token Otomatis
           </button>
         </div>
-        <div id="ownerTokenResult" class="glass-card hidden p-3.5 rounded-[12px] text-[11px] font-mono text-emerald-300"></div>
+        
+        <!-- Hasil Token & Tombol Salin -->
+        <div id="ownerTokenResult" class="glass-card hidden p-3.5 rounded-[12px] text-[11px] font-mono text-emerald-300 space-y-2.5">
+          <div id="ownerTokenText"></div>
+          <button onclick="copyGeneratedToken()" class="btn py-2 w-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 hover:bg-emerald-500/30 font-bold flex items-center justify-center gap-1.5 text-[10px]">
+            <i class="fa-regular fa-copy"></i> Salin Token
+          </button>
+        </div>
       </div>
 
       <!-- KONTROL PANEL: MANAJEMEN PENGGUNA -->
@@ -537,20 +544,19 @@
 
 <script>
   const OWNER_SECRET_KEY = "HAOMI_XML";
+  let lastGeneratedCode = ""; // Variabel untuk menyimpan kode token terakhir
 
   window.addEventListener("DOMContentLoaded", () => {
     const savedToken = localStorage.getItem("verified_token");
     const savedExpiry = localStorage.getItem("token_expiry");
     const ownerSession = localStorage.getItem("owner_logged_in");
 
-    // Jika sudah login sebagai Owner
     if (ownerSession === "true") {
       document.getElementById("tokenModal").classList.add("hidden");
       document.getElementById("ownerMenuButtonContainer").classList.remove("hidden");
       return;
     }
 
-    // Jika token reguler valid
     if (savedToken && savedExpiry) {
       const now = new Date().getTime();
       if (now < Number(savedExpiry)) {
@@ -586,7 +592,6 @@
     document.getElementById("ownerDashboardModal").classList.add("hidden");
   }
 
-  // ==== LOGIKA TAB ADMIN ====
   function switchAdminTab(tab) {
     document.getElementById("adminContentGen").classList.add("hidden");
     document.getElementById("adminContentUsers").classList.add("hidden");
@@ -602,13 +607,11 @@
     }
   }
 
-  // ==== LOAD USER DARI SERVER (DIARAHKAN KE CHECK-TOKEN) ====
   async function loadActiveUsers() {
     const container = document.getElementById("userListContainer");
     container.innerHTML = `<div class="text-center text-slate-400 py-4"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengambil data dari server...</div>`;
 
     try {
-      // PERUBAHAN: Ditembak langsung ke check-token.js
       const res = await fetch("/api/check-token?action=get_users", { 
         method: "GET",
         headers: { "Authorization": OWNER_SECRET_KEY } 
@@ -663,7 +666,7 @@
     if(confirm(`Yakin ingin mencabut (hapus) akses untuk token ${token}?`)) {
       showToast("Sedang memproses cabut token...");
       try {
-        await fetch("/api/check-token", { // PERUBAHAN
+        await fetch("/api/check-token", {
           method: "POST",
           headers: { 
             "Content-Type": "application/json",
@@ -683,7 +686,7 @@
     if(confirm(`Yakin ingin memblokir IP ${ip} agar tidak bisa login selamanya?`)) {
       showToast("Sedang memblokir IP...");
       try {
-        await fetch("/api/check-token", { // PERUBAHAN
+        await fetch("/api/check-token", {
           method: "POST",
           headers: { 
             "Content-Type": "application/json",
@@ -703,6 +706,7 @@
   async function generateOwnerToken() {
     const days = Number(document.getElementById("newGenDays").value);
     const randomCode = "HAO-" + Math.floor(1000 + Math.random() * 9000);
+    lastGeneratedCode = randomCode; // Simpan ke variabel global
     showToast("Membuat token otomatis...");
 
     try {
@@ -718,16 +722,30 @@
       }
 
       const resultBox = document.getElementById("ownerTokenResult");
-      resultBox.innerHTML = `
+      const tokenText = document.getElementById("ownerTokenText");
+      
+      tokenText.innerHTML = `
         <b>TOKEN BERHASIL DIBUAT!</b><br>
         Kode: <code class="text-cyan-400 font-bold">${randomCode}</code><br>
-        Durasi: <code>${days} Hari</code><br>
-        <span class="text-white">Silakan salin dan berikan ke pembeli!</span>
+        Durasi: <code>${days} Hari</code>
       `;
       resultBox.classList.remove("hidden");
       showToast("Token otomatis berhasil dibuat!");
     } catch (err) {
       showToast(err.message || "Gagal menghubungi server API.");
+    }
+  }
+
+  // Fungsi untuk menyalin token yang baru dibuat
+  async function copyGeneratedToken() {
+    if (!lastGeneratedCode) {
+      return showToast("Belum ada token yang dibuat.");
+    }
+    try {
+      await navigator.clipboard.writeText(lastGeneratedCode);
+      showToast(`Token ${lastGeneratedCode} berhasil disalin!`);
+    } catch (e) {
+      showToast("Gagal menyalin token.");
     }
   }
 
@@ -737,7 +755,6 @@
       return showToast("Masukkan token akses atau key owner terlebih dahulu.");
     }
 
-    // Cek Key Owner
     if (inputVal === OWNER_SECRET_KEY) {
       localStorage.setItem("owner_logged_in", "true");
       showToast("Akses Owner Diberikan!");
@@ -748,7 +765,6 @@
       return;
     }
 
-    // Token Reguler
     const tokenInput = inputVal.toUpperCase();
     showToast("Memverifikasi token online...");
 
@@ -756,7 +772,7 @@
       const res = await fetch("/api/check-token", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token: tokenInput }) // Tanpa 'action', dianggap verifikasi login
+        body: JSON.stringify({ token: tokenInput })
       });
 
       const contentType = res.headers.get("content-type");
@@ -800,7 +816,7 @@
 
     if (currentToken) {
       try {
-        await fetch("/api/check-token", { // PERUBAHAN
+        await fetch("/api/check-token", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ action: "logout", token: currentToken })
@@ -1286,5 +1302,4 @@
 </script>
 </body>
 </html>
-
 
