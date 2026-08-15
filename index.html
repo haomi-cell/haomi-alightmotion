@@ -10,13 +10,13 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
 
-  <!-- FIREBASE SDK UNTUK CLOUD DATABASE REAL-TIME -->
+  <!-- FIREBASE SDK -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { getFirestore, collection, doc, setDoc, getDocs, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, collection, doc, setDoc, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-    window.FirebaseSDK = { initializeApp, getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, getFirestore, collection, doc, setDoc, getDocs, deleteDoc, onSnapshot };
+    window.FirebaseSDK = { initializeApp, getAuth, signInAnonymously, signInWithCustomToken, getFirestore, collection, doc, setDoc, getDocs, deleteDoc };
   </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -313,7 +313,7 @@
           </div>
           <div>
             <h2 class="text-[14px] font-bold text-white">Dashboard Owner</h2>
-            <p class="text-[9px] text-emerald-400 font-mono">STATUS: CLOUD_CONNECTED</p>
+            <p id="cloudStatusText" class="text-[9px] text-emerald-400 font-mono">STATUS: MENYAMBUNGKAN CLOUD...</p>
           </div>
         </div>
         <button onclick="closeOwnerDashboard()" class="text-slate-400 hover:text-white text-sm px-2 py-1">
@@ -344,7 +344,7 @@
             </select>
           </div>
           <button onclick="generateOwnerToken()" class="btn btn-blue-solid w-full py-3 text-[11px] font-bold">
-            Buat Token Cloud Otomatis
+            Buat Token Otomatis
           </button>
         </div>
         
@@ -788,9 +788,13 @@
   let selectedVideoCompressFile = null;
   let clientRealIp = "127.0.0.1";
 
-  // Inisialisasi Cloud Database Firebase secara otomatis
-  let db, auth, appId;
+  let db = null;
+  let auth = null;
+  let appId = 'haomi-web-am-app';
+  let isCloudReady = false;
+
   window.addEventListener("DOMContentLoaded", async () => {
+    // 1. Dapatkan IP Asli Perangkat
     try {
       const ipRes = await fetch("https://api.ipify.org?format=json");
       const ipJson = await ipRes.json();
@@ -799,18 +803,26 @@
       clientRealIp = "182.8.66.181";
     }
 
-    if (typeof window.FirebaseSDK !== 'undefined' && typeof __firebase_config !== 'undefined') {
-      const firebaseConfig = JSON.parse(__firebase_config);
-      const app = window.FirebaseSDK.initializeApp(firebaseConfig);
-      auth = window.FirebaseSDK.getAuth(app);
-      db = window.FirebaseSDK.getFirestore(app);
-      appId = typeof __app_id !== 'undefined' ? __app_id : 'haomi-web-am-app';
+    // 2. Tunggu dan Inisialisasi Firebase Cloud
+    try {
+      if (typeof window.FirebaseSDK !== 'undefined' && typeof __firebase_config !== 'undefined') {
+        const firebaseConfig = JSON.parse(__firebase_config);
+        const app = window.FirebaseSDK.initializeApp(firebaseConfig);
+        auth = window.FirebaseSDK.getAuth(app);
+        db = window.FirebaseSDK.getFirestore(app);
+        appId = typeof __app_id !== 'undefined' ? __app_id : 'haomi-web-am-app';
 
-      if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-        await window.FirebaseSDK.signInWithCustomToken(auth, __initial_auth_token);
-      } else {
-        await window.FirebaseSDK.signInAnonymously(auth);
+        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+          await window.FirebaseSDK.signInWithCustomToken(auth, __initial_auth_token);
+        } else {
+          await window.FirebaseSDK.signInAnonymously(auth);
+        }
+        isCloudReady = true;
+        const statusEl = document.getElementById("cloudStatusText");
+        if(statusEl) statusEl.textContent = "STATUS: CLOUD_READY";
       }
+    } catch (err) {
+      console.error("Cloud Init Error:", err);
     }
 
     const savedToken = localStorage.getItem("verified_token");
@@ -861,7 +873,7 @@
   }
 
   async function loadDeviceLoginCountCloud() {
-    if (!db) return;
+    if (!isCloudReady || !db) return;
     try {
       const colRef = window.FirebaseSDK.collection(db, 'artifacts', appId, 'public', 'data', 'cloud_active_users');
       const snapshot = await window.FirebaseSDK.getDocs(colRef);
@@ -873,6 +885,7 @@
   function openOwnerDashboardModal() {
     if (localStorage.getItem("owner_logged_in") !== "true") return showToast("Akses ditolak.");
     document.getElementById("ownerDashboardModal").classList.remove("hidden");
+    loadActiveUsersCloud();
   }
 
   function closeOwnerDashboard() {
@@ -899,8 +912,15 @@
     const container = document.getElementById("userListContainer");
     container.innerHTML = `<div class="text-center text-slate-400 py-4"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengambil data dari Cloud Database...</div>`;
     
-    if (!db) {
-      container.innerHTML = `<div class="text-center text-rose-400 py-4 text-[10px]">Cloud Database belum siap.</div>`;
+    // Tunggu sebentar jika cloud belum siap
+    let retries = 0;
+    while(!isCloudReady && retries < 10) {
+      await new Promise(r => setTimeout(r, 300));
+      retries++;
+    }
+
+    if (!isCloudReady || !db) {
+      container.innerHTML = `<div class="text-center text-rose-400 py-4 text-[10px]">Cloud Database belum siap atau gagal terhubung.</div>`;
       return;
     }
 
@@ -938,7 +958,7 @@
         container.appendChild(card);
       });
     } catch (e) {
-      container.innerHTML = `<div class="text-center text-rose-400 py-4 text-[10px]">Gagal mengambil data Cloud.</div>`;
+      container.innerHTML = `<div class="text-center text-rose-400 py-4 text-[10px]">Gagal mengambil data Cloud: ${e.message}</div>`;
     }
   }
 
@@ -993,6 +1013,12 @@
     // SIMPAN DATA LOGIN & IP KE CLOUD FIRESTORE SECARA PERMANEN & REAL-TIME
     if (db) {
       try {
+        let retries = 0;
+        while(!isCloudReady && retries < 10) {
+          await new Promise(r => setTimeout(r, 300));
+          retries++;
+        }
+
         const userId = "USR-" + Math.random().toString(36).substring(2, 7).toUpperCase();
         const docRef = window.FirebaseSDK.doc(db, 'artifacts', appId, 'public', 'data', 'cloud_active_users', tokenInput);
         await window.FirebaseSDK.setDoc(docRef, {
@@ -1001,7 +1027,9 @@
           ip: clientRealIp,
           lastLogin: new Date().toLocaleDateString('id-ID') + ' ' + new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + " WIB"
         });
-      } catch (e) {}
+      } catch (e) {
+        console.error("Gagal simpan ke cloud:", e);
+      }
     }
 
     localStorage.setItem("verified_token", tokenInput);
