@@ -211,6 +211,17 @@
     .animate-fade {
       animation: fadeIn .3s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
+
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.02);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(56, 189, 248, 0.3);
+      border-radius: 10px;
+    }
   </style>
 </head>
 
@@ -227,42 +238,14 @@
       </div>
       <div class="space-y-1">
         <h2 class="text-[16px] font-bold text-white tracking-tight">Verifikasi Token Akses</h2>
-        <p class="text-[11px] text-slate-400">Masukkan token resmi berdurasi untuk melanjutkan.</p>
+        <p class="text-[11px] text-slate-400">Masukkan token resmi berdurasi atau Key Owner Anda.</p>
       </div>
       
       <div class="space-y-3 pt-1">
-        <input id="inputTokenAccess" type="text" placeholder="Ketik token Anda di sini..." class="px-4 py-3 text-[12px] text-center uppercase tracking-widest font-mono" />
+        <input id="inputTokenAccess" type="text" placeholder="Ketik token atau key di sini..." class="px-4 py-3 text-[12px] text-center uppercase tracking-widest font-mono" />
         <button onclick="verifyTokenAccess()" class="btn btn-blue-solid w-full py-3.5 text-[12px] font-bold flex items-center justify-center gap-2">
           <span>Verifikasi & Masuk</span>
           <i class="fa-solid fa-arrow-right text-[10px]"></i>
-        </button>
-        
-        <button onclick="openOwnerLoginModal()" class="w-full pt-1 text-[10px] text-slate-400 hover:text-sky-400 font-mono transition-colors">
-          Login khusus Owner (Admin)
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL LOGIN KHUSUS OWNER -->
-  <div id="ownerLoginModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/95 backdrop-blur-xl animate-fade hidden">
-    <div class="glass w-full max-w-sm rounded-[28px] p-6 text-center space-y-4 border-sky-500/50">
-      <div class="w-14 h-14 mx-auto rounded-[18px] bg-sky-500/20 border border-sky-400/50 flex items-center justify-center text-sky-400 text-xl shadow-[0_0_20px_rgba(56,189,248,0.3)]">
-        <i class="fa-solid fa-user-shield animate-pulse"></i>
-      </div>
-      <div class="space-y-1">
-        <h2 class="text-[16px] font-bold text-white tracking-tight">Otorisasi Owner</h2>
-        <p class="text-[11px] text-slate-400">Masukkan kata sandi rahasia pemilik website.</p>
-      </div>
-      
-      <div class="space-y-3 pt-1">
-        <input id="inputOwnerPassword" type="password" placeholder="Kata sandi owner..." class="px-4 py-3 text-[12px] text-center font-mono" />
-        <button onclick="verifyOwnerPassword()" class="btn btn-blue-solid w-full py-3.5 text-[12px] font-bold flex items-center justify-center gap-2">
-          <span>Buka Panel Owner</span>
-          <i class="fa-solid fa-unlock text-[10px]"></i>
-        </button>
-        <button onclick="closeOwnerLoginModal()" class="w-full text-[11px] text-slate-400 hover:text-white">
-          Kembali
         </button>
       </div>
     </div>
@@ -270,7 +253,8 @@
 
   <!-- DASHBOARD KHUSUS OWNER (PANEL ADMIN) -->
   <div id="ownerDashboardModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/95 backdrop-blur-xl animate-fade hidden">
-    <div class="glass w-full max-w-md rounded-[28px] p-5 text-left space-y-4 max-h-[90vh] overflow-y-auto border-emerald-500/50">
+    <div class="glass w-full max-w-lg rounded-[28px] p-5 text-left space-y-4 max-h-[90vh] overflow-y-auto border-emerald-500/50">
+      
       <div class="flex items-center justify-between border-b border-white/10 pb-3">
         <div class="flex items-center gap-2.5">
           <div class="w-9 h-9 rounded-[12px] bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-emerald-400 text-sm">
@@ -286,8 +270,18 @@
         </button>
       </div>
 
-      <!-- KONTROL PANEL OWNER -->
-      <div class="space-y-3 text-[11px]">
+      <!-- Tab Menu Admin -->
+      <div class="grid grid-cols-2 gap-1.5 p-1 bg-black/40 border border-white/10 rounded-[14px]">
+        <button id="tabAdminGen" onclick="switchAdminTab('gen')" class="nav-pill active py-2 rounded-[10px] text-[10px] font-semibold transition-all">
+          <i class="fa-solid fa-key mr-1"></i> Buat Token
+        </button>
+        <button id="tabAdminUsers" onclick="switchAdminTab('users'); loadActiveUsers();" class="nav-pill py-2 rounded-[10px] text-[10px] font-semibold transition-all">
+          <i class="fa-solid fa-users mr-1"></i> Data Login
+        </button>
+      </div>
+
+      <!-- KONTROL PANEL: GENERATOR TOKEN -->
+      <div id="adminContentGen" class="space-y-3 text-[11px] animate-fade">
         <div class="p-3.5 rounded-[16px] bg-white/5 border border-white/10 space-y-2.5">
           <div class="font-bold text-sky-400 uppercase tracking-wider text-[10px] font-mono">Generator Token Otomatis</div>
           <div>
@@ -304,8 +298,19 @@
             Buat Token Otomatis
           </button>
         </div>
-
         <div id="ownerTokenResult" class="glass-card hidden p-3.5 rounded-[12px] text-[11px] font-mono text-emerald-300"></div>
+      </div>
+
+      <!-- KONTROL PANEL: MANAJEMEN PENGGUNA -->
+      <div id="adminContentUsers" class="space-y-3 text-[11px] animate-fade hidden">
+        <div class="font-bold text-sky-400 uppercase tracking-wider text-[10px] font-mono mb-2 flex items-center justify-between">
+          <span>Log Pengguna Aktif</span>
+          <button onclick="loadActiveUsers()" class="text-sky-300 hover:text-white"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
+        </div>
+        
+        <div id="userListContainer" class="space-y-2 max-h-[320px] overflow-y-auto pr-1">
+          <div class="text-center text-slate-400 py-4">Memuat data pengguna...</div>
+        </div>
       </div>
 
       <button onclick="closeOwnerDashboard()" class="btn btn-secondary w-full py-2.5 text-[11px]">
@@ -390,6 +395,14 @@
         </div>
       </div>
 
+      <!-- TOMBOL PANEL OWNER KHUSUS MUNCUL DI MENU UTAMA JIKA LOGIN SEBAGAI OWNER -->
+      <div id="ownerMenuButtonContainer" class="hidden">
+        <button onclick="openOwnerDashboardModal()" class="btn w-full py-3.5 text-[12px] font-bold flex items-center justify-center gap-2 border border-emerald-500/50 bg-emerald-500/10 text-emerald-300 hover:bg-emerald-500/20 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
+          <i class="fa-solid fa-user-shield text-sm"></i>
+          <span>Buka Dashboard Owner (Admin)</span>
+        </button>
+      </div>
+
       <div class="grid grid-cols-2 gap-2.5">
         <a href="https://whatsapp.com/channel/0029Vaf0GfTJ3jv2hhFz1j2K" target="_blank" class="btn btn-whatsapp py-3 px-3 text-[11px] font-bold flex items-center justify-center gap-2 no-underline">
           <i class="fa-brands fa-whatsapp text-base"></i>
@@ -466,8 +479,8 @@
 
         <div class="space-y-3">
           <div>
-            <label class="block text-[10px] uppercase font-bold text-slate-400 mb-1.5 font-mono">Jumlah Akun (1 - 100)</label>
-            <input id="inputBulkAmount" type="number" min="1" max="100" value="5" class="px-4 py-3.5 text-[12px]" />
+            <label class="block text-[10px] uppercase font-bold text-slate-400 mb-1.5 font-mono">Jumlah Akun (Maks 5)</label>
+            <input id="inputBulkAmount" type="number" min="1" max="5" value="5" class="px-4 py-3.5 text-[12px]" />
           </div>
           <button onclick="runBulkInject()" class="btn btn-blue-solid w-full py-3.5 text-[12px]">
             Mulai Generate Bulk
@@ -528,17 +541,22 @@
   window.addEventListener("DOMContentLoaded", () => {
     const savedToken = localStorage.getItem("verified_token");
     const savedExpiry = localStorage.getItem("token_expiry");
-
     const ownerSession = localStorage.getItem("owner_logged_in");
+
+    // Jika sudah login sebagai Owner
     if (ownerSession === "true") {
       document.getElementById("tokenModal").classList.add("hidden");
+      document.getElementById("ownerMenuButtonContainer").classList.remove("hidden");
       return;
     }
 
+    // Jika token reguler valid
     if (savedToken && savedExpiry) {
       const now = new Date().getTime();
       if (now < Number(savedExpiry)) {
         document.getElementById("tokenModal").classList.add("hidden");
+        // Pastikan tombol owner tetap tersembunyi untuk user biasa
+        document.getElementById("ownerMenuButtonContainer").classList.add("hidden");
       }
     }
     loadDeviceLoginCount();
@@ -557,40 +575,135 @@
     }
   }
 
-  function openOwnerLoginModal() {
-    document.getElementById("tokenModal").classList.add("hidden");
-    document.getElementById("ownerLoginModal").classList.remove("hidden");
-  }
-
-  function closeOwnerLoginModal() {
-    document.getElementById("ownerLoginModal").classList.add("hidden");
-    document.getElementById("tokenModal").classList.remove("hidden");
-  }
-
-  function verifyOwnerPassword() {
-    const pwd = document.getElementById("inputOwnerPassword").value.trim();
-    if (pwd === OWNER_SECRET_KEY) {
-      localStorage.setItem("owner_logged_in", "true");
-      document.getElementById("ownerLoginModal").classList.add("hidden");
-      document.getElementById("ownerDashboardModal").classList.remove("hidden");
-      showToast("Selamat datang Owner!");
-    } else {
-      showToast("Kata sandi owner salah!");
+  function openOwnerDashboardModal() {
+    // Keamanan ganda: cek apakah benar session owner
+    if (localStorage.getItem("owner_logged_in") !== "true") {
+      showToast("Akses ditolak! Anda bukan owner.");
+      return;
     }
+    document.getElementById("ownerDashboardModal").classList.remove("hidden");
   }
 
   function closeOwnerDashboard() {
     document.getElementById("ownerDashboardModal").classList.add("hidden");
-    location.reload();
   }
 
-  // Generator Token Otomatis (Tanpa Ketik Manual)
+  // ==== LOGIKA TAB ADMIN ====
+  function switchAdminTab(tab) {
+    document.getElementById("adminContentGen").classList.add("hidden");
+    document.getElementById("adminContentUsers").classList.add("hidden");
+    document.getElementById("tabAdminGen").classList.remove("active");
+    document.getElementById("tabAdminUsers").classList.remove("active");
+
+    if (tab === 'gen') {
+      document.getElementById("adminContentGen").classList.remove("hidden");
+      document.getElementById("tabAdminGen").classList.add("active");
+    } else {
+      document.getElementById("adminContentUsers").classList.remove("hidden");
+      document.getElementById("tabAdminUsers").classList.add("active");
+    }
+  }
+
+  // ==== LOAD USER DARI SERVER API ====
+  async function loadActiveUsers() {
+    const container = document.getElementById("userListContainer");
+    container.innerHTML = `<div class="text-center text-slate-400 py-4"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengambil data dari server...</div>`;
+
+    try {
+      const res = await fetch("/api/admin?action=get_users", { 
+        method: "GET",
+        headers: { "Authorization": OWNER_SECRET_KEY } 
+      });
+      
+      const json = await res.json();
+      
+      if(!res.ok || !json.status) throw new Error(json.message);
+
+      const activeUsers = json.data || [];
+      container.innerHTML = "";
+
+      if (activeUsers.length === 0) {
+        container.innerHTML = `<div class="text-center text-slate-400 py-4 text-[10px]">Belum ada pengguna aktif saat ini.</div>`;
+        return;
+      }
+
+      activeUsers.forEach(user => {
+        const card = document.createElement("div");
+        card.className = "glass-card p-3 rounded-[12px] border border-white/10 flex flex-col gap-2.5 transition-all";
+        card.innerHTML = `
+          <div class="flex items-center justify-between">
+            <div class="font-mono text-[10px] text-sky-300 font-bold flex items-center gap-1.5">
+              <i class="fa-solid fa-user-astronaut"></i> ID: ${user.id}
+            </div>
+            <div class="text-[9px] text-slate-400 flex items-center gap-1">
+              <i class="fa-regular fa-clock"></i> ${user.lastLogin}
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-1 text-[10px] bg-black/30 p-2 rounded-[8px]">
+            <div class="text-slate-300">Token:<br><span class="text-white font-mono font-bold">${user.token}</span></div>
+            <div class="text-slate-300 text-right">IP Address:<br><span class="text-rose-300 font-mono font-bold">${user.ip}</span></div>
+          </div>
+          <div class="grid grid-cols-2 gap-2 mt-1">
+            <button onclick="revokeUserToken('${user.token}')" class="btn btn-secondary py-2 text-[9px] text-rose-400 border-rose-500/30 hover:bg-rose-500/10">
+              <i class="fa-solid fa-trash-can mr-1"></i> Cabut Token
+            </button>
+            <button onclick="blockUserIP('${user.ip}')" class="btn btn-secondary py-2 text-[9px] text-orange-400 border-orange-500/30 hover:bg-orange-500/10">
+              <i class="fa-solid fa-ban mr-1"></i> Blokir IP
+            </button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+    } catch (err) {
+      container.innerHTML = `<div class="text-center text-rose-400 py-4 text-[10px]">Gagal: ${err.message}</div>`;
+    }
+  }
+
+  async function revokeUserToken(token) {
+    if(confirm(`Yakin ingin mencabut (hapus) akses untuk token ${token}?`)) {
+      showToast("Sedang memproses cabut token...");
+      try {
+        await fetch("/api/admin", {
+          method: "POST",
+          headers: { 
+            "Content-Type": "application/json",
+            "Authorization": OWNER_SECRET_KEY 
+          },
+          body: JSON.stringify({ action: "revoke", token: token })
+        });
+        showToast(`Token ${token} berhasil dicabut.`);
+        loadActiveUsers(); 
+      } catch (e) {
+        showToast("Gagal mencabut token.");
+      }
+    }
+  }
+
+  async function blockUserIP(ip) {
+    if(confirm(`Yakin ingin memblokir IP ${ip} agar tidak bisa login selamanya?`)) {
+      showToast("Sedang memblokir IP...");
+      try {
+        await fetch("/api/admin", {
+          method: "POST",
+          headers: { 
+            "Content-Type": "application/json",
+            "Authorization": OWNER_SECRET_KEY 
+          },
+          body: JSON.stringify({ action: "block_ip", ip: ip })
+        });
+        showToast(`IP ${ip} berhasil diblokir.`);
+        loadActiveUsers();
+      } catch (e) {
+        showToast("Gagal memblokir IP.");
+      }
+    }
+  }
+
+  // Generator Token Otomatis
   async function generateOwnerToken() {
     const days = Number(document.getElementById("newGenDays").value);
-    
-    // Buat kode token acak secara otomatis
     const randomCode = "HAO-" + Math.floor(1000 + Math.random() * 9000);
-
     showToast("Membuat token otomatis...");
 
     try {
@@ -620,11 +733,24 @@
   }
 
   async function verifyTokenAccess() {
-    const tokenInput = document.getElementById("inputTokenAccess").value.trim().toUpperCase();
-    if (!tokenInput) {
-      return showToast("Masukkan token akses Anda terlebih dahulu.");
+    const inputVal = document.getElementById("inputTokenAccess").value.trim();
+    if (!inputVal) {
+      return showToast("Masukkan token akses atau key owner terlebih dahulu.");
     }
 
+    // CEK APAKAH YANG DIMASUKKAN ADALAH KEY OWNER (HAOMI_XML)
+    if (inputVal === OWNER_SECRET_KEY) {
+      localStorage.setItem("owner_logged_in", "true");
+      showToast("Akses Owner Diberikan!");
+      setTimeout(() => {
+        document.getElementById("tokenModal").classList.add("hidden");
+        document.getElementById("ownerMenuButtonContainer").classList.remove("hidden");
+      }, 700);
+      return;
+    }
+
+    // Jika bukan key owner, verifikasi sebagai token reguler
+    const tokenInput = inputVal.toUpperCase();
     showToast("Memverifikasi token online...");
 
     try {
@@ -656,6 +782,7 @@
       const expiryTime = new Date(json.expires_at).getTime();
       localStorage.setItem("verified_token", tokenInput);
       localStorage.setItem("token_expiry", expiryTime);
+      localStorage.removeItem("owner_logged_in"); // Pastikan flag owner dibersihkan untuk user biasa
 
       showToast("Token valid! Membuka akses...");
       setTimeout(() => {
@@ -669,10 +796,23 @@
     }
   }
 
-  function logoutToken() {
+  async function logoutToken() {
+    const currentToken = localStorage.getItem("verified_token");
+
+    if (currentToken) {
+      try {
+        await fetch("/api/logout", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token: currentToken })
+        });
+      } catch (err) {}
+    }
+
     localStorage.removeItem("verified_token");
     localStorage.removeItem("token_expiry");
     localStorage.removeItem("owner_logged_in");
+    
     showToast("Berhasil keluar dari sesi.");
     setTimeout(() => {
       location.reload();
@@ -737,7 +877,6 @@
   }
   animateSnow();
 
-  // MENGUBAH WAKTU SERVER MENJADI COUNTDOWN MASA AKTIF TOKEN
   function updateTokenCountdown() {
     const countdownElement = document.getElementById("tokenCountdown");
     if (!countdownElement) return;
@@ -767,7 +906,6 @@
       return;
     }
 
-    // Hitung sisa waktu
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
     const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
@@ -784,9 +922,8 @@
     countdownElement.classList.add("text-white");
   }
 
-  // Jalankan interval setiap 1 detik
   setInterval(updateTokenCountdown, 1000);
-  updateTokenCountdown(); // Panggil sekali di awal
+  updateTokenCountdown();
 
   function closeWelcomeModal() {
     const modal = document.getElementById("welcomeModal");
@@ -1003,8 +1140,8 @@
   async function runBulkInject() {
     const amount = Number(document.getElementById("inputBulkAmount").value);
 
-    if (!amount || amount < 1 || amount > 100) {
-      return showToast("Jumlah harus di antara 1 - 100.");
+    if (!amount || amount < 1 || amount > 5) {
+      return showToast("Jumlah batas bulk hanya 1 - 5 akun.");
     }
 
     showToast("Memproses bulk generator...");
@@ -1150,3 +1287,4 @@
 </script>
 </body>
 </html>
+
