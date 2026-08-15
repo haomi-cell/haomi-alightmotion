@@ -209,7 +209,7 @@
       </div>
       <div class="space-y-1">
         <h2 class="text-[17px] font-bold text-white tracking-tight">Verifikasi Token Akses</h2>
-        <p class="text-[11px] text-slate-400">Masukkan token resmi atau key akses owner Anda.</p>
+        <p class="text-[11px] text-slate-400">Masukkan token resmi atau klaim token gratis 5 menit.</p>
       </div>
       
       <div class="space-y-3 pt-1">
@@ -219,7 +219,7 @@
           <i class="fa-solid fa-arrow-right text-[10px]"></i>
         </button>
 
-        <!-- KLAIM TOKEN GRATIS 5 MENIT ( SEKALI PAKAI ) -->
+        <!-- KLAIM TOKEN GRATIS 5 MENIT ( SEKALI PAKAI ANTI CURANG ) -->
         <button id="btnClaimFree" onclick="claimFreeTrialToken()" class="btn-pro w-full py-3 text-[11px] font-bold flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500/20 to-orange-500/20 text-amber-300 border border-amber-500/40 hover:bg-amber-500/30 shadow-[0_0_15px_rgba(245,158,11,0.15)]">
           <i class="fa-solid fa-gift text-amber-400"></i>
           <span>🎁 Klaim Token Gratis 5 Menit</span>
@@ -303,7 +303,7 @@
           <div>
             <label class="block text-[10px] text-slate-400 mb-1">Durasi Masa Aktif</label>
             <select id="newGenDays" class="px-3 py-3 text-[11px]">
-              <option value="0.0833">5 Menit</option>
+              <option value="5_MIN">5 Menit</option>
               <option value="1">1 Hari</option>
               <option value="3">3 Hari</option>
               <option value="7">7 Hari</option>
@@ -788,7 +788,6 @@
       }
     }
 
-    // Periksa status klaim gratis sekali pakai di perangkat ini
     checkFreeClaimStatus();
     loadDeviceLoginCount();
   });
@@ -809,23 +808,23 @@
       return showToast("Anda sudah pernah mengklaim token gratis di perangkat ini!");
     }
 
-    // Tandai perangkat sudah klaim
+    // Tandai perangkat sudah klaim secara permanen di browser
     localStorage.setItem("free_trial_claimed_status", "true");
 
-    const freeTokenCode = "FREE-5MIN-" + Math.floor(100 + Math.random() * 900);
+    const freeTokenCode = "FREE-5MIN-" + Math.floor(1000 + Math.random() * 9000);
     
-    // Simpan data token trial ke pool valid
     let tokenPool = JSON.parse(localStorage.getItem("owner_token_pool_data") || "{}");
-    tokenPool[freeTokenCode] = "0.0833"; // 5 menit
+    tokenPool[freeTokenCode] = "5_MIN";
     localStorage.setItem("owner_token_pool_data", JSON.stringify(tokenPool));
 
     let validTokens = JSON.parse(localStorage.getItem("owner_valid_token_pool") || "[]");
     if (!validTokens.includes(freeTokenCode)) validTokens.push(freeTokenCode);
     localStorage.setItem("owner_valid_token_pool", JSON.stringify(validTokens));
 
-    // Otomatis masukkan ke input token dan verifikasi
     document.getElementById("inputTokenAccess").value = freeTokenCode;
     showToast("Berhasil klaim token gratis 5 menit!");
+
+    checkFreeClaimStatus();
 
     setTimeout(() => {
       verifyTokenAccess();
@@ -945,14 +944,14 @@
     lastGeneratedCode = randomCode;
 
     let tokenPool = JSON.parse(localStorage.getItem("owner_token_pool_data") || "{}");
-    tokenPool[randomCode] = selectedVal; // simpan durasi atau 'PERMANENT'
+    tokenPool[randomCode] = selectedVal;
     localStorage.setItem("owner_token_pool_data", JSON.stringify(tokenPool));
 
     let validTokens = JSON.parse(localStorage.getItem("owner_valid_token_pool") || "[]");
     if (!validTokens.includes(randomCode)) validTokens.push(randomCode);
     localStorage.setItem("owner_valid_token_pool", JSON.stringify(validTokens));
 
-    const labelText = selectedVal === "PERMANENT" ? "Permanen (Tanpa Batas)" : (selectedVal == "0.0833" ? "5 Menit" : selectedVal + " Hari");
+    const labelText = selectedVal === "PERMANENT" ? "Permanen (Tanpa Batas)" : (selectedVal === "5_MIN" ? "5 Menit" : selectedVal + " Hari");
 
     document.getElementById("ownerTokenText").innerHTML = `<b>TOKEN PRO BERHASIL!</b><br>Kode: <code class="text-indigo-300 font-bold">${randomCode}</code><br>Durasi: <code>${labelText}</code>`;
     document.getElementById("ownerTokenResult").classList.remove("hidden");
@@ -1009,14 +1008,17 @@
     localStorage.setItem("global_owner_user_logs", JSON.stringify(activeUsers));
     localStorage.setItem("verified_token", tokenInput);
 
-    // Tentukan masa aktif berdasarkan token pool atau default
     let durationType = tokenPool[tokenInput] || "30";
     if (tokenInput.startsWith("FREE-5MIN-")) {
-      durationType = "0.0833";
+      durationType = "5_MIN";
     }
 
     if (durationType === "PERMANENT") {
       localStorage.setItem("token_expiry", "PERMANENT");
+    } else if (durationType === "5_MIN") {
+      // Tepat 5 menit dalam milidetik
+      const expiryTime = new Date().getTime() + (5 * 60 * 1000);
+      localStorage.setItem("token_expiry", expiryTime);
     } else {
       const days = Number(durationType);
       const expiryTime = new Date().getTime() + (days * 24 * 60 * 60 * 1000);
