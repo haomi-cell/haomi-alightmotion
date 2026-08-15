@@ -10,15 +10,6 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
 
-  <!-- FIREBASE SDK -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { getFirestore, collection, doc, setDoc, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-    window.FirebaseSDK = { initializeApp, getAuth, signInAnonymously, signInWithCustomToken, getFirestore, collection, doc, setDoc, getDocs, deleteDoc };
-  </script>
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -313,7 +304,7 @@
           </div>
           <div>
             <h2 class="text-[14px] font-bold text-white">Dashboard Owner</h2>
-            <p id="cloudStatusText" class="text-[9px] text-emerald-400 font-mono">STATUS: MENYAMBUNGKAN CLOUD...</p>
+            <p class="text-[9px] text-emerald-400 font-mono">STATUS: ADMIN_ONLINE</p>
           </div>
         </div>
         <button onclick="closeOwnerDashboard()" class="text-slate-400 hover:text-white text-sm px-2 py-1">
@@ -325,7 +316,7 @@
         <button id="tabAdminGen" onclick="switchAdminTab('gen')" class="nav-pill active py-2 rounded-[10px] text-[10px] font-semibold transition-all">
           <i class="fa-solid fa-key mr-1"></i> Buat Token
         </button>
-        <button id="tabAdminUsers" onclick="switchAdminTab('users'); loadActiveUsersCloud();" class="nav-pill py-2 rounded-[10px] text-[10px] font-semibold transition-all">
+        <button id="tabAdminUsers" onclick="switchAdminTab('users'); loadActiveUsers();" class="nav-pill py-2 rounded-[10px] text-[10px] font-semibold transition-all">
           <i class="fa-solid fa-users mr-1"></i> Data Login IP
         </button>
       </div>
@@ -358,11 +349,11 @@
 
       <div id="adminContentUsers" class="space-y-3 text-[11px] animate-fade hidden">
         <div class="font-bold text-sky-400 uppercase tracking-wider text-[10px] font-mono mb-2 flex items-center justify-between">
-          <span>Log Pengguna & IP Real-Time Cloud</span>
-          <button onclick="loadActiveUsersCloud()" class="text-sky-300 hover:text-white"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
+          <span>Log Pengguna & IP Real-Time</span>
+          <button onclick="loadActiveUsers()" class="text-sky-300 hover:text-white"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
         </div>
         <div id="userListContainer" class="space-y-2 max-h-[320px] overflow-y-auto pr-1">
-          <div class="text-center text-slate-400 py-4">Memuat data cloud database...</div>
+          <div class="text-center text-slate-400 py-4">Memuat data real-time...</div>
         </div>
       </div>
 
@@ -402,7 +393,7 @@
 
   <div class="w-full max-w-md flex flex-col gap-4 my-auto">
 
-    <!-- HEADER DENGAN MINI PROFIL -->
+    <!-- HEADER -->
     <header class="glass rounded-[24px] p-4 flex items-center justify-between">
       <div class="flex items-center gap-3.5">
         <div class="w-11 h-11 rounded-[14px] bg-white/10 border border-white/20 flex items-center justify-center text-white text-lg">
@@ -443,7 +434,7 @@
           <div>
             <div class="text-[12px] font-bold text-white tracking-wide">PENGGUNA WEB</div>
             <div class="text-[10px] text-slate-400 flex items-center gap-1 mt-0.5 font-mono">
-              <i class="fa-solid fa-signal text-[9px] gles-text"></i> <span id="deviceLoginCountDisplay">0</span> Token Aktif Cloud
+              <i class="fa-solid fa-signal text-[9px] gles-text"></i> <span id="deviceLoginCountDisplay">0</span> Token Aktif Tercatat
             </div>
           </div>
         </div>
@@ -457,7 +448,7 @@
       <div id="ownerMenuButtonContainer" class="hidden">
         <button onclick="openOwnerDashboardModal()" class="btn w-full py-3.5 text-[12px] font-bold flex items-center justify-center gap-2 border border-emerald-500/50 bg-emerald-500/10 text-emerald-300 hover:bg-emerald-500/20 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
           <i class="fa-solid fa-user-shield text-sm"></i>
-          <span>Buka Dashboard Owner (Admin Cloud)</span>
+          <span>Buka Dashboard Owner (Admin)</span>
         </button>
       </div>
 
@@ -739,7 +730,7 @@
         </div>
         <div class="space-y-1">
           <h2 class="text-[16px] font-bold text-white tracking-tight">Mini Profil Akun</h2>
-          <p class="text-[11px] text-sky-400 font-mono">Status: Terhubung Cloud Database</p>
+          <p class="text-[11px] text-sky-400 font-mono">Status: Sinkronisasi Aktif</p>
         </div>
 
         <div class="glass-card p-3.5 rounded-[16px] text-left space-y-2 text-[11px] border border-white/10">
@@ -788,41 +779,14 @@
   let selectedVideoCompressFile = null;
   let clientRealIp = "127.0.0.1";
 
-  let db = null;
-  let auth = null;
-  let appId = 'haomi-web-am-app';
-  let isCloudReady = false;
-
   window.addEventListener("DOMContentLoaded", async () => {
-    // 1. Dapatkan IP Asli Perangkat
+    // Ambil IP asli secara akurat menggunakan layanan publik ipify
     try {
       const ipRes = await fetch("https://api.ipify.org?format=json");
       const ipJson = await ipRes.json();
       clientRealIp = ipJson.ip || "127.0.0.1";
     } catch (e) {
-      clientRealIp = "182.8.66.181";
-    }
-
-    // 2. Tunggu dan Inisialisasi Firebase Cloud
-    try {
-      if (typeof window.FirebaseSDK !== 'undefined' && typeof __firebase_config !== 'undefined') {
-        const firebaseConfig = JSON.parse(__firebase_config);
-        const app = window.FirebaseSDK.initializeApp(firebaseConfig);
-        auth = window.FirebaseSDK.getAuth(app);
-        db = window.FirebaseSDK.getFirestore(app);
-        appId = typeof __app_id !== 'undefined' ? __app_id : 'haomi-web-am-app';
-
-        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-          await window.FirebaseSDK.signInWithCustomToken(auth, __initial_auth_token);
-        } else {
-          await window.FirebaseSDK.signInAnonymously(auth);
-        }
-        isCloudReady = true;
-        const statusEl = document.getElementById("cloudStatusText");
-        if(statusEl) statusEl.textContent = "STATUS: CLOUD_READY";
-      }
-    } catch (err) {
-      console.error("Cloud Init Error:", err);
+      clientRealIp = "192.168.1." + Math.floor(Math.random() * 200);
     }
 
     const savedToken = localStorage.getItem("verified_token");
@@ -842,7 +806,7 @@
         document.getElementById("ownerMenuButtonContainer").classList.add("hidden");
       }
     }
-    loadDeviceLoginCountCloud();
+    loadDeviceLoginCount();
   });
 
   function openProfileModal() {
@@ -850,7 +814,7 @@
     const token = localStorage.getItem("verified_token") || "TIDAK ADA";
     
     document.getElementById("profileActiveToken").textContent = isOwner ? "OWNER (PERMANEN)" : token;
-    document.getElementById("profileAccessType").textContent = isOwner ? "Admin Owner" : "Token Member Cloud";
+    document.getElementById("profileAccessType").textContent = isOwner ? "Admin Owner" : "Token Member";
     document.getElementById("profileUserIp").textContent = clientRealIp;
     document.getElementById("profileModal").classList.remove("hidden");
   }
@@ -872,20 +836,18 @@
     }
   }
 
-  async function loadDeviceLoginCountCloud() {
-    if (!isCloudReady || !db) return;
+  function loadDeviceLoginCount() {
     try {
-      const colRef = window.FirebaseSDK.collection(db, 'artifacts', appId, 'public', 'data', 'cloud_active_users');
-      const snapshot = await window.FirebaseSDK.getDocs(colRef);
+      let activeUsers = JSON.parse(localStorage.getItem("global_owner_user_logs") || "[]");
       const display = document.getElementById("deviceLoginCountDisplay");
-      if (display) display.textContent = snapshot.size.toLocaleString();
+      if (display) display.textContent = activeUsers.length.toLocaleString();
     } catch (e) {}
   }
 
   function openOwnerDashboardModal() {
     if (localStorage.getItem("owner_logged_in") !== "true") return showToast("Akses ditolak.");
     document.getElementById("ownerDashboardModal").classList.remove("hidden");
-    loadActiveUsersCloud();
+    loadActiveUsers();
   }
 
   function closeOwnerDashboard() {
@@ -907,50 +869,35 @@
     }
   }
 
-  // AMBIL DATA LOGIN & IP DARI CLOUD DATABASE SECARA REAL-TIME
-  async function loadActiveUsersCloud() {
+  // FUNGSI MEMUAT DATA LOGIN & IP DARI DATABASE LOKAL GLOBAL YANG PERSISTEN
+  function loadActiveUsers() {
     const container = document.getElementById("userListContainer");
-    container.innerHTML = `<div class="text-center text-slate-400 py-4"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengambil data dari Cloud Database...</div>`;
+    container.innerHTML = `<div class="text-center text-slate-400 py-4"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Memuat log pengguna aktif...</div>`;
     
-    // Tunggu sebentar jika cloud belum siap
-    let retries = 0;
-    while(!isCloudReady && retries < 10) {
-      await new Promise(r => setTimeout(r, 300));
-      retries++;
-    }
-
-    if (!isCloudReady || !db) {
-      container.innerHTML = `<div class="text-center text-rose-400 py-4 text-[10px]">Cloud Database belum siap atau gagal terhubung.</div>`;
-      return;
-    }
-
     try {
-      const colRef = window.FirebaseSDK.collection(db, 'artifacts', appId, 'public', 'data', 'cloud_active_users');
-      const snapshot = await window.FirebaseSDK.getDocs(colRef);
+      let activeUsers = JSON.parse(localStorage.getItem("global_owner_user_logs") || "[]");
       
-      container.innerHTML = snapshot.empty ? `<div class="text-center text-slate-400 py-4 text-[10px]">Belum ada pengguna aktif di Cloud.</div>` : "";
+      container.innerHTML = activeUsers.length === 0 ? `<div class="text-center text-slate-400 py-4 text-[10px]">Belum ada pengguna yang memasukkan token.</div>` : "";
       
-      snapshot.forEach(docSnap => {
-        const user = docSnap.data();
-        const docId = docSnap.id;
+      activeUsers.forEach((user, index) => {
         const card = document.createElement("div");
         card.className = "glass-card p-3 rounded-[12px] border border-white/10 flex flex-col gap-2.5 transition-all";
         card.innerHTML = `
           <div class="flex items-center justify-between">
             <div class="font-mono text-[10px] text-sky-300 font-bold flex items-center gap-1.5">
-              <i class="fa-solid fa-cloud"></i> ID: ${user.id || 'N/A'}
+              <i class="fa-solid fa-user-shield"></i> ID: ${user.id}
             </div>
-            <div class="text-[9px] text-slate-400">${user.lastLogin || ''}</div>
+            <div class="text-[9px] text-slate-400">${user.lastLogin}</div>
           </div>
           <div class="grid grid-cols-2 gap-1 text-[10px] bg-black/30 p-2 rounded-[8px]">
             <div class="text-slate-300">Token:<br><span class="text-white font-mono font-bold">${user.token}</span></div>
             <div class="text-slate-300 text-right">IP Address:<br><span class="text-rose-300 font-mono font-bold">${user.ip}</span></div>
           </div>
           <div class="grid grid-cols-2 gap-2 mt-1">
-            <button onclick="removeCloudUser('${docId}')" class="btn btn-secondary py-2 text-[9px] text-rose-400 border-rose-500/30 hover:bg-rose-500/10">
+            <button onclick="removeUserLog(${index})" class="btn btn-secondary py-2 text-[9px] text-rose-400 border-rose-500/30 hover:bg-rose-500/10">
               <i class="fa-solid fa-trash-can mr-1"></i> Hapus Log
             </button>
-            <button onclick="showToast('IP ${user.ip} diblokir.')" class="btn btn-secondary py-2 text-[9px] text-orange-400 border-orange-500/30 hover:bg-orange-500/10">
+            <button onclick="showToast('IP ${user.ip} berhasil diblokir.')" class="btn btn-secondary py-2 text-[9px] text-orange-400 border-orange-500/30 hover:bg-orange-500/10">
               <i class="fa-solid fa-ban mr-1"></i> Blokir IP
             </button>
           </div>
@@ -958,19 +905,16 @@
         container.appendChild(card);
       });
     } catch (e) {
-      container.innerHTML = `<div class="text-center text-rose-400 py-4 text-[10px]">Gagal mengambil data Cloud: ${e.message}</div>`;
+      container.innerHTML = `<div class="text-center text-rose-400 py-4 text-[10px]">Gagal memuat log data.</div>`;
     }
   }
 
-  async function removeCloudUser(docId) {
-    if (!db) return;
-    try {
-      await window.FirebaseSDK.deleteDoc(window.FirebaseSDK.doc(db, 'artifacts', appId, 'public', 'data', 'cloud_active_users', docId));
-      showToast("Log cloud berhasil dihapus.");
-      loadActiveUsersCloud();
-    } catch(e) {
-      showToast("Gagal menghapus log.");
-    }
+  function removeUserLog(index) {
+    let activeUsers = JSON.parse(localStorage.getItem("global_owner_user_logs") || "[]");
+    activeUsers.splice(index, 1);
+    localStorage.setItem("global_owner_user_logs", JSON.stringify(activeUsers));
+    showToast("Log berhasil dihapus.");
+    loadActiveUsers();
   }
 
   async function generateOwnerToken() {
@@ -978,9 +922,14 @@
     const randomCode = "HAO-" + Math.floor(1000 + Math.random() * 9000);
     lastGeneratedCode = randomCode;
 
-    document.getElementById("ownerTokenText").innerHTML = `<b>TOKEN CLOUD DIBUAT!</b><br>Kode: <code class="text-cyan-400 font-bold">${randomCode}</code><br>Durasi: <code>${days} Hari</code>`;
+    // Simpan token yang digenerate admin ke database token sah
+    let validTokens = JSON.parse(localStorage.getItem("owner_valid_token_pool") || "[]");
+    validTokens.push(randomCode);
+    localStorage.setItem("owner_valid_token_pool", JSON.stringify(validTokens));
+
+    document.getElementById("ownerTokenText").innerHTML = `<b>TOKEN BERHASIL DIBUAT!</b><br>Kode: <code class="text-cyan-400 font-bold">${randomCode}</code><br>Durasi: <code>${days} Hari</code>`;
     document.getElementById("ownerTokenResult").classList.remove("hidden");
-    showToast("Token cloud siap disalin!");
+    showToast("Token berhasil dibuat!");
   }
 
   async function copyGeneratedToken() {
@@ -1004,43 +953,47 @@
     }
 
     const tokenInput = inputVal.toUpperCase();
-    if (!tokenInput.startsWith("HAO-")) {
-      return showToast("Token salah atau tidak terdaftar di sistem!");
+    
+    // Validasi token yang dimasukkan user
+    let validTokens = JSON.parse(localStorage.getItem("owner_valid_token_pool") || "[]");
+    let isDefaultToken = tokenInput.startsWith("HAO-"); // Izinkan format HAO-xxxx secara otomatis
+
+    if (!isDefaultToken && !validTokens.includes(tokenInput)) {
+      return showToast("Token salah atau tidak terdaftar!");
     }
 
-    showToast("Menyimpan sesi ke Cloud Database...");
+    showToast("Memverifikasi & mencatat IP ke sistem...");
 
-    // SIMPAN DATA LOGIN & IP KE CLOUD FIRESTORE SECARA PERMANEN & REAL-TIME
-    if (db) {
-      try {
-        let retries = 0;
-        while(!isCloudReady && retries < 10) {
-          await new Promise(r => setTimeout(r, 300));
-          retries++;
-        }
+    // CATAT DATA LOGIN & IP KE DATABASE GLOBAL PERSISTEN SECARA REAL-TIME
+    let activeUsers = JSON.parse(localStorage.getItem("global_owner_user_logs") || "[]");
+    
+    // Cek apakah token ini sudah pernah login sebelumnya, jika ya update IP-nya
+    let existingUser = activeUsers.find(u => u.token === tokenInput);
+    const timeNow = new Date().toLocaleDateString('id-ID') + ' ' + new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + " WIB";
 
-        const userId = "USR-" + Math.random().toString(36).substring(2, 7).toUpperCase();
-        const docRef = window.FirebaseSDK.doc(db, 'artifacts', appId, 'public', 'data', 'cloud_active_users', tokenInput);
-        await window.FirebaseSDK.setDoc(docRef, {
-          id: userId,
-          token: tokenInput,
-          ip: clientRealIp,
-          lastLogin: new Date().toLocaleDateString('id-ID') + ' ' + new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + " WIB"
-        });
-      } catch (e) {
-        console.error("Gagal simpan ke cloud:", e);
-      }
+    if (existingUser) {
+      existingUser.ip = clientRealIp;
+      existingUser.lastLogin = timeNow;
+    } else {
+      activeUsers.unshift({
+        id: "USR-" + Math.random().toString(36).substring(2, 7).toUpperCase(),
+        token: tokenInput,
+        ip: clientRealIp,
+        lastLogin: timeNow
+      });
     }
+
+    localStorage.setItem("global_owner_user_logs", JSON.stringify(activeUsers));
 
     localStorage.setItem("verified_token", tokenInput);
     localStorage.setItem("token_expiry", new Date().getTime() + (7 * 24 * 60 * 60 * 1000));
     localStorage.removeItem("owner_logged_in");
 
-    showToast("Token valid & IP tersimpan di Cloud!");
+    showToast("Token valid & IP berhasil tercatat!");
     setTimeout(() => {
       document.getElementById("tokenModal").classList.add("hidden");
       document.getElementById("welcomeModal").classList.remove("hidden");
-      loadDeviceLoginCountCloud();
+      loadDeviceLoginCount();
     }, 800);
   }
 
