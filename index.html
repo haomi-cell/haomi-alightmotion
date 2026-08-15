@@ -458,19 +458,19 @@
         </a>
       </div>
 
-      <!-- NAVIGASI TAB UTAMA (DIPERSINGKAT: AKTIVASI, TOOLS MEDIA, BULK, INBOX) -->
+      <!-- NAVIGASI TAB UTAMA (URUTAN: AKTIVASI, BULK, INBOX, TOOLS MEDIA DI PALING KANAN) -->
       <div class="grid grid-cols-4 gap-1 p-1 bg-black/40 border border-white/10 rounded-[18px]">
         <button id="tabSend" onclick="switchTab('send')" class="nav-pill active py-2.5 rounded-[12px] font-semibold transition-all">
           <i class="fa-solid fa-wand-magic-sparkles block text-xs mb-0.5"></i> Aktivasi
-        </button>
-        <button id="tabTools" onclick="switchTab('tools')" class="nav-pill py-2.5 rounded-[12px] font-semibold transition-all text-sky-400">
-          <i class="fa-solid fa-toolbox block text-xs mb-0.5"></i> Tools Media
         </button>
         <button id="tabBulk" onclick="switchTab('bulk')" class="nav-pill py-2.5 rounded-[12px] font-semibold transition-all">
           <i class="fa-solid fa-layer-group block text-xs mb-0.5"></i> Bulk
         </button>
         <button id="tabInbox" onclick="switchTab('inbox')" class="nav-pill py-2.5 rounded-[12px] font-semibold transition-all">
           <i class="fa-solid fa-inbox block text-xs mb-0.5"></i> Inbox
+        </button>
+        <button id="tabTools" onclick="switchTab('tools')" class="nav-pill py-2.5 rounded-[12px] font-semibold transition-all text-sky-400">
+          <i class="fa-solid fa-toolbox block text-xs mb-0.5"></i> Tools Media
         </button>
       </div>
 
@@ -517,7 +517,53 @@
         <div id="sendResult" class="glass-card hidden p-4 rounded-[16px] text-[11px] border border-white/15"></div>
       </div>
 
-      <!-- TAB 1 TOMBOL TOOLS MEDIA (GABUNGAN HD FOTO, HD VIDEO, KOMPRES VIDEO) -->
+      <!-- TAB BULK -->
+      <div id="contentBulk" class="animate-fade space-y-3.5 hidden">
+        <div>
+          <div class="text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-1 font-mono">Batch Automation</div>
+          <h2 class="text-[15px] font-bold text-white">Bulk Generator</h2>
+          <p class="text-[11px] text-slate-400 mt-1">Buat banyak token akun premium secara simultan dengan cepat.</p>
+        </div>
+
+        <div class="space-y-3">
+          <div>
+            <label class="block text-[10px] uppercase font-bold text-slate-400 mb-1.5 font-mono">Jumlah Akun (Maks 100)</label>
+            <input id="inputBulkAmount" type="number" min="1" max="100" value="50" class="px-4 py-3.5 text-[12px]" />
+          </div>
+          <button onclick="runBulkInject()" class="btn btn-blue-solid w-full py-3.5 text-[12px]">
+            Mulai Generate Bulk
+          </button>
+        </div>
+
+        <div id="bulkResult" class="glass-card hidden p-4 rounded-[16px] text-[11px] max-h-48 overflow-y-auto font-mono text-slate-200 border border-white/15"></div>
+      </div>
+
+      <!-- TAB INBOX -->
+      <div id="contentInbox" class="animate-fade space-y-3.5 hidden">
+        <div>
+          <div class="text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-1 font-mono">Mail Scanner</div>
+          <h2 class="text-[15px] font-bold text-white">Pindai Kotak Masuk</h2>
+          <p class="text-[11px] text-slate-400 mt-1">Ambil link verifikasi langsung dari mail server secara otomatis.</p>
+        </div>
+
+        <div class="space-y-3">
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
+              <i class="fa-solid fa-at"></i>
+            </span>
+            <input id="inputInboxEmail" type="email" placeholder="email@tempmail.com" class="pl-11 pr-4 py-3.5 text-[12px]" />
+          </div>
+          <button onclick="runInboxCheck()" class="btn btn-blue-solid w-full py-3.5 text-[12px] flex items-center justify-center gap-2">
+            <i class="fa-solid fa-radar"></i>
+            <span>Pindai Pesan Masuk</span>
+          </button>
+        </div>
+
+        <div id="inboxNotice" class="hidden p-3 rounded-[12px] text-[11px] bg-white/5 border border-white/15 text-slate-200"></div>
+        <div id="inboxResult" class="space-y-2.5 max-h-48 overflow-y-auto"></div>
+      </div>
+
+      <!-- TAB TOOLS MEDIA (DI POSISI PALING KANAN) -->
       <div id="contentTools" class="animate-fade space-y-3.5 hidden">
         <div>
           <div class="text-[10px] uppercase font-bold tracking-widest text-sky-400 mb-1 font-mono">All-in-One Studio</div>
@@ -525,7 +571,6 @@
           <p class="text-[11px] text-slate-400 mt-1">Pilih jenis optimasi media yang ingin Anda lakukan di bawah ini.</p>
         </div>
 
-        <!-- Sub-menu Pilihan Tools -->
         <div class="grid grid-cols-3 gap-1.5 p-1 bg-black/40 border border-white/10 rounded-[14px]">
           <button id="subToolPhoto" onclick="switchToolSub('photo')" class="nav-pill active py-2 rounded-[10px] font-semibold transition-all text-[10px]">
             <i class="fa-solid fa-image block text-xs mb-0.5"></i> HD Foto
@@ -668,52 +713,6 @@
           </div>
         </div>
 
-      </div>
-
-      <!-- TAB BULK -->
-      <div id="contentBulk" class="animate-fade space-y-3.5 hidden">
-        <div>
-          <div class="text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-1 font-mono">Batch Automation</div>
-          <h2 class="text-[15px] font-bold text-white">Bulk Generator</h2>
-          <p class="text-[11px] text-slate-400 mt-1">Buat banyak token akun premium secara simultan dengan cepat.</p>
-        </div>
-
-        <div class="space-y-3">
-          <div>
-            <label class="block text-[10px] uppercase font-bold text-slate-400 mb-1.5 font-mono">Jumlah Akun (Maks 100)</label>
-            <input id="inputBulkAmount" type="number" min="1" max="100" value="50" class="px-4 py-3.5 text-[12px]" />
-          </div>
-          <button onclick="runBulkInject()" class="btn btn-blue-solid w-full py-3.5 text-[12px]">
-            Mulai Generate Bulk
-          </button>
-        </div>
-
-        <div id="bulkResult" class="glass-card hidden p-4 rounded-[16px] text-[11px] max-h-48 overflow-y-auto font-mono text-slate-200 border border-white/15"></div>
-      </div>
-
-      <!-- TAB INBOX -->
-      <div id="contentInbox" class="animate-fade space-y-3.5 hidden">
-        <div>
-          <div class="text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-1 font-mono">Mail Scanner</div>
-          <h2 class="text-[15px] font-bold text-white">Pindai Kotak Masuk</h2>
-          <p class="text-[11px] text-slate-400 mt-1">Ambil link verifikasi langsung dari mail server secara otomatis.</p>
-        </div>
-
-        <div class="space-y-3">
-          <div class="relative">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
-              <i class="fa-solid fa-at"></i>
-            </span>
-            <input id="inputInboxEmail" type="email" placeholder="email@tempmail.com" class="pl-11 pr-4 py-3.5 text-[12px]" />
-          </div>
-          <button onclick="runInboxCheck()" class="btn btn-blue-solid w-full py-3.5 text-[12px] flex items-center justify-center gap-2">
-            <i class="fa-solid fa-radar"></i>
-            <span>Pindai Pesan Masuk</span>
-          </button>
-        </div>
-
-        <div id="inboxNotice" class="hidden p-3 rounded-[12px] text-[11px] bg-white/5 border border-white/15 text-slate-200"></div>
-        <div id="inboxResult" class="space-y-2.5 max-h-48 overflow-y-auto"></div>
       </div>
 
       <!-- TOMBOL KELUAR -->
@@ -1147,15 +1146,15 @@
   function switchTab(tab) {
     const contents = {
       send: document.getElementById("contentSend"),
-      tools: document.getElementById("contentTools"),
       bulk: document.getElementById("contentBulk"),
-      inbox: document.getElementById("contentInbox")
+      inbox: document.getElementById("contentInbox"),
+      tools: document.getElementById("contentTools")
     };
     const tabs = {
       send: document.getElementById("tabSend"),
-      tools: document.getElementById("tabTools"),
       bulk: document.getElementById("tabBulk"),
-      inbox: document.getElementById("tabInbox")
+      inbox: document.getElementById("tabInbox"),
+      tools: document.getElementById("tabTools")
     };
 
     Object.values(contents).forEach(el => el.classList.add("hidden"));
