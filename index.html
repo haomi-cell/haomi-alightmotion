@@ -248,7 +248,7 @@
               <i class="fa-solid fa-bolt text-white"></i> Keuntungan Web Pro:
             </div>
             <p class="text-zinc-300 text-[10px] leading-relaxed">
-              Akses penuh fitur AI HD foto/video dan aktivasi Alight Motion (AM) Premium instan!
+              Akses penuh aktivasi Alight Motion (AM) Premium instan!
             </p>
           </div>
 
@@ -450,8 +450,8 @@
         </a>
       </div>
 
-      <!-- NAVIGASI TAB UTAMA -->
-      <div class="grid grid-cols-4 gap-1 p-1 bg-zinc-950/80 border border-white/10 rounded-[18px]">
+      <!-- NAVIGASI TAB UTAMA (3 TAB) -->
+      <div class="grid grid-cols-3 gap-1 p-1 bg-zinc-950/80 border border-white/10 rounded-[18px]">
         <button id="tabSend" onclick="switchTab('send')" class="nav-pill active py-2.5 rounded-[12px] font-semibold transition-all">
           <i class="fa-solid fa-bolt block text-xs mb-0.5"></i> Aktivasi
         </button>
@@ -460,9 +460,6 @@
         </button>
         <button id="tabInbox" onclick="switchTab('inbox')" class="nav-pill py-2.5 rounded-[12px] font-semibold transition-all">
           <i class="fa-solid fa-inbox block text-xs mb-0.5"></i> Inbox
-        </button>
-        <button id="tabTools" onclick="switchTab('tools')" class="nav-pill py-2.5 rounded-[12px] font-semibold transition-all text-white">
-          <i class="fa-solid fa-wrench block text-xs mb-0.5"></i> Tools Pro
         </button>
       </div>
 
@@ -555,158 +552,6 @@
         <div id="inboxResult" class="space-y-2.5 max-h-48 overflow-y-auto"></div>
       </div>
 
-      <!-- TAB TOOLS MEDIA -->
-      <div id="contentTools" class="animate-fade space-y-3.5 hidden">
-        <div>
-          <div class="text-[10px] uppercase font-bold tracking-widest text-white mb-1 font-mono">All-in-One Studio Pro</div>
-          <h2 class="text-[15px] font-bold text-white">Pusat Tools Media Premium</h2>
-          <p class="text-[11px] text-zinc-400 mt-1">Pilih jenis optimasi media profesional di bawah ini.</p>
-        </div>
-
-        <div class="grid grid-cols-3 gap-1.5 p-1 bg-zinc-950/80 border border-white/10 rounded-[16px]">
-          <button id="subToolPhoto" onclick="switchToolSub('photo')" class="nav-pill active py-2 rounded-[12px] font-semibold transition-all text-[10px]">
-            <i class="fa-solid fa-image block text-xs mb-0.5"></i> HD Foto
-          </button>
-          <button id="subToolVideoHd" onclick="switchToolSub('videohd')" class="nav-pill py-2 rounded-[12px] font-semibold transition-all text-[10px]">
-            <i class="fa-solid fa-video block text-xs mb-0.5"></i> Vidio HD
-          </button>
-          <button id="subToolCompress" onclick="switchToolSub('compress')" class="nav-pill py-2 rounded-[12px] font-semibold transition-all text-[10px]">
-            <i class="fa-solid fa-compress block text-xs mb-0.5"></i> Kompres
-          </button>
-        </div>
-
-        <!-- SUB 1: HD FOTO -->
-        <div id="toolPanelPhoto" class="space-y-3 animate-fade">
-          <div class="pro-card p-4 rounded-[20px] border border-dashed border-white/20 text-center space-y-3">
-            <div id="photoPreviewContainer" class="hidden">
-              <img id="uploadedImagePreview" class="max-h-36 mx-auto rounded-[14px] border border-white/20 object-contain shadow-lg" />
-            </div>
-            <div id="uploadPlaceholder" class="space-y-2 py-2">
-              <div class="w-10 h-10 mx-auto rounded-full bg-white/10 text-white flex items-center justify-center text-base">
-                <i class="fa-solid fa-cloud-arrow-up"></i>
-              </div>
-              <div class="text-[11px] text-zinc-300 font-medium">Unggah Foto untuk Di-HD-kan</div>
-            </div>
-            <input type="file" id="inputPhotoFile" accept="image/*" class="hidden" onchange="handleImageSelected(event)" />
-            <button onclick="document.getElementById('inputPhotoFile').click()" class="btn-pro pro-card py-2 px-3 text-[11px] font-bold text-white border-white/30">
-              <i class="fa-solid fa-folder-open mr-1"></i> Pilih Foto
-            </button>
-          </div>
-
-          <div>
-            <label class="block text-[10px] uppercase font-bold text-zinc-400 mb-1 font-mono">Tingkat Upscale AI</label>
-            <select id="upscaleLevel" class="px-3 py-3 text-[11px]">
-              <option value="2">2X Ultra HD</option>
-              <option value="3" selected>3X Supreme HD</option>
-              <option value="4">4X Cinematic Super HD</option>
-            </select>
-          </div>
-
-          <button onclick="processEnhancePhoto()" class="btn-pro btn-gradient w-full py-3 text-[12px] font-bold flex items-center justify-center gap-2">
-            <i class="fa-solid fa-wand-magic-sparkles"></i>
-            <span>Mulai Proses HD Foto</span>
-          </button>
-
-          <div id="hdResultBox" class="pro-card hidden p-3.5 rounded-[16px] text-[11px] space-y-2.5 border border-white/30 text-center animate-fade">
-            <div class="font-bold text-white text-[11px]">FOTO BERHASIL DI-HD-KAN!</div>
-            <div class="p-1.5 bg-black/50 rounded-[10px]">
-              <img id="enhancedResultPreview" class="max-h-36 mx-auto rounded-[8px] object-contain border border-white/40" />
-            </div>
-            <div class="text-zinc-300 text-[10px]" id="imageDimensionInfo">Resolusi ditingkatkan.</div>
-            <button onclick="downloadEnhancedPhoto()" class="btn-pro py-2.5 w-full bg-white text-black font-bold text-[11px]">
-              <i class="fa-solid fa-download mr-1"></i> Unduh Foto HD
-            </button>
-          </div>
-        </div>
-
-        <!-- SUB 2: VIDEO HD -->
-        <div id="toolPanelVideoHd" class="space-y-3 animate-fade hidden">
-          <div class="pro-card p-4 rounded-[20px] border border-dashed border-white/20 text-center space-y-3">
-            <div id="videoHdPreviewContainer" class="hidden">
-              <video id="uploadedVideoHdPreview" controls class="max-h-36 mx-auto rounded-[14px] border border-white/20 object-contain shadow-lg w-full"></video>
-            </div>
-            <div id="videoHdUploadPlaceholder" class="space-y-2 py-2">
-              <div class="w-10 h-10 mx-auto rounded-full bg-white/10 text-white flex items-center justify-center text-base">
-                <i class="fa-solid fa-video"></i>
-              </div>
-              <div class="text-[11px] text-zinc-300 font-medium">Unggah Video untuk Diubah ke HD</div>
-            </div>
-            <input type="file" id="inputVideoHdFile" accept="video/*" class="hidden" onchange="handleVideoHdSelected(event)" />
-            <button onclick="document.getElementById('inputVideoHdFile').click()" class="btn-pro pro-card py-2 px-3 text-[11px] font-bold text-white border-white/30">
-              <i class="fa-solid fa-folder-open mr-1"></i> Pilih Video
-            </button>
-          </div>
-
-          <div>
-            <label class="block text-[10px] uppercase font-bold text-zinc-400 mb-1 font-mono">Target Resolusi HD</label>
-            <select id="videoHdResolution" class="px-3 py-3 text-[11px]">
-              <option value="720">HD (720p)</option>
-              <option value="1080" selected>Full HD (1080p 60FPS)</option>
-              <option value="2160">Ultra HD (4K Cinematic)</option>
-            </select>
-          </div>
-
-          <button onclick="processVideoHd()" class="btn-pro btn-gradient w-full py-3 text-[12px] font-bold flex items-center justify-center gap-2">
-            <i class="fa-solid fa-wand-magic-sparkles"></i>
-            <span>Ubah Video ke HD Sekarang</span>
-          </button>
-
-          <div id="videoHdResultBox" class="pro-card hidden p-3.5 rounded-[16px] text-[11px] space-y-2 border border-white/30 text-center animate-fade">
-            <div class="font-bold text-white text-[11px]">VIDEO BERHASIL DITINGKATKAN KE HD!</div>
-            <div id="videoHdInfoSummary" class="text-zinc-300 text-[10px] font-mono bg-black/50 p-2.5 rounded-[10px]">
-              Kualitas ditingkatkan.
-            </div>
-            <button onclick="downloadVideoHd()" class="btn-pro py-2.5 w-full bg-white text-black font-bold text-[11px]">
-              <i class="fa-solid fa-download mr-1"></i> Unduh Video HD
-            </button>
-          </div>
-        </div>
-
-        <!-- SUB 3: KOMPRES VIDEO -->
-        <div id="toolPanelCompress" class="space-y-3 animate-fade hidden">
-          <div class="pro-card p-4 rounded-[20px] border border-dashed border-white/20 text-center space-y-3">
-            <div id="videoCompressPreviewContainer" class="hidden">
-              <video id="uploadedVideoCompressPreview" controls class="max-h-36 mx-auto rounded-[14px] border border-white/20 object-contain shadow-lg w-full"></video>
-            </div>
-            <div id="videoCompressUploadPlaceholder" class="space-y-2 py-2">
-              <div class="w-10 h-10 mx-auto rounded-full bg-white/10 text-white flex items-center justify-center text-base">
-                <i class="fa-solid fa-compress"></i>
-              </div>
-              <div class="text-[11px] text-zinc-300 font-medium">Unggah Video untuk Dikompres</div>
-            </div>
-            <input type="file" id="inputVideoCompressFile" accept="video/*" class="hidden" onchange="handleVideoCompressSelected(event)" />
-            <button onclick="document.getElementById('inputVideoCompressFile').click()" class="btn-pro pro-card py-2 px-3 text-[11px] font-bold text-white border-white/30">
-              <i class="fa-solid fa-folder-open mr-1"></i> Pilih Video
-            </button>
-          </div>
-
-          <div>
-            <label class="block text-[10px] uppercase font-bold text-zinc-400 mb-1 font-mono">Tingkat Kompresi Ukuran</label>
-            <select id="compressLevel" class="px-3 py-3 text-[11px]">
-              <option value="light">Kompres Ringan (Kualitas Tinggi)</option>
-              <option value="medium" selected>Kompres Sedang (Seimbang)</option>
-              <option value="heavy">Kompres Maksimal (Ukuran Paling Kecil)</option>
-            </select>
-          </div>
-
-          <button onclick="processVideoCompress()" class="btn-pro w-full py-3 text-[12px] font-bold flex items-center justify-center gap-2 bg-white text-black">
-            <i class="fa-solid fa-file-arrow-down"></i>
-            <span>Kompres Ukuran Video</span>
-          </button>
-
-          <div id="videoCompressResultBox" class="pro-card hidden p-3.5 rounded-[16px] text-[11px] space-y-2 border border-white/30 text-center animate-fade">
-            <div class="font-bold text-white text-[11px]">VIDEO BERHASIL DIKOMPRES!</div>
-            <div id="videoCompressInfoSummary" class="text-zinc-300 text-[10px] font-mono bg-black/50 p-2.5 rounded-[10px]">
-              Ukuran diperkecil.
-            </div>
-            <button onclick="downloadVideoCompress()" class="btn-pro py-2.5 w-full bg-white text-black font-bold text-[11px]">
-              <i class="fa-solid fa-download mr-1"></i> Unduh Video Kompres
-            </button>
-          </div>
-        </div>
-
-      </div>
-
     </main>
 
     <!-- MODAL MINI PROFIL -->
@@ -760,10 +605,6 @@
 <script>
   const OWNER_SECRET_KEY = "HAOMI_XML";
   let lastGeneratedCode = "";
-  let selectedPhotoDataUrl = null;
-  let enhancedPhotoDataUrl = null;
-  let selectedVideoHdFile = null;
-  let selectedVideoCompressFile = null;
   let clientRealIp = "127.0.0.1";
   let activeInjectEmail = "";
 
@@ -1068,137 +909,7 @@
     setTimeout(() => location.reload(), 800);
   }
 
-  function switchToolSub(sub) {
-    const panels = {
-      photo: document.getElementById("toolPanelPhoto"),
-      videohd: document.getElementById("toolPanelVideoHd"),
-      compress: document.getElementById("toolPanelCompress")
-    };
-    const subBtns = {
-      photo: document.getElementById("subToolPhoto"),
-      videohd: document.getElementById("subToolVideoHd"),
-      compress: document.getElementById("subToolCompress")
-    };
-
-    Object.values(panels).forEach(el => el.classList.add("hidden"));
-    Object.values(subBtns).forEach(el => el.classList.remove("active"));
-
-    if(panels[sub]) panels[sub].classList.remove("hidden");
-    if(subBtns[sub]) subBtns[sub].classList.add("active");
-  }
-
-  function handleImageSelected(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      selectedPhotoDataUrl = e.target.result;
-      document.getElementById("uploadedImagePreview").src = selectedPhotoDataUrl;
-      document.getElementById("photoPreviewContainer").classList.remove("hidden");
-      document.getElementById("uploadPlaceholder").classList.add("hidden");
-      document.getElementById("hdResultBox").classList.add("hidden");
-      showToast("Foto siap diproses.");
-    };
-    reader.readAsDataURL(file);
-  }
-
-  function processEnhancePhoto() {
-    if (!selectedPhotoDataUrl) return showToast("Pilih foto terlebih dahulu.");
-    showToast("Memproses AI Upscale Foto...");
-    const img = new Image();
-    img.src = selectedPhotoDataUrl;
-    img.onload = function() {
-      const scale = Number(document.getElementById("upscaleLevel").value) || 2;
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
-      canvas.width = img.width * scale;
-      canvas.height = img.height * scale;
-      ctx.imageSmoothingEnabled = true;
-      ctx.imageSmoothingQuality = 'high';
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-      enhancedPhotoDataUrl = canvas.toDataURL("image/png", 1.0);
-      document.getElementById("enhancedResultPreview").src = enhancedPhotoDataUrl;
-      document.getElementById("imageDimensionInfo").textContent = `Resolusi Baru: ${canvas.width} x ${canvas.height} px`;
-      document.getElementById("hdResultBox").classList.remove("hidden");
-      showToast("Foto berhasil di-HD-kan!");
-    };
-  }
-
-  function downloadEnhancedPhoto() {
-    if (!enhancedPhotoDataUrl) return;
-    const a = document.createElement("a");
-    a.href = enhancedPhotoDataUrl;
-    a.download = "Foto-Supreme-HD-Pro.png";
-    a.click();
-    showToast("Foto berhasil diunduh.");
-  }
-
-  function handleVideoHdSelected(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    selectedVideoHdFile = file;
-    document.getElementById("uploadedVideoHdPreview").src = URL.createObjectURL(file);
-    document.getElementById("videoHdPreviewContainer").classList.remove("hidden");
-    document.getElementById("videoHdUploadPlaceholder").classList.add("hidden");
-    document.getElementById("videoHdResultBox").classList.add("hidden");
-    showToast("Video HD dimuat.");
-  }
-
-  function processVideoHd() {
-    if (!selectedVideoHdFile) return showToast("Pilih file video terlebih dahulu.");
-    const resTarget = document.getElementById("videoHdResolution").value;
-    showToast(`Meningkatkan video ke ${resTarget}p HD...`);
-    setTimeout(() => {
-      document.getElementById("videoHdInfoSummary").innerHTML = `Target: <b>${resTarget}p HD 60FPS</b><br>Status: Peningkatan Kualitas Selesai`;
-      document.getElementById("videoHdResultBox").classList.remove("hidden");
-      showToast("Video HD siap diunduh!");
-    }, 1500);
-  }
-
-  function downloadVideoHd() {
-    if (!selectedVideoHdFile) return;
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(selectedVideoHdFile);
-    a.download = "Video-Enhanced-HD.mp4";
-    a.click();
-    showToast("Video berhasil diunduh.");
-  }
-
-  function handleVideoCompressSelected(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    selectedVideoCompressFile = file;
-    document.getElementById("uploadedVideoCompressPreview").src = URL.createObjectURL(file);
-    document.getElementById("videoCompressPreviewContainer").classList.remove("hidden");
-    document.getElementById("videoCompressUploadPlaceholder").classList.add("hidden");
-    document.getElementById("videoCompressResultBox").classList.add("hidden");
-    showToast("Video kompres dimuat.");
-  }
-
-  function processVideoCompress() {
-    if (!selectedVideoCompressFile) return showToast("Pilih video untuk dikompres.");
-    const level = document.getElementById("compressLevel").value;
-    showToast("Mengkompres ukuran video...");
-    setTimeout(() => {
-      const origSize = (selectedVideoCompressFile.size / (1024 * 1024)).toFixed(2);
-      const newSize = (origSize * (level === 'heavy' ? 0.3 : level === 'medium' ? 0.5 : 0.75)).toFixed(2);
-      document.getElementById("videoCompressInfoSummary").innerHTML = `Ukuran Awal: <b>${origSize} MB</b> &rarr; Jadi: <b class="text-white">${newSize} MB</b>`;
-      document.getElementById("videoCompressResultBox").classList.remove("hidden");
-      showToast("Video berhasil dikompres!");
-    }, 1500);
-  }
-
-  function downloadVideoCompress() {
-    if (!selectedVideoCompressFile) return;
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(selectedVideoCompressFile);
-    a.download = "Video-Compressed.mp4";
-    a.click();
-    showToast("Video kompres diunduh.");
-  }
-
-  // FUNGSI LOGIKA UTUH UNTUK AKTIVASI, BULK, DAN INBOX (KODE AWAL ANDA)
+  // FUNGSI UTUH UNTUK AKTIVASI, BULK, DAN INBOX
   async function handleSendMagicLink() {
     const email = document.getElementById("inputEmail").value.trim();
 
@@ -1566,14 +1277,12 @@
     const contents = {
       send: document.getElementById("contentSend"),
       bulk: document.getElementById("contentBulk"),
-      inbox: document.getElementById("contentInbox"),
-      tools: document.getElementById("contentTools")
+      inbox: document.getElementById("contentInbox")
     };
     const tabs = {
       send: document.getElementById("tabSend"),
       bulk: document.getElementById("tabBulk"),
-      inbox: document.getElementById("tabInbox"),
-      tools: document.getElementById("tabTools")
+      inbox: document.getElementById("tabInbox")
     };
 
     Object.values(contents).forEach(el => el.classList.add("hidden"));
@@ -1585,4 +1294,3 @@
 </script>
 </body>
 </html>
-
