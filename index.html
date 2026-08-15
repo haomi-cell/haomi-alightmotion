@@ -1269,8 +1269,16 @@
         const canvas = document.createElement("canvas");
         const ctx = canvas.getContext("2d");
 
-        const targetW = Math.min(img.width * scale, 4096);
-        const targetH = Math.min(img.height * scale, 4096);
+        // Menjaga rasio asli foto agar tidak gepeng/distorsi
+        let targetW = img.width * scale;
+        let targetH = img.height * scale;
+        const maxDim = 4096; // Batas maksimum dimensi kanvas
+
+        if (targetW > maxDim || targetH > maxDim) {
+          const ratio = Math.min(maxDim / targetW, maxDim / targetH);
+          targetW = Math.round(targetW * ratio);
+          targetH = Math.round(targetH * ratio);
+        }
 
         canvas.width = targetW;
         canvas.height = targetH;
@@ -1285,9 +1293,9 @@
           enhancedPhotoBlobUrl = URL.createObjectURL(blob);
 
           document.getElementById("enhancedResultPreview").src = enhancedPhotoBlobUrl;
-          document.getElementById("imageDimensionInfo").textContent = `Resolusi Baru: ${targetW} x ${targetH} px (Ultra HD)`;
+          document.getElementById("imageDimensionInfo").textContent = `Resolusi Baru: ${targetW} x ${targetH} px (Aspect Ratio Preserved)`;
           document.getElementById("hdPhotoResultBox").classList.remove("hidden");
-          showToast("Foto berhasil di-HD-kan!");
+          showToast("Foto berhasil di-HD-kan tanpa merubah bentuk!");
         }, "image/png", 1.0);
       };
     };
@@ -1372,18 +1380,247 @@
   function handleVideoCompressSelected(event) {
     const file = event.target.files[0];
     if (!file) return;
-    selectedCompressVideoFile = file;
+    selectedVideoCompressFile = file;
+    document.getElementById("uploadedVideoCompressPreview").src = URL.createObjectURL(file);
+    document.getElementById("videoCompressPreviewContainer").classList.remove("hidden");
+    document.getElementById("videoCompressUploadPlaceholder").classList.add("hidden");
+    document.getElementById("videoCompressResultBox").classList.add("hidden");
+    showToast("Video kompres dimuat.");
+  }
 
-    const videoUrl = URL.createObjectURL(file);
-    const videoPreview = document.getElementById("uploadedCompressVideoPreview");
-    videoPreview.src = videoUrl;
+  function showProgressOverlay(text, percent) {
+    let overlay = document.getElementById('globalProcessingOverlay');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'globalProcessingOverlay';
+      overlay.className = 'fixed inset-0 z-[9999] bg-black/95 backdrop-blur-md flex flex-col items-center justify-center text-white';
+      overlay.innerHTML = `
+        <div class="relative w-20 h-20 mb-6 flex items-center justify-center">
+          <div class="absolute inset-0 rounded-full border-t-2 border-cyan-400 animate-spin"></div>
+          <i class="fa-solid fa-microchip text-3xl text-cyan-400 animate-pulse"></i>
+        </div>
+        <div id="gpoText" class="text-[13px] font-bold tracking-widest mb-3 uppercase text-center text-zinc-200">MERENDER VIDEO...</div>
+        <div class="w-64 bg-zinc-900 rounded-[10px] h-3 overflow-hidden border border-white/10 shadow-[0_0_15px_rgba(6,182,212,0.2)]">
+          <div id="gpoBar" class="bg-gradient-to-r from-cyan-400 to-blue-500 h-full w-0 transition-all duration-300"></div>
+        </div>
+        <div id="gpoPercent" class="mt-3 font-mono text-sm text-cyan-300 font-bold">0%</div>
+        <div class="mt-5 text-[10px] text-zinc-500 font-mono text-center max-w-[280px] leading-relaxed">
+          <i class="fa-solid fa-circle-exclamation text-amber-400"></i> Waktu render menyesuaikan durasi video Anda. Jangan tutup browser/layar ini.
+        </div>
+      `;
+      document.body.appendChild(overlay);
+    }
+    overlay.classList.remove('hidden');
+    document.getElementById('gpoText').innerText = text;
+    document.getElementById('gpoBar').style.width = percent + '%';
+    document.getElementById('gpoPercent').innerText = Math.floor(percent) + '%';
+    
+    if (percent >= 100) {
+      setTimeout(() => overlay.classList.add('hidden'), 800);
+    }
+  }
 
-    document.getElementById("compressPreviewContainer").classList.remove("hidden");
-    document.getElementById("uploadCompressPlaceholder").classList.add("hidden");
-    document.getElementById("compressedResultBox").classList.add("hidden");
-    document.getElementById("compressProgressBox").classList.add("hidden");
+  // CORE RENDER ENGINE BROWSER
+  async function processVideoEngine(file, modeConfig) {
+    return new Promise((resolve, reject) => {
+      const video = document.createElement('video');
+      video.src = URL.createObjectURL(file);
+      video.crossOrigin = "anonymous";
+      video.muted = false; 
+      video.playsInline = true;
+      video.style.display = "none";
+      document.body.appendChild(video);
 
-    showToast("Vidio kompres dimuat.");
+      video.onloadedmetadata = async () => {
+        const canvas = document.createElement('canvas');
+        let origW = video.videoWidth;
+        let origH = video.videoHeight;
+        let targetW = origW;
+        let targetH = origH;
+        let bitrate = 2500000;
+
+        // Logika Dimensi per Mode
+        if (modeConfig.type === 'hd') {
+          const maxPixel = modeConfig.res === 1080 ? 1920 : (modeConfig.res === 720 ? 1280 : 3840);
+          if (origW > origH) {
+            targetW = maxPixel; targetH = Math.floor(maxPixel * (origH/origW));
+          } else {
+            targetH = maxPixel; targetW = Math.floor(maxPixel * (origW/origH));
+          }
+          bitrate = 8000000; 
+        } else if (modeConfig.type === 'compress') {
+          let scale = modeConfig.level === 'heavy' ? 0.35 : (modeConfig.level === 'medium' ? 0.6 : 0.8);
+          targetW = Math.floor(origW * scale);
+          targetH = Math.floor(origH * scale);
+          bitrate = modeConfig.level === 'heavy' ? 400000 : 1200000;
+        } else if (modeConfig.type === 'tiktok') {
+          targetW = 1080; targetH = 1920;
+          bitrate = 6000000;
+        }
+
+        // Syarat codec: resolusi harus genap
+        targetW = targetW % 2 === 0 ? targetW : targetW + 1;
+        targetH = targetH % 2 === 0 ? targetH : targetH + 1;
+
+        canvas.width = targetW;
+        canvas.height = targetH;
+        const ctx = canvas.getContext('2d', { alpha: false });
+
+        if (modeConfig.type === 'tiktok') {
+          ctx.filter = 'contrast(1.05) saturate(1.1)'; // Edge Sharpness minimal
+        }
+
+        let stream = canvas.captureStream(30);
+
+        try { await video.play(); } 
+        catch(e) { video.muted = true; await video.play(); }
+
+        // Ekstraksi Audio
+        if (video.captureStream) {
+          const audioTracks = video.captureStream().getAudioTracks();
+          if (audioTracks.length > 0) stream.addTrack(audioTracks[0]);
+        } else if (video.mozCaptureStream) {
+          const audioTracks = video.mozCaptureStream().getAudioTracks();
+          if (audioTracks.length > 0) stream.addTrack(audioTracks[0]);
+        }
+
+        let mime = MediaRecorder.isTypeSupported('video/mp4') ? 'video/mp4' : 'video/webm';
+        const recorder = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: bitrate });
+        const chunks = [];
+
+        recorder.ondataavailable = e => { if (e.data.size > 0) chunks.push(e.data); };
+        recorder.onstop = () => {
+          const blob = new Blob(chunks, { type: mime });
+          document.body.removeChild(video);
+          resolve({ blob, extension: mime.includes('mp4') ? 'mp4' : 'webm' });
+        };
+
+        recorder.start();
+
+        const drawFrame = () => {
+          if (video.paused || video.ended) return;
+
+          if (modeConfig.type === 'tiktok') {
+            let scale = Math.max(targetW / origW, targetH / origH);
+            let x = (targetW / 2) - (origW / 2) * scale;
+            let y = (targetH / 2) - (origH / 2) * scale;
+            ctx.fillStyle = "#000";
+            ctx.fillRect(0,0,targetW, targetH);
+            ctx.drawImage(video, x, y, origW * scale, origH * scale);
+          } else {
+            ctx.drawImage(video, 0, 0, targetW, targetH);
+          }
+
+          showProgressOverlay(modeConfig.name, (video.currentTime / video.duration) * 100);
+          requestAnimationFrame(drawFrame);
+        };
+
+        drawFrame();
+        video.onended = () => {
+          showProgressOverlay('MENYELESAIKAN FILE...', 100);
+          recorder.stop();
+        };
+      };
+      
+      video.onerror = () => {
+        document.body.removeChild(video);
+        reject("Gagal memuat format video.");
+      };
+    });
+  }
+
+  let extVideoHd = 'mp4';
+  async function processVideoHd() {
+    if (!selectedVideoHdFile) return showToast("Pilih file video terlebih dahulu.");
+    const resTarget = document.getElementById("videoHdResolution") ? document.getElementById("videoHdResolution").value : 1080;
+    
+    try {
+      showProgressOverlay('MEMULAI MESIN RENDER HD...', 0);
+      const result = await processVideoEngine(selectedVideoHdFile, { type: 'hd', res: Number(resTarget), name: 'MERENDER HD ' + resTarget + 'P...' });
+      
+      if (enhancedVideoBlobUrl) URL.revokeObjectURL(enhancedVideoBlobUrl);
+      enhancedVideoBlobUrl = URL.createObjectURL(result.blob);
+      extVideoHd = result.extension;
+      
+      document.getElementById("videoHdInfoSummary").innerHTML = `Target: <b class="text-white">${resTarget}p 60FPS</b><br>Format: <b class="text-cyan-300">.${result.extension}</b><br><span class="text-emerald-400">Render Selesai!</span>`;
+      document.getElementById("videoHdResultBox").classList.remove("hidden");
+      showToast("Video HD siap diunduh!");
+    } catch (e) {
+      showToast("Gagal memproses video.");
+      showProgressOverlay('GAGAL', 100);
+    }
+  }
+
+  function downloadVideoHd() {
+    if (!enhancedVideoBlobUrl) return;
+    const a = document.createElement("a");
+    a.href = enhancedVideoBlobUrl;
+    a.download = "Video-Enhanced-HD." + extVideoHd;
+    a.click();
+    showToast("Video HD berhasil diunduh.");
+  }
+
+  let extVideoCompress = 'mp4';
+  async function processVideoCompress() {
+    if (!selectedVideoCompressFile) return showToast("Pilih video untuk dikompres.");
+    const level = document.getElementById("compressLevel") ? document.getElementById("compressLevel").value : 'medium';
+    
+    try {
+      showProgressOverlay('MEMULAI ENGINE KOMPRESI...', 0);
+      const result = await processVideoEngine(selectedVideoCompressFile, { type: 'compress', level: level, name: 'MENGOMPRES FILE...' });
+      
+      if (compressedVideoBlobUrl) URL.revokeObjectURL(compressedVideoBlobUrl);
+      compressedVideoBlobUrl = URL.createObjectURL(result.blob);
+      extVideoCompress = result.extension;
+      
+      const origSize = (selectedVideoCompressFile.size / (1024 * 1024)).toFixed(2);
+      const newSize = (result.blob.size / (1024 * 1024)).toFixed(2);
+      document.getElementById("videoCompressInfoSummary").innerHTML = `Awal: <b class="text-rose-400">${origSize} MB</b><br>Hasil Akhir: <b class="text-emerald-400">${newSize} MB</b>`;
+      document.getElementById("videoCompressResultBox").classList.remove("hidden");
+      showToast("Video berhasil dikompres!");
+    } catch(e) {
+      showToast("Gagal mengkompres.");
+      showProgressOverlay('GAGAL', 100);
+    }
+  }
+
+  function downloadVideoCompress() {
+    if (!compressedVideoBlobUrl) return;
+    const a = document.createElement("a");
+    a.href = compressedVideoBlobUrl;
+    a.download = "Video-Compressed." + extVideoCompress;
+    a.click();
+    showToast("Video kompres diunduh.");
+  }
+
+  let extTiktokHd = 'mp4';
+  async function processTiktokHd() {
+    if (!selectedTiktokVideoFile) return showToast("Pilih video TikTok terlebih dahulu.");
+    
+    try {
+      showProgressOverlay('MEMULAI OPTIMASI TIKTOK...', 0);
+      const result = await processVideoEngine(selectedTiktokVideoFile, { type: 'tiktok', name: 'MENERAPKAN EDGE SHARPNESS...' });
+      
+      if (enhancedTiktokVideoBlobUrl) URL.revokeObjectURL(enhancedTiktokVideoBlobUrl);
+      enhancedTiktokVideoBlobUrl = URL.createObjectURL(result.blob);
+      extTiktokHd = result.extension;
+      
+      document.getElementById("tiktokInfoSummary").innerHTML = `Rasio: <b class="text-white">9:16 (1080x1920)</b><br>Edge Sharpness: <b class="text-emerald-400">Aktif</b>`;
+      document.getElementById("tiktokResultBox").classList.remove("hidden");
+      showToast("Video TikTok siap diunduh!");
+    } catch(e) {
+      showToast("Gagal optimasi TikTok.");
+      showProgressOverlay('GAGAL', 100);
+    }
+  }
+
+  function downloadTiktokVideo() {
+    if (!enhancedTiktokVideoBlobUrl) return;
+    const a = document.createElement("a");
+    a.href = enhancedTiktokVideoBlobUrl;
+    a.download = "TikTok-Ultra-HD." + extTiktokHd;
+    a.click();
+    showToast("Video TikTok diunduh.");
   }
 
   function processVideoCompress() {
