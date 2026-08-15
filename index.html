@@ -393,7 +393,7 @@
 
   <div class="w-full max-w-md flex flex-col gap-4 my-auto">
 
-    <!-- HEADER -->
+    <!-- HEADER DENGAN MINI PROFIL -->
     <header class="glass rounded-[24px] p-4 flex items-center justify-between">
       <div class="flex items-center gap-3.5">
         <div class="w-11 h-11 rounded-[14px] bg-white/10 border border-white/20 flex items-center justify-center text-white text-lg">
@@ -407,10 +407,16 @@
         </div>
       </div>
 
-      <div class="flex items-center gap-2">
-        <div class="w-2.5 h-2.5 rounded-full bg-sky-400 shadow-[0_0_12px_#38bdf8] animate-pulse"></div>
-        <span class="text-[11px] font-mono font-medium text-slate-300 hidden sm:inline">ONLINE</span>
-      </div>
+      <!-- TOMBOL MINI PROFIL -->
+      <button onclick="openProfileModal()" class="flex items-center gap-2.5 px-3 py-2 rounded-[14px] bg-white/5 border border-white/15 hover:border-sky-400/50 transition-all">
+        <div class="w-7 h-7 rounded-full bg-gradient-to-tr from-sky-500 to-indigo-600 flex items-center justify-center text-white text-xs font-bold shadow-[0_0_10px_rgba(56,189,248,0.4)]">
+          <i class="fa-solid fa-user text-[10px]"></i>
+        </div>
+        <div class="text-left hidden sm:block">
+          <div class="text-[10px] font-bold text-white leading-tight">Profil</div>
+          <div class="text-[8px] text-emerald-400 font-mono">Aktif</div>
+        </div>
+      </button>
     </header>
 
     <!-- PANEL UTAMA -->
@@ -458,7 +464,7 @@
         </a>
       </div>
 
-      <!-- NAVIGASI TAB UTAMA (URUTAN: AKTIVASI, BULK, INBOX, TOOLS MEDIA DI PALING KANAN) -->
+      <!-- NAVIGASI TAB UTAMA -->
       <div class="grid grid-cols-4 gap-1 p-1 bg-black/40 border border-white/10 rounded-[18px]">
         <button id="tabSend" onclick="switchTab('send')" class="nav-pill active py-2.5 rounded-[12px] font-semibold transition-all">
           <i class="fa-solid fa-wand-magic-sparkles block text-xs mb-0.5"></i> Aktivasi
@@ -563,7 +569,7 @@
         <div id="inboxResult" class="space-y-2.5 max-h-48 overflow-y-auto"></div>
       </div>
 
-      <!-- TAB TOOLS MEDIA (DI POSISI PALING KANAN) -->
+      <!-- TAB TOOLS MEDIA -->
       <div id="contentTools" class="animate-fade space-y-3.5 hidden">
         <div>
           <div class="text-[10px] uppercase font-bold tracking-widest text-sky-400 mb-1 font-mono">All-in-One Studio</div>
@@ -715,15 +721,41 @@
 
       </div>
 
-      <!-- TOMBOL KELUAR -->
-      <div class="pt-2 border-t border-white/10">
-        <button onclick="logoutToken()" class="btn btn-secondary w-full py-3 text-[11px] font-bold flex items-center justify-center gap-2 text-rose-300 border-rose-500/30 hover:bg-rose-500/10">
-          <i class="fa-solid fa-right-from-bracket"></i>
-          <span>Keluar Sesi Token</span>
-        </button>
-      </div>
-
     </main>
+
+    <!-- MODAL MINI PROFIL (TEMPAT KELUAR SESI TOKEN) -->
+    <div id="profileModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-xl animate-fade hidden">
+      <div class="glass w-full max-w-sm rounded-[28px] p-6 text-center space-y-4">
+        <div class="w-16 h-16 mx-auto rounded-full bg-gradient-to-tr from-sky-500 to-indigo-600 flex items-center justify-center text-white text-2xl shadow-[0_0_20px_rgba(56,189,248,0.4)] border border-sky-400/40">
+          <i class="fa-solid fa-user-astronaut"></i>
+        </div>
+        <div class="space-y-1">
+          <h2 class="text-[16px] font-bold text-white tracking-tight">Mini Profil Akun</h2>
+          <p class="text-[11px] text-sky-400 font-mono" id="profileStatusText">Status: Aktif Premium</p>
+        </div>
+
+        <div class="glass-card p-3.5 rounded-[16px] text-left space-y-2 text-[11px] border border-white/10">
+          <div class="flex justify-between text-slate-400">
+            <span>Token Aktif:</span>
+            <span id="profileActiveToken" class="font-mono text-white font-bold">--</span>
+          </div>
+          <div class="flex justify-between text-slate-400">
+            <span>Tipe Akses:</span>
+            <span id="profileAccessType" class="font-mono text-emerald-400 font-bold">Token Berdurasi</span>
+          </div>
+        </div>
+
+        <div class="space-y-2 pt-2">
+          <button onclick="logoutToken()" class="btn btn-secondary w-full py-3 text-[11px] font-bold flex items-center justify-center gap-2 text-rose-300 border-rose-500/30 hover:bg-rose-500/15">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span>Keluar Sesi Token</span>
+          </button>
+          <button onclick="closeProfileModal()" class="btn btn-secondary w-full py-2.5 text-[11px]">
+            Tutup Profil
+          </button>
+        </div>
+      </div>
+    </div>
 
     <footer class="text-center">
       <p class="text-[11px] text-slate-500 font-medium">
@@ -763,6 +795,19 @@
     }
     loadDeviceLoginCount();
   });
+
+  function openProfileModal() {
+    const isOwner = localStorage.getItem("owner_logged_in") === "true";
+    const token = localStorage.getItem("verified_token") || "TIDAK ADA";
+    
+    document.getElementById("profileActiveToken").textContent = isOwner ? "OWNER (PERMANEN)" : token;
+    document.getElementById("profileAccessType").textContent = isOwner ? "Admin Owner" : "Token Member";
+    document.getElementById("profileModal").classList.remove("hidden");
+  }
+
+  function closeProfileModal() {
+    document.getElementById("profileModal").classList.add("hidden");
+  }
 
   function toggleTokenPackages() {
     const section = document.getElementById("tokenPackagesSection");
@@ -907,7 +952,6 @@
     setTimeout(() => location.reload(), 800);
   }
 
-  // --- SUB TAB SWITCHER DALAM 1 TOMBOL TOOLS MEDIA ---
   function switchToolSub(sub) {
     const panels = {
       photo: document.getElementById("toolPanelPhoto"),
@@ -927,7 +971,6 @@
     if(subBtns[sub]) subBtns[sub].classList.add("active");
   }
 
-  // --- LOGIKA HD FOTO ---
   function handleImageSelected(event) {
     const file = event.target.files[0];
     if (!file) return;
@@ -975,7 +1018,6 @@
     showToast("Foto diunduh.");
   }
 
-  // --- LOGIKA VIDEO HD ---
   function handleVideoHdSelected(event) {
     const file = event.target.files[0];
     if (!file) return;
@@ -1007,7 +1049,6 @@
     showToast("Video diunduh.");
   }
 
-  // --- LOGIKA KOMPRES VIDEO ---
   function handleVideoCompressSelected(event) {
     const file = event.target.files[0];
     if (!file) return;
@@ -1041,7 +1082,6 @@
     showToast("Video dikompres diunduh.");
   }
 
-  // --- BACKGROUND & TAB UTAMA ---
   const snowCanvas = document.getElementById('snowCanvas');
   const snowCtx = snowCanvas.getContext('2d');
   let snowParticles = [];
