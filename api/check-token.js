@@ -2,8 +2,12 @@ import { sendJson } from "./_upstream.js";
 
 const OWNER_SECRET_KEY = "HAOMI_XML";
 
-// Memori Global Sementara
-if (!global.generatedTokens) global.generatedTokens = {};
+// Menggunakan objek global yang lebih aman
+if (!global.generatedTokens) {
+  global.generatedTokens = {
+    "HAO-1234": { expires_at: new Date(Date.now() + 30 * 86400000).toISOString() }
+  };
+}
 if (!global.activeUsers) global.activeUsers = [];
 if (!global.blockedIPs) global.blockedIPs = [];
 
@@ -12,9 +16,7 @@ export default async function handler(req, res) {
   const body = req.body || {};
   const query = req.query || {};
 
-  // ==========================================
-  // 1. FITUR GET (OWNER MELIHAT DATA LOGIN)
-  // ==========================================
+  // 1. GET DATA LOGIN (Dilihat oleh Owner)
   if (req.method === "GET" && query.action === "get_users") {
     if (req.headers.authorization !== OWNER_SECRET_KEY) {
       return sendJson(res, 401, { status: false, message: "Akses Ditolak." });
@@ -22,16 +24,11 @@ export default async function handler(req, res) {
     return sendJson(res, 200, { status: true, data: global.activeUsers });
   }
 
-  // Izinkan POST dan PUT
   if (req.method !== "POST" && req.method !== "PUT") {
     return sendJson(res, 405, { status: false, message: "Method tidak diizinkan." });
   }
 
-  // ==========================================
-  // 2. FITUR ADMIN (BUAT TOKEN, CABUT, BLOKIR IP)
-  // ==========================================
-  
-  // A. Generate Token
+  // 2. GENERATE TOKEN OLEH OWNER
   if (body.action === "generate" || req.method === "PUT") {
     if (body.secret !== OWNER_SECRET_KEY) return sendJson(res, 401, { status: false, message: "Secret key salah." });
     const days = Number(body.days || 30);
@@ -43,14 +40,14 @@ export default async function handler(req, res) {
     return sendJson(res, 200, { status: true, message: "Token berhasil dibuat.", token: token, expires_at: expiryDate });
   }
 
-  // B. Cabut Token
+  // 3. CABUT TOKEN
   if (body.action === "revoke") {
     if (req.headers.authorization !== OWNER_SECRET_KEY) return sendJson(res, 401, { status: false, message: "Akses Ditolak." });
     global.activeUsers = global.activeUsers.filter(user => user.token !== body.token);
     return sendJson(res, 200, { status: true, message: "Token berhasil dicabut." });
   }
 
-  // C. Blokir IP
+  // 4. BLOKIR IP
   if (body.action === "block_ip") {
     if (req.headers.authorization !== OWNER_SECRET_KEY) return sendJson(res, 401, { status: false, message: "Akses Ditolak." });
     if (!global.blockedIPs.includes(body.ip)) global.blockedIPs.push(body.ip);
@@ -58,17 +55,13 @@ export default async function handler(req, res) {
     return sendJson(res, 200, { status: true, message: "IP berhasil diblokir." });
   }
 
-  // ==========================================
-  // 3. FITUR USER LOGOUT
-  // ==========================================
+  // 5. USER LOGOUT (Hanya hapus sesi browser mereka, JANGAN hapus dari log histori owner agar owner tetap bisa melihat riwayatnya)
   if (body.action === "logout") {
-    global.activeUsers = global.activeUsers.filter(user => user.token !== body.token);
+    // Kita biarkan data tetap ada di global.activeUsers agar Owner tetap punya riwayat history IP pembeli
     return sendJson(res, 200, { status: true, message: "Berhasil logout." });
   }
 
-  // ==========================================
-  // 4. FITUR USER LOGIN (VERIFIKASI TOKEN)
-  // ==========================================
+  // 6. VERIFIKASI TOKEN OLEH USER
   const tokenInput = String(body.token || "").trim().toUpperCase();
   if (!tokenInput) return sendJson(res, 400, { status: false, message: "Token tidak boleh kosong." });
   
@@ -84,20 +77,22 @@ export default async function handler(req, res) {
     return sendJson(res, 400, { status: false, message: "Token kedaluwarsa!" });
   }
 
-  // Catat Aktivitas Login
   const timeString = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
-  const randomId = "USR-" + Math.random().toString(36).substring(2, 6).toUpperCase();
-
-  // Hapus jika token ini login sebelumnya biar tidak ganda
-  global.activeUsers = global.activeUsers.filter(u => u.token !== tokenInput);
   
-  // Masukkan ke log
-  global.activeUsers.push({
-    id: randomId,
-    token: tokenInput,
-    ip: ipAddress,
-    lastLogin: `Hari ini, ${timeString}`
-  });
+  // Cek apakah kombinasi Token & IP ini sudah pernah tercatat
+  const existingIndex = global.activeUsers.findIndex(u => u.token === tokenInput && u.ip === ipAddress);
+
+  if (existingIndex !== -1) {
+    global.activeUsers[existingIndex].lastLogin = `Hari ini, ${timeString}`;
+  } else {
+    const randomId = "USR-" + Math.random().toString(36).substring(2, 6).toUpperCase();
+    global.activeUsers.push({
+      id: randomId,
+      token: tokenInput,
+      ip: ipAddress,
+      lastLogin: `Hari ini, ${timeString}`
+    });
+  }
 
   return sendJson(res, 200, { status: true, message: "Token valid.", expires_at: tokenData.expires_at });
 }
