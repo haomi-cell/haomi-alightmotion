@@ -775,7 +775,16 @@
   }
 
   // Modals & Basic Logic
-  function openProfileModal() { document.getElementById("profileModal").classList.remove("hidden"); }
+  function openProfileModal() { 
+    const isOwner = localStorage.getItem("owner_logged_in") === "true";
+    const currentToken = localStorage.getItem("verified_token") || "TIDAK ADA";
+    
+    document.getElementById("profileActiveToken").textContent = isOwner ? "OWNER-ACCESS" : currentToken;
+    document.getElementById("profileAccessType").textContent = isOwner ? "Admin Owner Pro" : "Token Member";
+    document.getElementById("profileUserIp").textContent = clientRealIp;
+    
+    document.getElementById("profileModal").classList.remove("hidden"); 
+  }
   function closeProfileModal() { document.getElementById("profileModal").classList.add("hidden"); }
   function openOwnerDashboardModal() { document.getElementById("ownerDashboardModal").classList.remove("hidden"); loadActiveUsers(); }
   function closeOwnerDashboard() { document.getElementById("ownerDashboardModal").classList.add("hidden"); }
@@ -866,12 +875,18 @@
     if (exp === "PERMANENT") { el.textContent = "PERMANEN"; return; }
     
     const diff = Number(exp) - new Date().getTime();
-    if (diff <= 0) { el.textContent = "EXPIRED"; return; }
+    if (diff <= 0) { el.textContent = "KEDALUWARSA"; return; }
     
-    const h = Math.floor(diff / 3600000);
-    const m = Math.floor((diff % 3600000) / 60000);
-    const s = Math.floor((diff % 60000) / 1000);
-    el.textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const s = Math.floor((diff % (1000 * 60)) / 1000);
+    
+    if (d > 0) {
+      el.textContent = `${d} Hari ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    } else {
+      el.textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    }
   }
   setInterval(updateTokenCountdown, 1000);
 
@@ -1031,11 +1046,94 @@
     }, 1500);
   }
   function downloadEnhancedPhoto() { showToast("Foto HD disimpan!"); }
-  function handleSendMagicLink() { showToast("Magic link simulasi terkirim."); }
-  function handleVerifyMagicLink() { showToast("Verifikasi sukses."); }
-  function resetInjectFlow() { document.getElementById("inputEmail").value = ""; }
-  function runBulkInject() { showToast("Memproses bulk... Selesai!"); }
-  function runInboxCheck() { showToast("Memindai inbox... Kosong."); }
+
+  // SIMULASI ALIGHT MOTION BERJALAN
+  function handleSendMagicLink() { 
+    const email = document.getElementById("inputEmail").value.trim();
+    if (!email.includes("@")) return showToast("Masukkan format email yang valid!");
+    
+    showToast("Memproses request sinkronisasi...");
+    setTimeout(() => {
+      document.getElementById("stepEmailBox").classList.add("hidden");
+      document.getElementById("stepVerifyBox").classList.remove("hidden");
+      showToast("Magic link telah terkirim ke email!");
+    }, 1500);
+  }
+
+  function handleVerifyMagicLink() { 
+    const link = document.getElementById("inputLink").value.trim();
+    if (!link.includes("http")) return showToast("Tempel link valid dari email!");
+    
+    showToast("Memverifikasi token dari link...");
+    setTimeout(() => {
+      document.getElementById("stepVerifyBox").classList.add("hidden");
+      const res = document.getElementById("sendResult");
+      res.classList.remove("hidden");
+      res.innerHTML = `
+        <div class="text-[12px] font-extrabold text-white mb-2 flex items-center gap-1.5"><i class="fa-solid fa-circle-check text-emerald-400"></i> AKTIVASI BERHASIL!</div>
+        <div class="space-y-1.5 bg-black/40 p-2.5 rounded-[12px] border border-white/10">
+          <div>Email: <b class="text-cyan-300 font-mono">${document.getElementById("inputEmail").value}</b></div>
+          <div>Status: <b class="text-emerald-400 font-mono">Premium Aktif</b></div>
+        </div>
+        <button onclick="resetInjectFlow()" class="btn-glass w-full py-3 mt-3 text-[11px] font-bold"><i class="fa-solid fa-rotate-left"></i> Selesai & Kembali</button>
+      `;
+      showToast("Aktivasi Sukses!");
+    }, 2000);
+  }
+
+  function resetInjectFlow() { 
+    document.getElementById("inputEmail").value = ""; 
+    document.getElementById("inputLink").value = "";
+    document.getElementById("stepVerifyBox").classList.add("hidden");
+    document.getElementById("sendResult").classList.add("hidden");
+    document.getElementById("stepEmailBox").classList.remove("hidden");
+  }
+
+  function runBulkInject() { 
+    const amount = parseInt(document.getElementById("inputBulkAmount").value);
+    if (!amount || amount < 1 || amount > 100) return showToast("Jumlah harus antara 1 - 100!");
+    
+    showToast(`Memulai proses Bulk Create untuk ${amount} akun...`);
+    const res = document.getElementById("bulkResult");
+    res.classList.remove("hidden");
+    res.innerHTML = `<div class="text-center text-violet-400 py-3"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Generating accounts...</div>`;
+    
+    setTimeout(() => {
+      let html = `<div class="text-[11px] font-bold text-white mb-2 bg-[#121218] p-1.5 border-b border-white/10"><i class="fa-solid fa-check-double text-emerald-400"></i> GENERATED ${amount} ACCOUNT(S)</div><div class="space-y-1.5 pt-1">`;
+      for(let i = 0; i < amount; i++) {
+        let randStr = Math.random().toString(36).substring(2,7);
+        html += `<div class="p-2.5 bg-black/30 border border-white/5 rounded-[8px] text-[10px] text-zinc-300 flex justify-between"><span>am_${randStr}@haomi.com</span><span class="text-emerald-400 font-bold">Premium</span></div>`;
+      }
+      html += `</div>`;
+      res.innerHTML = html;
+      showToast("Generate Bulk selesai!");
+    }, 2000);
+  }
+
+  function runInboxCheck() { 
+    const email = document.getElementById("inputInboxEmail").value.trim();
+    if (!email.includes("@")) return showToast("Masukkan alamat email yang valid!");
+    
+    const notice = document.getElementById("inboxNotice");
+    const res = document.getElementById("inboxResult");
+    notice.classList.remove("hidden");
+    notice.innerHTML = "<i class='fa-solid fa-spinner fa-spin text-violet-400 mr-1.5'></i> Memindai kotak masuk server...";
+    res.innerHTML = "";
+    
+    setTimeout(() => {
+      notice.innerHTML = "<i class='fa-solid fa-check text-emerald-400 mr-1.5'></i> Pindai Selesai. (1 Pesan Ditemukan)";
+      res.innerHTML = `
+        <div class="glass-card p-3.5 bg-black/40 border border-white/10 rounded-[16px]">
+          <div class="flex items-center gap-2 mb-2 text-white font-bold text-[11px]"><i class="fa-solid fa-envelope text-violet-400 text-lg"></i> Alight Motion Sign-in</div>
+          <div class="p-3 rounded-[12px] bg-black/50 border border-white/10 text-zinc-300 text-[10px] break-all font-mono mb-3">
+            https://alight.link/auth?token=${Math.random().toString(36).substring(2,15)}
+          </div>
+          <button class="btn-primary w-full py-3 text-[11px] font-bold !bg-gradient-to-r !from-violet-500 !to-fuchsia-500" onclick="showToast('Link berhasil disalin ke clipboard!')"><i class="fa-regular fa-copy mr-1"></i> Salin Link Verifikasi</button>
+        </div>
+      `;
+      showToast("Pesan berhasil dimuat!");
+    }, 2500);
+  }
 
   // HIGH-PERFORMANCE FOREGROUND SNOW ENGINE
   const snowCanvas = document.getElementById('snowCanvas');
