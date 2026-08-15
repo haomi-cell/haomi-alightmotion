@@ -232,7 +232,7 @@
 
   <!-- MODAL LOGIN / MASUKKAN TOKEN AKSES -->
   <div id="tokenModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-xl animate-fade">
-    <div class="glass w-full max-w-sm rounded-[28px] p-6 text-center space-y-4">
+    <div class="glass w-full max-w-sm rounded-[28px] p-6 text-center space-y-4 max-h-[95vh] overflow-y-auto">
       <div class="w-14 h-14 mx-auto rounded-[18px] bg-white/10 border border-white/30 flex items-center justify-center text-white text-xl shadow-[0_0_20px_rgba(56,189,248,0.3)]">
         <i class="fa-solid fa-key animate-pulse gles-text"></i>
       </div>
@@ -247,6 +247,49 @@
           <span>Verifikasi & Masuk</span>
           <i class="fa-solid fa-arrow-right text-[10px]"></i>
         </button>
+      </div>
+
+      <!-- TOMBOL DAPATKAN TOKEN UTAMA (MENAMPILKAN PILIHAN KETIKA DIKLIK) -->
+      <div class="border-t border-white/10 pt-3">
+        <button onclick="toggleTokenPackages()" class="btn btn-whatsapp w-full py-3 text-[11px] font-bold flex items-center justify-center gap-2" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #fff;">
+          <i class="fa-brands fa-whatsapp text-sm"></i>
+          <span id="btnGetTokenText">Dapatkan Token</span>
+        </button>
+
+        <!-- KONTEN PILIHAN TOKEN & DESKRIPSI (TERSEMBUNYI AWALNYA) -->
+        <div id="tokenPackagesSection" class="hidden space-y-3 pt-3 text-left animate-fade">
+          <div class="p-3 rounded-[14px] bg-sky-500/10 border border-sky-500/30 text-sky-200 text-[11px] leading-relaxed space-y-1">
+            <div class="font-bold flex items-center gap-1.5 text-sky-300">
+              <i class="fa-solid fa-star text-amber-400"></i> Keuntungan Web HD & AM:
+            </div>
+            <p class="text-slate-300 text-[10px] leading-relaxed">
+              Nikmati fitur web HD foto kualitas tinggi & buat Alight Motion (AM) Premium secara instan dengan pilihan batas token sesuai kebutuhan Anda!
+            </p>
+          </div>
+
+          <div class="space-y-2">
+            <a href="https://Wa.me/+6282231669053?text=Mau%20Token%20Web%201day%20Mas%20Hao" target="_blank" class="btn btn-secondary py-2.5 px-3 text-[11px] flex items-center justify-between no-underline hover:border-sky-400 block">
+              <span class="text-white font-medium"><i class="fa-solid fa-ticket text-sky-400 mr-2"></i> Token 1 Hari (3k)</span>
+              <span class="text-[10px] text-sky-300 font-mono font-bold">Rp 3.000 <i class="fa-brands fa-whatsapp ml-1"></i></span>
+            </a>
+            <a href="https://Wa.me/+6282231669053?text=Mau%20Token%20Web%203day%20Mas%20Hao" target="_blank" class="btn btn-secondary py-2.5 px-3 text-[11px] flex items-center justify-between no-underline hover:border-sky-400 block">
+              <span class="text-white font-medium"><i class="fa-solid fa-ticket text-sky-400 mr-2"></i> Token 3 Hari (5k)</span>
+              <span class="text-[10px] text-sky-300 font-mono font-bold">Rp 5.000 <i class="fa-brands fa-whatsapp ml-1"></i></span>
+            </a>
+            <a href="https://Wa.me/+6282231669053?text=Mau%20Token%20Web%207day%20Mas%20Hao" target="_blank" class="btn btn-secondary py-2.5 px-3 text-[11px] flex items-center justify-between no-underline hover:border-sky-400 block">
+              <span class="text-white font-medium"><i class="fa-solid fa-ticket text-sky-400 mr-2"></i> Token 7 Hari (15k)</span>
+              <span class="text-[10px] text-sky-300 font-mono font-bold">Rp 15.000 <i class="fa-brands fa-whatsapp ml-1"></i></span>
+            </a>
+            <a href="https://Wa.me/+6282231669053?text=Mau%20Token%20Web%201B%20Mas%20Hao" target="_blank" class="btn btn-secondary py-2.5 px-3 text-[11px] flex items-center justify-between no-underline hover:border-sky-400 block">
+              <span class="text-white font-medium"><i class="fa-solid fa-ticket text-sky-400 mr-2"></i> Token 1 Bulan (25k)</span>
+              <span class="text-[10px] text-sky-300 font-mono font-bold">Rp 25.000 <i class="fa-brands fa-whatsapp ml-1"></i></span>
+            </a>
+            <a href="https://Wa.me/+6282231669053?text=Mau%20Token%20Web%20Permanen%20Mas%20Hao" target="_blank" class="btn btn-whatsapp py-3 px-3 text-[11px] font-bold flex items-center justify-between no-underline block" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #fff;">
+              <span><i class="fa-solid fa-crown mr-1.5"></i> Token Permanen (40k)</span>
+              <span class="text-[10px] font-mono font-bold">Rp 40.000 <i class="fa-brands fa-whatsapp ml-1"></i></span>
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -486,8 +529,8 @@
 
         <div class="space-y-3">
           <div>
-            <label class="block text-[10px] uppercase font-bold text-slate-400 mb-1.5 font-mono">Jumlah Akun (Maks 5)</label>
-            <input id="inputBulkAmount" type="number" min="1" max="5" value="5" class="px-4 py-3.5 text-[12px]" />
+            <label class="block text-[10px] uppercase font-bold text-slate-400 mb-1.5 font-mono">Jumlah Akun (Maks 100)</label>
+            <input id="inputBulkAmount" type="number" min="1" max="100" value="50" class="px-4 py-3.5 text-[12px]" />
           </div>
           <button onclick="runBulkInject()" class="btn btn-blue-solid w-full py-3.5 text-[12px]">
             Mulai Generate Bulk
@@ -566,6 +609,19 @@
     }
     loadDeviceLoginCount();
   });
+
+  function toggleTokenPackages() {
+    const section = document.getElementById("tokenPackagesSection");
+    const btnText = document.getElementById("btnGetTokenText");
+
+    if (section.classList.contains("hidden")) {
+      section.classList.remove("hidden");
+      btnText.textContent = "Tutup Pilihan Paket";
+    } else {
+      section.classList.add("hidden");
+      btnText.textContent = "Dapatkan Token";
+    }
+  }
 
   function loadDeviceLoginCount() {
     try {
@@ -1153,8 +1209,8 @@
   async function runBulkInject() {
     const amount = Number(document.getElementById("inputBulkAmount").value);
 
-    if (!amount || amount < 1 || amount > 5) {
-      return showToast("Jumlah batas bulk hanya 1 - 5 akun.");
+    if (!amount || amount < 1 || amount > 100) {
+      return showToast("Jumlah batas bulk hanya 1 - 100 akun.");
     }
 
     showToast("Memproses bulk generator...");
