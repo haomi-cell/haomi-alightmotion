@@ -299,10 +299,10 @@
           </button>
         </div>
         
-        <!-- Hasil Token & Tombol Salin -->
+        <!-- Hasil Token & Tombol Salin di Bawahnya -->
         <div id="ownerTokenResult" class="glass-card hidden p-3.5 rounded-[12px] text-[11px] font-mono text-emerald-300 space-y-2.5">
           <div id="ownerTokenText"></div>
-          <button onclick="copyGeneratedToken()" class="btn py-2 w-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 hover:bg-emerald-500/30 font-bold flex items-center justify-center gap-1.5 text-[10px]">
+          <button onclick="copyGeneratedToken()" class="btn py-2.5 w-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 hover:bg-emerald-500/30 font-bold flex items-center justify-center gap-2 text-[11px]">
             <i class="fa-regular fa-copy"></i> Salin Token
           </button>
         </div>
@@ -311,7 +311,7 @@
       <!-- KONTROL PANEL: MANAJEMEN PENGGUNA -->
       <div id="adminContentUsers" class="space-y-3 text-[11px] animate-fade hidden">
         <div class="font-bold text-sky-400 uppercase tracking-wider text-[10px] font-mono mb-2 flex items-center justify-between">
-          <span>Log Pengguna Aktif</span>
+          <span>Log Pengguna & Multi-IP</span>
           <button onclick="loadActiveUsers()" class="text-sky-300 hover:text-white"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
         </div>
         
@@ -544,7 +544,7 @@
 
 <script>
   const OWNER_SECRET_KEY = "HAOMI_XML";
-  let lastGeneratedCode = ""; // Variabel untuk menyimpan kode token terakhir
+  let lastGeneratedCode = "";
 
   window.addEventListener("DOMContentLoaded", () => {
     const savedToken = localStorage.getItem("verified_token");
@@ -702,11 +702,10 @@
     }
   }
 
-  // Generator Token Otomatis
   async function generateOwnerToken() {
     const days = Number(document.getElementById("newGenDays").value);
     const randomCode = "HAO-" + Math.floor(1000 + Math.random() * 9000);
-    lastGeneratedCode = randomCode; // Simpan ke variabel global
+    lastGeneratedCode = randomCode;
     showToast("Membuat token otomatis...");
 
     try {
@@ -736,7 +735,6 @@
     }
   }
 
-  // Fungsi untuk menyalin token yang baru dibuat
   async function copyGeneratedToken() {
     if (!lastGeneratedCode) {
       return showToast("Belum ada token yang dibuat.");
