@@ -555,7 +555,6 @@
       const now = new Date().getTime();
       if (now < Number(savedExpiry)) {
         document.getElementById("tokenModal").classList.add("hidden");
-        // Pastikan tombol owner tetap tersembunyi untuk user biasa
         document.getElementById("ownerMenuButtonContainer").classList.add("hidden");
       }
     }
@@ -576,7 +575,6 @@
   }
 
   function openOwnerDashboardModal() {
-    // Keamanan ganda: cek apakah benar session owner
     if (localStorage.getItem("owner_logged_in") !== "true") {
       showToast("Akses ditolak! Anda bukan owner.");
       return;
@@ -604,13 +602,14 @@
     }
   }
 
-  // ==== LOAD USER DARI SERVER API ====
+  // ==== LOAD USER DARI SERVER (DIARAHKAN KE CHECK-TOKEN) ====
   async function loadActiveUsers() {
     const container = document.getElementById("userListContainer");
     container.innerHTML = `<div class="text-center text-slate-400 py-4"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengambil data dari server...</div>`;
 
     try {
-      const res = await fetch("/api/admin?action=get_users", { 
+      // PERUBAHAN: Ditembak langsung ke check-token.js
+      const res = await fetch("/api/check-token?action=get_users", { 
         method: "GET",
         headers: { "Authorization": OWNER_SECRET_KEY } 
       });
@@ -623,7 +622,7 @@
       container.innerHTML = "";
 
       if (activeUsers.length === 0) {
-        container.innerHTML = `<div class="text-center text-slate-400 py-4 text-[10px]">Belum ada pengguna aktif saat ini.</div>`;
+        container.innerHTML = `<div class="text-center text-slate-400 py-4 text-[10px]">Belum ada pengguna aktif saat ini.<br>Akan muncul saat user verifikasi token.</div>`;
         return;
       }
 
@@ -664,7 +663,7 @@
     if(confirm(`Yakin ingin mencabut (hapus) akses untuk token ${token}?`)) {
       showToast("Sedang memproses cabut token...");
       try {
-        await fetch("/api/admin", {
+        await fetch("/api/check-token", { // PERUBAHAN
           method: "POST",
           headers: { 
             "Content-Type": "application/json",
@@ -684,7 +683,7 @@
     if(confirm(`Yakin ingin memblokir IP ${ip} agar tidak bisa login selamanya?`)) {
       showToast("Sedang memblokir IP...");
       try {
-        await fetch("/api/admin", {
+        await fetch("/api/check-token", { // PERUBAHAN
           method: "POST",
           headers: { 
             "Content-Type": "application/json",
@@ -708,9 +707,9 @@
 
     try {
       const res = await fetch("/api/check-token", {
-        method: "PUT",
+        method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token: randomCode, days: days, secret: OWNER_SECRET_KEY })
+        body: JSON.stringify({ action: "generate", token: randomCode, days: days, secret: OWNER_SECRET_KEY })
       });
 
       const json = await res.json();
@@ -738,7 +737,7 @@
       return showToast("Masukkan token akses atau key owner terlebih dahulu.");
     }
 
-    // CEK APAKAH YANG DIMASUKKAN ADALAH KEY OWNER (HAOMI_XML)
+    // Cek Key Owner
     if (inputVal === OWNER_SECRET_KEY) {
       localStorage.setItem("owner_logged_in", "true");
       showToast("Akses Owner Diberikan!");
@@ -749,7 +748,7 @@
       return;
     }
 
-    // Jika bukan key owner, verifikasi sebagai token reguler
+    // Token Reguler
     const tokenInput = inputVal.toUpperCase();
     showToast("Memverifikasi token online...");
 
@@ -757,7 +756,7 @@
       const res = await fetch("/api/check-token", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token: tokenInput })
+        body: JSON.stringify({ token: tokenInput }) // Tanpa 'action', dianggap verifikasi login
       });
 
       const contentType = res.headers.get("content-type");
@@ -782,7 +781,7 @@
       const expiryTime = new Date(json.expires_at).getTime();
       localStorage.setItem("verified_token", tokenInput);
       localStorage.setItem("token_expiry", expiryTime);
-      localStorage.removeItem("owner_logged_in"); // Pastikan flag owner dibersihkan untuk user biasa
+      localStorage.removeItem("owner_logged_in");
 
       showToast("Token valid! Membuka akses...");
       setTimeout(() => {
@@ -801,10 +800,10 @@
 
     if (currentToken) {
       try {
-        await fetch("/api/logout", {
+        await fetch("/api/check-token", { // PERUBAHAN
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ token: currentToken })
+          body: JSON.stringify({ action: "logout", token: currentToken })
         });
       } catch (err) {}
     }
@@ -1287,4 +1286,5 @@
 </script>
 </body>
 </html>
+
 
