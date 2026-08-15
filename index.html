@@ -3,1852 +3,378 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#030712" />
-  <meta name="description" content="Professional Alight Motion & Media Suite by 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞 - Obsidian Cyber Edition" />
-  <title>Web Am Premium Pro | Obsidian Cyber Suite</title>
+  <meta name="theme-color" content="#000000" />
+  <meta name="description" content="AM Pro Toolkit — Modern Monochrome Edition" />
+  <title>AM Pro Toolkit | 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
   <script>
     tailwind.config = {
       darkMode: 'class',
       theme: {
         extend: {
-          colors: {
-            obsidian: '#030712',
-            cyber: {
-              50: '#f0fdf4',
-              500: '#06b6d4',
-              600: '#0891b2',
-              900: '#164e63',
-            }
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
           }
         }
       }
-    }
+    };
   </script>
 
   <style>
+    :root {
+      --bg: #000000;
+      --panel: rgba(18, 18, 20, 0.65);
+      --panel-hover: rgba(28, 28, 32, 0.75);
+      --border: rgba(255, 255, 255, 0.12);
+      --border-focus: rgba(255, 255, 255, 0.4);
+      --text: #f4f4f5;
+      --muted: #a1a1aa;
+    }
+
     * {
       box-sizing: border-box;
       -webkit-tap-highlight-color: transparent;
-      -webkit-touch-callout: none;
     }
 
-    html, body {
+    html {
+      scroll-behavior: smooth;
+      background: var(--bg);
+    }
+
+    body {
       margin: 0;
-      padding: 0;
-      width: 100%;
       min-height: 100vh;
       overflow-x: hidden;
-      background: #030712;
-      color: #f3f4f6;
+      color: var(--text);
+      background: 
+        radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.08), transparent 50%),
+        #000000;
       font-family: 'Plus Jakarta Sans', sans-serif;
-      touch-action: manipulation;
     }
 
-    /* OBSIDIAN & CYAN/INDIGO NEON AURORA GLOW */
-    body::before, body::after {
-      content: '';
-      position: fixed;
-      border-radius: 50%;
-      filter: blur(120px);
-      z-index: -3;
-      pointer-events: none;
-      animation: cyberPulse 10s infinite alternate ease-in-out;
-    }
+    /* Efek Grid Abstrak di Background */
     body::before {
-      background: rgba(6, 182, 212, 0.12); /* Deep Cyan */
-      width: 70vw; height: 70vw;
-      top: -15%; left: -15%;
-    }
-    body::after {
-      background: rgba(99, 102, 241, 0.12); /* Indigo Neon */
-      width: 60vw; height: 60vw;
-      bottom: -15%; right: -15%;
-      animation-delay: -5s;
-    }
-
-    @keyframes cyberPulse {
-      0% { transform: scale(0.85) translate(0, 0); opacity: 0.4; }
-      100% { transform: scale(1.15) translate(4%, 4%); opacity: 0.8; }
-    }
-
-    #particleCanvas, #snowCanvas {
+      content: "";
       position: fixed;
       inset: 0;
+      z-index: -2;
       pointer-events: none;
-      width: 100vw;
-      height: 100vh;
-    }
-    #particleCanvas { opacity: 0.4; z-index: -2; }
-    #snowCanvas { opacity: 0.9; z-index: -1; }
-
-    /* ULTRA COOL GLASSMORPHISM */
-    .cyber-glass {
-      background: rgba(10, 15, 30, 0.55);
-      backdrop-filter: blur(28px) saturate(200%);
-      -webkit-backdrop-filter: blur(28px) saturate(200%);
-      border: 1px solid rgba(6, 182, 212, 0.18);
-      box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.9), inset 0 1px 1px 0 rgba(255, 255, 255, 0.12);
+      background-image: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 32px 32px;
+      mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
     }
 
-    .cyber-modal-glass {
-      background: rgba(8, 12, 24, 0.9);
-      backdrop-filter: blur(40px) saturate(220%);
-      -webkit-backdrop-filter: blur(40px) saturate(220%);
-      border: 1px solid rgba(6, 182, 212, 0.3);
-      box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.95), 0 0 50px rgba(6, 182, 212, 0.15), inset 0 1px 1px 0 rgba(255, 255, 255, 0.2);
+    /* Glassmorphism Utama */
+    .glass {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(30px) saturate(150%);
+      -webkit-backdrop-filter: blur(30px) saturate(150%);
+      box-shadow: 
+        0 24px 48px rgba(0, 0, 0, 0.8),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
     }
 
-    .cyber-card {
-      background: rgba(17, 24, 39, 0.5);
-      border: 1px solid rgba(255, 255, 255, 0.07);
+    .glass-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       backdrop-filter: blur(16px);
-      transition: all .35s cubic-bezier(0.16, 1, 0.3, 1);
+      -webkit-backdrop-filter: blur(16px);
+      transition: all .25s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .cyber-card:hover {
-      background: rgba(30, 41, 59, 0.65);
-      border-color: rgba(6, 182, 212, 0.4);
-      box-shadow: 0 15px 35px -10px rgba(6, 182, 212, 0.2);
-      transform: translateY(-2px);
+    .glass-card:hover {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba(255, 255, 255, 0.18);
     }
 
-    /* NEON GRADIENT TEXT */
-    .text-cyber-gradient {
-      background: linear-gradient(135deg, #22d3ee 0%, #818cf8 50%, #c084fc 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    /* FORM INPUTS */
-    input, select, textarea {
+    input, select {
       width: 100%;
       color: #ffffff !important;
-      background: rgba(3, 7, 18, 0.85) !important;
+      background: rgba(10, 10, 12, 0.8) !important;
       border: 1px solid rgba(255, 255, 255, 0.12) !important;
       border-radius: 14px !important;
       outline: none;
-      transition: all .3s ease;
+      transition: all .2s ease;
       font-family: 'Plus Jakarta Sans', sans-serif;
     }
 
-    input:focus, select:focus, textarea:focus {
-      border-color: #06b6d4 !important;
-      box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.3) !important;
-      background: rgba(10, 15, 30, 0.95) !important;
+    input::placeholder {
+      color: #52525b;
     }
 
-    select option { background: #030712; color: white; }
+    input:focus, select:focus {
+      border-color: #ffffff !important;
+      background: rgba(18, 18, 22, 0.95) !important;
+      box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.08), 0 0 20px rgba(255, 255, 255, 0.05) !important;
+    }
 
-    /* BUTTONS */
-    .btn-cyber {
+    select option {
+      background: #121214;
+      color: white;
+    }
+
+    /* Tombol Kustom */
+    .btn {
       border-radius: 14px;
-      font-weight: 700;
-      transition: all .3s cubic-bezier(0.16, 1, 0.3, 1);
+      font-weight: 600;
+      transition: all .2s cubic-bezier(0.16, 1, 0.3, 1);
       position: relative;
       overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.15);
     }
 
-    .btn-cyber:active { transform: scale(0.96); }
+    .btn:active {
+      transform: scale(0.97);
+    }
 
-    .btn-grad-cyan {
-      background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+    .btn-primary {
+      background: #ffffff;
+      color: #000000;
+      border: 1px solid #ffffff;
+      box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-primary:hover {
+      background: #e4e4e7;
+      box-shadow: 0 6px 25px rgba(255, 255, 255, 0.35);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.06);
       color: #ffffff;
-      box-shadow: 0 4px 20px rgba(6, 182, 212, 0.35);
-    }
-    .btn-grad-cyan:hover {
-      box-shadow: 0 6px 25px rgba(6, 182, 212, 0.55);
-      border-color: rgba(255, 255, 255, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.12);
     }
 
-    .btn-grad-indigo {
-      background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-      color: #ffffff;
-      box-shadow: 0 4px 20px rgba(99, 102, 241, 0.35);
-    }
-    .btn-grad-indigo:hover {
-      box-shadow: 0 6px 25px rgba(99, 102, 241, 0.55);
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.25);
     }
 
-    /* CATEGORY & NAV PILLS */
-    .category-btn { transition: all .3s cubic-bezier(0.16, 1, 0.3, 1); }
-    
-    .category-btn.active-am {
-      background: linear-gradient(135deg, #06b6d4 0%, #6366f1 100%);
-      color: #ffffff;
-      box-shadow: 0 6px 20px rgba(6, 182, 212, 0.4);
-      border: 1px solid rgba(255,255,255,0.25);
-    }
-
-    .category-btn.active-tools {
-      background: linear-gradient(135deg, #f43f5e 0%, #8b5cf6 100%);
-      color: #ffffff;
-      box-shadow: 0 6px 20px rgba(244, 63, 94, 0.4);
-      border: 1px solid rgba(255,255,255,0.25);
-    }
-
+    /* Navigasi / Dock Style Baru */
     .nav-pill {
       position: relative;
-      color: #94a3b8;
-      transition: all .3s ease;
-      border: 1px solid transparent;
+      color: #71717a;
+      transition: all .25s ease;
+    }
+
+    .nav-pill:hover {
+      color: #d4d4d8;
     }
 
     .nav-pill.active {
-      color: #ffffff;
-      background: rgba(6, 182, 212, 0.15);
-      border: 1px solid rgba(6, 182, 212, 0.4);
+      color: #000000;
+      background: #ffffff;
       font-weight: 700;
-      box-shadow: 0 4px 15px rgba(6, 182, 212, 0.2);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
     }
 
-    /* TOAST NOTIFICATION */
-    .toast-cyber {
+    .toast {
       transform: translate(-50%, 20px);
       opacity: 0;
       pointer-events: none;
-      transition: all .4s cubic-bezier(0.16, 1, 0.3, 1);
-      background: rgba(10, 15, 30, 0.95);
-      border: 1px solid rgba(6, 182, 212, 0.6);
-      backdrop-filter: blur(25px);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.9), 0 0 30px rgba(6, 182, 212, 0.25);
+      transition: all .3s cubic-bezier(0.16, 1, 0.3, 1);
+      background: rgba(18, 18, 22, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.8), 0 0 20px rgba(255,255,255,0.1);
     }
 
-    .toast-cyber.show {
+    .toast.show {
       transform: translate(-50%, 0);
       opacity: 1;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(12px) scale(0.98); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
+    .hidden {
+      display: none !important;
     }
-    .animate-fade { animation: fadeIn .35s cubic-bezier(0.16, 1, 0.3, 1) both; }
-    
-    .progress-bar-fill { transition: width 0.3s ease-out; }
 
-    ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: rgba(6, 182, 212, 0.3); border-radius: 10px; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-fade {
+      animation: fadeIn .3s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
   </style>
 </head>
 
-<body class="min-h-screen px-3 py-6 flex flex-col items-center justify-between">
+<body class="min-h-screen px-4 py-5 flex flex-col items-center justify-between">
 
-  <!-- BACKGROUND CANVASES -->
-  <canvas id="particleCanvas"></canvas>
-  <canvas id="snowCanvas"></canvas>
+  <!-- WRAPPER UTAMA -->
+  <div class="w-full max-w-lg flex flex-col gap-5 my-auto">
 
-  <!-- MODAL TOKEN AKSES -->
-  <div id="tokenModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-2xl animate-fade">
-    <div class="cyber-modal-glass w-full max-w-sm rounded-[32px] p-6 text-center space-y-5 max-h-[95vh] overflow-y-auto relative overflow-hidden">
-      
-      <div class="absolute -top-10 -right-10 w-32 h-32 bg-cyan-500/20 blur-3xl rounded-full"></div>
-      <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-indigo-500/20 blur-3xl rounded-full"></div>
-
-      <div class="w-16 h-16 mx-auto rounded-[22px] bg-gradient-to-br from-cyan-500/20 to-indigo-500/20 border border-cyan-400/40 flex items-center justify-center text-cyan-400 text-2xl shadow-[0_0_30px_rgba(6,182,212,0.3)] relative z-10">
-        <i class="fa-solid fa-shield-cat animate-pulse"></i>
-      </div>
-      <div class="space-y-1.5 relative z-10">
-        <h2 class="text-[18px] font-extrabold text-white tracking-tight">Verifikasi Akses Cyber</h2>
-        <p class="text-[11px] text-slate-400">Masukkan token resmi atau klaim akses trial 5 menit.</p>
-      </div>
-      
-      <div class="space-y-3.5 pt-1 relative z-10">
-        <input id="inputTokenAccess" type="text" placeholder="MASUKKAN TOKEN..." class="px-4 py-4 text-[12px] text-center uppercase tracking-widest font-mono font-bold" />
-        <button onclick="verifyTokenAccess()" class="btn-cyber btn-grad-cyan w-full py-4 text-[12px] flex items-center justify-center gap-2">
-          <span>Verifikasi & Masuk Workspace</span>
-          <i class="fa-solid fa-arrow-right-to-bracket text-[11px]"></i>
-        </button>
-
-        <div id="freeTokenContainer" class="pt-1">
-          <button id="btnClaimFree" onclick="claimFreeTrialToken()" class="btn-cyber w-full py-3.5 text-[11px] font-bold flex items-center justify-center gap-2 bg-white/5 text-white border-white/20 hover:bg-white/10 shadow-lg">
-            <i class="fa-solid fa-gift text-cyan-400"></i>
-            <span>Klaim Token Gratis 5 Menit</span>
-          </button>
-          <p class="text-[9px] text-slate-400 mt-2.5 text-center leading-relaxed">
-            <i class="fa-solid fa-rotate mr-1"></i> Bonus token berdurasi 5 menit dapat diklaim ulang otomatis setiap 7 hari.
-          </p>
-        </div>
-      </div>
-
-      <div class="border-t border-white/10 pt-4 relative z-10">
-        <button onclick="toggleTokenPackages()" class="btn-cyber btn-cyber w-full py-3 text-[11px] flex items-center justify-center gap-2 bg-slate-900/80 border-slate-700 hover:bg-slate-800">
-          <i class="fa-brands fa-whatsapp text-sm text-emerald-400"></i>
-          <span id="btnGetTokenText">Dapatkan Token Resmi</span>
-        </button>
-
-        <div id="tokenPackagesSection" class="hidden space-y-2.5 pt-3 text-left animate-fade">
-          <div class="p-3.5 rounded-[16px] bg-gradient-to-r from-cyan-500/10 to-indigo-500/10 border border-cyan-500/20 text-[11px] leading-relaxed space-y-1.5">
-            <div class="font-bold flex items-center gap-1.5 text-white">
-              <i class="fa-solid fa-crown text-cyan-400"></i> Benefit Cyber Pro Member:
-            </div>
-            <p class="text-slate-300 text-[10px] leading-relaxed">
-              Akses penuh seluruh fitur <b>AM Suite</b> & fitur <b>Menu Tools Media</b> tanpa batasan ukuran file!
-            </p>
-          </div>
-
-          <div class="space-y-2 mt-2">
-            <a href="https://Wa.me/+6282231669053?text=Mau%20Token%20Web%201day%20Mas%20Hao" target="_blank" class="cyber-card py-2.5 px-3.5 rounded-[12px] text-[11px] flex items-center justify-between no-underline hover:border-cyan-400/40">
-              <span class="text-white font-medium flex items-center"><i class="fa-solid fa-ticket text-cyan-400 mr-2.5"></i> Token 1 Hari</span>
-              <span class="text-[10px] text-slate-300 font-mono font-bold">Rp 3.000 <i class="fa-brands fa-whatsapp ml-1 text-emerald-400"></i></span>
-            </a>
-            <a href="https://Wa.me/+6282231669053?text=Mau%20Token%20Web%203day%20Mas%20Hao" target="_blank" class="cyber-card py-2.5 px-3.5 rounded-[12px] text-[11px] flex items-center justify-between no-underline hover:border-cyan-400/40">
-              <span class="text-white font-medium flex items-center"><i class="fa-solid fa-ticket text-cyan-400 mr-2.5"></i> Token 3 Hari</span>
-              <span class="text-[10px] text-slate-300 font-mono font-bold">Rp 5.000 <i class="fa-brands fa-whatsapp ml-1 text-emerald-400"></i></span>
-            </a>
-            <a href="https://Wa.me/+6282231669053?text=Mau%20Token%20Web%207day%20Mas%20Hao" target="_blank" class="cyber-card py-2.5 px-3.5 rounded-[12px] text-[11px] flex items-center justify-between no-underline hover:border-cyan-400/40">
-              <span class="text-white font-medium flex items-center"><i class="fa-solid fa-ticket text-cyan-400 mr-2.5"></i> Token 7 Hari</span>
-              <span class="text-[10px] text-slate-300 font-mono font-bold">Rp 15.000 <i class="fa-brands fa-whatsapp ml-1 text-emerald-400"></i></span>
-            </a>
-            <a href="https://Wa.me/+6282231669053?text=Mau%20Token%20Web%201B%20Mas%20Hao" target="_blank" class="cyber-card py-2.5 px-3.5 rounded-[12px] text-[11px] flex items-center justify-between no-underline hover:border-cyan-400/40">
-              <span class="text-white font-medium flex items-center"><i class="fa-solid fa-ticket text-cyan-400 mr-2.5"></i> Token 1 Bulan</span>
-              <span class="text-[10px] text-slate-300 font-mono font-bold">Rp 25.000 <i class="fa-brands fa-whatsapp ml-1 text-emerald-400"></i></span>
-            </a>
-            <a href="https://Wa.me/+6282231669053?text=Mau%20Token%20Web%20Permanen%20Mas%20Hao" target="_blank" class="btn-cyber btn-grad-cyan py-3 px-3.5 text-[11px] flex items-center justify-between no-underline">
-              <span><i class="fa-solid fa-gem text-white mr-2"></i> Token Permanen</span>
-              <span class="text-[10px] font-mono font-bold">Rp 40.000 <i class="fa-brands fa-whatsapp ml-1"></i></span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- DASHBOARD OWNER (ADMIN) -->
-  <div id="ownerDashboardModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-2xl animate-fade hidden">
-    <div class="cyber-modal-glass w-full max-w-lg rounded-[32px] p-5 text-left space-y-4 max-h-[90vh] overflow-y-auto border border-amber-500/30">
-      <div class="flex items-center justify-between border-b border-white/10 pb-3">
-        <div class="flex items-center gap-3">
-          <div class="w-11 h-11 rounded-[14px] bg-amber-500/15 border border-amber-500/40 flex items-center justify-center text-amber-400 text-lg shadow-[0_0_20px_rgba(245,158,11,0.25)]">
-            <i class="fa-solid fa-terminal"></i>
-          </div>
-          <div>
-            <h2 class="text-[15px] font-bold text-white tracking-tight">Dashboard Cyber Owner</h2>
-            <p class="text-[9px] text-amber-400 font-mono font-bold uppercase tracking-wider">Status: Secure_Admin</p>
-          </div>
-        </div>
-        <button onclick="closeOwnerDashboard()" class="text-slate-400 hover:text-white p-2">
-          <i class="fa-solid fa-xmark text-lg"></i>
-        </button>
-      </div>
-
-      <div class="grid grid-cols-2 gap-2 p-1.5 bg-black/50 border border-white/10 rounded-[16px]">
-        <button id="tabAdminGen" onclick="switchAdminTab('gen')" class="nav-pill active py-3 rounded-[12px] text-[10px] font-semibold transition-all">
-          <i class="fa-solid fa-key mr-1.5 text-amber-400"></i> Buat Token
-        </button>
-        <button id="tabAdminUsers" onclick="switchAdminTab('users'); loadActiveUsers();" class="nav-pill py-3 rounded-[12px] text-[10px] font-semibold transition-all">
-          <i class="fa-solid fa-radar mr-1.5 text-cyan-400"></i> Data Log IP
-        </button>
-      </div>
-
-      <div id="adminContentGen" class="space-y-3.5 text-[11px] animate-fade">
-        <div class="p-4 rounded-[22px] bg-white/5 border border-white/10 space-y-3">
-          <div class="font-bold text-white uppercase tracking-widest text-[10px] font-mono opacity-80">Generator Token Cepat</div>
-          <div>
-            <label class="block text-[10px] text-slate-400 mb-1.5">Durasi Masa Aktif</label>
-            <select id="newGenDays" class="px-4 py-3.5 text-[12px]">
-              <option value="5_MIN">5 Menit</option>
-              <option value="1">1 Hari</option>
-              <option value="3">3 Hari</option>
-              <option value="7">7 Hari</option>
-              <option value="30" selected>30 Hari (1 Bulan)</option>
-              <option value="PERMANENT">Permanen (Tanpa Batas)</option>
-            </select>
-          </div>
-          <button onclick="generateOwnerToken()" class="btn-cyber btn-grad-cyan w-full py-3.5 text-[12px]">
-            Buat Token Baru
-          </button>
-        </div>
-        
-        <div id="ownerTokenResult" class="cyber-card hidden p-4 rounded-[18px] text-[11px] font-mono text-white space-y-3 border border-cyan-500/30 shadow-[0_0_20px_rgba(6,182,212,0.15)]">
-          <div id="ownerTokenText" class="leading-relaxed"></div>
-          <button onclick="copyGeneratedToken()" class="btn-cyber py-3 w-full bg-white/10 text-white border border-white/20 font-bold flex items-center justify-center gap-2 text-[11px] hover:bg-white/20">
-            <i class="fa-regular fa-copy"></i> Salin Token
-          </button>
-        </div>
-      </div>
-
-      <div id="adminContentUsers" class="space-y-3.5 text-[11px] animate-fade hidden">
-        <div class="font-bold text-white uppercase tracking-wider text-[10px] font-mono mb-2 flex items-center justify-between">
-          <span>Log Pengguna Real-Time</span>
-          <div class="flex gap-2">
-            <button onclick="clearAllLogs()" class="text-slate-400 hover:text-red-400 text-[10px] px-2">
-              <i class="fa-solid fa-trash mr-1"></i> Reset
-            </button>
-            <button onclick="loadActiveUsers()" class="text-slate-300 hover:text-white text-[10px] px-2">
-              <i class="fa-solid fa-rotate-right mr-1"></i> Refresh
-            </button>
-          </div>
-        </div>
-
-        <div class="p-3 rounded-[14px] bg-cyan-500/10 border border-cyan-500/20 text-[10px] text-slate-300 space-y-1.5">
-          <div class="font-bold text-white flex items-center"><i class="fa-solid fa-circle-info text-cyan-400 mr-1.5"></i> Catatan Multi-IP:</div>
-          <p class="text-cyan-200/70 text-[9px] leading-relaxed">
-            IP ditangkap akurat melalui Multi-Source API. Fitur blokir IP aktif.
-          </p>
-        </div>
-
-        <div id="userListContainer" class="space-y-2.5 max-h-[320px] overflow-y-auto pr-1">
-          <div class="text-center text-slate-400 py-4">Memuat data log...</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL WELCOME -->
-  <div id="welcomeModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-2xl animate-fade hidden">
-    <div class="cyber-modal-glass w-full max-w-md rounded-[32px] p-6 text-center space-y-5 border border-emerald-500/30 shadow-[0_0_40px_rgba(16,185,129,0.2)] relative overflow-hidden">
-      <div class="w-16 h-16 mx-auto rounded-[22px] bg-gradient-to-br from-emerald-400/20 to-teal-500/20 border border-emerald-400/40 flex items-center justify-center text-emerald-400 text-2xl shadow-[0_0_30px_rgba(16,185,129,0.3)] relative z-10">
-        <i class="fa-brands fa-whatsapp animate-bounce"></i>
-      </div>
-      <div class="space-y-1 relative z-10">
-        <h2 class="text-[18px] font-extrabold text-white tracking-tight">INFORMASI PENTING</h2>
-        <p class="text-[11px] text-slate-400 font-mono">BY 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞</p>
-      </div>
-      <div class="p-4 rounded-[20px] bg-emerald-950/30 border border-emerald-500/20 text-slate-200 text-[11px] text-left leading-relaxed flex items-start gap-3 relative z-10">
-        <i class="fa-solid fa-bullhorn text-emerald-400 mt-0.5 text-sm flex-shrink-0"></i>
-        <span>Jangan lupa join saluran WhatsApp resmi kami agar tidak ketinggalan update fitur keren terbaru dan info penting lainnya!</span>
-      </div>
-      
-      <div class="space-y-3 pt-2 relative z-10">
-        <button onclick="closeWelcomeModal()" class="btn-cyber w-full py-3.5 text-[12px] flex items-center justify-center gap-2 bg-slate-900 border-slate-700 hover:bg-slate-800 text-white">
-          <span>Lanjut ke Beranda Web</span>
-          <i class="fa-solid fa-arrow-right text-[10px]"></i>
-        </button>
-        <a href="https://whatsapp.com/channel/0029Vaf0GfTJ3jv2hhFz1j2K" target="_blank" class="btn-cyber bg-gradient-to-r from-emerald-500 to-teal-500 text-white w-full py-3.5 text-[12px] flex items-center justify-center gap-2 no-underline border border-emerald-400/50 shadow-[0_4px_20px_rgba(16,185,129,0.35)] hover:shadow-[0_6px_25px_rgba(16,185,129,0.5)] transition-all">
-          <i class="fa-brands fa-whatsapp text-lg"></i>
-          <span>Join Saluran WhatsApp</span>
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <div class="w-full max-w-md flex flex-col gap-4 my-auto relative z-10">
-
-    <!-- HEADER -->
-    <header class="cyber-glass rounded-[26px] p-4 flex items-center justify-between border border-cyan-500/20 relative overflow-hidden">
-      <!-- subtle header glow -->
-      <div class="absolute inset-0 bg-gradient-to-r from-cyan-600/10 to-indigo-600/10 pointer-events-none"></div>
-      
-      <div class="flex items-center gap-3.5 relative z-10">
-        <div class="w-12 h-12 rounded-[16px] bg-gradient-to-br from-cyan-400 to-indigo-600 flex items-center justify-center text-white text-2xl shadow-[0_0_20px_rgba(6,182,212,0.4)] border border-white/20">
-          <i class="fa-solid fa-bolt-lightning"></i>
+    <!-- HEADER / KEPALA MINIMALIS -->
+    <header class="glass rounded-[24px] p-4 flex items-center justify-between">
+      <div class="flex items-center gap-3.5">
+        <div class="w-11 h-11 rounded-[16px] bg-white/10 border border-white/20 flex items-center justify-center text-white text-base shadow-[0_0_15px_rgba(255,255,255,0.1)]">
+          <i class="fa-solid fa-cube"></i>
         </div>
         <div>
-          <h1 class="font-extrabold text-[16px] tracking-tight text-white flex items-center gap-1.5">
-            Web Am Premium <span class="text-[10px] px-1.5 py-0.5 rounded bg-cyan-400 text-black font-mono font-bold shadow-[0_0_12px_rgba(6,182,212,0.6)]">PRO</span>
+          <h1 class="font-bold text-[15px] tracking-tight text-white flex items-center gap-2">
+            AM Pro Toolkit
+            <span class="text-[9px] px-2 py-0.5 rounded-full bg-white/10 text-white border border-white/20 font-mono">v3.0</span>
           </h1>
-          <p class="text-[11px] text-cyber-gradient font-mono mt-0.5 font-bold tracking-wide">BY 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞</p>
+          <p class="text-[11px] text-zinc-400 mt-0.5">𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞 Enterprise System</p>
         </div>
       </div>
 
-      <button onclick="openProfileModal()" class="flex items-center gap-2 px-3 py-2 rounded-[14px] bg-black/40 border border-white/10 hover:border-cyan-400/50 hover:bg-cyan-950/30 transition-all relative z-10">
-        <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-cyan-400 to-indigo-500 flex items-center justify-center text-white text-xs font-bold shadow-[0_0_12px_rgba(6,182,212,0.4)] border border-white/20">
-          <i class="fa-solid fa-user-astronaut text-[12px]"></i>
-        </div>
-        <div class="text-left hidden sm:block pr-1">
-          <div class="text-[10px] font-bold text-white leading-tight">Profil</div>
-          <div class="text-[8px] text-emerald-400 font-mono font-bold tracking-wider">ON</div>
-        </div>
-      </button>
+      <div class="flex items-center gap-2">
+        <div class="w-2.5 h-2.5 rounded-full bg-white shadow-[0_0_10px_#ffffff] animate-pulse"></div>
+        <span class="text-[11px] font-medium text-zinc-300 hidden sm:inline">Active</span>
+      </div>
     </header>
 
-    <!-- MAIN PANEL -->
-    <main class="cyber-glass rounded-[32px] p-4 sm:p-5 flex flex-col gap-4 relative overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.9)]">
+    <!-- PANEL UTAMA DENGAN TATA LETAK BARU -->
+    <main class="glass rounded-[28px] p-5 sm:p-6 flex flex-col gap-5">
 
-      <div class="p-3.5 rounded-[18px] bg-red-950/40 border border-red-500/30 text-slate-300 text-[11px] leading-relaxed flex items-start gap-3 relative z-10">
-        <i class="fa-solid fa-fire text-red-400 mt-0.5 text-sm flex-shrink-0"></i>
-        <span>Web ini eksklusif, tidak dijual lewat pihak ketiga. Harga permanen resmi 40k. Hargai karya developer (HAO).</span>
-      </div>
-
-      <div class="cyber-card rounded-[22px] p-4 flex items-center justify-between relative z-10 border border-cyan-500/25">
-        <div class="flex items-center gap-3.5">
-          <div class="w-12 h-12 rounded-[14px] bg-cyan-500/15 text-cyan-400 flex items-center justify-center font-bold text-lg shadow-[0_0_20px_rgba(6,182,212,0.2)] border border-cyan-500/40">
-            <i class="fa-solid fa-chart-pie"></i>
+      <!-- DASHBOARD / STATUS PANEL KECIL -->
+      <div class="glass-card rounded-[20px] p-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-[14px] bg-white text-black flex items-center justify-center font-bold text-sm shadow-[0_0_15px_rgba(255,255,255,0.3)]">
+            A
           </div>
           <div>
-            <div class="text-[11px] font-extrabold text-white tracking-widest uppercase">Traffic User</div>
-            <div class="text-[10px] text-slate-400 flex items-center gap-1 mt-1 font-mono">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span id="deviceLoginCountDisplay" class="font-bold text-white">0</span> Online
+            <div class="text-[13px] font-bold text-white" id="displayUsername">Administrator</div>
+            <div class="text-[10px] text-zinc-400 flex items-center gap-1 mt-0.5">
+              <i class="fa-solid fa-shield-halved text-[9px]"></i> Unlimited Access Mode
             </div>
           </div>
         </div>
         <div class="text-right">
-          <div class="text-[9px] uppercase tracking-widest text-slate-400 font-mono mb-1">Masa Aktif Token</div>
-          <div class="text-[13px] font-mono text-cyber-gradient font-extrabold" id="tokenCountdown">--:--:--</div>
+          <div class="text-[9px] uppercase tracking-wider text-zinc-500 font-bold">Status</div>
+          <div class="text-[11px] font-mono text-white font-semibold mt-0.5">ONLINE</div>
         </div>
       </div>
 
-      <div id="ownerMenuButtonContainer" class="hidden relative z-10">
-        <button onclick="openOwnerDashboardModal()" class="btn-cyber w-full py-4 text-[12px] font-bold flex items-center justify-center gap-2 border border-amber-500/40 bg-gradient-to-r from-amber-500/15 to-orange-500/15 text-amber-400 hover:from-amber-500/25 hover:to-orange-500/25 shadow-[0_0_25px_rgba(245,158,11,0.2)]">
-          <i class="fa-solid fa-terminal text-lg"></i>
-          <span>Buka Panel Khusus Owner</span>
+      <!-- NAVIGASI TAB PILL BERGAYA ISLAND -->
+      <div class="grid grid-cols-3 gap-1.5 p-1 bg-white/[0.03] border border-white/10 rounded-[18px]">
+        <button id="tabSend" onclick="switchTab('send')" class="nav-pill active py-2.5 rounded-[14px] text-[11px] font-semibold transition-all">
+          <i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i> Aktivasi
+        </button>
+        <button id="tabBulk" onclick="switchTab('bulk')" class="nav-pill py-2.5 rounded-[14px] text-[11px] font-semibold transition-all">
+          <i class="fa-solid fa-layer-group mr-1.5"></i> Bulk
+        </button>
+        <button id="tabInbox" onclick="switchTab('inbox')" class="nav-pill py-2.5 rounded-[14px] text-[11px] font-semibold transition-all">
+          <i class="fa-solid fa-inbox mr-1.5"></i> Inbox
         </button>
       </div>
 
-      <div class="grid grid-cols-2 gap-3 relative z-10">
-        <a href="https://whatsapp.com/channel/0029Vaf0GfTJ3jv2hhFz1j2K" target="_blank" class="btn-cyber border border-white/10 bg-white/5 py-3.5 px-3 text-[11px] flex items-center justify-center gap-2 no-underline text-white hover:bg-white/10 hover:border-cyan-400/50 group transition-all">
-          <i class="fa-solid fa-paper-plane text-cyan-400 text-lg group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform"></i>
-          <span>Saluran Info</span>
-        </a>
-        <a href="https://Wa.me/+6282231669053" target="_blank" class="btn-cyber border border-white/10 bg-white/5 py-3.5 px-3 text-[11px] flex items-center justify-center gap-2 no-underline text-white hover:bg-white/10 hover:border-indigo-400/50 group transition-all">
-          <i class="fa-solid fa-headset text-indigo-400 text-lg group-hover:scale-110 transition-transform"></i>
-          <span>Tanya Owner</span>
-        </a>
+      <!-- KONTEN TAB: AKTIVASI -->
+      <div id="contentSend" class="animate-fade space-y-4">
+        <div>
+          <div class="text-[10px] uppercase font-bold tracking-widest text-zinc-400 mb-1">Secure Protocol</div>
+          <h2 class="text-[16px] font-bold text-white">Aktivasi Alight Motion</h2>
+          <p id="flowInstruction" class="text-[11px] text-zinc-400 mt-1 leading-relaxed">
+            Kirimkan magic link ke alamat email aktif Anda untuk memulai proses sinkronisasi.
+          </p>
+        </div>
+
+        <div id="stepEmailBox" class="space-y-3">
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-zinc-500">
+              <i class="fa-regular fa-envelope"></i>
+            </span>
+            <input id="inputEmail" type="email" placeholder="nama@domain.com" class="pl-11 pr-4 py-3.5 text-[12px]" />
+          </div>
+          <button onclick="handleSendMagicLink()" class="btn btn-primary w-full py-3.5 text-[12px] flex items-center justify-center gap-2">
+            <span>Kirim Magic Link</span>
+            <i class="fa-solid fa-arrow-right text-[10px]"></i>
+          </button>
+        </div>
+
+        <div id="stepVerifyBox" class="hidden space-y-3">
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-zinc-500">
+              <i class="fa-solid fa-link"></i>
+            </span>
+            <input id="inputLink" type="text" placeholder="Tempel link verifikasi https://..." class="pl-11 pr-4 py-3.5 text-[12px]" />
+          </div>
+          <div class="grid grid-cols-[1fr_auto] gap-2">
+            <button onclick="handleVerifyMagicLink()" class="btn btn-primary py-3.5 text-[12px] font-bold">
+              Verifikasi & Eksekusi
+            </button>
+            <button onclick="resetInjectFlow()" class="btn btn-secondary px-4 text-white">
+              <i class="fa-solid fa-rotate-left"></i>
+            </button>
+          </div>
+        </div>
+
+        <div id="sendResult" class="glass-card hidden p-4 rounded-[16px] text-[11px] border border-white/10"></div>
       </div>
 
-      <div class="space-y-2 relative z-10 mt-1">
-        <div class="text-[10px] uppercase font-bold text-slate-400 tracking-widest font-mono flex items-center justify-between px-1">
-          <span>Pilih Kategori Workspace</span>
-          <i class="fa-solid fa-microchip"></i>
+      <!-- KONTEN TAB: BULK -->
+      <div id="contentBulk" class="animate-fade space-y-4 hidden">
+        <div>
+          <div class="text-[10px] uppercase font-bold tracking-widest text-zinc-400 mb-1">Batch Automation</div>
+          <h2 class="text-[16px] font-bold text-white">Bulk Generator</h2>
+          <p class="text-[11px] text-zinc-400 mt-1">Buat banyak token akun premium secara simultan dengan cepat.</p>
         </div>
-        <div class="grid grid-cols-2 gap-2 p-1.5 bg-black/50 border border-white/10 rounded-[18px]">
-          <button id="btnCatAm" onclick="switchCategory('am')" class="category-btn active-am py-3 px-3 rounded-[14px] text-[11px] font-bold flex items-center justify-center gap-2">
-            <i class="fa-solid fa-bolt text-[13px]"></i>
-            <span>Alight Motion Suite</span>
-          </button>
-          <button id="btnCatOther" onclick="switchCategory('other')" class="category-btn py-3 px-3 rounded-[14px] text-[11px] font-bold text-slate-400 flex items-center justify-center gap-2 hover:bg-white/5">
-            <i class="fa-solid fa-wand-magic-sparkles text-[13px]"></i>
-            <span>Menu Tools Media</span>
+
+        <div class="space-y-3">
+          <div>
+            <label class="block text-[10px] uppercase font-bold text-zinc-400 mb-1.5">Jumlah Akun (1 - 100)</label>
+            <input id="inputBulkAmount" type="number" min="1" max="100" value="5" class="px-4 py-3.5 text-[12px]" />
+          </div>
+          <button onclick="runBulkInject()" class="btn btn-primary w-full py-3.5 text-[12px]">
+            Mulai Generate Bulk
           </button>
         </div>
+
+        <div id="bulkResult" class="glass-card hidden p-4 rounded-[16px] text-[11px] max-h-48 overflow-y-auto font-mono"></div>
       </div>
 
-      <!-- ================= SECTION 1: ALIGHT MOTION SUITE ================= -->
-      <div id="sectionAmSuite" class="space-y-3.5 animate-fade relative z-10 mt-1">
+      <!-- KONTEN TAB: INBOX -->
+      <div id="contentInbox" class="animate-fade space-y-4 hidden">
+        <div>
+          <div class="text-[10px] uppercase font-bold tracking-widest text-zinc-400 mb-1">Mail Scanner</div>
+          <h2 class="text-[16px] font-bold text-white">Pindai Kotak Masuk</h2>
+          <p class="text-[11px] text-zinc-400 mt-1">Ambil link verifikasi langsung dari mail server secara otomatis.</p>
+        </div>
 
-        <div class="grid grid-cols-3 gap-1.5 p-1.5 bg-black/50 border border-cyan-500/20 rounded-[18px]">
-          <button id="tabSend" onclick="switchTab('send')" class="nav-pill active py-2.5 rounded-[12px] font-semibold transition-all text-[10px]">
-            <i class="fa-solid fa-shield-halved block text-sm mb-1 text-cyan-400"></i> Aktivasi
-          </button>
-          <button id="tabBulk" onclick="switchTab('bulk')" class="nav-pill py-2.5 rounded-[12px] font-semibold transition-all text-[10px]">
-            <i class="fa-solid fa-clones block text-sm mb-1"></i> Bulk
-          </button>
-          <button id="tabInbox" onclick="switchTab('inbox')" class="nav-pill py-2.5 rounded-[12px] font-semibold transition-all text-[10px]">
-            <i class="fa-solid fa-envelope-open-text block text-sm mb-1"></i> Inbox
+        <div class="space-y-3">
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-zinc-500">
+              <i class="fa-solid fa-at"></i>
+            </span>
+            <input id="inputInboxEmail" type="email" placeholder="email@tempmail.com" class="pl-11 pr-4 py-3.5 text-[12px]" />
+          </div>
+          <button onclick="runInboxCheck()" class="btn btn-primary w-full py-3.5 text-[12px] flex items-center justify-center gap-2">
+            <i class="fa-solid fa-radar"></i>
+            <span>Pindai Pesan Masuk</span>
           </button>
         </div>
 
-        <!-- TAB AKTIVASI -->
-        <div id="contentSend" class="animate-fade space-y-4">
-          <div class="px-1">
-            <div class="text-[10px] uppercase font-bold tracking-widest text-cyan-400 mb-1 font-mono">Neural Protocol</div>
-            <h2 class="text-[16px] font-extrabold text-white">Aktivasi Alight Motion</h2>
-            <p id="flowInstruction" class="text-[11px] text-slate-400 mt-1 leading-relaxed">
-              masukkan gmail google mu di sini, lalu cek gmail. jika di gmail tidak muncul cek di bagian spam
-            </p>
-          </div>
-
-          <div id="stepEmailBox" class="space-y-3">
-            <div class="relative">
-              <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-cyan-400">
-                <i class="fa-solid fa-at"></i>
-              </span>
-              <input id="inputEmail" type="email" placeholder="contoh@gmail.com" class="pl-11 pr-4 py-4 text-[12px]" />
-            </div>
-            <button onclick="handleSendMagicLinkSimulated()" class="btn-cyber btn-grad-cyan w-full py-4 text-[12px] flex items-center justify-center gap-2">
-              <span>Minta Link Verifikasi</span>
-              <i class="fa-solid fa-paper-plane text-[10px]"></i>
-            </button>
-          </div>
-
-          <div id="stepVerifyBox" class="hidden space-y-3">
-            <div class="relative">
-              <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-cyan-400">
-                <i class="fa-solid fa-link"></i>
-              </span>
-              <input id="inputLink" type="text" placeholder="Tempel link https://..." class="pl-11 pr-4 py-4 text-[12px]" />
-            </div>
-            <div class="grid grid-cols-[1fr_auto] gap-2">
-              <button onclick="handleVerifyMagicLinkSimulated()" class="btn-cyber btn-grad-cyan py-4 text-[12px]">
-                Verifikasi & Eksekusi
-              </button>
-              <button onclick="resetInjectFlowSimulated()" class="btn-cyber cyber-card px-4.5 text-white hover:border-cyan-400/50">
-                <i class="fa-solid fa-rotate-left"></i>
-              </button>
-            </div>
-          </div>
-
-          <div id="sendResult" class="cyber-card hidden p-4 rounded-[18px] text-[11px] border border-cyan-500/30 shadow-[0_0_20px_rgba(6,182,212,0.15)]"></div>
-        </div>
-
-        <!-- TAB BULK -->
-        <div id="contentBulk" class="animate-fade space-y-4 hidden">
-          <div class="px-1">
-            <div class="text-[10px] uppercase font-bold tracking-widest text-cyan-400 mb-1 font-mono">Batch Automation</div>
-            <h2 class="text-[16px] font-extrabold text-white">Bulk Account Generator</h2>
-            <p class="text-[11px] text-slate-400 mt-1">Buat banyak akun premium AM secara instan dengan generator mail otomatis.</p>
-          </div>
-
-          <div class="space-y-3">
-            <div>
-              <label class="block text-[10px] uppercase font-bold text-slate-400 mb-2 font-mono">Jumlah Akun (Maks 100)</label>
-              <input id="inputBulkAmount" type="number" min="1" max="100" value="50" class="px-4 py-4 text-[12px] text-center font-bold text-lg" />
-            </div>
-            <button onclick="runBulkInjectSimulated()" class="btn-cyber btn-grad-cyan w-full py-4 text-[12px]">
-              <i class="fa-solid fa-gears mr-1.5"></i> Mulai Generate Bulk
-            </button>
-          </div>
-
-          <div id="bulkResult" class="cyber-card hidden p-4 rounded-[18px] text-[11px] max-h-48 overflow-y-auto font-mono text-slate-200 border border-cyan-500/30 shadow-inner"></div>
-        </div>
-
-        <!-- TAB INBOX -->
-        <div id="contentInbox" class="animate-fade space-y-4 hidden">
-          <div class="px-1">
-            <div class="text-[10px] uppercase font-bold tracking-widest text-cyan-400 mb-1 font-mono">Mail Scanner</div>
-            <h2 class="text-[16px] font-extrabold text-white">Pindai Kotak Masuk</h2>
-            <p class="text-[11px] text-slate-400 mt-1">Masukkan mail dari bulk/generator mail, otomatis akan mengambilkan link akses untuk AM premium.</p>
-          </div>
-
-          <div class="space-y-3">
-            <div class="relative">
-              <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-cyan-400">
-                <i class="fa-solid fa-satellite-dish"></i>
-              </span>
-              <input id="inputInboxEmail" type="email" placeholder="email@tempmail.com" class="pl-11 pr-4 py-4 text-[12px]" />
-            </div>
-            <button onclick="runInboxCheckSimulated()" class="btn-cyber btn-grad-cyan w-full py-4 text-[12px] flex items-center justify-center gap-2">
-              <i class="fa-solid fa-radar text-white"></i>
-              <span>Pindai Pesan Masuk</span>
-            </button>
-          </div>
-
-          <div id="inboxNotice" class="hidden p-3 rounded-[14px] text-[11px] bg-black/50 border border-white/10 text-slate-200 text-center font-mono"></div>
-          <div id="inboxResult" class="space-y-2.5 max-h-56 overflow-y-auto pr-1"></div>
-        </div>
-
-      </div>
-
-      <!-- ================= SECTION 2: MENU TOOLS (MEDIA WORKSHOP) ================= -->
-      <div id="sectionOtherSuite" class="space-y-4 animate-fade hidden relative z-10 mt-1">
-
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 p-1.5 bg-black/50 border border-white/10 rounded-[18px]">
-          <button id="tabToolPhoto" onclick="switchMenuToolTab('photo')" class="nav-pill tool-tab-photo active py-2.5 rounded-[12px] font-semibold transition-all text-[10px]">
-            <i class="fa-solid fa-camera-retro block text-sm mb-1"></i> HD Foto
-          </button>
-          <button id="tabToolVideo" onclick="switchMenuToolTab('video')" class="nav-pill tool-tab-video py-2.5 rounded-[12px] font-semibold transition-all text-[10px]">
-            <i class="fa-solid fa-film block text-sm mb-1"></i> HD Vidio
-          </button>
-          <button id="tabToolCompress" onclick="switchMenuToolTab('compress')" class="nav-pill tool-tab-compress py-2.5 rounded-[12px] font-semibold transition-all text-[10px]">
-            <i class="fa-solid fa-down-left-and-up-right-to-center block text-sm mb-1"></i> Kompres
-          </button>
-          <button id="tabToolTiktok" onclick="switchMenuToolTab('tiktok')" class="nav-pill tool-tab-tiktok py-2.5 rounded-[12px] font-semibold transition-all text-[10px]">
-            <i class="fa-brands fa-tiktok block text-sm mb-1"></i> HD TikTok
-          </button>
-        </div>
-
-        <!-- 1. FITUR HD FOTO -->
-        <div id="contentToolPhoto" class="animate-fade space-y-4">
-          <div class="px-1">
-            <div class="text-[10px] uppercase font-bold tracking-widest text-cyan-400 mb-1 font-mono">AI Upscale Engine</div>
-            <h2 class="text-[16px] font-extrabold text-white flex items-center gap-2">
-              <i class="fa-solid fa-camera-retro text-cyan-400"></i> Buat HD Foto
-            </h2>
-            <p class="text-[11px] text-slate-400 mt-1">Tingkatkan resolusi & kejernihan visual foto hingga 4X lipat.</p>
-          </div>
-
-          <div class="cyber-card p-5 rounded-[22px] border border-dashed border-cyan-500/30 text-center space-y-4 hover:border-cyan-400 transition-colors cursor-pointer" onclick="if(!selectedPhotoFile) document.getElementById('inputPhotoFile').click()">
-            <div id="photoPreviewContainer" class="hidden">
-              <img id="uploadedImagePreview" class="max-h-40 mx-auto rounded-[14px] border border-cyan-500/35 object-contain shadow-[0_10px_30px_rgba(6,182,212,0.2)]" />
-            </div>
-            <div id="uploadPhotoPlaceholder" class="space-y-2 py-3 pointer-events-none">
-              <div class="w-12 h-12 mx-auto rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 flex items-center justify-center text-xl shadow-[0_0_15px_rgba(6,182,212,0.2)]">
-                <i class="fa-solid fa-cloud-arrow-up"></i>
-              </div>
-              <div class="text-[11px] text-slate-300 font-bold">Sentuh untuk Unggah Foto (JPG/PNG)</div>
-            </div>
-            <input type="file" id="inputPhotoFile" accept="image/*" class="hidden" onchange="handleImageSelected(event)" />
-            <button onclick="document.getElementById('inputPhotoFile').click(); event.stopPropagation();" class="btn-cyber cyber-card py-2.5 px-4 text-[11px] font-bold text-white border-cyan-500/40 hover:bg-cyan-500/20 w-max mx-auto block">
-              Ganti Foto
-            </button>
-          </div>
-
-          <div>
-            <label class="block text-[10px] uppercase font-bold text-slate-400 mb-2 font-mono">Tingkat Penjernihan (Upscale)</label>
-            <select id="upscaleLevel" class="px-4 py-3.5 text-[12px] border-cyan-500/30 focus:border-cyan-500">
-              <option value="2">2X Ultra HD (Cepat)</option>
-              <option value="3" selected>3X Supreme HD (Rekomendasi)</option>
-              <option value="4">4X Extreme Cinematic HD</option>
-            </select>
-          </div>
-
-          <button onclick="processEnhancePhoto()" class="btn-cyber btn-grad-cyan w-full py-4 text-[12px] flex items-center justify-center gap-2">
-            <i class="fa-solid fa-wand-magic-sparkles"></i>
-            <span>Mulai Penjernihan Foto</span>
-          </button>
-
-          <div id="hdPhotoResultBox" class="cyber-card hidden p-4 rounded-[18px] text-[11px] space-y-3 text-center animate-fade shadow-[0_0_30px_rgba(6,182,212,0.15)] border border-cyan-500/30">
-            <div class="font-extrabold text-white text-[12px] flex items-center justify-center gap-1.5">
-              <i class="fa-solid fa-circle-check text-cyan-400 text-lg"></i> BERHASIL DI-HD-KAN!
-            </div>
-            <div class="p-1.5 bg-black/60 rounded-[12px] border border-white/10">
-              <img id="enhancedResultPreview" class="max-h-44 mx-auto rounded-[8px] object-contain border border-cyan-500/40" />
-            </div>
-            <div class="text-cyan-200 text-[10px] font-mono font-bold" id="imageDimensionInfo">Resolusi baru: --</div>
-            <button onclick="downloadEnhancedPhoto()" class="btn-cyber bg-white text-black py-3.5 w-full font-bold text-[12px] flex items-center justify-center gap-2 hover:bg-slate-200">
-              <i class="fa-solid fa-download"></i>
-              <span>Simpan ke Galeri</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- 2. FITUR HD VIDIO -->
-        <div id="contentToolVideo" class="animate-fade space-y-4 hidden">
-          <div class="px-1">
-            <div class="text-[10px] uppercase font-bold tracking-widest text-indigo-400 mb-1 font-mono">Video Quality Enhancer</div>
-            <h2 class="text-[16px] font-extrabold text-white flex items-center gap-2">
-              <i class="fa-solid fa-film text-indigo-400"></i> Buat HD-in Vidio
-            </h2>
-            <p class="text-[11px] text-slate-400 mt-1">Ubah vidio buram menjadi terang, tajam, dan resolusi HD 60FPS.</p>
-          </div>
-
-          <div class="cyber-card p-5 rounded-[22px] border border-dashed border-indigo-500/30 text-center space-y-4 hover:border-indigo-400 transition-colors cursor-pointer" onclick="if(!selectedVideoHdFile) document.getElementById('inputVideoFile').click()">
-            <div id="videoPreviewContainer" class="hidden">
-              <video id="uploadedVideoPreview" controls class="max-h-40 mx-auto rounded-[14px] border border-indigo-500/30 object-contain shadow-[0_10px_30px_rgba(99,102,241,0.2)] w-full"></video>
-            </div>
-            <div id="uploadVideoPlaceholder" class="space-y-2 py-3 pointer-events-none">
-              <div class="w-12 h-12 mx-auto rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/30 flex items-center justify-center text-xl shadow-[0_0_15px_rgba(99,102,241,0.2)]">
-                <i class="fa-solid fa-film"></i>
-              </div>
-              <div class="text-[11px] text-slate-300 font-bold">Sentuh untuk Unggah Vidio (MP4/WebM)</div>
-            </div>
-            <input type="file" id="inputVideoFile" accept="video/*" class="hidden" onchange="handleVideoHdSelected(event)" />
-            <button onclick="document.getElementById('inputVideoFile').click(); event.stopPropagation();" class="btn-pro cyber-card py-2.5 px-4 text-[11px] font-bold text-white border-indigo-500/40 hover:bg-indigo-500/20 w-max mx-auto block">
-              Ganti Vidio
-            </button>
-          </div>
-
-          <div>
-            <label class="block text-[10px] uppercase font-bold text-slate-400 mb-2 font-mono">Target Resolusi Vidio</label>
-            <select id="videoTargetRes" class="px-4 py-3.5 text-[12px] border-indigo-500/30 focus:border-indigo-500">
-              <option value="720">HD (720p 60FPS)</option>
-              <option value="1080" selected>Full HD (1080p Ultra Clear)</option>
-              <option value="2160">4K Cinematic Supreme</option>
-            </select>
-          </div>
-
-          <div id="videoHdProgressBox" class="hidden space-y-2 p-4 rounded-[16px] bg-black/60 border border-indigo-500/30 text-[11px]">
-            <div class="flex justify-between text-slate-300 font-bold">
-              <span id="videoHdProgressStatus">Memproses kualitas...</span>
-              <span id="videoHdPercent" class="font-mono text-indigo-400 text-[12px]">0%</span>
-            </div>
-            <div class="w-full bg-slate-900 h-2.5 rounded-full overflow-hidden border border-white/10">
-              <div id="videoHdProgressBar" class="bg-gradient-to-r from-indigo-500 to-cyan-400 h-full w-0 progress-bar-fill shadow-[0_0_10px_rgba(99,102,241,0.8)]"></div>
-            </div>
-          </div>
-
-          <button onclick="processVideoHd()" class="btn-cyber btn-grad-indigo w-full py-4 text-[12px] flex items-center justify-center gap-2">
-            <i class="fa-solid fa-wand-magic-sparkles"></i>
-            <span>Mulai Proses HD Vidio</span>
-          </button>
-
-          <div id="hdVideoResultBox" class="cyber-card hidden p-4 rounded-[18px] text-[11px] space-y-3 text-center animate-fade shadow-[0_0_30px_rgba(99,102,241,0.15)] border border-indigo-500/30">
-            <div class="font-extrabold text-white text-[12px] flex items-center justify-center gap-1.5">
-              <i class="fa-solid fa-circle-check text-indigo-400 text-lg"></i> VIDIO BERHASIL DITINGKATKAN!
-            </div>
-            <div class="p-1 bg-black/60 rounded-[14px] border border-white/10">
-              <video id="enhancedVideoResult" controls class="max-h-44 mx-auto rounded-[10px] w-full"></video>
-            </div>
-            <div class="text-indigo-200 text-[10px] font-mono font-bold" id="videoHdInfoSummary">Siap diunduh.</div>
-            <button onclick="downloadEnhancedVideo()" class="btn-cyber bg-white text-black py-3.5 w-full font-bold text-[12px] flex items-center justify-center gap-2 hover:bg-slate-200">
-              <i class="fa-solid fa-download"></i>
-              <span>Simpan ke Galeri</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- 3. FITUR KOMPRES VIDIO -->
-        <div id="contentToolCompress" class="animate-fade space-y-4 hidden">
-          <div class="px-1">
-            <div class="text-[10px] uppercase font-bold tracking-widest text-emerald-400 mb-1 font-mono">Video Size Reducer</div>
-            <h2 class="text-[16px] font-extrabold text-white flex items-center gap-2">
-              <i class="fa-solid fa-down-left-and-up-right-to-center text-emerald-400"></i> Fitur Kompres Vidio
-            </h2>
-            <p class="text-[11px] text-slate-400 mt-1">Perkecil ukuran file vidio secara signifikan tanpa banyak kurangi kualitas gambar.</p>
-          </div>
-
-          <div class="cyber-card p-5 rounded-[22px] border border-dashed border-emerald-500/30 text-center space-y-4 hover:border-emerald-400 transition-colors cursor-pointer" onclick="if(!selectedCompressVideoFile) document.getElementById('inputCompressVideoFile').click()">
-            <div id="compressPreviewContainer" class="hidden">
-              <video id="uploadedCompressVideoPreview" controls class="max-h-40 mx-auto rounded-[14px] border border-emerald-500/30 object-contain shadow-[0_10px_30px_rgba(16,185,129,0.2)] w-full"></video>
-            </div>
-            <div id="uploadCompressPlaceholder" class="space-y-2 py-3 pointer-events-none">
-              <div class="w-12 h-12 mx-auto rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 flex items-center justify-center text-xl shadow-[0_0_15px_rgba(16,185,129,0.2)]">
-                <i class="fa-solid fa-compress-arrows-alt"></i>
-              </div>
-              <div class="text-[11px] text-slate-300 font-bold">Sentuh untuk Unggah Vidio</div>
-            </div>
-            <input type="file" id="inputCompressVideoFile" accept="video/*" class="hidden" onchange="handleVideoCompressSelected(event)" />
-            <button onclick="document.getElementById('inputCompressVideoFile').click(); event.stopPropagation();" class="btn-cyber cyber-card py-2.5 px-4 text-[11px] font-bold text-white border-emerald-500/40 hover:bg-emerald-500/20 w-max mx-auto block">
-              Ganti Vidio
-            </button>
-          </div>
-
-          <div>
-            <label class="block text-[10px] uppercase font-bold text-slate-400 mb-2 font-mono">Tingkat Kompresi Ukuran</label>
-            <select id="compressLevel" class="px-4 py-3.5 text-[12px] border-emerald-500/30 focus:border-emerald-500">
-              <option value="light">Kompres Ringan (Kualitas Tinggi)</option>
-              <option value="medium" selected>Kompres Sedang (Seimbang)</option>
-              <option value="heavy">Kompres Maksimal (Ukuran Super Kecil)</option>
-            </select>
-          </div>
-
-          <div id="compressProgressBox" class="hidden space-y-2 p-4 rounded-[16px] bg-black/60 border border-emerald-500/30 text-[11px]">
-            <div class="flex justify-between text-slate-300 font-bold">
-              <span id="compressProgressStatus">Mengompres ukuran file...</span>
-              <span id="compressPercent" class="font-mono text-emerald-400 text-[12px]">0%</span>
-            </div>
-            <div class="w-full bg-slate-900 h-2.5 rounded-full overflow-hidden border border-white/10">
-              <div id="compressProgressBar" class="bg-gradient-to-r from-emerald-400 to-teal-400 h-full w-0 progress-bar-fill shadow-[0_0_10px_rgba(16,185,129,0.8)]"></div>
-            </div>
-          </div>
-
-          <button onclick="processVideoCompress()" class="btn-cyber bg-gradient-to-r from-emerald-500 to-teal-600 text-white border border-emerald-400 shadow-[0_4px_20px_rgba(16,185,129,0.35)] hover:shadow-[0_6px_25px_rgba(16,185,129,0.55)] w-full py-4 text-[12px] flex items-center justify-center gap-2">
-            <i class="fa-solid fa-file-arrow-down"></i>
-            <span>Mulai Kompres Vidio</span>
-          </button>
-
-          <div id="compressedResultBox" class="cyber-card hidden p-4 rounded-[18px] text-[11px] space-y-3 text-center animate-fade shadow-[0_0_30px_rgba(16,185,129,0.15)] border border-emerald-500/30">
-            <div class="font-extrabold text-white text-[12px] flex items-center justify-center gap-1.5">
-              <i class="fa-solid fa-circle-check text-emerald-400 text-lg"></i> VIDIO BERHASIL DIKOMPRES!
-            </div>
-            <div class="p-1 bg-black/60 rounded-[14px] border border-white/10">
-              <video id="compressedVideoResult" controls class="max-h-44 mx-auto rounded-[10px] w-full"></video>
-            </div>
-            <div class="text-slate-200 text-[11px] font-mono bg-black/40 p-3 rounded-[12px] border border-white/10 shadow-inner" id="videoCompressInfoSummary">
-              Ukuran berhasil diperkecil.
-            </div>
-            <button onclick="downloadCompressedVideo()" class="btn-cyber bg-white text-black py-3.5 w-full font-bold text-[12px] flex items-center justify-center gap-2 hover:bg-slate-200">
-              <i class="fa-solid fa-download"></i>
-              <span>Simpan ke Galeri</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- 4. FITUR HD TIKTOK -->
-        <div id="contentToolTiktok" class="animate-fade space-y-4 hidden">
-          <div class="px-1">
-            <div class="text-[10px] uppercase font-bold tracking-widest text-cyan-400 mb-1 font-mono">TikTok Anti-Compression Engine</div>
-            <h2 class="text-[16px] font-extrabold text-white flex items-center gap-2">
-              <i class="fa-brands fa-tiktok text-cyan-400"></i> Fitur HD TikTok
-            </h2>
-            <p class="text-[11px] text-slate-400 mt-1">Mengunci rasio, bit-rate, & ketajaman tepi agar saat diunggah kualitasnya tidak buram/gepeng.</p>
-          </div>
-
-          <div class="cyber-card p-5 rounded-[22px] border border-dashed border-cyan-500/30 text-center space-y-4 hover:border-cyan-400 transition-colors cursor-pointer" onclick="if(!selectedTiktokVideoFile) document.getElementById('inputTiktokVideoFile').click()">
-            <div id="tiktokPreviewContainer" class="hidden">
-              <video id="uploadedTiktokVideoPreview" controls class="max-h-40 mx-auto rounded-[14px] border border-cyan-500/30 object-contain shadow-[0_10px_30px_rgba(6,182,212,0.2)] w-full"></video>
-            </div>
-            <div id="uploadTiktokPlaceholder" class="space-y-2 py-3 pointer-events-none">
-              <div class="w-12 h-12 mx-auto rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 flex items-center justify-center text-xl shadow-[0_0_15px_rgba(6,182,212,0.2)]">
-                <i class="fa-brands fa-tiktok text-cyan-400"></i>
-              </div>
-              <div class="text-[11px] text-slate-300 font-bold">Sentuh untuk Unggah Vidio TikTok</div>
-            </div>
-            <input type="file" id="inputTiktokVideoFile" accept="video/*" class="hidden" onchange="handleTiktokVideoSelected(event)" />
-            <button onclick="document.getElementById('inputTiktokVideoFile').click(); event.stopPropagation();" class="btn-cyber cyber-card py-2.5 px-4 text-[11px] font-bold text-white border-cyan-500/40 hover:bg-cyan-500/20 w-max mx-auto block">
-              Ganti Vidio
-            </button>
-          </div>
-
-          <div>
-            <label class="block text-[10px] uppercase font-bold text-slate-400 mb-2 font-mono">Mode Anti-Compress TikTok</label>
-            <select id="tiktokOptimizationMode" class="px-4 py-3.5 text-[12px] border-cyan-500/30 focus:border-cyan-500">
-              <option value="916_hd" selected>1080x1920 (Fix Sharpness & Anti-Gepeng)</option>
-              <option value="bitrate_lock">Lock High Bitrate 60FPS (Cegah Server TikTok)</option>
-              <option value="edge_enhance">Edge Sharpener (Tepi Gambar Ekstra Tajam)</option>
-            </select>
-          </div>
-
-          <div id="tiktokProgressBox" class="hidden space-y-2 p-4 rounded-[16px] bg-black/60 border border-cyan-500/30 text-[11px]">
-            <div class="flex justify-between text-slate-300 font-bold">
-              <span id="tiktokProgressStatus">Mengoptimalkan algoritma...</span>
-              <span id="tiktokPercent" class="font-mono text-cyan-400 text-[12px]">0%</span>
-            </div>
-            <div class="w-full bg-slate-900 h-2.5 rounded-full overflow-hidden border border-white/10">
-              <div id="tiktokProgressBar" class="bg-gradient-to-r from-cyan-400 to-indigo-500 h-full w-0 progress-bar-fill shadow-[0_0_10px_rgba(6,182,212,0.8)]"></div>
-            </div>
-          </div>
-
-          <button onclick="processTiktokHd()" class="btn-cyber btn-grad-cyan w-full py-4 text-[12px] flex items-center justify-center gap-2">
-            <i class="fa-brands fa-tiktok text-white"></i>
-            <span>Optimalkan Vidio untuk TikTok</span>
-          </button>
-
-          <div id="tiktokResultBox" class="cyber-card hidden p-4 rounded-[18px] text-[11px] space-y-3 text-center animate-fade shadow-[0_0_30px_rgba(6,182,212,0.15)] border border-cyan-500/30">
-            <div class="font-extrabold text-white text-[12px] flex items-center justify-center gap-1.5">
-              <i class="fa-solid fa-circle-check text-cyan-400 text-lg"></i> OPTIMASI TIKTOK SELESAI!
-            </div>
-            <div class="p-1 bg-black/60 rounded-[14px] border border-white/10">
-              <video id="tiktokVideoResult" controls class="max-h-44 mx-auto rounded-[10px] w-full"></video>
-            </div>
-            <div class="text-slate-200 text-[11px] font-mono bg-black/40 p-3 rounded-[12px] border border-white/10 shadow-inner" id="tiktokInfoSummary">
-              Vidio terhindar dari kompresi TikTok.
-            </div>
-            <button onclick="downloadTiktokVideo()" class="btn-cyber bg-white text-black py-3.5 w-full font-bold text-[12px] flex items-center justify-center gap-2 hover:bg-slate-200">
-              <i class="fa-solid fa-download"></i>
-              <span>Simpan ke Galeri</span>
-            </button>
-          </div>
-        </div>
-
+        <div id="inboxNotice" class="hidden p-3 rounded-[12px] text-[11px] bg-white/5 border border-white/10 text-zinc-300"></div>
+        <div id="inboxResult" class="space-y-2.5 max-h-48 overflow-y-auto"></div>
       </div>
 
     </main>
 
-    <!-- MODAL PROFIL -->
-    <div id="profileModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-2xl animate-fade hidden">
-      <div class="cyber-modal-glass w-full max-w-sm rounded-[32px] p-6 text-center space-y-5 border border-cyan-500/30 shadow-[0_0_40px_rgba(6,182,212,0.2)] relative overflow-hidden">
-        
-        <div class="absolute -top-10 -right-10 w-32 h-32 bg-cyan-600/20 blur-3xl rounded-full"></div>
-
-        <div class="w-16 h-16 mx-auto rounded-full bg-gradient-to-tr from-cyan-400 to-indigo-600 flex items-center justify-center text-white text-2xl shadow-[0_0_30px_rgba(6,182,212,0.4)] border border-white/40 relative z-10">
-          <i class="fa-solid fa-user-astronaut"></i>
-        </div>
-        <div class="space-y-1 relative z-10">
-          <h2 class="text-[18px] font-extrabold text-white tracking-tight">Mini Profil Akun</h2>
-          <p class="text-[11px] text-slate-400 font-mono">Status: <span class="text-emerald-400 font-bold">Terverifikasi Sistem</span></p>
-        </div>
-
-        <div class="cyber-card p-4.5 rounded-[20px] text-left space-y-3 text-[11px] border border-cyan-500/20 relative z-10">
-          <div class="flex justify-between items-center text-slate-400 border-b border-white/5 pb-2">
-            <span>Token Aktif:</span>
-            <span id="profileActiveToken" class="font-mono text-white font-bold bg-white/10 px-2 py-1 rounded-[6px]">--</span>
-          </div>
-          <div class="flex justify-between items-center text-slate-400 border-b border-white/5 pb-2">
-            <span>Tipe Akses:</span>
-            <span id="profileAccessType" class="font-mono text-cyan-300 font-bold">Token Member</span>
-          </div>
-          <div class="flex justify-between items-center text-slate-400">
-            <span>IP Perangkat:</span>
-            <span id="profileUserIp" class="font-mono text-emerald-400 font-bold">Mendeteksi...</span>
-          </div>
-        </div>
-
-        <div class="space-y-3 pt-2 relative z-10">
-          <button onclick="logoutToken()" class="btn-cyber cyber-card w-full py-3.5 text-[12px] font-bold flex items-center justify-center gap-2 text-rose-400 border-rose-500/30 hover:bg-rose-500/20 hover:text-white transition-colors">
-            <i class="fa-solid fa-right-from-bracket"></i>
-            <span>Keluar Sesi Token</span>
-          </button>
-          <button onclick="closeProfileModal()" class="btn-cyber w-full py-3 text-[11px] text-slate-400 hover:text-white transition-colors bg-transparent">
-            Tutup Profil
-          </button>
-        </div>
-      </div>
-    </div>
-
     <!-- FOOTER -->
-    <footer class="text-center relative z-10 mt-2">
-      <p class="text-[11px] text-slate-500 font-medium tracking-wide">
-        Web Am Premium Pro <span class="mx-1.5 text-white/10">•</span> Cyber Obsidian Edition <span class="mx-1.5 text-white/10">•</span> 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞
+    <footer class="text-center">
+      <p class="text-[11px] text-zinc-500 font-medium">
+        AM Pro Toolkit <span class="mx-1.5 text-zinc-700">•</span> Secure Monochrome <span class="mx-1.5 text-zinc-700">•</span> 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞
       </p>
     </footer>
 
   </div>
 
-  <div id="toast" class="toast-cyber fixed z-50 bottom-6 left-1/2 rounded-[16px] px-6 py-3.5 text-[12px] font-bold text-white shadow-2xl max-w-[calc(100vw-32px)]"></div>
+  <!-- TOAST NOTIFIKASI -->
+  <div id="toast" class="toast fixed z-50 bottom-6 left-1/2 rounded-[16px] px-5 py-3 text-[11px] text-white shadow-2xl max-w-[calc(100vw-32px)]"></div>
 
 <script>
-  const OWNER_SECRET_KEY = "HAOMI_XML";
-  let lastGeneratedCode = "";
-  let clientRealIp = "Detecting...";
   let activeInjectEmail = "";
-
-  let selectedPhotoFile = null;
-  let enhancedPhotoBlobUrl = null;
-  
-  let selectedVideoHdFile = null;
-  let enhancedVideoBlobUrl = null;
-
-  let selectedCompressVideoFile = null;
-  let compressedVideoBlobUrl = null;
-
-  let selectedTiktokVideoFile = null;
-  let enhancedTiktokVideoBlobUrl = null;
-
-  async function fetchRealIpAddress() {
-    try {
-      const serverRes = await fetch("/api/ip", { method: "GET" });
-      if (serverRes.ok) {
-        const serverJson = await serverRes.json();
-        if (serverJson && serverJson.ip) return serverJson.ip;
-      }
-    } catch (e) {}
-
-    const providers = [
-      async () => { const res = await fetch("https://api.ipify.org?format=json"); const json = await res.json(); return json.ip; },
-      async () => { const res = await fetch("https://ipapi.co/json/"); const json = await res.json(); return json.ip; },
-      async () => { const res = await fetch("https://api.myip.com"); const json = await res.json(); return json.ip; }
-    ];
-
-    for (const provider of providers) {
-      try {
-        const ip = await provider();
-        if (ip && ip.length >= 7) return ip;
-      } catch (e) {}
-    }
-    return "180.252." + Math.floor(Math.random() * 200 + 1) + "." + Math.floor(Math.random() * 250 + 1);
-  }
-
-  async function recordUserLog(tokenStr, ipStr) {
-    const timeNow = new Date().toLocaleDateString('id-ID') + ' ' + new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + " WIB";
-    const logData = {
-      id: "USR-" + Math.random().toString(36).substring(2, 7).toUpperCase(),
-      token: tokenStr,
-      ip: ipStr || clientRealIp,
-      lastLogin: timeNow
-    };
-
-    let activeUsers = JSON.parse(localStorage.getItem("global_owner_user_logs") || "[]");
-    let existingUser = activeUsers.find(u => u.token === tokenStr && u.ip === logData.ip);
-    if (existingUser) {
-      existingUser.lastLogin = timeNow;
-    } else {
-      activeUsers.unshift(logData);
-    }
-    localStorage.setItem("global_owner_user_logs", JSON.stringify(activeUsers));
-
-    try {
-      await fetch("/api/log", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(logData)
-      });
-    } catch (err) {}
-
-    loadDeviceLoginCount();
-  }
-
-  window.addEventListener("DOMContentLoaded", async () => {
-    clientRealIp = await fetchRealIpAddress();
-
-    const savedToken = localStorage.getItem("verified_token");
-    const savedExpiry = localStorage.getItem("token_expiry");
-    const ownerSession = localStorage.getItem("owner_logged_in");
-
-    if (ownerSession === "true") {
-      document.getElementById("tokenModal").classList.add("hidden");
-      document.getElementById("ownerMenuButtonContainer").classList.remove("hidden");
-      recordUserLog("OWNER_ADMIN", clientRealIp);
-      return;
-    }
-
-    if (savedToken && savedExpiry) {
-      if (savedExpiry === "PERMANENT") {
-        document.getElementById("tokenModal").classList.add("hidden");
-        document.getElementById("ownerMenuButtonContainer").classList.add("hidden");
-      } else {
-        const now = new Date().getTime();
-        if (now < Number(savedExpiry)) {
-          document.getElementById("tokenModal").classList.add("hidden");
-          document.getElementById("ownerMenuButtonContainer").classList.add("hidden");
-        }
-      }
-    }
-
-    checkFreeClaimStatus();
-    loadDeviceLoginCount();
-  });
-
-  function switchCategory(cat) {
-    const btnAm = document.getElementById("btnCatAm");
-    const btnOther = document.getElementById("btnCatOther");
-    const secAm = document.getElementById("sectionAmSuite");
-    const secOther = document.getElementById("sectionOtherSuite");
-
-    btnAm.className = "category-btn py-3 px-3 rounded-[14px] text-[11px] font-bold text-slate-400 flex items-center justify-center gap-2 hover:bg-white/5";
-    btnOther.className = "category-btn py-3 px-3 rounded-[14px] text-[11px] font-bold text-slate-400 flex items-center justify-center gap-2 hover:bg-white/5";
-
-    if (cat === 'am') {
-      btnAm.classList.add("active-am");
-      secAm.classList.remove("hidden");
-      secOther.classList.add("hidden");
-    } else {
-      btnOther.classList.add("active-tools");
-      secOther.classList.remove("hidden");
-      secAm.classList.add("hidden");
-    }
-  }
-
-  function switchMenuToolTab(tab) {
-    const contents = {
-      photo: document.getElementById("contentToolPhoto"),
-      video: document.getElementById("contentToolVideo"),
-      compress: document.getElementById("contentToolCompress"),
-      tiktok: document.getElementById("contentToolTiktok")
-    };
-    const tabs = {
-      photo: document.getElementById("tabToolPhoto"),
-      video: document.getElementById("tabToolVideo"),
-      compress: document.getElementById("tabToolCompress"),
-      tiktok: document.getElementById("tabToolTiktok")
-    };
-
-    Object.values(contents).forEach(el => el.classList.add("hidden"));
-    Object.values(tabs).forEach(el => el.classList.remove("active"));
-
-    if (contents[tab]) contents[tab].classList.remove("hidden");
-    if (tabs[tab]) tabs[tab].classList.add("active");
-  }
-
-  function handleTiktokVideoSelected(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    selectedTiktokVideoFile = file;
-
-    const videoUrl = URL.createObjectURL(file);
-    const videoPreview = document.getElementById("uploadedTiktokVideoPreview");
-    videoPreview.src = videoUrl;
-
-    document.getElementById("tiktokPreviewContainer").classList.remove("hidden");
-    document.getElementById("uploadTiktokPlaceholder").classList.add("hidden");
-    document.getElementById("tiktokResultBox").classList.add("hidden");
-    document.getElementById("tiktokProgressBox").classList.add("hidden");
-
-    showToast("Vidio TikTok dimuat dengan sukses.");
-  }
-
-  function processTiktokHd() {
-    if (!selectedTiktokVideoFile) return showToast("Pilih vidio terlebih dahulu!");
-
-    const mode = document.getElementById("tiktokOptimizationMode").value;
-    const progressBox = document.getElementById("tiktokProgressBox");
-    const progressBar = document.getElementById("tiktokProgressBar");
-    const progressPercent = document.getElementById("tiktokPercent");
-    const progressStatus = document.getElementById("tiktokProgressStatus");
-
-    progressBox.classList.remove("hidden");
-    document.getElementById("tiktokResultBox").classList.add("hidden");
-    progressStatus.textContent = "Mengunci bitrate 60FPS & sharpness edge...";
-
-    let progress = 0;
-    const interval = setInterval(() => {
-      progress += Math.floor(Math.random() * 15 + 10);
-      if (progress >= 100) {
-        progress = 100;
-        clearInterval(interval);
-
-        if (enhancedTiktokVideoBlobUrl) URL.revokeObjectURL(enhancedTiktokVideoBlobUrl);
-        enhancedTiktokVideoBlobUrl = URL.createObjectURL(selectedTiktokVideoFile);
-
-        const resultVideo = document.getElementById("tiktokVideoResult");
-        resultVideo.src = enhancedTiktokVideoBlobUrl;
-
-        let modeName = mode === '916_hd' ? '1080x1920 60FPS (Edge Lock)' : mode === 'bitrate_lock' ? 'High Bitrate Fixed' : 'Sharpness & Anti-Blur';
-        document.getElementById("tiktokInfoSummary").innerHTML = 
-          `Status: <b class="text-cyan-400">SIAP UPLOAD TIKTOK</b><br>Mode Optimasi: <b>${modeName}</b> (Format terproteksi)`;
-
-        document.getElementById("tiktokResultBox").classList.remove("hidden");
-        progressBox.classList.add("hidden");
-        showToast("Vidio HD TikTok siap diunduh & di-upload!");
-      }
-      progressBar.style.width = progress + "%";
-      progressPercent.textContent = progress + "%";
-    }, 250);
-  }
-
-  function downloadTiktokVideo() {
-    if (!enhancedTiktokVideoBlobUrl) return showToast("Vidio belum diproses.");
-    const a = document.createElement("a");
-    a.href = enhancedTiktokVideoBlobUrl;
-    a.download = `Vidio-TikTok-UltraHD-${Date.now()}.mp4`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    showToast("Vidio TikTok HD berhasil disimpan ke galeri!");
-  }
-
-  function handleImageSelected(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    selectedPhotoFile = file;
-
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      document.getElementById("uploadedImagePreview").src = e.target.result;
-      document.getElementById("photoPreviewContainer").classList.remove("hidden");
-      document.getElementById("uploadPhotoPlaceholder").classList.add("hidden");
-      document.getElementById("hdPhotoResultBox").classList.add("hidden");
-      showToast("Foto berhasil dimuat.");
-    };
-    reader.readAsDataURL(file);
-  }
-
-  function processEnhancePhoto() {
-    if (!selectedPhotoFile) return showToast("Pilih foto terlebih dahulu!");
-
-    showToast("Memproses AI HD Foto...");
-    const scale = Number(document.getElementById("upscaleLevel").value) || 3;
-
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      const img = new Image();
-      img.src = e.target.result;
-
-      img.onload = function() {
-        const canvas = document.createElement("canvas");
-        const ctx = canvas.getContext("2d");
-
-        let targetW = img.width * scale;
-        let targetH = img.height * scale;
-        const maxDim = 4096;
-
-        if (targetW > maxDim || targetH > maxDim) {
-          const ratio = Math.min(maxDim / targetW, maxDim / targetH);
-          targetW = Math.round(targetW * ratio);
-          targetH = Math.round(targetH * ratio);
-        }
-
-        canvas.width = targetW;
-        canvas.height = targetH;
-
-        ctx.imageSmoothingEnabled = true;
-        ctx.imageSmoothingQuality = "high";
-        ctx.filter = "contrast(1.12) saturate(1.08) brightness(1.02)";
-        ctx.drawImage(img, 0, 0, targetW, targetH);
-
-        canvas.toBlob((blob) => {
-          if (enhancedPhotoBlobUrl) URL.revokeObjectURL(enhancedPhotoBlobUrl);
-          enhancedPhotoBlobUrl = URL.createObjectURL(blob);
-
-          document.getElementById("enhancedResultPreview").src = enhancedPhotoBlobUrl;
-          document.getElementById("imageDimensionInfo").textContent = `Resolusi Baru: ${targetW} x ${targetH} px (Aspect Ratio Preserved)`;
-          document.getElementById("hdPhotoResultBox").classList.remove("hidden");
-          showToast("Foto berhasil di-HD-kan tanpa merubah bentuk!");
-        }, "image/png", 1.0);
-      };
-    };
-    reader.readAsDataURL(selectedPhotoFile);
-  }
-
-  function downloadEnhancedPhoto() {
-    if (!enhancedPhotoBlobUrl) return showToast("Belum ada foto yang di-HD-kan.");
-    const a = document.createElement("a");
-    a.href = enhancedPhotoBlobUrl;
-    a.download = `Foto-HD-Pro-${Date.now()}.png`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    showToast("Foto disimpan ke galeri/unduhan!");
-  }
-
-  function handleVideoHdSelected(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    selectedVideoHdFile = file;
-
-    const videoUrl = URL.createObjectURL(file);
-    const videoPreview = document.getElementById("uploadedVideoPreview");
-    videoPreview.src = videoUrl;
-
-    document.getElementById("videoPreviewContainer").classList.remove("hidden");
-    document.getElementById("uploadVideoPlaceholder").classList.add("hidden");
-    document.getElementById("hdVideoResultBox").classList.add("hidden");
-    document.getElementById("videoHdProgressBox").classList.add("hidden");
-
-    showToast("Vidio dimuat dengan sukses.");
-  }
-
-  function processVideoHd() {
-    if (!selectedVideoHdFile) return showToast("Pilih file vidio terlebih dahulu!");
-
-    const targetRes = document.getElementById("videoTargetRes").value;
-    const progressBox = document.getElementById("videoHdProgressBox");
-    const progressBar = document.getElementById("videoHdProgressBar");
-    const progressPercent = document.getElementById("videoHdPercent");
-    const progressStatus = document.getElementById("videoHdProgressStatus");
-
-    progressBox.classList.remove("hidden");
-    document.getElementById("hdVideoResultBox").classList.add("hidden");
-    progressStatus.textContent = `Meningkatkan ketajaman & resolusi ke ${targetRes}p...`;
-
-    let progress = 0;
-    const interval = setInterval(() => {
-      progress += Math.floor(Math.random() * 12 + 8);
-      if (progress >= 100) {
-        progress = 100;
-        clearInterval(interval);
-
-        if (enhancedVideoBlobUrl) URL.revokeObjectURL(enhancedVideoBlobUrl);
-        enhancedVideoBlobUrl = URL.createObjectURL(selectedVideoHdFile);
-
-        const resultVideo = document.getElementById("enhancedVideoResult");
-        resultVideo.src = enhancedVideoBlobUrl;
-
-        document.getElementById("videoHdInfoSummary").innerHTML = `Target: <b class="text-white">${targetRes}p HD 60FPS</b><br>Status: Peningkatan Kualitas Selesai`;
-        document.getElementById("hdVideoResultBox").classList.remove("hidden");
-        progressBox.classList.add("hidden");
-        showToast("Vidio HD siap di-download!");
-      }
-      progressBar.style.width = progress + "%";
-      progressPercent.textContent = progress + "%";
-    }, 280);
-  }
-
-  function downloadEnhancedVideo() {
-    if (!enhancedVideoBlobUrl) return showToast("Vidio belum selesai diproses.");
-    const a = document.createElement("a");
-    a.href = enhancedVideoBlobUrl;
-    a.download = `Vidio-HD-Pro-${Date.now()}.mp4`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    showToast("Vidio HD diunduh ke galeri!");
-  }
-
-  function handleVideoCompressSelected(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    selectedCompressVideoFile = file;
-    document.getElementById("uploadedCompressVideoPreview").src = URL.createObjectURL(file);
-    document.getElementById("compressPreviewContainer").classList.remove("hidden");
-    document.getElementById("uploadCompressPlaceholder").classList.add("hidden");
-    document.getElementById("compressedResultBox").classList.add("hidden");
-    showToast("Video kompres dimuat.");
-  }
-
-  function processVideoCompress() {
-    if (!selectedCompressVideoFile) return showToast("Pilih vidio untuk dikompres!");
-
-    const level = document.getElementById("compressLevel").value;
-    const progressBox = document.getElementById("compressProgressBox");
-    const progressBar = document.getElementById("compressProgressBar");
-    const progressPercent = document.getElementById("compressPercent");
-    const progressStatus = document.getElementById("compressProgressStatus");
-
-    progressBox.classList.remove("hidden");
-    document.getElementById("compressedResultBox").classList.add("hidden");
-    progressStatus.textContent = "Mengompres bit-rate dan ukuran file vidio...";
-
-    let progress = 0;
-    const interval = setInterval(() => {
-      progress += Math.floor(Math.random() * 15 + 12);
-      if (progress >= 100) {
-        progress = 100;
-        clearInterval(interval);
-
-        if (compressedVideoBlobUrl) URL.revokeObjectURL(compressedVideoBlobUrl);
-        compressedVideoBlobUrl = URL.createObjectURL(selectedCompressVideoFile);
-
-        const origMb = (selectedCompressVideoFile.size / (1024 * 1024)).toFixed(2);
-        const ratio = level === 'heavy' ? 0.25 : level === 'medium' ? 0.45 : 0.65;
-        const newMb = (origMb * ratio).toFixed(2);
-        const savedPercent = Math.round((1 - ratio) * 100);
-
-        document.getElementById("compressedVideoResult").src = compressedVideoBlobUrl;
-        document.getElementById("videoCompressInfoSummary").innerHTML = 
-          `Ukuran Awal: <b>${origMb} MB</b> &rarr; Hasil: <b class="text-emerald-400">${newMb} MB</b><br>Hemat ruang ${savedPercent}%`;
-
-        document.getElementById("compressedResultBox").classList.remove("hidden");
-        progressBox.classList.add("hidden");
-        showToast("Kompres vidio berhasil!");
-      }
-      progressBar.style.width = progress + "%";
-      progressPercent.textContent = progress + "%";
-    }, 220);
-  }
-
-  function downloadCompressedVideo() {
-    if (!compressedVideoBlobUrl) return showToast("Vidio belum selesai dikompres.");
-    const a = document.createElement("a");
-    a.href = compressedVideoBlobUrl;
-    a.download = `Vidio-Kompres-${Date.now()}.mp4`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    showToast("Vidio kompres diunduh ke galeri!");
-  }
-
-  function checkFreeClaimStatus() {
-    const lastClaim = localStorage.getItem("last_free_token_claim_date");
-    const oneWeek = 7 * 24 * 60 * 60 * 1000;
-    const btnClaim = document.getElementById("btnClaimFree");
-
-    if (lastClaim && btnClaim) {
-      const timePassed = Date.now() - parseInt(lastClaim);
-      if (timePassed < oneWeek) {
-        const timeLeftDays = Math.ceil((oneWeek - timePassed) / (1000 * 60 * 60 * 24));
-        btnClaim.disabled = true;
-        btnClaim.style.opacity = "0.5";
-        btnClaim.innerHTML = `<i class="fa-solid fa-clock text-white"></i> <span>Telah diklaim (Reset dlm ${timeLeftDays} hari)</span>`;
-      } else {
-        btnClaim.disabled = false;
-        btnClaim.style.opacity = "1";
-        btnClaim.innerHTML = `<i class="fa-solid fa-gift text-cyan-400"></i> <span>Klaim Token Gratis 5 Menit</span>`;
-      }
-    }
-  }
-
-  function claimFreeTrialToken() {
-    const lastClaim = localStorage.getItem("last_free_token_claim_date");
-    const oneWeek = 7 * 24 * 60 * 60 * 1000;
-
-    if (lastClaim) {
-      const timePassed = Date.now() - parseInt(lastClaim);
-      if (timePassed < oneWeek) {
-        const timeLeftDays = Math.ceil((oneWeek - timePassed) / (1000 * 60 * 60 * 24));
-        return showToast(`Token gratis baru bisa diklaim lagi dalam ${timeLeftDays} hari.`);
-      }
-    }
-
-    localStorage.setItem("last_free_token_claim_date", Date.now().toString());
-    const freeTokenCode = "FREE-5MIN-" + Math.floor(1000 + Math.random() * 9000);
-    
-    let tokenPool = JSON.parse(localStorage.getItem("owner_token_pool_data") || "{}");
-    tokenPool[freeTokenCode] = "5_MIN";
-    localStorage.setItem("owner_token_pool_data", JSON.stringify(tokenPool));
-
-    let validTokens = JSON.parse(localStorage.getItem("owner_valid_token_pool") || "[]");
-    if (!validTokens.includes(freeTokenCode)) validTokens.push(freeTokenCode);
-    localStorage.setItem("owner_valid_token_pool", JSON.stringify(validTokens));
-
-    document.getElementById("inputTokenAccess").value = freeTokenCode;
-    showToast("Berhasil klaim token gratis mingguan!");
-
-    checkFreeClaimStatus();
-    setTimeout(() => verifyTokenAccess(), 700);
-  }
-
-  function openProfileModal() {
-    const isOwner = localStorage.getItem("owner_logged_in") === "true";
-    const token = localStorage.getItem("verified_token") || "TIDAK ADA";
-    
-    document.getElementById("profileActiveToken").textContent = isOwner ? "OWNER (PERMANENT)" : token;
-    document.getElementById("profileAccessType").textContent = isOwner ? "Admin Owner Pro" : "Token Member";
-    document.getElementById("profileUserIp").textContent = clientRealIp;
-    document.getElementById("profileModal").classList.remove("hidden");
-  }
-
-  function closeProfileModal() {
-    document.getElementById("profileModal").classList.add("hidden");
-  }
-
-  function toggleTokenPackages() {
-    const section = document.getElementById("tokenPackagesSection");
-    const btnText = document.getElementById("btnGetTokenText");
-
-    if (section.classList.contains("hidden")) {
-      section.classList.remove("hidden");
-      btnText.textContent = "Tutup Pilihan Paket";
-    } else {
-      section.classList.add("hidden");
-      btnText.textContent = "Dapatkan Token Resmi";
-    }
-  }
-
-  function loadDeviceLoginCount() {
-    try {
-      let activeUsers = JSON.parse(localStorage.getItem("global_owner_user_logs") || "[]");
-      const display = document.getElementById("deviceLoginCountDisplay");
-      if (display) display.textContent = activeUsers.length.toLocaleString();
-    } catch (e) {}
-  }
-
-  function openOwnerDashboardModal() {
-    if (localStorage.getItem("owner_logged_in") !== "true") return showToast("Akses ditolak.");
-    document.getElementById("ownerDashboardModal").classList.remove("hidden");
-    loadActiveUsers();
-  }
-
-  function closeOwnerDashboard() {
-    document.getElementById("ownerDashboardModal").classList.add("hidden");
-  }
-
-  function switchAdminTab(tab) {
-    document.getElementById("adminContentGen").classList.add("hidden");
-    document.getElementById("adminContentUsers").classList.add("hidden");
-    document.getElementById("tabAdminGen").classList.remove("active");
-    document.getElementById("tabAdminUsers").classList.remove("active");
-
-    if (tab === 'gen') {
-      document.getElementById("adminContentGen").classList.remove("hidden");
-      document.getElementById("tabAdminGen").classList.add("active");
-    } else {
-      document.getElementById("adminContentUsers").classList.remove("hidden");
-      document.getElementById("tabAdminUsers").classList.add("active");
-    }
-  }
-
-  function loadActiveUsers() {
-    const container = document.getElementById("userListContainer");
-    container.innerHTML = `<div class="text-center text-cyan-400 py-6"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Memuat log pengguna...</div>`;
-    
-    try {
-      let activeUsers = JSON.parse(localStorage.getItem("global_owner_user_logs") || "[]");
-      
-      if (activeUsers.length === 0) {
-        container.innerHTML = `
-          <div class="text-center text-slate-500 py-6 text-[10px] space-y-2">
-            <i class="fa-solid fa-folder-open text-2xl text-slate-600 block"></i>
-            <div>Belum ada data log IP terdaftar.</div>
-          </div>
-        `;
-        return;
-      }
-
-      container.innerHTML = "";
-      
-      activeUsers.forEach((user, index) => {
-        const card = document.createElement("div");
-        card.className = "cyber-card p-3.5 rounded-[16px] flex flex-col gap-3 transition-all border border-cyan-500/20";
-        card.innerHTML = `
-          <div class="flex items-center justify-between">
-            <div class="font-mono text-[10px] text-white font-bold flex items-center gap-2">
-              <i class="fa-solid fa-user-shield text-cyan-400 text-sm"></i> ID: ${user.id}
-            </div>
-            <div class="text-[9px] text-slate-400 font-mono">${user.lastLogin}</div>
-          </div>
-          <div class="grid grid-cols-2 gap-1.5 text-[10px] bg-black/50 p-2.5 rounded-[12px] border border-white/5">
-            <div class="text-slate-400">Token:<br><span class="text-white font-mono font-bold">${user.token}</span></div>
-            <div class="text-slate-400 text-right">IP Address:<br><span class="text-emerald-400 font-mono font-bold">${user.ip || '127.0.0.1'}</span></div>
-          </div>
-          <div class="grid grid-cols-2 gap-2 mt-1">
-            <button onclick="removeUserLog(${index})" class="btn-cyber py-2.5 text-[9px] text-slate-300 border border-rose-500/30 bg-rose-500/10 hover:bg-rose-500/20 hover:text-white transition-colors">
-              <i class="fa-solid fa-trash-can mr-1"></i> Hapus Log
-            </button>
-            <button onclick="showToast('IP ${user.ip} berhasil diblokir.')" class="btn-cyber py-2.5 text-[9px] text-slate-300 border border-amber-500/30 bg-amber-500/10 hover:bg-amber-500/20 hover:text-white transition-colors">
-              <i class="fa-solid fa-ban mr-1"></i> Blokir IP
-            </button>
-          </div>
-        `;
-        container.appendChild(card);
-      });
-    } catch (e) {
-      container.innerHTML = `<div class="text-center text-rose-400 py-4 text-[10px]">Gagal memuat log data.</div>`;
-    }
-  }
-
-  function removeUserLog(index) {
-    let activeUsers = JSON.parse(localStorage.getItem("global_owner_user_logs") || "[]");
-    activeUsers.splice(index, 1);
-    localStorage.setItem("global_owner_user_logs", JSON.stringify(activeUsers));
-    showToast("Log berhasil dihapus.");
-    loadActiveUsers();
-  }
-
-  function clearAllLogs() {
-    localStorage.removeItem("global_owner_user_logs");
-    showToast("Semua log IP dibersihkan.");
-    loadActiveUsers();
-  }
-
-  async function generateOwnerToken() {
-    const selectedVal = document.getElementById("newGenDays").value;
-    const randomCode = "HAO-PRO-" + Math.floor(1000 + Math.random() * 9000);
-    lastGeneratedCode = randomCode;
-
-    let tokenPool = JSON.parse(localStorage.getItem("owner_token_pool_data") || "{}");
-    tokenPool[randomCode] = selectedVal;
-    localStorage.setItem("owner_token_pool_data", JSON.stringify(tokenPool));
-
-    let validTokens = JSON.parse(localStorage.getItem("owner_valid_token_pool") || "[]");
-    if (!validTokens.includes(randomCode)) validTokens.push(randomCode);
-    localStorage.setItem("owner_valid_token_pool", JSON.stringify(validTokens));
-
-    const labelText = selectedVal === "PERMANENT" ? "Permanen (Tanpa Batas)" : (selectedVal === "5_MIN" ? "5 Menit" : selectedVal + " Hari");
-
-    document.getElementById("ownerTokenText").innerHTML = `<b>TOKEN PRO DIBUAT!</b><br>Kode: <code class="text-cyan-300 font-bold text-[13px] bg-white/10 px-2 py-0.5 rounded">${randomCode}</code><br>Durasi: <code class="text-indigo-300">${labelText}</code>`;
-    document.getElementById("ownerTokenResult").classList.remove("hidden");
-    showToast("Token Pro berhasil dibuat!");
-  }
-
-  async function copyGeneratedToken() {
-    if (!lastGeneratedCode) return;
-    await navigator.clipboard.writeText(lastGeneratedCode);
-    showToast("Token disalin ke clipboard!");
-  }
-
-  async function verifyTokenAccess() {
-    const inputVal = document.getElementById("inputTokenAccess").value.trim();
-    if (!inputVal) return showToast("Masukkan token akses.");
-    
-    if (clientRealIp.includes("Detecting")) {
-      clientRealIp = await fetchRealIpAddress();
-    }
-
-    if (inputVal === OWNER_SECRET_KEY) {
-      localStorage.setItem("owner_logged_in", "true");
-      recordUserLog("OWNER_ADMIN", clientRealIp);
-      showToast("Akses Admin Owner Diberikan!");
-      setTimeout(() => {
-        document.getElementById("tokenModal").classList.add("hidden");
-        document.getElementById("ownerMenuButtonContainer").classList.remove("hidden");
-      }, 700);
-      return;
-    }
-
-    const tokenInput = inputVal.toUpperCase();
-    let validTokens = JSON.parse(localStorage.getItem("owner_valid_token_pool") || "[]");
-    let tokenPool = JSON.parse(localStorage.getItem("owner_token_pool_data") || "{}");
-    let isDefaultToken = tokenInput.startsWith("HAO-") || tokenInput.startsWith("FREE-5MIN-");
-
-    if (!isDefaultToken && !validTokens.includes(tokenInput)) {
-      return showToast("Token salah atau tidak terdaftar!");
-    }
-
-    showToast("Memverifikasi & mencatat IP...");
-
-    recordUserLog(tokenInput, clientRealIp);
-    localStorage.setItem("verified_token", tokenInput);
-
-    let durationType = tokenPool[tokenInput] || "30";
-    if (tokenInput.startsWith("FREE-5MIN-")) {
-      durationType = "5_MIN";
-    }
-
-    if (durationType === "PERMANENT") {
-      localStorage.setItem("token_expiry", "PERMANENT");
-    } else if (durationType === "5_MIN") {
-      const expiryTime = new Date().getTime() + (5 * 60 * 1000);
-      localStorage.setItem("token_expiry", expiryTime);
-    } else {
-      const days = Number(durationType);
-      const expiryTime = new Date().getTime() + (days * 24 * 60 * 60 * 1000);
-      localStorage.setItem("token_expiry", expiryTime);
-    }
-
-    localStorage.removeItem("owner_logged_in");
-
-    showToast("Token valid & tercatat di sistem!");
-    setTimeout(() => {
-      document.getElementById("tokenModal").classList.add("hidden");
-      document.getElementById("welcomeModal").classList.remove("hidden");
-      loadDeviceLoginCount();
-    }, 800);
-  }
-
-  async function logoutToken() {
-    localStorage.removeItem("verified_token");
-    localStorage.removeItem("token_expiry");
-    localStorage.removeItem("owner_logged_in");
-    showToast("Sesi berhasil diakhiri.");
-    setTimeout(() => location.reload(), 800);
-  }
-
-  // SIMULATED FUNCTIONS FOR ALIGHT MOTION SUITE
-  function handleSendMagicLinkSimulated() { 
-    const email = document.getElementById("inputEmail").value.trim();
-    if (!email.includes("@")) return showToast("Masukkan format email yang valid!");
-    
-    showToast("Memproses request sinkronisasi...");
-    activeInjectEmail = email;
-    setTimeout(() => {
-      document.getElementById("stepEmailBox").classList.add("hidden");
-      document.getElementById("stepVerifyBox").classList.remove("hidden");
-      document.getElementById("flowInstruction").innerHTML =
-        `Magic link dikirim ke <b class="text-white">${email}</b>. Masukkan link verifikasi Anda di bawah ini.`;
-      showToast("Magic link telah terkirim ke email!");
-    }, 1500);
-  }
-
-  function handleVerifyMagicLinkSimulated() { 
-    const link = document.getElementById("inputLink").value.trim();
-    if (!link.includes("http")) return showToast("Tempel link valid dari email!");
-    
-    showToast("Memverifikasi token dari link...");
-    setTimeout(() => {
-      document.getElementById("stepVerifyBox").classList.add("hidden");
-      const res = document.getElementById("sendResult");
-      res.classList.remove("hidden");
-      res.innerHTML = `
-        <div class="text-[12px] font-extrabold text-emerald-400 mb-2 flex items-center gap-1.5"><i class="fa-solid fa-circle-check"></i> AKTIVASI BERHASIL!</div>
-        <div class="space-y-1.5 bg-black/40 p-2.5 rounded-[12px] border border-white/10">
-          <div>Email: <b class="text-cyan-300 font-mono">${activeInjectEmail || document.getElementById("inputEmail").value}</b></div>
-          <div>Status: <b class="text-emerald-400 font-mono">Premium Aktif</b></div>
-        </div>
-        <button onclick="resetInjectFlowSimulated()" class="btn-cyber w-full py-3 mt-3 text-[11px] font-bold border-cyan-500/40 hover:bg-cyan-500/20"><i class="fa-solid fa-rotate-left"></i> Selesai & Kembali</button>
-      `;
-      showToast("Aktivasi Sukses!");
-    }, 2000);
-  }
-
-  function resetInjectFlowSimulated() { 
-    activeInjectEmail = "";
-    document.getElementById("inputEmail").value = ""; 
-    document.getElementById("inputLink").value = "";
-    document.getElementById("stepVerifyBox").classList.add("hidden");
-    document.getElementById("sendResult").classList.add("hidden");
-    document.getElementById("stepEmailBox").classList.remove("hidden");
-    document.getElementById("flowInstruction").textContent =
-      "masukkan gmail google mu di sini, lalu cek gmail. jika di gmail tidak muncul cek di bagian spam";
-  }
-
-  function runBulkInjectSimulated() { 
-    const amount = parseInt(document.getElementById("inputBulkAmount").value);
-    if (!amount || amount < 1 || amount > 100) return showToast("Jumlah harus antara 1 - 100!");
-    
-    showToast(`Memulai proses Bulk Create untuk ${amount} akun...`);
-    const res = document.getElementById("bulkResult");
-    res.classList.remove("hidden");
-    res.innerHTML = `<div class="text-center text-cyan-400 py-3"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Generating accounts...</div>`;
-    
-    setTimeout(() => {
-      let html = `<div class="text-[11px] font-bold text-white mb-2 bg-black/50 p-1.5 border-b border-cyan-500/30"><i class="fa-solid fa-check-double text-emerald-400"></i> GENERATED ${amount} ACCOUNT(S)</div><div class="space-y-1.5 pt-1">`;
-      for(let i = 0; i < amount; i++) {
-        let randStr = Math.random().toString(36).substring(2,7);
-        html += `<div class="p-2.5 bg-black/30 border border-white/5 rounded-[8px] text-[10px] text-slate-300 flex justify-between"><span>am_${randStr}@haomi.com</span><span class="text-emerald-400 font-bold">Premium</span></div>`;
-      }
-      html += `</div>`;
-      res.innerHTML = html;
-      showToast("Generate Bulk selesai!");
-    }, 2000);
-  }
-
-  function runInboxCheckSimulated() { 
-    const email = document.getElementById("inputInboxEmail").value.trim();
-    if (!email.includes("@")) return showToast("Masukkan alamat email yang valid!");
-    
-    const notice = document.getElementById("inboxNotice");
-    const res = document.getElementById("inboxResult");
-    notice.classList.remove("hidden");
-    notice.innerHTML = "<i class='fa-solid fa-circle-notch fa-spin text-cyan-400 mr-2'></i>Memindai kotak masuk...";
-    res.innerHTML = "";
-    
-    setTimeout(() => {
-      notice.innerHTML = "<i class='fa-solid fa-check text-emerald-400 mr-1.5'></i> Pindai Selesai. (1 Pesan Ditemukan)";
-      res.innerHTML = `
-        <div class="cyber-card p-4 rounded-[16px] space-y-2.5 border border-cyan-500/20">
-          <div class="flex items-center gap-2 mb-2 text-white font-bold text-[11px]"><i class="fa-solid fa-envelope text-cyan-400 text-lg"></i> Alight Motion Sign-in</div>
-          <div class="p-2.5 rounded-[12px] bg-black/50 border border-white/10 text-slate-300 text-[10px] break-all font-mono">
-            https://alight.link/auth?token=${Math.random().toString(36).substring(2,15)}
-          </div>
-          <button class="btn-cyber bg-white/10 text-white w-full py-2.5 text-[10px] font-bold border border-white/20 hover:bg-white/20 transition-colors" onclick="showToast('Link berhasil disalin ke clipboard!')"><i class="fa-regular fa-copy mr-1"></i> Salin Link Verifikasi</button>
-        </div>
-      `;
-      showToast("Pesan berhasil dimuat!");
-    }, 2500);
-  }
-  // END OF SIMULATED FUNCTIONS
-
-  function escapeHtml(value) {
-    return String(value ?? "")
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#039;");
-  }
-
-  // SNOWFALL PARTICLE ANIMATION
-  const snowCanvas = document.getElementById('snowCanvas');
-  const snowCtx = snowCanvas.getContext('2d');
-  let snowParticles = [];
-  function resizeSnowCanvas() {
-    snowCanvas.width = window.innerWidth;
-    snowCanvas.height = window.innerHeight;
-  }
-  window.addEventListener('resize', resizeSnowCanvas);
-  resizeSnowCanvas();
-
-  class Snowflake {
-    constructor() {
-      this.x = Math.random() * snowCanvas.width;
-      this.y = Math.random() * snowCanvas.height;
-      this.radius = Math.random() * 2.2 + 0.6;
-      this.speedY = Math.random() * 0.9 + 0.3;
-      this.speedX = (Math.random() - 0.5) * 0.6;
-      this.alpha = Math.random() * 0.7 + 0.2;
-    }
-    update() {
-      this.y += this.speedY;
-      this.x += this.speedX;
-      if (this.y > snowCanvas.height) {
-        this.y = 0;
-        this.x = Math.random() * snowCanvas.width;
-      }
-    }
-    draw() {
-      snowCtx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
-      snowCtx.beginPath();
-      snowCtx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-      snowCtx.fill();
-    }
-  }
-
-  for (let i = 0; i < 90; i++) snowParticles.push(new Snowflake());
-
-  function animateSnow() {
-    snowCtx.clearRect(0, 0, snowCanvas.width, snowCanvas.height);
-    snowParticles.forEach(p => { p.update(); p.draw(); });
-    requestAnimationFrame(animateSnow);
-  }
-  animateSnow();
-
-  function updateTokenCountdown() {
-    const countdownElement = document.getElementById("tokenCountdown");
-    if (!countdownElement) return;
-    if (localStorage.getItem("owner_logged_in") === "true") {
-      countdownElement.textContent = "PERMANEN";
-      countdownElement.classList.add("text-cyan-400");
-      return;
-    }
-    const savedExpiry = localStorage.getItem("token_expiry");
-    if (!savedExpiry) { countdownElement.textContent = "--:--:--"; return; }
-    if (savedExpiry === "PERMANENT") {
-      countdownElement.textContent = "PERMANEN";
-      countdownElement.classList.add("text-cyan-400");
-      return;
-    }
-    const diff = Number(savedExpiry) - new Date().getTime();
-    if (diff <= 0) { countdownElement.textContent = "KEDALUWARSA"; return; }
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    const secs = Math.floor((diff % (1000 * 60)) / 1000);
-    countdownElement.textContent = (days > 0 ? `${days}h ` : "") + `${String(hours).padStart(2,'0')}:${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
-  }
-  setInterval(updateTokenCountdown, 1000);
-
-  function closeWelcomeModal() {
-    document.getElementById("welcomeModal").classList.add("hidden");
-  }
-
-  // CYBER BACKGROUND PARTICLE ANIMATION
-  const canvas = document.getElementById('particleCanvas');
-  const ctx = canvas.getContext('2d');
-  let particlesArray = [];
-  function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-  window.addEventListener('resize', resizeCanvas);
-  resizeCanvas();
-
-  class Particle {
-    constructor() {
-      this.x = Math.random() * canvas.width;
-      this.y = Math.random() * canvas.height;
-      this.size = Math.random() * 1.8 + 0.5;
-      this.speedX = (Math.random() - 0.5) * 0.4;
-      this.speedY = (Math.random() - 0.5) * 0.4;
-      this.alpha = Math.random() * 0.5 + 0.15;
-      this.color = Math.random() > 0.5 ? '6, 182, 212' : '99, 102, 241'; // Cyan or Indigo
-    }
-    update() {
-      this.x += this.speedX; this.y += this.speedY;
-      if (this.x < 0 || this.x > canvas.width) this.speedX = -this.speedX;
-      if (this.y < 0 || this.y > canvas.height) this.speedY = -this.speedY;
-    }
-    draw() {
-      ctx.fillStyle = `rgba(${this.color}, ${this.alpha})`;
-      ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
-    }
-  }
-
-  for (let i = 0; i < 40; i++) particlesArray.push(new Particle());
-
-  function animateParticles() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particlesArray.forEach(p => { p.update(); p.draw(); });
-    requestAnimationFrame(animateParticles);
-  }
-  animateParticles();
 
   function showToast(message) {
     const toast = document.getElementById("toast");
@@ -1864,6 +390,7 @@
       bulk: document.getElementById("contentBulk"),
       inbox: document.getElementById("contentInbox")
     };
+
     const tabs = {
       send: document.getElementById("tabSend"),
       bulk: document.getElementById("tabBulk"),
@@ -1873,8 +400,266 @@
     Object.values(contents).forEach(el => el.classList.add("hidden"));
     Object.values(tabs).forEach(el => el.classList.remove("active"));
 
-    if(contents[tab]) contents[tab].classList.remove("hidden");
-    if(tabs[tab]) tabs[tab].classList.add("active");
+    contents[tab].classList.remove("hidden");
+    tabs[tab].classList.add("active");
+  }
+
+  async function handleSendMagicLink() {
+    const email = document.getElementById("inputEmail").value.trim();
+
+    if (!email || !email.includes("@")) {
+      return showToast("Masukkan format email yang valid.");
+    }
+
+    showToast("Mengirim magic link...");
+
+    try {
+      const res = await fetch("/api/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email })
+      });
+
+      const contentType = res.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        const text = await res.text();
+        throw new Error(text || "Terjadi kesalahan pada server.");
+      }
+
+      const json = await res.json();
+
+      if (!res.ok || json.status === false) {
+        throw new Error(json.message || "Gagal mengirim magic link.");
+      }
+
+      activeInjectEmail = email;
+
+      document.getElementById("stepEmailBox").classList.add("hidden");
+      document.getElementById("stepVerifyBox").classList.remove("hidden");
+      document.getElementById("flowInstruction").textContent =
+        `Magic link dikirim ke ${email}. Masukkan link verifikasi Anda di bawah ini.`;
+
+      showToast("Magic link berhasil dikirim.");
+    } catch (err) {
+      showToast(err.message || "Koneksi gagal.");
+    }
+  }
+
+  async function handleVerifyMagicLink() {
+    const link = document.getElementById("inputLink").value.trim();
+
+    if (!link) return showToast("Masukkan link verifikasi.");
+
+    showToast("Memverifikasi data...");
+
+    let success = false;
+    let resultMessage = "";
+
+    try {
+      const res = await fetch("/api/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: activeInjectEmail,
+          link
+        })
+      });
+
+      const contentType = res.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        const text = await res.text();
+        throw new Error(text || "Terjadi kesalahan pada server.");
+      }
+
+      const json = await res.json();
+
+      success = res.ok && json.status !== false;
+      resultMessage = json.message || "Verifikasi berhasil.";
+
+      const result = document.getElementById("sendResult");
+      result.innerHTML = `
+        <div class="font-bold ${success ? "text-white" : "text-zinc-400"}">
+          ${success ? "STATUS: BERHASIL" : "STATUS: GAGAL"}
+        </div>
+        <div class="text-[11px] text-zinc-300 mt-1 leading-relaxed">
+          ${escapeHtml(resultMessage)}
+        </div>
+      `;
+      result.classList.remove("hidden");
+    } catch (err) {
+      success = false;
+      showToast(err.message || "Kesalahan jaringan.");
+    }
+
+    if (success) {
+      showToast("Verifikasi berhasil.");
+      setTimeout(resetInjectFlow, 900);
+    } else {
+      showToast("Verifikasi gagal.");
+    }
+  }
+
+  function resetInjectFlow() {
+    activeInjectEmail = "";
+
+    document.getElementById("inputEmail").value = "";
+    document.getElementById("inputLink").value = "";
+
+    document.getElementById("stepVerifyBox").classList.add("hidden");
+    document.getElementById("stepEmailBox").classList.remove("hidden");
+
+    document.getElementById("flowInstruction").textContent =
+      "Kirimkan magic link ke alamat email aktif Anda untuk memulai proses sinkronisasi.";
+
+    document.getElementById("sendResult").classList.add("hidden");
+  }
+
+  async function runBulkInject() {
+    const amount = Number(document.getElementById("inputBulkAmount").value);
+
+    if (!amount || amount < 1 || amount > 100) {
+      return showToast("Jumlah harus di antara 1 - 100.");
+    }
+
+    showToast("Memproses bulk generator...");
+
+    let success = false;
+    let resultMessage = "";
+
+    try {
+      const res = await fetch("/api/bulk", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount })
+      });
+
+      const contentType = res.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        const text = await res.text();
+        throw new Error(text || "Terjadi kesalahan pada server.");
+      }
+
+      const json = await res.json();
+
+      success = res.ok && json.status !== false;
+      resultMessage = json.message || JSON.stringify(json, null, 2);
+
+      const result = document.getElementById("bulkResult");
+
+      result.innerHTML = `
+        <div class="font-bold ${success ? "text-white" : "text-zinc-400"}">
+          ${success ? "BULK GENERATE SUCCESS" : "BULK GENERATE FAILED"}
+        </div>
+        <pre class="whitespace-pre-wrap text-[10px] text-zinc-300 mt-1">${escapeHtml(resultMessage)}</pre>
+      `;
+
+      result.classList.remove("hidden");
+    } catch (err) {
+      success = false;
+      showToast(err.message || "Koneksi gagal.");
+    }
+
+    if (success) {
+      showToast("Proses bulk selesai.");
+    } else {
+      showToast("Proses bulk gagal.");
+    }
+  }
+
+  async function runInboxCheck() {
+    const email = document.getElementById("inputInboxEmail").value.trim();
+    const notice = document.getElementById("inboxNotice");
+    const container = document.getElementById("inboxResult");
+
+    if (!email) return showToast("Masukkan alamat email.");
+
+    notice.textContent = "Memindai kotak masuk...";
+    notice.classList.remove("hidden");
+
+    container.innerHTML = "";
+
+    try {
+      const res = await fetch("/api/inbox", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email })
+      });
+
+      const contentType = res.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        const text = await res.text();
+        throw new Error(text || "Terjadi kesalahan pada server.");
+      }
+
+      const json = await res.json();
+
+      if (!res.ok || json.status === false) {
+        throw new Error(json.message || "Gagal memindai inbox.");
+      }
+
+      notice.textContent = "Pemindaian kotak masuk selesai.";
+
+      const messages = json.data?.messages || [];
+
+      if (!messages.length) {
+        container.innerHTML =
+          '<div class="text-[11px] text-zinc-500 p-4 text-center">Tidak ada pesan ditemukan.</div>';
+        return;
+      }
+
+      messages.forEach(msg => {
+        const card = document.createElement("div");
+        card.className =
+          "glass-card p-3.5 rounded-[14px] space-y-2.5";
+
+        const subject = msg.subject || "Tanpa Subjek";
+        const link = msg.login_url || "";
+
+        card.innerHTML = `
+          <div class="text-[11px] font-bold text-white">${escapeHtml(subject)}</div>
+          ${
+            link
+              ? `
+                <div class="p-2.5 rounded-[10px] bg-black/40 border border-white/10 text-zinc-300 text-[10px] break-all font-mono">
+                  ${escapeHtml(link)}
+                </div>
+                <button class="btn btn-primary w-full py-2.5 text-[10px] font-bold">
+                  Salin Link Verifikasi
+                </button>
+              `
+              : `
+                <div class="text-[10px] text-zinc-500">
+                  Link verifikasi belum tersedia.
+                </div>
+              `
+          }
+        `;
+
+        if (link) {
+          card.querySelector("button").addEventListener("click", async () => {
+            try {
+              await navigator.clipboard.writeText(link);
+              showToast("Link berhasil disalin.");
+            } catch {
+              showToast("Gagal menyalin link.");
+            }
+          });
+        }
+
+        container.appendChild(card);
+      });
+    } catch (err) {
+      notice.textContent = err.message;
+    }
+  }
+
+  function escapeHtml(value) {
+    return String(value ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
   }
 </script>
 </body>
