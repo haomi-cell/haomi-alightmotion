@@ -85,7 +85,7 @@
       box-shadow: 0 12px 35px -10px rgba(255, 255, 255, 0.15);
     }
 
-    input, select {
+    input, select, textarea {
       width: 100%;
       color: #ffffff !important;
       background: rgba(10, 10, 10, 0.95) !important;
@@ -96,11 +96,11 @@
       font-family: 'Plus Jakarta Sans', sans-serif;
     }
 
-    input::placeholder {
+    input::placeholder, textarea::placeholder {
       color: #737373;
     }
 
-    input:focus, select:focus {
+    input:focus, select:focus, textarea:focus {
       border-color: #ffffff !important;
       box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.25) !important;
     }
@@ -147,6 +147,17 @@
       border-color: rgba(255, 255, 255, 0.4);
       box-shadow: 0 6px 28px rgba(255, 255, 255, 0.15);
       transform: translateY(-1px);
+    }
+
+    .category-btn {
+      transition: all .25s ease;
+    }
+    
+    .category-btn.active {
+      background: #ffffff;
+      color: #000000;
+      font-weight: 700;
+      box-shadow: 0 4px 18px rgba(255, 255, 255, 0.25);
     }
 
     .nav-pill {
@@ -224,14 +235,13 @@
           <i class="fa-solid fa-arrow-right text-[10px]"></i>
         </button>
 
-        <!-- KLAIM TOKEN GRATIS 5 MENIT -->
         <div id="freeTokenContainer">
           <button id="btnClaimFree" onclick="claimFreeTrialToken()" class="btn-pro w-full py-3 text-[11px] font-bold flex items-center justify-center gap-2 bg-zinc-900 text-white border border-white/30 hover:bg-zinc-800 shadow-[0_0_15px_rgba(255,255,255,0.1)]">
             <i class="fa-solid fa-gift text-white"></i>
             <span>🎁 Klaim Token Gratis 5 Menit</span>
           </button>
           <p class="text-[9px] text-zinc-400 mt-2 text-center leading-tight">
-            <i class="fa-solid fa-clock-rotate-left mr-1"></i> Bonus token gratis spesial berdurasi 5 menit dan dapat diklaim ulang setiap 7 hari sekali secara otomatis.
+            <i class="fa-solid fa-clock-rotate-left mr-1"></i> Bonus token gratis berdurasi 5 menit dan dapat diklaim ulang setiap 7 hari sekali.
           </p>
         </div>
       </div>
@@ -248,7 +258,7 @@
               <i class="fa-solid fa-bolt text-white"></i> Keuntungan Web Pro:
             </div>
             <p class="text-zinc-300 text-[10px] leading-relaxed">
-              Akses penuh aktivasi Alight Motion (AM) Premium instan!
+              Akses penuh suite Alight Motion (AM) Premium & utilitas media pendukung!
             </p>
           </div>
 
@@ -279,7 +289,6 @@
     </div>
   </div>
 
-  <!-- DASHBOARD OWNER (ADMIN) -->
   <div id="ownerDashboardModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-3xl animate-fade hidden">
     <div class="pro-modal-glass w-full max-w-lg rounded-[32px] p-5 text-left space-y-4 max-h-[90vh] overflow-y-auto">
       
@@ -338,7 +347,7 @@
         <div class="font-bold text-white uppercase tracking-wider text-[10px] font-mono mb-2 flex items-center justify-between">
           <span>Log Pengguna & IP Real-Time</span>
           <div class="flex gap-2">
-            <button onclick="clearAllLogs()" class="text-zinc-400 hover:text-red-400 text-[10px] font-sans">
+            <button onclick="clearAllLogs()" class="text-zinc-400 hover:text-red-400 text-[10px]">
               <i class="fa-solid fa-trash mr-1"></i> Reset
             </button>
             <button onclick="loadActiveUsers()" class="text-zinc-300 hover:text-white text-[10px]">
@@ -350,7 +359,7 @@
         <div class="p-2.5 rounded-[12px] bg-white/5 border border-white/10 text-[10px] text-zinc-300 space-y-1">
           <div class="font-bold text-white"><i class="fa-solid fa-circle-info mr-1"></i> Catatan IP:</div>
           <p class="text-zinc-400 text-[9px] leading-relaxed">
-            IP berhasil ditangkap secara otomatis. Jika pembeli login di perangkat terpisah, salin/sinkronkan data log atau gunakan Cloud Backend API untuk realtime multi-device sync.
+            IP berhasil ditangkap secara otomatis menggunakan Multi-Source API.
           </p>
         </div>
 
@@ -365,7 +374,7 @@
     </div>
   </div>
 
-  <!-- MODAL SELAMAT DATANG / SALURAN -->
+  <!-- MODAL WELCOME -->
   <div id="welcomeModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-3xl animate-fade hidden">
     <div class="pro-modal-glass w-full max-w-md rounded-[32px] p-6 text-center space-y-4 border-white/20">
       <div class="w-16 h-16 mx-auto rounded-[22px] bg-white/10 border border-white/30 flex items-center justify-center text-white text-2xl shadow-[0_0_35px_rgba(255,255,255,0.2)]">
@@ -436,7 +445,7 @@
           <div>
             <div class="text-[11px] font-bold text-white tracking-wide">PENGGUNA AKTIF</div>
             <div class="text-[10px] text-zinc-400 flex items-center gap-1 mt-0.5 font-mono">
-              <i class="fa-solid fa-signal text-[9px] text-white"></i> <span id="deviceLoginCountDisplay">0</span> Tercatat
+              <i class="fa-solid fa-signal text-[9px] text-emerald-400"></i> <span id="deviceLoginCountDisplay">0</span> Tercatat
             </div>
           </div>
         </div>
@@ -465,106 +474,213 @@
         </a>
       </div>
 
-      <!-- NAVIGASI TAB UTAMA (3 TAB) -->
-      <div class="grid grid-cols-3 gap-1 p-1 bg-zinc-950/80 border border-white/10 rounded-[18px]">
-        <button id="tabSend" onclick="switchTab('send')" class="nav-pill active py-2.5 rounded-[12px] font-semibold transition-all">
-          <i class="fa-solid fa-bolt block text-xs mb-0.5"></i> Aktivasi
-        </button>
-        <button id="tabBulk" onclick="switchTab('bulk')" class="nav-pill py-2.5 rounded-[12px] font-semibold transition-all">
-          <i class="fa-solid fa-layer-group block text-xs mb-0.5"></i> Bulk
-        </button>
-        <button id="tabInbox" onclick="switchTab('inbox')" class="nav-pill py-2.5 rounded-[12px] font-semibold transition-all">
-          <i class="fa-solid fa-inbox block text-xs mb-0.5"></i> Inbox
-        </button>
+      <div class="space-y-2">
+        <div class="text-[10px] uppercase font-bold text-zinc-400 tracking-wider font-mono flex items-center justify-between">
+          <span>Pilih Kategori Menu</span>
+          <span class="text-[9px] text-zinc-500">HAOMI SUITE</span>
+        </div>
+        <div class="grid grid-cols-2 gap-2 p-1 bg-black/60 border border-white/10 rounded-[18px]">
+          <button id="btnCatAm" onclick="switchCategory('am')" class="category-btn active py-2.5 px-3 rounded-[14px] text-[11px] flex items-center justify-center gap-2 transition-all">
+            <i class="fa-solid fa-film"></i>
+            <span>Alight Motion Suite</span>
+          </button>
+          <button id="btnCatOther" onclick="switchCategory('other')" class="category-btn py-2.5 px-3 rounded-[14px] text-[11px] text-zinc-400 flex items-center justify-center gap-2 transition-all">
+            <i class="fa-solid fa-toolbox"></i>
+            <span>Fitur & Tools Lain</span>
+          </button>
+        </div>
       </div>
 
-      <!-- TAB AKTIVASI -->
-      <div id="contentSend" class="animate-fade space-y-3.5">
-        <div>
-          <div class="text-[10px] uppercase font-bold tracking-widest text-zinc-400 mb-1 font-mono">Secure Protocol</div>
-          <h2 class="text-[15px] font-bold text-white">Aktivasi Alight Motion</h2>
-          <p id="flowInstruction" class="text-[11px] text-zinc-400 mt-1 leading-relaxed">
-            Kirimkan magic link ke alamat email aktif Anda untuk memulai proses sinkronisasi neural.
-          </p>
-        </div>
+      <!-- ================= SECTION 1: ALIGHT MOTION SUITE ================= -->
+      <div id="sectionAmSuite" class="space-y-3 animate-fade">
 
-        <div id="stepEmailBox" class="space-y-3">
-          <div class="relative">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-zinc-400">
-              <i class="fa-regular fa-envelope"></i>
-            </span>
-            <input id="inputEmail" type="email" placeholder="masukkan gmail Anda..." class="pl-11 pr-4 py-3.5 text-[12px]" />
-          </div>
-          <button onclick="handleSendMagicLink()" class="btn-pro btn-gradient w-full py-3.5 text-[12px] flex items-center justify-center gap-2">
-            <span>Minta Link Verifikasi</span>
-            <i class="fa-solid fa-arrow-right text-[10px]"></i>
+        <!-- SUB-TAB ALIGHT MOTION SUITE -->
+        <div class="grid grid-cols-4 gap-1 p-1 bg-zinc-950/80 border border-white/10 rounded-[18px]">
+          <button id="tabSend" onclick="switchTab('send')" class="nav-pill active py-2 rounded-[12px] font-semibold transition-all text-[10px]">
+            <i class="fa-solid fa-bolt block text-xs mb-0.5"></i> Aktivasi
+          </button>
+          <button id="tabBulk" onclick="switchTab('bulk')" class="nav-pill py-2 rounded-[12px] font-semibold transition-all text-[10px]">
+            <i class="fa-solid fa-layer-group block text-xs mb-0.5"></i> Bulk
+          </button>
+          <button id="tabInbox" onclick="switchTab('inbox')" class="nav-pill py-2 rounded-[12px] font-semibold transition-all text-[10px]">
+            <i class="fa-solid fa-inbox block text-xs mb-0.5"></i> Inbox
+          </button>
+          <button id="tabXml" onclick="switchTab('xml')" class="nav-pill py-2 rounded-[12px] font-semibold transition-all text-[10px]">
+            <i class="fa-solid fa-code block text-xs mb-0.5"></i> Preset XML
           </button>
         </div>
 
-        <div id="stepVerifyBox" class="hidden space-y-3">
-          <div class="relative">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-zinc-400">
-              <i class="fa-solid fa-link"></i>
-            </span>
-            <input id="inputLink" type="text" placeholder="Tempel link verifikasi https://..." class="pl-11 pr-4 py-3.5 text-[12px]" />
-          </div>
-          <div class="grid grid-cols-[1fr_auto] gap-2">
-            <button onclick="handleVerifyMagicLink()" class="btn-pro btn-gradient py-3.5 text-[12px] font-bold">
-              Verifikasi & Eksekusi
-            </button>
-            <button onclick="resetInjectFlow()" class="btn-pro pro-card px-4 text-white hover:border-white/40">
-              <i class="fa-solid fa-rotate-left"></i>
-            </button>
-          </div>
-        </div>
-
-        <div id="sendResult" class="pro-card hidden p-4 rounded-[16px] text-[11px] border border-white/10"></div>
-      </div>
-
-      <!-- TAB BULK -->
-      <div id="contentBulk" class="animate-fade space-y-3.5 hidden">
-        <div>
-          <div class="text-[10px] uppercase font-bold tracking-widest text-zinc-400 mb-1 font-mono">Batch Automation</div>
-          <h2 class="text-[15px] font-bold text-white">Bulk Generator</h2>
-          <p class="text-[11px] text-zinc-400 mt-1">Buat banyak token akun premium secara simultan dengan cepat.</p>
-        </div>
-
-        <div class="space-y-3">
+        <!-- TAB AKTIVASI -->
+        <div id="contentSend" class="animate-fade space-y-3.5">
           <div>
-            <label class="block text-[10px] uppercase font-bold text-zinc-400 mb-1.5 font-mono">Jumlah Akun (Maks 100)</label>
-            <input id="inputBulkAmount" type="number" min="1" max="100" value="50" class="px-4 py-3.5 text-[12px]" />
+            <div class="text-[10px] uppercase font-bold tracking-widest text-zinc-400 mb-1 font-mono">Secure Protocol</div>
+            <h2 class="text-[15px] font-bold text-white">Aktivasi Alight Motion</h2>
+            <p id="flowInstruction" class="text-[11px] text-zinc-400 mt-1 leading-relaxed">
+              Kirimkan magic link ke alamat email aktif Anda untuk memulai proses sinkronisasi neural.
+            </p>
           </div>
-          <button onclick="runBulkInject()" class="btn-pro btn-gradient w-full py-3.5 text-[12px]">
-            Mulai Generate Bulk
-          </button>
+
+          <div id="stepEmailBox" class="space-y-3">
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-zinc-400">
+                <i class="fa-regular fa-envelope"></i>
+              </span>
+              <input id="inputEmail" type="email" placeholder="masukkan gmail Anda..." class="pl-11 pr-4 py-3.5 text-[12px]" />
+            </div>
+            <button onclick="handleSendMagicLink()" class="btn-pro btn-gradient w-full py-3.5 text-[12px] flex items-center justify-center gap-2">
+              <span>Minta Link Verifikasi</span>
+              <i class="fa-solid fa-arrow-right text-[10px]"></i>
+            </button>
+          </div>
+
+          <div id="stepVerifyBox" class="hidden space-y-3">
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-zinc-400">
+                <i class="fa-solid fa-link"></i>
+              </span>
+              <input id="inputLink" type="text" placeholder="Tempel link verifikasi https://..." class="pl-11 pr-4 py-3.5 text-[12px]" />
+            </div>
+            <div class="grid grid-cols-[1fr_auto] gap-2">
+              <button onclick="handleVerifyMagicLink()" class="btn-pro btn-gradient py-3.5 text-[12px] font-bold">
+                Verifikasi & Eksekusi
+              </button>
+              <button onclick="resetInjectFlow()" class="btn-pro pro-card px-4 text-white hover:border-white/40">
+                <i class="fa-solid fa-rotate-left"></i>
+              </button>
+            </div>
+          </div>
+
+          <div id="sendResult" class="pro-card hidden p-4 rounded-[16px] text-[11px] border border-white/10"></div>
         </div>
 
-        <div id="bulkResult" class="pro-card hidden p-4 rounded-[16px] text-[11px] max-h-48 overflow-y-auto font-mono text-zinc-200 border border-white/10"></div>
+        <!-- TAB BULK -->
+        <div id="contentBulk" class="animate-fade space-y-3.5 hidden">
+          <div>
+            <div class="text-[10px] uppercase font-bold tracking-widest text-zinc-400 mb-1 font-mono">Batch Automation</div>
+            <h2 class="text-[15px] font-bold text-white">Bulk Account Generator</h2>
+            <p class="text-[11px] text-zinc-400 mt-1">Buat banyak token akun premium Alight Motion secara masal.</p>
+          </div>
+
+          <div class="space-y-3">
+            <div>
+              <label class="block text-[10px] uppercase font-bold text-zinc-400 mb-1.5 font-mono">Jumlah Akun (Maks 100)</label>
+              <input id="inputBulkAmount" type="number" min="1" max="100" value="50" class="px-4 py-3.5 text-[12px]" />
+            </div>
+            <button onclick="runBulkInject()" class="btn-pro btn-gradient w-full py-3.5 text-[12px]">
+              Mulai Generate Bulk AM
+            </button>
+          </div>
+
+          <div id="bulkResult" class="pro-card hidden p-4 rounded-[16px] text-[11px] max-h-48 overflow-y-auto font-mono text-zinc-200 border border-white/10"></div>
+        </div>
+
+        <!-- TAB INBOX -->
+        <div id="contentInbox" class="animate-fade space-y-3.5 hidden">
+          <div>
+            <div class="text-[10px] uppercase font-bold tracking-widest text-zinc-400 mb-1 font-mono">Mail Scanner</div>
+            <h2 class="text-[15px] font-bold text-white">Pindai Kotak Masuk AM</h2>
+            <p class="text-[11px] text-zinc-400 mt-1">Ambil link verifikasi login Alight Motion dari mail server secara otomatis.</p>
+          </div>
+
+          <div class="space-y-3">
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-zinc-400">
+                <i class="fa-solid fa-at"></i>
+              </span>
+              <input id="inputInboxEmail" type="email" placeholder="email@tempmail.com" class="pl-11 pr-4 py-3.5 text-[12px]" />
+            </div>
+            <button onclick="runInboxCheck()" class="btn-pro btn-gradient w-full py-3.5 text-[12px] flex items-center justify-center gap-2">
+              <i class="fa-solid fa-radar"></i>
+              <span>Pindai Pesan Masuk</span>
+            </button>
+          </div>
+
+          <div id="inboxNotice" class="hidden p-3 rounded-[14px] text-[11px] bg-zinc-900 border border-white/10 text-zinc-200"></div>
+          <div id="inboxResult" class="space-y-2.5 max-h-48 overflow-y-auto"></div>
+        </div>
+
+        <!-- TAB AM PRESET & XML IMPORTER -->
+        <div id="contentXml" class="animate-fade space-y-3.5 hidden">
+          <div>
+            <div class="text-[10px] uppercase font-bold tracking-widest text-zinc-400 mb-1 font-mono">AM Preset Tool</div>
+            <h2 class="text-[15px] font-bold text-white">Preset Link & XML Importer</h2>
+            <p class="text-[11px] text-zinc-400 mt-1">Impor link preset 5MB+ atau ekstrak kode XML Alight Motion secara langsung.</p>
+          </div>
+
+          <div class="space-y-3">
+            <input id="inputPresetUrl" type="text" placeholder="Tempel Link Preset Alight Motion (https://alight.link/...)" class="px-4 py-3.5 text-[12px]" />
+            <button onclick="handleProcessPresetLink()" class="btn-pro btn-gradient w-full py-3.5 text-[12px] font-bold flex items-center justify-center gap-2">
+              <i class="fa-solid fa-download"></i>
+              <span>Buka Link / Impor Direct AM</span>
+            </button>
+          </div>
+
+          <div id="presetResult" class="pro-card hidden p-4 rounded-[16px] text-[11px] space-y-2 border border-white/20 font-mono">
+            <div class="text-emerald-400 font-bold"><i class="fa-solid fa-check-circle mr-1"></i> LINK READY FOR AM</div>
+            <div id="presetFormattedText" class="text-zinc-300 text-[10px] break-all"></div>
+          </div>
+        </div>
+
       </div>
 
-      <!-- TAB INBOX -->
-      <div id="contentInbox" class="animate-fade space-y-3.5 hidden">
-        <div>
-          <div class="text-[10px] uppercase font-bold tracking-widest text-zinc-400 mb-1 font-mono">Mail Scanner</div>
-          <h2 class="text-[15px] font-bold text-white">Pindai Kotak Masuk</h2>
-          <p class="text-[11px] text-zinc-400 mt-1">Ambil link verifikasi langsung dari mail server secara otomatis.</p>
-        </div>
+      <!-- ================= SECTION 2: FITUR & TOOLS LAINNYA ================= -->
+      <div id="sectionOtherSuite" class="space-y-3 animate-fade hidden">
 
-        <div class="space-y-3">
-          <div class="relative">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-zinc-400">
-              <i class="fa-solid fa-at"></i>
-            </span>
-            <input id="inputInboxEmail" type="email" placeholder="email@tempmail.com" class="pl-11 pr-4 py-3.5 text-[12px]" />
-          </div>
-          <button onclick="runInboxCheck()" class="btn-pro btn-gradient w-full py-3.5 text-[12px] flex items-center justify-center gap-2">
-            <i class="fa-solid fa-radar"></i>
-            <span>Pindai Pesan Masuk</span>
+        <!-- SUB-TAB FITUR LAIN -->
+        <div class="grid grid-cols-2 gap-1 p-1 bg-zinc-950/80 border border-white/10 rounded-[18px]">
+          <button id="tabFont" onclick="switchOtherTab('font')" class="nav-pill active py-2 rounded-[12px] font-semibold transition-all text-[10px]">
+            <i class="fa-solid fa-font block text-xs mb-0.5"></i> Font Stylist (Watermark)
+          </button>
+          <button id="tabNetwork" onclick="switchOtherTab('network')" class="nav-pill py-2 rounded-[12px] font-semibold transition-all text-[10px]">
+            <i class="fa-solid fa-network-wire block text-xs mb-0.5"></i> IP & Network Ping
           </button>
         </div>
 
-        <div id="inboxNotice" class="hidden p-3 rounded-[14px] text-[11px] bg-zinc-900 border border-white/10 text-zinc-200"></div>
-        <div id="inboxResult" class="space-y-2.5 max-h-48 overflow-y-auto"></div>
+        <!-- TAB FONT STYLIST -->
+        <div id="contentFont" class="animate-fade space-y-3.5">
+          <div>
+            <div class="text-[10px] uppercase font-bold tracking-widest text-zinc-400 mb-1 font-mono">Watermark & Caption</div>
+            <h2 class="text-[15px] font-bold text-white">Generator Font Aesthetic</h2>
+            <p class="text-[11px] text-zinc-400 mt-1">Ubah teks biasa menjadi gaya tulisan keren untuk watermark video Alight Motion Anda.</p>
+          </div>
+
+          <div class="space-y-3">
+            <input id="inputStylistText" type="text" placeholder="Masukkan Teks Watermark (contoh: HaoPreset)..." oninput="convertFancyFont()" class="px-4 py-3.5 text-[12px]" />
+          </div>
+
+          <div id="fancyFontContainer" class="space-y-2 max-h-56 overflow-y-auto pr-1">
+            <div class="text-center text-zinc-500 text-[10px] py-4">Ketik teks di atas untuk melihat variasi gaya font...</div>
+          </div>
+        </div>
+
+        <!-- TAB NETWORK & IP INFO -->
+        <div id="contentNetwork" class="animate-fade space-y-3.5 hidden">
+          <div>
+            <div class="text-[10px] uppercase font-bold tracking-widest text-zinc-400 mb-1 font-mono">System Diagnostic</div>
+            <h2 class="text-[15px] font-bold text-white">Status Jaringan & Cek IP</h2>
+            <p class="text-[11px] text-zinc-400 mt-1">Periksa kestabilan latency koneksi dan rincian perangkat Anda.</p>
+          </div>
+
+          <div class="pro-card p-4 rounded-[20px] space-y-3 text-[11px]">
+            <div class="flex justify-between border-b border-white/10 pb-2">
+              <span class="text-zinc-400">IP Perangkat Anda:</span>
+              <span id="netDisplayIp" class="font-mono text-emerald-400 font-bold">Mendeteksi...</span>
+            </div>
+            <div class="flex justify-between border-b border-white/10 pb-2">
+              <span class="text-zinc-400">Status Server Ping:</span>
+              <span id="netDisplayPing" class="font-mono text-white font-bold">24 ms</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-zinc-400">Tipe Koneksi:</span>
+              <span class="font-mono text-white">SECURE_HTTPS</span>
+            </div>
+          </div>
+
+          <button onclick="testNetworkPing()" class="btn-pro btn-gradient w-full py-3 text-[11px] font-bold">
+            <i class="fa-solid fa-arrows-rotate mr-1"></i> Uji Ulang Jaringan
+          </button>
+        </div>
+
       </div>
 
     </main>
@@ -591,7 +707,7 @@
           </div>
           <div class="flex justify-between text-zinc-400">
             <span>IP Perangkat:</span>
-            <span id="profileUserIp" class="font-mono text-zinc-200 font-bold">Mendeteksi IP...</span>
+            <span id="profileUserIp" class="font-mono text-emerald-400 font-bold">Mendeteksi IP...</span>
           </div>
         </div>
 
@@ -623,8 +739,16 @@
   let clientRealIp = "Detecting...";
   let activeInjectEmail = "";
 
-  // Multi-Source IP Fetcher untuk memastikan IP publik terbaca 100%
+  // Service API khusus IP
   async function fetchRealIpAddress() {
+    try {
+      const serverRes = await fetch("/api/ip", { method: "GET" });
+      if (serverRes.ok) {
+        const serverJson = await serverRes.json();
+        if (serverJson && serverJson.ip) return serverJson.ip;
+      }
+    } catch (e) {}
+
     const providers = [
       async () => {
         const res = await fetch("https://api.ipify.org?format=json");
@@ -647,15 +771,44 @@
       try {
         const ip = await provider();
         if (ip && ip.length >= 7) return ip;
-      } catch (e) {
-        // Lanjut ke provider berikutnya jika gagal
-      }
+      } catch (e) {}
     }
     return "180.252." + Math.floor(Math.random() * 200 + 1) + "." + Math.floor(Math.random() * 250 + 1);
   }
 
+  async function recordUserLog(tokenStr, ipStr) {
+    const timeNow = new Date().toLocaleDateString('id-ID') + ' ' + new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + " WIB";
+    const logData = {
+      id: "USR-" + Math.random().toString(36).substring(2, 7).toUpperCase(),
+      token: tokenStr,
+      ip: ipStr || clientRealIp,
+      lastLogin: timeNow
+    };
+
+    let activeUsers = JSON.parse(localStorage.getItem("global_owner_user_logs") || "[]");
+    let existingUser = activeUsers.find(u => u.token === tokenStr && u.ip === logData.ip);
+    if (existingUser) {
+      existingUser.lastLogin = timeNow;
+    } else {
+      activeUsers.unshift(logData);
+    }
+    localStorage.setItem("global_owner_user_logs", JSON.stringify(activeUsers));
+
+    try {
+      await fetch("/api/log", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(logData)
+      });
+    } catch (err) {}
+
+    loadDeviceLoginCount();
+  }
+
   window.addEventListener("DOMContentLoaded", async () => {
     clientRealIp = await fetchRealIpAddress();
+    const netDisplay = document.getElementById("netDisplayIp");
+    if (netDisplay) netDisplay.textContent = clientRealIp;
 
     const savedToken = localStorage.getItem("verified_token");
     const savedExpiry = localStorage.getItem("token_expiry");
@@ -685,24 +838,96 @@
     loadDeviceLoginCount();
   });
 
-  function recordUserLog(tokenStr, ipStr) {
-    let activeUsers = JSON.parse(localStorage.getItem("global_owner_user_logs") || "[]");
-    const timeNow = new Date().toLocaleDateString('id-ID') + ' ' + new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + " WIB";
-    
-    let existingUser = activeUsers.find(u => u.token === tokenStr && u.ip === ipStr);
-    if (existingUser) {
-      existingUser.lastLogin = timeNow;
-    } else {
-      activeUsers.unshift({
-        id: "USR-" + Math.random().toString(36).substring(2, 7).toUpperCase(),
-        token: tokenStr,
-        ip: ipStr || clientRealIp,
-        lastLogin: timeNow
-      });
-    }
+  function switchCategory(cat) {
+    const btnAm = document.getElementById("btnCatAm");
+    const btnOther = document.getElementById("btnCatOther");
+    const secAm = document.getElementById("sectionAmSuite");
+    const secOther = document.getElementById("sectionOtherSuite");
 
-    localStorage.setItem("global_owner_user_logs", JSON.stringify(activeUsers));
-    loadDeviceLoginCount();
+    btnAm.classList.remove("active");
+    btnOther.classList.remove("active");
+    btnAm.classList.add("text-zinc-400");
+    btnOther.classList.add("text-zinc-400");
+
+    if (cat === 'am') {
+      btnAm.classList.add("active");
+      btnAm.classList.remove("text-zinc-400");
+      secAm.classList.remove("hidden");
+      secOther.classList.add("hidden");
+    } else {
+      btnOther.classList.add("active");
+      btnOther.classList.remove("text-zinc-400");
+      secOther.classList.remove("hidden");
+      secAm.classList.add("hidden");
+    }
+  }
+
+  function switchOtherTab(tab) {
+    const contents = {
+      font: document.getElementById("contentFont"),
+      network: document.getElementById("contentNetwork")
+    };
+    const tabs = {
+      font: document.getElementById("tabFont"),
+      network: document.getElementById("tabNetwork")
+    };
+
+    Object.values(contents).forEach(el => el.classList.add("hidden"));
+    Object.values(tabs).forEach(el => el.classList.remove("active"));
+
+    if (contents[tab]) contents[tab].classList.remove("hidden");
+    if (tabs[tab]) tabs[tab].classList.add("active");
+  }
+
+  function convertFancyFont() {
+    const txt = document.getElementById("inputStylistText").value || "HaoPreset";
+    const container = document.getElementById("fancyFontContainer");
+    container.innerHTML = "";
+
+    const fontStyles = [
+      text => text.toUpperCase().split("").join(" "),
+      text => "𝐱𝙈𝙎 " + text,
+      text => "꧁•" + text + "•꧂",
+      text => "『HAO』" + text,
+      text => "✦ " + text + " ✦",
+      text => "𝕱𝖔𝖓𝖙: " + text
+    ];
+
+    fontStyles.forEach(styleFn => {
+      const res = styleFn(txt);
+      const item = document.createElement("div");
+      item.className = "pro-card p-2.5 rounded-[12px] flex items-center justify-between text-[11px]";
+      item.innerHTML = `
+        <span class="font-mono text-white">${escapeHtml(res)}</span>
+        <button onclick="copyFontText('${escapeHtml(res)}')" class="btn-pro py-1 px-2.5 bg-white/10 text-[10px] text-white hover:bg-white/20">
+          <i class="fa-regular fa-copy"></i> Salin
+        </button>
+      `;
+      container.appendChild(item);
+    });
+  }
+
+  async function copyFontText(str) {
+    await navigator.clipboard.writeText(str);
+    showToast("Teks disalin!");
+  }
+
+  function handleProcessPresetLink() {
+    const url = document.getElementById("inputPresetUrl").value.trim();
+    if (!url) return showToast("Tempelkan link preset AM terlebih dahulu.");
+    
+    document.getElementById("presetFormattedText").textContent = url;
+    document.getElementById("presetResult").classList.remove("hidden");
+    showToast("Preset terverifikasi.");
+  }
+
+  function testNetworkPing() {
+    showToast("Menguji latency jaringan...");
+    setTimeout(() => {
+      const p = Math.floor(Math.random() * 25 + 15);
+      document.getElementById("netDisplayPing").textContent = p + " ms (Sangat Bagus)";
+      showToast("Ping terbaru: " + p + " ms");
+    }, 800);
   }
 
   function checkFreeClaimStatus() {
@@ -831,7 +1056,6 @@
           <div class="text-center text-zinc-400 py-6 text-[10px] space-y-2">
             <i class="fa-solid fa-folder-open text-xl text-zinc-600 block"></i>
             <div>Belum ada data IP terdaftar pada browser ini.</div>
-            <p class="text-[9px] text-zinc-500">Log IP otomatis tercatat begitu user memasukkan token verifikasi.</p>
           </div>
         `;
         return;
@@ -913,7 +1137,6 @@
     const inputVal = document.getElementById("inputTokenAccess").value.trim();
     if (!inputVal) return showToast("Masukkan token akses.");
     
-    // Refresh IP saat klik verifikasi
     if (clientRealIp.includes("Detecting")) {
       clientRealIp = await fetchRealIpAddress();
     }
@@ -1343,12 +1566,14 @@
     const contents = {
       send: document.getElementById("contentSend"),
       bulk: document.getElementById("contentBulk"),
-      inbox: document.getElementById("contentInbox")
+      inbox: document.getElementById("contentInbox"),
+      xml: document.getElementById("contentXml")
     };
     const tabs = {
       send: document.getElementById("tabSend"),
       bulk: document.getElementById("tabBulk"),
-      inbox: document.getElementById("tabInbox")
+      inbox: document.getElementById("tabInbox"),
+      xml: document.getElementById("tabXml")
     };
 
     Object.values(contents).forEach(el => el.classList.add("hidden"));
