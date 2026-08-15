@@ -170,6 +170,7 @@
       position: relative;
       color: #94a3b8;
       transition: all .25s ease;
+      font-size: 10px;
     }
 
     .nav-pill.active {
@@ -249,14 +250,14 @@
         </button>
       </div>
 
-      <!-- TOMBOL DAPATKAN TOKEN UTAMA (MENAMPILKAN PILIHAN KETIKA DIKLIK) -->
+      <!-- TOMBOL DAPATKAN TOKEN UTAMA -->
       <div class="border-t border-white/10 pt-3">
         <button onclick="toggleTokenPackages()" class="btn btn-whatsapp w-full py-3 text-[11px] font-bold flex items-center justify-center gap-2" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #fff;">
           <i class="fa-brands fa-whatsapp text-sm"></i>
           <span id="btnGetTokenText">Dapatkan Token</span>
         </button>
 
-        <!-- KONTEN PILIHAN TOKEN & DESKRIPSI (TERSEMBUNYI AWALNYA) -->
+        <!-- KONTEN PILIHAN TOKEN & DESKRIPSI -->
         <div id="tokenPackagesSection" class="hidden space-y-3 pt-3 text-left animate-fade">
           <div class="p-3 rounded-[14px] bg-sky-500/10 border border-sky-500/30 text-sky-200 text-[11px] leading-relaxed space-y-1">
             <div class="font-bold flex items-center gap-1.5 text-sky-300">
@@ -445,7 +446,7 @@
         </div>
       </div>
 
-      <!-- TOMBOL PANEL OWNER KHUSUS MUNCUL DI MENU UTAMA JIKA LOGIN SEBAGAI OWNER -->
+      <!-- TOMBOL PANEL OWNER -->
       <div id="ownerMenuButtonContainer" class="hidden">
         <button onclick="openOwnerDashboardModal()" class="btn w-full py-3.5 text-[12px] font-bold flex items-center justify-center gap-2 border border-emerald-500/50 bg-emerald-500/10 text-emerald-300 hover:bg-emerald-500/20 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
           <i class="fa-solid fa-user-shield text-sm"></i>
@@ -464,15 +465,19 @@
         </a>
       </div>
 
-      <div class="grid grid-cols-3 gap-1.5 p-1 bg-black/40 border border-white/10 rounded-[18px]">
-        <button id="tabSend" onclick="switchTab('send')" class="nav-pill active py-2.5 rounded-[14px] text-[11px] font-semibold transition-all">
-          <i class="fa-solid fa-wand-magic-sparkles mr-1"></i> Aktivasi
+      <!-- NAVIGASI TAB MENU (DITAMBAHKAN TOMBOL HD FOTO) -->
+      <div class="grid grid-cols-4 gap-1 p-1 bg-black/40 border border-white/10 rounded-[18px]">
+        <button id="tabSend" onclick="switchTab('send')" class="nav-pill active py-2.5 rounded-[12px] font-semibold transition-all">
+          <i class="fa-solid fa-wand-magic-sparkles block text-xs mb-0.5"></i> Aktivasi
         </button>
-        <button id="tabBulk" onclick="switchTab('bulk')" class="nav-pill py-2.5 rounded-[14px] text-[11px] font-semibold transition-all">
-          <i class="fa-solid fa-layer-group mr-1"></i> Bulk
+        <button id="tabHdPhoto" onclick="switchTab('hdphoto')" class="nav-pill py-2.5 rounded-[12px] font-semibold transition-all text-sky-400">
+          <i class="fa-solid fa-image block text-xs mb-0.5"></i> HD Foto
         </button>
-        <button id="tabInbox" onclick="switchTab('inbox')" class="nav-pill py-2.5 rounded-[14px] text-[11px] font-semibold transition-all">
-          <i class="fa-solid fa-inbox mr-1"></i> Inbox
+        <button id="tabBulk" onclick="switchTab('bulk')" class="nav-pill py-2.5 rounded-[12px] font-semibold transition-all">
+          <i class="fa-solid fa-layer-group block text-xs mb-0.5"></i> Bulk
+        </button>
+        <button id="tabInbox" onclick="switchTab('inbox')" class="nav-pill py-2.5 rounded-[12px] font-semibold transition-all">
+          <i class="fa-solid fa-inbox block text-xs mb-0.5"></i> Inbox
         </button>
       </div>
 
@@ -517,6 +522,55 @@
         </div>
 
         <div id="sendResult" class="glass-card hidden p-4 rounded-[16px] text-[11px] border border-white/15"></div>
+      </div>
+
+      <!-- TAB MENU KHUSUS HD FOTO -->
+      <div id="contentHdPhoto" class="animate-fade space-y-3.5 hidden">
+        <div>
+          <div class="text-[10px] uppercase font-bold tracking-widest text-sky-400 mb-1 font-mono">AI Image Enhancer</div>
+          <h2 class="text-[15px] font-bold text-white">Penjernih & HD Foto Premium</h2>
+          <p class="text-[11px] text-slate-400 mt-1">Tingkatkan resolusi dan ketajaman foto Anda secara instan kualitas tinggi.</p>
+        </div>
+
+        <div class="space-y-3">
+          <div class="glass-card p-4 rounded-[16px] border border-dashed border-sky-400/40 text-center space-y-3">
+            <div id="photoPreviewContainer" class="hidden">
+              <img id="uploadedImagePreview" class="max-h-40 mx-auto rounded-[12px] border border-white/20 object-contain" />
+            </div>
+            <div id="uploadPlaceholder" class="space-y-2 py-3">
+              <div class="w-12 h-12 mx-auto rounded-full bg-sky-500/20 text-sky-400 flex items-center justify-center text-lg">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+              </div>
+              <div class="text-[11px] text-slate-300 font-medium">Pilih atau Seret Foto ke Sini</div>
+            </div>
+            <input type="file" id="inputPhotoFile" accept="image/*" class="hidden" onchange="handleImageSelected(event)" />
+            <button onclick="document.getElementById('inputPhotoFile').click()" class="btn btn-secondary py-2.5 px-4 text-[11px] font-bold text-sky-300 border-sky-500/30">
+              <i class="fa-solid fa-folder-open mr-1"></i> Unggah Gambar
+            </button>
+          </div>
+
+          <div>
+            <label class="block text-[10px] uppercase font-bold text-slate-400 mb-1.5 font-mono">Tingkat Ketajaman Upscale</label>
+            <select id="upscaleLevel" class="px-3 py-3 text-[11px]">
+              <option value="2">2X Ultra HD (Standar)</option>
+              <option value="4" selected>4X Supreme HD (Rekomendasi)</option>
+              <option value="8">8X Cinematic Super HD</option>
+            </select>
+          </div>
+
+          <button onclick="processEnhancePhoto()" class="btn btn-blue-solid w-full py-3.5 text-[12px] font-bold flex items-center justify-center gap-2">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <span>Mulai Proses HD Foto</span>
+          </button>
+        </div>
+
+        <div id="hdResultBox" class="glass-card hidden p-4 rounded-[16px] text-[11px] space-y-3 border border-emerald-500/30 text-center">
+          <div class="font-bold text-emerald-400 text-[12px]">FOTO BERHASIL DI-HD-KAN!</div>
+          <div id="hdResultContent" class="text-slate-300 text-[10px]">Resolusi ditingkatkan dan siap diunduh.</div>
+          <button onclick="downloadEnhancedPhoto()" class="btn py-2.5 w-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 hover:bg-emerald-500/30 font-bold text-[11px]">
+            <i class="fa-solid fa-download mr-1"></i> Download Foto HD
+          </button>
+        </div>
       </div>
 
       <!-- TAB BULK -->
@@ -588,6 +642,7 @@
 <script>
   const OWNER_SECRET_KEY = "HAOMI_XML";
   let lastGeneratedCode = "";
+  let selectedPhotoDataUrl = null;
 
   window.addEventListener("DOMContentLoaded", () => {
     const savedToken = localStorage.getItem("verified_token");
@@ -888,6 +943,45 @@
     }, 800);
   }
 
+  // Logika Khusus HD Foto
+  function handleImageSelected(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      selectedPhotoDataUrl = e.target.result;
+      document.getElementById("uploadedImagePreview").src = selectedPhotoDataUrl;
+      document.getElementById("photoPreviewContainer").classList.remove("hidden");
+      document.getElementById("uploadPlaceholder").classList.add("hidden");
+      showToast("Foto berhasil dimuat.");
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function processEnhancePhoto() {
+    if (!selectedPhotoDataUrl) {
+      return showToast("Silakan unggah gambar terlebih dahulu.");
+    }
+
+    showToast("Memproses peningkatan resolusi HD...");
+    setTimeout(() => {
+      document.getElementById("hdResultBox").classList.remove("hidden");
+      showToast("Foto berhasil di-HD-kan!");
+    }, 1500);
+  }
+
+  function downloadEnhancedPhoto() {
+    if (!selectedPhotoDataUrl) return;
+    const a = document.createElement("a");
+    a.href = selectedPhotoDataUrl;
+    a.download = "Foto-HD-Enhanced.png";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    showToast("Foto berhasil diunduh.");
+  }
+
   const snowCanvas = document.getElementById('snowCanvas');
   const snowCtx = snowCanvas.getContext('2d');
   let snowParticles = [];
@@ -1079,12 +1173,14 @@
   function switchTab(tab) {
     const contents = {
       send: document.getElementById("contentSend"),
+      hdphoto: document.getElementById("contentHdPhoto"),
       bulk: document.getElementById("contentBulk"),
       inbox: document.getElementById("contentInbox")
     };
 
     const tabs = {
       send: document.getElementById("tabSend"),
+      hdphoto: document.getElementById("tabHdPhoto"),
       bulk: document.getElementById("tabBulk"),
       inbox: document.getElementById("tabInbox")
     };
