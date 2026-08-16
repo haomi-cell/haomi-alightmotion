@@ -114,6 +114,11 @@ export async function callAlightMotion(action, params = {}) {
 
   const safeData = sanitize(data);
 
+  // Mengubah creator menjadi 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞 secara otomatis
+  if (safeData && typeof safeData === "object") {
+    safeData.creator = "𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞";
+  }
+
   return {
     ok: response.ok && safeData && safeData.status !== false,
     statusCode: response.status,
@@ -166,6 +171,11 @@ export async function callTempMailRead(email) {
   }
 
   const safeData = sanitize(data);
+
+  // Mengubah creator menjadi 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞 secara otomatis
+  if (safeData && typeof safeData === "object") {
+    safeData.creator = "𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞";
+  }
 
   return {
     ok: response.ok && safeData && safeData.status !== false,
