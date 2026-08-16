@@ -740,7 +740,7 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
   import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-  import { getFirestore, doc, setDoc, deleteDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+  import { getFirestore, doc, setDoc, getDoc, deleteDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
   const appId = typeof __app_id !== 'undefined' ? __app_id : 'haomi-vip-dashboard-v3';
   let firebaseConfig = {};
@@ -792,13 +792,20 @@
       } catch(e) { console.error("Gagal hapus data cloud", e); }
   }
 
-  async function createOwner() {
-    const now = new Date();
-    const ownerData = { 
-        username: 'owner', password: OWNER_SECRET_KEY, role: 'admin', limit: 99999, ip: 'localhost', deviceId: 'MASTER-NODE', isBlocked: false, usernameChanges: 0, phone: '082231669053',
-        joinDate: now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) + ' ' + now.toLocaleTimeString('id-ID') + ' WIB'
-    };
-    await saveUserToDB(ownerData);
+  async function createOwnerForce() {
+    if (!auth || !auth.currentUser) return;
+    try {
+        const ownerRef = doc(db, 'artifacts', appId, 'public', 'data', 'users', 'owner');
+        const ownerSnap = await getDoc(ownerRef);
+        if (!ownerSnap.exists()) {
+            const now = new Date();
+            const ownerData = { 
+                username: 'owner', password: OWNER_SECRET_KEY, role: 'admin', limit: 99999, ip: 'localhost', deviceId: 'MASTER-NODE', isBlocked: false, usernameChanges: 0, phone: '082231669053',
+                joinDate: now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) + ' ' + now.toLocaleTimeString('id-ID') + ' WIB'
+            };
+            await setDoc(ownerRef, ownerData);
+        }
+    } catch(e) { console.error("Gagal inisialisasi owner", e); }
   }
 
   async function initAuth() {
@@ -809,6 +816,7 @@
           } else {
               await signInAnonymously(auth);
           }
+          await createOwnerForce();
           startRealtimeListener();
       } catch(e) {
           console.error("Auth Cloud Error", e);
@@ -825,7 +833,7 @@
           });
           
           if (!usersDB.find(u => u.username === 'owner')) {
-              createOwner();
+              createOwnerForce();
           }
           
           handleAuthState();
@@ -1023,7 +1031,7 @@
   function renderTopLimit() {
     const container = document.getElementById("topLimitList");
     const topUsers = usersDB.filter(u => u.role !== 'admin').sort((a, b) => b.limit - a.limit).slice(0, 3);
-    if (topUsers.length === 0) { container.innerHTML = '<div class="text-center text-[10px] text-slate-500 py-5 font-mono bg-slate-900/50 rounded-2xl border border-slate-800">Database klasemen kosong.</div>'; return; }
+    if (topUsers.length === 0) { container.innerHTML = '<div class="text-center text-[10px] text-slate-500 py-4 font-mono bg-slate-900/50 rounded-2xl border border-slate-800">Database klasemen kosong.</div>'; return; }
     
     let html = '';
     const medals = [
