@@ -777,7 +777,7 @@
   }
 
   async function saveUserToDB(userObj) {
-      if (!auth || !auth.currentUser) return;
+      if (!auth || !db) return;
       try {
           const userRef = doc(db, 'artifacts', appId, 'public', 'data', 'users', getDocId(userObj.username));
           await setDoc(userRef, userObj);
@@ -785,7 +785,7 @@
   }
 
   async function deleteUserFromDB(username) {
-      if (!auth || !auth.currentUser) return;
+      if (!auth || !db) return;
       try {
           const userRef = doc(db, 'artifacts', appId, 'public', 'data', 'users', getDocId(username));
           await deleteDoc(userRef);
@@ -793,7 +793,7 @@
   }
 
   async function createOwnerForce() {
-    if (!auth || !auth.currentUser) return;
+    if (!db) return;
     try {
         const ownerRef = doc(db, 'artifacts', appId, 'public', 'data', 'users', 'owner');
         const ownerSnap = await getDoc(ownerRef);
@@ -801,7 +801,8 @@
             const now = new Date();
             const ownerData = { 
                 username: 'owner', password: OWNER_SECRET_KEY, role: 'admin', limit: 99999, ip: 'localhost', deviceId: 'MASTER-NODE', isBlocked: false, usernameChanges: 0, phone: '082231669053',
-                joinDate: now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) + ' ' + now.toLocaleTimeString('id-ID') + ' WIB'
+                joinDate: now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) + ' ' + now.toLocaleTimeString('id-ID') + ' WIB',
+                lastLogin: now.toLocaleDateString('id-ID') + ' ' + now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB'
             };
             await setDoc(ownerRef, ownerData);
         }
@@ -901,7 +902,7 @@
     const saved = localStorage.getItem("logged_in_user_v2");
     if (saved) {
       const sessionData = JSON.parse(saved);
-      let dbUser = usersDB.find(u => u.username === sessionData.username && u.password === sessionData.password);
+      let dbUser = usersDB.find(u => u.username.toLowerCase() === sessionData.username.toLowerCase() && u.password === sessionData.password);
       
       if(dbUser) {
         if(dbUser.isBlocked) { 
@@ -1444,7 +1445,7 @@
     const toast = document.getElementById("toast");
     const isError = message.includes("❌") || message.includes("⚠️") || message.includes("🚫");
     const icon = isError ? "fa-solid fa-triangle-exclamation text-rose-500 text-lg" : "fa-solid fa-circle-check text-emerald-400 text-lg";
-    toast.innerHTML = `<i class="${icon}"></i> <span class="leading-relaxed tracking-wide">${message.replace(/[❌⚠️🚫✅🎉📤🔄⚙️📉💾🗑️🔓]/g, '')}</span>`;
+    toast.innerHTML = `<i class="${icon}"></i> <span class="leading-relaxed tracking-wide">${message.replace(/[❌⚠️🚫✅🎉📤🔄⚙️💾🗑️🔓]/g, '')}</span>`;
     toast.classList.remove("opacity-0", "pointer-events-none", "translate-y-[20px]");
     toast.classList.add("translate-y-[-20px]");
     clearTimeout(window.__toastTimer);
