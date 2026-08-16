@@ -66,6 +66,7 @@
     
     .app-container { width: 100%; max-width: 500px; min-height: 100vh; position: relative; display: flex; flex-direction: column; z-index: 10; }
     
+    /* Panel Tech Glassmorphism */
     .tech-panel { 
         background: linear-gradient(145deg, rgba(15, 23, 42, 0.7), rgba(2, 6, 23, 0.8)); 
         backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
@@ -80,6 +81,7 @@
         background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.5), transparent); opacity: 0.5; 
     }
     
+    /* VIP Panel */
     .vip-panel {
         background: linear-gradient(145deg, rgba(30, 20, 0, 0.8), rgba(15, 10, 0, 0.9));
         border: 1px solid rgba(251, 191, 36, 0.4);
@@ -89,6 +91,7 @@
         background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.8), transparent);
     }
 
+    /* Inputs */
     input, select { 
         width: 100%; background: rgba(2, 6, 23, 0.6) !important; 
         border: 1px solid rgba(51, 65, 85, 0.7) !important; 
@@ -102,12 +105,13 @@
         transform: translateY(-1px);
     }
 
+    /* Bouncy Buttons */
     .btn-cyber { 
         background: linear-gradient(135deg, #6366f1 0%, #4338ca 100%); color: #ffffff; 
         border-radius: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; 
         border: 1px solid #818cf8; box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3), inset 0 1px 0 rgba(255,255,255,0.2); 
         position: relative; overflow: hidden; 
-        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); cursor: pointer;
+        transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease; cursor: pointer;
     }
     .btn-cyber::before { 
         content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; 
@@ -124,11 +128,12 @@
 
     .btn-outline-cyber { 
         background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(99, 102, 241, 0.4); color: #818cf8; 
-        border-radius: 16px; font-weight: 600; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); 
+        border-radius: 16px; font-weight: 600; transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); 
         display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer;
     }
     .btn-outline-cyber:active { transform: scale(0.95); }
 
+    /* Floating Bottom Nav */
     .bottom-nav { 
         position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); 
         width: calc(100% - 32px); max-width: 468px; 
@@ -149,6 +154,7 @@
     }
     .nav-item.active i { transform: translateY(-3px) scale(1.15); color: #818cf8; text-shadow: 0 0 15px rgba(99, 102, 241, 0.8); }
 
+    /* Butter Smooth Tab Transitions */
     .tab-pane { 
         display: none; opacity: 0; transform: translateY(20px); 
         transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1), transform 0.5s cubic-bezier(0.22, 1, 0.36, 1); 
@@ -162,6 +168,7 @@
         100% { opacity: 1; transform: translateY(0); }
     }
 
+    /* Modals */
     .modal-overlay { 
         position: fixed; inset: 0; background: rgba(2, 6, 23, 0.85); 
         backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); z-index: 999; 
@@ -183,6 +190,7 @@
     }
     .modal-overlay.active .modal-content { transform: translateY(0); }
     
+    /* Background FX */
     .grid-bg-container { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
     .grid-bg { 
         position: absolute; inset: -50%; background-size: 40px 40px; 
@@ -213,10 +221,12 @@
 </head>
 
 <body>
+  <!-- Background Effects -->
   <div class="grid-bg-container"><div class="grid-bg"></div><div class="scanline"></div></div>
   
   <div class="app-container pb-32">
     
+    <!-- Top Header Navigation -->
     <header class="pt-8 pb-5 px-6 flex items-center justify-between sticky top-0 z-40 bg-dark-900/80 backdrop-blur-xl border-b border-slate-800/80 shadow-sm transition-all">
       <div class="flex items-center gap-4">
         <div class="w-12 h-12 rounded-[18px] bg-gradient-to-br from-indigo-500 via-purple-500 to-indigo-700 flex items-center justify-center text-white text-xl font-bold shadow-[0_0_20px_rgba(99,102,241,0.4)] relative overflow-hidden group">
@@ -240,7 +250,7 @@
       
       <div id="tabContentHome" class="tab-pane active space-y-6">
         
-        <!-- PANEL STATISTIK -->
+        <!-- PANEL STATISTIK UTAMA -->
         <div class="tech-panel p-6">
           <div class="flex justify-between items-start mb-5">
             <div>
@@ -266,7 +276,7 @@
             </div>
           </div>
 
-          <!-- TOMBOL TAMBAH LIMIT (HILANG JIKA VIP) -->
+          <!-- TOMBOL TAMBAH LIMIT ECERAN (HILANG JIKA VIP) -->
           <div id="orderLimitBtnContainer" class="border-b border-slate-700/80 pb-5 mb-5">
               <button onclick="orderMoreLimit()" class="w-full btn-outline-cyber py-3 text-[11px] !border-sky-500/30 !text-sky-400 hover:!bg-sky-900/30 tracking-widest uppercase font-bold shadow-none active:scale-95 transition-transform bg-sky-950/20">
                   <i class="fa-solid fa-cart-plus mr-1"></i> Beli Tambahan Limit (Ecer)
@@ -285,9 +295,11 @@
           </div>
         </div>
 
+        <!-- PANEL VIP & PREMIUM -->
         <div id="vipPanelContainer" class="tech-panel vip-panel p-6 relative overflow-hidden group">
             <div class="absolute -right-10 -top-10 w-40 h-40 bg-amber-500/20 rounded-full blur-3xl pointer-events-none group-hover:bg-amber-500/30 transition-all"></div>
             
+            <!-- Tampilan Promo VIP -->
             <div id="vipPanelPromo" class="relative z-10">
                 <div class="flex justify-between items-center mb-2">
                     <h3 class="text-[16px] font-black text-white tracking-wider flex items-center gap-2 font-mono uppercase">
@@ -301,18 +313,20 @@
                 </button>
             </div>
 
-            <div id="vipPanelActive" class="relative z-10 hidden text-center py-2">
-                <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 mb-3 shadow-[0_0_20px_rgba(16,185,129,0.3)] relative">
+            <!-- Tampilan Sudah Premium (VIP AKTIF) -->
+            <div id="vipPanelActive" class="relative z-10 hidden text-center py-3">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500/30 to-teal-900/40 border border-emerald-400/50 mb-4 shadow-[0_0_30px_rgba(16,185,129,0.4)] relative">
                     <div class="absolute inset-0 bg-emerald-400/20 rounded-2xl animate-ping opacity-75"></div>
-                    <i class="fa-solid fa-crown text-emerald-400 text-2xl drop-shadow-[0_0_10px_rgba(52,211,153,0.8)] z-10 relative"></i>
+                    <i class="fa-solid fa-crown text-emerald-400 text-3xl drop-shadow-[0_0_15px_rgba(52,211,153,1)] z-10 relative"></i>
                 </div>
-                <h3 class="text-[15px] font-black text-white tracking-wider font-mono uppercase mb-1 flex justify-center items-center gap-2 drop-shadow-md">
-                    <i class="fa-solid fa-shield-check text-emerald-400"></i> Anggota Premium Aktif
+                <h3 class="text-[16px] font-black text-white tracking-wider font-mono uppercase mb-2 flex justify-center items-center gap-2 drop-shadow-md">
+                    <i class="fa-solid fa-shield-check text-emerald-400"></i> SULTAN PREMIUM AKTIF
                 </h3>
-                <p class="text-[10px] text-emerald-300 font-bold font-mono uppercase tracking-widest bg-emerald-900/40 inline-block px-3 py-1 rounded-lg border border-emerald-500/30">Akses Tanpa Batas Sistem</p>
+                <p class="text-[10px] text-emerald-200 font-bold font-mono uppercase tracking-widest bg-emerald-950/60 inline-block px-4 py-1.5 rounded-xl border border-emerald-500/40 shadow-inner">Akses Bebas Tanpa Batas 24/7</p>
             </div>
         </div>
 
+        <!-- PANEL TOP LIMIT (LEADERBOARD) -->
         <div class="tech-panel p-6 relative border-t-2 border-t-amber-500/60 overflow-visible">
           <div class="absolute -top-10 -left-10 w-40 h-40 bg-amber-500/5 rounded-full blur-3xl pointer-events-none"></div>
           <div class="flex items-center justify-between mb-5 relative z-10">
@@ -874,14 +888,19 @@
   
   function buyPermanentAccess() {
       if(!currentUser) return showToast("Silakan login terlebih dahulu.");
-      const msg = `Bypass Protocol: Halo Admin, saya ingin membeli akses *Limit Permanen / Unlimited*.\n\n- Username: *${currentUser.username}* (contoh: Budi123)\n- No WA: *${currentUser.phone || '-'}* (contoh: 081234567890)\n\nMohon info pembayaran dan proses aktivasinya.`;
+      const msg = `Bypass Protocol: Halo Admin, saya ingin membeli akses *Limit Permanen / Unlimited*.\n\n- Username: *${currentUser.username}*\n- No WA: *${currentUser.phone || '-'}*\n\nMohon info pembayaran dan proses aktivasinya.`;
       window.open(`https://wa.me/+6282231669053?text=${encodeURIComponent(msg)}`, "_blank");
   }
 
   function orderMoreLimit() {
       if(!currentUser) return;
-      const msg = `Bypass Protocol: Halo Admin, saya ingin membeli tambahan limit eceran.\n\n- Username: *${currentUser.username}*\n- Beli Berapa Limit: (Isi jumlah, contoh: 50 Limit atau 100 Limit)\n\nMohon info harganya.`;
+      const msg = `Bypass Protocol: Halo Admin, saya ingin membeli tambahan limit eceran.\n\n- Username: *${currentUser.username}*\n- No WA: *${currentUser.phone || '-'}*\n- Beli Berapa Limit: (Isi jumlah, misal: 50 atau 100)\n\nMohon info harganya.`;
       window.open(`https://wa.me/+6282231669053?text=${encodeURIComponent(msg)}`, "_blank");
+  }
+
+  function handleForgotPassword() { 
+    const msg = "Bypass Protocol: Halo Admin, saya lupa akses akun panel saya.\n\nMohon bantu cek dengan data berikut:\n- Username: (Isi dengan username Anda yang lupa)\n- No WA: (Isi dengan nomor WA saat mendaftar)\n\nTerima kasih.";
+    window.open(`https://wa.me/+6282231669053?text=${encodeURIComponent(msg)}`, "_blank"); 
   }
 
   function updateTimerUI() {
@@ -915,12 +934,14 @@
               vipPanel.style.display = 'block';
               vipPromo.classList.add('hidden');
               vipActive.classList.remove('hidden');
+              
               vipPanel.className = "tech-panel p-6 relative overflow-hidden group border-t-4 border-t-emerald-500 shadow-[0_10px_40px_rgba(16,185,129,0.2)] bg-gradient-to-b from-emerald-900/20 to-slate-900/90";
               if(orderLimitBtn) orderLimitBtn.style.display = 'none';
           } else {
               vipPanel.style.display = 'block';
               vipPromo.classList.remove('hidden');
               vipActive.classList.add('hidden');
+              
               vipPanel.className = "tech-panel vip-panel p-6 relative overflow-hidden group";
               if(orderLimitBtn) orderLimitBtn.style.display = 'block';
           }
@@ -1075,11 +1096,6 @@
       switchTab('home', document.querySelector('.nav-item'));
       refreshDashboardUI(); showToast("🔓 Access Granted! Sesi diinisialisasi.");
     } else showToast("❌ Username atau Password tidak valid.");
-  }
-
-  function handleForgotPassword() { 
-    const msg = "Bypass Protocol: Halo Admin, saya lupa akses akun panel saya.\n\nMohon bantu cek dengan data berikut:\n- Username: (Isi dengan username Anda, contoh: Budi123)\n- No WA: (Isi dengan nomor WA saat daftar, contoh: 081234567890)\n\nTerima kasih.";
-    window.open(`https://wa.me/+6282231669053?text=${encodeURIComponent(msg)}`, "_blank"); 
   }
 
   function logoutAccount() {
