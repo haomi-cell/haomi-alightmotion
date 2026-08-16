@@ -35,6 +35,7 @@
             'grid-move': 'gridMove 20s linear infinite',
             'alert-pulse': 'alertPulse 1.5s ease-in-out infinite',
             'matrix-scan': 'matrixScan 8s linear infinite',
+            'spin-slow': 'spin 3s linear infinite',
           },
           keyframes: {
             glowPulse: { '0%, 100%': { opacity: '1', filter: 'brightness(1)' }, '50%': { opacity: '0.8', filter: 'brightness(1.3)' } },
@@ -66,7 +67,6 @@
     
     .app-container { width: 100%; max-width: 500px; min-height: 100vh; position: relative; display: flex; flex-direction: column; z-index: 10; }
     
-    /* Panel Tech Glassmorphism */
     .tech-panel { 
         background: linear-gradient(145deg, rgba(15, 23, 42, 0.7), rgba(2, 6, 23, 0.8)); 
         backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
@@ -81,17 +81,13 @@
         background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.5), transparent); opacity: 0.5; 
     }
     
-    /* VIP Panel */
     .vip-panel {
         background: linear-gradient(145deg, rgba(30, 20, 0, 0.8), rgba(15, 10, 0, 0.9));
         border: 1px solid rgba(251, 191, 36, 0.4);
         box-shadow: 0 10px 40px rgba(245, 158, 11, 0.2), inset 0 1px 0 rgba(255,255,255,0.1);
     }
-    .vip-panel::before {
-        background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.8), transparent);
-    }
+    .vip-panel::before { background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.8), transparent); }
 
-    /* Inputs */
     input, select { 
         width: 100%; background: rgba(2, 6, 23, 0.6) !important; 
         border: 1px solid rgba(51, 65, 85, 0.7) !important; 
@@ -105,7 +101,6 @@
         transform: translateY(-1px);
     }
 
-    /* Bouncy Buttons */
     .btn-cyber { 
         background: linear-gradient(135deg, #6366f1 0%, #4338ca 100%); color: #ffffff; 
         border-radius: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; 
@@ -133,7 +128,6 @@
     }
     .btn-outline-cyber:active { transform: scale(0.95); }
 
-    /* Floating Bottom Nav */
     .bottom-nav { 
         position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); 
         width: calc(100% - 32px); max-width: 468px; 
@@ -154,7 +148,6 @@
     }
     .nav-item.active i { transform: translateY(-3px) scale(1.15); color: #818cf8; text-shadow: 0 0 15px rgba(99, 102, 241, 0.8); }
 
-    /* Butter Smooth Tab Transitions */
     .tab-pane { 
         display: none; opacity: 0; transform: translateY(20px); 
         transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1), transform 0.5s cubic-bezier(0.22, 1, 0.36, 1); 
@@ -168,7 +161,6 @@
         100% { opacity: 1; transform: translateY(0); }
     }
 
-    /* Modals */
     .modal-overlay { 
         position: fixed; inset: 0; background: rgba(2, 6, 23, 0.85); 
         backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); z-index: 999; 
@@ -190,7 +182,6 @@
     }
     .modal-overlay.active .modal-content { transform: translateY(0); }
     
-    /* Background FX */
     .grid-bg-container { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
     .grid-bg { 
         position: absolute; inset: -50%; background-size: 40px 40px; 
@@ -216,7 +207,6 @@
         left: 50%; top: 50%; transform: translate(-50%, -50%);
     }
     .data-node:nth-child(even)::after { content: '0'; }
-
   </style>
 </head>
 
@@ -226,7 +216,6 @@
   
   <div class="app-container pb-32">
     
-    <!-- Top Header Navigation -->
     <header class="pt-8 pb-5 px-6 flex items-center justify-between sticky top-0 z-40 bg-dark-900/80 backdrop-blur-xl border-b border-slate-800/80 shadow-sm transition-all">
       <div class="flex items-center gap-4">
         <div class="w-12 h-12 rounded-[18px] bg-gradient-to-br from-indigo-500 via-purple-500 to-indigo-700 flex items-center justify-center text-white text-xl font-bold shadow-[0_0_20px_rgba(99,102,241,0.4)] relative overflow-hidden group">
@@ -238,7 +227,7 @@
             <h1 class="text-xl font-extrabold text-white tracking-tight leading-none" id="headerUsernameDisplay">GUEST</h1>
             <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_#10b981]" title="System Online"></span>
           </div>
-          <p class="text-[9px] text-indigo-300 font-mono font-bold tracking-widest uppercase flex items-center gap-1.5"><i class="fa-solid fa-server text-[8px] animate-pulse"></i> Node Secure v2.1</p>
+          <p class="text-[9px] text-indigo-300 font-mono font-bold tracking-widest uppercase flex items-center gap-1.5"><i class="fa-solid fa-server text-[8px] animate-pulse"></i> Node Secure v3.0 Live</p>
         </div>
       </div>
       <button onclick="openProfileModal()" class="w-12 h-12 rounded-[18px] bg-slate-800/80 border border-slate-700 text-slate-300 flex items-center justify-center transition-all shadow-sm active:scale-90 hover:shadow-[0_0_15px_rgba(255,255,255,0.1)]">
@@ -250,12 +239,11 @@
       
       <div id="tabContentHome" class="tab-pane active space-y-6">
         
-        <!-- PANEL STATISTIK UTAMA -->
         <div class="tech-panel p-6">
           <div class="flex justify-between items-start mb-5">
             <div>
               <div class="inline-flex items-center gap-1.5 bg-emerald-950/40 text-emerald-400 border border-emerald-500/30 px-2.5 py-1 rounded-md text-[9px] font-mono font-bold uppercase tracking-widest shadow-[0_0_10px_rgba(16,185,129,0.1)] mb-2">
-                  <i class="fa-solid fa-shield-check"></i> AES-256 SECURED
+                  <i class="fa-solid fa-shield-check"></i> CLOUD SYNCED
               </div>
               <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest font-mono">Daya Sistem (Limit)</p>
             </div>
@@ -276,7 +264,6 @@
             </div>
           </div>
 
-          <!-- TOMBOL TAMBAH LIMIT ECERAN (HILANG JIKA VIP) -->
           <div id="orderLimitBtnContainer" class="border-b border-slate-700/80 pb-5 mb-5">
               <button onclick="orderMoreLimit()" class="w-full btn-outline-cyber py-3 text-[11px] !border-sky-500/30 !text-sky-400 hover:!bg-sky-900/30 tracking-widest uppercase font-bold shadow-none active:scale-95 transition-transform bg-sky-950/20">
                   <i class="fa-solid fa-cart-plus mr-1"></i> Beli Tambahan Limit (Ecer)
@@ -289,17 +276,15 @@
               <p class="text-xl font-black text-white font-mono tracking-tight"><span id="deviceLoginCountDisplay">0</span> <span class="text-[9px] font-medium text-slate-400 ml-1">Koneksi</span></p>
             </div>
             <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800 shadow-inner flex flex-col justify-center">
-              <p class="text-[9px] text-slate-500 font-mono font-bold uppercase mb-1.5 flex items-center gap-1.5"><i class="fa-solid fa-database text-indigo-400"></i> Total Entitas</p>
+              <p class="text-[9px] text-slate-500 font-mono font-bold uppercase mb-1.5 flex items-center gap-1.5"><i class="fa-solid fa-database text-indigo-400"></i> Cloud Entitas</p>
               <p class="text-xl font-black text-white font-mono tracking-tight"><span id="totalUserCountDisplay">0</span> <span class="text-[9px] font-medium text-slate-400 ml-1">Terdaftar</span></p>
             </div>
           </div>
         </div>
 
-        <!-- PANEL VIP & PREMIUM -->
         <div id="vipPanelContainer" class="tech-panel vip-panel p-6 relative overflow-hidden group">
             <div class="absolute -right-10 -top-10 w-40 h-40 bg-amber-500/20 rounded-full blur-3xl pointer-events-none group-hover:bg-amber-500/30 transition-all"></div>
             
-            <!-- Tampilan Promo VIP -->
             <div id="vipPanelPromo" class="relative z-10">
                 <div class="flex justify-between items-center mb-2">
                     <h3 class="text-[16px] font-black text-white tracking-wider flex items-center gap-2 font-mono uppercase">
@@ -313,20 +298,18 @@
                 </button>
             </div>
 
-            <!-- Tampilan Sudah Premium (VIP AKTIF) -->
             <div id="vipPanelActive" class="relative z-10 hidden text-center py-3">
                 <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500/30 to-teal-900/40 border border-emerald-400/50 mb-4 shadow-[0_0_30px_rgba(16,185,129,0.4)] relative">
                     <div class="absolute inset-0 bg-emerald-400/20 rounded-2xl animate-ping opacity-75"></div>
                     <i class="fa-solid fa-crown text-emerald-400 text-3xl drop-shadow-[0_0_15px_rgba(52,211,153,1)] z-10 relative"></i>
                 </div>
                 <h3 class="text-[16px] font-black text-white tracking-wider font-mono uppercase mb-2 flex justify-center items-center gap-2 drop-shadow-md">
-                    <i class="fa-solid fa-shield-check text-emerald-400"></i> SULTAN PREMIUM AKTIF
+                    <i class="fa-solid fa-shield-check text-emerald-400"></i> ANGGOTA PREMIUM
                 </h3>
                 <p class="text-[10px] text-emerald-200 font-bold font-mono uppercase tracking-widest bg-emerald-950/60 inline-block px-4 py-1.5 rounded-xl border border-emerald-500/40 shadow-inner">Akses Bebas Tanpa Batas 24/7</p>
             </div>
         </div>
 
-        <!-- PANEL TOP LIMIT (LEADERBOARD) -->
         <div class="tech-panel p-6 relative border-t-2 border-t-amber-500/60 overflow-visible">
           <div class="absolute -top-10 -left-10 w-40 h-40 bg-amber-500/5 rounded-full blur-3xl pointer-events-none"></div>
           <div class="flex items-center justify-between mb-5 relative z-10">
@@ -336,15 +319,14 @@
               </h3>
               <p class="text-[10px] text-slate-400 font-mono mt-1 uppercase tracking-widest">Sultan Sistem Saat Ini</p>
             </div>
-            <div class="bg-slate-900/80 border border-slate-700 px-2.5 py-1 rounded-md text-[9px] font-mono text-slate-300 shadow-inner flex items-center gap-1.5"><i class="fa-solid fa-rotate text-sky-400 animate-spin-slow"></i> Live</div>
+            <div class="bg-slate-900/80 border border-slate-700 px-2.5 py-1 rounded-md text-[9px] font-mono text-slate-300 shadow-inner flex items-center gap-1.5"><i class="fa-solid fa-rotate text-sky-400 animate-spin-slow"></i> Live DB</div>
           </div>
           
           <div id="topLimitList" class="space-y-3 relative z-10">
-            <div class="text-center text-[10px] text-slate-500 py-4 font-mono"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Sinkronisasi data...</div>
+            <div class="text-center text-[10px] text-slate-500 py-4 font-mono"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Sinkronisasi Cloud DB...</div>
           </div>
         </div>
 
-        <!-- PANEL KONTAK -->
         <div class="grid grid-cols-2 gap-4">
           <a href="https://whatsapp.com/channel/0029Vaf0GfTJ3jv2hhFz1j2K" target="_blank" class="tech-panel py-4 px-4 flex flex-col items-center justify-center gap-2.5 no-underline active:scale-95 transition-transform">
             <div class="w-10 h-10 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shadow-inner">
@@ -360,7 +342,6 @@
           </a>
         </div>
 
-        <!-- TOMBOL ADMIN (MUNCUL JIKA ROLE OWNER) -->
         <div id="ownerMenuButtonContainer" class="hidden pb-2 mt-2">
           <button onclick="openOwnerDashboardModal()" class="w-full btn-cyber py-4 text-[13px] !bg-gradient-to-r from-rose-700 to-rose-600 !border-rose-500 shadow-[0_10px_30px_rgba(225,29,72,0.3)]">
             <i class="fa-solid fa-terminal text-rose-200"></i> <span class="ml-1 tracking-wider uppercase font-mono font-bold">Akses Root Console</span>
@@ -567,7 +548,7 @@
     </nav>
   </div>
 
-  <div id="legalWarningModal" class="modal-overlay z-[1000]">
+  <div id="legalWarningModal" class="modal-overlay z-[1000] active">
     <div class="modal-content !border-rose-500/60 !bg-rose-950/40 backdrop-blur-2xl shadow-[0_0_60px_rgba(225,29,72,0.3)] pb-8 !max-w-md mx-auto">
       <div class="w-16 h-16 rounded-full bg-rose-900/50 border-2 border-rose-500 flex items-center justify-center text-rose-500 text-3xl mb-6 mx-auto animate-alert-pulse shadow-[0_0_20px_rgba(225,29,72,0.5)]">
         <i class="fa-solid fa-triangle-exclamation"></i>
@@ -606,7 +587,6 @@
         <button id="tabBtnRegister" onclick="switchAuthTab('register')" class="flex-1 py-3.5 text-[12px] font-bold rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-all active:scale-95">Buat Akun</button>
       </div>
 
-      <!-- FORM LOGIN -->
       <div id="formLogin" class="space-y-4 animate-fade-in-up">
         <div class="relative">
           <i class="fa-solid fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
@@ -625,7 +605,6 @@
         </div>
       </div>
 
-      <!-- FORM REGISTER -->
       <div id="formRegister" class="space-y-3 hidden animate-fade-in-up">
         <div class="relative">
           <i class="fa-solid fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
@@ -746,25 +725,43 @@
         </div>
         
         <div class="flex justify-between items-center px-1">
-          <span class="text-[11px] font-bold text-slate-300 font-mono uppercase tracking-wider flex items-center gap-2"><i class="fa-solid fa-database text-indigo-400 text-sm"></i> Database Nodes</span>
-          <button onclick="loadUsersAdmin()" class="text-[10px] font-bold font-mono text-indigo-300 bg-indigo-900/40 border border-indigo-500/40 px-3 py-1.5 rounded-lg hover:bg-indigo-900/70 transition-all active:scale-95 shadow-sm"><i class="fa-solid fa-rotate mr-1.5"></i> Sync DB</button>
+          <span class="text-[11px] font-bold text-slate-300 font-mono uppercase tracking-wider flex items-center gap-2"><i class="fa-solid fa-database text-indigo-400 text-sm"></i> Global Data Nodes</span>
+          <button onclick="loadUsersAdmin()" class="text-[10px] font-bold font-mono text-indigo-300 bg-indigo-900/40 border border-indigo-500/40 px-3 py-1.5 rounded-lg hover:bg-indigo-900/70 transition-all active:scale-95 shadow-sm"><i class="fa-solid fa-cloud text-indigo-400 mr-1.5"></i> Live Sync</button>
         </div>
       </div>
       
       <div id="adminUserListContainer" class="space-y-4 max-h-[55vh] overflow-y-auto pr-2 custom-scrollbar pb-4">
-        <!-- List goes here via JS -->
       </div>
     </div>
   </div>
 
   <div id="toast" class="toast-modern fixed top-6 left-1/2 -translate-x-1/2 scale-95 opacity-0 pointer-events-none transition-all duration-400 cubic-bezier(0.34, 1.56, 0.64, 1) bg-slate-900/95 backdrop-blur-md border border-slate-700 text-white px-5 py-3.5 rounded-2xl font-medium text-[12px] shadow-[0_15px_40px_rgba(0,0,0,0.6)] z-[9999] flex items-center gap-3 max-w-[90vw] font-mono"></div>
 
-<script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+  import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+  import { getFirestore, doc, setDoc, deleteDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+  const appId = typeof __app_id !== 'undefined' ? __app_id : 'haomi-vip-dashboard-v3';
+  let firebaseConfig = {};
+  try {
+      const configStr = typeof __firebase_config !== 'undefined' ? __firebase_config : "{}";
+      firebaseConfig = JSON.parse(configStr);
+  } catch(e) { console.warn("Missing cloud config"); }
+
+  let app, db, auth;
+  try {
+      app = initializeApp(firebaseConfig);
+      db = getFirestore(app);
+      auth = getAuth(app);
+  } catch(e) { console.error("Cloud Error", e); }
+
   const OWNER_SECRET_KEY = "HAOMI_XML"; 
   let clientRealIp = "127.0.0.1";
   let activeInjectEmail = "";
   let currentCaptchaAnswer = 0; 
   let limitResetInterval = null;
+  let isAppInitialized = false;
 
   let userDeviceId = localStorage.getItem("secure_device_hash");
   if (!userDeviceId) {
@@ -772,9 +769,74 @@
     localStorage.setItem("secure_device_hash", userDeviceId);
   }
 
-  const DB_API_URL = "/api/db"; 
   let usersDB = []; 
   let currentUser = null; 
+
+  function getDocId(username) {
+      return username.toLowerCase().replace(/[^a-z0-9]/g, '_');
+  }
+
+  async function saveUserToDB(userObj) {
+      if (!auth || !auth.currentUser) return;
+      try {
+          const userRef = doc(db, 'artifacts', appId, 'public', 'data', 'users', getDocId(userObj.username));
+          await setDoc(userRef, userObj);
+      } catch(e) { console.error("Gagal simpan data cloud", e); }
+  }
+
+  async function deleteUserFromDB(username) {
+      if (!auth || !auth.currentUser) return;
+      try {
+          const userRef = doc(db, 'artifacts', appId, 'public', 'data', 'users', getDocId(username));
+          await deleteDoc(userRef);
+      } catch(e) { console.error("Gagal hapus data cloud", e); }
+  }
+
+  async function createOwner() {
+    const now = new Date();
+    const ownerData = { 
+        username: 'owner', password: OWNER_SECRET_KEY, role: 'admin', limit: 99999, ip: 'localhost', deviceId: 'MASTER-NODE', isBlocked: false, usernameChanges: 0, phone: '082231669053',
+        joinDate: now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) + ' ' + now.toLocaleTimeString('id-ID') + ' WIB'
+    };
+    await saveUserToDB(ownerData);
+  }
+
+  async function initAuth() {
+      if (!auth) return;
+      try {
+          if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+              await signInWithCustomToken(auth, __initial_auth_token);
+          } else {
+              await signInAnonymously(auth);
+          }
+          startRealtimeListener();
+      } catch(e) {
+          console.error("Auth Cloud Error", e);
+          showToast("⚠️ Gagal koneksi ke Server Cloud.");
+      }
+  }
+
+  function startRealtimeListener() {
+      const usersRef = collection(db, 'artifacts', appId, 'public', 'data', 'users');
+      onSnapshot(usersRef, (snapshot) => {
+          usersDB = [];
+          snapshot.forEach((doc) => {
+              usersDB.push(doc.data());
+          });
+          
+          if (!usersDB.find(u => u.username === 'owner')) {
+              createOwner();
+          }
+          
+          handleAuthState();
+          
+          if (document.getElementById("ownerDashboardModal").classList.contains("active")) {
+              loadUsersAdmin();
+          }
+      }, (error) => {
+          console.error("Cloud Sync Error", error);
+      });
+  }
 
   window.addEventListener("DOMContentLoaded", async () => {
     try {
@@ -793,8 +855,8 @@
     }, 3000);
 
     createDataNodes();
-    await loadDatabase();
-    checkSession();
+    initVisualGenerator();
+    await initAuth();
   });
 
   function createDataNodes() {
@@ -811,32 +873,7 @@
       }
   }
 
-  async function loadDatabase() {
-    try {
-      const res = await fetch(DB_API_URL);
-      if(res.ok) {
-        usersDB = await res.json();
-        localStorage.setItem("local_users_backup_v2", JSON.stringify(usersDB));
-      } else throw new Error("API File DB Tidak Ditemukan");
-    } catch(e) {
-      usersDB = JSON.parse(localStorage.getItem("local_users_backup_v2") || "[]");
-    }
-    
-    if (!usersDB.find(u => u.username === 'owner')) {
-      const now = new Date();
-      usersDB.push({ 
-        username: 'owner', password: OWNER_SECRET_KEY, role: 'admin', limit: 99999, ip: 'localhost', deviceId: 'MASTER-NODE', isBlocked: false, usernameChanges: 0, phone: '082231669053',
-        joinDate: now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) + ' ' + now.toLocaleTimeString('id-ID') + ' WIB'
-      });
-    }
-  }
-
-  async function saveDatabase() {
-    localStorage.setItem("local_users_backup_v2", JSON.stringify(usersDB));
-    try { await fetch(DB_API_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(usersDB) }); } catch(e) {} 
-  }
-
-  function saveSession(user) { currentUser = user; localStorage.setItem("logged_in_user_v2", JSON.stringify(user)); }
+  function saveSession(user) { localStorage.setItem("logged_in_user_v2", JSON.stringify(user)); }
 
   function processWeeklyReset(dbUser) {
     if (dbUser.role === 'admin') return false;
@@ -852,33 +889,53 @@
     return updated;
   }
 
-  function checkSession() {
+  function handleAuthState() {
     const saved = localStorage.getItem("logged_in_user_v2");
     if (saved) {
-      currentUser = JSON.parse(saved);
-      let dbUser = usersDB.find(u => u.username === currentUser.username && u.password === currentUser.password);
+      const sessionData = JSON.parse(saved);
+      let dbUser = usersDB.find(u => u.username === sessionData.username && u.password === sessionData.password);
+      
       if(dbUser) {
-        if(dbUser.isBlocked) { logoutAccount(); return showToast("🚫 Sesi ditolak. IP/Perangkat masuk daftar hitam."); }
-        if(processWeeklyReset(dbUser)) saveDatabase(); 
+        if(dbUser.isBlocked) { 
+            logoutAccount(); 
+            return showToast("🚫 Sesi ditolak. Akun Anda diblokir Admin."); 
+        }
+        
+        if(processWeeklyReset(dbUser)) { 
+            saveUserToDB(dbUser); 
+        } 
         
         currentUser = dbUser;
-        document.getElementById("legalWarningModal").classList.remove("active");
-        document.getElementById("authModal").classList.remove("active");
         
+        if (!isAppInitialized) {
+            document.getElementById("legalWarningModal").classList.remove("active");
+            document.getElementById("authModal").classList.remove("active");
+            switchTab('home', document.querySelectorAll('.nav-item')[0]);
+            isAppInitialized = true;
+        }
+
         document.getElementById("headerUsernameDisplay").textContent = currentUser.username;
         if(currentUser.role === 'admin') {
             document.getElementById("ownerMenuButtonContainer").classList.remove("hidden");
             document.getElementById("headerUsernameDisplay").classList.add("text-rose-500");
+        } else {
+            document.getElementById("ownerMenuButtonContainer").classList.add("hidden");
+            document.getElementById("headerUsernameDisplay").classList.remove("text-rose-500");
         }
-        switchTab('home', document.querySelector('.nav-item')); 
-      } else logoutAccount();
+      } else {
+        if (isAppInitialized) showToast("🔒 Sesi berakhir (Data diubah dari luar).");
+        logoutAccount();
+      }
     } else {
-      document.getElementById("legalWarningModal").classList.add("active");
+      if (!isAppInitialized) {
+          document.getElementById("legalWarningModal").classList.add("active");
+          isAppInitialized = true;
+      }
     }
     refreshDashboardUI();
   }
   
-  function acceptLegalAndShowAuth() {
+  window.acceptLegalAndShowAuth = function() {
       document.getElementById("legalWarningModal").classList.remove("active");
       setTimeout(() => {
          document.getElementById("authModal").classList.add("active");
@@ -886,20 +943,20 @@
       }, 300);
   }
   
-  function buyPermanentAccess() {
+  window.buyPermanentAccess = function() {
       if(!currentUser) return showToast("Silakan login terlebih dahulu.");
-      const msg = `Bypass Protocol: Halo Admin, saya ingin membeli akses *Limit Permanen / Unlimited*.\n\n- Username: *${currentUser.username}*\n- No WA: *${currentUser.phone || '-'}*\n\nMohon info pembayaran dan proses aktivasinya.`;
+      const msg = `Bypass Protocol: Halo Admin, saya ingin membeli akses *Limit Permanen / VIP*.\n\n- Username: *${currentUser.username}*\n- No WA: *${currentUser.phone || '-'}*\n\nMohon info pembayaran dan aktivasinya.`;
       window.open(`https://wa.me/+6282231669053?text=${encodeURIComponent(msg)}`, "_blank");
   }
 
-  function orderMoreLimit() {
+  window.orderMoreLimit = function() {
       if(!currentUser) return;
-      const msg = `Bypass Protocol: Halo Admin, saya ingin membeli tambahan limit eceran.\n\n- Username: *${currentUser.username}*\n- No WA: *${currentUser.phone || '-'}*\n- Beli Berapa Limit: (Isi jumlah, misal: 50 atau 100)\n\nMohon info harganya.`;
+      const msg = `Bypass Protocol: Halo Admin, saya ingin beli tambahan limit.\n\n- Username: *${currentUser.username}*\n- No WA: *${currentUser.phone || '-'}*\n- Beli Berapa Limit: (Isi jumlah, contoh: 50 / 100)\n\nMohon info harganya.`;
       window.open(`https://wa.me/+6282231669053?text=${encodeURIComponent(msg)}`, "_blank");
   }
 
-  function handleForgotPassword() { 
-    const msg = "Bypass Protocol: Halo Admin, saya lupa akses akun panel saya.\n\nMohon bantu cek dengan data berikut:\n- Username: (Isi dengan username Anda yang lupa)\n- No WA: (Isi dengan nomor WA saat mendaftar)\n\nTerima kasih.";
+  window.handleForgotPassword = function() { 
+    const msg = "Bypass Protocol: Halo Admin, saya lupa akses akun panel saya.\n\n- Username: (Isi username yang didaftarkan)\n- No WA: (Isi dengan nomor WA saat mendaftar)\n\nMohon bantuannya.";
     window.open(`https://wa.me/+6282231669053?text=${encodeURIComponent(msg)}`, "_blank"); 
   }
 
@@ -952,7 +1009,7 @@
       if(currentUser.limit <= 0 && currentUser.resetTargetTime) {
           limitResetInterval = setInterval(() => {
               let dbUser = usersDB.find(u => u.username === currentUser.username);
-              if(dbUser && processWeeklyReset(dbUser)) { saveDatabase(); currentUser = dbUser; refreshDashboardUI(); } 
+              if(dbUser && processWeeklyReset(dbUser)) { saveUserToDB(dbUser); currentUser = dbUser; refreshDashboardUI(); } 
               else updateTimerUI();
           }, 60000); 
       }
@@ -992,22 +1049,34 @@
     container.innerHTML = html;
   }
 
-  function useLimit(amount = 1) {
+  async function useLimit(amount = 1) {
     if (!currentUser) { showToast("⚠️ Anda belum login ke sistem."); return false; }
     if (currentUser.role === 'admin') return true; 
     let dbUser = usersDB.find(u => u.username === currentUser.username); if (!dbUser) return false;
-    if(processWeeklyReset(dbUser)) { saveDatabase(); currentUser = dbUser; refreshDashboardUI(); }
+    
+    if(processWeeklyReset(dbUser)) { await saveUserToDB(dbUser); currentUser = dbUser; refreshDashboardUI(); }
     if (dbUser.limit < amount) {
-      if(!dbUser.resetTargetTime) { processWeeklyReset(dbUser); saveDatabase(); refreshDashboardUI(); }
-      showToast("❌ Eksekusi ditolak! Sisa limit sistem habis."); return false;
+      if(!dbUser.resetTargetTime) { processWeeklyReset(dbUser); await saveUserToDB(dbUser); refreshDashboardUI(); }
+      showToast("❌ Eksekusi ditolak! Sisa limit habis."); return false;
     }
-    dbUser.limit -= amount; if(dbUser.limit <= 0 && !dbUser.resetTargetTime) processWeeklyReset(dbUser);
-    currentUser = dbUser; saveDatabase(); saveSession(currentUser); refreshDashboardUI(); return true;
+    
+    dbUser.limit -= amount; 
+    if(dbUser.limit <= 0 && !dbUser.resetTargetTime) processWeeklyReset(dbUser);
+    
+    await saveUserToDB(dbUser); 
+    currentUser = dbUser;
+    return true;
   }
-  function refundLimit(amount = 1) {
+  
+  async function refundLimit(amount = 1) {
     if (currentUser && currentUser.role !== 'admin') {
       let dbUser = usersDB.find(u => u.username === currentUser.username);
-      if (dbUser) { dbUser.limit += amount; if(dbUser.limit > 0) delete dbUser.resetTargetTime; currentUser = dbUser; saveDatabase(); saveSession(currentUser); refreshDashboardUI(); }
+      if (dbUser) { 
+          dbUser.limit += amount; 
+          if(dbUser.limit > 0) delete dbUser.resetTargetTime; 
+          await saveUserToDB(dbUser);
+          currentUser = dbUser; 
+      }
     }
   }
 
@@ -1017,7 +1086,7 @@
     const input = document.getElementById("regCaptcha"); if(input) input.value = "";
   }
 
-  function togglePasswordVisibility(inputId, btnEl) {
+  window.togglePasswordVisibility = function(inputId, btnEl) {
     const input = document.getElementById(inputId);
     if (!input) return;
     if (input.type === 'password') { 
@@ -1029,7 +1098,7 @@
     }
   }
 
-  function switchAuthTab(tab) {
+  window.switchAuthTab = function(tab) {
     document.getElementById("formLogin").classList.add("hidden"); document.getElementById("formRegister").classList.add("hidden");
     document.getElementById("tabBtnLogin").className = "flex-1 py-3.5 text-[12px] font-bold rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-all active:scale-95";
     document.getElementById("tabBtnRegister").className = "flex-1 py-3.5 text-[12px] font-bold rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-all active:scale-95";
@@ -1046,16 +1115,19 @@
     }
   }
 
-  function handleRegister() {
+  window.handleRegister = async function() {
     const user = document.getElementById("regUsername").value.trim(); const phone = document.getElementById("regPhone").value.trim();
     const pass = document.getElementById("regPassword").value; const captchaInput = parseInt(document.getElementById("regCaptcha").value);
 
     if (!user || !pass || !phone) return showToast("⚠️ Form registrasi belum lengkap.");
+    if (/[^a-zA-Z0-9_]/.test(user)) return showToast("⚠️ Username hanya boleh huruf, angka, dan garis bawah (_).");
     if (isNaN(captchaInput) || captchaInput !== currentCaptchaAnswer) { generateMathCaptcha(); return showToast("❌ Validasi Anti-Bot gagal. Hitung dengan benar."); }
+    
     const isIpBlocked = usersDB.some(u => (u.ip === clientRealIp || u.deviceId === userDeviceId) && u.isBlocked);
     if (isIpBlocked) return showToast("🚫 Sesi Ditolak! Node Perangkat Masuk Daftar Hitam.");
     if (user.length < 3) return showToast("⚠️ Username minimal 3 karakter.");
     if (phone.length < 10 || phone.length > 15) return showToast("⚠️ Nomor WA harus 10-15 digit angka.");
+    
     if (usersDB.find(u => u.username.toLowerCase() === user.toLowerCase())) return showToast("❌ Username sudah terdaftar di sistem.");
     if (usersDB.find(u => u.phone === phone)) return showToast("❌ Nomor WA ini telah digunakan.");
     
@@ -1063,18 +1135,19 @@
     if (accountsFromThisDevice.length >= 2) return showToast("🚫 Ditolak! Limit device tercapai (Maks 2 Profil/HP).");
     
     const now = new Date();
-    usersDB.push({
+    const newUser = {
       username: user, password: pass, phone: phone, role: 'member', limit: 5, ip: clientRealIp, deviceId: userDeviceId,
       lastLogin: now.toLocaleDateString('id-ID') + ' ' + now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB',
       joinDate: now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) + ' ' + now.toLocaleTimeString('id-ID') + ' WIB',
       isBlocked: false, usernameChanges: 0
-    });
+    };
     
-    saveDatabase(); refreshDashboardUI(); showToast("✅ Profil berhasil dibuat! Silakan Login.");
+    await saveUserToDB(newUser);
+    showToast("✅ Profil Cloud dibuat! Silakan Login.");
     switchAuthTab('login'); document.getElementById("loginUsername").value = user; document.getElementById("loginPassword").value = pass; document.getElementById("regCaptcha").value = "";
   }
 
-  function handleLogin() {
+  window.handleLogin = async function() {
     const user = document.getElementById("loginUsername").value.trim(); const pass = document.getElementById("loginPassword").value;
     if (!user || !pass) return showToast("⚠️ Kredensial kosong.");
     const isIpBlocked = usersDB.some(u => (u.ip === clientRealIp || u.deviceId === userDeviceId) && u.isBlocked);
@@ -1085,30 +1158,33 @@
       if(foundUser.isBlocked) return showToast("🚫 Akun Anda telah dinonaktifkan Admin.");
       foundUser.ip = clientRealIp; foundUser.deviceId = userDeviceId; 
       foundUser.lastLogin = new Date().toLocaleDateString('id-ID') + ' ' + new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB';
-      saveDatabase(); saveSession(foundUser);
       
-      document.getElementById("authModal").classList.remove("active");
-      document.getElementById("headerUsernameDisplay").textContent = foundUser.username;
-      if(foundUser.role === 'admin') {
-          document.getElementById("ownerMenuButtonContainer").classList.remove("hidden");
-          document.getElementById("headerUsernameDisplay").classList.add("text-rose-500");
-      }
-      switchTab('home', document.querySelector('.nav-item'));
-      refreshDashboardUI(); showToast("🔓 Access Granted! Sesi diinisialisasi.");
+      await saveUserToDB(foundUser);
+      saveSession(foundUser);
+      isAppInitialized = false; 
+      handleAuthState();
+      showToast("🔓 Access Granted! Sesi diinisialisasi.");
     } else showToast("❌ Username atau Password tidak valid.");
   }
 
-  function logoutAccount() {
-    localStorage.removeItem("logged_in_user_v2"); currentUser = null;
+  window.logoutAccount = function() {
+    localStorage.removeItem("logged_in_user_v2"); 
+    currentUser = null;
+    isAppInitialized = false;
+    
     document.getElementById("profileModal").classList.remove("active"); 
     document.getElementById("legalWarningModal").classList.add("active"); 
-    document.getElementById("ownerMenuButtonContainer").classList.add("hidden"); document.getElementById("headerUsernameDisplay").classList.remove("text-rose-500");
+    document.getElementById("ownerDashboardModal").classList.remove("active");
+    document.getElementById("ownerMenuButtonContainer").classList.add("hidden"); 
+    document.getElementById("headerUsernameDisplay").classList.remove("text-rose-500");
+    document.getElementById("headerUsernameDisplay").textContent = "GUEST";
+    
     if(limitResetInterval) clearInterval(limitResetInterval);
     generateMathCaptcha();
     showToast("🔒 Sesi telah diputus secara aman.");
   }
 
-  function openProfileModal() {
+  window.openProfileModal = function() {
     if(!currentUser) return;
     document.getElementById("profileUsername").textContent = currentUser.username;
     if(currentUser.role === 'admin') {
@@ -1124,40 +1200,52 @@
     document.getElementById("profileUsernameChanges").textContent = Math.max(0, 3 - (currentUser.usernameChanges || 0));
     document.getElementById("profileModal").classList.add("active");
   }
-  function closeProfileModal() { document.getElementById("profileModal").classList.remove("active"); }
+  window.closeProfileModal = function() { document.getElementById("profileModal").classList.remove("active"); }
 
-  function handleUpdateUsername() {
+  window.handleUpdateUsername = async function() {
     const newUsername = document.getElementById("newUsernameInput").value.trim();
     if (!newUsername) return showToast("⚠️ Input nama kosong.");
+    if (/[^a-zA-Z0-9_]/.test(newUsername)) return showToast("⚠️ Hanya boleh huruf, angka & garis bawah(_).");
     if (newUsername.length < 3) return showToast("⚠️ Minimal 3 karakter.");
     let changesMade = currentUser.usernameChanges || 0;
     if (changesMade >= 3) return showToast("❌ Batas ganti identitas (3x) telah habis.");
     if (usersDB.find(u => u.username.toLowerCase() === newUsername.toLowerCase())) return showToast("❌ Identitas sudah digunakan entitas lain.");
     
-    let idx = usersDB.findIndex(u => u.username === currentUser.username);
-    if (idx > -1) {
-      usersDB[idx].username = newUsername; usersDB[idx].usernameChanges = changesMade + 1;
-      saveDatabase(); saveSession(usersDB[idx]);
+    let dbUser = usersDB.find(u => u.username === currentUser.username);
+    if (dbUser) {
+      const oldUsername = dbUser.username;
+      const newUserObj = { ...dbUser, username: newUsername, usernameChanges: changesMade + 1 };
+      
+      await deleteUserFromDB(oldUsername);
+      await saveUserToDB(newUserObj);
+      saveSession(newUserObj);
+      
       document.getElementById("profileUsername").textContent = newUsername; document.getElementById("headerUsernameDisplay").textContent = newUsername; document.getElementById("newUsernameInput").value = "";
-      document.getElementById("profileUsernameChanges").textContent = 3 - usersDB[idx].usernameChanges;
-      refreshDashboardUI(); showToast(`✅ Identitas diperbarui. Sisa jatah: ${3 - usersDB[idx].usernameChanges}x`);
+      document.getElementById("profileUsernameChanges").textContent = 3 - newUserObj.usernameChanges;
+      showToast(`✅ Identitas diperbarui. Sisa jatah: ${3 - newUserObj.usernameChanges}x`);
     }
   }
 
-  function handleUpdatePassword() {
+  window.handleUpdatePassword = async function() {
     const newPassword = document.getElementById("newPasswordInput").value;
     if (!newPassword || newPassword.length < 4) return showToast("⚠️ Sandi baru minimal 4 karakter.");
-    let idx = usersDB.findIndex(u => u.username === currentUser.username);
-    if (idx > -1) { usersDB[idx].password = newPassword; saveDatabase(); saveSession(usersDB[idx]); document.getElementById("newPasswordInput").value = ""; showToast("✅ Keamanan enkripsi kunci diperbarui!"); }
+    let dbUser = usersDB.find(u => u.username === currentUser.username);
+    if (dbUser) { 
+        dbUser.password = newPassword; 
+        await saveUserToDB(dbUser); 
+        saveSession(dbUser); 
+        document.getElementById("newPasswordInput").value = ""; 
+        showToast("✅ Keamanan enkripsi sandi diperbarui!"); 
+    }
   }
 
-  function openOwnerDashboardModal() {
+  window.openOwnerDashboardModal = function() {
     if (!currentUser || currentUser.role !== 'admin') return showToast("❌ Akses Root Ditolak.");
     document.getElementById("ownerDashboardModal").classList.add("active"); document.getElementById("adminSearchInput").value = ""; loadUsersAdmin();
   }
-  function closeOwnerDashboard() { document.getElementById("ownerDashboardModal").classList.remove("active"); }
+  window.closeOwnerDashboard = function() { document.getElementById("ownerDashboardModal").classList.remove("active"); }
 
-  function loadUsersAdmin() {
+  window.loadUsersAdmin = function() {
     const container = document.getElementById("adminUserListContainer"); 
     const query = (document.getElementById("adminSearchInput")?.value || "").toLowerCase();
     let normalUsers = usersDB.filter(u => u.role !== 'admin');
@@ -1198,23 +1286,23 @@
     });
   }
 
-  function adminAddLimit(username, amount) { let idx = usersDB.findIndex(u => u.username === username); if (idx > -1) { usersDB[idx].limit += amount; if(usersDB[idx].limit > 0) delete usersDB[idx].resetTargetTime; saveDatabase(); loadUsersAdmin(); refreshDashboardUI(); showToast(`[SYS] Berhasil menambahkan daya ke ${username}.`); } }
-  function adminToggleBlockUser(username) { let idx = usersDB.findIndex(u => u.username === username); if (idx > -1) { usersDB[idx].isBlocked = !usersDB[idx].isBlocked; saveDatabase(); loadUsersAdmin(); showToast(usersDB[idx].isBlocked ? `🚫 Node ${username} terisolasi!` : `✅ Firewall dibuka.`); } }
-  function adminDeleteUser(username) { usersDB = usersDB.filter(u => u.username !== username); saveDatabase(); loadUsersAdmin(); refreshDashboardUI(); showToast(`[SYS] Entitas dihapus permanen.`); }
-  function adminLoginAsUser(username) { let targetUser = usersDB.find(u => u.username === username); if(targetUser) { saveSession(targetUser); closeOwnerDashboard(); checkSession(); showToast(`🔄 Sesi beralih ke: ${username}`); } }
+  window.adminAddLimit = async function(username, amount) { let dbUser = usersDB.find(u => u.username === username); if (dbUser) { dbUser.limit += amount; if(dbUser.limit > 0) delete dbUser.resetTargetTime; await saveUserToDB(dbUser); showToast(`[SYS] Berhasil menambahkan daya ke ${username}.`); } }
+  window.adminToggleBlockUser = async function(username) { let dbUser = usersDB.find(u => u.username === username); if (dbUser) { dbUser.isBlocked = !dbUser.isBlocked; await saveUserToDB(dbUser); showToast(dbUser.isBlocked ? `🚫 Node ${username} terisolasi!` : `✅ Firewall dibuka.`); } }
+  window.adminDeleteUser = async function(username) { await deleteUserFromDB(username); showToast(`[SYS] Entitas dihapus permanen dari Cloud.`); }
+  window.adminLoginAsUser = function(username) { let targetUser = usersDB.find(u => u.username === username); if(targetUser) { saveSession(targetUser); closeOwnerDashboard(); isAppInitialized = false; handleAuthState(); showToast(`🔄 Sesi beralih ke: ${username}`); } }
 
-  async function handleSendMagicLink() {
-    if (!useLimit(1)) return; 
-    const email = document.getElementById("inputEmail").value.trim(); if (!email || !email.includes("@")) { refundLimit(1); return showToast("❌ Format email tidak memenuhi standar."); }
+  window.handleSendMagicLink = async function() {
+    if (!(await useLimit(1))) return; 
+    const email = document.getElementById("inputEmail").value.trim(); if (!email || !email.includes("@")) { await refundLimit(1); return showToast("❌ Format email tidak memenuhi standar."); }
     showToast("📡 Transmit paket magic link berjalan...");
     try {
       const res = await fetch("/api/send", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email }) });
       if (!res.ok) throw new Error("Gagal");
       activeInjectEmail = email; document.getElementById("stepEmailBox").classList.add("hidden"); document.getElementById("stepVerifyBox").classList.remove("hidden"); showToast("✅ Transmit paket berhasil.");
-    } catch (err) { refundLimit(1); showToast("❌ Koneksi target terputus / API error."); }
+    } catch (err) { await refundLimit(1); showToast("❌ Koneksi target terputus / API error."); }
   }
 
-  async function handleVerifyMagicLink() {
+  window.handleVerifyMagicLink = async function() {
     const link = document.getElementById("inputLink").value.trim(); if (!link) return showToast("❌ Tempel URL Hash.");
     showToast("🔄 Melakukan dekripsi hash...");
     try {
@@ -1223,20 +1311,20 @@
       showToast("🎉 Eksekusi bypass valid."); setTimeout(resetInjectFlow, 2000);
     } catch (err) { showToast("❌ Hash tidak dikenali/gagal."); }
   }
-  function resetInjectFlow() { activeInjectEmail = ""; document.getElementById("inputEmail").value = ""; document.getElementById("inputLink").value = ""; document.getElementById("stepVerifyBox").classList.add("hidden"); document.getElementById("stepEmailBox").classList.remove("hidden"); document.getElementById("sendResult").classList.add("hidden"); }
+  window.resetInjectFlow = function() { activeInjectEmail = ""; document.getElementById("inputEmail").value = ""; document.getElementById("inputLink").value = ""; document.getElementById("stepVerifyBox").classList.add("hidden"); document.getElementById("stepEmailBox").classList.remove("hidden"); document.getElementById("sendResult").classList.add("hidden"); }
 
-  async function runBulkInject() {
-    if (!useLimit(1)) return; 
-    const amount = Number(document.getElementById("inputBulkAmount").value); if (!amount || amount < 1 || amount > 100) { refundLimit(1); return showToast("❌ Thread dibatasi 1 - 100."); }
+  window.runBulkInject = async function() {
+    if (!(await useLimit(1))) return; 
+    const amount = Number(document.getElementById("inputBulkAmount").value); if (!amount || amount < 1 || amount > 100) { await refundLimit(1); return showToast("❌ Thread dibatasi 1 - 100."); }
     showToast("⚙️ Menginisialisasi Batch Engine...");
     try {
       const res = await fetch("/api/bulk", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ amount }) });
       if (!res.ok) throw new Error("Gagal API");
       const json = await res.json(); document.getElementById("bulkResult").innerHTML = `<pre>${JSON.stringify(json, null, 2)}</pre>`; document.getElementById("bulkResult").classList.remove("hidden"); showToast("🎉 Batch eksekusi selesai.");
-    } catch (err) { refundLimit(1); showToast("❌ Engine dihentikan (Gagal / API Error). Limit dikembalikan."); }
+    } catch (err) { await refundLimit(1); showToast("❌ Engine dihentikan (Gagal / API Error). Limit dikembalikan."); }
   }
 
-  async function runInboxCheck() {
+  window.runInboxCheck = async function() {
     const email = document.getElementById("inputInboxEmail").value.trim(); 
     if (!email) { return showToast("❌ Parameter email kosong."); }
     
@@ -1255,8 +1343,7 @@
     }
   }
 
-  (function() {
-    "use strict";
+  function initVisualGenerator() {
     const urlInput = document.getElementById('imageUrl'); const dropZone = document.getElementById('dropZone'); const fileInput = document.getElementById('fileInput'); const fileNameDisplay = document.getElementById('fileNameDisplay'); const strengthRange = document.getElementById('strengthRange'); const strengthIndicator = document.getElementById('strengthIndicator'); const enhanceBtn = document.getElementById('enhanceBtn'); const resetBtn = document.getElementById('resetBtn'); const comparisonSplitSection = document.getElementById('comparisonSplitSection'); const splitImgBefore = document.getElementById('splitImgBefore'); const splitImgAfter = document.getElementById('splitImgAfter'); const statusMessage = document.getElementById('statusMessage'); const downloadFooterActions = document.getElementById('downloadFooterActions'); const downloadBtn = document.getElementById('downloadBtn');
     let selectedFile = null; let originalBlobUrl = null; let enhancedBlobUrl = null;
 
@@ -1343,9 +1430,9 @@
     }
 
     if (downloadBtn) { downloadBtn.addEventListener('click', () => { if (enhancedBlobUrl) { const a = document.createElement('a'); a.href = enhancedBlobUrl; a.download = `HQ_RENDER_${Date.now()}.png`; document.body.appendChild(a); a.click(); a.remove(); showToast("💾 File berhasil diamankan ke penyimpanan."); } }); }
-  })();
+  }
 
-  function showToast(message) {
+  window.showToast = function(message) {
     const toast = document.getElementById("toast");
     const isError = message.includes("❌") || message.includes("⚠️") || message.includes("🚫");
     const icon = isError ? "fa-solid fa-triangle-exclamation text-rose-500 text-lg" : "fa-solid fa-circle-check text-emerald-400 text-lg";
@@ -1356,7 +1443,7 @@
     window.__toastTimer = setTimeout(() => { toast.classList.remove("translate-y-[-20px]"); toast.classList.add("opacity-0", "pointer-events-none", "translate-y-[20px]"); }, 4000);
   }
 
-  function switchTab(tabId, element) {
+  window.switchTab = function(tabId, element) {
     const allTabs = document.querySelectorAll('.tab-pane');
     allTabs.forEach(el => { el.classList.remove('active'); setTimeout(() => { if(!el.classList.contains('active')) el.style.display = 'none'; }, 50); });
     const targetTab = document.getElementById('tabContent' + tabId.charAt(0).toUpperCase() + tabId.slice(1));
@@ -1365,7 +1452,7 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  function escapeHtml(value) { return String(value ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;"); }
+  window.escapeHtml = function(value) { return String(value ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;"); }
 </script>
 </body>
 </html>
