@@ -31,11 +31,23 @@ export default async function handler(req, res) {
   // 2. GENERATE TOKEN OLEH OWNER
   if (body.action === "generate" || req.method === "PUT") {
     if (body.secret !== OWNER_SECRET_KEY) return sendJson(res, 401, { status: false, message: "Secret key salah." });
-    const days = Number(body.days || 30);
+    
+    const rawDays = body.days;
     const token = String(body.token || "").trim().toUpperCase();
     if (!token) return sendJson(res, 400, { status: false, message: "Token tidak valid." });
     
-    const expiryDate = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toISOString();
+    let expiryDate;
+    // PERBAIKAN: Cek jika token bersifat permanen
+    if (rawDays === "PERMANENT") {
+      // Set kedaluwarsa 100 tahun ke depan agar dianggap selamanya
+      expiryDate = new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000).toISOString();
+    } else if (rawDays === "5_MIN") {
+      expiryDate = new Date(Date.now() + 5 * 60 * 1000).toISOString();
+    } else {
+      const days = Number(rawDays || 30);
+      expiryDate = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toISOString();
+    }
+
     global.generatedTokens[token] = { expires_at: expiryDate };
     return sendJson(res, 200, { status: true, message: "Token berhasil dibuat.", token: token, expires_at: expiryDate });
   }
@@ -55,9 +67,8 @@ export default async function handler(req, res) {
     return sendJson(res, 200, { status: true, message: "IP berhasil diblokir." });
   }
 
-  // 5. USER LOGOUT (Hanya hapus sesi browser mereka, JANGAN hapus dari log histori owner agar owner tetap bisa melihat riwayatnya)
+  // 5. USER LOGOUT
   if (body.action === "logout") {
-    // Kita biarkan data tetap ada di global.activeUsers agar Owner tetap punya riwayat history IP pembeli
     return sendJson(res, 200, { status: true, message: "Berhasil logout." });
   }
 
@@ -79,7 +90,6 @@ export default async function handler(req, res) {
 
   const timeString = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
   
-  // Cek apakah kombinasi Token & IP ini sudah pernah tercatat
   const existingIndex = global.activeUsers.findIndex(u => u.token === tokenInput && u.ip === ipAddress);
 
   if (existingIndex !== -1) {
