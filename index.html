@@ -23,12 +23,8 @@
             mono: ['"JetBrains Mono"', 'monospace'],
           },
           colors: {
-            brand: {
-              400: '#818cf8', 500: '#6366f1', 600: '#4f46e5', 900: '#312e81',
-            },
-            dark: {
-              900: '#020617', 800: '#0f172a', 700: '#1e293b', 600: '#334155'
-            }
+            brand: { 400: '#818cf8', 500: '#6366f1', 600: '#4f46e5', 900: '#312e81' },
+            dark: { 900: '#020617', 800: '#0f172a', 700: '#1e293b', 600: '#334155' }
           },
           animation: {
             'glow-pulse': 'glowPulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
@@ -84,7 +80,6 @@
         background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.5), transparent); opacity: 0.5; 
     }
     
-    /* VIP Panel Styling */
     .vip-panel {
         background: linear-gradient(145deg, rgba(30, 20, 0, 0.8), rgba(15, 10, 0, 0.9));
         border: 1px solid rgba(251, 191, 36, 0.4);
@@ -120,7 +115,7 @@
         transform: skewX(-20deg); transition: 0.6s cubic-bezier(0.22, 1, 0.36, 1); 
     }
     .btn-cyber:hover::before { left: 150%; }
-    .btn-cyber:active { transform: scale(0.92); box-shadow: 0 4px 10px rgba(99, 102, 241, 0.2); }
+    .btn-cyber:active { transform: scale(0.95); box-shadow: 0 4px 10px rgba(99, 102, 241, 0.2); }
 
     .btn-vip {
         background: linear-gradient(135deg, #f59e0b 0%, #b45309 100%); color: #ffffff; 
@@ -132,7 +127,7 @@
         border-radius: 16px; font-weight: 600; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); 
         display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer;
     }
-    .btn-outline-cyber:active { transform: scale(0.92); }
+    .btn-outline-cyber:active { transform: scale(0.95); }
 
     .bottom-nav { 
         position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); 
@@ -260,7 +255,7 @@
             </div>
           </div>
           
-          <div class="flex items-end justify-between border-b border-slate-700/80 pb-6 mb-5">
+          <div class="flex items-end justify-between pb-4">
             <div class="flex items-baseline gap-2 relative">
               <span class="text-6xl font-extrabold text-white tracking-tighter drop-shadow-[0_0_20px_rgba(99,102,241,0.3)]" id="userLimitDisplay">0</span>
               <span class="text-[11px] text-slate-500 font-bold font-mono uppercase tracking-wider">/ Akses</span>
@@ -269,6 +264,13 @@
               <p class="text-[9px] text-amber-400 uppercase font-bold mb-1 animate-pulse"><i class="fa-solid fa-clock-rotate-left mr-1"></i> Auto Reset Dlm</p>
               <p class="text-[11px] font-mono font-black text-slate-200" id="resetTimerText">Menghitung...</p>
             </div>
+          </div>
+
+          <!-- TOMBOL TAMBAH LIMIT (HILANG JIKA VIP) -->
+          <div id="orderLimitBtnContainer" class="border-b border-slate-700/80 pb-5 mb-5">
+              <button onclick="orderMoreLimit()" class="w-full btn-outline-cyber py-3 text-[11px] !border-sky-500/30 !text-sky-400 hover:!bg-sky-900/30 tracking-widest uppercase font-bold shadow-none active:scale-95 transition-transform bg-sky-950/20">
+                  <i class="fa-solid fa-cart-plus mr-1"></i> Beli Tambahan Limit (Ecer)
+              </button>
           </div>
           
           <div class="grid grid-cols-2 gap-4">
@@ -283,9 +285,10 @@
           </div>
         </div>
 
-        <div class="tech-panel vip-panel p-6 relative overflow-hidden group">
+        <div id="vipPanelContainer" class="tech-panel vip-panel p-6 relative overflow-hidden group">
             <div class="absolute -right-10 -top-10 w-40 h-40 bg-amber-500/20 rounded-full blur-3xl pointer-events-none group-hover:bg-amber-500/30 transition-all"></div>
-            <div class="relative z-10">
+            
+            <div id="vipPanelPromo" class="relative z-10">
                 <div class="flex justify-between items-center mb-2">
                     <h3 class="text-[16px] font-black text-white tracking-wider flex items-center gap-2 font-mono uppercase">
                         <i class="fa-solid fa-gem text-amber-400 drop-shadow-[0_0_10px_rgba(251,191,36,0.8)]"></i> Upgrade Premium
@@ -296,6 +299,17 @@
                 <button onclick="buyPermanentAccess()" class="btn-cyber btn-vip w-full py-3.5 text-[13px] font-black tracking-widest uppercase font-mono shadow-[0_5px_20px_rgba(245,158,11,0.4)]">
                     Klaim Akses Permanen <i class="fa-solid fa-arrow-right ml-2 text-sm"></i>
                 </button>
+            </div>
+
+            <div id="vipPanelActive" class="relative z-10 hidden text-center py-2">
+                <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 mb-3 shadow-[0_0_20px_rgba(16,185,129,0.3)] relative">
+                    <div class="absolute inset-0 bg-emerald-400/20 rounded-2xl animate-ping opacity-75"></div>
+                    <i class="fa-solid fa-crown text-emerald-400 text-2xl drop-shadow-[0_0_10px_rgba(52,211,153,0.8)] z-10 relative"></i>
+                </div>
+                <h3 class="text-[15px] font-black text-white tracking-wider font-mono uppercase mb-1 flex justify-center items-center gap-2 drop-shadow-md">
+                    <i class="fa-solid fa-shield-check text-emerald-400"></i> Anggota Premium Aktif
+                </h3>
+                <p class="text-[10px] text-emerald-300 font-bold font-mono uppercase tracking-widest bg-emerald-900/40 inline-block px-3 py-1 rounded-lg border border-emerald-500/30">Akses Tanpa Batas Sistem</p>
             </div>
         </div>
 
@@ -318,13 +332,13 @@
 
         <!-- PANEL KONTAK -->
         <div class="grid grid-cols-2 gap-4">
-          <a href="https://whatsapp.com/channel/0029Vaf0GfTJ3jv2hhFz1j2K" target="_blank" class="tech-panel py-4 px-4 flex flex-col items-center justify-center gap-2.5 no-underline active:scale-90 transition-transform">
+          <a href="https://whatsapp.com/channel/0029Vaf0GfTJ3jv2hhFz1j2K" target="_blank" class="tech-panel py-4 px-4 flex flex-col items-center justify-center gap-2.5 no-underline active:scale-95 transition-transform">
             <div class="w-10 h-10 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shadow-inner">
               <i class="fa-brands fa-whatsapp text-emerald-400 text-xl"></i>
             </div>
             <span class="text-[11px] font-bold text-white uppercase tracking-wider font-mono">Info Update</span>
           </a>
-          <a href="https://Wa.me/+6282231669053" target="_blank" class="tech-panel py-4 px-4 flex flex-col items-center justify-center gap-2.5 no-underline active:scale-90 transition-transform">
+          <a href="https://Wa.me/+6282231669053" target="_blank" class="tech-panel py-4 px-4 flex flex-col items-center justify-center gap-2.5 no-underline active:scale-95 transition-transform">
             <div class="w-10 h-10 rounded-full bg-sky-500/10 border border-sky-500/20 flex items-center justify-center shadow-inner">
               <i class="fa-solid fa-headset text-sky-400 text-xl"></i>
             </div>
@@ -375,7 +389,7 @@
               <button onclick="handleVerifyMagicLink()" class="btn-cyber py-4 text-[14px] font-bold !bg-gradient-to-r from-emerald-600 to-teal-600 !border-emerald-500 tracking-wide">
                 <i class="fa-solid fa-microchip mr-2"></i> Dekripsi Hash
               </button>
-              <button onclick="resetInjectFlow()" class="btn-outline-cyber px-5 bg-slate-800/80 active:scale-90" title="Reset Proses">
+              <button onclick="resetInjectFlow()" class="btn-outline-cyber px-5 bg-slate-800/80 active:scale-95" title="Reset Proses">
                 <i class="fa-solid fa-power-off text-lg"></i>
               </button>
             </div>
@@ -432,7 +446,7 @@
               </div>
             </div>
             <p class="text-[11px] text-slate-400 leading-relaxed font-medium">Sistem akan melakukan bypass ekstraksi URL verifikasi secara langsung dari <i>mail server</i> tanpa perlu login ke akun target.</p>
-            <div class="mt-4 bg-rose-950/40 border border-rose-500/40 text-rose-400 px-3 py-1.5 rounded-md text-[10px] font-mono font-bold inline-flex items-center"><i class="fa-solid fa-fire mr-2"></i> Eksekusi: Potong 1 Limit</div>
+            <div class="mt-4 bg-emerald-950/40 text-emerald-400 border border-emerald-500/40 px-3 py-1.5 rounded-md text-[10px] font-mono font-bold inline-flex items-center shadow-[0_0_15px_rgba(16,185,129,0.15)]"><i class="fa-solid fa-unlock-keyhole text-[11px] mr-1.5"></i> BEBAS LIMIT (GRATIS)</div>
           </div>
           
           <div class="space-y-4">
@@ -491,7 +505,7 @@
             <button class="btn-cyber flex-1 py-4 text-[14px] font-bold !bg-gradient-to-r from-purple-600 to-fuchsia-600 !border-purple-500 tracking-wide" id="enhanceBtn">
               <i class="fa-solid fa-microchip mr-2"></i> Render AI Now
             </button>
-            <button class="btn-outline-cyber px-5 bg-slate-800/80 active:scale-90" id="resetBtn" title="Hapus Gambar">
+            <button class="btn-outline-cyber px-5 bg-slate-800/80 active:scale-95" id="resetBtn" title="Hapus Gambar">
               <i class="fa-solid fa-trash-can text-lg"></i>
             </button>
           </div>
@@ -587,7 +601,7 @@
         <div class="relative">
           <i class="fa-solid fa-key absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
           <input id="loginPassword" type="password" placeholder="Password" class="pl-12 pr-12 py-4 text-[13px] font-bold font-mono tracking-wide" />
-          <button type="button" onclick="togglePasswordVisibility('loginPassword', this)" class="absolute inset-y-0 right-4 text-slate-400 hover:text-white transition-colors active:scale-90 flex items-center justify-center">
+          <button type="button" onclick="togglePasswordVisibility('loginPassword', this)" class="absolute inset-y-0 right-4 text-slate-400 hover:text-white transition-colors active:scale-95 flex items-center justify-center">
             <i class="fa-solid fa-eye"></i>
           </button>
         </div>
@@ -610,7 +624,7 @@
         <div class="relative">
           <i class="fa-solid fa-key absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
           <input id="regPassword" type="password" placeholder="Buat Password" class="pl-12 pr-12 py-3.5 text-[13px] font-bold font-mono tracking-wide" />
-          <button type="button" onclick="togglePasswordVisibility('regPassword', this)" class="absolute inset-y-0 right-4 text-slate-400 hover:text-white transition-colors active:scale-90 flex items-center justify-center">
+          <button type="button" onclick="togglePasswordVisibility('regPassword', this)" class="absolute inset-y-0 right-4 text-slate-400 hover:text-white transition-colors active:scale-95 flex items-center justify-center">
             <i class="fa-solid fa-eye"></i>
           </button>
         </div>
@@ -637,7 +651,7 @@
         <div>
           <h2 class="text-xl font-extrabold text-white uppercase tracking-wider font-mono">Node Profile</h2>
         </div>
-        <button onclick="closeProfileModal()" class="w-10 h-10 bg-slate-800/80 rounded-full flex items-center justify-center text-slate-400 hover:bg-slate-700 hover:text-white transition-colors active:scale-90 border border-slate-700"><i class="fa-solid fa-xmark text-lg"></i></button>
+        <button onclick="closeProfileModal()" class="w-10 h-10 bg-slate-800/80 rounded-full flex items-center justify-center text-slate-400 hover:bg-slate-700 hover:text-white transition-colors active:scale-95 border border-slate-700"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
       
       <div class="tech-panel p-5 mb-6 flex items-center gap-4 bg-slate-900/50">
@@ -681,7 +695,7 @@
           <div class="flex gap-2">
             <div class="relative w-full">
               <input type="password" id="newPasswordInput" placeholder="Ketik sandi baru..." class="px-4 py-3.5 text-[12px] font-mono w-full tracking-wide">
-              <button type="button" onclick="togglePasswordVisibility('newPasswordInput', this)" class="absolute inset-y-0 right-3 text-slate-400 hover:text-white transition-colors active:scale-90 flex items-center justify-center">
+              <button type="button" onclick="togglePasswordVisibility('newPasswordInput', this)" class="absolute inset-y-0 right-3 text-slate-400 hover:text-white transition-colors active:scale-95 flex items-center justify-center">
                 <i class="fa-solid fa-eye"></i>
               </button>
             </div>
@@ -708,7 +722,7 @@
             <p class="text-[9px] font-mono font-bold text-slate-400 mt-1 uppercase tracking-wider flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> ROOT_PRIVILEGE_ACTIVE</p>
           </div>
         </div>
-        <button onclick="closeOwnerDashboard()" class="w-10 h-10 bg-slate-800/80 rounded-full flex items-center justify-center text-slate-400 hover:bg-slate-700 hover:text-white transition-colors active:scale-90 border border-slate-700"><i class="fa-solid fa-xmark text-lg"></i></button>
+        <button onclick="closeOwnerDashboard()" class="w-10 h-10 bg-slate-800/80 rounded-full flex items-center justify-center text-slate-400 hover:bg-slate-700 hover:text-white transition-colors active:scale-95 border border-slate-700"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
       
       <div class="bg-slate-900/50 p-4 rounded-2xl border border-slate-700/80 mb-5 shadow-inner">
@@ -759,7 +773,6 @@
     
     document.getElementById("warnIpDisplay").textContent = clientRealIp;
     
-    // Simulate Ping Randomizer for UI alive effect
     setInterval(() => {
         const pingEl = document.getElementById("pingDisplay");
         if(pingEl) pingEl.textContent = Math.floor(Math.random() * (45 - 12 + 1) + 12);
@@ -819,7 +832,7 @@
       dbUser.resetTargetTime = now + (7 * 24 * 60 * 60 * 1000); updated = true;
     }
     if (dbUser.resetTargetTime && now >= dbUser.resetTargetTime) {
-      dbUser.limit = 5; delete dbUser.resetTargetTime; updated = true;
+      dbUser.limit = 5; delete dbUser.resetTargetTime; updated = true; 
       if (currentUser && currentUser.username === dbUser.username) showToast("🎉 Limit sistem mingguan (5) telah di-reset otomatis!");
     }
     return updated;
@@ -861,7 +874,13 @@
   
   function buyPermanentAccess() {
       if(!currentUser) return showToast("Silakan login terlebih dahulu.");
-      const msg = `Bypass Protocol: Halo Admin, saya ingin membeli akses *Limit Permanen / Unlimited*.\n\nUsername saya: *${currentUser.username}*\nNomor HP: *${currentUser.phone || '-'}*\n\nMohon info pembayaran dan proses aktivasinya.`;
+      const msg = `Bypass Protocol: Halo Admin, saya ingin membeli akses *Limit Permanen / Unlimited*.\n\n- Username: *${currentUser.username}* (contoh: Budi123)\n- No WA: *${currentUser.phone || '-'}* (contoh: 081234567890)\n\nMohon info pembayaran dan proses aktivasinya.`;
+      window.open(`https://wa.me/+6282231669053?text=${encodeURIComponent(msg)}`, "_blank");
+  }
+
+  function orderMoreLimit() {
+      if(!currentUser) return;
+      const msg = `Bypass Protocol: Halo Admin, saya ingin membeli tambahan limit eceran.\n\n- Username: *${currentUser.username}*\n- Beli Berapa Limit: (Isi jumlah, contoh: 50 Limit atau 100 Limit)\n\nMohon info harganya.`;
       window.open(`https://wa.me/+6282231669053?text=${encodeURIComponent(msg)}`, "_blank");
   }
 
@@ -881,7 +900,32 @@
 
   function refreshDashboardUI() {
     if(currentUser) {
-      document.getElementById("userLimitDisplay").textContent = currentUser.role === 'admin' ? "MAX" : currentUser.limit;
+      document.getElementById("userLimitDisplay").textContent = currentUser.role === 'admin' ? "MAX" : (currentUser.limit >= 1000 ? "MAX" : currentUser.limit);
+      
+      const vipPanel = document.getElementById("vipPanelContainer");
+      const vipPromo = document.getElementById("vipPanelPromo");
+      const vipActive = document.getElementById("vipPanelActive");
+      const orderLimitBtn = document.getElementById("orderLimitBtnContainer");
+      
+      if (vipPanel && vipPromo && vipActive) {
+          if (currentUser.role === 'admin') {
+              vipPanel.style.display = 'none'; 
+              if(orderLimitBtn) orderLimitBtn.style.display = 'none';
+          } else if (currentUser.limit >= 1000) {
+              vipPanel.style.display = 'block';
+              vipPromo.classList.add('hidden');
+              vipActive.classList.remove('hidden');
+              vipPanel.className = "tech-panel p-6 relative overflow-hidden group border-t-4 border-t-emerald-500 shadow-[0_10px_40px_rgba(16,185,129,0.2)] bg-gradient-to-b from-emerald-900/20 to-slate-900/90";
+              if(orderLimitBtn) orderLimitBtn.style.display = 'none';
+          } else {
+              vipPanel.style.display = 'block';
+              vipPromo.classList.remove('hidden');
+              vipActive.classList.add('hidden');
+              vipPanel.className = "tech-panel vip-panel p-6 relative overflow-hidden group";
+              if(orderLimitBtn) orderLimitBtn.style.display = 'block';
+          }
+      }
+
       updateTimerUI();
       if(limitResetInterval) clearInterval(limitResetInterval);
       if(currentUser.limit <= 0 && currentUser.resetTargetTime) {
@@ -1033,12 +1077,15 @@
     } else showToast("❌ Username atau Password tidak valid.");
   }
 
-  function handleForgotPassword() { window.open(`https://wa.me/+6282231669053?text=Bypass%20Protocol%3A%20Halo%20Admin%2C%20saya%20lupa%20username%2Fpassword%20akun%20panel%20saya.%20Mohon%20bantuannya.`, "_blank"); }
+  function handleForgotPassword() { 
+    const msg = "Bypass Protocol: Halo Admin, saya lupa akses akun panel saya.\n\nMohon bantu cek dengan data berikut:\n- Username: (Isi dengan username Anda, contoh: Budi123)\n- No WA: (Isi dengan nomor WA saat daftar, contoh: 081234567890)\n\nTerima kasih.";
+    window.open(`https://wa.me/+6282231669053?text=${encodeURIComponent(msg)}`, "_blank"); 
+  }
 
   function logoutAccount() {
     localStorage.removeItem("logged_in_user_v2"); currentUser = null;
     document.getElementById("profileModal").classList.remove("active"); 
-    document.getElementById("legalWarningModal").classList.add("active"); // Show Warning Again on Logout
+    document.getElementById("legalWarningModal").classList.add("active"); 
     document.getElementById("ownerMenuButtonContainer").classList.add("hidden"); document.getElementById("headerUsernameDisplay").classList.remove("text-rose-500");
     if(limitResetInterval) clearInterval(limitResetInterval);
     generateMathCaptcha();
@@ -1124,7 +1171,7 @@
         </div>
         <div class="grid grid-cols-3 gap-2 mt-2">
           <button onclick="adminAddLimit('${escapeHtml(user.username)}', 5)" class="btn-outline-cyber py-3 text-[10px] !border-emerald-500/50 !text-emerald-400 hover:!bg-emerald-500/10"><i class="fa-solid fa-plus"></i> 5 Limit</button>
-          <button onclick="adminReduceLimit('${escapeHtml(user.username)}', 10)" class="btn-outline-cyber py-3 text-[10px] !border-amber-500/50 !text-amber-400 hover:!bg-amber-500/10"><i class="fa-solid fa-minus"></i> 10 Limit</button>
+          <button onclick="adminAddLimit('${escapeHtml(user.username)}', 9999)" class="btn-outline-cyber py-3 text-[10px] !border-amber-500/50 !text-amber-400 hover:!bg-amber-500/10"><i class="fa-solid fa-crown"></i> Jadi VIP</button>
           <button onclick="adminToggleBlockUser('${escapeHtml(user.username)}')" class="btn-outline-cyber py-3 text-[10px] ${user.isBlocked ? '!border-emerald-500/50 !text-emerald-400' : '!border-rose-500/50 !text-rose-400'}"><i class="fa-solid ${user.isBlocked ? 'fa-unlock' : 'fa-ban'}"></i> ${user.isBlocked ? 'Buka Blokir' : 'Blokir IP'}</button>
           
           <button onclick="adminLoginAsUser('${escapeHtml(user.username)}')" class="btn-cyber py-3.5 text-[11px] col-span-2 !bg-indigo-900/60 !border-indigo-500/50 !text-indigo-200 tracking-wide"><i class="fa-solid fa-right-to-bracket mr-1"></i> Login As (Masuk)</button>
@@ -1135,8 +1182,7 @@
     });
   }
 
-  function adminAddLimit(username, amount) { let idx = usersDB.findIndex(u => u.username === username); if (idx > -1) { usersDB[idx].limit += amount; if(usersDB[idx].limit > 0) delete usersDB[idx].resetTargetTime; saveDatabase(); loadUsersAdmin(); refreshDashboardUI(); showToast(`[SYS] +${amount} Limit ke ${username}.`); } }
-  function adminReduceLimit(username, amount) { let idx = usersDB.findIndex(u => u.username === username); if (idx > -1) { usersDB[idx].limit = Math.max(0, usersDB[idx].limit - amount); if(usersDB[idx].limit <= 0 && !usersDB[idx].resetTargetTime) processWeeklyReset(usersDB[idx]); saveDatabase(); loadUsersAdmin(); refreshDashboardUI(); showToast(`[SYS] -${amount} Limit dipotong.`); } }
+  function adminAddLimit(username, amount) { let idx = usersDB.findIndex(u => u.username === username); if (idx > -1) { usersDB[idx].limit += amount; if(usersDB[idx].limit > 0) delete usersDB[idx].resetTargetTime; saveDatabase(); loadUsersAdmin(); refreshDashboardUI(); showToast(`[SYS] Berhasil menambahkan daya ke ${username}.`); } }
   function adminToggleBlockUser(username) { let idx = usersDB.findIndex(u => u.username === username); if (idx > -1) { usersDB[idx].isBlocked = !usersDB[idx].isBlocked; saveDatabase(); loadUsersAdmin(); showToast(usersDB[idx].isBlocked ? `🚫 Node ${username} terisolasi!` : `✅ Firewall dibuka.`); } }
   function adminDeleteUser(username) { usersDB = usersDB.filter(u => u.username !== username); saveDatabase(); loadUsersAdmin(); refreshDashboardUI(); showToast(`[SYS] Entitas dihapus permanen.`); }
   function adminLoginAsUser(username) { let targetUser = usersDB.find(u => u.username === username); if(targetUser) { saveSession(targetUser); closeOwnerDashboard(); checkSession(); showToast(`🔄 Sesi beralih ke: ${username}`); } }
@@ -1175,16 +1221,22 @@
   }
 
   async function runInboxCheck() {
-    if (!useLimit(1)) return; 
-    const email = document.getElementById("inputInboxEmail").value.trim(); if (!email) { refundLimit(1); return showToast("❌ Parameter email kosong."); }
-    document.getElementById("inboxNotice").innerHTML = "<i class='fa-solid fa-spinner fa-spin mr-2 text-rose-500'></i> Memindai server..."; document.getElementById("inboxNotice").classList.remove("hidden");
+    const email = document.getElementById("inputInboxEmail").value.trim(); 
+    if (!email) { return showToast("❌ Parameter email kosong."); }
+    
+    document.getElementById("inboxNotice").innerHTML = "<i class='fa-solid fa-spinner fa-spin mr-2 text-rose-500'></i> Memindai server..."; 
+    document.getElementById("inboxNotice").classList.remove("hidden");
+    
     try {
       const res = await fetch("/api/inbox", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email }) });
-      const json = await res.json(); const msgs = json.data?.messages || []; document.getElementById("inboxNotice").innerHTML = "<i class='fa-solid fa-check text-emerald-500 mr-2'></i> [SCAN_COMPLETE]";
+      const json = await res.json(); const msgs = json.data?.messages || []; 
+      document.getElementById("inboxNotice").innerHTML = "<i class='fa-solid fa-check text-emerald-500 mr-2'></i> [SCAN_COMPLETE]";
       const container = document.getElementById("inboxResult"); container.innerHTML = "";
       if(msgs.length === 0) { container.innerHTML = `<div class="bg-slate-900 p-4 rounded-xl border border-slate-700 text-[11px] text-slate-400 text-center">Data tidak ditemukan di server.</div>`; }
       msgs.forEach(msg => { container.innerHTML += `<div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-700 text-[10px] break-all font-mono text-sky-400 shadow-inner leading-relaxed">${msg.login_url || 'Link_Not_Found'}</div>`; });
-    } catch (err) { refundLimit(1); document.getElementById("inboxNotice").innerHTML = "<i class='fa-solid fa-triangle-exclamation text-rose-500 mr-2'></i> [ERR_SCAN_FAILED] Limit direfund."; }
+    } catch (err) { 
+        document.getElementById("inboxNotice").innerHTML = "<i class='fa-solid fa-triangle-exclamation text-rose-500 mr-2'></i> [ERR_SCAN_FAILED] Coba lagi nanti."; 
+    }
   }
 
   (function() {
