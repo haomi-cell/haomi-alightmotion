@@ -11,7 +11,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- Font Premium & Mewah -->
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 
   <script>
@@ -80,7 +79,7 @@
     .tab-btn i { font-size: 16px; transition: transform 0.3s; }
     .tab-btn:hover { color: #94a3b8; }
     .tab-btn.active { color: #ffffff; background: rgba(255,255,255,0.08); box-shadow: 0 4px 15px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); }
-    .tab-btn.active i { color: #00F0FF; transform: translateY(-2px); filter: drop-shadow(0 0 8px rgba(0,240,255,0.5)); }
+    .tab-btn.active i { transform: translateY(-2px); }
     
     /* UTILITIES & ANIMATIONS */
     .warning-block { background: repeating-linear-gradient(45deg, rgba(220, 38, 38, 0.05), rgba(220, 38, 38, 0.05) 10px, rgba(0, 0, 0, 0) 10px, rgba(0, 0, 0, 0) 20px), rgba(15, 0, 0, 0.8); border: 1px solid rgba(220, 38, 38, 0.3); box-shadow: 0 0 20px rgba(220, 38, 38, 0.15); border-radius: 16px; }
@@ -99,6 +98,10 @@
     .range-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%; background: #00F0FF; cursor: pointer; box-shadow: 0 0 15px rgba(0, 240, 255, 0.5); border: 3px solid #0a0d14; transition: transform 0.1s; }
     .range-slider::-webkit-slider-thumb:hover { transform: scale(1.15); }
     ::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-track { background: transparent; } ::-webkit-scrollbar-thumb { background: rgba(0, 240, 255, 0.3); border-radius: 10px; } ::-webkit-scrollbar-thumb:hover { background: rgba(0, 240, 255, 0.6); }
+
+    /* Custom Input Eye */
+    .eye-icon { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: #64748b; cursor: pointer; transition: color 0.3s; z-index: 10; }
+    .eye-icon:hover { color: #00F0FF; }
   </style>
 </head>
 
@@ -106,7 +109,7 @@
 
   <canvas id="particleCanvas"></canvas>
 
-  <!-- MODAL LEGAL WARNING (Wajib disetujui) -->
+  <!-- MODAL LEGAL WARNING -->
   <div id="legalWarningModal" class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/95 backdrop-blur-xl animate-fade">
     <div class="pro-glass w-full max-w-sm rounded-3xl p-7 text-center border border-red-500/40 shadow-[0_0_50px_rgba(220,38,38,0.25)] relative overflow-hidden">
       <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-red-500 to-transparent"></div>
@@ -142,17 +145,30 @@
         <p id="authSubtitle" class="text-[11px] text-slate-400 font-mono tracking-wider">Otorisasi Kredensial Terenkripsi</p>
       </div>
       
-      <div class="space-y-4">
+      <div class="space-y-5">
         <div class="relative group">
           <i class="fa-solid fa-user-astronaut absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-500 group-focus-within:text-primary transition-colors"></i>
           <input id="inputUsername" type="text" placeholder="USERNAME" class="pl-11 pr-4 py-4.5 text-[13px] font-mono font-bold tracking-widest uppercase bg-black/60" />
         </div>
-        <div class="relative group">
+        
+        <!-- Field WA (Sembunyi di Login, Tampil di Register) -->
+        <div class="relative group hidden" id="waInputContainer">
+          <i class="fa-brands fa-whatsapp absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-500 group-focus-within:text-emerald-400 transition-colors"></i>
+          <input id="inputWa" type="number" placeholder="NOMOR WA (Ex: 0822...)" class="pl-11 pr-4 py-4.5 text-[13px] font-mono font-bold tracking-widest bg-black/60" />
+        </div>
+
+        <div class="relative group mb-2">
           <i class="fa-solid fa-lock absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-500 group-focus-within:text-primary transition-colors"></i>
-          <input id="inputPassword" type="password" placeholder="PASSWORD" class="pl-11 pr-4 py-4.5 text-[13px] font-mono font-bold tracking-widest bg-black/60" />
+          <input id="inputPassword" type="password" placeholder="PASSWORD" class="pl-11 pr-10 py-4.5 text-[13px] font-mono font-bold tracking-widest bg-black/60" />
+          <i class="fa-solid fa-eye eye-icon" id="togglePasswordIcon" onclick="togglePasswordVisibility()"></i>
+          
+          <!-- Lupa Password Link (Tampil Saat Login Saja) -->
+          <div class="text-right mt-1.5 h-4" id="forgotPassContainer">
+             <button onclick="forgotPassword()" class="text-[10.5px] text-slate-400 hover:text-primary transition-colors font-medium">Lupa Kata Sandi?</button>
+          </div>
         </div>
         
-        <button id="btnAuthAction" onclick="handleAuth()" class="btn-super btn-primary w-full py-4 text-[14px] mt-2">
+        <button id="btnAuthAction" onclick="handleAuth()" class="btn-super btn-primary w-full py-4 text-[14px]">
           <span>Masuk Sistem</span>
           <i class="fa-solid fa-arrow-right-to-bracket"></i>
         </button>
@@ -183,22 +199,31 @@
         </button>
       </div>
 
-      <div class="tab-container mb-5">
-        <button id="tabAdminUsers" onclick="switchAdminTab('users');" class="tab-btn active text-[10px]">
-          <i class="fa-solid fa-users-gear mb-1"></i> Database User
+      <div class="tab-container mb-4 overflow-x-auto whitespace-nowrap custom-scrollbar">
+        <button id="tabAdminAll" onclick="switchAdminTab('all');" class="tab-btn active text-[10px] min-w-[70px]">
+          <i class="fa-solid fa-users mb-1"></i> Semua
         </button>
-        <button id="tabAdminLogs" onclick="switchAdminTab('logs');" class="tab-btn text-[10px]">
-          <i class="fa-solid fa-server mb-1"></i> Log Sistem
+        <button id="tabAdminReguler" onclick="switchAdminTab('reguler');" class="tab-btn text-[10px] min-w-[70px]">
+          <i class="fa-solid fa-user-clock mb-1"></i> Top Reguler
+        </button>
+        <button id="tabAdminVIP" onclick="switchAdminTab('vip');" class="tab-btn text-[10px] min-w-[70px]">
+          <i class="fa-solid fa-crown mb-1 text-gold"></i> VIP
+        </button>
+        <button id="tabAdminLogs" onclick="switchAdminTab('logs');" class="tab-btn text-[10px] min-w-[70px]">
+          <i class="fa-solid fa-server mb-1"></i> Logs
         </button>
       </div>
 
       <!-- TAB MANAJEMEN USER -->
-      <div id="adminContentUsers" class="space-y-4 animate-fade">
-        <div class="flex items-center justify-between mb-2 px-1">
-          <span class="text-[11px] font-mono text-slate-400 font-bold tracking-widest uppercase"><i class="fa-solid fa-database text-primary mr-1"></i> Klien Terdaftar</span>
-          <button onclick="loadAdminUsers()" class="text-primary text-[11px] font-bold hover:text-white bg-primary/10 px-3 py-1 rounded-lg border border-primary/20 transition-colors"><i class="fa-solid fa-rotate mr-1"></i>Refresh</button>
+      <div id="adminContentUsers" class="space-y-3 animate-fade">
+        <div class="flex items-center gap-2 mb-2">
+          <div class="relative flex-1">
+            <i class="fa-solid fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-500"></i>
+            <input type="text" id="adminSearchInput" onkeyup="loadAdminUsers()" placeholder="Cari Nick / WA / ID..." class="pl-9 pr-3 py-2 text-[11px] bg-black/50 font-mono">
+          </div>
+          <div id="adminUserCount" class="text-[10px] font-bold text-slate-400 bg-white/10 px-3 py-2 rounded-xl whitespace-nowrap">0 User</div>
         </div>
-        <div id="adminUserListContainer" class="space-y-3 max-h-[320px] overflow-y-auto pr-2"></div>
+        <div id="adminUserListContainer" class="space-y-3 max-h-[320px] overflow-y-auto pr-2 custom-scrollbar"></div>
       </div>
 
       <!-- TAB LOG RIWAYAT -->
@@ -207,7 +232,7 @@
           <span class="text-[11px] font-mono text-slate-400 font-bold tracking-widest uppercase"><i class="fa-solid fa-wave-square text-accent mr-1"></i> Pemantauan Real-time</span>
           <button onclick="loadAdminLogs()" class="text-accent text-[11px] font-bold hover:text-white bg-accent/10 px-3 py-1 rounded-lg border border-accent/20 transition-colors"><i class="fa-solid fa-rotate mr-1"></i>Refresh</button>
         </div>
-        <div id="adminLogsContainer" class="space-y-2 max-h-[320px] overflow-y-auto pr-2"></div>
+        <div id="adminLogsContainer" class="space-y-2 max-h-[320px] overflow-y-auto pr-2 custom-scrollbar"></div>
       </div>
     </div>
   </div>
@@ -233,7 +258,7 @@
               <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
             </span>
-            Neural System Online
+            <span id="realTimeClock">00:00:00 WIB</span>
           </p>
         </div>
       </div>
@@ -245,7 +270,7 @@
 
     <!-- PREMIUM UNLIMITED ADS BANNER (Luxury Gold) -->
     <div id="premiumAdContainer" class="animate-fade hidden">
-      <a href="https://Wa.me/+6282231669053?text=Halo%20Mas%20Hao,%20saya%20mau%20beli%20Premium%20Permanen%2070k%20untuk%20AM%20Suite" target="_blank" class="ad-premium block rounded-2xl p-4 no-underline relative overflow-hidden group">
+      <div onclick="buyVIP()" class="ad-premium block rounded-2xl p-4 no-underline relative overflow-hidden group cursor-pointer">
         <div class="absolute inset-0 bg-white/30 transform -skew-x-12 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
         <div class="flex items-center justify-between relative z-10">
            <div class="flex items-center gap-4">
@@ -258,10 +283,10 @@
               </div>
            </div>
            <div class="bg-black/15 w-8 h-8 rounded-full flex items-center justify-center group-hover:bg-black/25 transition-colors">
-             <i class="fa-solid fa-chevron-right text-sm"></i>
+             <i class="fa-solid fa-chevron-right text-sm text-yellow-900 font-bold"></i>
            </div>
         </div>
-      </a>
+      </div>
     </div>
 
     <!-- MAIN DASHBOARD -->
@@ -275,13 +300,15 @@
              <i class="fa-solid fa-bolt text-sm"></i>
            </div>
            <div>
-             <div class="text-[9.5px] uppercase tracking-widest text-slate-400 font-mono font-semibold">Energi Mingguan</div>
-             <div class="text-[15px] font-mono text-white font-extrabold tracking-wide drop-shadow-md mt-0.5" id="limitDisplay">--</div>
+             <div class="text-[9.5px] uppercase tracking-widest text-slate-400 font-mono font-semibold" id="labelEnergi">Energi Mingguan</div>
+             <div class="text-[15px] font-mono text-white font-extrabold tracking-wide drop-shadow-md mt-0.5 flex items-center gap-2" id="limitDisplay">
+               -- <span id="userRoleBadge" class="hidden text-[8px] bg-slate-700 px-2 py-0.5 rounded text-white font-sans">Role</span>
+             </div>
            </div>
         </div>
         <div class="text-right border-l border-white/10 pl-4">
            <div class="text-[9px] uppercase tracking-widest text-slate-400 font-mono font-semibold">Latency</div>
-           <div class="text-[13px] font-mono text-emerald-400 font-extrabold mt-0.5"><i class="fa-solid fa-wifi text-[9px] mr-1"></i>12ms</div>
+           <div class="text-[13px] font-mono text-emerald-400 font-extrabold mt-0.5 flex items-center gap-1 justify-end"><i class="fa-solid fa-wifi text-[9px]"></i> <span id="pingDisplay">12ms</span></div>
         </div>
       </div>
 
@@ -292,21 +319,32 @@
         </button>
       </div>
 
-      <!-- MAIN NAVIGATION TABS -->
-      <div class="tab-container relative z-20">
-        <button id="tabSend" onclick="switchAppTab('send')" class="tab-btn active">
-          <i class="fa-solid fa-wand-magic-sparkles"></i> Aktivasi
-        </button>
-        <button id="tabBulk" onclick="switchAppTab('bulk')" class="tab-btn">
-          <i class="fa-solid fa-cubes-stacked"></i> Masal
-        </button>
-        <button id="tabInbox" onclick="switchAppTab('inbox')" class="tab-btn">
-          <i class="fa-solid fa-radar"></i> Ekstrak
-        </button>
-        <button id="tabHdPhoto" onclick="switchAppTab('hdphoto')" class="tab-btn">
-          <i class="fa-solid fa-wand-magic"></i> AI Visual
-        </button>
+      <!-- SECTION: TOOLS ALIGHT MOTION -->
+      <div>
+        <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 ml-2 flex items-center gap-2"><i class="fa-solid fa-screwdriver-wrench text-primary"></i> Tools Alight Motion</div>
+        <div class="tab-container relative z-20 mb-5">
+          <button id="tabSend" onclick="switchAppTab('send')" class="tab-btn active">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Aktivasi
+          </button>
+          <button id="tabBulk" onclick="switchAppTab('bulk')" class="tab-btn">
+            <i class="fa-solid fa-cubes-stacked"></i> Masal
+          </button>
+          <button id="tabInbox" onclick="switchAppTab('inbox')" class="tab-btn">
+            <i class="fa-solid fa-radar"></i> Ekstrak
+          </button>
+        </div>
       </div>
+
+      <!-- SECTION: TOOLS BARU -->
+      <div>
+        <div class="text-[10px] font-bold text-[#FF007F] uppercase tracking-widest mb-3 ml-2 flex items-center gap-2"><i class="fa-solid fa-sparkles animate-pulse"></i> Tools Baru</div>
+        <div class="tab-container relative z-20">
+          <button id="tabHdPhoto" onclick="switchAppTab('hdphoto')" class="tab-btn">
+            <i class="fa-solid fa-wand-magic"></i> AI Visual (HD)
+          </button>
+        </div>
+      </div>
+
 
       <!-- TAB 1: AKTIVASI -->
       <div id="contentSend" class="animate-fade space-y-5">
@@ -494,6 +532,22 @@
           </button>
         </div>
       </div>
+
+      <!-- SECTION: LEADERBOARD GLOBAL -->
+      <div class="mt-2 pt-5 border-t border-white/10">
+        <div class="text-[10.5px] font-extrabold text-gold uppercase tracking-widest mb-3 ml-1 flex items-center gap-2"><i class="fa-solid fa-trophy"></i> Papan Peringkat Global</div>
+        <div class="tab-container relative z-20 mb-3">
+          <button id="tabLeadLimit" onclick="switchLeadTab('limit')" class="tab-btn active !py-2.5 text-[9px]">
+            <i class="fa-solid fa-bolt mb-1"></i> Top Limit
+          </button>
+          <button id="tabLeadVIP" onclick="switchLeadTab('vip')" class="tab-btn !py-2.5 text-[9px]">
+            <i class="fa-solid fa-crown mb-1 text-gold"></i> Member VIP
+          </button>
+        </div>
+        
+        <div id="leadLimitContent" class="space-y-2 max-h-52 overflow-y-auto custom-scrollbar pr-1 animate-fade"></div>
+        <div id="leadVIPContent" class="space-y-2 max-h-52 overflow-y-auto custom-scrollbar pr-1 animate-fade hidden"></div>
+      </div>
     </main>
     
     <!-- Footer Link Options -->
@@ -510,10 +564,10 @@
 
     <!-- MODAL PROFIL -->
     <div id="profileModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/95 backdrop-blur-xl animate-fade hidden">
-      <div class="pro-glass w-full max-w-sm rounded-3xl p-7 relative border border-white/10">
+      <div class="pro-glass w-full max-w-sm rounded-3xl p-7 relative border border-white/10 max-h-[90vh] overflow-y-auto custom-scrollbar">
         <button onclick="closeProfileModal()" class="absolute top-5 right-5 text-slate-500 hover:text-white transition-transform hover:rotate-90 bg-white/5 w-8 h-8 rounded-full flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
         
-        <div class="text-center space-y-3 mb-6 relative">
+        <div class="text-center space-y-3 mb-6 relative mt-2">
           <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-primary/20 blur-2xl rounded-full"></div>
           <div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-gray-800 to-black border-2 border-primary flex items-center justify-center text-white text-3xl shadow-[0_0_30px_rgba(0,240,255,0.4)] relative z-10">
             <i class="fa-solid fa-user-astronaut"></i>
@@ -524,10 +578,14 @@
           </div>
         </div>
         
-        <div class="pro-card p-4 space-y-3 text-[11.5px] font-mono mb-6 border-white/5 bg-black/40">
+        <div class="pro-card p-4 space-y-3 text-[11.5px] font-mono mb-4 border-white/5 bg-black/40">
           <div class="flex justify-between items-center border-b border-white/10 pb-2.5">
-            <span class="text-slate-400 font-semibold"><i class="fa-solid fa-id-card mr-1 text-slate-500"></i> Akun Anda</span>
-            <span id="profileActiveUsername" class="text-white font-extrabold tracking-wide">--</span>
+            <span class="text-slate-400 font-semibold"><i class="fa-solid fa-fingerprint mr-1 text-primary"></i> ID Sistem</span>
+            <span id="profileUserId" class="text-white font-extrabold tracking-wide text-[10px] bg-white/10 px-2 py-0.5 rounded">--</span>
+          </div>
+          <div class="flex justify-between items-center border-b border-white/10 pb-2.5">
+            <span class="text-slate-400 font-semibold"><i class="fa-regular fa-calendar mr-1"></i> Tgl Daftar</span>
+            <span id="profileRegDate" class="text-white font-extrabold tracking-wide text-[10px]">--</span>
           </div>
           <div class="flex justify-between items-center border-b border-white/10 pb-2.5">
             <span class="text-slate-400 font-semibold"><i class="fa-solid fa-crown mr-1 text-gold"></i> Tipe Lisensi</span>
@@ -537,6 +595,32 @@
             <span class="text-slate-400 font-semibold"><i class="fa-solid fa-network-wired mr-1 text-slate-500"></i> Network IP</span>
             <span id="profileUserIp" class="text-white font-bold bg-white/10 px-2 py-0.5 rounded">Detecting...</span>
           </div>
+        </div>
+
+        <!-- 1x EDIT OPTIONS -->
+        <div class="space-y-2 mb-6">
+           <div class="text-[10px] text-slate-400 font-bold uppercase tracking-widest ml-1 mb-2">Modifikasi Data (Jatah 1x)</div>
+           
+           <div class="flex items-center justify-between p-3 bg-black/50 border border-white/10 rounded-xl">
+             <div>
+               <div class="text-[11px] text-white font-bold"><i class="fa-solid fa-id-card text-primary mr-1"></i> <span id="profileActiveUsername">--</span></div>
+             </div>
+             <button id="btnEditName" onclick="editProfileData('name')" class="text-[9px] bg-primary/20 text-primary border border-primary/30 px-3 py-1.5 rounded-lg hover:bg-primary/40 transition">Ubah</button>
+           </div>
+           
+           <div class="flex items-center justify-between p-3 bg-black/50 border border-white/10 rounded-xl">
+             <div>
+               <div class="text-[11px] text-white font-bold"><i class="fa-solid fa-lock text-primary mr-1"></i> ********</div>
+             </div>
+             <button id="btnEditPass" onclick="editProfileData('pass')" class="text-[9px] bg-primary/20 text-primary border border-primary/30 px-3 py-1.5 rounded-lg hover:bg-primary/40 transition">Ubah</button>
+           </div>
+
+           <div class="flex items-center justify-between p-3 bg-black/50 border border-white/10 rounded-xl">
+             <div>
+               <div class="text-[11px] text-white font-bold"><i class="fa-brands fa-whatsapp text-emerald-400 mr-1"></i> <span id="profileWaNum">--</span></div>
+             </div>
+             <button id="btnEditWa" onclick="editProfileData('wa')" class="text-[9px] bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-3 py-1.5 rounded-lg hover:bg-emerald-500/40 transition">Ubah</button>
+           </div>
         </div>
         
         <button onclick="logoutUser()" class="btn-super w-full py-4 text-[12px] bg-gradient-to-r from-red-600/20 to-red-900/20 text-red-400 border border-red-500/40 hover:bg-red-500/30">
@@ -595,6 +679,7 @@
   let activeInjectEmail = "";
   let isLoginMode = true; // Auth Toggle State
   let loggedInUsername = null;
+  let activeAdminTab = 'all';
 
   // Image Enhancer Variables
   let selectedFile = null; let selectedMode = '2x'; let tempSelectedMode = '2x'; let originalBlobUrl = null; let enhancedBlobUrl = null;
@@ -605,6 +690,10 @@
   function getLogsDb() { return JSON.parse(localStorage.getItem("am_sys_logs") || "[]"); }
   function saveLogsDb(logs) { localStorage.setItem("am_sys_logs", JSON.stringify(logs)); }
   
+  function generateID() {
+      return 'AM' + Math.floor(10000 + Math.random() * 90000);
+  }
+
   function addLog(actionStr) {
       let logs = getLogsDb();
       logs.unshift({ time: new Date().toLocaleString('id-ID'), info: actionStr });
@@ -617,15 +706,16 @@
       let users = getUsersDb();
       if (!users.find(u => u.username === OWNER_USER)) {
           users.push({ 
-              username: OWNER_USER, password: OWNER_PASS, 
+              id: 'AM00000', username: OWNER_USER, password: OWNER_PASS, whatsapp: "080000000000",
               role: "owner", isPremium: true, limit: 9999, 
-              lastLimitReset: Date.now(), registeredAt: Date.now() 
+              lastLimitReset: Date.now(), registeredAt: Date.now(),
+              nameChanged: false, passChanged: false, waChanged: false
           });
           saveUsersDb(users);
       }
   }
 
-  // Cek & Reset Limit Mingguan
+  // Cek & Reset Limit Mingguan (Termasuk Patch User ID Lama)
   function checkWeeklyLimitReset() {
       let users = getUsersDb();
       const now = Date.now();
@@ -644,13 +734,32 @@
                   addLog(`Sistem mereset limit mingguan untuk user: ${u.username}`);
               }
           }
+          // Patch missing attributes for old users
+          if (!u.id) { u.id = generateID(); updated = true; }
+          if (u.nameChanged === undefined) { u.nameChanged = false; updated = true; }
+          if (u.passChanged === undefined) { u.passChanged = false; updated = true; }
+          if (u.waChanged === undefined) { u.waChanged = false; updated = true; }
+          if (u.whatsapp === undefined) { u.whatsapp = "-"; updated = true; }
       });
       if (updated) saveUsersDb(users);
+  }
+
+  // Jam Realtime & Ping
+  function startClocks() {
+    setInterval(() => {
+        document.getElementById('realTimeClock').textContent = new Date().toLocaleTimeString('id-ID') + " WIB";
+    }, 1000);
+    
+    setInterval(() => {
+        const fakePing = Math.floor(Math.random() * (45 - 12 + 1)) + 12; // 12ms to 45ms
+        document.getElementById('pingDisplay').textContent = fakePing + "ms";
+    }, 3000);
   }
 
   window.addEventListener("DOMContentLoaded", async () => {
     initOwnerAccount();
     checkWeeklyLimitReset();
+    startClocks();
 
     try {
       const ipRes = await fetch("https://api.ipify.org?format=json");
@@ -668,7 +777,6 @@
         if(!u) { logoutUser(); return; }
         unlockDashboard(u);
     } else {
-        // Tampilkan Legal Modal dulu
         document.getElementById("legalWarningModal").classList.remove("hidden");
     }
 
@@ -690,12 +798,52 @@
       document.getElementById("btnAuthAction").innerHTML = isLoginMode ? '<span>Masuk Sistem</span><i class="fa-solid fa-arrow-right-to-bracket ml-1"></i>' : '<span>Daftar Sekarang</span><i class="fa-solid fa-user-plus ml-1"></i>';
       document.getElementById("authToggleText").textContent = isLoginMode ? "Belum memiliki otoritas akses?" : "Sudah memiliki identitas sistem?";
       document.getElementById("authToggleBtn").textContent = isLoginMode ? "Daftar di sini" : "Login di sini";
+      
+      const waContainer = document.getElementById("waInputContainer");
+      const forgotPass = document.getElementById("forgotPassContainer");
+      if(isLoginMode) { 
+          waContainer.classList.add("hidden"); 
+          forgotPass.classList.remove("hidden");
+      } else { 
+          waContainer.classList.remove("hidden"); 
+          forgotPass.classList.add("hidden");
+      }
+  }
+
+  function togglePasswordVisibility() {
+      const pwdInput = document.getElementById("inputPassword");
+      const pwdIcon = document.getElementById("togglePasswordIcon");
+      if (pwdInput.type === "password") {
+          pwdInput.type = "text";
+          pwdIcon.classList.remove("fa-eye");
+          pwdIcon.classList.add("fa-eye-slash");
+          pwdIcon.style.color = "#00F0FF";
+      } else {
+          pwdInput.type = "password";
+          pwdIcon.classList.remove("fa-eye-slash");
+          pwdIcon.classList.add("fa-eye");
+          pwdIcon.style.color = "#64748b";
+      }
+  }
+
+  function forgotPassword() {
+      const waUrl = `https://wa.me/6282231669053?text=Halo%20Admin,%20saya%20lupa%20password%20akun%20saya.%0A%0A*Silakan%20cek%20data%20saya:*%0A-%20Username/ID:%20%0A-%20No%20WA:%20%0A%0AMohon%20bantuannya%20untuk%20reset%20password.`;
+      window.open(waUrl, '_blank');
+  }
+
+  function buyVIP() {
+      let u = getUsersDb().find(x => x.username === loggedInUsername);
+      if(!u) return;
+      let text = `Halo Mas Hao, saya mau beli Premium Permanen 70k untuk AM Suite.%0A%0A*Data Akun Saya:*%0A- ID: ${u.id}%0A- Username: ${u.username}%0A- No WA: ${u.whatsapp}%0A%0AMohon proses upgrade akun saya.`;
+      window.open(`https://wa.me/6282231669053?text=${text}`, '_blank');
   }
 
   function handleAuth() {
       const userVal = document.getElementById("inputUsername").value.trim();
       const passVal = document.getElementById("inputPassword").value.trim();
-      if (!userVal || !passVal) return showToast("Kredensial Username dan Password tidak boleh kosong!");
+      const waVal = document.getElementById("inputWa").value.trim();
+
+      if (!userVal || !passVal) return showToast("Kredensial Username dan Password wajib diisi!");
 
       let users = getUsersDb();
 
@@ -713,22 +861,26 @@
           }
       } else {
           // PROSES REGISTER
+          if (!waVal) return showToast("Nomor WhatsApp wajib diisi untuk pendaftaran!");
           if(userVal.toLowerCase() === "admin" || userVal.toLowerCase() === "haomi") return showToast("Username di-reserve oleh sistem!");
           if(users.find(u => u.username === userVal)) return showToast("Username telah terdaftar dalam sistem.");
           
           let newUser = {
+              id: generateID(),
               username: userVal,
               password: passVal,
+              whatsapp: waVal,
               role: "user",
               isPremium: false,
               limit: 3,
               lastLimitReset: Date.now(),
-              registeredAt: Date.now()
+              registeredAt: Date.now(),
+              nameChanged: false, passChanged: false, waChanged: false
           };
           users.push(newUser);
           saveUsersDb(users);
           
-          addLog(`[REGISTER] Identitas baru dialokasikan: ${userVal}`);
+          addLog(`[REGISTER] Identitas baru dialokasikan: ${userVal} (ID: ${newUser.id})`);
           showToast("Pembuatan identitas berhasil! Silakan Login.");
           toggleAuthMode();
       }
@@ -736,13 +888,20 @@
 
   function unlockDashboard(userObj) {
     document.getElementById("authModal").classList.add("hidden");
-    
-    // Update Limit Tampilan
     updateUIsAfterAction(userObj);
-
+    renderGlobalLeaderboard();
     if (userObj.role === "owner") {
       document.getElementById("ownerMenuButtonContainer").classList.remove("hidden");
     }
+  }
+
+  function getUserRole(limit) {
+      if(limit <= 3) return { text: "GRATISAN🗿", color: "bg-slate-700" };
+      if(limit <= 5) return { text: "KERE😹", color: "bg-amber-700" };
+      if(limit <= 10) return { text: "MISKIN😂", color: "bg-red-700" };
+      if(limit <= 15) return { text: "BOKEK🤧", color: "bg-purple-700" };
+      if(limit <= 49) return { text: "BARU CAIRAN😅", color: "bg-blue-600" };
+      return { text: "ORANG KAYA😎", color: "bg-emerald-600" };
   }
 
   function updateUIsAfterAction(forceUserObj = null) {
@@ -751,19 +910,103 @@
       if(!u) return;
 
       const adBanner = document.getElementById("premiumAdContainer");
+      const badge = document.getElementById("userRoleBadge");
+      
       if (u.isPremium || u.role === 'owner') {
           adBanner.style.display = "none";
-          document.getElementById("limitDisplay").innerHTML = '<i class="fa-solid fa-infinity mr-1 text-lg text-gold"></i> UNLIMITED';
-          document.getElementById("limitDisplay").className = "text-[15px] font-mono text-gold font-extrabold tracking-wide drop-shadow-[0_0_10px_rgba(255,215,0,0.5)] mt-0.5";
+          document.getElementById("limitDisplay").innerHTML = '<i class="fa-solid fa-infinity mr-1 text-lg text-gold"></i> UNLIMITED <span class="text-[8px] bg-gradient-to-r from-yellow-500 to-yellow-700 px-2 py-0.5 rounded text-white font-sans ml-1 shadow-sm">VIP</span>';
+          document.getElementById("limitDisplay").className = "text-[15px] font-mono text-gold font-extrabold tracking-wide drop-shadow-[0_0_10px_rgba(255,215,0,0.5)] mt-0.5 flex items-center gap-1";
       } else {
           adBanner.style.display = "block";
-          document.getElementById("limitDisplay").innerHTML = `${u.limit}x <span class="text-[10px] font-sans font-medium text-slate-300 opacity-80">Akses</span>`;
-          document.getElementById("limitDisplay").className = "text-[15px] font-mono text-white font-extrabold tracking-wide drop-shadow-md mt-0.5";
+          const role = getUserRole(u.limit);
+          document.getElementById("limitDisplay").innerHTML = `${u.limit}x <span class="text-[10px] font-sans font-medium text-slate-300 opacity-80">Akses</span> <span class="text-[8px] ${role.color} px-2 py-0.5 rounded text-white font-sans ml-1 shadow-sm">${role.text}</span>`;
+          document.getElementById("limitDisplay").className = "text-[15px] font-mono text-white font-extrabold tracking-wide drop-shadow-md mt-0.5 flex items-center gap-1";
       }
   }
 
   // ==========================================
-  // LIMIT MANAGEMENT (Pengecekan & Refund)
+  // LEADERBOARD GLOBAL LOGIC
+  // ==========================================
+  function switchLeadTab(tab) {
+      document.getElementById("leadLimitContent").classList.add("hidden");
+      document.getElementById("leadVIPContent").classList.add("hidden");
+      document.getElementById("tabLeadLimit").classList.remove("active");
+      document.getElementById("tabLeadVIP").classList.remove("active");
+
+      if(tab === 'limit') {
+          document.getElementById("leadLimitContent").classList.remove("hidden");
+          document.getElementById("tabLeadLimit").classList.add("active");
+      } else {
+          document.getElementById("leadVIPContent").classList.remove("hidden");
+          document.getElementById("tabLeadVIP").classList.add("active");
+      }
+  }
+
+  function renderGlobalLeaderboard() {
+      const usersDb = getUsersDb();
+      const limitContainer = document.getElementById("leadLimitContent");
+      const vipContainer = document.getElementById("leadVIPContent");
+      
+      limitContainer.innerHTML = "";
+      vipContainer.innerHTML = "";
+      
+      let regulerUsers = usersDb.filter(u => u.role !== 'owner' && !u.isPremium);
+      let vipUsers = usersDb.filter(u => u.role !== 'owner' && u.isPremium);
+      
+      // Top Limit Sort
+      regulerUsers.sort((a,b) => b.limit - a.limit);
+      
+      if(regulerUsers.length === 0) {
+          limitContainer.innerHTML = `<div class="text-center text-[10px] text-slate-500 py-4 bg-black/40 rounded-xl border border-white/5">Belum ada data member reguler.</div>`;
+      } else {
+          regulerUsers.forEach((u, i) => {
+              let rankIcon = `<span class="text-slate-400 font-bold">${i+1}</span>`;
+              if(i === 0) rankIcon = `<i class="fa-solid fa-medal text-gold text-lg"></i>`;
+              if(i === 1) rankIcon = `<i class="fa-solid fa-medal text-slate-300 text-lg"></i>`;
+              if(i === 2) rankIcon = `<i class="fa-solid fa-medal text-amber-600 text-lg"></i>`;
+              
+              const role = getUserRole(u.limit);
+              
+              limitContainer.innerHTML += `
+              <div class="p-3 bg-black/50 border border-white/5 rounded-xl flex items-center justify-between shadow-sm hover:border-primary/30 transition-colors">
+                <div class="flex items-center gap-3">
+                   <div class="w-8 flex justify-center">${rankIcon}</div>
+                   <div>
+                     <div class="text-[12px] font-extrabold text-white">${escapeHtml(u.username)}</div>
+                     <div class="text-[9px] font-mono text-slate-500">ID: ${u.id || '-'}</div>
+                   </div>
+                </div>
+                <div class="text-right">
+                   <div class="text-[13px] font-mono font-bold text-primary">${u.limit}x</div>
+                   <div class="text-[8px] ${role.color} px-1.5 py-0.5 rounded text-white font-sans inline-block mt-0.5">${role.text}</div>
+                </div>
+              </div>`;
+          });
+      }
+      
+      if(vipUsers.length === 0) {
+          vipContainer.innerHTML = `<div class="text-center text-[10px] text-slate-500 py-4 bg-black/40 rounded-xl border border-white/5">Belum ada VIP Member.</div>`;
+      } else {
+          vipUsers.forEach((u, i) => {
+              vipContainer.innerHTML += `
+              <div class="p-3 bg-black/50 border border-gold/30 rounded-xl flex items-center justify-between shadow-sm relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-1 h-full bg-gold"></div>
+                <div class="flex items-center gap-3 ml-2">
+                   <div class="w-8 h-8 rounded-full bg-gold/20 flex items-center justify-center text-gold border border-gold/40"><i class="fa-solid fa-crown"></i></div>
+                   <div>
+                     <div class="text-[12px] font-extrabold text-white">${escapeHtml(u.username)}</div>
+                     <div class="text-[9px] font-mono text-gold/70">ID: ${u.id || '-'}</div>
+                   </div>
+                </div>
+                <div class="text-[9px] bg-gradient-to-r from-yellow-500 to-yellow-700 px-2 py-1 rounded text-white font-bold tracking-widest shadow-md">VIP</div>
+              </div>`;
+          });
+      }
+  }
+
+
+  // ==========================================
+  // LIMIT MANAGEMENT
   // ==========================================
   function checkUserLimit() {
       let u = getUsersDb().find(x => x.username === loggedInUsername);
@@ -780,7 +1023,8 @@
           users[idx].limit -= 1;
           saveUsersDb(users);
           updateUIsAfterAction(users[idx]);
-          addLog(`[LIMIT_TERPAKAI] Eksekusi tool oleh ${loggedInUsername}. Sisa energi: ${users[idx].limit}`);
+          renderGlobalLeaderboard(); // Update Global Limit Board
+          addLog(`[LIMIT_TERPAKAI] Eksekusi tool oleh ${loggedInUsername}. Sisa: ${users[idx].limit}`);
       }
   }
 
@@ -791,6 +1035,7 @@
           users[idx].limit += 1;
           saveUsersDb(users);
           updateUIsAfterAction(users[idx]);
+          renderGlobalLeaderboard();
           addLog(`[REFUND_SISTEM] Pemulihan 1 limit untuk ${loggedInUsername}. Pemicu: ${alasan}`);
           showToast(`Kompensasi: Limit dikembalikan (+1) karena ${alasan}`);
       }
@@ -804,20 +1049,17 @@
     const contents = { send: document.getElementById("contentSend"), bulk: document.getElementById("contentBulk"), inbox: document.getElementById("contentInbox"), hdphoto: document.getElementById("contentHdPhoto") };
     const tabs = { send: document.getElementById("tabSend"), bulk: document.getElementById("tabBulk"), inbox: document.getElementById("tabInbox"), hdphoto: document.getElementById("tabHdPhoto") };
     Object.values(contents).forEach(el => el.classList.add("hidden"));
-    Object.values(tabs).forEach(el => { el.classList.remove("active"); el.style.background = ""; el.style.border = ""; });
+    Object.values(tabs).forEach(el => { if(el){ el.classList.remove("active"); el.style.background = ""; el.style.border = ""; } });
     
     if(contents[tab]) contents[tab].classList.remove("hidden");
     if(tabs[tab]) { 
       tabs[tab].classList.add("active");
-      // Add dynamic glow to active tab based on which feature it is
       if(tab==='send') tabs[tab].style.borderBottom = "2px solid #00F0FF";
       if(tab==='bulk') tabs[tab].style.borderBottom = "2px solid #34D399";
       if(tab==='inbox') tabs[tab].style.borderBottom = "2px solid #7000FF";
       if(tab==='hdphoto') tabs[tab].style.borderBottom = "2px solid #FF007F";
     }
   }
-
-  // Switch initial tab style manually
   document.getElementById("tabSend").style.borderBottom = "2px solid #00F0FF";
 
   function showToast(message) {
@@ -831,12 +1073,15 @@
   function escapeHtml(value) { return String(value ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;"); }
 
   // ==========================================
-  // PROFILE LOGIC
+  // PROFILE LOGIC & EDIT
   // ==========================================
   function openProfileModal() {
     let u = getUsersDb().find(x => x.username === loggedInUsername);
     if(!u) return;
+    document.getElementById("profileUserId").textContent = u.id || "-";
     document.getElementById("profileActiveUsername").textContent = u.username;
+    document.getElementById("profileWaNum").textContent = u.whatsapp || "-";
+    document.getElementById("profileRegDate").textContent = u.registeredAt ? new Date(u.registeredAt).toLocaleDateString('id-ID', {day:'numeric', month:'short', year:'numeric'}) : "-";
     
     let roleText = "Standard User";
     if (u.role === 'owner') roleText = "System Administrator";
@@ -844,9 +1089,61 @@
     
     document.getElementById("profileAccessType").textContent = roleText;
     document.getElementById("profileUserIp").textContent = clientRealIp;
+
+    // Tombol Update
+    document.getElementById("btnEditName").disabled = u.nameChanged;
+    document.getElementById("btnEditName").className = u.nameChanged ? "text-[9px] bg-slate-800 text-slate-500 px-3 py-1.5 rounded-lg cursor-not-allowed" : "text-[9px] bg-primary/20 text-primary border border-primary/30 px-3 py-1.5 rounded-lg hover:bg-primary/40 transition";
+    
+    document.getElementById("btnEditPass").disabled = u.passChanged;
+    document.getElementById("btnEditPass").className = u.passChanged ? "text-[9px] bg-slate-800 text-slate-500 px-3 py-1.5 rounded-lg cursor-not-allowed" : "text-[9px] bg-primary/20 text-primary border border-primary/30 px-3 py-1.5 rounded-lg hover:bg-primary/40 transition";
+    
+    document.getElementById("btnEditWa").disabled = u.waChanged;
+    document.getElementById("btnEditWa").className = u.waChanged ? "text-[9px] bg-slate-800 text-slate-500 px-3 py-1.5 rounded-lg cursor-not-allowed" : "text-[9px] bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-3 py-1.5 rounded-lg hover:bg-emerald-500/40 transition";
+
     document.getElementById("profileModal").classList.remove("hidden");
   }
   function closeProfileModal() { document.getElementById("profileModal").classList.add("hidden"); }
+
+  function editProfileData(type) {
+      let users = getUsersDb();
+      let idx = users.findIndex(u => u.username === loggedInUsername);
+      if(idx === -1) return;
+      let u = users[idx];
+
+      if(type === 'name' && !u.nameChanged) {
+          let n = prompt("Masukkan Username Baru (Hanya bisa 1x):");
+          if(n && n.trim() !== "" && !users.find(x=>x.username === n)) {
+              let oldName = u.username;
+              u.username = n.trim();
+              u.nameChanged = true;
+              loggedInUsername = u.username;
+              localStorage.setItem("active_session_user", u.username);
+              showToast("Username berhasil diperbarui!");
+              addLog(`User ${oldName} mengganti nama menjadi ${u.username}`);
+          } else if(n) { showToast("Username tidak valid atau sudah dipakai."); return; }
+      }
+      else if(type === 'pass' && !u.passChanged) {
+          let p = prompt("Masukkan Password Baru (Hanya bisa 1x):");
+          if(p && p.trim() !== "") {
+              u.password = p.trim();
+              u.passChanged = true;
+              showToast("Password berhasil diperbarui!");
+              addLog(`User ${u.username} memperbarui password.`);
+          }
+      }
+      else if(type === 'wa' && !u.waChanged) {
+          let w = prompt("Masukkan Nomor WA Baru (Hanya bisa 1x):");
+          if(w && w.trim() !== "") {
+              u.whatsapp = w.trim();
+              u.waChanged = true;
+              showToast("Nomor WhatsApp berhasil diperbarui!");
+              addLog(`User ${u.username} memperbarui nomor WA.`);
+          }
+      }
+      saveUsersDb(users);
+      openProfileModal();
+      renderGlobalLeaderboard(); 
+  }
   
   function logoutUser() {
     localStorage.removeItem("active_session_user");
@@ -861,49 +1158,91 @@
     let u = getUsersDb().find(x => x.username === loggedInUsername);
     if (!u || u.role !== 'owner') return showToast("Sistem mendeteksi intrusi. Akses Root ditolak!");
     document.getElementById("ownerDashboardModal").classList.remove("hidden");
-    loadAdminUsers();
+    switchAdminTab('all');
   }
   function closeOwnerDashboard() { document.getElementById("ownerDashboardModal").classList.add("hidden"); }
 
   function switchAdminTab(tab) {
+    activeAdminTab = tab;
     document.getElementById("adminContentUsers").classList.add("hidden");
     document.getElementById("adminContentLogs").classList.add("hidden");
-    document.getElementById("tabAdminUsers").classList.remove("active");
-    document.getElementById("tabAdminLogs").classList.remove("active");
+    document.querySelectorAll("#ownerDashboardModal .tab-btn").forEach(el => el.classList.remove("active"));
     
-    if (tab === 'users') {
-      document.getElementById("adminContentUsers").classList.remove("hidden");
-      document.getElementById("tabAdminUsers").classList.add("active");
-      loadAdminUsers();
-    } else {
+    if (tab === 'logs') {
       document.getElementById("adminContentLogs").classList.remove("hidden");
       document.getElementById("tabAdminLogs").classList.add("active");
       loadAdminLogs();
+    } else {
+      document.getElementById("adminContentUsers").classList.remove("hidden");
+      if(tab === 'all') document.getElementById("tabAdminAll").classList.add("active");
+      if(tab === 'reguler') document.getElementById("tabAdminReguler").classList.add("active");
+      if(tab === 'vip') document.getElementById("tabAdminVIP").classList.add("active");
+      loadAdminUsers();
     }
   }
 
   function loadAdminUsers() {
     const container = document.getElementById("adminUserListContainer");
+    const query = document.getElementById("adminSearchInput").value.toLowerCase();
     let usersDb = getUsersDb();
     container.innerHTML = "";
     
-    usersDb.forEach((item, index) => {
-      if(item.role === 'owner') return; // Sembunyikan owner dari list
-      
+    let filteredUsers = usersDb.filter(item => {
+        if(item.role === 'owner') return false; 
+        
+        // Filter Tab
+        if(activeAdminTab === 'reguler' && item.isPremium) return false;
+        if(activeAdminTab === 'vip' && !item.isPremium) return false;
+        
+        // Filter Pencarian (Nick, WA, ID)
+        if(query) {
+            let n = item.username.toLowerCase();
+            let w = (item.whatsapp || "").toLowerCase();
+            let id = (item.id || "").toLowerCase();
+            if(!n.includes(query) && !w.includes(query) && !id.includes(query)) return false;
+        }
+        return true;
+    });
+
+    if(activeAdminTab === 'reguler') {
+        filteredUsers.sort((a,b) => b.limit - a.limit);
+    } else {
+        filteredUsers.reverse(); 
+    }
+
+    document.getElementById("adminUserCount").textContent = `${filteredUsers.length} User`;
+
+    if(filteredUsers.length === 0) {
+        container.innerHTML = `<div class="text-slate-500 font-mono text-center text-[10px] py-4 bg-black/30 rounded-xl border border-white/5">Tidak ada data ditemukan.</div>`;
+    }
+
+    filteredUsers.forEach((item) => {
       const card = document.createElement("div");
       card.className = "p-3.5 bg-black/50 border border-white/5 rounded-xl flex flex-col gap-2.5 font-mono text-[10.5px] shadow-sm";
       card.innerHTML = `
         <div class="flex items-center justify-between text-slate-300 border-b border-white/10 pb-2">
-          <span class="font-extrabold text-white text-[13px] flex items-center gap-1.5"><i class="fa-solid fa-user-check text-primary"></i> ${escapeHtml(item.username)}</span>
+          <span class="font-extrabold text-white text-[13px] flex items-center gap-1.5">
+            <i class="fa-solid fa-user-check text-primary"></i> 
+            <span class="text-[9px] bg-white/10 px-1.5 py-0.5 rounded text-slate-400 font-bold">${item.id || '-'}</span> 
+            ${escapeHtml(item.username)}
+          </span>
           <span class="px-2.5 py-1 rounded-md text-[9px] font-extrabold tracking-wider ${item.isPremium ? 'bg-gradient-to-r from-yellow-500/20 to-yellow-700/20 text-gold border border-gold/30' : 'bg-slate-800 text-slate-300 border border-slate-600'}">${item.isPremium ? 'VIP PREMIUM' : 'MEMBER REGULER'}</span>
         </div>
         <div class="flex justify-between items-center text-slate-400 mt-0.5">
           <span>Kunci: <span class="text-white font-bold bg-white/5 px-1.5 py-0.5 rounded">${escapeHtml(item.password)}</span></span>
           <span>Sisa Limit: <strong class="text-white text-[12px] bg-primary/10 px-2 rounded-full border border-primary/20">${item.isPremium ? '∞' : item.limit}</strong></span>
         </div>
-        <div class="grid grid-cols-2 gap-2 mt-2">
-           <button onclick="adminSetPremium('${item.username}')" class="py-2 bg-emerald-500/10 text-emerald-400 font-bold rounded-lg border border-emerald-500/30 hover:bg-emerald-500/20 transition-colors"><i class="fa-solid fa-crown mr-1"></i> Beri VIP</button>
-           <button onclick="adminAddLimit('${item.username}')" class="py-2 bg-primary/10 text-primary font-bold rounded-lg border border-primary/30 hover:bg-primary/20 transition-colors"><i class="fa-solid fa-plus mr-1"></i> Topup Limit</button>
+        <div class="text-[9px] text-slate-500 mb-1 flex justify-between">
+          <span>WA: <span class="text-emerald-400">${escapeHtml(item.whatsapp || "-")}</span></span>
+          <span>Reg: ${item.registeredAt ? new Date(item.registeredAt).toLocaleDateString('id-ID') : '-'}</span>
+        </div>
+        <div class="grid grid-cols-2 gap-2 mt-1">
+           <button onclick="adminSetPremium('${item.username}')" class="py-2 bg-emerald-500/10 text-emerald-400 font-bold rounded-lg border border-emerald-500/30 hover:bg-emerald-500/20 transition-colors"><i class="fa-solid fa-crown mr-1"></i> VIP</button>
+           <button onclick="adminAddLimit('${item.username}')" class="py-2 bg-primary/10 text-primary font-bold rounded-lg border border-primary/30 hover:bg-primary/20 transition-colors"><i class="fa-solid fa-plus mr-1"></i> Limit</button>
+        </div>
+        <div class="grid grid-cols-2 gap-2 mt-1">
+           <button onclick="adminLoginAs('${item.username}')" class="py-2 bg-blue-500/10 text-blue-400 font-bold rounded-lg border border-blue-500/30 hover:bg-blue-500/20 transition-colors"><i class="fa-solid fa-eye mr-1"></i> Akses Akun</button>
+           <button onclick="adminDeleteUser('${item.username}')" class="py-2 bg-red-500/10 text-red-400 font-bold rounded-lg border border-red-500/30 hover:bg-red-500/20 transition-colors"><i class="fa-solid fa-trash mr-1"></i> Hapus</button>
         </div>
       `;
       container.appendChild(card);
@@ -932,6 +1271,7 @@
           addLog(`Administrator meng-upgrade status ${username} menjadi VIP PREMIUM.`);
           showToast(`Berhasil! Status akun ${username} telah diperbarui ke Premium.`);
           loadAdminUsers();
+          renderGlobalLeaderboard();
       }
   }
 
@@ -947,13 +1287,34 @@
               addLog(`Administrator menyuntikkan ${num} limit operasional untuk ${username}.`);
               showToast(`Berhasil mentransfer ${num} limit ke database ${username}.`);
               loadAdminUsers();
+              renderGlobalLeaderboard();
           }
+      }
+  }
+
+  function adminDeleteUser(username) {
+      if(confirm(`AWAS! Anda yakin ingin menghapus akun ${username} secara permanen?`)) {
+          let users = getUsersDb();
+          let newUsers = users.filter(u => u.username !== username);
+          saveUsersDb(newUsers);
+          addLog(`Administrator MENGHAPUS akun ${username} dari sistem.`);
+          showToast(`Akun ${username} telah dimusnahkan.`);
+          loadAdminUsers();
+          renderGlobalLeaderboard();
+      }
+  }
+
+  function adminLoginAs(username) {
+      if(confirm(`Ambil alih sesi (Login) sebagai ${username}?`)) {
+          localStorage.setItem("active_session_user", username);
+          addLog(`Administrator mengambil alih sesi login milik ${username}.`);
+          location.reload();
       }
   }
 
   // ==========================================
   // FITUR API ASLI (AKTIVASI, BULK, INBOX)
-  // [Dimodifikasi HANYA untuk potong & refund limit]
+  // [Kode di bawah INTACT]
   // ==========================================
   
   async function handleSendMagicLink() {
@@ -962,7 +1323,7 @@
     const email = document.getElementById("inputEmail").value.trim();
     if (!email || !email.includes("@")) return showToast("Format alamat tujuan invalid. Periksa kembali entri Anda.");
     
-    deductLimit(); // POTONG LIMIT
+    deductLimit(); 
     const btn = document.querySelector("#stepEmailBox button");
     btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Sinkronisasi ke Server...';
     btn.disabled = true;
@@ -977,7 +1338,7 @@
       activeInjectEmail = email; document.getElementById("stepEmailBox").classList.add("hidden"); document.getElementById("stepVerifyBox").classList.remove("hidden");
       document.getElementById("flowInstruction").innerHTML = `Paket data disuntikkan ke <b class="text-primary">${email}</b>. Masukkan response link di bawah.`; showToast("Transmisi tautan am-magic berhasil.");
     } catch (err) { 
-        refundLimit("Distribusi Payload Gagal (Gateway Error)"); // PENGEMBALIAN LIMIT JIKA GAGAL
+        refundLimit("Distribusi Payload Gagal (Gateway Error)");
         showToast("Error Internal: " + (err.message || "Koneksi terputus ke server pusat.")); 
     } finally {
         btn.innerHTML = '<span>Kirim Payload Inject</span><i class="fa-solid fa-paper-plane ml-1"></i>';
@@ -1018,7 +1379,7 @@
     const amount = Number(document.getElementById("inputBulkAmount").value);
     if (!amount || amount < 1 || amount > 100) return showToast("Parameter target di luar jangkauan logika (1-100).");
     
-    deductLimit(); // POTONG LIMIT
+    deductLimit(); 
     showToast("Menginisialisasi Skrip Batch Node. Harap tunggu...");
     
     let success = false; let resultMessage = "";
@@ -1046,7 +1407,7 @@
     const notice = document.getElementById("inboxNotice"); const container = document.getElementById("inboxResult");
     if (!email) return showToast("Koordinat alamat surel belum ditentukan.");
     
-    deductLimit(); // POTONG LIMIT
+    deductLimit();
     notice.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1 text-accent"></i> Memindai trafik mail server sasaran...'; notice.classList.remove("hidden"); container.innerHTML = "";
     
     try {
@@ -1081,7 +1442,7 @@
   }
 
   // ==========================================
-  // FITUR FOTO HD (Limit check ditambahkan di klik tombolnya)
+  // FITUR FOTO HD 
   // ==========================================
   function initImageEnhancerLogic() {
     const urlInput = document.getElementById('imageUrl'); const dropZone = document.getElementById('dropZone'); const fileInput = document.getElementById('fileInput'); const fileNameDisplay = document.getElementById('fileNameDisplay'); const strengthRange = document.getElementById('strengthRange'); const strengthIndicator = document.getElementById('strengthIndicator'); const openModeModal = document.getElementById('openModeModal'); const closeModeModal = document.getElementById('closeModeModal'); const modeModalOverlay = document.getElementById('modeModalOverlay'); const modeModalContent = document.getElementById('modeModalContent'); const applyModeBtn = document.getElementById('applyModeBtn'); const currentModeLabel = document.getElementById('currentModeLabel'); const modeItems = document.querySelectorAll('.mode-option-item'); const enhanceBtn = document.getElementById('enhanceBtn'); const resetBtn = document.getElementById('resetBtn'); const comparisonSplitSection = document.getElementById('comparisonSplitSection'); const splitImgBefore = document.getElementById('splitImgBefore'); const splitImgAfter = document.getElementById('splitImgAfter'); const statusMessage = document.getElementById('statusMessage'); const downloadFooterActions = document.getElementById('downloadFooterActions'); const downloadBtn = document.getElementById('downloadBtn'); const copyUrlBtn = document.getElementById('copyUrlBtn'); const strengthLabels = [ { max: 30, text: 'Lembut' }, { max: 70, text: 'Optimal' }, { max: 100, text: 'Maksimal' } ];
@@ -1118,13 +1479,12 @@
     
     resetBtn.addEventListener('click', () => { selectedFile = null; fileInput.value = ''; fileNameDisplay.textContent = 'Belum ada file dipilih'; urlInput.value = ''; if (originalBlobUrl) URL.revokeObjectURL(originalBlobUrl); if (enhancedBlobUrl) URL.revokeObjectURL(enhancedBlobUrl); originalBlobUrl = null; enhancedBlobUrl = null; comparisonSplitSection.classList.add('hidden'); comparisonSplitSection.classList.remove('flex'); downloadFooterActions.classList.add('hidden'); downloadFooterActions.classList.remove('flex'); setStatus('', ''); showToast("Workspace Visual telah di-reset ulang."); });
     
-    // LIMIT CHECK UNTUK TOMBOL PROSES HD FOTO
     enhanceBtn.addEventListener('click', async () => {
       const urlVal = urlInput.value.trim();
       if (!urlVal && !selectedFile) { setStatus('Upload resource / masukkan alamat URL jaringan gambar terlebih dahulu.', 'error'); return; }
       
       if(!checkUserLimit()) return showToast("Bahan Bakar Limit Habis! Upgrade ke lisensi Premium.");
-      deductLimit(); // POTONG LIMIT
+      deductLimit();
 
       enhanceBtn.disabled = true; enhanceBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Model Neural sedang memproses...'; setStatus('⏳ Mengkompilasi matrix piksel ke dalam neural engine...', '');
       try {
@@ -1140,7 +1500,7 @@
         comparisonSplitSection.classList.remove('hidden'); comparisonSplitSection.classList.add('flex'); downloadFooterActions.classList.remove('hidden'); downloadFooterActions.classList.add('flex');
         setStatus(`✅ Sintesis Sukses didukung oleh: ${methodUsed}`, 'success'); showToast("Image Enhancement Selesai!");
       } catch (err) { 
-        refundLimit("Gagal mensintesis gambar (Server AI Error/CORS)"); // REFUND JIKA GAGAL
+        refundLimit("Gagal mensintesis gambar (Server AI Error/CORS)");
         setStatus('❌ Kegagalan rendering: ' + err.message, 'error'); 
       } finally { enhanceBtn.disabled = false; enhanceBtn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> Mulai Sintesis Gambar'; }
     });
