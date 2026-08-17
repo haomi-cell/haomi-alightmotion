@@ -579,7 +579,6 @@
         if (now < Number(savedExpiry)) {
           unlockDashboard(false, false);
         } else {
-          // Token expired
           localStorage.removeItem("verified_token");
           localStorage.removeItem("token_expiry");
         }
@@ -640,8 +639,7 @@
   function escapeHtml(value) { return String(value ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;"); }
 
   // ==========================================
-  // MAGIC TOKEN GENERATOR (ALGORITHMIC)
-  // TIDAK BUTUH DATABASE & BEKERJA DI HP MANAPUN
+  // MAGIC TOKEN GENERATOR (ALGORITHMIC LOCAL)
   // ==========================================
   function generateMagicToken(daysString, isTrial = false) {
     let expiryTime;
@@ -653,10 +651,7 @@
       expiryTime = Date.now() + (Number(daysString) * 24 * 60 * 60 * 1000);
     }
     
-    // Ubah format ke string spesial (Base36)
     const timeStr = expiryTime.toString(36).toUpperCase();
-    
-    // Buat tanda tangan keamanan agar tidak dipalsukan
     let checksum = 0;
     for (let i = 0; i < timeStr.length; i++) checksum += timeStr.charCodeAt(i);
     const signature = (checksum * TOKEN_SECRET_SALT).toString(36).toUpperCase();
@@ -679,14 +674,12 @@
     const timeStr = parts[1];
     const signature = parts[3];
     
-    // Cek keamanan tanda tangan
     let checksum = 0;
     for (let i = 0; i < timeStr.length; i++) checksum += timeStr.charCodeAt(i);
     const expectedSig = (checksum * TOKEN_SECRET_SALT).toString(36).toUpperCase();
     
     if (signature !== expectedSig) return { valid: false, message: "Token invalid atau palsu." };
     
-    // Cek kedaluwarsa
     const expiryTime = parseInt(timeStr, 36);
     if (Date.now() > expiryTime) return { valid: false, message: "Token sudah kedaluwarsa!" };
     
@@ -735,7 +728,6 @@
     
     showToast("Memeriksa keamanan token...");
     
-    // Memberikan sedikit jeda animasi
     setTimeout(() => {
       const check = validateMagicToken(inputVal.toUpperCase());
 
@@ -758,7 +750,7 @@
       } else {
         showToast("Akses Ditolak: " + check.message);
       }
-    }, 500);
+    }, 400);
   }
 
   function updateTokenCountdown() {
@@ -828,8 +820,6 @@
 
   function generateOwnerToken() {
     const selectedVal = document.getElementById("newGenDays").value;
-    
-    // Gunakan Token Algoritma!
     const randomCode = generateMagicToken(selectedVal);
     lastGeneratedCode = randomCode;
 
@@ -837,7 +827,6 @@
     document.getElementById("ownerTokenText").innerHTML = `<b>GENERATED KEY:</b><br><code class="text-primary text-[15px] font-bold mt-1 block">${randomCode}</code><br>Type: ${labelText}`;
     document.getElementById("ownerTokenResult").classList.remove("hidden");
     
-    // Simpan riwayat Token ke penyimpanan HP Admin agar bisa dilihat lagi
     let history = JSON.parse(localStorage.getItem("admin_generated_history") || "[]");
     history.unshift({ token: randomCode, type: labelText, date: new Date().toLocaleString('id-ID') });
     localStorage.setItem("admin_generated_history", JSON.stringify(history));
@@ -1046,5 +1035,4 @@
 </script>
 </body>
 </html>
-
 
