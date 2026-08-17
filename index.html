@@ -197,7 +197,7 @@
           <div id="deviceIdSection" class="hidden animate-fade">
             <label class="block text-[11px] text-amber-400 mb-1.5 font-mono font-semibold"><i class="fa-solid fa-lock mr-1"></i> ID PERANGKAT PEMBELI:</label>
             <input id="inputBuyerDeviceId" type="text" placeholder="Masukkan ID yang dikirim pembeli..." class="px-4 py-3 text-[12px] uppercase font-mono border-amber-500/50 bg-amber-950/20" />
-            <span class="text-[9px] text-amber-300/70 block mt-1">Wajib diisi untuk paket jangka panjang agar tidak dijual ke pihak ketiga.</span>
+            <span class="text-[9px] text-amber-300/70 block mt-1">Wajib diisi untuk paket durasi > 1 bulan agar tidak dijual ke pihak ketiga.</span>
           </div>
 
           <button onclick="generateOwnerToken()" class="btn-super btn-primary w-full py-3.5 text-[12px] mt-2">
@@ -562,12 +562,12 @@
   const TOKEN_SECRET_SALT = 8472;
   let lastGeneratedCode = "";
   let buyerDeviceId = "";
+  let activeInjectEmail = "";
 
   // Image Enhancer Variables
   let selectedFile = null; let selectedMode = '2x'; let tempSelectedMode = '2x'; let originalBlobUrl = null; let enhancedBlobUrl = null;
 
   window.addEventListener("DOMContentLoaded", async () => {
-    // FINGERPRINT TETAP: Menggunakan kombinasi hardware layar & browser agar tidak berubah meski cache/localStorage dibersihkan
     buyerDeviceId = localStorage.getItem("am_buyer_device_id");
     if (!buyerDeviceId) {
       const screenInfo = `${window.screen.width}x${window.screen.height}x${window.screen.colorDepth}`;
@@ -712,11 +712,7 @@
     }
     
     if (encodedDevId !== "ANY" && encodedDevId !== buyerDeviceId) {
-      // Auto-sync jika ID fingerprint konsisten
-      localStorage.setItem("am_buyer_device_id", encodedDevId);
-      buyerDeviceId = encodedDevId;
-      const deviceDisplay = document.getElementById("displayMyDeviceId");
-      if (deviceDisplay) deviceDisplay.textContent = buyerDeviceId;
+      return { valid: false, message: "Token ini terkunci di HP lain! Tidak bisa dipindah/dijual." };
     }
     
     const expiryTime = parseInt(timeStr, 36);
@@ -873,10 +869,10 @@
 
   function generateOwnerToken() {
     const selectedVal = document.getElementById("newGenDays").value;
-    let targetDevIdInput = document.getElementById("inputBuyerDeviceId").value.trim();
+    const targetDevIdInput = document.getElementById("inputBuyerDeviceId").value.trim();
     
     if ((selectedVal === "90" || selectedVal === "365" || selectedVal === "PERMANENT") && !targetDevIdInput) {
-      targetDevIdInput = "ANY";
+      return showToast("⚠️ Harap masukkan ID Perangkat pembeli untuk paket jangka panjang ini!");
     }
 
     const randomCode = generateMagicToken(selectedVal, targetDevIdInput);
@@ -888,7 +884,7 @@
     if (selectedVal === "365") labelText = "1 Tahun";
     if (selectedVal === "5_MIN") labelText = "5 Menit Trial";
 
-    const boundInfo = targetDevIdInput !== "ANY" ? `Terkunci ke: <span class="text-emerald-400 font-bold">${targetDevIdInput.toUpperCase()}</span>` : `Bebas`;
+    const boundInfo = targetDevIdInput ? `Terkunci ke: <span class="text-emerald-400 font-bold">${targetDevIdInput.toUpperCase()}</span>` : `Bebas`;
 
     document.getElementById("ownerTokenText").innerHTML = `<b>LOCKED KEY:</b><br><code class="text-primary text-[14px] font-bold mt-1 block select-all">${randomCode}</code><br>Durasi: ${labelText} | ${boundInfo}`;
     document.getElementById("ownerTokenResult").classList.remove("hidden");
@@ -899,7 +895,7 @@
     history.unshift({ 
       token: randomCode, 
       type: labelText, 
-      devId: targetDevIdInput !== "ANY" ? targetDevIdInput.toUpperCase() : "Bebas",
+      devId: targetDevIdInput ? targetDevIdInput.toUpperCase() : "Bebas",
       date: new Date().toLocaleString('id-ID'),
       expiry: expiryTimestamp
     });
@@ -1006,18 +1002,17 @@
     const amount = Number(document.getElementById("inputBulkAmount").value);
     if (!amount || amount < 1 || amount > 100) return showToast("Value must be 1-100");
     showToast("Starting Batch Generation...");
-    let success = false; let resultMessage = "";
-    try {
-      const res = await fetch("/api/bulk", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ amount }) });
-      const contentType = res.headers.get("content-type");
-      if (!contentType || !contentType.includes("application/json")) { const text = await res.text(); throw new Error(text || "Server error."); }
-      const json = await res.json();
-      success = res.ok && json.status !== false; resultMessage = json.message || JSON.stringify(json, null, 2);
-      const result = document.getElementById("bulkResult");
-      result.innerHTML = `<div class="font-bold ${success ? "text-accent" : "text-red-400"} mb-2">${success ? "[ BATCH_SUCCESS ]" : "[ BATCH_FAILED ]"}</div><pre class="whitespace-pre-wrap text-[9px] text-slate-400">${escapeHtml(resultMessage)}</pre>`;
-      result.classList.remove("hidden");
-    } catch (err) { success = false; showToast(err.message || "Connection Failed."); }
-    if (success) showToast("Batch task completed."); else showToast("Batch task aborted.");
+    
+    // Fitur Bulk Generator Client-Side (Client-side batch generation agar berjalan sempurna di Static Hosting)
+    let bulkTokens = [];
+    for (let i = 0; i < amount; i++) {
+      bulkTokens.push(generateMagicToken("30", "ANY"));
+    }
+    
+    const result = document.getElementById("bulkResult");
+    result.innerHTML = `<div class="font-bold text-accent mb-2">[ BATCH_SUCCESS (${amount} Tokens Generated) ]</div><pre class="whitespace-pre-wrap text-[9px] text-slate-400 select-all">${bulkTokens.join("\n")}</pre>`;
+    result.classList.remove("hidden");
+    showToast("Batch task completed.");
   }
 
   async function runInboxCheck() {
