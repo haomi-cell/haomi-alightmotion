@@ -85,19 +85,24 @@
         <i class="fa-solid fa-shield-halved animate-pulse"></i>
       </div>
       
-      <div class="space-y-1 mb-5">
+      <div class="space-y-1 mb-4">
         <h2 class="text-xl font-display font-bold text-white">SECURITY GATEWAY</h2>
         <p class="text-[11px] text-slate-400 font-mono">Authentication Required • v2.0</p>
       </div>
 
-      <div class="warning-block rounded-xl p-3 mb-5 text-left relative overflow-hidden animate-fade">
+      <!-- Info ID Perangkat Pembeli -->
+      <div class="pro-card p-2.5 mb-4 text-[10px] font-mono flex items-center justify-between border-primary/30 bg-primary/5">
+        <span class="text-slate-400">ID Perangkat Anda:</span>
+        <strong id="displayMyDeviceId" class="text-primary font-bold select-all tracking-wider">Loading...</strong>
+      </div>
+
+      <div class="warning-block rounded-xl p-3 mb-4 text-left relative overflow-hidden animate-fade">
         <div class="absolute top-0 left-0 w-1 h-full bg-red-500"></div>
         <h3 class="text-red-400 font-bold text-[11px] flex items-center gap-1.5 mb-1.5 uppercase font-display tracking-wider">
           <i class="fa-solid fa-triangle-exclamation"></i> Peringatan Sistem
         </h3>
         <p class="text-[9px] text-red-200/80 leading-relaxed font-mono">
-          Dilarang keras membagikan token, melakukan bruteforce, bypass, atau aktivitas ilegal lainnya. 
-          <strong class="text-white">IP Anda (<span id="warnIp">Mendeteksi...</span>) telah dicatat.</strong> Pelanggaran akan mengakibatkan pemblokiran PERMANEN!
+          Token jangka panjang terkunci khusus untuk perangkat Anda. Dilarang keras membagikannya!
         </p>
       </div>
       
@@ -112,7 +117,7 @@
           <i class="fa-solid fa-arrow-right-to-bracket"></i>
         </button>
 
-        <div id="freeTokenContainer" class="pt-2">
+        <div id="freeTokenContainer" class="pt-1">
           <button id="btnClaimFree" onclick="claimFreeTrialToken()" class="btn-super btn-dark w-full py-3 text-[11px] flex items-center justify-center gap-2">
             <i class="fa-solid fa-gift text-accent"></i>
             <span>Klaim Token Trial (5 Menit)</span>
@@ -120,23 +125,23 @@
         </div>
       </div>
 
-      <div class="mt-5 border-t border-white/10 pt-4">
+      <div class="mt-4 border-t border-white/10 pt-3">
         <button onclick="toggleTokenPackages()" class="btn-super btn-dark w-full py-3 text-[11px] flex items-center justify-center gap-2 border-primary/30 text-primary hover:bg-primary/10">
           <i class="fa-brands fa-whatsapp"></i>
           <span id="btnGetTokenText">Dapatkan Token Resmi</span>
         </button>
 
         <div id="tokenPackagesSection" class="hidden space-y-2 mt-3 text-left animate-fade">
-          <a href="https://Wa.me/+6282231669053?text=Mau%20Token%20Web%201day%20Mas%20Hao" target="_blank" class="pro-card py-3 px-4 flex items-center justify-between no-underline group">
+          <a href="https://Wa.me/+6282231669053?text=Halo%20Mas%20Hao,%20Saya%20mau%20beli%20Token%201%20Hari." target="_blank" class="pro-card py-3 px-4 flex items-center justify-between no-underline group">
             <span class="text-slate-300 text-[11px] font-medium group-hover:text-white transition"><i class="fa-regular fa-clock mr-2 text-primary"></i>1 Hari</span>
             <span class="text-[11px] text-white font-mono font-bold bg-white/10 px-2 py-1 rounded">Rp 3.000</span>
           </a>
-          <a href="https://Wa.me/+6282231669053?text=Mau%20Token%20Web%207day%20Mas%20Hao" target="_blank" class="pro-card py-3 px-4 flex items-center justify-between no-underline group">
+          <a href="https://Wa.me/+6282231669053?text=Halo%20Mas%20Hao,%20Saya%20mau%20beli%20Token%207%20Hari." target="_blank" class="pro-card py-3 px-4 flex items-center justify-between no-underline group">
             <span class="text-slate-300 text-[11px] font-medium group-hover:text-white transition"><i class="fa-regular fa-calendar mr-2 text-primary"></i>7 Hari</span>
             <span class="text-[11px] text-white font-mono font-bold bg-white/10 px-2 py-1 rounded">Rp 15.000</span>
           </a>
-          <a href="https://Wa.me/+6282231669053?text=Mau%20Token%20Web%20Permanen%20Mas%20Hao" target="_blank" class="ad-premium rounded-xl py-3 px-4 flex items-center justify-between no-underline mt-2">
-            <span class="font-bold text-[12px] flex items-center"><i class="fa-solid fa-crown mr-2"></i>Permanen</span>
+          <a href="https://Wa.me/+6282231669053?text=Halo%20Mas%20Hao,%20Saya%20mau%20beli%20Token%20Permanen.%20ID%20Perangkat%20saya:%20" target="_blank" id="waLinkPerm" class="ad-premium rounded-xl py-3 px-4 flex items-center justify-between no-underline mt-2">
+            <span class="font-bold text-[12px] flex items-center"><i class="fa-solid fa-crown mr-2"></i>Permanen (Kirim ID)</span>
             <span class="text-[11px] font-mono font-black bg-black/20 px-2 py-1 rounded">Rp 40.000</span>
           </a>
         </div>
@@ -144,7 +149,7 @@
     </div>
   </div>
 
-  <!-- DASHBOARD OWNER (ADMIN) - CEK TOKEN RIWAYAT -->
+  <!-- DASHBOARD OWNER (ADMIN) -->
   <div id="ownerDashboardModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/95 backdrop-blur-xl animate-fade hidden">
     <div class="pro-glass w-full max-w-lg rounded-3xl p-5 text-left border border-primary/40 shadow-[0_0_50px_rgba(14,165,233,0.15)] relative">
       <div class="flex items-center justify-between border-b border-white/10 pb-4 mb-4">
@@ -167,26 +172,36 @@
           <i class="fa-solid fa-key mr-1"></i> Generator
         </button>
         <button id="tabAdminHistory" onclick="switchAdminTab('history'); loadTokenHistory();" class="tab-btn py-2.5 text-[11px] font-semibold font-display tracking-wide uppercase rounded-lg">
-          <i class="fa-solid fa-list-check mr-1"></i> Cek Token Dibuat
+          <i class="fa-solid fa-list-check mr-1"></i> Riwayat Token
         </button>
       </div>
 
       <!-- Tab 1: Generator -->
       <div id="adminContentGen" class="space-y-4 animate-fade">
-        <div class="pro-card p-4 border border-white/10">
-          <label class="block text-[11px] text-slate-300 mb-2 font-mono font-semibold">DURASI TOKEN BARU:</label>
-          <select id="newGenDays" class="px-4 py-3.5 text-[12px] bg-black/80 mb-4">
-            <option value="5_MIN">5 Menit (Trial)</option>
-            <option value="1">1 Hari</option>
-            <option value="3">3 Hari</option>
-            <option value="7">7 Hari</option>
-            <option value="15">15 Hari</option>
-            <option value="30" selected>30 Hari (1 Bulan)</option>
-            <option value="90">90 Hari (3 Bulan)</option>
-            <option value="365">365 Hari (1 Tahun)</option>
-            <option value="PERMANENT">Permanen (Tanpa Batas)</option>
-          </select>
-          <button onclick="generateOwnerToken()" class="btn-super btn-primary w-full py-3.5 text-[12px]">
+        <div class="pro-card p-4 border border-white/10 space-y-3">
+          <div>
+            <label class="block text-[11px] text-slate-300 mb-1.5 font-mono font-semibold">PILIH DURASI TOKEN:</label>
+            <select id="newGenDays" onchange="checkDurationSelection()" class="px-4 py-3 text-[12px] bg-black/80">
+              <option value="5_MIN">5 Menit (Trial)</option>
+              <option value="1">1 Hari</option>
+              <option value="3">3 Hari</option>
+              <option value="7">7 Hari</option>
+              <option value="15">15 Hari</option>
+              <option value="30" selected>30 Hari (1 Bulan)</option>
+              <option value="90">90 Hari (3 Bulan - Jangka Panjang)</option>
+              <option value="365">365 Hari (1 Tahun - Jangka Panjang)</option>
+              <option value="PERMANENT">Permanen (Tanpa Batas - Jangka Panjang)</option>
+            </select>
+          </div>
+
+          <!-- Kolom ID Perangkat hanya muncul jika durasi > 1 Bulan (90, 365, PERMANENT) -->
+          <div id="deviceIdSection" class="hidden animate-fade">
+            <label class="block text-[11px] text-amber-400 mb-1.5 font-mono font-semibold"><i class="fa-solid fa-lock mr-1"></i> ID PERANGKAT PEMBELI:</label>
+            <input id="inputBuyerDeviceId" type="text" placeholder="Masukkan ID yang dikirim pembeli..." class="px-4 py-3 text-[12px] uppercase font-mono border-amber-500/50 bg-amber-950/20" />
+            <span class="text-[9px] text-amber-300/70 block mt-1">Wajib diisi karena ini paket jangka panjang agar tidak dijual ke pihak ketiga.</span>
+          </div>
+
+          <button onclick="generateOwnerToken()" class="btn-super btn-primary w-full py-3.5 text-[12px] mt-2">
             Execute Generation
           </button>
         </div>
@@ -199,10 +214,10 @@
         </div>
       </div>
 
-      <!-- Tab 2: Cek Token & Riwayat -->
+      <!-- Tab 2: Riwayat Token -->
       <div id="adminContentHistory" class="space-y-3 animate-fade hidden">
         <div class="flex items-center justify-between mb-2">
-          <span class="text-[10px] font-mono text-slate-400 uppercase">Daftar Token Terbuat & Statusnya</span>
+          <span class="text-[10px] font-mono text-slate-400 uppercase">Daftar Riwayat Token</span>
           <button onclick="loadTokenHistory()" class="text-primary text-[10px] hover:text-white"><i class="fa-solid fa-rotate mr-1"></i>Refresh</button>
         </div>
         <div id="tokenHistoryListContainer" class="space-y-2 max-h-[300px] overflow-y-auto pr-2"></div>
@@ -237,9 +252,9 @@
       </button>
     </header>
 
-    <!-- PREMIUM UNLIMITED ADS BANNER -->
+    <!-- PREMIUM UNLIMITED ADS BANNER (Akan otomatis hilang jika token permanen/admin) -->
     <div id="premiumAdContainer" class="animate-fade">
-      <a href="https://Wa.me/+6282231669053?text=Halo%20Mas%20Hao,%20Saya%20mau%20beli%20Token%20Permanen%20Unlimited" target="_blank" class="ad-premium block rounded-2xl p-3 no-underline transition-transform hover:scale-[1.01] relative overflow-hidden group">
+      <a href="https://Wa.me/+6282231669053?text=Halo%20Mas%20Hao,%20Saya%20mau%20beli%20Token%20Permanen" target="_blank" class="ad-premium block rounded-2xl p-3 no-underline transition-transform hover:scale-[1.01] relative overflow-hidden group">
         <div class="absolute inset-0 bg-white/20 transform -skew-x-12 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
         <div class="flex items-center justify-between relative z-10">
            <div class="flex items-center gap-3">
@@ -484,8 +499,8 @@
             <span id="profileAccessType" class="text-primary font-bold">Standard Member</span>
           </div>
           <div class="flex justify-between items-center">
-            <span class="text-slate-500">IP Address</span>
-            <span id="profileUserIp" class="text-white font-bold">Detecting...</span>
+            <span class="text-slate-500">ID Perangkat</span>
+            <span id="profileDeviceId" class="text-white font-bold select-all">--</span>
           </div>
         </div>
         <button onclick="logoutToken()" class="btn-super w-full py-3 text-[11px] bg-red-500/10 text-red-400 border border-red-500/30 hover:bg-red-500/20">
@@ -542,27 +557,28 @@
 
 <script>
   // ==========================================
-  // CORE CONFIGURATION & STATE
+  // CORE CONFIGURATION & DEVICE BINDING
   // ==========================================
   const OWNER_SECRET_KEY = "HAOMI_XML";
   const TOKEN_SECRET_SALT = 8472;
   let lastGeneratedCode = "";
-  let clientRealIp = "127.0.0.1";
-  let activeInjectEmail = "";
+  let buyerDeviceId = "";
 
   // Image Enhancer Variables
   let selectedFile = null; let selectedMode = '2x'; let tempSelectedMode = '2x'; let originalBlobUrl = null; let enhancedBlobUrl = null;
 
   window.addEventListener("DOMContentLoaded", async () => {
-    try {
-      const ipRes = await fetch("https://api.ipify.org?format=json");
-      const ipJson = await ipRes.json();
-      clientRealIp = ipJson.ip || "127.0.0.1";
-      document.getElementById("warnIp").textContent = clientRealIp;
-    } catch (e) {
-      clientRealIp = "192.168.1." + Math.floor(Math.random() * 200);
-      document.getElementById("warnIp").textContent = clientRealIp;
+    buyerDeviceId = localStorage.getItem("am_buyer_device_id");
+    if (!buyerDeviceId) {
+      buyerDeviceId = "DEV-" + Math.random().toString(36).substring(2, 8).toUpperCase();
+      localStorage.setItem("am_buyer_device_id", buyerDeviceId);
     }
+    
+    const deviceDisplay = document.getElementById("displayMyDeviceId");
+    if (deviceDisplay) deviceDisplay.textContent = buyerDeviceId;
+
+    const baseWaText = "Halo%20Mas%20Hao,%20Saya%20mau%20beli%20Token%20Permanen.%20ID%20Perangkat%20saya:%20" + buyerDeviceId;
+    document.getElementById("waLinkPerm").href = `https://Wa.me/+6282231669053?text=${baseWaText}`;
 
     const savedToken = localStorage.getItem("verified_token");
     const savedExpiry = localStorage.getItem("token_expiry");
@@ -599,7 +615,7 @@
     const adBanner = document.getElementById("premiumAdContainer");
     if(adBanner) {
       if(isOwner || isPermanent || localStorage.getItem("token_expiry") === "PERMANENT") {
-        adBanner.style.display = "none";
+        adBanner.style.display = "none"; // Hilangkan banner iklan oren jika permanen atau owner
       } else {
         adBanner.style.display = "block";
       }
@@ -641,9 +657,9 @@
   function escapeHtml(value) { return String(value ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;"); }
 
   // ==========================================
-  // MAGIC TOKEN GENERATOR (ALGORITHMIC LOCAL)
+  // LOCKED MAGIC TOKEN GENERATOR
   // ==========================================
-  function generateMagicToken(daysString, isTrial = false) {
+  function generateMagicToken(daysString, targetDeviceId = "", isTrial = false) {
     let expiryTime;
     if (daysString === "PERMANENT") {
       expiryTime = new Date("2099-12-31").getTime();
@@ -654,14 +670,15 @@
     }
     
     const timeStr = expiryTime.toString(36).toUpperCase();
+    const cleanDevId = targetDeviceId ? targetDeviceId.trim().toUpperCase() : "ANY";
+    
+    let payload = timeStr + "_" + cleanDevId;
     let checksum = 0;
-    for (let i = 0; i < timeStr.length; i++) checksum += timeStr.charCodeAt(i);
+    for (let i = 0; i < payload.length; i++) checksum += payload.charCodeAt(i);
     const signature = (checksum * TOKEN_SECRET_SALT).toString(36).toUpperCase();
     
-    const randomPart = Math.random().toString(36).substring(2, 6).toUpperCase();
     const prefix = isTrial ? "TRIAL" : "PRO";
-    
-    return `${prefix}-${timeStr}-${randomPart}-${signature}`;
+    return `${prefix}-${timeStr}-${cleanDevId}-${signature}`;
   }
 
   function validateMagicToken(token) {
@@ -670,20 +687,30 @@
 
     const parts = token.split("-");
     if ((parts[0] !== "PRO" && parts[0] !== "TRIAL") || parts.length < 4) {
-      return { valid: false, message: "Format token tidak dikenali." };
+      return { valid: false, message: "Format token tidak valid." };
     }
     
     const timeStr = parts[1];
+    const encodedDevId = parts[2];
     const signature = parts[3];
     
+    let payload = timeStr + "_" + encodedDevId;
     let checksum = 0;
-    for (let i = 0; i < timeStr.length; i++) checksum += timeStr.charCodeAt(i);
+    for (let i = 0; i < payload.length; i++) checksum += payload.charCodeAt(i);
     const expectedSig = (checksum * TOKEN_SECRET_SALT).toString(36).toUpperCase();
     
-    if (signature !== expectedSig) return { valid: false, message: "Token invalid atau palsu." };
+    if (signature !== expectedSig) {
+      return { valid: false, message: "Token palsu atau tidak dikenali." };
+    }
+    
+    if (encodedDevId !== "ANY" && encodedDevId !== buyerDeviceId) {
+      return { valid: false, message: "Token ini terkunci di HP lain! Tidak bisa dipindah/dijual." };
+    }
     
     const expiryTime = parseInt(timeStr, 36);
-    if (Date.now() > expiryTime) return { valid: false, message: "Token sudah kedaluwarsa!" };
+    if (Date.now() > expiryTime) {
+      return { valid: false, message: "Token sudah kedaluwarsa!" };
+    }
     
     return { valid: true, isOwner: false, expiry: expiryTime };
   }
@@ -716,10 +743,10 @@
       if (timePassed < oneWeek) return showToast("Token trial sudah diklaim minggu ini.");
     }
 
-    const freeTokenCode = generateMagicToken("5_MIN", true);
+    const freeTokenCode = generateMagicToken("5_MIN", buyerDeviceId, true);
     localStorage.setItem("last_free_token_claim_date", Date.now().toString());
     document.getElementById("inputTokenAccess").value = freeTokenCode;
-    showToast("Token trial berhasil dibuat! Mengautentikasi...");
+    showToast("Token trial berhasil dibuat untuk perangkat ini!");
     checkFreeClaimStatus();
     setTimeout(() => { verifyTokenAccess(); }, 800);
   }
@@ -728,7 +755,7 @@
     const inputVal = document.getElementById("inputTokenAccess").value.trim();
     if (!inputVal) return showToast("Akses Ditolak: Token Kosong");
     
-    showToast("Memeriksa keamanan token...");
+    showToast("Memeriksa otorisasi perangkat...");
     
     setTimeout(() => {
       const check = validateMagicToken(inputVal.toUpperCase());
@@ -746,7 +773,7 @@
             localStorage.setItem("token_expiry", check.expiry.toString());
           }
           localStorage.removeItem("owner_logged_in");
-          showToast("Autentikasi Berhasil!");
+          showToast("Perangkat Terverifikasi & Masuk!");
           setTimeout(() => { unlockDashboard(false, check.expiry === "PERMANENT"); }, 800);
         }
       } else {
@@ -783,7 +810,7 @@
     const token = localStorage.getItem("verified_token") || "UNKNOWN";
     document.getElementById("profileActiveToken").textContent = isOwner ? "ROOT_ADMIN" : token;
     document.getElementById("profileAccessType").textContent = isOwner ? "System Owner" : "Token User";
-    document.getElementById("profileUserIp").textContent = clientRealIp;
+    document.getElementById("profileDeviceId").textContent = buyerDeviceId;
     document.getElementById("profileModal").classList.remove("hidden");
   }
   function closeProfileModal() { document.getElementById("profileModal").classList.add("hidden"); }
@@ -797,11 +824,12 @@
   }
 
   // ==========================================
-  // ADMIN DASHBOARD LOGIC (CEK TOKEN & RIWAYAT)
+  // ADMIN DASHBOARD LOGIC
   // ==========================================
   function openOwnerDashboardModal() {
     if (localStorage.getItem("owner_logged_in") !== "true") return showToast("ACCESS DENIED");
     document.getElementById("ownerDashboardModal").classList.remove("hidden");
+    checkDurationSelection();
     loadTokenHistory();
   }
   function closeOwnerDashboard() { document.getElementById("ownerDashboardModal").classList.add("hidden"); }
@@ -820,34 +848,60 @@
     }
   }
 
+  // Fungsi untuk memunculkan kolom ID perangkat HANYA jika durasi > 1 bulan (90, 365, PERMANENT)
+  function checkDurationSelection() {
+    const val = document.getElementById("newGenDays").value;
+    const deviceSection = document.getElementById("deviceIdSection");
+    if (val === "90" || val === "365" || val === "PERMANENT") {
+      deviceSection.classList.remove("hidden");
+    } else {
+      deviceSection.classList.add("hidden");
+      document.getElementById("inputBuyerDeviceId").value = "";
+    }
+  }
+
   function generateOwnerToken() {
     const selectedVal = document.getElementById("newGenDays").value;
-    const randomCode = generateMagicToken(selectedVal);
+    const targetDevIdInput = document.getElementById("inputBuyerDeviceId").value.trim();
+    
+    // Validasi jika durasi jangka panjang wajib menyertakan ID Perangkat
+    if ((selectedVal === "90" || selectedVal === "365" || selectedVal === "PERMANENT") && !targetDevIdInput) {
+      return showToast("⚠️ Harap masukkan ID Perangkat pembeli untuk paket jangka panjang ini!");
+    }
+
+    const randomCode = generateMagicToken(selectedVal, targetDevIdInput);
     lastGeneratedCode = randomCode;
 
-    const labelText = selectedVal === "PERMANENT" ? "Unlimited" : (selectedVal === "5_MIN" ? "5 Menit" : selectedVal + " Hari");
-    document.getElementById("ownerTokenText").innerHTML = `<b>GENERATED KEY:</b><br><code class="text-primary text-[15px] font-bold mt-1 block">${randomCode}</code><br>Type: ${labelText}`;
+    let labelText = selectedVal + " Hari";
+    if (selectedVal === "PERMANENT") labelText = "Permanen";
+    if (selectedVal === "90") labelText = "3 Bulan";
+    if (selectedVal === "365") labelText = "1 Tahun";
+    if (selectedVal === "5_MIN") labelText = "5 Menit Trial";
+
+    const boundInfo = targetDevIdInput ? `Terkunci ke: <span class="text-emerald-400 font-bold">${targetDevIdInput.toUpperCase()}</span>` : `Bebas`;
+
+    document.getElementById("ownerTokenText").innerHTML = `<b>LOCKED KEY:</b><br><code class="text-primary text-[14px] font-bold mt-1 block select-all">${randomCode}</code><br>Durasi: ${labelText} | ${boundInfo}`;
     document.getElementById("ownerTokenResult").classList.remove("hidden");
     
-    // Simpan ke riwayat token admin beserta masa aktifnya
     let history = JSON.parse(localStorage.getItem("admin_token_history_list") || "[]");
     let expiryTimestamp = (selectedVal === "PERMANENT") ? "PERMANENT" : (selectedVal === "5_MIN" ? Date.now() + 300000 : Date.now() + Number(selectedVal) * 86400000);
     
     history.unshift({ 
       token: randomCode, 
       type: labelText, 
+      devId: targetDevIdInput ? targetDevIdInput.toUpperCase() : "Bebas",
       date: new Date().toLocaleString('id-ID'),
       expiry: expiryTimestamp
     });
     localStorage.setItem("admin_token_history_list", JSON.stringify(history));
 
-    showToast("Token Pro Generated & Disimpan ke Riwayat!");
+    showToast("Token Berhasil Dibuat!");
   }
 
   async function copyGeneratedToken() {
     if (!lastGeneratedCode) return;
     await navigator.clipboard.writeText(lastGeneratedCode);
-    showToast("Token copied to clipboard!");
+    showToast("Token ter-copy ke clipboard!");
   }
 
   function loadTokenHistory() {
@@ -861,24 +915,19 @@
     
     container.innerHTML = "";
     history.forEach((item, index) => {
-      // Cek apakah token masih aktif atau sudah kedaluwarsa
       let statusHtml = "";
       if (item.expiry === "PERMANENT") {
-        statusHtml = `<span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 text-[9px] font-bold">AKTIF (Permanen)</span>`;
+        statusHtml = `<span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 text-[9px] font-bold">AKTIF</span>`;
       } else {
         const isExpired = Date.now() > Number(item.expiry);
-        if (isExpired) {
-          statusHtml = `<span class="px-2 py-0.5 rounded bg-red-500/20 text-red-400 text-[9px] font-bold">KEDALUWARSA</span>`;
-        } else {
-          statusHtml = `<span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 text-[9px] font-bold">AKTIF</span>`;
-        }
+        statusHtml = isExpired ? `<span class="px-2 py-0.5 rounded bg-red-500/20 text-red-400 text-[9px] font-bold">EXPIRED</span>` : `<span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 text-[9px] font-bold">AKTIF</span>`;
       }
 
       const card = document.createElement("div");
       card.className = "p-3 bg-black/60 border border-white/5 rounded-lg flex flex-col gap-2 font-mono text-[10px]";
       card.innerHTML = `
         <div class="flex items-center justify-between text-slate-300">
-          <span><i class="fa-solid fa-key text-primary mr-1"></i> Durasi: ${item.type}</span>
+          <span><i class="fa-solid fa-shield text-primary mr-1"></i> ${item.type} | Kunci: <strong class="text-white">${item.devId}</strong></span>
           ${statusHtml}
         </div>
         <div class="p-2 bg-white/5 rounded text-white text-center font-bold tracking-wider select-all">
@@ -902,7 +951,7 @@
   }
 
   // ==========================================
-  // FITUR ORIGINAL (AKTIVASI, BULK, INBOX) - TIDAK DISENTUH
+  // FITUR ORIGINAL (AKTIVASI, BULK, INBOX, HD FOTO) - TIDAK DISENTUH
   // ==========================================
   async function handleSendMagicLink() {
     const email = document.getElementById("inputEmail").value.trim();
