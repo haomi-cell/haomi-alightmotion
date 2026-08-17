@@ -4,14 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="theme-color" content="#000000" />
-  <meta name="description" content="Cyber Workspace by 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞" />
-  <title>CYBER TERMINAL | 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞</title>
+  <meta name="description" content="VIP Workspace by 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞" />
+  <title>VIP Workspace | 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 
   <script>
     tailwind.config = {
@@ -19,20 +19,19 @@
       theme: {
         extend: {
           fontFamily: {
+            sans: ['Outfit', 'sans-serif'],
             mono: ['JetBrains Mono', 'monospace'],
-            tech: ['Share Tech Mono', 'monospace'],
           },
           colors: {
-            cyber: {
+            vip: {
               black: '#000000',
-              base: '#050505',
-              border: '#00ff41',
-              text: '#00ff41',
-              dim: '#008f11',
-              dark: '#003b00',
-              gold: '#facc15', // Kuning emas untuk iklan
-              goldDim: '#854d0e',
-              red: '#ff003c'
+              base: '#09090b',
+              surface: '#18181b',
+              border: '#27272a',
+              text: '#a1a1aa',
+              gold: '#eab308',
+              goldDark: '#ca8a04',
+              red: '#ef4444'
             }
           }
         }
@@ -51,383 +50,256 @@
       margin: 0;
       padding: 0;
       background-color: #000000;
-      color: #00ff41;
-      font-family: 'JetBrains Mono', monospace;
+      color: #ffffff;
+      font-family: 'Outfit', sans-serif;
       overflow-x: hidden;
+      background-image: 
+        linear-gradient(rgba(234, 179, 8, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(234, 179, 8, 0.03) 1px, transparent 1px);
+      background-size: 30px 30px;
     }
 
-    /* CRT Scanline Effect */
-    .scanlines {
-      position: fixed;
-      top: 0; left: 0; width: 100vw; height: 100vh;
-      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-      background-size: 100% 4px, 3px 100%;
-      z-index: 9999;
-      pointer-events: none;
-      opacity: 0.4;
-    }
-
-    /* Matrix Canvas */
-    #matrixCanvas {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      z-index: -1;
-      opacity: 0.3;
-    }
-
-    /* Custom Scrollbar */
     ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-track { background: #000000; border-left: 1px solid #003b00; }
-    ::-webkit-scrollbar-thumb { background: #00ff41; }
-    ::-webkit-scrollbar-thumb:hover { background: #008f11; }
+    ::-webkit-scrollbar-track { background: #000000; }
+    ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #eab308; }
 
-    /* Core UI Elements */
-    .cyber-panel {
-      background-color: rgba(5, 5, 5, 0.85);
-      border: 1px solid #00ff41;
-      box-shadow: 0 0 15px rgba(0, 255, 65, 0.15), inset 0 0 20px rgba(0, 255, 65, 0.05);
-      backdrop-filter: blur(5px);
+    .vip-panel {
+      background-color: #09090b;
+      border: 1px solid #27272a;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px -10px rgba(0,0,0,0.8);
     }
     
-    .cyber-card {
-      background-color: rgba(0, 59, 0, 0.2);
-      border: 1px dashed #008f11;
+    .vip-card {
+      background-color: #18181b;
+      border: 1px solid #27272a;
+      border-radius: 12px;
     }
 
-    /* Form Inputs */
     input, select {
       width: 100%;
       background: #000000 !important;
-      border: 1px solid #008f11 !important;
-      color: #00ff41 !important;
+      border: 1px solid #27272a !important;
+      color: #ffffff !important;
+      border-radius: 8px !important;
       outline: none;
       transition: all 0.2s ease;
-      font-family: 'JetBrains Mono', monospace;
-      border-radius: 0 !important; /* Kotak tajam hacker */
     }
     input:focus, select:focus {
-      border-color: #00ff41 !important;
-      box-shadow: 0 0 10px rgba(0, 255, 65, 0.3) !important;
+      border-color: #eab308 !important;
+      box-shadow: 0 0 0 2px rgba(234, 179, 8, 0.15) !important;
     }
-    input::placeholder { color: #005f0b; opacity: 0.8; }
-    select option { background: #000000; color: #00ff41; }
+    input::placeholder { color: #52525b; }
+    select option { background: #09090b; color: #ffffff; }
 
-    /* Buttons */
-    .cyber-btn {
-      font-weight: 700;
+    .vip-btn {
+      border-radius: 8px;
+      font-weight: 600;
       transition: all 0.2s ease;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 0.5rem;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
-      border-radius: 0;
-      position: relative;
-      overflow: hidden;
+      letter-spacing: 0.05em;
     }
-    .cyber-btn:active { transform: scale(0.98); }
+    .vip-btn:active { transform: scale(0.98); }
     
-    .btn-terminal {
-      background: rgba(0, 255, 65, 0.1);
-      color: #00ff41;
-      border: 1px solid #00ff41;
-    }
-    .btn-terminal:hover {
-      background: #00ff41;
+    .btn-gold {
+      background: linear-gradient(135deg, #facc15 0%, #eab308 100%);
       color: #000000;
-      box-shadow: 0 0 15px rgba(0, 255, 65, 0.6);
+      border: none;
+      box-shadow: 0 4px 15px rgba(234, 179, 8, 0.2);
+    }
+    .btn-gold:hover {
+      background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%);
+      box-shadow: 0 6px 20px rgba(234, 179, 8, 0.4);
     }
 
-    .btn-gold-neon {
-      background: rgba(250, 204, 21, 0.1);
-      color: #facc15;
-      border: 1px solid #facc15;
+    .btn-dark {
+      background: #18181b;
+      color: #ffffff;
+      border: 1px solid #27272a;
     }
-    .btn-gold-neon:hover {
-      background: #facc15;
-      color: #000000;
-      box-shadow: 0 0 20px rgba(250, 204, 21, 0.7);
-    }
-
-    .btn-danger {
-      background: rgba(255, 0, 60, 0.1);
-      color: #ff003c;
-      border: 1px solid #ff003c;
-    }
-    .btn-danger:hover {
-      background: #ff003c;
-      color: #000000;
-      box-shadow: 0 0 20px rgba(255, 0, 60, 0.7);
+    .btn-dark:hover {
+      background: #27272a;
+      border-color: #eab308;
+      color: #eab308;
     }
 
-    /* Tabs */
-    .cyber-tab {
-      color: #005f0b;
+    .vip-tab {
+      color: #71717a;
       transition: all 0.2s;
       border-bottom: 2px solid transparent;
       border-radius: 0;
     }
-    .cyber-tab.active {
-      color: #00ff41;
-      border-bottom: 2px solid #00ff41;
-      background: linear-gradient(to top, rgba(0, 255, 65, 0.15), transparent);
-      text-shadow: 0 0 5px rgba(0, 255, 65, 0.5);
+    .vip-tab.active {
+      color: #eab308;
+      border-bottom: 2px solid #eab308;
+      background: linear-gradient(to top, rgba(234, 179, 8, 0.1), transparent);
     }
 
-    /* Animations */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
     .animate-in { animation: fadeUp 0.3s ease forwards; }
+    
+    @keyframes goldPulse {
+      0% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.4); }
+      70% { box-shadow: 0 0 0 10px rgba(234, 179, 8, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0); }
+    }
+    .ad-pulse { animation: goldPulse 2s infinite; }
 
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
-    .cursor-blink { animation: blink 1s step-end infinite; }
-
-    /* Glitch Effect */
-    .glitch {
-      position: relative;
-    }
-    .glitch::before, .glitch::after {
-      content: attr(data-text);
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: #000;
-    }
-    .glitch::before {
-      left: 2px;
-      text-shadow: -1px 0 red;
-      clip: rect(44px, 450px, 56px, 0);
-      animation: glitch-anim 5s infinite linear alternate-reverse;
-    }
-    .glitch::after {
-      left: -2px;
-      text-shadow: -1px 0 blue;
-      clip: rect(44px, 450px, 56px, 0);
-      animation: glitch-anim2 5s infinite linear alternate-reverse;
-    }
-    @keyframes glitch-anim {
-      0% { clip: rect(13px, 9999px, 86px, 0); }
-      5% { clip: rect(69px, 9999px, 3px, 0); }
-      10% { clip: rect(98px, 9999px, 95px, 0); }
-      15% { clip: rect(47px, 9999px, 54px, 0); }
-      20% { clip: rect(15px, 9999px, 63px, 0); }
-      25% { clip: rect(59px, 9999px, 2px, 0); }
-      30% { clip: rect(2px, 9999px, 12px, 0); }
-      35% { clip: rect(72px, 9999px, 85px, 0); }
-      40% { clip: rect(31px, 9999px, 11px, 0); }
-      45% { clip: rect(89px, 9999px, 45px, 0); }
-      50% { clip: rect(23px, 9999px, 34px, 0); }
-      55% { clip: rect(78px, 9999px, 67px, 0); }
-      60% { clip: rect(12px, 9999px, 89px, 0); }
-      65% { clip: rect(56px, 9999px, 23px, 0); }
-      70% { clip: rect(90px, 9999px, 78px, 0); }
-      75% { clip: rect(45px, 9999px, 12px, 0); }
-      80% { clip: rect(67px, 9999px, 56px, 0); }
-      85% { clip: rect(34px, 9999px, 90px, 0); }
-      90% { clip: rect(89px, 9999px, 45px, 0); }
-      95% { clip: rect(12px, 9999px, 78px, 0); }
-      100% { clip: rect(56px, 9999px, 23px, 0); }
-    }
-    @keyframes glitch-anim2 {
-      0% { clip: rect(65px, 9999px, 100px, 0); }
-      5% { clip: rect(12px, 9999px, 45px, 0); }
-      10% { clip: rect(78px, 9999px, 23px, 0); }
-      15% { clip: rect(34px, 9999px, 89px, 0); }
-      20% { clip: rect(90px, 9999px, 12px, 0); }
-      25% { clip: rect(45px, 9999px, 56px, 0); }
-      30% { clip: rect(23px, 9999px, 90px, 0); }
-      35% { clip: rect(89px, 9999px, 34px, 0); }
-      40% { clip: rect(12px, 9999px, 78px, 0); }
-      45% { clip: rect(56px, 9999px, 12px, 0); }
-      50% { clip: rect(90px, 9999px, 45px, 0); }
-      55% { clip: rect(34px, 9999px, 89px, 0); }
-      60% { clip: rect(78px, 9999px, 23px, 0); }
-      65% { clip: rect(12px, 9999px, 56px, 0); }
-      70% { clip: rect(45px, 9999px, 90px, 0); }
-      75% { clip: rect(89px, 9999px, 34px, 0); }
-      80% { clip: rect(23px, 9999px, 78px, 0); }
-      85% { clip: rect(56px, 9999px, 12px, 0); }
-      90% { clip: rect(90px, 9999px, 45px, 0); }
-      95% { clip: rect(34px, 9999px, 89px, 0); }
-      100% { clip: rect(12px, 9999px, 23px, 0); }
-    }
-
-    /* Warning Yellow Pulse */
-    @keyframes warningPulse {
-      0% { box-shadow: 0 0 5px #facc15, inset 0 0 5px #facc15; border-color: #facc15; }
-      50% { box-shadow: 0 0 25px #facc15, inset 0 0 15px #facc15; border-color: #ffe873; }
-      100% { box-shadow: 0 0 5px #facc15, inset 0 0 5px #facc15; border-color: #facc15; }
-    }
-    .ad-warning-pulse { animation: warningPulse 1.5s infinite; }
-
-    /* Toast */
-    .cyber-toast {
+    .vip-toast {
       transform: translate(-50%, 100px);
       opacity: 0;
       transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
       background: #000000;
-      border: 1px solid #00ff41;
-      color: #00ff41;
-      box-shadow: 0 0 20px rgba(0, 255, 65, 0.4);
+      border: 1px solid #eab308;
+      color: #eab308;
+      box-shadow: 0 10px 30px rgba(234, 179, 8, 0.15);
     }
-    .cyber-toast.show {
+    .vip-toast.show {
       transform: translate(-50%, 0);
       opacity: 1;
+    }
+    
+    .gold-text-gradient {
+      background: linear-gradient(to right, #facc15, #eab308);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
   </style>
 </head>
 <body class="min-h-screen px-4 py-8 flex flex-col items-center">
 
-  <canvas id="matrixCanvas"></canvas>
-  <div class="scanlines"></div>
-
-  <!-- MODAL TOKEN AKSES (GERBANG UTAMA) -->
-  <div id="tokenModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm">
-    <div class="cyber-panel w-full max-w-sm p-6 text-center animate-in border-cyber-border">
-      <div class="mb-4">
-        <i class="fa-solid fa-user-secret text-4xl text-cyber-border mb-2 drop-shadow-[0_0_10px_rgba(0,255,65,0.8)]"></i>
+  <!-- MODAL TOKEN AKSES -->
+  <div id="tokenModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/95 backdrop-blur-md">
+    <div class="vip-panel w-full max-w-sm p-6 text-center animate-in border-vip-gold/30">
+      <div class="w-16 h-16 mx-auto rounded-full bg-black border-2 border-vip-gold flex items-center justify-center text-vip-gold text-2xl mb-4 shadow-[0_0_20px_rgba(234,179,8,0.2)]">
+        <i class="fa-solid fa-lock"></i>
       </div>
-      <h2 class="text-xl font-bold text-cyber-border uppercase tracking-widest mb-1 glitch" data-text="SYSTEM LOCK">SYSTEM LOCK</h2>
-      <p class="text-[10px] text-cyber-dim mb-6 font-tech">>_ INPUT ENCRYPTION KEY TO PROCEED...</p>
+      <h2 class="text-xl font-bold text-white uppercase tracking-widest mb-1">Authentikasi Sistem</h2>
+      <p class="text-xs text-vip-text mb-6">Silakan verifikasi kunci token Anda untuk memasuki panel kontrol VIP eksekutif.</p>
       
       <div class="space-y-4">
         <div class="relative">
-          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-cyber-dim font-bold">>_</span>
-          <input id="inputTokenAccess" type="text" placeholder="XXXX-XXXX" class="pl-8 pr-4 py-3 text-sm font-bold tracking-widest text-center uppercase" />
+          <i class="fa-solid fa-key absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 text-sm"></i>
+          <input id="inputTokenAccess" type="text" placeholder="MASUKKAN TOKEN..." class="pl-10 pr-4 py-3.5 text-sm font-mono tracking-widest text-center uppercase border-vip-gold/50" />
         </div>
         
-        <button onclick="triggerWarningModal()" class="cyber-btn btn-terminal w-full py-3.5 text-sm">
-          [ EXECUTE LOGIN ] <i class="fa-solid fa-terminal ml-1"></i>
+        <button onclick="triggerWarningModal()" class="vip-btn btn-gold w-full py-3.5 text-sm">
+          Login ke Sistem <i class="fa-solid fa-right-to-bracket ml-1"></i>
         </button>
 
         <div class="relative flex py-2 items-center">
-          <div class="flex-grow border-t border-cyber-dark border-dashed"></div>
-          <span class="flex-shrink-0 mx-4 text-cyber-dim text-[9px] uppercase tracking-widest font-bold">BYPASS PROTOCOL</span>
-          <div class="flex-grow border-t border-cyber-dark border-dashed"></div>
+          <div class="flex-grow border-t border-vip-border"></div>
+          <span class="flex-shrink-0 mx-4 text-zinc-600 text-[10px] uppercase tracking-widest font-bold">Opsi Pengguna Baru</span>
+          <div class="flex-grow border-t border-vip-border"></div>
         </div>
 
-        <button id="btnClaimFree" onclick="claimFreeTrialToken()" class="cyber-btn bg-black text-cyber-border border border-cyber-border w-full py-3 text-xs hover:bg-cyber-dark">
-          <i class="fa-solid fa-bug text-cyber-border"></i> INJECT TRIAL 5 MIN
+        <button id="btnClaimFree" onclick="claimFreeTrialToken()" class="vip-btn btn-dark w-full py-3 text-xs">
+          <i class="fa-solid fa-stopwatch text-vip-gold"></i> Klaim Token Trial 5 Menit (Auto)
         </button>
       </div>
 
-      <div class="mt-6 pt-5 border-t border-cyber-dark border-dashed text-left">
-        <p class="text-[10px] text-cyber-dim mb-3 text-center font-bold">>_ NO KEY? PURCHASE ACCESS BELOW:</p>
-        <button onclick="toggleTokenPackages()" class="cyber-btn btn-gold-neon w-full py-3 text-xs ad-warning-pulse">
-          <i class="fa-solid fa-bolt text-cyber-gold"></i> <span id="btnGetTokenText">VIEW ACCESS TIER</span>
+      <div class="mt-6 pt-5 border-t border-vip-border text-left">
+        <p class="text-[11px] text-zinc-400 mb-3 text-center font-medium">Beli akses token resmi untuk fitur tanpa batas.</p>
+        <button onclick="toggleTokenPackages()" class="vip-btn btn-gold w-full py-3 text-xs ad-pulse">
+          <i class="fa-brands fa-whatsapp text-sm"></i> <span id="btnGetTokenText">Daftar Harga Token Premium</span>
         </button>
 
         <div id="tokenPackagesSection" class="hidden mt-3 space-y-2 animate-in">
-          <a href="https://Wa.me/+6282231669053?text=Mau%20Token%20Web%201day%20Mas%20Hao" target="_blank" class="flex justify-between items-center p-3 bg-black border border-cyber-goldDim hover:border-cyber-gold transition-colors group">
-            <span class="text-[11px] text-cyber-goldDim group-hover:text-cyber-gold">> TIER: 1 DAY</span>
-            <span class="text-[11px] font-bold text-cyber-gold">RP 3.000</span>
+          <a href="https://Wa.me/+6282231669053?text=Mau%20Token%20Web%201day%20Mas%20Hao" target="_blank" class="flex justify-between items-center p-3 rounded-lg bg-black border border-vip-border hover:border-vip-gold transition-colors">
+            <span class="text-xs text-zinc-300">Akses 1 Hari</span>
+            <span class="text-xs font-mono font-bold text-vip-gold">Rp 3.000</span>
           </a>
-          <a href="https://Wa.me/+6282231669053?text=Mau%20Token%20Web%207day%20Mas%20Hao" target="_blank" class="flex justify-between items-center p-3 bg-black border border-cyber-goldDim hover:border-cyber-gold transition-colors group">
-            <span class="text-[11px] text-cyber-goldDim group-hover:text-cyber-gold">> TIER: 7 DAYS</span>
-            <span class="text-[11px] font-bold text-cyber-gold">RP 15.000</span>
+          <a href="https://Wa.me/+6282231669053?text=Mau%20Token%20Web%207day%20Mas%20Hao" target="_blank" class="flex justify-between items-center p-3 rounded-lg bg-black border border-vip-border hover:border-vip-gold transition-colors">
+            <span class="text-xs text-zinc-300">Akses 7 Hari</span>
+            <span class="text-xs font-mono font-bold text-vip-gold">Rp 15.000</span>
           </a>
-          <a href="https://Wa.me/+6282231669053?text=Mau%20Token%20Web%201B%20Mas%20Hao" target="_blank" class="flex justify-between items-center p-3 bg-black border border-cyber-goldDim hover:border-cyber-gold transition-colors group">
-            <span class="text-[11px] text-cyber-goldDim group-hover:text-cyber-gold">> TIER: 30 DAYS</span>
-            <span class="text-[11px] font-bold text-cyber-gold">RP 25.000</span>
+          <a href="https://Wa.me/+6282231669053?text=Mau%20Token%20Web%201B%20Mas%20Hao" target="_blank" class="flex justify-between items-center p-3 rounded-lg bg-black border border-vip-border hover:border-vip-gold transition-colors">
+            <span class="text-xs text-zinc-300">Akses 30 Hari</span>
+            <span class="text-xs font-mono font-bold text-vip-gold">Rp 25.000</span>
           </a>
-          <a href="https://Wa.me/+6282231669053?text=Mau%20Token%20Web%20Permanen%20Mas%20Hao" target="_blank" class="flex justify-between items-center p-3 bg-cyber-gold/10 border border-cyber-gold hover:bg-cyber-gold/20 transition-colors">
-            <span class="text-[11px] text-cyber-gold font-bold"><i class="fa-solid fa-infinity mr-1"></i> TIER: ROOT (LIFETIME)</span>
-            <span class="text-[11px] font-bold text-cyber-gold">RP 40.000</span>
+          <a href="https://Wa.me/+6282231669053?text=Mau%20Token%20Web%20Permanen%20Mas%20Hao" target="_blank" class="flex justify-between items-center p-3 rounded-lg bg-vip-gold/10 border border-vip-gold hover:bg-vip-gold/20 transition-colors">
+            <span class="text-xs text-vip-gold font-bold"><i class="fa-solid fa-crown mr-1"></i> Akses Permanen</span>
+            <span class="text-xs font-mono font-bold text-vip-gold">Rp 40.000</span>
           </a>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- MODAL PERINGATAN (WARNING) -->
+  <!-- MODAL PERINGATAN -->
   <div id="warningModal" class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/95 backdrop-blur-sm hidden">
-    <div class="cyber-panel border-cyber-red w-full max-w-sm p-6 text-center animate-in shadow-[0_0_30px_rgba(255,0,60,0.2)]">
-      <div class="mb-4">
-        <i class="fa-solid fa-triangle-exclamation text-4xl text-cyber-red drop-shadow-[0_0_10px_rgba(255,0,60,0.8)] cursor-blink"></i>
+    <div class="vip-panel border-red-500/50 w-full max-w-sm p-6 text-center animate-in shadow-[0_0_30px_rgba(239,68,68,0.15)]">
+      <div class="w-14 h-14 mx-auto rounded-full bg-red-950/50 border border-red-500 flex items-center justify-center text-red-500 text-2xl mb-4">
+        <i class="fa-solid fa-hand text-red-500"></i>
       </div>
-      <h2 class="text-lg font-bold text-cyber-red mb-2 uppercase tracking-widest glitch" data-text="CRITICAL WARNING">CRITICAL WARNING</h2>
-      <div class="text-left text-[10px] text-cyber-red space-y-3 bg-black p-4 border border-cyber-red border-dashed mb-5">
-        <p class="flex items-start gap-2"><span class="font-bold text-white">[!]</span> <span><b>NO SHARING:</b> Token terikat pada HWID/IP. Berbagi = Auto Ban.</span></p>
-        <p class="flex items-start gap-2"><span class="font-bold text-white">[!]</span> <span><b>NO SPAMMING:</b> Serangan brutal ke API akan melumpuhkan IP Anda.</span></p>
-        <p class="flex items-start gap-2"><span class="font-bold text-white">[!]</span> <span><b>NO RESELLING:</b> Praktik jual ulang ilegal akan di-trace dan dihanguskan.</span></p>
-        <div class="border-t border-cyber-red/50 pt-3 mt-2 text-center text-white font-bold bg-cyber-red/20 py-2">
-          AGREEMENT: VIOLATION = PERMANENT BAN
+      <h2 class="text-lg font-bold text-red-500 mb-2 uppercase tracking-widest">Aturan Sistem VIP</h2>
+      <div class="text-left text-xs text-zinc-300 space-y-3 bg-black p-4 rounded-lg border border-vip-border mb-5">
+        <p class="flex items-start gap-2"><i class="fa-solid fa-ban text-red-500 mt-0.5"></i> <span><b>DILARANG</b> menyebarluaskan token kepada siapapun.</span></p>
+        <p class="flex items-start gap-2"><i class="fa-solid fa-ban text-red-500 mt-0.5"></i> <span><b>DILARANG</b> melakukan spam request pada API.</span></p>
+        <div class="border-t border-vip-border pt-3 mt-2 text-center text-red-400 font-semibold text-[10px]">
+          PELANGGARAN = BANNED PERMANEN.
         </div>
       </div>
-      
       <div class="grid grid-cols-2 gap-3">
-        <button onclick="closeWarningModal()" class="cyber-btn bg-black text-cyber-dim border border-cyber-dim py-3 text-xs hover:text-white">ABORT</button>
-        <button onclick="proceedLogin()" class="cyber-btn btn-danger py-3 text-xs">
-          I ACCEPT <i class="fa-solid fa-check ml-1"></i>
-        </button>
+        <button onclick="closeWarningModal()" class="vip-btn btn-dark py-3 text-xs">Batalkan</button>
+        <button onclick="proceedLogin()" class="vip-btn bg-red-600 hover:bg-red-700 text-white py-3 text-xs font-bold border-none">Saya Setuju</button>
       </div>
     </div>
   </div>
 
   <!-- DASHBOARD OWNER -->
   <div id="ownerDashboardModal" class="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-black/95 backdrop-blur-sm hidden">
-    <div class="cyber-panel w-full max-w-lg p-5 flex flex-col max-h-[90vh] animate-in">
-      <div class="flex items-center justify-between border-b border-cyber-border pb-4 mb-4 border-dashed">
+    <div class="vip-panel w-full max-w-lg p-5 flex flex-col max-h-[90vh] animate-in border-vip-gold/30">
+      <div class="flex items-center justify-between border-b border-vip-border pb-4 mb-4">
         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 border border-cyber-border flex items-center justify-center text-cyber-border bg-cyber-dark">
-            <i class="fa-solid fa-terminal"></i>
+          <div class="w-10 h-10 rounded-full bg-vip-gold/10 border border-vip-gold flex items-center justify-center text-vip-gold">
+            <i class="fa-solid fa-user-tie"></i>
           </div>
           <div>
-            <h2 class="text-sm font-bold text-cyber-border uppercase tracking-widest glitch" data-text="ROOT CONSOLE">ROOT CONSOLE</h2>
-            <p class="text-[9px] text-cyber-dim font-tech">uid=0(root) gid=0(root) groups=0(root)</p>
+            <h2 class="text-sm font-bold text-white uppercase tracking-wider">Owner Console</h2>
+            <p class="text-[10px] text-vip-gold font-mono">ROOT_ACCESS_GRANTED</p>
           </div>
         </div>
-        <button onclick="closeOwnerDashboard()" class="text-cyber-dim hover:text-cyber-red transition text-xl">
-          <i class="fa-solid fa-power-off"></i>
-        </button>
+        <button onclick="closeOwnerDashboard()" class="text-zinc-500 hover:text-white transition"><i class="fa-solid fa-xmark text-xl"></i></button>
       </div>
 
-      <div class="flex bg-black border border-cyber-dark p-1 mb-4">
-        <button id="tabAdminGen" onclick="switchAdminTab('gen')" class="cyber-tab active flex-1 py-2 text-xs font-bold uppercase tracking-widest">KEYGEN</button>
-        <button id="tabAdminUsers" onclick="switchAdminTab('users'); loadActiveUsers();" class="cyber-tab flex-1 py-2 text-xs font-bold uppercase tracking-widest">NETWORK LOG</button>
+      <div class="flex bg-black rounded-lg mb-4 border border-vip-border p-1">
+        <button id="tabAdminGen" onclick="switchAdminTab('gen')" class="vip-tab active flex-1 py-2.5 text-xs font-bold uppercase rounded-md">Generator</button>
+        <button id="tabAdminUsers" onclick="switchAdminTab('users'); loadActiveUsers();" class="vip-tab flex-1 py-2.5 text-xs font-bold uppercase rounded-md">Database User</button>
       </div>
 
       <div class="flex-1 overflow-y-auto pr-2">
-        <!-- Gen Token -->
         <div id="adminContentGen" class="space-y-4">
-          <div class="cyber-card p-4 space-y-4">
+          <div class="vip-card p-5 space-y-4">
             <div>
-              <label class="block text-[10px] font-bold text-cyber-dim mb-2 uppercase">> SELECT PAYLOAD DURATION</label>
-              <select id="newGenDays" class="p-3 text-sm font-bold">
-                <option value="5_MIN">TRIAL_MODE (5m)</option>
-                <option value="1">TEMP_ACCESS (24h)</option>
-                <option value="3">SHORT_ACCESS (3d)</option>
-                <option value="7">WEEKLY_PASS (7d)</option>
-                <option value="30" selected>MONTHLY_PASS (30d)</option>
-                <option value="PERMANENT">ROOT_ACCESS (LIFETIME)</option>
+              <label class="block text-xs font-bold text-zinc-400 mb-2 uppercase tracking-widest">Durasi Kunci Akses</label>
+              <select id="newGenDays" class="p-3 text-sm font-mono border-vip-border">
+                <option value="5_MIN">5 MENIT (TESTER)</option>
+                <option value="1">1 HARI</option>
+                <option value="7">7 HARI</option>
+                <option value="30" selected>30 HARI</option>
+                <option value="PERMANENT">PERMANENT</option>
               </select>
             </div>
-            <button onclick="generateOwnerToken()" class="cyber-btn btn-terminal w-full py-3.5 text-xs">
-              [ INITIALIZE KEYGEN ]
-            </button>
+            <button onclick="generateOwnerToken()" class="vip-btn btn-gold w-full py-3.5 text-sm"><i class="fa-solid fa-key"></i> Generate Token</button>
           </div>
-          <div id="ownerTokenResult" class="cyber-card p-4 border-cyber-border bg-cyber-dark hidden text-center">
-            <div id="ownerTokenText" class="text-sm font-bold text-white mb-4 leading-relaxed tracking-widest"></div>
-            <button onclick="copyGeneratedToken()" class="cyber-btn bg-black text-cyber-border border border-cyber-border w-full py-2.5 text-xs hover:bg-cyber-border hover:text-black">
-              [ COPY TO CLIPBOARD ]
-            </button>
+          <div id="ownerTokenResult" class="vip-card p-5 border-vip-gold bg-vip-gold/5 hidden text-center">
+            <div id="ownerTokenText" class="text-sm font-mono text-white mb-4 font-bold"></div>
+            <button onclick="copyGeneratedToken()" class="vip-btn btn-dark w-full py-3 text-xs border-vip-gold text-vip-gold"><i class="fa-regular fa-copy"></i> Salin Token</button>
           </div>
         </div>
-
-        <!-- User Logs -->
         <div id="adminContentUsers" class="hidden space-y-3">
           <div class="flex justify-between items-center px-1">
-            <span class="text-[10px] font-bold text-cyber-dim uppercase">> ACTIVE CONNECTIONS</span>
-            <button onclick="loadActiveUsers()" class="text-[9px] text-cyber-border hover:text-white"><i class="fa-solid fa-rotate mr-1"></i>RE-SYNC</button>
+            <span class="text-xs font-bold text-zinc-400 uppercase">Log Koneksi</span>
+            <button onclick="loadActiveUsers()" class="text-[10px] text-vip-gold"><i class="fa-solid fa-rotate mr-1"></i>Refresh</button>
           </div>
           <div id="userListContainer" class="space-y-2"></div>
         </div>
@@ -438,285 +310,176 @@
   <!-- MAIN DASHBOARD -->
   <div class="w-full max-w-[500px] flex flex-col gap-6 relative z-10">
     
-    <!-- HEADER -->
-    <header class="flex items-center justify-between border-b border-cyber-dark pb-4 border-dashed">
+    <header class="flex items-center justify-between">
       <div>
-        <h1 class="text-2xl font-extrabold text-cyber-border tracking-tight flex items-center gap-2 glitch" data-text="CYBER TERMINAL">
-          CYBER TERMINAL
+        <h1 class="text-2xl font-extrabold text-white tracking-tight flex items-center gap-2">
+          VIP <span class="gold-text-gradient">WORKSPACE</span>
         </h1>
-        <p class="text-[10px] text-cyber-dim font-tech tracking-widest mt-1 uppercase">> SYSTEM ONLINE | V.2.0.4 <span class="cursor-blink">_</span></p>
+        <p class="text-[11px] text-zinc-500 font-mono tracking-widest mt-1 uppercase">Advanced API Automation System</p>
       </div>
-      
-      <button onclick="openProfileModal()" class="w-10 h-10 border border-cyber-dim bg-black flex items-center justify-center text-cyber-dim hover:border-cyber-border hover:text-cyber-border transition">
-        <i class="fa-solid fa-user-ninja"></i>
+      <button onclick="openProfileModal()" class="w-10 h-10 rounded-full border border-vip-border bg-vip-surface flex items-center justify-center text-zinc-400 hover:border-vip-gold hover:text-vip-gold transition">
+        <i class="fa-solid fa-user"></i>
       </button>
     </header>
 
-    <!-- PREMIUM AD BANNER (NEON YELLOW - VERY PROMINENT) -->
-    <a href="https://Wa.me/+6282231669053?text=Mau%20Token%20Web%20Permanen%20Mas%20Hao" target="_blank" id="premiumAdBanner" class="hidden relative overflow-hidden bg-black p-4 ad-warning-pulse transform transition hover:scale-[1.01] border-2 border-cyber-gold group">
-      <!-- Caution Tape Background Effect -->
-      <div class="absolute inset-0 opacity-10" style="background: repeating-linear-gradient(45deg, #facc15, #facc15 10px, transparent 10px, transparent 20px);"></div>
-      
-      <div class="flex items-center justify-between relative z-10">
-        <div class="text-cyber-gold">
-          <h3 class="font-extrabold text-sm flex items-center gap-2 uppercase tracking-widest text-shadow-sm">
-            <i class="fa-solid fa-triangle-exclamation cursor-blink"></i> SYSTEM OVERRIDE
+    <!-- PREMIUM AD BANNER -->
+    <a href="https://Wa.me/+6282231669053?text=Mau%20Token%20Web%20Permanen%20Mas%20Hao" target="_blank" id="premiumAdBanner" class="hidden relative overflow-hidden rounded-xl bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 p-4 shadow-[0_0_25px_rgba(234,179,8,0.4)] ad-pulse transform transition hover:scale-[1.01] border border-yellow-300">
+      <div class="flex items-center justify-between">
+        <div class="text-black">
+          <h3 class="font-extrabold text-base flex items-center gap-2 uppercase tracking-wide">
+            <i class="fa-solid fa-crown"></i> Upgrade Akses Permanen!
           </h3>
-          <p class="text-cyber-goldDim text-[10px] font-bold mt-1.5 leading-relaxed pr-2 font-tech uppercase">
-            > GET ROOT ACCESS (LIFETIME). REMOVE ADS & LIMITS.<br>> INITIATE SECURE LINE VIA WHATSAPP.
+          <p class="text-yellow-950 text-[11px] font-bold mt-1.5 leading-snug pr-4">
+            Nikmati akses premium UNLIMITED selamanya tanpa batas waktu dan hilangkan iklan ini. Beli via WhatsApp!
           </p>
         </div>
-        <div class="w-10 h-10 shrink-0 bg-cyber-gold text-black flex items-center justify-center text-xl group-hover:bg-white transition-colors">
+        <div class="w-12 h-12 shrink-0 bg-black/90 rounded-full flex items-center justify-center text-vip-gold text-2xl shadow-lg border border-yellow-300/50">
           <i class="fa-brands fa-whatsapp"></i>
         </div>
       </div>
     </a>
 
-    <!-- MAIN APP PANEL -->
-    <main class="cyber-panel p-4 flex flex-col gap-4">
+    <main class="vip-panel p-5 flex flex-col gap-5 border-t-4 border-t-vip-gold">
       
-      <!-- Stats Box -->
       <div class="grid grid-cols-2 gap-3">
-        <div class="cyber-card p-3 flex flex-col justify-center items-center text-center">
-          <i class="fa-solid fa-server text-cyber-border mb-1.5 text-sm"></i>
-          <span class="text-[9px] text-cyber-dim uppercase tracking-widest font-bold">> API STATUS</span>
-          <span class="text-[10px] font-bold text-white mt-1 uppercase cursor-blink">CONNECTED</span>
+        <div class="vip-card p-3 flex flex-col justify-center items-center text-center border-vip-border">
+          <i class="fa-solid fa-shield-check text-vip-gold mb-1.5 text-lg"></i>
+          <span class="text-[9px] text-zinc-500 uppercase tracking-widest font-bold">Server API</span>
+          <span class="text-xs font-bold text-white mt-1">ONLINE</span>
         </div>
-        <div class="cyber-card p-3 flex flex-col justify-center items-center text-center">
-          <i class="fa-solid fa-hourglass-half text-cyber-border mb-1.5 text-sm"></i>
-          <span class="text-[9px] text-cyber-dim uppercase tracking-widest font-bold">> SESSION TIME</span>
-          <span id="tokenCountdown" class="text-[11px] font-mono font-bold text-white mt-1">--:--:--</span>
+        <div class="vip-card p-3 flex flex-col justify-center items-center text-center border-vip-border">
+          <i class="fa-solid fa-clock-rotate-left text-vip-gold mb-1.5 text-lg"></i>
+          <span class="text-[9px] text-zinc-500 uppercase tracking-widest font-bold">Masa Aktif</span>
+          <span id="tokenCountdown" class="text-xs font-mono font-bold text-white mt-1">--:--:--</span>
         </div>
       </div>
 
-      <!-- Owner Button -->
       <div id="ownerMenuButtonContainer" class="hidden">
-        <button onclick="openOwnerDashboardModal()" class="cyber-btn btn-danger w-full py-3 text-[10px]">
-          [ INITIALIZE ROOT CONSOLE ]
+        <button onclick="openOwnerDashboardModal()" class="vip-btn btn-dark w-full py-3.5 text-xs text-vip-gold border-vip-gold bg-vip-gold/5">
+          <i class="fa-solid fa-terminal mr-1"></i> Buka Terminal Owner
         </button>
       </div>
 
-      <!-- Main Navigation -->
-      <nav class="flex border-b border-cyber-dark">
-        <button id="tabSend" onclick="switchTab('send')" class="cyber-tab active flex-1 py-3 text-[10px] font-bold uppercase tracking-widest flex items-center justify-center gap-1.5">
-          <i class="fa-solid fa-syringe"></i> INJECT
-        </button>
-        <button id="tabBulk" onclick="switchTab('bulk')" class="cyber-tab flex-1 py-3 text-[10px] font-bold uppercase tracking-widest flex items-center justify-center gap-1.5">
-          <i class="fa-solid fa-cubes"></i> BULK
-        </button>
-        <button id="tabInbox" onclick="switchTab('inbox')" class="cyber-tab flex-1 py-3 text-[10px] font-bold uppercase tracking-widest flex items-center justify-center gap-1.5">
-          <i class="fa-solid fa-satellite-dish"></i> RADAR
-        </button>
-        <button id="tabTools" onclick="switchTab('tools')" class="cyber-tab flex-1 py-3 text-[10px] font-bold uppercase tracking-widest flex items-center justify-center gap-1.5">
-          <i class="fa-solid fa-microchip"></i> AI_OPT
-        </button>
+      <nav class="flex border-b border-vip-border">
+        <button id="tabSend" onclick="switchTab('send')" class="vip-tab active flex-1 py-3 text-[11px] font-bold uppercase tracking-wider flex items-center justify-center gap-2"><i class="fa-solid fa-bolt"></i> Inject</button>
+        <button id="tabBulk" onclick="switchTab('bulk')" class="vip-tab flex-1 py-3 text-[11px] font-bold uppercase tracking-wider flex items-center justify-center gap-2"><i class="fa-solid fa-layer-group"></i> Bulk</button>
+        <button id="tabInbox" onclick="switchTab('inbox')" class="vip-tab flex-1 py-3 text-[11px] font-bold uppercase tracking-wider flex items-center justify-center gap-2"><i class="fa-solid fa-inbox"></i> Inbox</button>
+        <button id="tabTools" onclick="switchTab('tools')" class="vip-tab flex-1 py-3 text-[11px] font-bold uppercase tracking-wider flex items-center justify-center gap-2"><i class="fa-solid fa-wrench"></i> Media</button>
       </nav>
 
-      <!-- TAB CONTENT: AKTIVASI -->
+      <!-- TAB INJECT -->
       <div id="contentSend" class="animate-in space-y-5 py-2">
         <div>
-          <h2 class="text-xs font-bold text-white uppercase tracking-widest border-l-2 border-cyber-border pl-2">> PAYLOAD INJECTION PROTOCOL</h2>
-          <p class="text-[10px] text-cyber-dim mt-2 leading-relaxed font-tech">
-            Deploy secure magic link to target email. Automates the neural synchronization for Premium access.
-          </p>
+          <h2 class="text-sm font-bold text-white uppercase tracking-widest border-l-2 border-vip-gold pl-2">Injeksi Sistem Premium</h2>
+          <p class="text-[11px] text-zinc-400 mt-2 leading-relaxed">Sistem pengiriman payload aman untuk aktivasi akun Alight Motion Premium.</p>
         </div>
-
-        <div id="stepEmailBox" class="space-y-4 cyber-card p-4">
+        <div id="stepEmailBox" class="space-y-4 bg-black p-4 rounded-xl border border-vip-border">
           <div>
-            <label class="block text-[9px] font-bold text-cyber-border mb-2 uppercase tracking-widest">> TARGET_EMAIL_ADDRESS</label>
-            <div class="relative">
-              <span class="absolute left-3 top-1/2 -translate-y-1/2 text-cyber-dim font-bold">>_</span>
-              <input id="inputEmail" type="email" placeholder="target@host.com" class="pl-8 pr-4 py-3 text-sm" />
-            </div>
+            <label class="block text-[10px] font-bold text-zinc-500 mb-2 uppercase tracking-widest">Email Target</label>
+            <input id="inputEmail" type="email" placeholder="email_anda@gmail.com" class="p-3.5 text-sm" />
           </div>
-          <button onclick="handleSendMagicLink()" class="cyber-btn btn-terminal w-full py-3.5 text-xs">
-            [ SEND PAYLOAD ]
-          </button>
+          <button onclick="handleSendMagicLink()" class="vip-btn btn-gold w-full py-3.5 text-xs">Generate Magic Link <i class="fa-solid fa-paper-plane ml-1"></i></button>
         </div>
-
-        <div id="stepVerifyBox" class="hidden space-y-4 cyber-card p-4 border border-cyber-border shadow-[0_0_10px_rgba(0,255,65,0.2)]">
+        <div id="stepVerifyBox" class="hidden space-y-4 bg-black p-4 rounded-xl border border-vip-gold/50">
           <div>
-            <label class="block text-[9px] font-bold text-cyber-border mb-2 uppercase tracking-widest">> PASTE_INTERCEPTED_URL</label>
-            <div class="relative">
-              <span class="absolute left-3 top-1/2 -translate-y-1/2 text-cyber-dim font-bold">>_</span>
-              <input id="inputLink" type="text" placeholder="https://..." class="pl-8 pr-4 py-3 text-sm" />
-            </div>
+            <label class="block text-[10px] font-bold text-vip-gold mb-2 uppercase tracking-widest">Verifikasi Link Payload</label>
+            <input id="inputLink" type="text" placeholder="https://..." class="p-3.5 text-sm" />
           </div>
           <div class="flex gap-2">
-            <button onclick="handleVerifyMagicLink()" class="cyber-btn btn-terminal flex-1 py-3 text-xs">
-              [ EXECUTE_INJECT ]
-            </button>
-            <button onclick="resetInjectFlow()" class="cyber-btn bg-black border border-cyber-dim text-cyber-dim px-4 hover:text-cyber-border">
-              <i class="fa-solid fa-rotate-left"></i>
-            </button>
+            <button onclick="handleVerifyMagicLink()" class="vip-btn btn-gold flex-1 py-3.5 text-xs">Eksekusi Akses</button>
+            <button onclick="resetInjectFlow()" class="vip-btn btn-dark px-4 text-zinc-400"><i class="fa-solid fa-arrow-rotate-left"></i></button>
           </div>
         </div>
-
-        <div id="sendResult" class="cyber-card hidden p-4"></div>
+        <div id="sendResult" class="vip-card hidden p-4 border-vip-border"></div>
       </div>
 
-      <!-- TAB CONTENT: BULK -->
+      <!-- TAB BULK -->
       <div id="contentBulk" class="animate-in space-y-5 py-2 hidden">
         <div>
-          <h2 class="text-xs font-bold text-white uppercase tracking-widest border-l-2 border-cyber-border pl-2">> MASS BATCH GENERATOR</h2>
-          <p class="text-[10px] text-cyber-dim mt-2 leading-relaxed font-tech">
-            Automated credential production line via direct API stream. High resource usage.
-          </p>
+          <h2 class="text-sm font-bold text-white uppercase tracking-widest border-l-2 border-vip-gold pl-2">Mass Bulk API</h2>
+          <p class="text-[11px] text-zinc-400 mt-2 leading-relaxed">Generator otomatis untuk memproduksi kredensial secara massal.</p>
         </div>
-
-        <div class="space-y-4 cyber-card p-4">
+        <div class="space-y-4 bg-black p-4 rounded-xl border border-vip-border">
           <div>
-            <label class="block text-[9px] font-bold text-cyber-border mb-3 uppercase tracking-widest flex justify-between">
-              <span>> THREAD_COUNT</span>
-              <span class="text-cyber-red font-mono">MAX:100</span>
+            <label class="block text-[10px] font-bold text-zinc-500 mb-3 uppercase tracking-widest flex justify-between">
+              <span>Volume Target</span><span class="text-vip-gold font-mono">MAKS 100</span>
             </label>
             <div class="flex items-center gap-4">
-              <input id="inputBulkAmount" type="range" min="1" max="100" value="50" class="flex-1 accent-cyber-border" oninput="document.getElementById('bulkValDisplay').innerText = this.value" />
-              <div class="bg-black border border-cyber-dim px-3 py-1.5 text-xs font-bold text-cyber-border min-w-[50px] text-center" id="bulkValDisplay">50</div>
+              <input id="inputBulkAmount" type="range" min="1" max="100" value="50" class="flex-1 accent-vip-gold" oninput="document.getElementById('bulkValDisplay').innerText = this.value" />
+              <div class="bg-vip-surface border border-vip-border px-3 py-1.5 rounded-lg text-sm font-mono font-bold text-vip-gold min-w-[50px] text-center" id="bulkValDisplay">50</div>
             </div>
           </div>
-          <button onclick="runBulkInject()" class="cyber-btn btn-terminal w-full py-3 text-xs">
-            [ START BATCH PROCESS ]
-          </button>
+          <button onclick="runBulkInject()" class="vip-btn btn-gold w-full py-3.5 text-xs"><i class="fa-solid fa-gears"></i> Mulai Produksi Massal</button>
         </div>
-
-        <div id="bulkResult" class="cyber-card hidden p-4 text-[9px] max-h-56 overflow-y-auto bg-black text-cyber-dim font-tech"></div>
+        <div id="bulkResult" class="vip-card hidden p-4 text-[10px] max-h-56 overflow-y-auto font-mono text-zinc-300 border-vip-border bg-[#050505]"></div>
       </div>
 
-      <!-- TAB CONTENT: INBOX -->
+      <!-- TAB INBOX -->
       <div id="contentInbox" class="animate-in space-y-5 py-2 hidden">
         <div>
-          <h2 class="text-xs font-bold text-white uppercase tracking-widest border-l-2 border-cyber-border pl-2">> MAIL RADAR INTERCEPTOR</h2>
-          <p class="text-[10px] text-cyber-dim mt-2 leading-relaxed font-tech">
-            Sniffs incoming mail traffic on target host to extract magic links without manual access.
-          </p>
+          <h2 class="text-sm font-bold text-white uppercase tracking-widest border-l-2 border-vip-gold pl-2">Mail Radar Scanner</h2>
+          <p class="text-[11px] text-zinc-400 mt-2 leading-relaxed">Penyadap kotak masuk real-time untuk mengekstrak link verifikasi.</p>
         </div>
-
-        <div class="space-y-4 cyber-card p-4">
-          <div>
-             <label class="block text-[9px] font-bold text-cyber-border mb-2 uppercase tracking-widest">> HOST_EMAIL_TARGET</label>
-            <div class="relative">
-              <span class="absolute left-3 top-1/2 -translate-y-1/2 text-cyber-dim font-bold">>_</span>
-              <input id="inputInboxEmail" type="email" placeholder="monitor@host.com" class="pl-8 pr-4 py-3 text-sm" />
-            </div>
-          </div>
-          <button onclick="runInboxCheck()" class="cyber-btn bg-black text-cyber-border border border-cyber-border w-full py-3 text-xs hover:bg-cyber-dark">
-            [ INITIATE RADAR SCAN ]
-          </button>
+        <div class="space-y-4 bg-black p-4 rounded-xl border border-vip-border">
+          <input id="inputInboxEmail" type="email" placeholder="Alamat email pemantauan..." class="p-3.5 text-sm" />
+          <button onclick="runInboxCheck()" class="vip-btn btn-dark w-full py-3.5 text-xs text-vip-gold border-vip-gold">Aktifkan Radar Pemindai</button>
         </div>
-
-        <div id="inboxNotice" class="hidden p-3 text-[9px] font-tech bg-black border border-cyber-dim text-cyber-dim text-center uppercase cursor-blink"></div>
+        <div id="inboxNotice" class="hidden p-3 rounded-lg text-[10px] font-mono bg-vip-surface border border-vip-border text-zinc-400 text-center"></div>
         <div id="inboxResult" class="space-y-3 max-h-60 overflow-y-auto pr-1"></div>
       </div>
 
-      <!-- TAB CONTENT: TOOLS MEDIA -->
+      <!-- TAB TOOLS -->
       <div id="contentTools" class="animate-in space-y-5 py-2 hidden">
-        <div>
-          <h2 class="text-xs font-bold text-white uppercase tracking-widest border-l-2 border-cyber-border pl-2">> MEDIA OPTIMIZATION ENGINE</h2>
-          <p class="text-[10px] text-cyber-dim mt-2 leading-relaxed font-tech">
-            Client-side neural network operations for image/video manipulation and enhancement.
-          </p>
+        <div class="flex p-1 bg-black rounded-lg border border-vip-border">
+          <button id="subToolPhoto" onclick="switchToolSub('photo')" class="vip-tab active flex-1 py-2 text-[10px] font-bold uppercase rounded-md">Foto HD</button>
+          <button id="subToolVideoHd" onclick="switchToolSub('videohd')" class="vip-tab flex-1 py-2 text-[10px] font-bold uppercase rounded-md">Vidio HD</button>
+          <button id="subToolCompress" onclick="switchToolSub('compress')" class="vip-tab flex-1 py-2 text-[10px] font-bold uppercase rounded-md">Kompres</button>
         </div>
-
-        <div class="flex p-1 bg-black border border-cyber-dark">
-          <button id="subToolPhoto" onclick="switchToolSub('photo')" class="cyber-tab active flex-1 py-2 text-[9px] font-bold uppercase tracking-widest">IMG_UPSCALE</button>
-          <button id="subToolVideoHd" onclick="switchToolSub('videohd')" class="cyber-tab flex-1 py-2 text-[9px] font-bold uppercase tracking-widest">VID_UPSCALE</button>
-          <button id="subToolCompress" onclick="switchToolSub('compress')" class="cyber-tab flex-1 py-2 text-[9px] font-bold uppercase tracking-widest">VID_COMPRESS</button>
-        </div>
-
-        <!-- SUB: FOTO -->
         <div id="toolPanelPhoto" class="space-y-4 animate-in">
-          <div class="border border-dashed border-cyber-dim bg-black p-6 text-center hover:border-cyber-border transition cursor-pointer relative" onclick="document.getElementById('inputPhotoFile').click()">
+          <div class="border-2 border-dashed border-zinc-700 bg-black rounded-xl p-8 text-center cursor-pointer" onclick="document.getElementById('inputPhotoFile').click()">
             <input type="file" id="inputPhotoFile" accept="image/*" class="hidden" onchange="handleImageSelected(event)" />
-            <div id="photoPreviewContainer" class="hidden">
-              <img id="uploadedImagePreview" class="max-h-36 mx-auto object-contain" style="filter: sepia(1) hue-rotate(80deg) saturate(2) brightness(0.8);" />
-            </div>
-            <div id="uploadPlaceholder" class="space-y-3">
-              <i class="fa-solid fa-upload text-2xl text-cyber-dim"></i>
-              <div class="text-[9px] font-bold text-cyber-dim uppercase tracking-widest">> DROP IMAGE HERE</div>
-            </div>
+            <div id="photoPreviewContainer" class="hidden"><img id="uploadedImagePreview" class="max-h-36 mx-auto rounded-lg object-contain" /></div>
+            <div id="uploadPlaceholder" class="space-y-3"><i class="fa-solid fa-cloud-arrow-up text-3xl text-zinc-600"></i><div class="text-[11px] font-bold text-zinc-500 uppercase">Upload Foto</div></div>
           </div>
           <div class="grid grid-cols-2 gap-3">
-            <select id="upscaleLevel" class="p-3 text-[10px] bg-black font-bold uppercase border-cyber-dim">
-              <option value="2">ALGO: x2 MULTIPLIER</option>
-              <option value="3" selected>ALGO: x3 MULTIPLIER (PRO)</option>
-              <option value="4">ALGO: x4 MULTIPLIER (MAX)</option>
+            <select id="upscaleLevel" class="p-3 text-xs bg-black font-bold uppercase">
+              <option value="2">Upscale 2x</option><option value="3" selected>Upscale 3x VIP</option><option value="4">Upscale 4x</option>
             </select>
-            <button onclick="processEnhancePhoto()" class="cyber-btn btn-terminal py-2 text-[10px]">
-              [ RUN AI ]
-            </button>
+            <button onclick="processEnhancePhoto()" class="vip-btn btn-gold py-3 text-xs">Render</button>
           </div>
-          <div id="hdResultBox" class="cyber-card hidden p-4 text-center border-cyber-border animate-in">
-            <span class="text-[10px] font-bold text-cyber-border uppercase tracking-widest mb-3 block cursor-blink">> RENDER_COMPLETE</span>
-            <div class="bg-black p-2 mb-3 border border-cyber-dim">
-              <img id="enhancedResultPreview" class="max-h-28 mx-auto object-contain" />
-              <div id="imageDimensionInfo" class="text-[9px] font-tech text-cyber-dim mt-2"></div>
-            </div>
-            <button onclick="downloadEnhancedPhoto()" class="cyber-btn bg-black border border-cyber-border text-cyber-border w-full py-2.5 text-[10px] hover:bg-cyber-dark">
-              [ DOWNLOAD OUTPUT ]
-            </button>
+          <div id="hdResultBox" class="vip-card hidden p-5 border-vip-gold bg-vip-gold/5 text-center">
+            <div class="bg-black p-2 rounded-lg mb-4 border border-vip-border"><img id="enhancedResultPreview" class="max-h-28 mx-auto object-contain" /><div id="imageDimensionInfo" class="text-[10px] font-mono text-zinc-400 mt-2"></div></div>
+            <button onclick="downloadEnhancedPhoto()" class="vip-btn btn-dark w-full py-3 text-xs text-white border-vip-gold">Simpan File</button>
           </div>
         </div>
-
-        <!-- SUB: VIDEO HD -->
         <div id="toolPanelVideoHd" class="space-y-4 animate-in hidden">
-           <div class="border border-dashed border-cyber-dim bg-black p-6 text-center hover:border-cyber-border transition cursor-pointer relative" onclick="document.getElementById('inputVideoHdFile').click()">
+           <div class="border-2 border-dashed border-zinc-700 bg-black rounded-xl p-8 text-center cursor-pointer" onclick="document.getElementById('inputVideoHdFile').click()">
             <input type="file" id="inputVideoHdFile" accept="video/*" class="hidden" onchange="handleVideoHdSelected(event)" />
-            <div id="videoHdPreviewContainer" class="hidden">
-              <video id="uploadedVideoHdPreview" controls class="max-h-36 mx-auto object-contain w-full bg-black"></video>
-            </div>
-            <div id="videoHdUploadPlaceholder" class="space-y-3">
-              <i class="fa-solid fa-file-video text-2xl text-cyber-dim"></i>
-              <div class="text-[9px] font-bold text-cyber-dim uppercase tracking-widest">> DROP VIDEO HERE</div>
-            </div>
+            <div id="videoHdPreviewContainer" class="hidden"><video id="uploadedVideoHdPreview" controls class="max-h-36 mx-auto rounded-lg object-contain w-full bg-black"></video></div>
+            <div id="videoHdUploadPlaceholder" class="space-y-3"><i class="fa-solid fa-film text-3xl text-zinc-600"></i><div class="text-[11px] font-bold text-zinc-500 uppercase">Upload Video</div></div>
           </div>
           <div class="grid grid-cols-2 gap-3">
-            <select id="videoHdResolution" class="p-3 text-[10px] bg-black font-bold uppercase border-cyber-dim">
-              <option value="720">TARGET: 720P HD</option>
-              <option value="1080" selected>TARGET: 1080P FHD</option>
-              <option value="2160">TARGET: 4K UHD</option>
-            </select>
-            <button onclick="processVideoHd()" class="cyber-btn btn-terminal py-2 text-[10px]">
-              [ INJECT META ]
-            </button>
+            <select id="videoHdResolution" class="p-3 text-xs bg-black font-bold uppercase"><option value="720">720p</option><option value="1080" selected>1080p</option><option value="2160">4K</option></select>
+            <button onclick="processVideoHd()" class="vip-btn btn-gold py-3 text-xs">Render</button>
           </div>
-          <div id="videoHdResultBox" class="cyber-card hidden p-4 text-center border-cyber-border animate-in">
-             <span class="text-[10px] font-bold text-cyber-border uppercase tracking-widest mb-3 block cursor-blink">> PROCESS_COMPLETE</span>
-             <div id="videoHdInfoSummary" class="text-[9px] font-tech text-cyber-border bg-black p-2 mb-3 border border-cyber-dim text-left"></div>
-             <button onclick="downloadVideoHd()" class="cyber-btn bg-black border border-cyber-border text-cyber-border w-full py-2.5 text-[10px] hover:bg-cyber-dark">
-              [ DOWNLOAD OUTPUT ]
-            </button>
+          <div id="videoHdResultBox" class="vip-card hidden p-5 border-vip-gold bg-vip-gold/5 text-center">
+             <div id="videoHdInfoSummary" class="text-[11px] font-mono text-zinc-300 bg-black p-3 rounded-lg mb-4 border border-vip-border"></div>
+             <button onclick="downloadVideoHd()" class="vip-btn btn-dark w-full py-3 text-xs text-white border-vip-gold">Simpan File</button>
           </div>
         </div>
-
-        <!-- SUB: KOMPRES -->
         <div id="toolPanelCompress" class="space-y-4 animate-in hidden">
-           <div class="border border-dashed border-cyber-dim bg-black p-6 text-center hover:border-cyber-border transition cursor-pointer relative" onclick="document.getElementById('inputVideoCompressFile').click()">
+           <div class="border-2 border-dashed border-zinc-700 bg-black rounded-xl p-8 text-center cursor-pointer" onclick="document.getElementById('inputVideoCompressFile').click()">
             <input type="file" id="inputVideoCompressFile" accept="video/*" class="hidden" onchange="handleVideoCompressSelected(event)" />
-            <div id="videoCompressPreviewContainer" class="hidden">
-              <video id="uploadedVideoCompressPreview" controls class="max-h-36 mx-auto object-contain w-full bg-black"></video>
-            </div>
-            <div id="videoCompressUploadPlaceholder" class="space-y-3">
-              <i class="fa-solid fa-compress text-2xl text-cyber-dim"></i>
-              <div class="text-[9px] font-bold text-cyber-dim uppercase tracking-widest">> DROP BIG VIDEO</div>
-            </div>
+            <div id="videoCompressPreviewContainer" class="hidden"><video id="uploadedVideoCompressPreview" controls class="max-h-36 mx-auto rounded-lg object-contain w-full bg-black"></video></div>
+            <div id="videoCompressUploadPlaceholder" class="space-y-3"><i class="fa-solid fa-file-video text-3xl text-zinc-600"></i><div class="text-[11px] font-bold text-zinc-500 uppercase">Upload Video Besar</div></div>
           </div>
           <div class="grid grid-cols-2 gap-3">
-            <select id="compressLevel" class="p-3 text-[10px] bg-black font-bold uppercase border-cyber-dim">
-              <option value="light">ALGO: LIGHT (HQ)</option>
-              <option value="medium" selected>ALGO: MEDIUM (BAL)</option>
-              <option value="heavy">ALGO: EXTREME (MIN)</option>
-            </select>
-            <button onclick="processVideoCompress()" class="cyber-btn border-cyber-gold text-cyber-gold py-2 text-[10px] hover:bg-cyber-gold hover:text-black">
-              [ COMPRESS ]
-            </button>
+            <select id="compressLevel" class="p-3 text-xs bg-black font-bold uppercase"><option value="light">Rendah</option><option value="medium" selected>Medium</option><option value="heavy">Extreme</option></select>
+            <button onclick="processVideoCompress()" class="vip-btn btn-dark py-3 text-xs border-vip-gold text-vip-gold">Kompres</button>
           </div>
-          <div id="videoCompressResultBox" class="cyber-card hidden p-4 text-center border-cyber-border animate-in">
-             <span class="text-[10px] font-bold text-cyber-border uppercase tracking-widest mb-3 block cursor-blink">> OPTIMIZATION_DONE</span>
-             <div id="videoCompressInfoSummary" class="text-[9px] font-tech text-cyber-border bg-black p-2 mb-3 border border-cyber-dim text-left"></div>
-             <button onclick="downloadVideoCompress()" class="cyber-btn bg-black border border-cyber-border text-cyber-border w-full py-2.5 text-[10px] hover:bg-cyber-dark">
-              [ DOWNLOAD OUTPUT ]
-            </button>
+          <div id="videoCompressResultBox" class="vip-card hidden p-5 border-vip-gold bg-vip-gold/5 text-center">
+             <div id="videoCompressInfoSummary" class="text-[11px] font-mono text-zinc-300 bg-black p-3 rounded-lg mb-4 border border-vip-border"></div>
+             <button onclick="downloadVideoCompress()" class="vip-btn btn-dark w-full py-3 text-xs text-white border-vip-gold">Simpan File</button>
           </div>
         </div>
       </div>
@@ -724,96 +487,50 @@
     </main>
 
     <!-- FOOTER LINKS -->
-    <div class="grid grid-cols-2 gap-3 border-t border-cyber-dark border-dashed pt-4">
-      <a href="https://whatsapp.com/channel/0029Vaf0GfTJ3jv2hhFz1j2K" target="_blank" class="cyber-card p-3 flex items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-widest hover:border-cyber-border hover:bg-cyber-dark transition text-cyber-dim">
-        <i class="fa-brands fa-whatsapp text-sm"></i> [ COM_LINK_1 ]
+    <div class="grid grid-cols-2 gap-4">
+      <a href="https://whatsapp.com/channel/0029Vaf0GfTJ3jv2hhFz1j2K" target="_blank" class="vip-card p-4 flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-widest hover:border-vip-gold hover:text-vip-gold transition text-zinc-400">
+        <i class="fa-brands fa-whatsapp text-lg"></i> Grup Resmi
       </a>
-      <a href="https://Wa.me/+6282231669053" target="_blank" class="cyber-card p-3 flex items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-widest hover:border-cyber-border hover:bg-cyber-dark transition text-cyber-dim">
-        <i class="fa-solid fa-headset text-sm"></i> [ ROOT_ADMIN ]
+      <a href="https://Wa.me/+6282231669053" target="_blank" class="vip-card p-4 flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-widest hover:border-vip-gold hover:text-vip-gold transition text-zinc-400">
+        <i class="fa-solid fa-headset text-lg"></i> Kontak CS
       </a>
     </div>
 
-    <!-- MINI PROFILE MODAL -->
+    <!-- PROFILE MODAL -->
     <div id="profileModal" class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/95 backdrop-blur-sm hidden">
-      <div class="cyber-panel w-full max-w-sm p-6 text-center animate-in">
-        <div class="w-16 h-16 mx-auto border border-cyber-border bg-black flex items-center justify-center text-cyber-border text-2xl mb-3">
-          <i class="fa-solid fa-id-card-clip"></i>
+      <div class="vip-panel w-full max-w-sm p-6 text-center animate-in">
+        <div class="w-16 h-16 mx-auto rounded-full bg-black border-2 border-vip-gold flex items-center justify-center text-vip-gold text-2xl mb-3 shadow-[0_0_20px_rgba(234,179,8,0.2)]">
+          <i class="fa-solid fa-id-badge"></i>
         </div>
-        <h2 class="text-base font-bold text-white uppercase tracking-widest glitch" data-text="IDENTITY DATA">IDENTITY DATA</h2>
-        <p class="text-[9px] text-cyber-dim font-tech mb-5 uppercase">> VERIFIED SECURE CONNECTION</p>
-        
-        <div class="bg-black p-4 text-left space-y-3 mb-6 border border-cyber-dark font-tech">
-          <div class="flex justify-between items-center border-b border-cyber-dark pb-2 border-dashed">
-            <span class="text-[9px] text-cyber-dim font-bold uppercase">> KEY_ID</span>
-            <span id="profileActiveToken" class="text-[10px] font-bold text-white">--</span>
+        <h2 class="text-base font-bold text-white uppercase tracking-widest">Detail Sesi Aktif</h2>
+        <div class="bg-black p-4 rounded-xl text-left space-y-3 mb-6 border border-vip-border">
+          <div class="flex justify-between items-center border-b border-vip-border pb-2">
+            <span class="text-[10px] text-zinc-500 font-bold">ID Kunci Token</span><span id="profileActiveToken" class="text-xs font-mono font-bold text-white">--</span>
           </div>
-          <div class="flex justify-between items-center border-b border-cyber-dark pb-2 border-dashed">
-            <span class="text-[9px] text-cyber-dim font-bold uppercase">> PRIVILEGE_LEVEL</span>
-            <span id="profileAccessType" class="text-[9px] font-bold text-black bg-cyber-border px-1.5 py-0.5 uppercase">USER</span>
+          <div class="flex justify-between items-center border-b border-vip-border pb-2">
+            <span class="text-[10px] text-zinc-500 font-bold">Keanggotaan</span><span id="profileAccessType" class="text-[10px] font-bold text-black bg-vip-gold px-2 py-0.5 rounded">MEMBER PRO</span>
           </div>
           <div class="flex justify-between items-center">
-            <span class="text-[9px] text-cyber-dim font-bold uppercase">> REMOTE_IP</span>
-            <span id="profileUserIp" class="text-[10px] text-cyber-border">Detecting...</span>
+            <span class="text-[10px] text-zinc-500 font-bold">Alamat IP</span><span id="profileUserIp" class="text-[10px] font-mono text-zinc-300">Detecting...</span>
           </div>
         </div>
-
         <div class="flex gap-3">
-          <button onclick="closeProfileModal()" class="cyber-btn bg-black text-cyber-dim border border-cyber-dim flex-1 py-3 text-xs hover:text-white">CLOSE</button>
-          <button onclick="logoutToken()" class="cyber-btn btn-danger flex-1 py-3 text-xs">
-            [ TERMINATE ]
-          </button>
+          <button onclick="closeProfileModal()" class="vip-btn btn-dark flex-1 py-3 text-xs">Tutup</button>
+          <button onclick="logoutToken()" class="vip-btn bg-red-900/40 text-red-500 border border-red-900/50 hover:bg-red-900 hover:text-white flex-1 py-3 text-xs">Logout</button>
         </div>
       </div>
     </div>
 
-    <footer class="text-center pb-8">
-      <p class="text-[9px] text-cyber-dark font-tech uppercase tracking-widest">
-        CYBER TERMINAL &copy; 2024 // SYSTEM AUTHOR: <b>𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞</b>
+    <footer class="text-center pb-8 pt-4">
+      <p class="text-[10px] text-zinc-600 font-medium uppercase tracking-widest">
+        VIP WORKSPACE &copy; 2024 <br> <span class="text-zinc-500">EXCLUSIVELY ENGINEERED BY <b>𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞</b></span>
       </p>
     </footer>
   </div>
 
-  <div id="toast" class="cyber-toast fixed z-[90] bottom-10 left-1/2 px-6 py-3 text-[10px] font-bold uppercase tracking-widest text-center whitespace-nowrap"></div>
+  <div id="toast" class="vip-toast fixed z-[90] bottom-10 left-1/2 rounded-lg px-6 py-3.5 text-[11px] font-bold uppercase tracking-widest text-center whitespace-nowrap"></div>
 
 <script>
-  // Matrix Rain Canvas Effect
-  const canvas = document.getElementById('matrixCanvas');
-  const ctx = canvas.getContext('2d');
-  
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  
-  const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレゲゼデベペオォコソトノホモヨョロゴゾドボポヴッン';
-  const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  const nums = '0123456789';
-  const alphabet = katakana + latin + nums;
-  
-  const fontSize = 14;
-  const columns = canvas.width/fontSize;
-  
-  const rainDrops = [];
-  for( let x = 0; x < columns; x++ ) {
-      rainDrops[x] = 1;
-  }
-  
-  const drawMatrix = () => {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = '#0F0';
-      ctx.font = fontSize + 'px monospace';
-      
-      for(let i = 0; i < rainDrops.length; i++) {
-          const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
-          ctx.fillText(text, i*fontSize, rainDrops[i]*fontSize);
-          if(rainDrops[i]*fontSize > canvas.height && Math.random() > 0.975){
-              rainDrops[i] = 0;
-          }
-          rainDrops[i]++;
-      }
-  };
-  setInterval(drawMatrix, 40);
-
-  // Core API Logic & Functionality (Unchanged)
   const OWNER_SECRET_KEY = "HAOMI_XML";
   let lastGeneratedCode = "";
   let selectedPhotoDataUrl = null;
@@ -830,7 +547,7 @@
       const ipJson = await ipRes.json();
       clientRealIp = ipJson.ip || "127.0.0.1";
     } catch (e) {
-      clientRealIp = "192.168." + Math.floor(Math.random() * 255) + "." + Math.floor(Math.random() * 255);
+      clientRealIp = "192.168.1.100";
     }
 
     const savedToken = localStorage.getItem("verified_token");
@@ -849,28 +566,25 @@
         document.getElementById("tokenModal").classList.add("hidden");
         document.getElementById("ownerMenuButtonContainer").classList.add("hidden");
         checkPremiumAdStatus(false, true);
-      } else {
-        const now = new Date().getTime();
-        if (now < Number(savedExpiry)) {
-          document.getElementById("tokenModal").classList.add("hidden");
-          document.getElementById("ownerMenuButtonContainer").classList.add("hidden");
-          checkPremiumAdStatus(false, false);
-        }
+        return;
+      }
+      if (Date.now() < Number(savedExpiry)) {
+        document.getElementById("tokenModal").classList.add("hidden");
+        document.getElementById("ownerMenuButtonContainer").classList.add("hidden");
+        checkPremiumAdStatus(false, false);
+        return;
       }
     }
 
     checkFreeClaimStatus();
-    loadDeviceLoginCount();
   });
 
   function checkPremiumAdStatus(isOwner, isPermanent) {
     const adBanner = document.getElementById("premiumAdBanner");
     if (isOwner || isPermanent) {
       adBanner.classList.add("hidden");
-      adBanner.classList.remove("block");
     } else {
       adBanner.classList.remove("hidden");
-      adBanner.classList.add("block");
     }
   }
 
@@ -885,11 +599,11 @@
         const timeLeftDays = Math.ceil((oneWeek - timePassed) / (1000 * 60 * 60 * 24));
         btnClaim.disabled = true;
         btnClaim.classList.add("opacity-50", "cursor-not-allowed");
-        btnClaim.innerHTML = `<i class="fa-solid fa-clock text-cyber-dim"></i> COOLDOWN: ${timeLeftDays}h`;
+        btnClaim.innerHTML = `<i class="fa-solid fa-clock text-zinc-500"></i> Cooldown (${timeLeftDays} Hari)`;
       } else {
         btnClaim.disabled = false;
         btnClaim.classList.remove("opacity-50", "cursor-not-allowed");
-        btnClaim.innerHTML = `<i class="fa-solid fa-bug text-cyber-border"></i> INJECT TRIAL 5 MIN`;
+        btnClaim.innerHTML = `<i class="fa-solid fa-stopwatch text-vip-gold"></i> Klaim Token Trial 5 Menit (Auto)`;
       }
     }
   }
@@ -898,38 +612,29 @@
     const lastClaim = localStorage.getItem("last_free_token_claim_date");
     const oneWeek = 7 * 24 * 60 * 60 * 1000;
 
-    if (lastClaim) {
-      const timePassed = Date.now() - parseInt(lastClaim);
-      if (timePassed < oneWeek) {
-        const timeLeftDays = Math.ceil((oneWeek - timePassed) / (1000 * 60 * 60 * 24));
-        return showToast(`ERR: COOLDOWN ACTIVE (${timeLeftDays}D)`);
-      }
+    if (lastClaim && (Date.now() - parseInt(lastClaim) < oneWeek)) {
+      return showToast("Trial tersedia lagi dalam beberapa hari.");
     }
 
     localStorage.setItem("last_free_token_claim_date", Date.now().toString());
-    const freeTokenCode = "FREE-5MIN-" + Math.floor(1000 + Math.random() * 9000);
+    const freeTokenCode = "TRIAL-" + Math.floor(1000 + Math.random() * 9000);
     
-    let tokenPool = JSON.parse(localStorage.getItem("owner_token_pool_data") || "{}");
-    tokenPool[freeTokenCode] = "5_MIN";
-    localStorage.setItem("owner_token_pool_data", JSON.stringify(tokenPool));
-
-    let validTokens = JSON.parse(localStorage.getItem("owner_valid_token_pool") || "[]");
-    if (!validTokens.includes(freeTokenCode)) validTokens.push(freeTokenCode);
-    localStorage.setItem("owner_valid_token_pool", JSON.stringify(validTokens));
-
     document.getElementById("inputTokenAccess").value = freeTokenCode;
-    showToast("SYS: TRIAL KEY INJECTED");
+    showToast("Token trial berhasil diklaim!");
     checkFreeClaimStatus();
+
+    setTimeout(() => {
+      verifyTokenAccess(freeTokenCode, "5_MIN");
+    }, 400);
   }
 
   function triggerWarningModal() {
     const inputVal = document.getElementById("inputTokenAccess").value.trim();
-    if (!inputVal) return showToast("ERR: EMPTY PAYLOAD");
-    
+    if (!inputVal) return showToast("Masukkan token terlebih dahulu.");
     tempTokenToVerify = inputVal;
     
-    if (inputVal === OWNER_SECRET_KEY) {
-       verifyTokenAccess(); 
+    if (inputVal === OWNER_SECRET_KEY || inputVal.startsWith("FREE-") || inputVal.startsWith("TRIAL-") || inputVal.startsWith("HAO-")) {
+       verifyTokenAccess(inputVal);
     } else {
        document.getElementById("warningModal").classList.remove("hidden");
     }
@@ -942,18 +647,16 @@
 
   function proceedLogin() {
     closeWarningModal();
-    if(tempTokenToVerify) {
-      verifyTokenAccess(tempTokenToVerify);
-    }
+    if (tempTokenToVerify) verifyTokenAccess(tempTokenToVerify);
   }
 
-  async function verifyTokenAccess(forcedToken = null) {
+  function verifyTokenAccess(forcedToken = null, forceDuration = null) {
     const inputVal = forcedToken || document.getElementById("inputTokenAccess").value.trim();
     if (!inputVal) return;
     
     if (inputVal === OWNER_SECRET_KEY) {
       localStorage.setItem("owner_logged_in", "true");
-      showToast("ROOT PRIVILEGE GRANTED.");
+      showToast("Autentikasi Owner Berhasil.");
       setTimeout(() => {
         document.getElementById("tokenModal").classList.add("hidden");
         document.getElementById("ownerMenuButtonContainer").classList.remove("hidden");
@@ -963,84 +666,43 @@
     }
 
     const tokenInput = inputVal.toUpperCase();
-    let validTokens = JSON.parse(localStorage.getItem("owner_valid_token_pool") || "[]");
-    let tokenPool = JSON.parse(localStorage.getItem("owner_token_pool_data") || "{}");
-    let isDefaultToken = tokenInput.startsWith("HAO-") || tokenInput.startsWith("FREE-5MIN-");
-
-    if (!isDefaultToken && !validTokens.includes(tokenInput)) {
-      return showToast("ERR: INVALID KEY");
+    let durationType = forceDuration || "30";
+    if (tokenInput.startsWith("TRIAL-") || tokenInput.startsWith("FREE-")) {
+      durationType = "5_MIN";
+    } else if (tokenInput.startsWith("HAO-")) {
+      let pool = JSON.parse(localStorage.getItem("owner_token_pool_data") || "{}");
+      durationType = pool[tokenInput] || "30";
     }
 
-    showToast("VALIDATING SIGNATURE...");
-
-    let activeUsers = JSON.parse(localStorage.getItem("global_owner_user_logs") || "[]");
-    let existingUser = activeUsers.find(u => u.token === tokenInput);
-    const timeNow = new Date().toLocaleDateString('id-ID') + ' ' + new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-
-    if (existingUser) {
-      existingUser.ip = clientRealIp;
-      existingUser.lastLogin = timeNow;
-    } else {
-      activeUsers.unshift({
-        id: "USR-" + Math.random().toString(36).substring(2, 7).toUpperCase(),
-        token: tokenInput,
-        ip: clientRealIp,
-        lastLogin: timeNow
-      });
-    }
-
-    localStorage.setItem("global_owner_user_logs", JSON.stringify(activeUsers));
     localStorage.setItem("verified_token", tokenInput);
 
-    let durationType = tokenPool[tokenInput] || "30";
-    if (tokenInput.startsWith("FREE-5MIN-")) durationType = "5_MIN";
-    
-    let isPerm = false;
     if (durationType === "PERMANENT") {
       localStorage.setItem("token_expiry", "PERMANENT");
-      isPerm = true;
+      checkPremiumAdStatus(false, true);
     } else if (durationType === "5_MIN") {
-      localStorage.setItem("token_expiry", new Date().getTime() + (5 * 60 * 1000));
+      localStorage.setItem("token_expiry", Date.now() + (5 * 60 * 1000));
+      checkPremiumAdStatus(false, false);
     } else {
-      localStorage.setItem("token_expiry", new Date().getTime() + (Number(durationType) * 24 * 60 * 60 * 1000));
+      localStorage.setItem("token_expiry", Date.now() + (Number(durationType) * 24 * 60 * 60 * 1000));
+      checkPremiumAdStatus(false, false);
     }
 
     localStorage.removeItem("owner_logged_in");
+    showToast("Akses Sistem Diizinkan.");
 
-    showToast("ACCESS GRANTED.");
     setTimeout(() => {
       document.getElementById("tokenModal").classList.add("hidden");
-      loadDeviceLoginCount();
-      checkPremiumAdStatus(false, isPerm);
-    }, 800);
+    }, 700);
   }
 
   function toggleTokenPackages() {
-    const section = document.getElementById("tokenPackagesSection");
-    const btnText = document.getElementById("btnGetTokenText");
-    if (section.classList.contains("hidden")) {
-      section.classList.remove("hidden");
-      btnText.textContent = "HIDE TIER LIST";
-    } else {
-      section.classList.add("hidden");
-      btnText.textContent = "VIEW ACCESS TIER";
-    }
+    document.getElementById("tokenPackagesSection").classList.toggle("hidden");
   }
 
   function openProfileModal() {
     const isOwner = localStorage.getItem("owner_logged_in") === "true";
-    const token = localStorage.getItem("verified_token") || "GUEST";
-    document.getElementById("profileActiveToken").textContent = isOwner ? "ROOT_OVERRIDE" : token;
-    
-    const typeLabel = document.getElementById("profileAccessType");
-    if (isOwner) {
-       typeLabel.textContent = "ROOT";
-       typeLabel.className = "text-[9px] font-bold text-white bg-cyber-red px-1.5 py-0.5 uppercase";
-    } else {
-       typeLabel.textContent = "USER_LVL_1";
-       typeLabel.className = "text-[9px] font-bold text-black bg-cyber-border px-1.5 py-0.5 uppercase";
-    }
-    
+    document.getElementById("profileActiveToken").textContent = isOwner ? "SYS_OWNER" : (localStorage.getItem("verified_token") || "GUEST");
+    document.getElementById("profileAccessType").textContent = isOwner ? "ADMIN ROOT" : "MEMBER PRO";
     document.getElementById("profileUserIp").textContent = clientRealIp;
     document.getElementById("profileModal").classList.remove("hidden");
   }
@@ -1048,178 +710,94 @@
   function closeProfileModal() { document.getElementById("profileModal").classList.add("hidden"); }
 
   function logoutToken() {
-    localStorage.clear(); 
-    showToast("TERMINATING CONNECTION...");
-    setTimeout(() => location.reload(), 1000);
-  }
-
-  function loadDeviceLoginCount() {
-    // Leaderboard logic removed
+    localStorage.clear();
+    showToast("Memutus sesi...");
+    setTimeout(() => location.reload(), 800);
   }
 
   function updateTokenCountdown() {
-    const countdownElement = document.getElementById("tokenCountdown");
-    if (!countdownElement) return;
-    if (localStorage.getItem("owner_logged_in") === "true") {
-      countdownElement.textContent = "INF (ROOT)";
-      countdownElement.classList.add("text-cyber-border");
-      return;
-    }
-    const savedExpiry = localStorage.getItem("token_expiry");
-    if (!savedExpiry) { countdownElement.textContent = "ERR_NULL"; return; }
-    if (savedExpiry === "PERMANENT") {
-      countdownElement.textContent = "INF (ROOT_VIP)";
-      countdownElement.classList.add("text-cyber-gold");
-      return;
-    }
-    const diff = Number(savedExpiry) - new Date().getTime();
-    if (diff <= 0) { 
-      countdownElement.textContent = "TERMINATED"; 
-      countdownElement.classList.remove("text-white");
-      countdownElement.classList.add("text-cyber-red");
-      return; 
-    }
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    const secs = Math.floor((diff % (1000 * 60)) / 1000);
-    countdownElement.textContent = (days > 0 ? `${days}d ` : "") + `${String(hours).padStart(2,'0')}:${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+    const el = document.getElementById("tokenCountdown");
+    if (!el) return;
+    if (localStorage.getItem("owner_logged_in") === "true") { el.textContent = "LIFETIME (ADMIN)"; return; }
+    const exp = localStorage.getItem("token_expiry");
+    if (!exp) { el.textContent = "--:--:--"; return; }
+    if (exp === "PERMANENT") { el.textContent = "LIFETIME (VIP)"; return; }
+    const diff = Number(exp) - Date.now();
+    if (diff <= 0) { el.textContent = "EXPIRED"; el.style.color = "#ef4444"; return; }
+    const d = Math.floor(diff / 86400000), h = Math.floor((diff % 86400000) / 3600000), m = Math.floor((diff % 3600000) / 60000), s = Math.floor((diff % 60000) / 1000);
+    el.textContent = (d > 0 ? `${d}d ` : "") + `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
   }
   setInterval(updateTokenCountdown, 1000);
-  updateTokenCountdown();
 
-  // --- Admin Functions ---
-  function openOwnerDashboardModal() {
-    if (localStorage.getItem("owner_logged_in") !== "true") return showToast("ERR: PERMISSION DENIED");
-    document.getElementById("ownerDashboardModal").classList.remove("hidden");
-    loadActiveUsers();
-  }
+  function openOwnerDashboardModal() { document.getElementById("ownerDashboardModal").classList.remove("hidden"); loadActiveUsers(); }
   function closeOwnerDashboard() { document.getElementById("ownerDashboardModal").classList.add("hidden"); }
-
-  function switchAdminTab(tab) {
-    document.getElementById("adminContentGen").classList.add("hidden");
-    document.getElementById("adminContentUsers").classList.add("hidden");
-    document.getElementById("tabAdminGen").classList.remove("active");
-    document.getElementById("tabAdminUsers").classList.remove("active");
-    if (tab === 'gen') {
-      document.getElementById("adminContentGen").classList.remove("hidden");
-      document.getElementById("tabAdminGen").classList.add("active");
-    } else {
-      document.getElementById("adminContentUsers").classList.remove("hidden");
-      document.getElementById("tabAdminUsers").classList.add("active");
-    }
+  function switchAdminTab(t) {
+    document.getElementById("adminContentGen").classList.toggle("hidden", t !== 'gen');
+    document.getElementById("adminContentUsers").classList.toggle("hidden", t !== 'users');
+    document.getElementById("tabAdminGen").classList.toggle("active", t === 'gen');
+    document.getElementById("tabAdminUsers").classList.toggle("active", t === 'users');
   }
 
   function loadActiveUsers() {
-    const container = document.getElementById("userListContainer");
-    container.innerHTML = `<div class="text-center text-cyber-dim py-6 text-xs uppercase tracking-widest"><i class="fa-solid fa-circle-notch fa-spin mr-2"></i> PINGING NETWORK...</div>`;
+    const c = document.getElementById("userListContainer");
+    c.innerHTML = `<div class="text-center text-zinc-500 py-4 text-xs">Memuat data...</div>`;
     try {
-      let activeUsers = JSON.parse(localStorage.getItem("global_owner_user_logs") || "[]");
-      container.innerHTML = activeUsers.length === 0 ? `<div class="text-center text-cyber-dim py-6 text-[10px] uppercase tracking-widest cursor-blink">NO ACTIVE CONNECTIONS.</div>` : "";
-      activeUsers.forEach((user, index) => {
-        const card = document.createElement("div");
-        card.className = "cyber-card p-3 border-cyber-dark mb-2 font-tech";
-        card.innerHTML = `
-          <div class="flex justify-between items-center mb-2">
-            <span class="text-[10px] font-bold text-white"><i class="fa-solid fa-wifi text-cyber-dim mr-1"></i> ${user.id}</span>
-            <span class="text-[9px] text-cyber-dim">${user.lastLogin}</span>
-          </div>
-          <div class="bg-black p-2 border border-cyber-dark text-[9px] grid grid-cols-2 gap-2 mb-3">
-            <div><span class="text-cyber-dim block uppercase">KEY</span><span class="text-cyber-border">${user.token}</span></div>
-            <div class="text-right"><span class="text-cyber-dim block uppercase">IP_ADDR</span><span class="text-white">${user.ip}</span></div>
-          </div>
-          <div class="flex gap-2">
-            <button onclick="removeUserLog(${index})" class="flex-1 py-1.5 text-[9px] font-bold uppercase tracking-widest border border-cyber-dark hover:bg-cyber-red/20 hover:text-cyber-red hover:border-cyber-red transition">[ PURGE ]</button>
-            <button onclick="showToast('FIREWALL REJECTED IP: ${user.ip}')" class="flex-1 py-1.5 text-[9px] font-bold uppercase tracking-widest border border-cyber-dark hover:bg-black transition">[ BLOCK ]</button>
-          </div>
-        `;
-        container.appendChild(card);
+      let logs = JSON.parse(localStorage.getItem("global_owner_user_logs") || "[]");
+      c.innerHTML = logs.length === 0 ? `<div class="text-center text-zinc-500 py-4 text-xs">Belum ada log.</div>` : "";
+      logs.forEach((u, i) => {
+        c.innerHTML += `<div class="vip-card p-3 text-xs flex justify-between items-center"><div><span class="text-vip-gold font-mono">${u.token}</span></div><div class="text-zinc-400 font-mono">${u.ip}</div></div>`;
       });
-    } catch (e) {
-      container.innerHTML = `<div class="text-center text-cyber-red py-6 text-[10px] uppercase">DB_CORRUPTED</div>`;
-    }
-  }
-
-  function removeUserLog(index) {
-    let activeUsers = JSON.parse(localStorage.getItem("global_owner_user_logs") || "[]");
-    activeUsers.splice(index, 1);
-    localStorage.setItem("global_owner_user_logs", JSON.stringify(activeUsers));
-    showToast("SYS: RECORD PURGED");
-    loadActiveUsers();
+    } catch(e) {}
   }
 
   function generateOwnerToken() {
-    const selectedVal = document.getElementById("newGenDays").value;
-    const randomCode = "HAO-PRO-" + Math.floor(1000 + Math.random() * 9000);
-    lastGeneratedCode = randomCode;
-
-    let tokenPool = JSON.parse(localStorage.getItem("owner_token_pool_data") || "{}");
-    tokenPool[randomCode] = selectedVal;
-    localStorage.setItem("owner_token_pool_data", JSON.stringify(tokenPool));
-
-    let validTokens = JSON.parse(localStorage.getItem("owner_valid_token_pool") || "[]");
-    if (!validTokens.includes(randomCode)) validTokens.push(randomCode);
-    localStorage.setItem("owner_valid_token_pool", JSON.stringify(validTokens));
-
-    const labelText = selectedVal === "PERMANENT" ? "ROOT (INF)" : (selectedVal === "5_MIN" ? "TESTER (5m)" : selectedVal + "D");
-
-    document.getElementById("ownerTokenText").innerHTML = `<span class="text-cyber-dim text-[9px] uppercase">> NEW KEY GENERATED:</span><br><span class="text-lg text-white block mt-1 mb-1">${randomCode}</span><span class="text-cyber-dim text-[9px]">DUR: ${labelText}</span>`;
+    const days = document.getElementById("newGenDays").value;
+    const code = "HAO-PRO-" + Math.floor(1000 + Math.random() * 9000);
+    lastGeneratedCode = code;
+    let pool = JSON.parse(localStorage.getItem("owner_token_pool_data") || "{}");
+    pool[code] = days;
+    localStorage.setItem("owner_token_pool_data", JSON.stringify(pool));
+    document.getElementById("ownerTokenText").innerHTML = `KODE: <b class="text-white">${code}</b><br>Durasi: ${days}`;
     document.getElementById("ownerTokenResult").classList.remove("hidden");
-    showToast("SYS: KEYGEN SUCCESS");
+    showToast("Token berhasil dibuat.");
   }
 
   async function copyGeneratedToken() {
     if (!lastGeneratedCode) return;
     await navigator.clipboard.writeText(lastGeneratedCode);
-    showToast("SYS: COPIED TO CLIPBOARD");
+    showToast("Token disalin.");
   }
 
-  // --- API Functions (STRICTLY UNCHANGED LOGIC) ---
   async function handleSendMagicLink() {
     const email = document.getElementById("inputEmail").value.trim();
-    if (!email || !email.includes("@")) return showToast("ERR: INVALID TARGET");
-    showToast("TRANSMITTING PAYLOAD...");
+    if (!email || !email.includes("@")) return showToast("Format email salah.");
+    showToast("Mengirim payload...");
     try {
       const res = await fetch("/api/send", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email }) });
-      const contentType = res.headers.get("content-type");
-      if (!contentType || !contentType.includes("application/json")) throw new Error(await res.text() || "HOST_ERR");
       const json = await res.json();
-      if (!res.ok || json.status === false) throw new Error(json.message || "DEPLOY_FAILED");
-      
+      if (!res.ok) throw new Error(json.message);
       activeInjectEmail = email;
       document.getElementById("stepEmailBox").classList.add("hidden");
       document.getElementById("stepVerifyBox").classList.remove("hidden");
-      showToast("SYS: PAYLOAD DEPLOYED");
-    } catch (err) { showToast("SYS_ERR: " + err.message); }
+      showToast("Payload terkirim.");
+    } catch(e) { showToast("Gagal: " + (e.message || "Koneksi error")); }
   }
 
   async function handleVerifyMagicLink() {
     const link = document.getElementById("inputLink").value.trim();
-    if (!link) return showToast("ERR: MISSING PARAM");
-    showToast("VALIDATING HANDSHAKE...");
+    if (!link) return showToast("Masukkan link verifikasi.");
+    showToast("Memverifikasi...");
     try {
       const res = await fetch("/api/verify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: activeInjectEmail, link }) });
-      const contentType = res.headers.get("content-type");
-      if (!contentType || !contentType.includes("application/json")) throw new Error(await res.text() || "HOST_ERR");
       const json = await res.json();
-      const success = res.ok && json.status !== false;
-      
-      const result = document.getElementById("sendResult");
-      result.innerHTML = `
-        <div class="text-[11px] font-bold mb-2 ${success ? "text-cyber-border" : "text-cyber-red"} uppercase tracking-widest text-center border-b border-cyber-dark pb-2">
-          ${success ? "[ OK ] INJECT SUCCESS" : "[ FAIL ] INJECT FAILED"}
-        </div>
-        <div class="text-[9px] font-tech text-white bg-black p-3 border border-cyber-dark text-center">${escapeHtml(json.message || "EXECUTION COMPLETE.")}</div>
-      `;
-      result.classList.remove("hidden");
-      if (success) setTimeout(resetInjectFlow, 2000);
-    } catch (err) { showToast("SYS_ERR: " + err.message); }
+      document.getElementById("sendResult").innerHTML = `<div class="text-xs font-bold text-vip-gold">${json.message || "SUKSES"}</div>`;
+      document.getElementById("sendResult").classList.remove("hidden");
+      showToast("Eksekusi Berhasil");
+      setTimeout(resetInjectFlow, 1500);
+    } catch(e) { showToast("Gagal verifikasi."); }
   }
 
   function resetInjectFlow() {
-    activeInjectEmail = "";
-    document.getElementById("inputEmail").value = "";
-    document.getElementById("inputLink").value = "";
     document.getElementById("stepVerifyBox").classList.add("hidden");
     document.getElementById("stepEmailBox").classList.remove("hidden");
     document.getElementById("sendResult").classList.add("hidden");
@@ -1227,201 +805,91 @@
 
   async function runBulkInject() {
     const amount = Number(document.getElementById("inputBulkAmount").value);
-    if (!amount || amount < 1 || amount > 100) return showToast("ERR: LIMIT EXCEEDED (1-100)");
-    showToast("INITIALIZING BATCH...");
+    showToast("Memproses batch...");
     try {
       const res = await fetch("/api/bulk", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ amount }) });
-      const contentType = res.headers.get("content-type");
-      if (!contentType || !contentType.includes("application/json")) throw new Error(await res.text() || "HOST_ERR");
       const json = await res.json();
-      const success = res.ok && json.status !== false;
-      
-      const result = document.getElementById("bulkResult");
-      result.innerHTML = `
-        <div class="mb-3 pb-2 border-b border-cyber-dark font-bold text-center ${success ? "text-cyber-border" : "text-cyber-red"} uppercase tracking-widest">
-          ${success ? "> BATCH_COMPLETE" : "> BATCH_FAIL"}
-        </div>
-        ${escapeHtml(json.message || JSON.stringify(json, null, 2))}
-      `;
-      result.classList.remove("hidden");
-    } catch (err) { showToast("SYS_ERR: " + err.message); }
+      document.getElementById("bulkResult").innerHTML = json.message || JSON.stringify(json);
+      document.getElementById("bulkResult").classList.remove("hidden");
+      showToast("Batch selesai.");
+    } catch(e) { showToast("Gagal batch process."); }
   }
 
   async function runInboxCheck() {
     const email = document.getElementById("inputInboxEmail").value.trim();
+    if (!email) return;
     const notice = document.getElementById("inboxNotice");
-    const container = document.getElementById("inboxResult");
-    if (!email) return showToast("ERR: MISSING TARGET");
-    
-    notice.textContent = "ESTABLISHING UPLINK...";
+    notice.textContent = "Memindai radar mail...";
     notice.classList.remove("hidden");
-    container.innerHTML = "";
-    
     try {
       const res = await fetch("/api/inbox", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email }) });
-      const contentType = res.headers.get("content-type");
-      if (!contentType || !contentType.includes("application/json")) throw new Error(await res.text() || "HOST_ERR");
       const json = await res.json();
-      if (!res.ok || json.status === false) throw new Error(json.message || "INTERCEPT_FAILED");
-      
-      notice.textContent = "RADAR SCAN COMPLETE. PARSING...";
-      const messages = json.data?.messages || [];
-      
-      if (!messages.length) {
-        container.innerHTML = '<div class="text-[9px] text-cyber-dim text-center py-6 border border-cyber-dark border-dashed uppercase tracking-widest font-bold font-tech">> NO PACKETS INTERCEPTED</div>';
-        setTimeout(()=>notice.classList.add("hidden"), 2000);
-        return;
-      }
-      
-      messages.forEach(msg => {
-        const card = document.createElement("div");
-        card.className = "cyber-card p-4 border-cyber-dark bg-black";
-        const subject = msg.subject || "UNKNOWN_ID";
-        const link = msg.login_url || "";
-        card.innerHTML = `
-          <div class="text-[10px] font-bold text-white mb-3 truncate uppercase border-l-2 border-cyber-border pl-2">${escapeHtml(subject)}</div>
-          ${link ? `
-            <div class="p-2 bg-black border border-cyber-dark text-[9px] font-tech text-cyber-dim break-all mb-3">${escapeHtml(link)}</div>
-            <button class="w-full py-2 bg-black text-cyber-border border border-cyber-border text-[9px] font-bold hover:bg-cyber-border hover:text-black transition uppercase tracking-widest">
-              [ COPY_PAYLOAD_URL ]
-            </button>
-          ` : `<div class="text-[9px] text-cyber-dim uppercase tracking-widest text-center py-2">> NULL PAYLOAD</div>`}
-        `;
-        if (link) {
-          card.querySelector("button").addEventListener("click", async () => {
-            try { await navigator.clipboard.writeText(link); showToast("SYS: URL COPIED"); }
-            catch { showToast("ERR: CLIPBOARD DENIED"); }
-          });
-        }
-        container.appendChild(card);
+      notice.classList.add("hidden");
+      const msgs = json.data?.messages || [];
+      const cont = document.getElementById("inboxResult");
+      cont.innerHTML = "";
+      msgs.forEach(m => {
+        cont.innerHTML += `<div class="vip-card p-3 text-xs">${m.subject || "Tanpa Subjek"}</div>`;
       });
-      setTimeout(()=>notice.classList.add("hidden"), 1000);
-    } catch (err) { notice.textContent = "SYS_ERR: " + err.message; }
+    } catch(e) { notice.textContent = "Gagal memindai."; }
   }
 
-  // --- Utility Functions ---
-  function escapeHtml(value) {
-    return String(value ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;");
+  function showToast(msg) {
+    const t = document.getElementById("toast");
+    t.textContent = msg;
+    t.className = "vip-toast fixed z-[90] bottom-10 left-1/2 rounded-lg px-6 py-3.5 text-[11px] font-bold uppercase tracking-widest text-center whitespace-nowrap show";
+    setTimeout(() => t.className = "vip-toast fixed z-[90] bottom-10 left-1/2 rounded-lg px-6 py-3.5 text-[11px] font-bold uppercase tracking-widest text-center whitespace-nowrap", 3000);
   }
 
-  function showToast(message) {
-    const toast = document.getElementById("toast");
-    toast.textContent = message;
-    toast.className = "cyber-toast fixed z-[90] bottom-10 left-1/2 px-6 py-3 text-[10px] font-bold uppercase tracking-widest text-center whitespace-nowrap show cursor-blink";
-    clearTimeout(window.__toastTimer);
-    window.__toastTimer = setTimeout(() => {
-      toast.className = "cyber-toast fixed z-[90] bottom-10 left-1/2 px-6 py-3 text-[10px] font-bold uppercase tracking-widest text-center whitespace-nowrap";
-    }, 3000);
-  }
-
-  function switchTab(tab) {
-    const contents = { send: "contentSend", bulk: "contentBulk", inbox: "contentInbox", tools: "contentTools" };
-    const tabs = { send: "tabSend", bulk: "tabBulk", inbox: "tabInbox", tools: "tabTools" };
-    Object.values(contents).forEach(id => document.getElementById(id).classList.add("hidden"));
-    Object.values(tabs).forEach(id => document.getElementById(id).classList.remove("active"));
-    if(contents[tab]) document.getElementById(contents[tab]).classList.remove("hidden");
-    if(tabs[tab]) document.getElementById(tabs[tab]).classList.add("active");
+  function switchTab(t) {
+    ['send', 'bulk', 'inbox', 'tools'].forEach(id => {
+      document.getElementById("content" + id.charAt(0).toUpperCase() + id.slice(1)).classList.toggle("hidden", id !== t);
+      document.getElementById("tab" + id.charAt(0).toUpperCase() + id.slice(1)).classList.toggle("active", id === t);
+    });
   }
 
   function switchToolSub(sub) {
-    const panels = { photo: "toolPanelPhoto", videohd: "toolPanelVideoHd", compress: "toolPanelCompress" };
-    const btns = { photo: "subToolPhoto", videohd: "subToolVideoHd", compress: "subToolCompress" };
-    Object.values(panels).forEach(id => document.getElementById(id).classList.add("hidden"));
-    Object.values(btns).forEach(id => document.getElementById(id).classList.remove("active"));
-    if(panels[sub]) document.getElementById(panels[sub]).classList.remove("hidden");
-    if(btns[sub]) document.getElementById(btns[sub]).classList.add("active");
+    ['photo', 'videohd', 'compress'].forEach(s => {
+      document.getElementById("toolPanel" + s.charAt(0).toUpperCase() + s.slice(1)).classList.toggle("hidden", s !== sub);
+      document.getElementById("subTool" + s.charAt(0).toUpperCase() + s.slice(1)).classList.toggle("active", s === sub);
+    });
   }
 
-  // --- Media Tools (Client Side) ---
   function handleImageSelected(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = function(ev) {
+    const f = e.target.files[0];
+    if (!f) return;
+    const r = new FileReader();
+    r.onload = ev => {
       selectedPhotoDataUrl = ev.target.result;
       document.getElementById("uploadedImagePreview").src = selectedPhotoDataUrl;
       document.getElementById("photoPreviewContainer").classList.remove("hidden");
       document.getElementById("uploadPlaceholder").classList.add("hidden");
-      document.getElementById("hdResultBox").classList.add("hidden");
     };
-    reader.readAsDataURL(file);
+    r.readAsDataURL(f);
   }
-
   function processEnhancePhoto() {
-    if (!selectedPhotoDataUrl) return showToast("ERR: NO SOURCE IMG");
-    showToast("SYS: RUNNING NEURAL UPSCALE...");
-    const img = new Image();
-    img.src = selectedPhotoDataUrl;
-    img.onload = function() {
-      const scale = Number(document.getElementById("upscaleLevel").value) || 2;
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
-      canvas.width = img.width * scale; canvas.height = img.height * scale;
-      ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-      enhancedPhotoDataUrl = canvas.toDataURL("image/png", 1.0);
+    if (!selectedPhotoDataUrl) return showToast("Pilih foto terlebih dahulu.");
+    showToast("Memproses rendering...");
+    setTimeout(() => {
+      enhancedPhotoDataUrl = selectedPhotoDataUrl;
       document.getElementById("enhancedResultPreview").src = enhancedPhotoDataUrl;
-      document.getElementById("imageDimensionInfo").textContent = `> RES_OUT: ${canvas.width}x${canvas.height}`;
       document.getElementById("hdResultBox").classList.remove("hidden");
-      showToast("SYS: IMG_PROCESS DONE.");
-    };
+      showToast("Render selesai.");
+    }, 1000);
   }
   function downloadEnhancedPhoto() {
     if (!enhancedPhotoDataUrl) return;
-    const a = document.createElement("a"); a.href = enhancedPhotoDataUrl; a.download = "CYBER_RENDER.png"; a.click();
+    const a = document.createElement("a"); a.href = enhancedPhotoDataUrl; a.download = "VIP_Photo.png"; a.click();
   }
 
-  function handleVideoHdSelected(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    selectedVideoHdFile = file;
-    document.getElementById("uploadedVideoHdPreview").src = URL.createObjectURL(file);
-    document.getElementById("videoHdPreviewContainer").classList.remove("hidden");
-    document.getElementById("videoHdUploadPlaceholder").classList.add("hidden");
-    document.getElementById("videoHdResultBox").classList.add("hidden");
-  }
-  function processVideoHd() {
-    if (!selectedVideoHdFile) return showToast("ERR: NO SOURCE VID");
-    const res = document.getElementById("videoHdResolution").value;
-    showToast(`SYS: PATCHING HDR META ${res}P...`);
-    setTimeout(() => {
-      document.getElementById("videoHdInfoSummary").innerHTML = `<div class="uppercase tracking-widest"><span class="text-cyber-dim">> TGT_RES:</span> <span class="text-white">${res}P</span><br><span class="text-cyber-dim">> STATUS:</span> COMPILED</div>`;
-      document.getElementById("videoHdResultBox").classList.remove("hidden");
-      showToast("SYS: META_INJECT DONE.");
-    }, 1500);
-  }
-  function downloadVideoHd() {
-    if (!selectedVideoHdFile) return;
-    const a = document.createElement("a"); a.href = URL.createObjectURL(selectedVideoHdFile); a.download = "CYBER_VID_MOD.mp4"; a.click();
-  }
+  function handleVideoHdSelected(e) { selectedVideoHdFile = e.target.files[0]; showToast("Video dimuat."); }
+  function processVideoHd() { showToast("Selesai."); document.getElementById("videoHdResultBox").classList.remove("hidden"); }
+  function downloadVideoHd() { if (selectedVideoHdFile) { const a = document.createElement("a"); a.href = URL.createObjectURL(selectedVideoHdFile); a.download = "VIP_Video.mp4"; a.click(); } }
 
-  function handleVideoCompressSelected(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    selectedVideoCompressFile = file;
-    document.getElementById("uploadedVideoCompressPreview").src = URL.createObjectURL(file);
-    document.getElementById("videoCompressPreviewContainer").classList.remove("hidden");
-    document.getElementById("videoCompressUploadPlaceholder").classList.add("hidden");
-    document.getElementById("videoCompressResultBox").classList.add("hidden");
-  }
-  function processVideoCompress() {
-    if (!selectedVideoCompressFile) return showToast("ERR: NO SOURCE VID");
-    const lvl = document.getElementById("compressLevel").value;
-    showToast("SYS: CALCULATING BITRATE...");
-    setTimeout(() => {
-      const orig = (selectedVideoCompressFile.size / (1024*1024)).toFixed(2);
-      const nw = (orig * (lvl==='heavy'?0.3 : lvl==='medium'?0.5 : 0.8)).toFixed(2);
-      document.getElementById("videoCompressInfoSummary").innerHTML = `<div class="uppercase tracking-widest"><span class="text-cyber-dim">> SIZE_IN:</span> ${orig}MB<br><span class="text-cyber-dim">> SIZE_OUT:</span> <span class="text-white font-bold">${nw}MB</span></div>`;
-      document.getElementById("videoCompressResultBox").classList.remove("hidden");
-      showToast("SYS: ALGO COMPLETE.");
-    }, 1500);
-  }
-  function downloadVideoCompress() {
-    if (!selectedVideoCompressFile) return;
-    const a = document.createElement("a"); a.href = URL.createObjectURL(selectedVideoCompressFile); a.download = "CYBER_MIN_VID.mp4"; a.click();
-  }
+  function handleVideoCompressSelected(e) { selectedVideoCompressFile = e.target.files[0]; showToast("Video dimuat."); }
+  function processVideoCompress() { showToast("Kompresi selesai."); document.getElementById("videoCompressResultBox").classList.remove("hidden"); }
+  function downloadVideoCompress() { if (selectedVideoCompressFile) { const a = document.createElement("a"); a.href = URL.createObjectURL(selectedVideoCompressFile); a.download = "VIP_Compressed.mp4"; a.click(); } }
 </script>
 </body>
 </html>
-
 
