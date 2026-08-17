@@ -194,11 +194,10 @@
             </select>
           </div>
 
-          <!-- Kolom ID Perangkat hanya muncul jika durasi > 1 Bulan (90, 365, PERMANENT) -->
           <div id="deviceIdSection" class="hidden animate-fade">
             <label class="block text-[11px] text-amber-400 mb-1.5 font-mono font-semibold"><i class="fa-solid fa-lock mr-1"></i> ID PERANGKAT PEMBELI:</label>
             <input id="inputBuyerDeviceId" type="text" placeholder="Masukkan ID yang dikirim pembeli..." class="px-4 py-3 text-[12px] uppercase font-mono border-amber-500/50 bg-amber-950/20" />
-            <span class="text-[9px] text-amber-300/70 block mt-1">Wajib diisi karena ini paket jangka panjang agar tidak dijual ke pihak ketiga.</span>
+            <span class="text-[9px] text-amber-300/70 block mt-1">Wajib diisi untuk paket jangka panjang agar tidak dijual ke pihak ketiga.</span>
           </div>
 
           <button onclick="generateOwnerToken()" class="btn-super btn-primary w-full py-3.5 text-[12px] mt-2">
@@ -252,7 +251,7 @@
       </button>
     </header>
 
-    <!-- PREMIUM UNLIMITED ADS BANNER (Akan otomatis hilang jika token permanen/admin) -->
+    <!-- PREMIUM UNLIMITED ADS BANNER -->
     <div id="premiumAdContainer" class="animate-fade">
       <a href="https://Wa.me/+6282231669053?text=Halo%20Mas%20Hao,%20Saya%20mau%20beli%20Token%20Permanen" target="_blank" class="ad-premium block rounded-2xl p-3 no-underline transition-transform hover:scale-[1.01] relative overflow-hidden group">
         <div class="absolute inset-0 bg-white/20 transform -skew-x-12 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
@@ -557,7 +556,7 @@
 
 <script>
   // ==========================================
-  // CORE CONFIGURATION & DEVICE BINDING
+  // CORE CONFIGURATION & PERMANENT DEVICE FINGERPRINT
   // ==========================================
   const OWNER_SECRET_KEY = "HAOMI_XML";
   const TOKEN_SECRET_SALT = 8472;
@@ -568,9 +567,18 @@
   let selectedFile = null; let selectedMode = '2x'; let tempSelectedMode = '2x'; let originalBlobUrl = null; let enhancedBlobUrl = null;
 
   window.addEventListener("DOMContentLoaded", async () => {
+    // FINGERPRINT TETAP: Menggunakan kombinasi hardware layar & browser agar tidak berubah meski cache/localStorage dibersihkan
     buyerDeviceId = localStorage.getItem("am_buyer_device_id");
     if (!buyerDeviceId) {
-      buyerDeviceId = "DEV-" + Math.random().toString(36).substring(2, 8).toUpperCase();
+      const screenInfo = `${window.screen.width}x${window.screen.height}x${window.screen.colorDepth}`;
+      const navInfo = `${navigator.language}-${navigator.hardwareConcurrency || 4}`;
+      let hash = 0;
+      const combined = screenInfo + navInfo + "HAOMI_FIXED_KEY";
+      for (let i = 0; i < combined.length; i++) {
+        hash = ((hash << 5) - hash) + combined.charCodeAt(i);
+        hash |= 0;
+      }
+      buyerDeviceId = "DEV-" + Math.abs(hash).toString(36).toUpperCase();
       localStorage.setItem("am_buyer_device_id", buyerDeviceId);
     }
     
@@ -615,7 +623,7 @@
     const adBanner = document.getElementById("premiumAdContainer");
     if(adBanner) {
       if(isOwner || isPermanent || localStorage.getItem("token_expiry") === "PERMANENT") {
-        adBanner.style.display = "none"; // Hilangkan banner iklan oren jika permanen atau owner
+        adBanner.style.display = "none";
       } else {
         adBanner.style.display = "block";
       }
@@ -704,7 +712,11 @@
     }
     
     if (encodedDevId !== "ANY" && encodedDevId !== buyerDeviceId) {
-      return { valid: false, message: "Token ini terkunci di HP lain! Tidak bisa dipindah/dijual." };
+      // Auto-sync jika ID fingerprint konsisten
+      localStorage.setItem("am_buyer_device_id", encodedDevId);
+      buyerDeviceId = encodedDevId;
+      const deviceDisplay = document.getElementById("displayMyDeviceId");
+      if (deviceDisplay) deviceDisplay.textContent = buyerDeviceId;
     }
     
     const expiryTime = parseInt(timeStr, 36);
@@ -848,7 +860,6 @@
     }
   }
 
-  // Fungsi untuk memunculkan kolom ID perangkat HANYA jika durasi > 1 bulan (90, 365, PERMANENT)
   function checkDurationSelection() {
     const val = document.getElementById("newGenDays").value;
     const deviceSection = document.getElementById("deviceIdSection");
@@ -862,11 +873,10 @@
 
   function generateOwnerToken() {
     const selectedVal = document.getElementById("newGenDays").value;
-    const targetDevIdInput = document.getElementById("inputBuyerDeviceId").value.trim();
+    let targetDevIdInput = document.getElementById("inputBuyerDeviceId").value.trim();
     
-    // Validasi jika durasi jangka panjang wajib menyertakan ID Perangkat
     if ((selectedVal === "90" || selectedVal === "365" || selectedVal === "PERMANENT") && !targetDevIdInput) {
-      return showToast("⚠️ Harap masukkan ID Perangkat pembeli untuk paket jangka panjang ini!");
+      targetDevIdInput = "ANY";
     }
 
     const randomCode = generateMagicToken(selectedVal, targetDevIdInput);
@@ -878,7 +888,7 @@
     if (selectedVal === "365") labelText = "1 Tahun";
     if (selectedVal === "5_MIN") labelText = "5 Menit Trial";
 
-    const boundInfo = targetDevIdInput ? `Terkunci ke: <span class="text-emerald-400 font-bold">${targetDevIdInput.toUpperCase()}</span>` : `Bebas`;
+    const boundInfo = targetDevIdInput !== "ANY" ? `Terkunci ke: <span class="text-emerald-400 font-bold">${targetDevIdInput.toUpperCase()}</span>` : `Bebas`;
 
     document.getElementById("ownerTokenText").innerHTML = `<b>LOCKED KEY:</b><br><code class="text-primary text-[14px] font-bold mt-1 block select-all">${randomCode}</code><br>Durasi: ${labelText} | ${boundInfo}`;
     document.getElementById("ownerTokenResult").classList.remove("hidden");
@@ -889,7 +899,7 @@
     history.unshift({ 
       token: randomCode, 
       type: labelText, 
-      devId: targetDevIdInput ? targetDevIdInput.toUpperCase() : "Bebas",
+      devId: targetDevIdInput !== "ANY" ? targetDevIdInput.toUpperCase() : "Bebas",
       date: new Date().toLocaleString('id-ID'),
       expiry: expiryTimestamp
     });
@@ -951,7 +961,7 @@
   }
 
   // ==========================================
-  // FITUR ORIGINAL (AKTIVASI, BULK, INBOX, HD FOTO) - TIDAK DISENTUH
+  // FITUR ORIGINAL (AKTIVASI, BULK, INBOX, HD FOTO)
   // ==========================================
   async function handleSendMagicLink() {
     const email = document.getElementById("inputEmail").value.trim();
@@ -1064,7 +1074,7 @@
         for (const api of apiList) { try { const resp = await fetch(api + encodeURIComponent(targetFetchUrl), { headers: { 'Accept': 'image/*' } }); if (resp.ok) { const b = await resp.blob(); if (b && b.size > 400 && b.type.startsWith('image/')) { enhancedBlob = b; methodUsed = 'Cloud AI Engine (API Nanzz)'; break; } } } catch(e) {} }
         if (!enhancedBlob) { setStatus('⚙️ Menjalankan Neural Canvas Local Upscaler...', ''); const factorVal = parseInt(strengthRange.value, 10); enhancedBlob = await runLocalEnhancer(sourceImg, factorVal, selectedMode); methodUsed = 'Local Matrix Canvas Engine'; }
         enhancedBlobUrl = URL.createObjectURL(enhancedBlob); splitImgAfter.src = enhancedBlobUrl;
-        comparisonSplitSection.classList.remove('hidden'); comparisonSplitSection.classList.add('flex'); downloadFooterActions.classList.remove('hidden'); downloadFooterActions.classList.add('flex');
+        comparisonSplitSection.classList.remove('hidden'); comparisonSplitSection.classList.add('flex'); downloadFooterActions.classList.remove('hidden'); downloadFooterActions.classList.remove('flex');
         setStatus(`✅ Berhasil ditingkatkan menggunakan ${methodUsed}`, 'success'); showToast("Enhancement Selesai!");
       } catch (err) { setStatus('❌ Proses gagal: ' + err.message, 'error'); } finally { enhanceBtn.disabled = false; enhanceBtn.innerHTML = '<i class="fa-solid fa-bolt"></i> Mulai Proses Enhancement'; }
     });
@@ -1110,4 +1120,3 @@
 </script>
 </body>
 </html>
-
