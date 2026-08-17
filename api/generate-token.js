@@ -10,7 +10,6 @@ export default async function handler(req, res) {
   res.setHeader("Cache-Control", "no-store, max-age=0");
   res.setHeader("Content-Type", "application/json; charset=utf-8");
 
-  // Izinkan method POST maupun PUT agar tidak pernah error "Method tidak diizinkan"
   if (req.method !== "POST" && req.method !== "PUT") {
     return res.status(405).json({ status: false, message: "Method tidak diizinkan." });
   }
@@ -22,14 +21,22 @@ export default async function handler(req, res) {
       return res.status(401).json({ status: false, message: "Unauthorized: Secret key salah." });
     }
 
-    const days = Number(body.days || 30);
+    const rawDays = body.days;
     const token = String(body.token || "").trim().toUpperCase();
 
     if (!token) {
       return res.status(400).json({ status: false, message: "Token tidak valid." });
     }
 
-    const expiryDate = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toISOString();
+    let expiryDate;
+    if (rawDays === "PERMANENT") {
+      expiryDate = new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000).toISOString(); // +100 tahun
+    } else if (rawDays === "5_MIN") {
+      expiryDate = new Date(Date.now() + 5 * 60 * 1000).toISOString();
+    } else {
+      const days = Number(rawDays || 30);
+      expiryDate = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toISOString();
+    }
     
     global.generatedTokens[token] = {
       expires_at: expiryDate
@@ -43,9 +50,6 @@ export default async function handler(req, res) {
     });
 
   } catch (err) {
-    return res.status(500).json({
-      status: false,
-      message: "Server Error: " + (err.message || "Kesalahan internal.")
-    });
+    return res.status(500).json({ status: false, message: "Server Error" });
   }
 }
