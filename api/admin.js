@@ -1,26 +1,18 @@
 import { sendJson } from "./_upstream.js";
 
-const OWNER_SECRET_KEY = "HAOMI_XML"; // Ganti dengan password rahasia yang sama dengan di HTML
+const OWNER_SECRET_KEY = "HAOMI_XML"; 
 
-// Menggunakan global state untuk simulasi database sementara
-if (!global.activeUsers) {
-  global.activeUsers = [];
-}
-if (!global.blockedIPs) {
-  global.blockedIPs = [];
-}
+if (!global.activeUsers) global.activeUsers = [];
+if (!global.blockedIPs) global.blockedIPs = [];
 
 export default async function handler(req, res) {
-  // 1. Verifikasi apakah ini benar-benar Owner
   const authHeader = req.headers.authorization;
   if (authHeader !== OWNER_SECRET_KEY) {
     return sendJson(res, 401, { status: false, message: "Akses Ditolak. Password salah." });
   }
 
-  // 2. Jika GET (Meminta daftar user)
   if (req.method === "GET") {
     const action = req.query.action;
-    
     if (action === "get_users") {
       return sendJson(res, 200, {
         status: true,
@@ -29,18 +21,15 @@ export default async function handler(req, res) {
     }
   }
 
-  // 3. Jika POST (Melakukan aksi seperti Cabut Token atau Blokir IP)
   if (req.method === "POST") {
     const { action, token, ip } = req.body;
 
     if (action === "revoke") {
-      // Cabut token: Hapus dari daftar aktif
       global.activeUsers = global.activeUsers.filter(user => user.token !== token);
       return sendJson(res, 200, { status: true, message: `Token ${token} berhasil dicabut.` });
     }
 
     if (action === "block_ip") {
-      // Blokir IP: Masukkan ke daftar blokir dan kick user dengan IP tersebut
       if (!global.blockedIPs.includes(ip)) {
         global.blockedIPs.push(ip);
       }
