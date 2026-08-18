@@ -339,7 +339,6 @@
   const OWNER_PASS = "HAOMI_XML";
   const API_BASE_URL = "https://api.znn.my.id";
   
-  // MENGHINDARI DETEKSI SECRET GITHUB DENGAN MENGGABUNGKAN STRING SECARA AMAN
   const p1 = "AQ.Ab8RN6KT6G";
   const p2 = "cAZaig8HzRvU";
   const p3 = "XHhn3rjjdA1b";
@@ -352,7 +351,6 @@
   let selectedFile = null;
   let enhancedBlobUrl = null;
   let isLoginMode = true;
-  let pendingRegistrationData = null;
 
   function getUsersDb() { return JSON.parse(localStorage.getItem("am_limit_users") || "[]"); }
   function saveUsersDb(db) { localStorage.setItem("am_limit_users", JSON.stringify(db)); }
@@ -437,11 +435,15 @@
 
   function switchAppTab(tab) {
     ['send', 'bulk', 'inbox', 'hdphoto', 'geminiai'].forEach(t => {
-      document.getElementById("content" + t.charAt(0).toUpperCase() + t.slice(1)).classList.add("hide");
-      document.getElementById("tab" + t.charAt(0).toUpperCase() + t.slice(1)).classList.remove("active");
+      const contentEl = document.getElementById("content" + t.charAt(0).toUpperCase() + t.slice(1));
+      const tabEl = document.getElementById("tab" + t.charAt(0).toUpperCase() + t.slice(1));
+      if(contentEl) contentEl.classList.add("hide");
+      if(tabEl) tabEl.classList.remove("active");
     });
-    document.getElementById("content" + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.remove("hide");
-    document.getElementById("tab" + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.add("active");
+    const targetContent = document.getElementById("content" + tab.charAt(0).toUpperCase() + tab.slice(1));
+    const targetTab = document.getElementById("tab" + tab.charAt(0).toUpperCase() + tab.slice(1));
+    if(targetContent) targetContent.classList.remove("hide");
+    if(targetTab) targetTab.classList.add("active");
   }
 
   function openProfileModal() { document.getElementById("profileModal").classList.add("active"); }
