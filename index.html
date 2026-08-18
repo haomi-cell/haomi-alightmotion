@@ -682,7 +682,7 @@
   const OWNER_USER = "HAOMI";
   const OWNER_PASS = "HAOMI_XML";
   
-  // Diperbarui agar mengarah ke endpoint lokal/relative Vercel (/api) agar tidak terjadi error CORS / Failed to fetch
+  // Endpoint mengarah ke direktori serverless Vercel (/api)
   const API_BASE_URL = "/api";
   
   let activeInjectEmail = ""; 
@@ -1133,7 +1133,7 @@
   }
 
   // ==========================================
-  // FITUR UTAMA LANGSUNG KE VERCEL SERVERLESS (/api/...)
+  // FITUR UTAMA KE VERCEL SERVERLESS (/api/...)
   // ==========================================
   async function handleSendMagicLink() {
     if(!checkUserLimit()) return showToast("Credit Habis! Upgrade VIP Access.");
@@ -1237,7 +1237,6 @@
     container.innerHTML = "";
     
     try {
-      // Diubah ke POST agar sesuai dengan validasi onlyPost(req, res) pada file backend inbox.js
       const res = await fetch(`${API_BASE_URL}/inbox`, { 
         method: "POST", 
         headers: { "Content-Type": "application/json" }, 
