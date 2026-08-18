@@ -1,666 +1,1380 @@
 <!DOCTYPE html>
-<html lang="id" class="dark">
+<html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#000000" />
-  <meta name="description" content="AM Pro Toolkit — Modern Monochrome Edition" />
-  <title>AM Pro Toolkit | 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞</title>
+  <meta name="theme-color" content="#030305" />
+  <title>AM Suite Pro | Executive Edition</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <script>
     tailwind.config = {
-      darkMode: 'class',
       theme: {
         extend: {
           fontFamily: {
-            sans: ['Plus Jakarta Sans', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace']
+            sans: ['Outfit', 'sans-serif'],
+            mono: ['Space Grotesk', 'monospace'],
+          },
+          colors: {
+            darkbg: '#030305',
           }
         }
       }
-    };
+    }
   </script>
 
   <style>
-    :root {
-      --bg: #000000;
-      --panel: rgba(18, 18, 20, 0.65);
-      --panel-hover: rgba(28, 28, 32, 0.75);
-      --border: rgba(255, 255, 255, 0.12);
-      --border-focus: rgba(255, 255, 255, 0.4);
-      --text: #f4f4f5;
-      --muted: #a1a1aa;
+    /* RESET & DYNAMIC CYBER BACKGROUND */
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
+    body { background-color: #030305; color: #f3f4f6; font-family: 'Outfit', sans-serif; overflow-x: hidden; min-height: 100vh; }
+    
+    .bg-mesh {
+      position: fixed; inset: 0; z-index: -2; background: #030305;
+      background-image: 
+        radial-gradient(circle at 15% 50%, rgba(6, 182, 212, 0.08) 0px, transparent 40%),
+        radial-gradient(circle at 85% 30%, rgba(217, 70, 239, 0.08) 0px, transparent 40%),
+        linear-gradient(to right, rgba(255,255,255,0.01) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.01) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 30px 30px, 30px 30px;
     }
 
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
+    .scanlines {
+      position: fixed; inset: 0; z-index: 9998; pointer-events: none;
+      background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2));
+      background-size: 100% 4px; opacity: 0.15;
+    }
+    .vignette {
+      position: fixed; inset: 0; z-index: 9997; pointer-events: none;
+      background: radial-gradient(circle, transparent 50%, rgba(0,0,0,0.9) 150%);
     }
 
-    html {
-      scroll-behavior: smooth;
-      background: var(--bg);
+    /* MODERN CARDS & GLASSMORPHISM */
+    .app-card {
+      background: rgba(10, 10, 15, 0.65); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(6, 182, 212, 0.2); border-top: 1px solid rgba(6, 182, 212, 0.4);
+      border-radius: 24px; box-shadow: 0 20px 50px -10px rgba(0,0,0,0.8), inset 0 0 20px rgba(6, 182, 212, 0.05);
+      position: relative; overflow: hidden;
     }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      overflow-x: hidden;
-      color: var(--text);
-      background: 
-        radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.08), transparent 50%),
-        #000000;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-
-    /* Efek Grid Abstrak di Background */
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      z-index: -2;
-      pointer-events: none;
-      background-image: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-      background-size: 32px 32px;
-      mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
-    }
-
-    /* Glassmorphism Utama */
-    .glass {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      backdrop-filter: blur(30px) saturate(150%);
-      -webkit-backdrop-filter: blur(30px) saturate(150%);
-      box-shadow: 
-        0 24px 48px rgba(0, 0, 0, 0.8),
-        inset 0 1px 0 rgba(255, 255, 255, 0.15);
-    }
-
-    .glass-card {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      transition: all .25s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .glass-card:hover {
-      background: rgba(255, 255, 255, 0.04);
-      border-color: rgba(255, 255, 255, 0.18);
-    }
-
-    input, select {
-      width: 100%;
-      color: #ffffff !important;
-      background: rgba(10, 10, 12, 0.8) !important;
-      border: 1px solid rgba(255, 255, 255, 0.12) !important;
-      border-radius: 14px !important;
-      outline: none;
-      transition: all .2s ease;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-
-    input::placeholder {
-      color: #52525b;
-    }
-
-    input:focus, select:focus {
-      border-color: #ffffff !important;
-      background: rgba(18, 18, 22, 0.95) !important;
-      box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.08), 0 0 20px rgba(255, 255, 255, 0.05) !important;
-    }
-
-    select option {
-      background: #121214;
-      color: white;
-    }
-
-    /* Tombol Kustom */
-    .btn {
-      border-radius: 14px;
-      font-weight: 600;
-      transition: all .2s cubic-bezier(0.16, 1, 0.3, 1);
+    
+    .sub-box {
+      background: rgba(15, 15, 20, 0.5); backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 16px;
       position: relative;
-      overflow: hidden;
+    }
+    .glass-subpanel {
+      background: rgba(20, 20, 30, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
     }
 
-    .btn:active {
-      transform: scale(0.97);
+    /* INPUTS */
+    .input-box {
+      width: 100%; background: rgba(10, 10, 15, 0.7) !important; 
+      border: 1px solid rgba(255, 255, 255, 0.1) !important; 
+      border-radius: 12px !important; color: #fff !important; 
+      padding: 14px 16px 14px 46px; font-size: 13px; font-weight: 500; 
+      transition: all 0.3s ease; backdrop-filter: blur(8px);
+      box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
+    }
+    .input-box:focus { 
+      border-color: #06b6d4 !important; background: rgba(6, 182, 212, 0.08) !important;
+      box-shadow: 0 0 15px rgba(6, 182, 212, 0.25), inset 0 0 10px rgba(6, 182, 212, 0.1) !important; 
+    }
+    .input-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #06b6d4; opacity: 0.8; font-size: 14px; }
+
+    /* NEON BUTTONS */
+    .btn-main {
+      display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 14px;
+      font-weight: 700; font-size: 13px; font-family: 'Space Grotesk', monospace; letter-spacing: 1px;
+      border-radius: 12px; background: rgba(6, 182, 212, 0.15); color: #22d3ee;
+      border: 1px solid #06b6d4; cursor: pointer; transition: all 0.3s ease; 
+      box-shadow: 0 0 15px rgba(6, 182, 212, 0.2), inset 0 0 10px rgba(6, 182, 212, 0.1);
+      position: relative; overflow: hidden; text-transform: uppercase;
+    }
+    .btn-main::before {
+      content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: 0.5s;
+    }
+    .btn-main:hover::before { left: 100%; }
+    .btn-main:hover {
+      background: rgba(6, 182, 212, 0.3);
+      box-shadow: 0 0 25px rgba(6, 182, 212, 0.5), inset 0 0 15px rgba(6, 182, 212, 0.2);
+      text-shadow: 0 0 8px #22d3ee; transform: translateY(-2px);
+    }
+    .btn-main:active { transform: scale(0.98); }
+
+    .btn-sub {
+      background: rgba(20, 20, 30, 0.5); color: #a1a1aa; border: 1px solid rgba(255,255,255,0.1); 
+      border-radius: 12px; padding: 12px; font-size: 12px; font-family: 'Space Grotesk', monospace; font-weight: 600; 
+      display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; transition: all 0.3s ease;
+      backdrop-filter: blur(8px);
+    }
+    .btn-sub:hover { 
+      border-color: #a855f7; color: #d8b4fe;
+      box-shadow: 0 0 15px rgba(168, 85, 247, 0.2); background: rgba(168, 85, 247, 0.15);
     }
 
-    .btn-primary {
-      background: #ffffff;
-      color: #000000;
-      border: 1px solid #ffffff;
-      box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
+    /* VIP RGB ANIMATION */
+    .vip-rgb {
+      background: linear-gradient(90deg, #d946ef, #8b5cf6, #06b6d4, #3b82f6, #d946ef);
+      background-size: 200% auto; color: transparent; -webkit-background-clip: text; background-clip: text;
+      animation: rgbGlow 4s linear infinite; font-weight: 800; text-shadow: 0 0 15px rgba(217,70,239,0.3);
     }
+    @keyframes rgbGlow { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
 
-    .btn-primary:hover {
-      background: #e4e4e7;
-      box-shadow: 0 6px 25px rgba(255, 255, 255, 0.35);
-      transform: translateY(-1px);
-    }
-
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.06);
-      color: #ffffff;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-    }
-
-    .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.12);
-      border-color: rgba(255, 255, 255, 0.25);
-    }
-
-    /* Navigasi / Dock Style Baru */
-    .nav-pill {
-      position: relative;
+    /* TABS DYNAMIC STYLE */
+    .tab-btn {
+      transition: all 0.3s ease;
       color: #71717a;
-      transition: all .25s ease;
+      cursor: pointer;
+      padding: 10px 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border-radius: 12px;
+      border: 1px solid transparent;
+      user-select: none;
+    }
+    .tab-btn.active { 
+      background: rgba(6, 182, 212, 0.15) !important; 
+      color: #22d3ee !important; 
+      border: 1px solid rgba(6, 182, 212, 0.4) !important;
+      box-shadow: 0 0 15px rgba(6, 182, 212, 0.25) !important;
     }
 
-    .nav-pill:hover {
-      color: #d4d4d8;
+    /* TOAST & MODALS */
+    .toast-alert {
+      position: fixed; top: -100px; left: 50%; transform: translateX(-50%); z-index: 9999;
+      background: rgba(10, 10, 15, 0.9); backdrop-filter: blur(16px);
+      border: 1px solid #06b6d4; padding: 10px 18px; border-radius: 100px;
+      box-shadow: 0 10px 40px rgba(6, 182, 212, 0.4); transition: top 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
+    .toast-alert.show { top: 24px; }
+    @keyframes shake { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-15deg); } 75% { transform: rotate(15deg); } }
+    .animate-shake { animation: shake 0.5s ease-in-out infinite; }
 
-    .nav-pill.active {
-      color: #000000;
-      background: #ffffff;
-      font-weight: 700;
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(12px); z-index: 900;
+      display: flex; align-items: center; justify-content: center; padding: 16px; opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
     }
+    .modal-backdrop.active { opacity: 1; pointer-events: auto; }
+    .modal-box {
+      background: rgba(15, 15, 20, 0.88); border: 1px solid rgba(6, 182, 212, 0.3); 
+      border-radius: 24px; width: 100%; max-width: 380px; backdrop-filter: blur(20px);
+      box-shadow: 0 0 50px rgba(0,0,0,0.8), inset 0 0 20px rgba(6, 182, 212, 0.1);
+      transform: scale(0.95); opacity: 0; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease;
+      position: relative; overflow: hidden; max-height: 90vh; overflow-y: auto;
+    }
+    .modal-box::before {
+      content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+      background: linear-gradient(90deg, transparent, #06b6d4, transparent);
+    }
+    .modal-backdrop.active .modal-box { transform: scale(1); opacity: 1; }
 
-    .toast {
-      transform: translate(-50%, 20px);
-      opacity: 0;
-      pointer-events: none;
-      transition: all .3s cubic-bezier(0.16, 1, 0.3, 1);
-      background: rgba(18, 18, 22, 0.9);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(20px);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.8), 0 0 20px rgba(255,255,255,0.1);
-    }
+    /* HORIZONTAL SCROLL LEADERBOARD */
+    .scroll-lead { display: flex; overflow-x: auto; gap: 10px; padding-bottom: 6px; scroll-snap-type: x mandatory; scrollbar-width: none; }
+    .scroll-lead::-webkit-scrollbar { display: none; }
+    .snap-card { scroll-snap-align: start; min-width: 140px; flex-shrink: 0; }
 
-    .toast.show {
-      transform: translate(-50%, 0);
-      opacity: 1;
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .animate-fade {
-      animation: fadeIn .3s cubic-bezier(0.16, 1, 0.3, 1) both;
-    }
+    .hide { display: none !important; }
+    .custom-scroll::-webkit-scrollbar { width: 4px; height: 4px; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: rgba(6, 182, 212, 0.3); border-radius: 10px; }
+    
+    @keyframes scan { 0%, 100% { top: 0; opacity: 0; } 50% { opacity: 1; } 90% { top: 100%; opacity: 0; } }
   </style>
 </head>
+<body class="pb-12">
 
-<body class="min-h-screen px-4 py-5 flex flex-col items-center justify-between">
+  <div class="bg-mesh"></div>
+  <div class="scanlines"></div>
+  <div class="vignette"></div>
 
-  <!-- WRAPPER UTAMA -->
-  <div class="w-full max-w-lg flex flex-col gap-5 my-auto">
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="toast-alert flex items-center gap-3">
+    <div class="w-8 h-8 rounded-full bg-cyan-500/20 border border-cyan-400 flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(6,182,212,0.5)]">
+       <i class="fa-solid fa-bell text-cyan-400 animate-shake"></i>
+    </div>
+    <div class="flex flex-col">
+       <span class="text-[9px] font-mono text-cyan-500/80 tracking-widest">SYSTEM ALERT</span>
+       <span id="toastText" class="text-xs font-semibold text-white tracking-wide">Notifikasi Sistem</span>
+    </div>
+  </div>
 
-    <!-- HEADER / KEPALA MINIMALIS -->
-    <header class="glass rounded-[24px] p-4 flex items-center justify-between">
-      <div class="flex items-center gap-3.5">
-        <div class="w-11 h-11 rounded-[16px] bg-white/10 border border-white/20 flex items-center justify-center text-white text-base shadow-[0_0_15px_rgba(255,255,255,0.1)]">
-          <i class="fa-solid fa-cube"></i>
+  <!-- MODAL 1: LEGAL WARNING -->
+  <div id="legalModal" class="modal-backdrop active z-[1100]">
+    <div class="modal-box p-8 text-center relative">
+      <div class="absolute inset-0 bg-red-900/10 opacity-50 pointer-events-none"></div>
+      <div class="w-20 h-20 rounded-full bg-red-500/10 border border-red-500/40 mx-auto flex items-center justify-center text-red-500 text-3xl mb-4 relative shadow-[0_0_20px_rgba(239,68,68,0.3)]">
+          <div class="absolute inset-0 rounded-full border border-red-500/20 animate-ping"></div>
+          <i class="fa-solid fa-radiation animate-pulse"></i>
+      </div>
+      <h2 class="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-500 mb-2 font-mono tracking-widest">RESTRICTED ZONE</h2>
+      <p class="text-[11px] text-zinc-300 mb-8 leading-relaxed font-mono relative z-10 border border-red-500/20 bg-red-950/30 p-4 rounded-xl shadow-[inset_0_0_10px_rgba(239,68,68,0.1)]">
+        Sistem dipantau oleh sekuriti AI berlapis. Dilarang melakukan <b class="text-red-400">Bypass API, Spam bot, atau Perjualbelian</b> akun tanpa izin otorisasi. Pelanggaran mengakibatkan IP & Mac Address di-banned permanen.
+      </p>
+      <button onclick="acceptLegal()" class="btn-main !bg-red-600/20 !border-red-500 !text-red-300 hover:!bg-red-500/40 !shadow-[0_0_15px_rgba(239,68,68,0.4)]">
+        <i class="fa-solid fa-check-double mr-2"></i> ACKNOWLEDGE & ENTER
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL VERIFIKASI BOT CC -->
+  <div id="botVerifyModal" class="modal-backdrop z-[1050]">
+    <div class="modal-box p-8 text-center relative">
+        <div class="absolute -top-10 -right-10 w-40 h-40 bg-cyan-500/10 blur-3xl rounded-full pointer-events-none"></div>
+        
+        <div class="w-24 h-24 mx-auto rounded-full border-2 border-dashed border-cyan-400 flex items-center justify-center mb-5 animate-[spin_6s_linear_infinite] shadow-[0_0_15px_rgba(6,182,212,0.3)]" id="verifySpinner">
+            <i class="fa-solid fa-microchip text-4xl text-cyan-400 animate-[spin_6s_linear_infinite_reverse]"></i>
         </div>
-        <div>
-          <h1 class="font-bold text-[15px] tracking-tight text-white flex items-center gap-2">
-            AM Pro Toolkit
-            <span class="text-[9px] px-2 py-0.5 rounded-full bg-white/10 text-white border border-white/20 font-mono">v3.0</span>
-          </h1>
-          <p class="text-[11px] text-zinc-400 mt-0.5">𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞 Enterprise System</p>
+        
+        <h2 class="text-xl font-bold text-cyan-300 mb-2 font-mono tracking-widest drop-shadow-[0_0_8px_rgba(103,232,249,0.8)]" id="verifyTitle">CC / INTEGRITY CHECK</h2>
+        <p class="text-[11px] text-cyan-200/70 mb-8 font-mono leading-relaxed bg-cyan-950/30 p-3 rounded-lg border border-cyan-900" id="verifyDesc">
+            Sistem mendeteksi pembuatan node baru. Selesaikan validasi keamanan CC (Client Clearance) untuk mengesahkan pembuatan akun Anda ke database quantum.
+        </p>
+        
+        <div id="verifyProgressContainer" class="hide mb-6 relative">
+            <div class="flex justify-between text-[10px] text-cyan-400 font-mono mb-1.5 font-bold">
+                <span class="animate-pulse">EXECUTING CLEARANCE...</span>
+                <span id="verifyPercent">0%</span>
+            </div>
+            <div class="h-2.5 w-full bg-[#050508] rounded-full overflow-hidden border border-cyan-800/50 shadow-[inset_0_0_5px_rgba(0,0,0,0.8)]">
+                <div id="verifyProgressBar" class="h-full bg-cyan-400 w-0 shadow-[0_0_10px_rgba(34,211,238,1)] transition-all duration-200"></div>
+            </div>
         </div>
+
+        <button id="btnStartVerify" onclick="startVerificationProcess()" class="btn-main">
+            <i class="fa-solid fa-fingerprint mr-2 text-lg"></i> INITIATE CLEARANCE
+        </button>
+    </div>
+  </div>
+
+  <!-- MODAL 2: AUTHENTICATION -->
+  <div id="authModal" class="modal-backdrop z-[950]">
+    <div class="modal-box p-7 relative overflow-hidden">
+      <div class="absolute top-0 left-0 w-full h-1 bg-cyan-400/50 shadow-[0_0_15px_rgba(6,182,212,1)] animate-[scan_3s_ease-in-out_infinite]"></div>
+      
+      <div class="text-center mb-6 mt-2 relative z-10">
+        <div class="inline-block bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 px-3 py-1 rounded-full text-[9px] font-mono font-bold tracking-widest mb-3">SECURE GATEWAY v2</div>
+        <h1 class="text-2xl font-black text-white tracking-wide font-mono" id="authTitle">SYSTEM LOGIN</h1>
+        <p class="text-xs text-zinc-400 mt-1 font-mono" id="authSubtitle">Akses ruang kerja terminal terenkripsi</p>
       </div>
 
-      <div class="flex items-center gap-2">
-        <div class="w-2.5 h-2.5 rounded-full bg-white shadow-[0_0_10px_#ffffff] animate-pulse"></div>
-        <span class="text-[11px] font-medium text-zinc-300 hidden sm:inline">Active</span>
+      <div id="registerInfoBox" class="hide mb-5 p-3 glass-subpanel border-cyan-500/30 bg-cyan-500/5 text-[10px] text-cyan-300/80 leading-relaxed font-mono shadow-[inset_0_0_15px_rgba(6,182,212,0.1)]">
+        <i class="fa-solid fa-shield-halved mr-1 text-cyan-400"></i> <b>SECURE REG PROTOCOL:</b> 1 Hardware Node hanya diizinkan meng-host max 2 akun. Membutuhkan verifikasi uplink WhatsApp aktif.
       </div>
-    </header>
 
-    <!-- PANEL UTAMA DENGAN TATA LETAK BARU -->
-    <main class="glass rounded-[28px] p-5 sm:p-6 flex flex-col gap-5">
+      <div class="space-y-4 relative z-10">
+        <div class="relative">
+          <i class="fa-solid fa-user-astronaut input-icon"></i>
+          <input type="text" id="inputUsername" class="input-box font-mono" placeholder="Alias / Username" />
+        </div>
+        
+        <div id="waContainer" class="relative hide">
+          <i class="fa-brands fa-whatsapp input-icon text-emerald-400"></i>
+          <input type="number" id="inputWa" class="input-box font-mono focus:!border-emerald-400 focus:!shadow-[0_0_15px_rgba(52,211,153,0.2)]" placeholder="ID WhatsApp (0822...)" />
+        </div>
 
-      <!-- DASHBOARD / STATUS PANEL KECIL -->
-      <div class="glass-card rounded-[20px] p-4 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-[14px] bg-white text-black flex items-center justify-center font-bold text-sm shadow-[0_0_15px_rgba(255,255,255,0.3)]">
-            A
+        <div class="relative">
+          <i class="fa-solid fa-key input-icon"></i>
+          <input type="password" id="inputPassword" class="input-box pr-10 font-mono" placeholder="Decryption Key / Password" />
+          <i class="fa-regular fa-eye absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 cursor-pointer hover:text-cyan-400 transition-colors" onclick="togglePasswordVisibility()" id="togglePasswordIcon"></i>
+        </div>
+        
+        <div id="captchaContainer" class="hide flex items-center justify-between p-3 glass-subpanel border-cyan-900/50">
+          <div class="text-[10px] text-zinc-400 font-mono">
+            TURING TEST:<br/><span class="text-cyan-400 font-bold text-sm tracking-widest drop-shadow-[0_0_5px_rgba(34,211,238,0.5)]" id="captchaQuestion">? + ? =</span>
           </div>
-          <div>
-            <div class="text-[13px] font-bold text-white" id="displayUsername">Administrator</div>
-            <div class="text-[10px] text-zinc-400 flex items-center gap-1 mt-0.5">
-              <i class="fa-solid fa-shield-halved text-[9px]"></i> Unlimited Access Mode
+          <input type="number" id="inputCaptcha" class="w-16 input-box !py-2 !px-0 text-center font-bold font-mono !bg-[#050508]" placeholder="..." />
+        </div>
+
+        <div class="text-right" id="forgotPassContainer">
+          <span onclick="forgotPassword()" class="text-[10px] font-mono text-zinc-500 hover:text-cyan-400 cursor-pointer transition flex items-center justify-end gap-1"><i class="fa-solid fa-triangle-exclamation text-[8px]"></i> Lupa Kredensial?</span>
+        </div>
+
+        <button onclick="handleAuth()" id="btnAuthAction" class="btn-main mt-2">
+           <i class="fa-solid fa-right-to-bracket"></i> OTORISASI AKSES
+        </button>
+      </div>
+
+      <div class="mt-6 text-center text-[11px] font-mono text-zinc-500 border-t border-white/10 pt-5 relative z-10">
+        <span id="authToggleText">Akses Node Ditolak?</span>
+        <span onclick="toggleAuthMode()" id="authToggleBtn" class="text-cyan-400 font-bold cursor-pointer ml-1 hover:text-cyan-300 drop-shadow-[0_0_5px_rgba(34,211,238,0.3)]">Buat Node Baru</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN APP CONTAINER -->
+  <div class="max-w-md mx-auto px-4 pt-6 flex flex-col gap-5 z-10 relative">
+    
+    <!-- HEADER -->
+    <header class="app-card p-4 relative group">
+      <div class="absolute -top-10 -right-10 w-32 h-32 bg-cyan-500/10 blur-[40px] rounded-full pointer-events-none group-hover:bg-cyan-500/20 transition-colors"></div>
+      <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-fuchsia-500/10 blur-[40px] rounded-full pointer-events-none group-hover:bg-fuchsia-500/20 transition-colors"></div>
+      
+      <div class="flex justify-between items-center mb-4 border-b border-white/5 pb-2">
+          <span class="text-[8px] font-mono text-cyan-500/70 tracking-[0.2em] flex items-center gap-1"><span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span> SECURE_NODE_CONN</span>
+          <span class="text-[8px] font-mono text-zinc-500 tracking-widest">v2.4.9 // ENCRYPTED</span>
+      </div>
+
+      <div class="flex items-center justify-between mb-2 relative z-10 bg-[#050508]/40 p-2.5 rounded-2xl border border-white/5 shadow-[inset_0_0_15px_rgba(0,0,0,0.5)]">
+        <div class="flex items-center gap-3 cursor-pointer group/prof flex-1" onclick="openProfileModal()">
+          <div class="relative w-12 h-12 rounded-xl glass-subpanel flex items-center justify-center text-cyan-400 border border-cyan-500/30 group-hover/prof:shadow-[0_0_20px_rgba(6,182,212,0.3)] group-hover/prof:border-cyan-400 transition-all overflow-hidden shrink-0">
+             <div class="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-transparent"></div>
+             <i class="fa-solid fa-user-ninja text-xl relative z-10 drop-shadow-[0_0_5px_rgba(34,211,238,0.5)]"></i>
+          </div>
+          <div class="overflow-hidden">
+            <h2 id="headerName" class="text-sm font-bold text-white tracking-wide truncate">User</h2>
+            <div class="flex items-center gap-1.5 mt-1">
+              <span class="w-1 h-1 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_5px_#34d399]"></span>
+              <span class="text-[9px] text-emerald-400 font-mono tracking-widest uppercase truncate font-bold" id="headerRole">Active Session</span>
             </div>
           </div>
         </div>
-        <div class="text-right">
-          <div class="text-[9px] uppercase tracking-wider text-zinc-500 font-bold">Status</div>
-          <div class="text-[11px] font-mono text-white font-semibold mt-0.5">ONLINE</div>
-        </div>
-      </div>
-
-      <!-- NAVIGASI TAB PILL BERGAYA ISLAND -->
-      <div class="grid grid-cols-3 gap-1.5 p-1 bg-white/[0.03] border border-white/10 rounded-[18px]">
-        <button id="tabSend" onclick="switchTab('send')" class="nav-pill active py-2.5 rounded-[14px] text-[11px] font-semibold transition-all">
-          <i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i> Aktivasi
-        </button>
-        <button id="tabBulk" onclick="switchTab('bulk')" class="nav-pill py-2.5 rounded-[14px] text-[11px] font-semibold transition-all">
-          <i class="fa-solid fa-layer-group mr-1.5"></i> Bulk
-        </button>
-        <button id="tabInbox" onclick="switchTab('inbox')" class="nav-pill py-2.5 rounded-[14px] text-[11px] font-semibold transition-all">
-          <i class="fa-solid fa-inbox mr-1.5"></i> Inbox
-        </button>
-      </div>
-
-      <!-- KONTEN TAB: AKTIVASI -->
-      <div id="contentSend" class="animate-fade space-y-4">
-        <div>
-          <div class="text-[10px] uppercase font-bold tracking-widest text-zinc-400 mb-1">Secure Protocol</div>
-          <h2 class="text-[16px] font-bold text-white">Aktivasi Alight Motion</h2>
-          <p id="flowInstruction" class="text-[11px] text-zinc-400 mt-1 leading-relaxed">
-            Kirimkan magic link ke alamat email aktif Anda untuk memulai proses sinkronisasi.
-          </p>
-        </div>
-
-        <div id="stepEmailBox" class="space-y-3">
-          <div class="relative">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-zinc-500">
-              <i class="fa-regular fa-envelope"></i>
-            </span>
-            <input id="inputEmail" type="email" placeholder="nama@domain.com" class="pl-11 pr-4 py-3.5 text-[12px]" />
+        
+        <!-- BIG LIMIT DISPLAY -->
+        <div class="flex items-center gap-2 pl-3 border-l border-white/10 shrink-0 relative">
+          <div class="flex flex-col text-right">
+              <span class="text-[7px] text-cyan-500/80 font-mono tracking-[0.2em]">AVAILABLE</span>
+              <span class="text-[9px] text-white font-bold tracking-widest font-mono">CREDITS</span>
           </div>
-          <button onclick="handleSendMagicLink()" class="btn btn-primary w-full py-3.5 text-[12px] flex items-center justify-center gap-2">
-            <span>Kirim Magic Link</span>
-            <i class="fa-solid fa-arrow-right text-[10px]"></i>
+          <div class="relative ml-1 min-w-[48px]">
+              <div id="limitDisplay" class="text-3xl font-black font-mono text-cyan-400 drop-shadow-[0_0_15px_rgba(34,211,238,0.8)] leading-none text-right relative z-10 flex items-center justify-end">
+                --
+              </div>
+              <svg class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 -z-0 opacity-20 animate-[spin_10s_linear_infinite]" viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" r="45" fill="none" stroke="#22d3ee" stroke-width="3" stroke-dasharray="10 5 20 5"></circle>
+              </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- BANNER VIP -->
+      <div id="premiumAdContainer" class="hide mt-3 relative group overflow-hidden rounded-xl border border-fuchsia-500/30">
+        <div class="absolute inset-0 bg-gradient-to-r from-fuchsia-600/10 to-blue-600/10 pointer-events-none group-hover:opacity-100 opacity-50 transition-opacity"></div>
+        <div onclick="buyVIP()" class="glass-subpanel !border-none p-2.5 flex justify-between items-center cursor-pointer hover:shadow-[inset_0_0_20px_rgba(217,70,239,0.1)] transition-all bg-transparent">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-lg bg-fuchsia-500/20 text-fuchsia-400 flex items-center justify-center shadow-[inset_0_0_10px_rgba(217,70,239,0.3)]">
+              <i class="fa-solid fa-bolt group-hover:scale-110 transition-transform drop-shadow-[0_0_5px_rgba(217,70,239,0.8)]"></i>
+            </div>
+            <div>
+              <div class="text-[12px] font-bold text-white font-mono tracking-wide">UNLOCK OVERRIDE VIP</div>
+              <div class="text-[9px] text-fuchsia-300/70 font-mono mt-0.5">Bypass protocol restrictions. Infinite limit.</div>
+            </div>
+          </div>
+          <span class="text-[9px] bg-fuchsia-600/20 text-fuchsia-400 border border-fuchsia-500/50 px-2 py-1 rounded font-bold font-mono shadow-[0_0_10px_rgba(217,70,239,0.3)] uppercase tracking-wider">Upgrade</span>
+        </div>
+      </div>
+      
+      <!-- ADMIN OWNER BUTTON -->
+      <button id="ownerMenuButtonContainer" onclick="openOwnerDashboardModal()" class="hide btn-sub w-full mt-3 !py-2.5 !text-[10px] !text-fuchsia-400 !border-fuchsia-500/30 !bg-fuchsia-500/5 hover:!bg-fuchsia-500/20 tracking-widest shadow-[0_0_10px_rgba(217,70,239,0.1)]">
+        <i class="fa-solid fa-terminal"></i> INITIALIZE ROOT CONSOLE
+      </button>
+    </header>
+
+    <!-- LEADERBOARD GLOBAL -->
+    <section>
+      <div class="flex justify-between items-end mb-2.5 px-1 border-b border-white/5 pb-2">
+        <div>
+          <h3 class="text-[11px] font-bold text-cyan-400 font-mono tracking-widest flex items-center gap-1.5 drop-shadow-[0_0_5px_rgba(6,182,212,0.5)]">
+             <i class="fa-solid fa-network-wired text-[10px]"></i> GLOBAL NODE RANK
+          </h3>
+          <div class="text-[8px] text-zinc-500 font-mono tracking-widest mt-1">TOP EXECUTION CREDITS</div>
+        </div>
+        <span class="text-[8px] bg-red-500/10 text-red-400 border border-red-500/20 px-1.5 py-0.5 rounded font-mono animate-pulse tracking-widest shadow-[0_0_5px_rgba(239,68,68,0.2)]">LIVE SYS</span>
+      </div>
+      <div id="leadLimitContent" class="scroll-lead"></div>
+    </section>
+
+    <!-- MAIN TOOLS -->
+    <main class="app-card p-5">
+      
+      <!-- TABS NAVIGATION -->
+      <div class="mb-5 relative p-1 bg-[#050508]/70 border border-white/10 rounded-2xl flex gap-1 overflow-x-auto custom-scroll snap-x snap-mandatory shadow-[inset_0_0_10px_rgba(0,0,0,0.8)]">
+        <button class="tab-btn active snap-center shrink-0 w-[24%]" id="tabSend" onclick="switchAppTab('send')">
+          <i class="fa-solid fa-bolt text-base mb-1 drop-shadow-[0_0_5px_currentColor]"></i>
+          <span class="text-[8px] font-mono tracking-widest uppercase font-bold">Injeksi</span>
+        </button>
+        <button class="tab-btn snap-center shrink-0 w-[24%]" id="tabBulk" onclick="switchAppTab('bulk')">
+          <i class="fa-solid fa-layer-group text-base mb-1 drop-shadow-[0_0_5px_currentColor]"></i>
+          <span class="text-[8px] font-mono tracking-widest uppercase font-bold">Masal</span>
+        </button>
+        <button class="tab-btn snap-center shrink-0 w-[24%] relative" id="tabInbox" onclick="switchAppTab('inbox')">
+          <span class="absolute -top-1 right-1 text-[6px] bg-emerald-500/20 border border-emerald-500/50 text-emerald-400 px-1 rounded-sm font-bold font-mono tracking-wider animate-pulse shadow-[0_0_5px_rgba(52,211,153,0.5)]">FREE</span>
+          <i class="fa-solid fa-satellite-dish text-base mb-1 drop-shadow-[0_0_5px_currentColor]"></i>
+          <span class="text-[8px] font-mono tracking-widest uppercase font-bold">Pindai</span>
+        </button>
+        <button class="tab-btn snap-center shrink-0 w-[24%] relative" id="tabHdPhoto" onclick="switchAppTab('hdphoto')">
+          <span class="absolute -top-1 right-1 text-[6px] bg-fuchsia-500/20 border border-fuchsia-500/50 text-fuchsia-400 px-1 rounded-sm font-bold font-mono tracking-wider shadow-[0_0_5px_rgba(217,70,239,0.5)]">FREE</span>
+          <i class="fa-solid fa-microchip text-base mb-1 drop-shadow-[0_0_5px_currentColor]"></i>
+          <span class="text-[8px] font-mono tracking-widest uppercase font-bold">Visual AI</span>
+        </button>
+      </div>
+
+      <!-- TAB 1: AKTIVASI -->
+      <div id="contentSend" class="space-y-5 relative">
+        <div class="absolute -right-4 -top-4 text-6xl text-cyan-500/5 font-black font-mono">01</div>
+        <div>
+          <h2 class="text-sm font-bold text-cyan-300 font-mono tracking-wider drop-shadow-[0_0_5px_rgba(103,232,249,0.5)] flex items-center gap-2">
+            <i class="fa-solid fa-syringe text-xs"></i> ENCRYPTED INJECTION
+          </h2>
+          <p class="text-[10px] text-zinc-400 mt-1 font-mono leading-relaxed">Initialize secure tunnel to target device. Bypass firewall and deploy payload. <span class="text-fuchsia-400 font-bold bg-fuchsia-500/10 px-1 rounded">-1 Credit</span></p>
+        </div>
+        
+        <div id="stepEmailBox" class="space-y-4">
+          <div class="relative">
+            <i class="fa-regular fa-envelope input-icon"></i>
+            <input type="email" id="inputEmail" class="input-box font-mono" placeholder="Target Node Email..." />
+          </div>
+          <button onclick="handleSendMagicLink()" class="btn-main">
+            <i class="fa-solid fa-rocket mr-1"></i> DEPLOY PAYLOAD
           </button>
         </div>
 
-        <div id="stepVerifyBox" class="hidden space-y-3">
+        <div id="stepVerifyBox" class="hide space-y-4">
           <div class="relative">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-zinc-500">
-              <i class="fa-solid fa-link"></i>
-            </span>
-            <input id="inputLink" type="text" placeholder="Tempel link verifikasi https://..." class="pl-11 pr-4 py-3.5 text-[12px]" />
+            <i class="fa-solid fa-link input-icon"></i>
+            <input type="text" id="inputLink" class="input-box font-mono" placeholder="Paste response hash link..." />
           </div>
-          <div class="grid grid-cols-[1fr_auto] gap-2">
-            <button onclick="handleVerifyMagicLink()" class="btn btn-primary py-3.5 text-[12px] font-bold">
-              Verifikasi & Eksekusi
-            </button>
-            <button onclick="resetInjectFlow()" class="btn btn-secondary px-4 text-white">
-              <i class="fa-solid fa-rotate-left"></i>
-            </button>
+          <div class="flex gap-2">
+            <button onclick="handleVerifyMagicLink()" class="btn-main flex-1"><i class="fa-solid fa-terminal mr-1"></i> EXECUTE</button>
+            <button onclick="resetInjectFlow()" class="btn-sub w-14 px-0 hover:!border-red-500 hover:!text-red-400 hover:!bg-red-500/10"><i class="fa-solid fa-power-off"></i></button>
           </div>
         </div>
-
-        <div id="sendResult" class="glass-card hidden p-4 rounded-[16px] text-[11px] border border-white/10"></div>
+        <div id="sendResult" class="hide p-3 glass-subpanel border-cyan-900/50 text-[10px] font-mono break-words shadow-[inset_0_0_10px_rgba(0,0,0,0.5)]"></div>
       </div>
 
-      <!-- KONTEN TAB: BULK -->
-      <div id="contentBulk" class="animate-fade space-y-4 hidden">
+      <!-- TAB 2: BULK -->
+      <div id="contentBulk" class="hide space-y-5 relative">
+        <div class="absolute -right-4 -top-4 text-6xl text-cyan-500/5 font-black font-mono">02</div>
         <div>
-          <div class="text-[10px] uppercase font-bold tracking-widest text-zinc-400 mb-1">Batch Automation</div>
-          <h2 class="text-[16px] font-bold text-white">Bulk Generator</h2>
-          <p class="text-[11px] text-zinc-400 mt-1">Buat banyak token akun premium secara simultan dengan cepat.</p>
+          <h2 class="text-sm font-bold text-cyan-300 font-mono tracking-wider drop-shadow-[0_0_5px_rgba(103,232,249,0.5)] flex items-center gap-2">
+            <i class="fa-solid fa-server text-xs"></i> MULTI-THREAD BATCH
+          </h2>
+          <p class="text-[10px] text-zinc-400 mt-1 font-mono leading-relaxed">Deploy concurrent script execution across multiple nodes. Highly anonymous. <span class="text-fuchsia-400 font-bold bg-fuchsia-500/10 px-1 rounded">-1 Credit</span></p>
         </div>
-
-        <div class="space-y-3">
+        <div class="p-4 glass-subpanel border-cyan-500/20 flex justify-between items-center shadow-[inset_0_0_10px_rgba(0,0,0,0.3)]">
           <div>
-            <label class="block text-[10px] uppercase font-bold text-zinc-400 mb-1.5">Jumlah Akun (1 - 100)</label>
-            <input id="inputBulkAmount" type="number" min="1" max="100" value="5" class="px-4 py-3.5 text-[12px]" />
+              <div class="text-[10px] text-cyan-100 font-bold font-mono tracking-widest">THREAD COUNT</div>
+              <div class="text-[8px] text-cyan-500/70 font-mono mt-0.5">Max 100 simultaneous nodes</div>
           </div>
-          <button onclick="runBulkInject()" class="btn btn-primary w-full py-3.5 text-[12px]">
-            Mulai Generate Bulk
-          </button>
+          <input type="number" id="inputBulkAmount" value="50" min="1" max="100" class="w-20 input-box !py-2 !px-2 text-center text-lg font-black font-mono text-cyan-300 drop-shadow-[0_0_5px_rgba(103,232,249,0.5)]" />
         </div>
-
-        <div id="bulkResult" class="glass-card hidden p-4 rounded-[16px] text-[11px] max-h-48 overflow-y-auto font-mono"></div>
+        <button onclick="runBulkInject()" class="btn-main !bg-fuchsia-500/10 !border-fuchsia-500 !text-fuchsia-300 hover:!bg-fuchsia-500/20 hover:!shadow-[0_0_20px_rgba(217,70,239,0.4)]">
+           <i class="fa-solid fa-bolt-lightning mr-1"></i> INITIATE SEQUENCE
+        </button>
+        <div id="bulkResult" class="hide p-3 glass-subpanel border-cyan-900 text-[10px] font-mono max-h-48 overflow-y-auto custom-scroll shadow-[inset_0_0_15px_rgba(0,0,0,0.8)]"></div>
       </div>
 
-      <!-- KONTEN TAB: INBOX -->
-      <div id="contentInbox" class="animate-fade space-y-4 hidden">
+      <!-- TAB 3: INBOX (FREE) -->
+      <div id="contentInbox" class="hide space-y-5 relative">
+        <div class="absolute -right-4 -top-4 text-6xl text-emerald-500/5 font-black font-mono">03</div>
         <div>
-          <div class="text-[10px] uppercase font-bold tracking-widest text-zinc-400 mb-1">Mail Scanner</div>
-          <h2 class="text-[16px] font-bold text-white">Pindai Kotak Masuk</h2>
-          <p class="text-[11px] text-zinc-400 mt-1">Ambil link verifikasi langsung dari mail server secara otomatis.</p>
+          <h2 class="text-sm font-bold text-emerald-400 font-mono tracking-wider drop-shadow-[0_0_5px_rgba(52,211,153,0.5)] flex items-center gap-2">
+            <i class="fa-solid fa-satellite text-xs"></i> PACKET INTERCEPTOR
+          </h2>
+          <p class="text-[10px] text-zinc-400 mt-1 font-mono leading-relaxed">Sniff and extract raw payload from mail server nodes in real-time. Bypass TLS.</p>
         </div>
-
-        <div class="space-y-3">
-          <div class="relative">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-zinc-500">
-              <i class="fa-solid fa-at"></i>
-            </span>
-            <input id="inputInboxEmail" type="email" placeholder="email@tempmail.com" class="pl-11 pr-4 py-3.5 text-[12px]" />
-          </div>
-          <button onclick="runInboxCheck()" class="btn btn-primary w-full py-3.5 text-[12px] flex items-center justify-center gap-2">
-            <i class="fa-solid fa-radar"></i>
-            <span>Pindai Pesan Masuk</span>
-          </button>
+        <div class="relative">
+          <i class="fa-solid fa-radar input-icon text-emerald-400"></i>
+          <input type="email" id="inputInboxEmail" class="input-box font-mono focus:!border-emerald-400 focus:!shadow-[0_0_15px_rgba(52,211,153,0.2)]" placeholder="Target Node Mail..." />
         </div>
-
-        <div id="inboxNotice" class="hidden p-3 rounded-[12px] text-[11px] bg-white/5 border border-white/10 text-zinc-300"></div>
-        <div id="inboxResult" class="space-y-2.5 max-h-48 overflow-y-auto"></div>
+        <button onclick="runInboxCheck()" class="btn-main !bg-emerald-500/10 !border-emerald-500 !text-emerald-300 hover:!bg-emerald-500/20 hover:!shadow-[0_0_20px_rgba(52,211,153,0.4)]">
+           <i class="fa-solid fa-crosshairs mr-1"></i> START SNIFFING
+        </button>
+        <div id="inboxNotice" class="hide text-center text-[10px] text-emerald-500/70 font-mono tracking-widest animate-pulse"></div>
+        <div id="inboxResult" class="space-y-3 max-h-56 overflow-y-auto custom-scroll pr-1"></div>
       </div>
 
+      <!-- TAB 4: HD FOTO (FREE) -->
+      <div id="contentHdPhoto" class="hide space-y-5 relative">
+        <div class="absolute -right-4 -top-4 text-6xl text-fuchsia-500/5 font-black font-mono">04</div>
+        <div>
+          <h2 class="text-sm font-bold text-fuchsia-400 font-mono tracking-wider drop-shadow-[0_0_5px_rgba(217,70,239,0.5)] flex items-center gap-2">
+            <i class="fa-solid fa-eye text-xs"></i> NEURAL VISION AI
+          </h2>
+          <p class="text-[10px] text-zinc-400 mt-1 font-mono leading-relaxed">Reconstruct pixel matrix using deep neural networks and tensor algorithms.</p>
+        </div>
+
+        <div class="relative">
+          <i class="fa-solid fa-link input-icon text-fuchsia-400"></i>
+          <input type="url" id="imageUrl" class="input-box font-mono focus:!border-fuchsia-400 focus:!shadow-[0_0_15px_rgba(217,70,239,0.2)]" placeholder="Inject Image URL (Opsional)">
+        </div>
+
+        <div id="dropZone" class="glass-subpanel border-2 border-dashed border-fuchsia-500/30 hover:border-fuchsia-400 hover:bg-fuchsia-500/5 transition-all rounded-2xl p-6 text-center cursor-pointer flex flex-col items-center gap-3 relative overflow-hidden group">
+          <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9InJnYmEoMjE3LDcwLDIzOSwwLjA1KSIvPjwvc3ZnPg==')] opacity-50 group-hover:opacity-100 transition-opacity"></div>
+          <i class="fa-solid fa-cloud-arrow-up text-3xl text-fuchsia-500/60 group-hover:text-fuchsia-400 group-hover:-translate-y-1 transition-all drop-shadow-[0_0_10px_rgba(217,70,239,0.5)] relative z-10"></i>
+          <div class="relative z-10">
+              <div class="text-[11px] font-bold text-fuchsia-100 font-mono tracking-widest">UPLOAD TARGET MATRIX</div>
+              <div class="text-[8px] text-fuchsia-500/70 font-mono mt-1 tracking-widest uppercase">Select file from local node</div>
+          </div>
+          <div id="fileNameDisplay" class="text-[9px] font-mono text-fuchsia-300 bg-[#050508] border border-fuchsia-500/30 px-3 py-1.5 rounded-lg hide z-10 shadow-[0_0_10px_rgba(217,70,239,0.2)] truncate max-w-[80%]"></div>
+          <input type="file" id="fileInput" accept="image/*" class="hide">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div class="glass-subpanel p-3 flex flex-col gap-2 border-fuchsia-500/20">
+            <div class="text-[9px] font-bold font-mono text-zinc-400 flex justify-between tracking-widest">
+              <span>TENSOR POWER</span> <span id="strengthIndicator" class="text-fuchsia-400 drop-shadow-[0_0_5px_rgba(217,70,239,0.8)]">Optimal</span>
+            </div>
+            <input type="range" id="strengthRange" class="w-full accent-fuchsia-500" min="10" max="100" value="60">
+          </div>
+          
+          <div class="glass-subpanel p-3 flex flex-col justify-center cursor-pointer hover:border-fuchsia-500/50 hover:bg-fuchsia-500/5 transition-all border-fuchsia-500/20" id="openModeModal">
+            <div class="text-[8px] text-zinc-500 font-bold font-mono mb-1 tracking-widest">RENDER MODEL</div>
+            <div class="flex items-center justify-between">
+              <div id="currentModeLabel" class="text-[10px] font-bold text-fuchsia-100 font-mono tracking-wide">Upscale 2x</div>
+              <i class="fa-solid fa-chevron-right text-[9px] text-fuchsia-500"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex gap-2">
+          <button id="enhanceBtn" class="btn-main flex-1 !bg-fuchsia-500/10 !border-fuchsia-500 !text-fuchsia-300 hover:!bg-fuchsia-500/20 hover:!shadow-[0_0_20px_rgba(217,70,239,0.4)]">
+             <i class="fa-solid fa-wand-magic-sparkles mr-1"></i> RENDER MATRIX
+          </button>
+          <button id="resetBtn" class="btn-sub w-14 px-0 hover:!border-red-500 hover:!text-red-400 hover:!bg-red-500/10"><i class="fa-solid fa-rotate-left"></i></button>
+        </div>
+
+        <div id="statusMessage" class="hide text-center text-[10px] font-mono tracking-widest text-zinc-400 py-1"></div>
+
+        <div id="comparisonSplitSection" class="hide flex-col gap-3 mt-3">
+          <div class="grid grid-cols-2 gap-3 relative">
+            <div class="absolute left-1/2 top-0 bottom-0 w-px bg-fuchsia-500/30 -translate-x-1/2 z-10 shadow-[0_0_5px_rgba(217,70,239,0.5)]"></div>
+            <div class="relative group">
+              <span class="absolute top-2 left-2 text-[7px] bg-black/80 border border-white/10 px-1.5 py-0.5 rounded text-zinc-400 font-mono tracking-widest z-10 backdrop-blur-sm">RAW_DATA</span>
+              <img id="splitImgBefore" class="w-full h-36 object-cover rounded-xl opacity-60 grayscale-[30%] border border-white/5" />
+            </div>
+            <div class="relative group">
+              <span class="absolute top-2 right-2 text-[7px] bg-fuchsia-600/80 border border-fuchsia-400 px-1.5 py-0.5 rounded text-white font-bold font-mono tracking-widest z-10 shadow-[0_0_10px_rgba(217,70,239,0.8)] backdrop-blur-sm">ENHANCED</span>
+              <img id="splitImgAfter" class="w-full h-36 object-cover rounded-xl border border-fuchsia-500/50 shadow-[0_0_15px_rgba(217,70,239,0.2)]" />
+            </div>
+          </div>
+          <div class="flex gap-2">
+            <button id="downloadBtn" class="btn-main flex-1 !py-3 !text-[11px] !bg-emerald-500/10 !border-emerald-500 !text-emerald-300 hover:!bg-emerald-500/20 hover:!shadow-[0_0_15px_rgba(52,211,153,0.3)]"><i class="fa-solid fa-download mr-1"></i> EXTRACT TO LOCAL</button>
+            <button id="copyUrlBtn" class="btn-sub !py-3 px-5 hover:!border-cyan-400 hover:!text-cyan-400"><i class="fa-solid fa-link"></i></button>
+          </div>
+        </div>
+      </div>
     </main>
-
-    <!-- FOOTER -->
-    <footer class="text-center">
-      <p class="text-[11px] text-zinc-500 font-medium">
-        AM Pro Toolkit <span class="mx-1.5 text-zinc-700">•</span> Secure Monochrome <span class="mx-1.5 text-zinc-700">•</span> 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞
-      </p>
-    </footer>
-
   </div>
 
-  <!-- TOAST NOTIFIKASI -->
-  <div id="toast" class="toast fixed z-50 bottom-6 left-1/2 rounded-[16px] px-5 py-3 text-[11px] text-white shadow-2xl max-w-[calc(100vw-32px)]"></div>
+  <!-- MODAL PROFILE CLASSIFIED -->
+  <div id="profileModal" class="modal-backdrop z-[900]">
+      <div class="modal-box p-0 relative overflow-hidden bg-[#050508] border-cyan-500/40 w-full max-w-sm">
+          <div class="h-28 bg-gradient-to-br from-cyan-900/40 to-blue-900/10 relative border-b border-cyan-500/20">
+              <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9InJnYmEoNiwtMTgyLDIxMiwwLjE1KSIvPjwvc3ZnPg==')] opacity-50"></div>
+              <button onclick="closeProfileModal()" class="absolute top-4 right-4 text-cyan-500 hover:text-white w-8 h-8 flex items-center justify-center rounded-full bg-black/50 border border-cyan-500/30 backdrop-blur-md z-10 transition-colors"><i class="fa-solid fa-xmark"></i></button>
+              <div class="absolute bottom-3 left-5 text-[8px] font-mono text-cyan-400/50 tracking-[0.3em]">SECURE_IDENTITY_FILE</div>
+          </div>
+          
+          <div class="px-6 pb-7 relative">
+              <div class="w-20 h-20 rounded-2xl bg-[#050508] border-2 border-cyan-400 absolute -top-10 left-6 shadow-[0_0_20px_rgba(6,182,212,0.4)] flex items-center justify-center overflow-hidden z-10">
+                  <div class="absolute inset-0 bg-cyan-500/10 animate-pulse"></div>
+                  <i class="fa-solid fa-user-astronaut text-3xl text-cyan-300 relative z-10 drop-shadow-[0_0_5px_rgba(103,232,249,0.8)]"></i>
+              </div>
+              
+              <div class="ml-24 mt-4 mb-6">
+                  <h2 class="text-xl font-black text-white tracking-wide truncate font-mono drop-shadow-[0_0_5px_rgba(255,255,255,0.3)]" id="profileActiveUsername">--</h2>
+                  <div id="profileAccessType" class="text-[10px] text-cyan-400 font-mono font-bold tracking-widest mt-0.5 uppercase drop-shadow-[0_0_5px_rgba(6,182,212,0.8)]">--</div>
+              </div>
+
+              <div class="glass-subpanel p-4 space-y-3 text-xs mb-6 font-mono relative overflow-hidden shadow-[inset_0_0_15px_rgba(0,0,0,0.5)]">
+                  <div class="absolute right-0 top-0 w-16 h-full bg-gradient-to-l from-cyan-500/5 to-transparent pointer-events-none"></div>
+                  <div class="flex justify-between items-center border-b border-white/5 pb-2">
+                      <span class="text-zinc-500 tracking-widest text-[9px]">SYS_ID</span>
+                      <span class="text-cyan-300 font-bold tracking-wider" id="profileUserId">--</span>
+                  </div>
+                  <div class="flex justify-between items-center border-b border-white/5 pb-2">
+                      <span class="text-zinc-500 tracking-widest text-[9px]">COM_LINK</span>
+                      <span class="text-white tracking-wider" id="profileWaNum">--</span>
+                  </div>
+                  <div class="flex justify-between items-center">
+                      <span class="text-zinc-500 tracking-widest text-[9px]">INIT_DATE</span>
+                      <span class="text-zinc-300 tracking-wider" id="profileRegDate">--</span>
+                  </div>
+              </div>
+
+              <div class="space-y-3 mb-6">
+                  <div class="text-[9px] text-cyan-500/70 font-mono tracking-widest flex items-center gap-3">
+                      <div class="h-px bg-cyan-500/20 flex-1"></div>
+                      DATA OVERRIDE <span class="text-fuchsia-400 bg-fuchsia-500/10 px-1 rounded">(1X)</span>
+                      <div class="h-px bg-cyan-500/20 flex-1"></div>
+                  </div>
+                  <div class="flex gap-2">
+                      <button id="btnEditName" onclick="editProfileData('name')" class="flex-1 btn-sub !py-2 !text-[9px] !bg-cyan-900/10 !border-cyan-500/30 !text-cyan-400 hover:!bg-cyan-500/20 hover:!shadow-[0_0_10px_rgba(6,182,212,0.2)]">ALIAS</button>
+                      <button id="btnEditPass" onclick="editProfileData('pass')" class="flex-1 btn-sub !py-2 !text-[9px] !bg-cyan-900/10 !border-cyan-500/30 !text-cyan-400 hover:!bg-cyan-500/20 hover:!shadow-[0_0_10px_rgba(6,182,212,0.2)]">KEY</button>
+                      <button id="btnEditWa" onclick="editProfileData('wa')" class="flex-1 btn-sub !py-2 !text-[9px] !bg-cyan-900/10 !border-cyan-500/30 !text-cyan-400 hover:!bg-cyan-500/20 hover:!shadow-[0_0_10px_rgba(6,182,212,0.2)]">LINK</button>
+                  </div>
+              </div>
+
+              <button onclick="logoutUser()" class="btn-sub w-full !py-3 !border-red-500/50 !text-red-400 !bg-red-950/30 hover:!bg-red-900/50 hover:!shadow-[0_0_15px_rgba(239,68,68,0.3)] !font-mono tracking-widest uppercase font-bold">
+                  <i class="fa-solid fa-power-off mr-2"></i> Terminate Session
+              </button>
+          </div>
+      </div>
+  </div>
+
+  <!-- MODAL RESOLUSI HD FOTO -->
+  <div id="modeModalOverlay" class="modal-backdrop z-[900]">
+    <div class="modal-box p-6 border-fuchsia-500/40 shadow-[0_0_50px_rgba(0,0,0,0.8),inset_0_0_20px_rgba(217,70,239,0.1)]" id="modeModalContent">
+      <div class="flex justify-between items-center mb-5 border-b border-white/5 pb-3">
+        <h3 class="font-bold text-sm text-fuchsia-300 font-mono tracking-widest drop-shadow-[0_0_5px_rgba(217,70,239,0.5)]">TENSOR MODEL SELECT</h3>
+        <button class="text-zinc-500 hover:text-fuchsia-400 transition-colors w-8 h-8 flex items-center justify-center rounded-full bg-black/30 border border-white/5" id="closeModeModal"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="space-y-3 mb-5 relative z-10">
+        <div class="mode-option-item glass-subpanel p-4 cursor-pointer border border-white/5 hover:border-fuchsia-500/50 hover:bg-fuchsia-500/5 transition-all group" data-mode="2x">
+          <div class="text-xs font-bold text-white mb-1.5 title-mode font-mono tracking-wide">Upscale 2x + Detail</div>
+          <div class="text-[10px] text-zinc-400 leading-relaxed font-mono">Perbesar resolusi 200% dengan injeksi detail matriks neural.</div>
+        </div>
+        <div class="mode-option-item glass-subpanel p-4 cursor-pointer border border-white/5 hover:border-fuchsia-500/50 hover:bg-fuchsia-500/5 transition-all group" data-mode="1x">
+          <div class="text-xs font-bold text-white mb-1.5 title-mode font-mono tracking-wide">Native Size + Cleanse</div>
+          <div class="text-[10px] text-zinc-400 leading-relaxed font-mono">Dimensi asli, fokus pembersihan noise warna tingkat mikroskopis.</div>
+        </div>
+      </div>
+      <button id="applyModeBtn" class="btn-main !bg-fuchsia-500/10 !border-fuchsia-500 !text-fuchsia-300 hover:!bg-fuchsia-500/20 hover:!shadow-[0_0_20px_rgba(217,70,239,0.4)]">
+          APPLY PARAMETERS
+      </button>
+    </div>
+  </div>
+
+  <!-- ADMIN PANEL MODAL -->
+  <div id="ownerDashboardModal" class="modal-backdrop z-[900]">
+    <div class="modal-box p-6 flex flex-col h-[85vh] border-fuchsia-500/40 shadow-[0_0_50px_rgba(0,0,0,0.8),inset_0_0_20px_rgba(217,70,239,0.1)] w-full max-w-md">
+      <div class="flex justify-between items-center mb-5 border-b border-fuchsia-500/20 pb-3 relative">
+        <h2 class="font-black text-fuchsia-400 text-base font-mono tracking-widest drop-shadow-[0_0_8px_rgba(217,70,239,0.8)]"><i class="fa-solid fa-terminal mr-2 text-sm"></i> ROOT CONSOLE</h2>
+        <button onclick="closeOwnerDashboard()" class="text-zinc-500 hover:text-white w-8 h-8 rounded-full bg-black/30 flex items-center justify-center border border-white/10"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="tab-nav mb-5 text-[9px] font-mono tracking-widest flex gap-1 p-1 bg-black/40 border border-white/10 rounded-xl overflow-x-auto custom-scroll">
+        <div class="tab-item active !py-2 px-3 shrink-0 rounded-lg !border-fuchsia-500/50 !text-fuchsia-300 !bg-fuchsia-500/10 !shadow-[0_0_10px_rgba(217,70,239,0.3)]" id="tabAdminAll" onclick="switchAdminTab('all')">ALL NODES</div>
+        <div class="tab-item !py-2 px-3 shrink-0 rounded-lg hover:bg-white/5" id="tabAdminReguler" onclick="switchAdminTab('reguler')">REGULAR</div>
+        <div class="tab-item !py-2 px-3 shrink-0 rounded-lg hover:bg-white/5" id="tabAdminVIP" onclick="switchAdminTab('vip')">VIP</div>
+        <div class="tab-item !py-2 px-3 shrink-0 rounded-lg hover:bg-white/5" id="tabAdminLogs" onclick="switchAdminTab('logs')">SYS LOGS</div>
+      </div>
+
+      <div id="adminContentUsers" class="flex-1 flex flex-col overflow-hidden relative z-10">
+        <div class="relative mb-4">
+          <i class="fa-solid fa-magnifying-glass input-icon text-fuchsia-500/70 text-sm"></i>
+          <input type="text" id="adminSearchInput" onkeyup="loadAdminUsers()" class="input-box !py-3 !pl-10 !text-xs font-mono !border-fuchsia-500/30 focus:!border-fuchsia-400 focus:!shadow-[0_0_15px_rgba(217,70,239,0.2)]" placeholder="Query target node..." />
+        </div>
+        <div id="adminUserListContainer" class="flex-1 overflow-y-auto space-y-3 pr-2 custom-scroll"></div>
+      </div>
+
+      <div id="adminContentLogs" class="hide flex-1 flex flex-col overflow-hidden relative z-10">
+        <div class="flex justify-end mb-3">
+          <button onclick="loadAdminLogs()" class="text-[9px] font-mono tracking-widest text-fuchsia-300 bg-fuchsia-900/30 border border-fuchsia-500/30 px-3 py-1.5 rounded hover:bg-fuchsia-500/20 transition-colors"><i class="fa-solid fa-rotate-right mr-1"></i> REFRESH</button>
+        </div>
+        <div id="adminLogsContainer" class="flex-1 overflow-y-auto space-y-2 pr-2 custom-scroll"></div>
+      </div>
+    </div>
+  </div>
 
 <script>
-  let activeInjectEmail = "";
+  // ==========================================
+  // CONFIG & STATE
+  // ==========================================
+  const OWNER_USER = "HAOMI";
+  const OWNER_PASS = "HAOMI_XML";
+  const API_BASE_URL = "https://api.znn.my.id";
+  
+  let activeInjectEmail = ""; 
+  let isLoginMode = true; 
+  let loggedInUsername = null; 
+  let activeAdminTab = 'all'; 
+  let currentCaptchaAnswer = 0;
+  let selectedMode = '2x'; 
+  let tempSelectedMode = '2x'; 
+  let selectedFile = null; 
+  let originalBlobUrl = null; 
+  let enhancedBlobUrl = null;
+  let pendingRegistrationData = null;
 
-  function showToast(message) {
-    const toast = document.getElementById("toast");
-    toast.textContent = message;
-    toast.classList.add("show");
-    clearTimeout(window.__toastTimer);
-    window.__toastTimer = setTimeout(() => toast.classList.remove("show"), 3000);
+  function getUsersDb() { return JSON.parse(localStorage.getItem("am_limit_users") || "[]"); }
+  function saveUsersDb(db) { localStorage.setItem("am_limit_users", JSON.stringify(db)); }
+  function getLogsDb() { return JSON.parse(localStorage.getItem("am_sys_logs") || "[]"); }
+  function saveLogsDb(logs) { localStorage.setItem("am_sys_logs", JSON.stringify(logs)); }
+  function getDeviceRegCount() { return parseInt(localStorage.getItem("am_device_reg_count") || "0"); }
+  function incrementDeviceRegCount() { localStorage.setItem("am_device_reg_count", getDeviceRegCount() + 1); }
+  function generateID() { return 'UID-' + Math.floor(1000 + Math.random() * 9000); }
+
+  function addLog(actionStr) {
+      let logs = getLogsDb(); 
+      logs.unshift({ time: new Date().toLocaleTimeString('id-ID'), info: actionStr });
+      if(logs.length > 50) logs.pop(); 
+      saveLogsDb(logs);
   }
 
-  function switchTab(tab) {
-    const contents = {
-      send: document.getElementById("contentSend"),
-      bulk: document.getElementById("contentBulk"),
-      inbox: document.getElementById("contentInbox")
-    };
-
-    const tabs = {
-      send: document.getElementById("tabSend"),
-      bulk: document.getElementById("tabBulk"),
-      inbox: document.getElementById("tabInbox")
-    };
-
-    Object.values(contents).forEach(el => el.classList.add("hidden"));
-    Object.values(tabs).forEach(el => el.classList.remove("active"));
-
-    contents[tab].classList.remove("hidden");
-    tabs[tab].classList.add("active");
+  function initOwnerAccount() {
+      let users = getUsersDb();
+      if (!users.find(u => u.username === OWNER_USER)) {
+          users.push({ id: 'UID-0000', username: OWNER_USER, password: OWNER_PASS, whatsapp: "080000000000", role: "owner", isPremium: true, limit: 9999, registeredAt: Date.now(), nameChanged: false, passChanged: false, waChanged: false });
+          saveUsersDb(users);
+      }
   }
 
-  async function handleSendMagicLink() {
-    const email = document.getElementById("inputEmail").value.trim();
-
-    if (!email || !email.includes("@")) {
-      return showToast("Masukkan format email yang valid.");
+  window.addEventListener("DOMContentLoaded", () => {
+    initOwnerAccount();
+    const savedSession = localStorage.getItem("active_session_user");
+    if (savedSession) {
+        document.getElementById("legalModal").classList.remove("active");
+        loggedInUsername = savedSession;
+        let u = getUsersDb().find(x => x.username === loggedInUsername);
+        if(!u) { logoutUser(); return; }
+        unlockDashboard(u);
     }
+    initImageEnhancerLogic();
+    switchAppTab('send');
+  });
 
-    showToast("Mengirim magic link...");
+  // ==========================================
+  // TOAST & UI
+  // ==========================================
+  let toastTimer;
+  function showToast(message) {
+    const toast = document.getElementById("toast"); 
+    document.getElementById("toastText").textContent = message;
+    toast.classList.add("show"); 
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => { toast.classList.remove("show"); }, 3500);
+  }
+  function escapeHtml(value) { return String(value ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;"); }
 
-    try {
-      const res = await fetch("/api/send", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email })
+  // ==========================================
+  // AUTHENTICATION & SECURITY
+  // ==========================================
+  function acceptLegal() {
+      document.getElementById("legalModal").classList.remove("active");
+      document.getElementById("authModal").classList.add("active");
+  }
+
+  function generateCaptcha() {
+      const n1 = Math.floor(Math.random() * 10) + 1; 
+      const n2 = Math.floor(Math.random() * 10) + 1;
+      currentCaptchaAnswer = n1 + n2;
+      document.getElementById("captchaQuestion").textContent = `${n1} + ${n2} =`; 
+      document.getElementById("inputCaptcha").value = "";
+  }
+
+  function toggleAuthMode() {
+      isLoginMode = !isLoginMode;
+      document.getElementById("authTitle").textContent = isLoginMode ? "SYSTEM LOGIN" : "NODE CREATION";
+      document.getElementById("authSubtitle").textContent = isLoginMode ? "Akses ruang kerja terminal terenkripsi" : "Registrasi identitas node baru (+3 Credits)";
+      document.getElementById("btnAuthAction").innerHTML = isLoginMode ? '<i class="fa-solid fa-right-to-bracket mr-2"></i> OTORISASI AKSES' : '<i class="fa-solid fa-plus mr-2"></i> INITIATE NODE';
+      document.getElementById("authToggleText").textContent = isLoginMode ? "Akses Node Ditolak?" : "Sudah Punya Akses Node?";
+      document.getElementById("authToggleBtn").textContent = isLoginMode ? "Buat Node Baru" : "Masuk Terminal";
+      
+      const waContainer = document.getElementById("waContainer"); 
+      const captchaContainer = document.getElementById("captchaContainer"); 
+      const forgotPass = document.getElementById("forgotPassContainer");
+      const registerInfoBox = document.getElementById("registerInfoBox");
+
+      if(isLoginMode) { 
+          waContainer.classList.add("hide"); 
+          captchaContainer.classList.add("hide"); 
+          forgotPass.classList.remove("hide");
+          registerInfoBox.classList.add("hide");
+      } else { 
+          waContainer.classList.remove("hide"); 
+          captchaContainer.classList.remove("hide"); 
+          forgotPass.classList.add("hide");
+          registerInfoBox.classList.remove("hide");
+          generateCaptcha();
+      }
+  }
+
+  function togglePasswordVisibility() {
+      const pwd = document.getElementById("inputPassword"); 
+      const icn = document.getElementById("togglePasswordIcon");
+      if (pwd.type === "password") { pwd.type = "text"; icn.classList.replace("fa-eye", "fa-eye-slash"); icn.classList.add("text-cyan-400", "drop-shadow-[0_0_5px_rgba(34,211,238,0.8)]"); } 
+      else { pwd.type = "password"; icn.classList.replace("fa-eye-slash", "fa-eye"); icn.classList.remove("text-cyan-400", "drop-shadow-[0_0_5px_rgba(34,211,238,0.8)]"); }
+  }
+  
+  function forgotPassword() { window.open(`https://wa.me/6282231669053?text=Halo%20Admin,%20saya%20lupa%20password%20akun%20saya.`, '_blank'); }
+  function buyVIP() { let u = getUsersDb().find(x => x.username === loggedInUsername); if(!u) return; window.open(`https://wa.me/6282231669053?text=Halo%20Mas%20Hao,%20saya%20mau%20beli%20VIP.%0AID: ${u.id}%0AName: ${u.username}`, '_blank'); }
+
+  function handleAuth() {
+      const userVal = document.getElementById("inputUsername").value.trim(); 
+      const passVal = document.getElementById("inputPassword").value.trim();
+      if (!userVal || !passVal) return showToast("Input Kredensial tidak lengkap!");
+      let users = getUsersDb();
+
+      if (isLoginMode) {
+          let found = users.find(u => u.username === userVal && u.password === passVal);
+          if(found) { 
+              localStorage.setItem("active_session_user", found.username); 
+              loggedInUsername = found.username; 
+              showToast("Otorisasi Sukses! Membuka Terminal..."); 
+              setTimeout(() => { unlockDashboard(found); }, 600); 
+          } else showToast("Kredensial Ditolak!");
+      } else {
+          const waVal = document.getElementById("inputWa").value.trim(); 
+          const captchaInput = parseInt(document.getElementById("inputCaptcha").value.trim());
+          if (isNaN(captchaInput) || captchaInput !== currentCaptchaAnswer) { generateCaptcha(); return showToast("Turing Test Gagal. CC Ditolak."); }
+          if (!/^(08|628|\+628)[0-9]{7,11}$/.test(waVal)) return showToast("Nomor WA wajib format aktif ID (08... / 628...)!");
+          if (getDeviceRegCount() >= 2) return showToast("Batas maksimal 2 Node per Hardware!");
+          if(users.find(u => u.username.toLowerCase() === userVal.toLowerCase())) return showToast("Alias sudah terdaftar di network.");
+          
+          pendingRegistrationData = { id: generateID(), username: userVal, password: passVal, whatsapp: waVal, role: "user", isPremium: false, limit: 3, registeredAt: Date.now(), nameChanged: false, passChanged: false, waChanged: false };
+          
+          document.getElementById("authModal").classList.remove("active");
+          document.getElementById("botVerifyModal").classList.add("active");
+          resetVerificationUI();
+      }
+  }
+
+  function resetVerificationUI() {
+      document.getElementById("verifyProgressContainer").classList.add("hide");
+      document.getElementById("btnStartVerify").classList.remove("hide");
+      
+      const spin = document.getElementById("verifySpinner");
+      spin.className = "w-24 h-24 mx-auto rounded-full border-2 border-dashed border-cyan-400 flex items-center justify-center mb-5 animate-[spin_6s_linear_infinite] shadow-[0_0_15px_rgba(6,182,212,0.3)]";
+      spin.innerHTML = '<i class="fa-solid fa-microchip text-4xl text-cyan-400 animate-[spin_6s_linear_infinite_reverse]"></i>';
+      
+      document.getElementById("verifyTitle").textContent = "CC / INTEGRITY CHECK";
+      document.getElementById("verifyTitle").className = "text-xl font-bold text-cyan-300 mb-2 font-mono tracking-widest drop-shadow-[0_0_8px_rgba(103,232,249,0.8)]";
+      document.getElementById("verifyDesc").textContent = "Sistem mendeteksi pembuatan node baru. Selesaikan validasi keamanan CC (Client Clearance) untuk mengesahkan pembuatan akun Anda ke database quantum.";
+  }
+
+  function startVerificationProcess() {
+      document.getElementById("btnStartVerify").classList.add("hide");
+      document.getElementById("verifyProgressContainer").classList.remove("hide");
+      document.getElementById("verifyTitle").textContent = "ANALYZING NODE...";
+      
+      let progress = 0;
+      const bar = document.getElementById("verifyProgressBar");
+      const pct = document.getElementById("verifyPercent");
+      
+      const interval = setInterval(() => {
+          progress += Math.floor(Math.random() * 12) + 4;
+          if(progress >= 100) progress = 100;
+          
+          bar.style.width = progress + "%";
+          pct.textContent = progress + "%";
+          
+          if(progress > 20 && progress < 50) document.getElementById("verifyDesc").textContent = "Mengekstrak fingerprint perangkat... Memverifikasi gateway...";
+          if(progress > 50 && progress < 80) document.getElementById("verifyDesc").textContent = "Menguji latensi CC... Memastikan bebas spoofing...";
+          if(progress > 80) document.getElementById("verifyDesc").textContent = "Menyusun blok enkripsi untuk kredensial baru...";
+          
+          if(progress === 100) {
+              clearInterval(interval);
+              setTimeout(finishVerification, 600);
+          }
+      }, 200);
+  }
+
+  function finishVerification() {
+      document.getElementById("verifyTitle").textContent = "ACCESS GRANTED";
+      document.getElementById("verifyTitle").className = "text-xl font-bold text-emerald-400 mb-2 font-mono tracking-widest drop-shadow-[0_0_8px_rgba(52,211,153,0.8)]";
+      document.getElementById("verifyDesc").textContent = "Verifikasi CC Sukses. Kredensial telah diamankan dalam database quantum.";
+      
+      const spin = document.getElementById("verifySpinner");
+      spin.className = "w-24 h-24 mx-auto rounded-full border-2 border-emerald-400 flex items-center justify-center mb-5 shadow-[0_0_20px_rgba(52,211,153,0.5)] bg-emerald-500/10";
+      spin.innerHTML = '<i class="fa-solid fa-shield-check text-4xl text-emerald-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.8)]"></i>';
+      
+      setTimeout(() => {
+          let users = getUsersDb();
+          users.push(pendingRegistrationData);
+          saveUsersDb(users); 
+          incrementDeviceRegCount(); 
+          
+          document.getElementById("botVerifyModal").classList.remove("active");
+          showToast("Registrasi berhasil! Identitas disahkan."); 
+          
+          isLoginMode = false;
+          toggleAuthMode();
+          document.getElementById("inputPassword").value = "";
+          document.getElementById("authModal").classList.add("active");
+      }, 1800);
+  }
+
+  // ==========================================
+  // DASHBOARD & LEADERBOARD
+  // ==========================================
+  function unlockDashboard(userObj) {
+    document.getElementById("authModal").classList.remove("active");
+    updateUIsAfterAction(userObj); 
+    renderGlobalLeaderboard();
+    if (userObj.role === "owner") document.getElementById("ownerMenuButtonContainer").classList.remove("hide");
+  }
+
+  function updateUIsAfterAction(forceUserObj = null) {
+      let u = forceUserObj || getUsersDb().find(x => x.username === loggedInUsername); if(!u) return;
+      const adBanner = document.getElementById("premiumAdContainer"); 
+      const nameHeader = document.getElementById("headerName"); 
+      const limitDisplay = document.getElementById("limitDisplay"); 
+      const roleHeader = document.getElementById("headerRole");
+      
+      if (u.isPremium || u.role === 'owner') {
+          adBanner.classList.add("hide"); 
+          limitDisplay.innerHTML = `∞ <div class="text-[7px] text-fuchsia-400 bg-fuchsia-500/20 px-1.5 py-0.5 rounded font-bold shadow-[0_0_10px_rgba(217,70,239,0.3)] border border-fuchsia-500/30 absolute -top-1 -right-2">VIP</div>`;
+          limitDisplay.classList.add("text-fuchsia-400", "drop-shadow-[0_0_15px_rgba(217,70,239,0.8)]");
+          limitDisplay.classList.remove("text-cyan-400", "drop-shadow-[0_0_15px_rgba(34,211,238,0.8)]");
+          nameHeader.textContent = u.username; 
+          nameHeader.className = "text-sm font-bold vip-rgb tracking-wide truncate"; 
+          roleHeader.textContent = u.role === 'owner' ? "ROOT ADMIN" : "VIP NODE";
+      } else {
+          adBanner.classList.remove("hide"); 
+          limitDisplay.innerHTML = u.limit;
+          limitDisplay.classList.add("text-cyan-400", "drop-shadow-[0_0_15px_rgba(34,211,238,0.8)]");
+          limitDisplay.classList.remove("text-fuchsia-400", "drop-shadow-[0_0_15px_rgba(217,70,239,0.8)]");
+          nameHeader.textContent = u.username; 
+          nameHeader.className = "text-sm font-bold text-white tracking-wide truncate drop-shadow-[0_0_5px_rgba(255,255,255,0.3)]"; 
+          roleHeader.textContent = "STANDARD NODE";
+      }
+  }
+
+  function renderGlobalLeaderboard() {
+      const usersDb = getUsersDb(); 
+      const limitContainer = document.getElementById("leadLimitContent");
+      limitContainer.innerHTML = "";
+      
+      let regulerUsers = usersDb.filter(u => u.role !== 'owner' && !u.isPremium).sort((a,b) => b.limit - a.limit);
+      
+      if(regulerUsers.length === 0) limitContainer.innerHTML = `<div class="text-[10px] font-mono text-zinc-600 p-2">Database Kosong.</div>`;
+      else regulerUsers.forEach((u, i) => {
+          let borderCol = i === 0 ? 'border-l-yellow-400 shadow-[inset_2px_0_10px_-2px_rgba(250,204,21,0.3)]' : (i === 1 ? 'border-l-gray-300' : (i === 2 ? 'border-l-amber-600' : 'border-l-cyan-500/50'));
+          let textCol = i === 0 ? 'text-yellow-400 drop-shadow-[0_0_5px_rgba(250,204,21,0.8)]' : 'text-cyan-500';
+          
+          limitContainer.innerHTML += `
+          <div class="snap-card glass-subpanel p-3 flex flex-col justify-between border-l-2 ${borderCol} relative overflow-hidden group">
+            <div class="absolute -right-2 -top-2 text-5xl opacity-5 font-black italic group-hover:scale-110 group-hover:opacity-10 transition-all font-mono">${i+1}</div>
+            <div class="flex justify-between items-start mb-3 relative z-10">
+              <div class="text-[10px] ${textCol} font-bold font-mono tracking-widest">RANK_0${i+1}</div>
+              <div class="text-right">
+                <div class="text-[14px] font-black text-white leading-none drop-shadow-[0_0_5px_rgba(255,255,255,0.3)] font-mono">${u.limit}</div>
+                <div class="text-[7px] text-zinc-500 mt-1 uppercase font-mono tracking-widest">CREDITS</div>
+              </div>
+            </div>
+            <div class="text-[11px] font-bold text-zinc-300 truncate relative z-10 flex items-center gap-1.5 font-mono">
+                <i class="fa-solid fa-user-terminal text-[9px] text-zinc-500"></i> ${escapeHtml(u.username)}
+            </div>
+          </div>`;
       });
+  }
 
-      const contentType = res.headers.get("content-type");
-      if (!contentType || !contentType.includes("application/json")) {
-        const text = await res.text();
-        throw new Error(text || "Terjadi kesalahan pada server.");
+  function checkUserLimit() { let u = getUsersDb().find(x => x.username === loggedInUsername); if(!u){logoutUser(); return false;} if(u.isPremium || u.role==='owner' || u.limit>0) return true; return false; }
+  function deductLimit() { let users = getUsersDb(); let idx = users.findIndex(x => x.username === loggedInUsername); if(idx>-1 && !users[idx].isPremium && users[idx].role!=='owner'){ users[idx].limit-=1; saveUsersDb(users); updateUIsAfterAction(users[idx]); renderGlobalLeaderboard(); } }
+  function refundLimit() { let users = getUsersDb(); let idx = users.findIndex(x => x.username === loggedInUsername); if(idx>-1 && !users[idx].isPremium && users[idx].role!=='owner'){ users[idx].limit+=1; saveUsersDb(users); updateUIsAfterAction(users[idx]); renderGlobalLeaderboard(); } }
+
+  // ==========================================
+  // TABS & PROFIL LOGIC
+  // ==========================================
+  function switchAppTab(tab) {
+    const contents = { 
+      send: document.getElementById("contentSend"), 
+      bulk: document.getElementById("contentBulk"), 
+      inbox: document.getElementById("contentInbox"), 
+      hdphoto: document.getElementById("contentHdPhoto") 
+    };
+    const tabs = { 
+      send: document.getElementById("tabSend"), 
+      bulk: document.getElementById("tabBulk"), 
+      inbox: document.getElementById("tabInbox"), 
+      hdphoto: document.getElementById("tabHdPhoto") 
+    };
+    
+    Object.values(contents).forEach(el => { if(el) el.classList.add("hide"); }); 
+    Object.values(tabs).forEach(el => { if(el) el.classList.remove("active"); });
+
+    if(contents[tab]) contents[tab].classList.remove("hide"); 
+    if(tabs[tab]) tabs[tab].classList.add("active");
+  }
+
+  function openProfileModal() {
+    let u = getUsersDb().find(x => x.username === loggedInUsername); if(!u) return;
+    document.getElementById("profileUserId").textContent = u.id || "-"; 
+    document.getElementById("profileActiveUsername").textContent = u.username;
+    document.getElementById("profileActiveUsername").className = u.isPremium || u.role === 'owner' ? "text-xl font-black vip-rgb tracking-wide truncate font-mono" : "text-xl font-black text-white tracking-wide truncate font-mono drop-shadow-[0_0_5px_rgba(255,255,255,0.3)]";
+    document.getElementById("profileWaNum").textContent = u.whatsapp || "-"; 
+    document.getElementById("profileRegDate").textContent = u.registeredAt ? new Date(u.registeredAt).toLocaleDateString('id-ID') : "-";
+    document.getElementById("profileAccessType").textContent = u.role === 'owner' ? "ROOT ADMIN" : (u.isPremium ? "VIP NODE" : "STANDARD NODE");
+    
+    const accTypeEl = document.getElementById("profileAccessType");
+    if(u.isPremium || u.role === 'owner') { 
+        accTypeEl.className = "text-[10px] text-fuchsia-400 font-mono font-bold tracking-widest mt-0.5 uppercase drop-shadow-[0_0_5px_rgba(217,70,239,0.8)]";
+    } else {
+        accTypeEl.className = "text-[10px] text-cyan-400 font-mono font-bold tracking-widest mt-0.5 uppercase drop-shadow-[0_0_5px_rgba(6,182,212,0.8)]";
+    }
+    
+    document.getElementById("btnEditName").disabled = u.nameChanged; document.getElementById("btnEditName").style.opacity = u.nameChanged ? "0.3" : "1";
+    document.getElementById("btnEditPass").disabled = u.passChanged; document.getElementById("btnEditPass").style.opacity = u.passChanged ? "0.3" : "1";
+    document.getElementById("btnEditWa").disabled = u.waChanged; document.getElementById("btnEditWa").style.opacity = u.waChanged ? "0.3" : "1";
+    document.getElementById("profileModal").classList.add("active");
+  }
+  function closeProfileModal() { document.getElementById("profileModal").classList.remove("active"); }
+
+  function editProfileData(type) {
+      let users = getUsersDb(); let idx = users.findIndex(u => u.username === loggedInUsername); if(idx === -1) return; let u = users[idx];
+      if(type === 'name' && !u.nameChanged) {
+          let n = prompt("Override Alias (Hanya 1x):"); if(n && n.trim()!=="" && !users.find(x=>x.username===n)) { u.username = n.trim(); u.nameChanged = true; loggedInUsername = u.username; localStorage.setItem("active_session_user", u.username); showToast("Alias updated!"); } else if(n) showToast("Alias invalid/used");
+      } else if(type === 'pass' && !u.passChanged) {
+          let p = prompt("Override Key (Hanya 1x):"); if(p && p.trim()!=="") { u.password = p.trim(); u.passChanged = true; showToast("Key updated!"); }
+      } else if(type === 'wa' && !u.waChanged) {
+          let w = prompt("Override WA Link (08...):"); if(w && /^(08|628|\+628)[0-9]{7,11}$/.test(w.trim())) { u.whatsapp = w.trim(); u.waChanged = true; showToast("WA updated!"); } else if(w) showToast("WA invalid!");
       }
+      saveUsersDb(users); openProfileModal(); updateUIsAfterAction(); renderGlobalLeaderboard(); 
+  }
+  function logoutUser() { localStorage.removeItem("active_session_user"); showToast("Terminating session..."); setTimeout(() => location.reload(), 1000); }
 
-      const json = await res.json();
+  // ==========================================
+  // ADMIN DASHBOARD
+  // ==========================================
+  function openOwnerDashboardModal() { let u = getUsersDb().find(x => x.username === loggedInUsername); if (!u || u.role !== 'owner') return; document.getElementById("ownerDashboardModal").classList.add("active"); switchAdminTab('all'); }
+  function closeOwnerDashboard() { document.getElementById("ownerDashboardModal").classList.remove("active"); }
+  
+  function switchAdminTab(tab) {
+    activeAdminTab = tab; 
+    document.getElementById("adminContentUsers").classList.add("hide"); 
+    document.getElementById("adminContentLogs").classList.add("hide");
+    
+    ['tabAdminAll', 'tabAdminReguler', 'tabAdminVIP', 'tabAdminLogs'].forEach(t => { 
+        let el = document.getElementById(t);
+        if(el) {
+          el.classList.remove("active", "!border-fuchsia-500/50", "!text-fuchsia-300", "!bg-fuchsia-500/10", "!shadow-[0_0_10px_rgba(217,70,239,0.3)]"); 
+        }
+    });
+    
+    let activeId = '';
+    if (tab === 'logs') { 
+      document.getElementById("adminContentLogs").classList.remove("hide"); 
+      activeId = 'tabAdminLogs'; 
+      loadAdminLogs(); 
+    } else { 
+      document.getElementById("adminContentUsers").classList.remove("hide"); 
+      activeId = tab==='all' ? 'tabAdminAll' : (tab==='reguler' ? 'tabAdminReguler' : 'tabAdminVIP'); 
+      loadAdminUsers(); 
+    }
+    
+    let activeEl = document.getElementById(activeId);
+    if(activeEl) {
+      activeEl.classList.add("active", "!border-fuchsia-500/50", "!text-fuchsia-300", "!bg-fuchsia-500/10", "!shadow-[0_0_10px_rgba(217,70,239,0.3)]");
+    }
+  }
+  
+  function loadAdminUsers() {
+    const container = document.getElementById("adminUserListContainer"); 
+    const query = document.getElementById("adminSearchInput").value.toLowerCase(); 
+    let usersDb = getUsersDb(); 
+    container.innerHTML = "";
+    
+    let filteredUsers = usersDb.filter(item => { 
+      if(item.role === 'owner') return false; 
+      if(activeAdminTab === 'reguler' && item.isPremium) return false; 
+      if(activeAdminTab === 'vip' && !item.isPremium) return false; 
+      if(query && !item.username.toLowerCase().includes(query)) return false; 
+      return true; 
+    });
+    
+    if(activeAdminTab === 'reguler') filteredUsers.sort((a,b) => b.limit - a.limit); 
+    else filteredUsers.reverse(); 
+    
+    if(filteredUsers.length === 0) container.innerHTML = `<div class="text-fuchsia-500/50 text-[10px] font-mono py-6 text-center glass-subpanel border-fuchsia-900/30">No nodes found.</div>`;
+    filteredUsers.forEach((item) => {
+      const card = document.createElement("div"); 
+      card.className = "p-3 glass-subpanel flex flex-col gap-2 text-[10px] font-mono border-fuchsia-900/30";
+      card.innerHTML = `
+        <div class="flex justify-between items-center text-white font-bold border-b border-fuchsia-500/20 pb-2">
+            <span class="${item.isPremium ? 'vip-rgb text-xs' : 'text-[11px]'} truncate pr-2">${escapeHtml(item.username)}</span>
+            <span class="px-2 py-0.5 rounded text-[8px] font-bold ${item.isPremium ? 'bg-fuchsia-500/20 text-fuchsia-400 border border-fuchsia-500/30' : 'bg-zinc-800 text-zinc-400 border border-white/5'}">${item.isPremium ? 'VIP' : 'REG'}</span>
+        </div>
+        <div class="flex justify-between text-zinc-400 mt-1"><span>Key: <span class="text-white bg-black/50 px-1 rounded">${escapeHtml(item.password)}</span></span><span>Limit: <span class="text-cyan-400 font-bold">${item.isPremium ? '∞' : item.limit}</span></span></div>
+        <div class="flex gap-2 mt-2">
+            <button onclick="adminSetPremium('${item.username}')" class="flex-1 btn-sub !py-2 !text-[9px] !bg-fuchsia-900/20 !border-fuchsia-500/30 !text-fuchsia-400 hover:!bg-fuchsia-500/20">SET VIP</button>
+            <button onclick="adminAddLimit('${item.username}')" class="flex-1 btn-sub !py-2 !text-[9px] !bg-cyan-900/20 !border-cyan-500/30 !text-cyan-400 hover:!bg-cyan-500/20">+ CREDITS</button>
+        </div>`;
+      container.appendChild(card);
+    });
+  }
 
-      if (!res.ok || json.status === false) {
-        throw new Error(json.message || "Gagal mengirim magic link.");
-      }
+  function loadAdminLogs() {
+      const container = document.getElementById("adminLogsContainer"); 
+      let logs = getLogsDb(); 
+      container.innerHTML = "";
+      if(logs.length === 0) return container.innerHTML = '<div class="text-fuchsia-500/50 text-[10px] font-mono text-center mt-4 glass-subpanel p-3 border-fuchsia-900/30">System log empty.</div>';
+      logs.forEach(l => { container.innerHTML += `<div class="p-2 glass-subpanel border-white/5 rounded text-[9px] font-mono mb-1 text-zinc-400"><span class="text-fuchsia-500/70 mr-2">[${l.time}]</span>${escapeHtml(l.info)}</div>`; });
+  }
 
-      activeInjectEmail = email;
+  function adminSetPremium(username) { 
+    let users = getUsersDb(); 
+    let idx = users.findIndex(u => u.username === username); 
+    if(idx > -1) { 
+      users[idx].isPremium = true; 
+      saveUsersDb(users); 
+      addLog(`Admin Set VIP: ${username}`); 
+      showToast(`Akun VIP diset.`); 
+      loadAdminUsers(); 
+      renderGlobalLeaderboard(); 
+    } 
+  }
 
-      document.getElementById("stepEmailBox").classList.add("hidden");
-      document.getElementById("stepVerifyBox").classList.remove("hidden");
-      document.getElementById("flowInstruction").textContent =
-        `Magic link dikirim ke ${email}. Masukkan link verifikasi Anda di bawah ini.`;
+  function adminAddLimit(username) { 
+    let jm = prompt(`Inject credits:`, "5"); 
+    if(jm !== null && !isNaN(jm)) { 
+      let num = parseInt(jm); 
+      let users = getUsersDb(); 
+      let idx = users.findIndex(u => u.username === username); 
+      if(idx > -1) { 
+        users[idx].limit += num; 
+        saveUsersDb(users); 
+        addLog(`Admin +${num} limit: ${username}`); 
+        showToast(`Inject sukses.`); 
+        loadAdminUsers(); 
+        renderGlobalLeaderboard(); 
+      } 
+    } 
+  }
 
-      showToast("Magic link berhasil dikirim.");
-    } catch (err) {
-      showToast(err.message || "Koneksi gagal.");
+  // ==========================================
+  // FITUR UTAMA LANGSUNG KE UPSTREAM API ZNN
+  // ==========================================
+  async function handleSendMagicLink() {
+    if(!checkUserLimit()) return showToast("Credit Habis! Upgrade VIP Access.");
+    const email = document.getElementById("inputEmail").value.trim(); 
+    if (!email || !email.includes("@")) return showToast("Format email tidak valid.");
+    
+    deductLimit(); 
+    const btn = document.querySelector("#stepEmailBox button"); 
+    btn.innerHTML = '<i class="fa-solid fa-spinner animate-spin mr-1"></i> DEPLOYING...'; 
+    btn.disabled = true;
+    
+    try {
+      const res = await fetch(`${API_BASE_URL}/alightmotion/send`, { 
+        method: "POST", 
+        headers: { "Content-Type": "application/json" }, 
+        body: JSON.stringify({ email }) 
+      });
+      const json = await res.json(); 
+      if (!res.ok || json.status === false) throw new Error(json.message || "Gagal injeksi.");
+      
+      activeInjectEmail = email; 
+      document.getElementById("stepEmailBox").classList.add("hide"); 
+      document.getElementById("stepVerifyBox").classList.remove("hide"); 
+      showToast("Payload berhasil dikirim.");
+    } catch (err) { 
+      refundLimit(); 
+      showToast("Error: " + (err.message || "Network error.")); 
+    } finally { 
+      btn.innerHTML = '<i class="fa-solid fa-rocket mr-1"></i> DEPLOY PAYLOAD'; 
+      btn.disabled = false; 
     }
   }
 
   async function handleVerifyMagicLink() {
-    const link = document.getElementById("inputLink").value.trim();
-
-    if (!link) return showToast("Masukkan link verifikasi.");
-
-    showToast("Memverifikasi data...");
-
-    let success = false;
-    let resultMessage = "";
-
+    const link = document.getElementById("inputLink").value.trim(); 
+    if (!link) return showToast("Hash link wajib diisi."); 
+    showToast("Verifying Hash...");
+    
     try {
-      const res = await fetch("/api/verify", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: activeInjectEmail,
-          link
-        })
+      const res = await fetch(`${API_BASE_URL}/alightmotion/verify`, { 
+        method: "POST", 
+        headers: { "Content-Type": "application/json" }, 
+        body: JSON.stringify({ email: activeInjectEmail, link }) 
       });
-
-      const contentType = res.headers.get("content-type");
-      if (!contentType || !contentType.includes("application/json")) {
-        const text = await res.text();
-        throw new Error(text || "Terjadi kesalahan pada server.");
-      }
-
-      const json = await res.json();
-
-      success = res.ok && json.status !== false;
-      resultMessage = json.message || "Verifikasi berhasil.";
-
-      const result = document.getElementById("sendResult");
-      result.innerHTML = `
-        <div class="font-bold ${success ? "text-white" : "text-zinc-400"}">
-          ${success ? "STATUS: BERHASIL" : "STATUS: GAGAL"}
-        </div>
-        <div class="text-[11px] text-zinc-300 mt-1 leading-relaxed">
-          ${escapeHtml(resultMessage)}
-        </div>
-      `;
-      result.classList.remove("hidden");
-    } catch (err) {
-      success = false;
-      showToast(err.message || "Kesalahan jaringan.");
-    }
-
-    if (success) {
-      showToast("Verifikasi berhasil.");
-      setTimeout(resetInjectFlow, 900);
-    } else {
-      showToast("Verifikasi gagal.");
+      const json = await res.json(); 
+      const success = res.ok && json.status !== false; 
+      const resultMessage = json.message || "Otorisasi berhasil.";
+      
+      const result = document.getElementById("sendResult"); 
+      result.innerHTML = `<span class="${success ? 'text-emerald-400' : 'text-red-400'} font-bold text-xs">${success?'[SYS_SUCCESS]':'[SYS_FAILED]'}</span><br/><div class="mt-1">${escapeHtml(resultMessage)}</div>`;
+      result.classList.remove("hide"); 
+      if(success) setTimeout(resetInjectFlow, 3500);
+    } catch (err) { 
+      showToast("Error: " + (err.message || "Network Error.")); 
     }
   }
 
-  function resetInjectFlow() {
-    activeInjectEmail = "";
-
-    document.getElementById("inputEmail").value = "";
-    document.getElementById("inputLink").value = "";
-
-    document.getElementById("stepVerifyBox").classList.add("hidden");
-    document.getElementById("stepEmailBox").classList.remove("hidden");
-
-    document.getElementById("flowInstruction").textContent =
-      "Kirimkan magic link ke alamat email aktif Anda untuk memulai proses sinkronisasi.";
-
-    document.getElementById("sendResult").classList.add("hidden");
+  function resetInjectFlow() { 
+    activeInjectEmail = ""; 
+    document.getElementById("inputEmail").value = ""; 
+    document.getElementById("inputLink").value = ""; 
+    document.getElementById("stepVerifyBox").classList.add("hide"); 
+    document.getElementById("stepEmailBox").classList.remove("hide"); 
+    document.getElementById("sendResult").classList.add("hide"); 
   }
 
   async function runBulkInject() {
-    const amount = Number(document.getElementById("inputBulkAmount").value);
-
-    if (!amount || amount < 1 || amount > 100) {
-      return showToast("Jumlah harus di antara 1 - 100.");
-    }
-
-    showToast("Memproses bulk generator...");
-
-    let success = false;
-    let resultMessage = "";
-
+    if(!checkUserLimit()) return showToast("Credit Habis! Upgrade VIP Access.");
+    const amount = Number(document.getElementById("inputBulkAmount").value); 
+    if (!amount || amount < 1 || amount > 100) return showToast("Batas 1-100 thread nodes.");
+    
+    deductLimit(); 
+    showToast("Menjalankan Batch Sequence...");
+    
     try {
-      const res = await fetch("/api/bulk", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount })
+      const res = await fetch(`${API_BASE_URL}/alightmotion/bulk`, { 
+        method: "POST", 
+        headers: { "Content-Type": "application/json" }, 
+        body: JSON.stringify({ amount }) 
       });
-
-      const contentType = res.headers.get("content-type");
-      if (!contentType || !contentType.includes("application/json")) {
-        const text = await res.text();
-        throw new Error(text || "Terjadi kesalahan pada server.");
-      }
-
-      const json = await res.json();
-
-      success = res.ok && json.status !== false;
-      resultMessage = json.message || JSON.stringify(json, null, 2);
-
+      const json = await res.json(); 
+      const success = res.ok && json.status !== false; 
       const result = document.getElementById("bulkResult");
-
-      result.innerHTML = `
-        <div class="font-bold ${success ? "text-white" : "text-zinc-400"}">
-          ${success ? "BULK GENERATE SUCCESS" : "BULK GENERATE FAILED"}
-        </div>
-        <pre class="whitespace-pre-wrap text-[10px] text-zinc-300 mt-1">${escapeHtml(resultMessage)}</pre>
-      `;
-
-      result.classList.remove("hidden");
-    } catch (err) {
-      success = false;
-      showToast(err.message || "Koneksi gagal.");
-    }
-
-    if (success) {
-      showToast("Proses bulk selesai.");
-    } else {
-      showToast("Proses bulk gagal.");
+      
+      result.innerHTML = `<span class="${success ? 'text-emerald-400' : 'text-red-400'} font-bold text-xs">${success?'[BATCH_SUCCESS]':'[BATCH_FAILED]'}</span><br/><div class="mt-1 text-zinc-400">${escapeHtml(json.message || JSON.stringify(json))}</div>`;
+      result.classList.remove("hide");
+    } catch (err) { 
+      refundLimit(); 
+      showToast("Error: " + err.message); 
     }
   }
 
   async function runInboxCheck() {
-    const email = document.getElementById("inputInboxEmail").value.trim();
-    const notice = document.getElementById("inboxNotice");
+    const email = document.getElementById("inputInboxEmail").value.trim(); 
+    if (!email) return showToast("Target Node Mail kosong.");
+    
+    const notice = document.getElementById("inboxNotice"); 
     const container = document.getElementById("inboxResult");
-
-    if (!email) return showToast("Masukkan alamat email.");
-
-    notice.textContent = "Memindai kotak masuk...";
-    notice.classList.remove("hidden");
-
+    notice.innerHTML = 'SNIFFING TRAFFIC...'; 
+    notice.classList.remove("hide"); 
     container.innerHTML = "";
-
+    
     try {
-      const res = await fetch("/api/inbox", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email })
+      const res = await fetch(`${API_BASE_URL}/tempmail-read?email=` + encodeURIComponent(email), { 
+        method: "GET", 
+        headers: { "accept": "application/json" } 
       });
-
-      const contentType = res.headers.get("content-type");
-      if (!contentType || !contentType.includes("application/json")) {
-        const text = await res.text();
-        throw new Error(text || "Terjadi kesalahan pada server.");
+      const json = await res.json(); 
+      if (!res.ok || json.status === false) throw new Error(json.message || "Gagal menyadap trafik.");
+      
+      notice.innerHTML = 'SCAN COMPLETE.'; 
+      const payloadData = json.data || json;
+      const messages = payloadData.messages || payloadData.inbox || [];
+      
+      if (!messages.length) { 
+        container.innerHTML = '<div class="text-[10px] text-zinc-500 font-mono text-center glass-subpanel p-3 border-emerald-900/30">Zero packets intercepted.</div>'; 
+        return; 
       }
-
-      const json = await res.json();
-
-      if (!res.ok || json.status === false) {
-        throw new Error(json.message || "Gagal memindai inbox.");
-      }
-
-      notice.textContent = "Pemindaian kotak masuk selesai.";
-
-      const messages = json.data?.messages || [];
-
-      if (!messages.length) {
-        container.innerHTML =
-          '<div class="text-[11px] text-zinc-500 p-4 text-center">Tidak ada pesan ditemukan.</div>';
-        return;
-      }
-
+      
       messages.forEach(msg => {
-        const card = document.createElement("div");
-        card.className =
-          "glass-card p-3.5 rounded-[14px] space-y-2.5";
-
-        const subject = msg.subject || "Tanpa Subjek";
-        const link = msg.login_url || "";
-
-        card.innerHTML = `
-          <div class="text-[11px] font-bold text-white">${escapeHtml(subject)}</div>
-          ${
-            link
-              ? `
-                <div class="p-2.5 rounded-[10px] bg-black/40 border border-white/10 text-zinc-300 text-[10px] break-all font-mono">
-                  ${escapeHtml(link)}
-                </div>
-                <button class="btn btn-primary w-full py-2.5 text-[10px] font-bold">
-                  Salin Link Verifikasi
-                </button>
-              `
-              : `
-                <div class="text-[10px] text-zinc-500">
-                  Link verifikasi belum tersedia.
-                </div>
-              `
-          }
-        `;
-
-        if (link) {
-          card.querySelector("button").addEventListener("click", async () => {
-            try {
-              await navigator.clipboard.writeText(link);
-              showToast("Link berhasil disalin.");
-            } catch {
-              showToast("Gagal menyalin link.");
-            }
-          });
-        }
-
+        const card = document.createElement("div"); 
+        card.className = "p-3 glass-subpanel border-emerald-500/30 text-[10px] font-mono shadow-[inset_0_0_10px_rgba(52,211,153,0.1)]";
+        const subject = msg.subject || "No Subject"; 
+        const link = msg.login_url || msg.loginUrl || "";
+        
+        card.innerHTML = `<div class="font-bold text-emerald-300 mb-2 text-[11px] drop-shadow-[0_0_5px_rgba(52,211,153,0.5)]"><i class="fa-solid fa-file-code mr-1 text-emerald-500"></i> ${escapeHtml(subject)}</div>${ link ? `<div class="bg-black/60 border border-white/5 p-2 rounded text-zinc-400 break-all shadow-[inset_0_0_5px_rgba(0,0,0,0.8)]">${escapeHtml(link)}</div>` : '<div class="text-red-400/80 bg-red-950/30 p-2 rounded border border-red-900/50">Tautan login tidak ter-decode.</div>'}`;
         container.appendChild(card);
       });
-    } catch (err) {
-      notice.textContent = err.message;
+    } catch (err) { 
+      notice.innerHTML = '<span class="text-red-400">SYS_ERR: ' + err.message + '</span>'; 
     }
   }
 
-  function escapeHtml(value) {
-    return String(value ?? "")
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#039;");
+  // ==========================================
+  // IMAGE ENHANCER LOGIC
+  // ==========================================
+  function initImageEnhancerLogic() {
+    const urlInput = document.getElementById('imageUrl'); 
+    const dropZone = document.getElementById('dropZone'); 
+    const fileInput = document.getElementById('fileInput'); 
+    const fileNameDisplay = document.getElementById('fileNameDisplay'); 
+    const enhanceBtn = document.getElementById('enhanceBtn'); 
+    const resetBtn = document.getElementById('resetBtn'); 
+    const comparisonSplitSection = document.getElementById('comparisonSplitSection'); 
+    const splitImgBefore = document.getElementById('splitImgBefore'); 
+    const splitImgAfter = document.getElementById('splitImgAfter'); 
+    const statusMessage = document.getElementById('statusMessage'); 
+    const downloadBtn = document.getElementById('downloadBtn'); 
+    const copyUrlBtn = document.getElementById('copyUrlBtn');
+    
+    const strengthRange = document.getElementById('strengthRange'); 
+    const strengthIndicator = document.getElementById('strengthIndicator');
+    const openModeModal = document.getElementById('openModeModal'); 
+    const closeModeModal = document.getElementById('closeModeModal'); 
+    const modeModalOverlay = document.getElementById('modeModalOverlay'); 
+    const applyModeBtn = document.getElementById('applyModeBtn'); 
+    const currentModeLabel = document.getElementById('currentModeLabel'); 
+    const modeItems = document.querySelectorAll('.mode-option-item');
+    
+    const strengthLabels = [ { max: 30, text: 'Soft' }, { max: 70, text: 'Optimal' }, { max: 100, text: 'Maximum' } ];
+    strengthRange.addEventListener('input', () => { const val = parseInt(strengthRange.value, 10); let label = 'Optimal'; for (let item of strengthLabels) { if (val <= item.max) { label = item.text; break; } } strengthIndicator.textContent = label; });
+    
+    openModeModal.addEventListener('click', () => { tempSelectedMode = selectedMode; updateModalSelectionUI(); modeModalOverlay.classList.add('active'); });
+    closeModeModal.addEventListener('click', () => { modeModalOverlay.classList.remove('active'); });
+    
+    modeItems.forEach(item => { 
+      item.addEventListener('click', () => { 
+        modeItems.forEach(i => { 
+          i.classList.remove('border-fuchsia-500', 'bg-fuchsia-500/10'); 
+          i.classList.add('border-white/5'); 
+          i.querySelector('.title-mode').classList.remove('text-fuchsia-400'); 
+        }); 
+        item.classList.add('border-fuchsia-500', 'bg-fuchsia-500/10'); 
+        item.classList.remove('border-white/5'); 
+        item.querySelector('.title-mode').classList.add('text-fuchsia-400'); 
+        tempSelectedMode = item.getAttribute('data-mode'); 
+      }); 
+    });
+    
+    function updateModalSelectionUI() { 
+      modeItems.forEach(item => { 
+        if (item.getAttribute('data-mode') === tempSelectedMode) { 
+          item.classList.add('border-fuchsia-500', 'bg-fuchsia-500/10'); 
+          item.classList.remove('border-white/5'); 
+          item.querySelector('.title-mode').classList.add('text-fuchsia-400'); 
+        } else { 
+          item.classList.remove('border-fuchsia-500', 'bg-fuchsia-500/10'); 
+          item.classList.add('border-white/5'); 
+          item.querySelector('.title-mode').classList.remove('text-fuchsia-400'); 
+        } 
+      }); 
+    }
+    
+    applyModeBtn.addEventListener('click', () => { selectedMode = tempSelectedMode; const modeTexts = { '2x': 'Upscale 2x + Detail', '1x': 'Native Size + Cleanse' }; currentModeLabel.textContent = modeTexts[selectedMode]; modeModalOverlay.classList.remove('active'); });
+
+    dropZone.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', (e) => { if (e.target.files && e.target.files[0]) { selectedFile = e.target.files[0]; fileNameDisplay.textContent = selectedFile.name; fileNameDisplay.classList.remove('hide'); urlInput.value = ''; } });
+    
+    function setStatus(text, isError=false) { statusMessage.textContent = text; if(text) { statusMessage.classList.remove('hide'); statusMessage.className = `text-center text-[10px] py-1 font-mono tracking-widest ${isError ? 'text-red-400' : 'text-fuchsia-400/80'}`; } else statusMessage.classList.add('hide'); }
+    
+    resetBtn.addEventListener('click', () => { selectedFile = null; fileInput.value = ''; fileNameDisplay.textContent = ''; fileNameDisplay.classList.add('hide'); urlInput.value = ''; comparisonSplitSection.classList.add('hide'); comparisonSplitSection.classList.remove('flex'); setStatus(''); showToast("Reset Matrix Workspace"); });
+    
+    enhanceBtn.addEventListener('click', async () => {
+      const urlVal = urlInput.value.trim(); if (!urlVal && !selectedFile) { setStatus('SYS: Upload file / set URL', true); return; }
+      enhanceBtn.disabled = true; enhanceBtn.innerHTML = '<i class="fa-solid fa-spinner animate-spin mr-1"></i> RENDERING...'; setStatus('Analyzing Neural Data...');
+      try {
+        let sourceImg = null; let origBlob = null;
+        if (selectedFile) { origBlob = selectedFile; sourceImg = await new Promise((resolve) => { const r = new FileReader(); r.onload=e=>{const i=new Image(); i.onload=()=>resolve(i); i.src=e.target.result;}; r.readAsDataURL(selectedFile);});
+        } else { origBlob = await fetch(urlVal).then(r=>r.blob()); sourceImg = await new Promise((resolve) => { const u=URL.createObjectURL(origBlob); const i=new Image(); i.onload=()=>resolve(i); i.src=u;}); }
+        splitImgBefore.src = URL.createObjectURL(origBlob);
+        
+        let enhancedBlob = null; const apiList = [ 'https://api-nanzz.my.id/docs/api/tools/image/enhancer.php?url=', 'https://api-nanzz.my.id/api/tools/image/enhancer?url=' ];
+        let targetFetchUrl = urlVal || URL.createObjectURL(origBlob);
+        for (const api of apiList) { try { const resp = await fetch(api + encodeURIComponent(targetFetchUrl), { headers: { 'Accept': 'image/*' } }); if (resp.ok) { const b = await resp.blob(); if (b.size > 400) { enhancedBlob = b; break; } } } catch(e) {} }
+        
+        if (!enhancedBlob) { 
+            setStatus('Switching to Local Render Node...'); 
+            const factorVal = parseInt(strengthRange.value, 10);
+            enhancedBlob = await runLocalEnhancer(sourceImg, factorVal, selectedMode);
+        }
+        
+        enhancedBlobUrl = URL.createObjectURL(enhancedBlob); splitImgAfter.src = enhancedBlobUrl;
+        comparisonSplitSection.classList.remove('hide'); comparisonSplitSection.classList.add('flex'); setStatus(`[✓] Optimization Complete`); showToast("HD Render Complete!");
+      } catch (err) { setStatus('[x] Failed: ' + err.message, true); } finally { enhanceBtn.disabled = false; enhanceBtn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles mr-1"></i> RENDER MATRIX'; }
+    });
+
+    function runLocalEnhancer(img, strengthVal, mode) {
+      return new Promise((resolve) => {
+          const sw = img.naturalWidth || img.width; const sh = img.naturalHeight || img.height;
+          let multiplier = 1.0; if (mode === '2x') multiplier = 2.0;
+          const limitMax = 3840; if ((sw * multiplier) > limitMax || (sh * multiplier) > limitMax) { multiplier = Math.min(limitMax / sw, limitMax / sh); }
+          const w = Math.round(sw * multiplier); const h = Math.round(sh * multiplier);
+          const canvas = document.createElement('canvas'); canvas.width = w; canvas.height = h; const ctx = canvas.getContext('2d');
+          const intensity = strengthVal / 100; let contrast = 1.06 + (intensity * 0.12); let saturate = 1.05 + (intensity * 0.15); let brightness = 1.01 + (intensity * 0.03);
+          ctx.filter = `contrast(${contrast}) saturate(${saturate}) brightness(${brightness})`; ctx.drawImage(img, 0, 0, w, h);
+          canvas.toBlob((b) => resolve(b), 'image/png', 0.98);
+      });
+    }
+    
+    downloadBtn.addEventListener('click', () => { if(enhancedBlobUrl){ const a=document.createElement('a'); a.href=enhancedBlobUrl; a.download=`AM_HD_${Date.now()}.png`; a.click(); showToast("Extracted to Local Node!");} });
+    copyUrlBtn.addEventListener('click', () => { if(enhancedBlobUrl){ navigator.clipboard.writeText(enhancedBlobUrl); showToast("URL Copied to Clipboard!"); } });
   }
 </script>
 </body>
 </html>
+
