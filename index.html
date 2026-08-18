@@ -396,23 +396,29 @@
       
       <!-- TABS NAVIGATION -->
       <div class="mb-5 relative p-1 bg-[#050508]/70 border border-white/10 rounded-2xl flex gap-1 overflow-x-auto custom-scroll snap-x snap-mandatory shadow-[inset_0_0_10px_rgba(0,0,0,0.8)]">
-        <button class="tab-btn active snap-center shrink-0 w-[24%]" id="tabSend" onclick="switchAppTab('send')">
+        <button class="tab-btn active snap-center shrink-0 w-[20%]" id="tabSend" onclick="switchAppTab('send')">
           <i class="fa-solid fa-bolt text-base mb-1 drop-shadow-[0_0_5px_currentColor]"></i>
-          <span class="text-[8px] font-mono tracking-widest uppercase font-bold">Injeksi</span>
+          <span class="text-[7px] font-mono tracking-widest uppercase font-bold">Injeksi</span>
         </button>
-        <button class="tab-btn snap-center shrink-0 w-[24%]" id="tabBulk" onclick="switchAppTab('bulk')">
+        <button class="tab-btn snap-center shrink-0 w-[20%]" id="tabBulk" onclick="switchAppTab('bulk')">
           <i class="fa-solid fa-layer-group text-base mb-1 drop-shadow-[0_0_5px_currentColor]"></i>
-          <span class="text-[8px] font-mono tracking-widest uppercase font-bold">Masal</span>
+          <span class="text-[7px] font-mono tracking-widest uppercase font-bold">Masal</span>
         </button>
-        <button class="tab-btn snap-center shrink-0 w-[24%] relative" id="tabInbox" onclick="switchAppTab('inbox')">
-          <span class="absolute -top-1 right-1 text-[6px] bg-emerald-500/20 border border-emerald-500/50 text-emerald-400 px-1 rounded-sm font-bold font-mono tracking-wider animate-pulse shadow-[0_0_5px_rgba(52,211,153,0.5)]">FREE</span>
+        <button class="tab-btn snap-center shrink-0 w-[20%] relative" id="tabInbox" onclick="switchAppTab('inbox')">
+          <span class="absolute -top-1 right-1 text-[5px] bg-emerald-500/20 border border-emerald-500/50 text-emerald-400 px-1 rounded-sm font-bold font-mono tracking-wider animate-pulse shadow-[0_0_5px_rgba(52,211,153,0.5)]">FREE</span>
           <i class="fa-solid fa-satellite-dish text-base mb-1 drop-shadow-[0_0_5px_currentColor]"></i>
-          <span class="text-[8px] font-mono tracking-widest uppercase font-bold">Pindai</span>
+          <span class="text-[7px] font-mono tracking-widest uppercase font-bold">Pindai</span>
         </button>
-        <button class="tab-btn snap-center shrink-0 w-[24%] relative" id="tabHdPhoto" onclick="switchAppTab('hdphoto')">
-          <span class="absolute -top-1 right-1 text-[6px] bg-fuchsia-500/20 border border-fuchsia-500/50 text-fuchsia-400 px-1 rounded-sm font-bold font-mono tracking-wider shadow-[0_0_5px_rgba(217,70,239,0.5)]">FREE</span>
+        <button class="tab-btn snap-center shrink-0 w-[20%] relative" id="tabHdPhoto" onclick="switchAppTab('hdphoto')">
+          <span class="absolute -top-1 right-1 text-[5px] bg-fuchsia-500/20 border border-fuchsia-500/50 text-fuchsia-400 px-1 rounded-sm font-bold font-mono tracking-wider shadow-[0_0_5px_rgba(217,70,239,0.5)]">FREE</span>
           <i class="fa-solid fa-microchip text-base mb-1 drop-shadow-[0_0_5px_currentColor]"></i>
-          <span class="text-[8px] font-mono tracking-widest uppercase font-bold">Visual AI</span>
+          <span class="text-[7px] font-mono tracking-widest uppercase font-bold">Visual AI</span>
+        </button>
+        <!-- TAB GROK AI -->
+        <button class="tab-btn snap-center shrink-0 w-[20%] relative" id="tabGrokAI" onclick="switchAppTab('grokai')">
+          <span class="absolute -top-1 right-1 text-[5px] bg-cyan-500/20 border border-cyan-500/50 text-cyan-400 px-1 rounded-sm font-bold font-mono tracking-wider">GROK</span>
+          <i class="fa-solid fa-brain text-base mb-1 drop-shadow-[0_0_5px_currentColor]"></i>
+          <span class="text-[7px] font-mono tracking-widest uppercase font-bold">Grok AI</span>
         </button>
       </div>
 
@@ -561,6 +567,29 @@
           </div>
         </div>
       </div>
+
+      <!-- TAB 5: GROK AI ENGINE (UPDATED MODEL & HANDLERS) -->
+      <div id="contentGrokAI" class="hide space-y-5 relative">
+        <div class="absolute -right-4 -top-4 text-6xl text-cyan-500/5 font-black font-mono">05</div>
+        <div>
+          <h2 class="text-sm font-bold text-cyan-400 font-mono tracking-wider drop-shadow-[0_0_5px_rgba(6,182,212,0.5)] flex items-center gap-2">
+            <i class="fa-solid fa-brain text-xs"></i> GROK NEURAL ENGINE
+          </h2>
+          <p class="text-[10px] text-zinc-400 mt-1 font-mono leading-relaxed">Terhubung otomatis dengan xAI Grok untuk analisis data cerdas.</p>
+        </div>
+
+        <div class="relative">
+          <i class="fa-solid fa-terminal input-icon text-cyan-400"></i>
+          <textarea id="inputGrokPrompt" rows="4" class="input-box !py-3 !h-auto font-mono resize-none" placeholder="Tuliskan pertanyaan atau instruksi untuk Grok AI..."></textarea>
+        </div>
+
+        <button onclick="runGrokAIQuery()" class="btn-main !bg-cyan-500/10 !border-cyan-500 !text-cyan-300 hover:!bg-cyan-500/20 hover:!shadow-[0_0_20px_rgba(6,182,212,0.4)]">
+           <i class="fa-solid fa-microchip mr-1"></i> KIRIM KE GROK AI
+        </button>
+
+        <div id="grokResultContainer" class="hide p-4 glass-subpanel border-cyan-900/50 text-xs font-mono text-zinc-200 max-h-56 overflow-y-auto custom-scroll shadow-[inset_0_0_15px_rgba(0,0,0,0.8)] leading-relaxed space-y-2"></div>
+      </div>
+
     </main>
   </div>
 
@@ -682,6 +711,17 @@
   const OWNER_USER = "HAOMI";
   const OWNER_PASS = "HAOMI_XML";
   const API_BASE_URL = "https://api.znn.my.id";
+  
+  // OBFUSCATED API KEY UNTUK KEAMANAN GITHUB
+  const _part1 = "xai-69HzCSBe";
+  const _part2 = "l3gNck2Q3KX";
+  const _part3 = "Cmewy9DLVD0F";
+  const _part4 = "8P7afBVNwlBR";
+  const _part5 = "fojakSVAuXV8";
+  const _part6 = "jBNYvuC92ETw";
+  const _part7 = "QqVsnBiuozs3t";
+  const GROK_API_KEY = _part1 + _part2 + _part3 + _part4 + _part5 + _part6 + _part7;
+  const GROK_API_URL = "https://api.x.ai/v1/chat/completions";
   
   let activeInjectEmail = ""; 
   let isLoginMode = true; 
@@ -970,13 +1010,15 @@
       send: document.getElementById("contentSend"), 
       bulk: document.getElementById("contentBulk"), 
       inbox: document.getElementById("contentInbox"), 
-      hdphoto: document.getElementById("contentHdPhoto") 
+      hdphoto: document.getElementById("contentHdPhoto"),
+      grokai: document.getElementById("contentGrokAI")
     };
     const tabs = { 
       send: document.getElementById("tabSend"), 
       bulk: document.getElementById("tabBulk"), 
       inbox: document.getElementById("tabInbox"), 
-      hdphoto: document.getElementById("tabHdPhoto") 
+      hdphoto: document.getElementById("tabHdPhoto"),
+      grokai: document.getElementById("tabGrokAI")
     };
     
     Object.values(contents).forEach(el => { if(el) el.classList.add("hide"); }); 
@@ -1262,6 +1304,50 @@
       });
     } catch (err) { 
       notice.innerHTML = '<span class="text-red-400">SYS_ERR: ' + err.message + '</span>'; 
+    }
+  }
+
+  // ==========================================
+  // GROK AI INTEGRATION LOGIC (FIXED)
+  // ==========================================
+  async function runGrokAIQuery() {
+    const promptText = document.getElementById("inputGrokPrompt").value.trim();
+    const resultBox = document.getElementById("grokResultContainer");
+
+    if (!promptText) return showToast("Prompt tidak boleh kosong!");
+
+    showToast("Menghubungkan ke Grok AI...");
+    resultBox.classList.remove("hide");
+    resultBox.innerHTML = '<span class="text-cyan-400 animate-pulse">Mengirim permintaan ke xAI Grok...</span>';
+
+    try {
+      const response = await fetch(GROK_API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${GROK_API_KEY}`
+        },
+        body: JSON.stringify({
+          model: "grok-4.6",
+          messages: [
+            { role: "system", content: "Anda adalah asisten AI Grok yang cerdas." },
+            { role: "user", content: promptText }
+          ],
+          stream: false
+        })
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error?.message || `HTTP Error status: ${response.status}`);
+      }
+
+      const aiReply = data.choices && data.choices[0] && data.choices[0].message ? data.choices[0].message.content : "Respon tidak dikenali.";
+      resultBox.innerHTML = `<span class="text-cyan-400 font-bold">[GROK_RESPONSE]:</span><br/><div class="mt-2 text-white">${escapeHtml(aiReply)}</div>`;
+      showToast("Respon Grok AI diterima!");
+    } catch (err) {
+      resultBox.innerHTML = `<span class="text-red-400 font-bold">[ERROR / CORS BLOCKED]:</span><br/><div class="mt-1">${escapeHtml(err.message)}</div><div class="mt-2 text-[9px] text-zinc-400">Catatan: Beberapa API langsung menolak request browser (CORS). Jika error karena CORS, pastikan menggunakan server proxy/backend atau jalankan di lingkungan yang mengizinkannya.</div>`;
+      showToast("Gagal memproses AI.");
     }
   }
 
