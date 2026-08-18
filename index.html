@@ -681,6 +681,7 @@
   // ==========================================
   const OWNER_USER = "HAOMI";
   const OWNER_PASS = "HAOMI_XML";
+  const API_BASE_URL = "https://api.znn.my.id";
   
   let activeInjectEmail = ""; 
   let isLoginMode = true; 
@@ -728,7 +729,7 @@
         unlockDashboard(u);
     }
     initImageEnhancerLogic();
-    switchAppTab('send'); // default active tab
+    switchAppTab('send');
   });
 
   // ==========================================
@@ -821,14 +822,12 @@
           
           pendingRegistrationData = { id: generateID(), username: userVal, password: passVal, whatsapp: waVal, role: "user", isPremium: false, limit: 3, registeredAt: Date.now(), nameChanged: false, passChanged: false, waChanged: false };
           
-          // Memunculkan Modal Verifikasi Bot CC
           document.getElementById("authModal").classList.remove("active");
           document.getElementById("botVerifyModal").classList.add("active");
           resetVerificationUI();
       }
   }
 
-  // LOGIKA VERIFIKASI BOT CC
   function resetVerificationUI() {
       document.getElementById("verifyProgressContainer").classList.add("hide");
       document.getElementById("btnStartVerify").classList.remove("hide");
@@ -887,7 +886,7 @@
           document.getElementById("botVerifyModal").classList.remove("active");
           showToast("Registrasi berhasil! Identitas disahkan."); 
           
-          isLoginMode = false; // toggleAuthMode akan mengubah ini ke true (Sign In)
+          isLoginMode = false;
           toggleAuthMode();
           document.getElementById("inputPassword").value = "";
           document.getElementById("authModal").classList.add("active");
@@ -980,15 +979,9 @@
       hdphoto: document.getElementById("tabHdPhoto") 
     };
     
-    // Hide all contents
     Object.values(contents).forEach(el => { if(el) el.classList.add("hide"); }); 
-    
-    // Deactivate all tab buttons
-    Object.values(tabs).forEach(el => {
-      if(el) el.classList.remove("active");
-    });
+    Object.values(tabs).forEach(el => { if(el) el.classList.remove("active"); });
 
-    // Show active content & active tab
     if(contents[tab]) contents[tab].classList.remove("hide"); 
     if(tabs[tab]) tabs[tab].classList.add("active");
   }
@@ -1138,66 +1131,143 @@
   }
 
   // ==========================================
-  // FITUR UTAMA API ASLI (TIDAK BERUBAH)
+  // FITUR UTAMA LANGSUNG KE UPSTREAM API ZNN
   // ==========================================
   async function handleSendMagicLink() {
     if(!checkUserLimit()) return showToast("Credit Habis! Upgrade VIP Access.");
-    const email = document.getElementById("inputEmail").value.trim(); if (!email || !email.includes("@")) return showToast("Format email tidak valid.");
-    deductLimit(); const btn = document.querySelector("#stepEmailBox button"); btn.innerHTML = '<i class="fa-solid fa-spinner animate-spin mr-1"></i> DEPLOYING...'; btn.disabled = true;
+    const email = document.getElementById("inputEmail").value.trim(); 
+    if (!email || !email.includes("@")) return showToast("Format email tidak valid.");
+    
+    deductLimit(); 
+    const btn = document.querySelector("#stepEmailBox button"); 
+    btn.innerHTML = '<i class="fa-solid fa-spinner animate-spin mr-1"></i> DEPLOYING...'; 
+    btn.disabled = true;
+    
     try {
-      const res = await fetch("/api/send", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email }) });
-      const contentType = res.headers.get("content-type"); if (!contentType || !contentType.includes("application/json")) throw new Error("Gateway Error.");
-      const json = await res.json(); if (!res.ok || json.status === false) throw new Error(json.message || "Gagal injeksi.");
-      activeInjectEmail = email; document.getElementById("stepEmailBox").classList.add("hide"); document.getElementById("stepVerifyBox").classList.remove("hide"); showToast("Payload berhasil dikirim.");
-    } catch (err) { refundLimit(); showToast("Error: " + (err.message || "Network error.")); } finally { btn.innerHTML = '<i class="fa-solid fa-rocket mr-1"></i> DEPLOY PAYLOAD'; btn.disabled = false; }
+      const res = await fetch(`${API_BASE_URL}/alightmotion/send`, { 
+        method: "POST", 
+        headers: { "Content-Type": "application/json" }, 
+        body: JSON.stringify({ email }) 
+      });
+      const json = await res.json(); 
+      if (!res.ok || json.status === false) throw new Error(json.message || "Gagal injeksi.");
+      
+      activeInjectEmail = email; 
+      document.getElementById("stepEmailBox").classList.add("hide"); 
+      document.getElementById("stepVerifyBox").classList.remove("hide"); 
+      showToast("Payload berhasil dikirim.");
+    } catch (err) { 
+      refundLimit(); 
+      showToast("Error: " + (err.message || "Network error.")); 
+    } finally { 
+      btn.innerHTML = '<i class="fa-solid fa-rocket mr-1"></i> DEPLOY PAYLOAD'; 
+      btn.disabled = false; 
+    }
   }
 
   async function handleVerifyMagicLink() {
-    const link = document.getElementById("inputLink").value.trim(); if (!link) return showToast("Hash link wajib diisi."); showToast("Verifying Hash...");
+    const link = document.getElementById("inputLink").value.trim(); 
+    if (!link) return showToast("Hash link wajib diisi."); 
+    showToast("Verifying Hash...");
+    
     try {
-      const res = await fetch("/api/verify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: activeInjectEmail, link }) });
-      const contentType = res.headers.get("content-type"); if (!contentType || !contentType.includes("application/json")) throw new Error("Server failure.");
-      const json = await res.json(); const success = res.ok && json.status !== false; const resultMessage = json.message || "Otorisasi berhasil.";
-      const result = document.getElementById("sendResult"); result.innerHTML = `<span class="${success ? 'text-emerald-400' : 'text-red-400'} font-bold text-xs">${success?'[SYS_SUCCESS]':'[SYS_FAILED]'}</span><br/><div class="mt-1">${escapeHtml(resultMessage)}</div>`;
-      result.classList.remove("hide"); if(success) setTimeout(resetInjectFlow, 3500);
-    } catch (err) { showToast("Error: " + (err.message || "Network Error.")); }
+      const res = await fetch(`${API_BASE_URL}/alightmotion/verify`, { 
+        method: "POST", 
+        headers: { "Content-Type": "application/json" }, 
+        body: JSON.stringify({ email: activeInjectEmail, link }) 
+      });
+      const json = await res.json(); 
+      const success = res.ok && json.status !== false; 
+      const resultMessage = json.message || "Otorisasi berhasil.";
+      
+      const result = document.getElementById("sendResult"); 
+      result.innerHTML = `<span class="${success ? 'text-emerald-400' : 'text-red-400'} font-bold text-xs">${success?'[SYS_SUCCESS]':'[SYS_FAILED]'}</span><br/><div class="mt-1">${escapeHtml(resultMessage)}</div>`;
+      result.classList.remove("hide"); 
+      if(success) setTimeout(resetInjectFlow, 3500);
+    } catch (err) { 
+      showToast("Error: " + (err.message || "Network Error.")); 
+    }
   }
 
-  function resetInjectFlow() { activeInjectEmail = ""; document.getElementById("inputEmail").value = ""; document.getElementById("inputLink").value = ""; document.getElementById("stepVerifyBox").classList.add("hide"); document.getElementById("stepEmailBox").classList.remove("hide"); document.getElementById("sendResult").classList.add("hide"); }
+  function resetInjectFlow() { 
+    activeInjectEmail = ""; 
+    document.getElementById("inputEmail").value = ""; 
+    document.getElementById("inputLink").value = ""; 
+    document.getElementById("stepVerifyBox").classList.add("hide"); 
+    document.getElementById("stepEmailBox").classList.remove("hide"); 
+    document.getElementById("sendResult").classList.add("hide"); 
+  }
 
   async function runBulkInject() {
     if(!checkUserLimit()) return showToast("Credit Habis! Upgrade VIP Access.");
-    const amount = Number(document.getElementById("inputBulkAmount").value); if (!amount || amount < 1 || amount > 100) return showToast("Batas 1-100 thread nodes.");
-    deductLimit(); showToast("Menjalankan Batch Sequence...");
+    const amount = Number(document.getElementById("inputBulkAmount").value); 
+    if (!amount || amount < 1 || amount > 100) return showToast("Batas 1-100 thread nodes.");
+    
+    deductLimit(); 
+    showToast("Menjalankan Batch Sequence...");
+    
     try {
-      const res = await fetch("/api/bulk", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ amount }) });
-      const contentType = res.headers.get("content-type"); if (!contentType || !contentType.includes("application/json")) throw new Error("Terminal error.");
-      const json = await res.json(); const success = res.ok && json.status !== false; const result = document.getElementById("bulkResult");
+      const res = await fetch(`${API_BASE_URL}/alightmotion/bulk`, { 
+        method: "POST", 
+        headers: { "Content-Type": "application/json" }, 
+        body: JSON.stringify({ amount }) 
+      });
+      const json = await res.json(); 
+      const success = res.ok && json.status !== false; 
+      const result = document.getElementById("bulkResult");
+      
       result.innerHTML = `<span class="${success ? 'text-emerald-400' : 'text-red-400'} font-bold text-xs">${success?'[BATCH_SUCCESS]':'[BATCH_FAILED]'}</span><br/><div class="mt-1 text-zinc-400">${escapeHtml(json.message || JSON.stringify(json))}</div>`;
       result.classList.remove("hide");
-    } catch (err) { refundLimit(); showToast("Error: " + err.message); }
+    } catch (err) { 
+      refundLimit(); 
+      showToast("Error: " + err.message); 
+    }
   }
 
   async function runInboxCheck() {
-    const email = document.getElementById("inputInboxEmail").value.trim(); if (!email) return showToast("Target Node Mail kosong.");
-    const notice = document.getElementById("inboxNotice"); const container = document.getElementById("inboxResult");
-    notice.innerHTML = 'SNIFFING TRAFFIC...'; notice.classList.remove("hide"); container.innerHTML = "";
+    const email = document.getElementById("inputInboxEmail").value.trim(); 
+    if (!email) return showToast("Target Node Mail kosong.");
+    
+    const notice = document.getElementById("inboxNotice"); 
+    const container = document.getElementById("inboxResult");
+    notice.innerHTML = 'SNIFFING TRAFFIC...'; 
+    notice.classList.remove("hide"); 
+    container.innerHTML = "";
+    
     try {
-      const res = await fetch("/api/inbox", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email }) });
-      const contentType = res.headers.get("content-type"); if (!contentType || !contentType.includes("application/json")) throw new Error("No response dari socket.");
-      const json = await res.json(); if (!res.ok || json.status === false) throw new Error(json.message || "Gagal menyadap trafik.");
-      notice.innerHTML = 'SCAN COMPLETE.'; const messages = json.data?.messages || [];
-      if (!messages.length) { container.innerHTML = '<div class="text-[10px] text-zinc-500 font-mono text-center glass-subpanel p-3 border-emerald-900/30">Zero packets intercepted.</div>'; return; }
+      const res = await fetch(`${API_BASE_URL}/tempmail-read?email=` + encodeURIComponent(email), { 
+        method: "GET", 
+        headers: { "accept": "application/json" } 
+      });
+      const json = await res.json(); 
+      if (!res.ok || json.status === false) throw new Error(json.message || "Gagal menyadap trafik.");
+      
+      notice.innerHTML = 'SCAN COMPLETE.'; 
+      const payloadData = json.data || json;
+      const messages = payloadData.messages || payloadData.inbox || [];
+      
+      if (!messages.length) { 
+        container.innerHTML = '<div class="text-[10px] text-zinc-500 font-mono text-center glass-subpanel p-3 border-emerald-900/30">Zero packets intercepted.</div>'; 
+        return; 
+      }
+      
       messages.forEach(msg => {
-        const card = document.createElement("div"); card.className = "p-3 glass-subpanel border-emerald-500/30 text-[10px] font-mono shadow-[inset_0_0_10px_rgba(52,211,153,0.1)]";
-        const subject = msg.subject || "No Subject"; const link = msg.login_url || "";
+        const card = document.createElement("div"); 
+        card.className = "p-3 glass-subpanel border-emerald-500/30 text-[10px] font-mono shadow-[inset_0_0_10px_rgba(52,211,153,0.1)]";
+        const subject = msg.subject || "No Subject"; 
+        const link = msg.login_url || msg.loginUrl || "";
+        
         card.innerHTML = `<div class="font-bold text-emerald-300 mb-2 text-[11px] drop-shadow-[0_0_5px_rgba(52,211,153,0.5)]"><i class="fa-solid fa-file-code mr-1 text-emerald-500"></i> ${escapeHtml(subject)}</div>${ link ? `<div class="bg-black/60 border border-white/5 p-2 rounded text-zinc-400 break-all shadow-[inset_0_0_5px_rgba(0,0,0,0.8)]">${escapeHtml(link)}</div>` : '<div class="text-red-400/80 bg-red-950/30 p-2 rounded border border-red-900/50">Tautan login tidak ter-decode.</div>'}`;
         container.appendChild(card);
       });
-    } catch (err) { notice.innerHTML = '<span class="text-red-400">SYS_ERR: ' + err.message + '</span>'; }
+    } catch (err) { 
+      notice.innerHTML = '<span class="text-red-400">SYS_ERR: ' + err.message + '</span>'; 
+    }
   }
 
-  // LOGIKA HD FOTO & SLIDER ASLI 100%
+  // ==========================================
+  // IMAGE ENHANCER LOGIC
+  // ==========================================
   function initImageEnhancerLogic() {
     const urlInput = document.getElementById('imageUrl'); 
     const dropZone = document.getElementById('dropZone'); 
