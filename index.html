@@ -681,7 +681,9 @@
   // ==========================================
   const OWNER_USER = "HAOMI";
   const OWNER_PASS = "HAOMI_XML";
-  const API_BASE_URL = "https://api.znn.my.id";
+  
+  // Diperbarui agar mengarah ke endpoint lokal/relative Vercel (/api) agar tidak terjadi error CORS / Failed to fetch
+  const API_BASE_URL = "/api";
   
   let activeInjectEmail = ""; 
   let isLoginMode = true; 
@@ -1131,7 +1133,7 @@
   }
 
   // ==========================================
-  // FITUR UTAMA LANGSUNG KE UPSTREAM API ZNN
+  // FITUR UTAMA LANGSUNG KE VERCEL SERVERLESS (/api/...)
   // ==========================================
   async function handleSendMagicLink() {
     if(!checkUserLimit()) return showToast("Credit Habis! Upgrade VIP Access.");
@@ -1144,7 +1146,7 @@
     btn.disabled = true;
     
     try {
-      const res = await fetch(`${API_BASE_URL}/alightmotion/send`, { 
+      const res = await fetch(`${API_BASE_URL}/send`, { 
         method: "POST", 
         headers: { "Content-Type": "application/json" }, 
         body: JSON.stringify({ email }) 
@@ -1171,7 +1173,7 @@
     showToast("Verifying Hash...");
     
     try {
-      const res = await fetch(`${API_BASE_URL}/alightmotion/verify`, { 
+      const res = await fetch(`${API_BASE_URL}/verify`, { 
         method: "POST", 
         headers: { "Content-Type": "application/json" }, 
         body: JSON.stringify({ email: activeInjectEmail, link }) 
@@ -1207,7 +1209,7 @@
     showToast("Menjalankan Batch Sequence...");
     
     try {
-      const res = await fetch(`${API_BASE_URL}/alightmotion/bulk`, { 
+      const res = await fetch(`${API_BASE_URL}/bulk`, { 
         method: "POST", 
         headers: { "Content-Type": "application/json" }, 
         body: JSON.stringify({ amount }) 
@@ -1235,9 +1237,11 @@
     container.innerHTML = "";
     
     try {
-      const res = await fetch(`${API_BASE_URL}/tempmail-read?email=` + encodeURIComponent(email), { 
-        method: "GET", 
-        headers: { "accept": "application/json" } 
+      // Diubah ke POST agar sesuai dengan validasi onlyPost(req, res) pada file backend inbox.js
+      const res = await fetch(`${API_BASE_URL}/inbox`, { 
+        method: "POST", 
+        headers: { "Content-Type": "application/json" }, 
+        body: JSON.stringify({ email }) 
       });
       const json = await res.json(); 
       if (!res.ok || json.status === false) throw new Error(json.message || "Gagal menyadap trafik.");
