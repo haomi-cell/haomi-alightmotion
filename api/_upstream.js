@@ -59,29 +59,16 @@ export async function callAlightMotion(action, params = {}) {
   const token = cleanString(process.env.AM_TOKEN, 4096);
   const accessToken = cleanString(process.env.ZNN_ACCESS_TOKEN, 4096);
 
-  // Jika kedua env var tidak di-set, kita fallback ke simulated response agar
-  // frontend masih bisa dipakai saat testing lokal atau jika pemilik belum
-  // mengisi env vars di hosting.
-  if (!token || !accessToken) {
-    console.warn("AM_TOKEN atau ZNN_ACCESS_TOKEN belum diatur. Menggunakan fallback simulasi.");
+  if (!token) {
+    const error = new Error("AM_TOKEN belum diatur di Environment Variables Vercel.");
+    error.statusCode = 500;
+    throw error;
+  }
 
-    const simulated = {
-      status: true,
-      message: `Simulated response for action ${action}`,
-      action,
-      params
-    };
-
-    const safeData = sanitize(simulated);
-    if (safeData && typeof safeData === "object") {
-      safeData.creator = "𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞";
-    }
-
-    return {
-      ok: true,
-      statusCode: 200,
-      data: safeData
-    };
+  if (!accessToken) {
+    const error = new Error("ZNN_ACCESS_TOKEN belum diatur di Environment Variables Vercel.");
+    error.statusCode = 500;
+    throw error;
   }
 
   const base = cleanString(process.env.AM_API_BASE || DEFAULT_BASE, 1024).replace(/\/+$/, "");
@@ -127,11 +114,6 @@ export async function callAlightMotion(action, params = {}) {
 
   const safeData = sanitize(data);
 
-  // Mengubah creator menjadi 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞 secara otomatis
-  if (safeData && typeof safeData === "object") {
-    safeData.creator = "𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞";
-  }
-
   return {
     ok: response.ok && safeData && safeData.status !== false,
     statusCode: response.status,
@@ -142,17 +124,10 @@ export async function callAlightMotion(action, params = {}) {
 export async function callTempMailRead(email) {
   const accessToken = cleanString(process.env.ZNN_ACCESS_TOKEN, 4096);
 
-  // Fallback saat env tidak tersedia supaya fitur inbox masih bisa diuji.
   if (!accessToken) {
-    console.warn("ZNN_ACCESS_TOKEN belum diatur. Menggunakan fallback simulasi untuk Temp Mail.");
-    const simulated = {
-      status: true,
-      message: "Simulated tempmail response",
-      data: { email, count: 0, messages: [] }
-    };
-    const safeData = sanitize(simulated);
-    if (safeData && typeof safeData === "object") safeData.creator = "𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞";
-    return { ok: true, statusCode: 200, data: safeData };
+    const error = new Error("ZNN_ACCESS_TOKEN belum diatur di Environment Variables Vercel.");
+    error.statusCode = 500;
+    throw error;
   }
 
   const root = cleanString(process.env.TEMPMAIL_API_BASE || DEFAULT_API_ROOT, 1024).replace(/\/+$/, "");
@@ -191,11 +166,6 @@ export async function callTempMailRead(email) {
   }
 
   const safeData = sanitize(data);
-
-  // Mengubah creator menjadi 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞 secara otomatis
-  if (safeData && typeof safeData === "object") {
-    safeData.creator = "𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞";
-  }
 
   return {
     ok: response.ok && safeData && safeData.status !== false,
