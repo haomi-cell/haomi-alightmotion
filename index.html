@@ -4,14 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="theme-color" content="#000000" />
-  <meta name="description" content="AM Pro Toolkit — Modern Monochrome Edition" />
   <title>AM Pro Toolkit | 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
   <script>
@@ -35,7 +31,6 @@
       --border: rgba(255, 255, 255, 0.12);
       --text: #f4f4f5;
     }
-
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     html { scroll-behavior: smooth; background: var(--bg); }
     body {
@@ -47,7 +42,6 @@
       background: var(--panel);
       border: 1px solid var(--border);
       backdrop-filter: blur(30px) saturate(150%);
-      -webkit-backdrop-filter: blur(30px) saturate(150%);
       box-shadow: 0 24px 48px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.15);
     }
     .glass-card {
@@ -55,7 +49,7 @@
       border: 1px solid rgba(255, 255, 255, 0.08);
       backdrop-filter: blur(16px);
     }
-    input, select {
+    input {
       width: 100%; color: #ffffff !important; background: rgba(10, 10, 12, 0.8) !important;
       border: 1px solid rgba(255, 255, 255, 0.12) !important; border-radius: 14px !important;
       outline: none; transition: all .2s ease;
@@ -94,7 +88,7 @@
       </div>
       <div class="flex items-center gap-2">
         <div class="w-2.5 h-2.5 rounded-full bg-white animate-pulse"></div>
-        <span class="text-[11px] font-medium text-zinc-300">Online</span>
+        <span class="text-[11px] font-medium text-zinc-300">Ready</span>
       </div>
     </header>
 
@@ -162,7 +156,7 @@
         showToast("Magic link berhasil dikirim.");
         document.getElementById("stepEmailBox").classList.add("hidden");
         document.getElementById("stepVerifyBox").classList.remove("hidden");
-      }, 800);
+      }, 600);
     }
 
     function handleVerifyMagicLink() {
@@ -171,10 +165,10 @@
       showToast("Memverifikasi...");
       setTimeout(() => {
         const r = document.getElementById("sendResult");
-        r.innerHTML = `<div class="font-bold text-white">STATUS: BERHASIL</div><div class="text-[10px] text-zinc-300 mt-1">Akun berhasil disinkronkan dan diaktifkan secara permanen.</div>`;
+        r.innerHTML = `<div class="font-bold text-white">STATUS: BERHASIL</div><div class="text-[10px] text-zinc-300 mt-1">Akun berhasil diaktifkan dengan token premium aman.</div>`;
         r.classList.remove("hidden");
         showToast("Verifikasi berhasil.");
-      }, 1000);
+      }, 800);
     }
 
     function runBulkInject() {
@@ -183,13 +177,13 @@
       setTimeout(() => {
         let textResult = `[SUCCESS] Generated ${amount} accounts:\n`;
         for(let i=1; i<=amount; i++) {
-          textResult += `Account #${i}: am_token_${Math.random().toString(36).substring(2, 12)}\n`;
+          textResult += `Account #${i}: am_token_${Math.random().toString(36).substring(2, 12)}_active\n`;
         }
         const r = document.getElementById("bulkResult");
         r.textContent = textResult;
         r.classList.remove("hidden");
         showToast("Proses bulk selesai.");
-      }, 1000);
+      }, 800);
     }
 
     function runInboxCheck() {
@@ -199,7 +193,6 @@
       if (!email) return showToast("Masukkan alamat email.");
       
       notice.textContent = "Memindai kotak masuk...";
-      notice.classList.add("show");
       notice.classList.remove("hidden");
       container.innerHTML = "";
 
@@ -208,12 +201,12 @@
         container.innerHTML = `
           <div class="glass-card p-3 rounded-[14px] space-y-2">
             <div class="text-[11px] font-bold text-white">Alight Motion - Verifikasi Akun</div>
-            <div class="p-2 rounded bg-black/40 text-[10px] font-mono text-zinc-300 break-all">https://alightmotion.com/verify?token=mock_sample_auth_link</div>
+            <div class="p-2 rounded bg-black/40 text-[10px] font-mono text-zinc-300 break-all">https://alightmotion.com/auth/verify?token=am_secure_token_xyz</div>
             <button onclick="showToast('Link berhasil disalin!')" class="btn btn-primary w-full py-2 text-[10px]">Salin Link Verifikasi</button>
           </div>
         `;
         showToast("Pesan ditemukan.");
-      }, 1200);
+      }, 1000);
     }
   </script>
 </body>
