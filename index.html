@@ -87,47 +87,53 @@
         </div>
       </div>
       <div class="flex items-center gap-2">
-        <div class="w-2.5 h-2.5 rounded-full bg-white animate-pulse"></div>
+        <div class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></div>
         <span class="text-[11px] font-medium text-zinc-300">Online</span>
       </div>
     </header>
 
     <main class="glass rounded-[28px] p-5 sm:p-6 flex flex-col gap-5">
+      <!-- Input Akses Key Global (VIP) -->
+      <div class="space-y-1.5">
+        <label class="text-[11px] font-medium text-zinc-400 ml-1">Akses Key (VIP)</label>
+        <input id="inputAksesKey" type="text" value="aks-1d3bd53f4d857a690a77471d" placeholder="Masukkan akseskey..." class="p-3 text-[12px] font-mono" />
+      </div>
+
       <div class="grid grid-cols-3 gap-1.5 p-1 bg-white/[0.03] border border-white/10 rounded-[18px]">
         <button id="tabSend" onclick="switchTab('send')" class="nav-pill active py-2.5 rounded-[14px] text-[11px] font-semibold">Aktivasi</button>
         <button id="tabBulk" onclick="switchTab('bulk')" class="nav-pill py-2.5 rounded-[14px] text-[11px] font-semibold">Bulk</button>
-        <button id="tabInbox" onclick="switchTab('inbox')" class="nav-pill py-2.5 rounded-[14px] text-[11px] font-semibold">Inbox</button>
+        <button id="tabVerify" onclick="switchTab('verify')" class="nav-pill py-2.5 rounded-[14px] text-[11px] font-semibold">Verifikasi</button>
       </div>
 
-      <!-- Tab Aktivasi -->
+      <!-- Tab 1: AM Send -->
       <div id="contentSend" class="space-y-4">
-        <h2 class="text-[16px] font-bold text-white">Aktivasi Alight Motion</h2>
-        <div id="stepEmailBox" class="space-y-3">
-          <input id="inputEmail" type="email" placeholder="nama@domain.com" class="p-3.5 text-[12px]" />
-          <button onclick="handleSendMagicLink()" class="btn btn-primary w-full py-3.5 text-[12px]">Kirim Magic Link</button>
+        <h2 class="text-[16px] font-bold text-white">Alight Motion Send</h2>
+        <div class="space-y-3">
+          <input id="inputSendEmail" type="email" placeholder="email_pembeli@domain.com" class="p-3.5 text-[12px]" />
+          <button onclick="runAmSend()" class="btn btn-primary w-full py-3.5 text-[12px]">Kirim Magic Link</button>
         </div>
-        <div id="stepVerifyBox" class="hidden space-y-3">
-          <input id="inputLink" type="text" placeholder="Tempel link verifikasi" class="p-3.5 text-[12px]" />
-          <button onclick="handleVerifyMagicLink()" class="btn btn-primary w-full py-3.5 text-[12px]">Verifikasi & Eksekusi</button>
-        </div>
-        <div id="sendResult" class="glass-card hidden p-4 rounded-[16px] text-[11px]"></div>
+        <div id="sendResult" class="glass-card hidden p-4 rounded-[16px] text-[11px] font-mono overflow-y-auto max-h-40"></div>
       </div>
 
-      <!-- Tab Bulk -->
+      <!-- Tab 2: AM Bulk -->
       <div id="contentBulk" class="space-y-4 hidden">
-        <h2 class="text-[16px] font-bold text-white">Bulk Generator</h2>
-        <input id="inputBulkAmount" type="number" min="1" max="100" value="5" class="p-3.5 text-[12px]" />
-        <button onclick="runBulkInject()" class="btn btn-primary w-full py-3.5 text-[12px]">Mulai Generate Bulk</button>
+        <h2 class="text-[16px] font-bold text-white">Alight Motion Bulk Email</h2>
+        <div class="space-y-3">
+          <input id="inputBulkAmount" type="number" min="1" max="100" value="5" placeholder="Jumlah akun" class="p-3.5 text-[12px]" />
+          <button onclick="runAmBulk()" class="btn btn-primary w-full py-3.5 text-[12px]">Mulai Generate Bulk</button>
+        </div>
         <div id="bulkResult" class="glass-card hidden p-4 rounded-[16px] text-[11px] max-h-48 overflow-y-auto font-mono"></div>
       </div>
 
-      <!-- Tab Inbox -->
-      <div id="contentInbox" class="space-y-4 hidden">
-        <h2 class="text-[16px] font-bold text-white">Pindai Inbox</h2>
-        <input id="inputInboxEmail" type="email" placeholder="email@tempmail.com" class="p-3.5 text-[12px]" />
-        <button onclick="runInboxCheck()" class="btn btn-primary w-full py-3.5 text-[12px]">Pindai Pesan</button>
-        <div id="inboxNotice" class="hidden p-3 rounded-[12px] text-[11px] bg-white/5 text-zinc-300"></div>
-        <div id="inboxResult" class="space-y-2.5 max-h-48 overflow-y-auto"></div>
+      <!-- Tab 3: AM Verify -->
+      <div id="contentVerify" class="space-y-4 hidden">
+        <h2 class="text-[16px] font-bold text-white">Alight Motion Verify</h2>
+        <div class="space-y-3">
+          <input id="inputVerifyEmail" type="email" placeholder="Email dari hasil bulk" class="p-3.5 text-[12px]" />
+          <input id="inputVerifyLink" type="text" placeholder="Tempel link verifikasi" class="p-3.5 text-[12px]" />
+          <button onclick="runAmVerify()" class="btn btn-primary w-full py-3.5 text-[12px]">Verifikasi & Aktifkan</button>
+        </div>
+        <div id="verifyResult" class="glass-card hidden p-4 rounded-[16px] text-[11px] font-mono overflow-y-auto max-h-40"></div>
       </div>
     </main>
   </div>
@@ -135,11 +141,7 @@
   <div id="toast" class="toast fixed z-50 bottom-6 left-1/2 rounded-[16px] px-5 py-3 text-[11px] text-white"></div>
 
   <script>
-    const API_KEY = "e329d3cb861969fe599ef5fe";
-    const ACCESS_TOKEN = "aks-1d3bd53f4d857a690a77471d";
-    const BASE_URL = "https://ndxhs.my.id";
-
-    let activeEmail = "";
+    const BASE_URL = "https://ndxhs.my.id/alightmotion";
 
     function showToast(msg) {
       const t = document.getElementById("toast");
@@ -148,89 +150,71 @@
     }
 
     function switchTab(tab) {
-      ['send','bulk','inbox'].forEach(t => {
+      ['send','bulk','verify'].forEach(t => {
         document.getElementById('content'+t.charAt(0).toUpperCase()+t.slice(1)).classList.toggle('hidden', t !== tab);
         document.getElementById('tab'+t.charAt(0).toUpperCase()+t.slice(1)).classList.toggle('active', t === tab);
       });
     }
 
-    async function handleSendMagicLink() {
-      const email = document.getElementById("inputEmail").value.trim();
-      if (!email) return showToast("Masukkan email yang valid.");
-      showToast("Mengirim magic link...");
-      try {
-        const res = await fetch(`${BASE_URL}/send?email=${encodeURIComponent(email)}`, {
-          headers: { "X-Zen-Key": API_KEY, "X-Zen-Access": ACCESS_TOKEN }
-        });
-        const data = await res.json();
-        if (data.status !== false) {
-          activeEmail = email;
-          showToast("Magic link berhasil dikirim.");
-          document.getElementById("stepEmailBox").classList.add("hidden");
-          document.getElementById("stepVerifyBox").classList.remove("hidden");
-        } else {
-          showToast(data.message || "Gagal mengirim.");
-        }
-      } catch (e) {
-        showToast("Gagal terhubung ke server backend.");
-      }
+    function getAksesKey() {
+      return document.getElementById("inputAksesKey").value.trim();
     }
 
-    async function handleVerifyMagicLink() {
-      const link = document.getElementById("inputLink").value.trim();
-      if (!link) return showToast("Masukkan link verifikasi.");
-      showToast("Memverifikasi...");
+    async function runAmSend() {
+      const akseskey = getAksesKey();
+      const email = document.getElementById("inputSendEmail").value.trim();
+      if (!akseskey) return showToast("Masukkan Akses Key VIP.");
+      if (!email) return showToast("Masukkan email tujuan.");
+
+      showToast("Mengirim magic link...");
       try {
-        const res = await fetch(`${BASE_URL}/verify?email=${encodeURIComponent(activeEmail)}&link=${encodeURIComponent(link)}`, {
-          headers: { "X-Zen-Key": API_KEY, "X-Zen-Access": ACCESS_TOKEN }
-        });
+        const res = await fetch(`${BASE_URL}/send?akseskey=${encodeURIComponent(akseskey)}&email=${encodeURIComponent(email)}`);
         const data = await res.json();
         const r = document.getElementById("sendResult");
         r.textContent = JSON.stringify(data, null, 2);
         r.classList.remove("hidden");
-        showToast("Verifikasi selesai.");
+        showToast("Proses AM Send selesai.");
       } catch (e) {
-        showToast("Verifikasi gagal diproses.");
+        showToast("Gagal terhubung ke server.");
       }
     }
 
-    async function runBulkInject() {
+    async function runAmBulk() {
+      const akseskey = getAksesKey();
       const amount = document.getElementById("inputBulkAmount").value;
+      if (!akseskey) return showToast("Masukkan Akses Key VIP.");
+      if (!amount) return showToast("Masukkan jumlah akun.");
+
       showToast("Memproses bulk generator...");
       try {
-        const res = await fetch(`${BASE_URL}/bulk?amount=${amount}`, {
-          headers: { "X-Zen-Key": API_KEY, "X-Zen-Access": ACCESS_TOKEN }
-        });
+        const res = await fetch(`${BASE_URL}/bulk?akseskey=${encodeURIComponent(akseskey)}&amount=${amount}`);
         const data = await res.json();
         const r = document.getElementById("bulkResult");
         r.textContent = JSON.stringify(data, null, 2);
         r.classList.remove("hidden");
-        showToast("Bulk selesai digenerate.");
+        showToast("Bulk generator selesai.");
       } catch (e) {
         showToast("Proses bulk gagal.");
       }
     }
 
-    async function runInboxCheck() {
-      const email = document.getElementById("inputInboxEmail").value.trim();
-      const notice = document.getElementById("inboxNotice");
-      const container = document.getElementById("inboxResult");
-      if (!email) return showToast("Masukkan alamat email.");
-      
-      notice.textContent = "Memindai kotak masuk...";
-      notice.classList.remove("hidden");
-      container.innerHTML = "";
+    async function runAmVerify() {
+      const akseskey = getAksesKey();
+      const email = document.getElementById("inputVerifyEmail").value.trim();
+      const link = document.getElementById("inputVerifyLink").value.trim();
+      if (!akseskey) return showToast("Masukkan Akses Key VIP.");
+      if (!email || !link) return showToast("Lengkapi email dan link verifikasi.");
 
+      showToast("Memverifikasi akun...");
       try {
-        const res = await fetch(`${BASE_URL}/tempmail-read?email=${encodeURIComponent(email)}`, {
-          headers: { "X-Zen-Key": API_KEY, "X-Zen-Access": ACCESS_TOKEN }
-        });
+        const res = await fetch(`${BASE_URL}/verify?akseskey=${encodeURIComponent(akseskey)}&email=${encodeURIComponent(email)}&link=${encodeURIComponent(link)}`);
         const data = await res.json();
-        notice.textContent = "Pemindaian selesai.";
-        container.innerHTML = `<pre class="text-[10px] text-zinc-300 whitespace-pre-wrap">${JSON.stringify(data, null, 2)}</pre>`;
-        showToast("Inbox berhasil dipindai.");
+        const r = document.getElementById("verifyResult");
+        r.textContent = JSON.stringify(data, null, 2);
+        r.classList.remove("hidden");
+        showToast("Verifikasi selesai.");
       } catch (e) {
-        notice.textContent = "Gagal memindai inbox.";
+        showToast("Proses verifikasi gagal.");
       }
     }
   </script>
