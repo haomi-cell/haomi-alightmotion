@@ -3,7 +3,7 @@
  */
 const DEFAULT_BASE = "https://ndxhs.my.id/alightmotion";
 const DEFAULT_API_ROOT = "https://ndxhs.my.id";
-const API_KEY = "aks-1d3bd53f4d857a690a77471d"; // Key diatur secara langsung di sini
+const API_KEY = "e329d3cb861969fe599ef5fe"; // Key diatur secara langsung di sini
 
 function cleanString(value, max = 4000) {
   return String(value ?? "").trim().slice(0, max);
