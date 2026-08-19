@@ -1,4 +1,4 @@
-const DEFAULT_BASE = "https://ndxhs.my.id";
+const DEFAULT_BASE = "https://ndxhs.my.id/service";
 const DEFAULT_API_ROOT = "https://ndxhs.my.id";
 
 const HARDCODED_API_KEY = "e329d3cb861969fe599ef5fe";
@@ -59,22 +59,16 @@ function sanitize(value, depth = 0) {
 }
 
 export async function callAlightMotion(action, params = {}) {
-  const token = cleanString(process.env.ZEN_API_KEY || HARDCODED_API_KEY, 4096);
-  const accessToken = cleanString(process.env.ZEN_ACCESS_TOKEN || HARDCODED_ACCESS_TOKEN, 4096);
+  const token = cleanString(process.env.ISAAW_API_KEY || HARDCODED_API_KEY, 4096);
+  const accessToken = cleanString(process.env.ISAAW_ACCESS_TOKEN || HARDCODED_ACCESS_TOKEN, 4096);
 
   if (!token) {
-    const error = new Error("API Key belum tersedia.");
+    const error = new Error("ISAAW_API_KEY belum tersedia.");
     error.statusCode = 500;
     throw error;
   }
 
-  if (!accessToken) {
-    const error = new Error("Access Token belum tersedia.");
-    error.statusCode = 500;
-    throw error;
-  }
-
-  const base = cleanString(process.env.ZEN_API_BASE || DEFAULT_BASE, 1024).replace(/\/+$/, "");
+  const base = cleanString(process.env.ISAAW_API_BASE || DEFAULT_BASE, 1024).replace(/\/+$/, "");
   const url = new URL(base + "/" + action);
 
   for (const [key, value] of Object.entries(params)) {
@@ -90,9 +84,9 @@ export async function callAlightMotion(action, params = {}) {
       method: "GET",
       headers: {
         accept: "application/json",
-        "X-Zen-Access": accessToken,
-        "X-Zen-Key": token,
-        "user-agent": "zen-service-client/2.0"
+        "X-Isaaw-Access": accessToken,
+        "X-Isaaw-Key": token,
+        "user-agent": "isaaw-service-client/2.0"
       },
       redirect: "follow",
       signal: AbortSignal.timeout(28000)
@@ -125,15 +119,8 @@ export async function callAlightMotion(action, params = {}) {
 }
 
 export async function callTempMailRead(email) {
-  const accessToken = cleanString(process.env.ZEN_ACCESS_TOKEN || HARDCODED_ACCESS_TOKEN, 4096);
-
-  if (!accessToken) {
-    const error = new Error("Access Token belum tersedia.");
-    error.statusCode = 500;
-    throw error;
-  }
-
-  const root = cleanString(process.env.TEMPMAIL_API_BASE || DEFAULT_API_ROOT, 1024).replace(/\/+$/, "");
+  const accessToken = cleanString(process.env.ISAAW_ACCESS_TOKEN || HARDCODED_ACCESS_TOKEN, 4096);
+  const root = cleanString(process.env.ISAAW_API_BASE_ROOT || DEFAULT_API_ROOT, 1024).replace(/\/+$/, "");
   const url = new URL(root + "/tempmail-read");
   url.searchParams.set("email", email);
 
@@ -144,8 +131,8 @@ export async function callTempMailRead(email) {
       method: "GET",
       headers: {
         accept: "application/json",
-        "X-Zen-Access": accessToken,
-        "user-agent": "zen-service-client/2.0"
+        "X-Isaaw-Access": accessToken,
+        "user-agent": "isaaw-service-client/2.0"
       },
       redirect: "follow",
       signal: AbortSignal.timeout(28000)
