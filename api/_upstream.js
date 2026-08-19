@@ -1,5 +1,9 @@
+/**
+ * Creator: 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞
+ */
 const DEFAULT_BASE = "https://ndxhs.my.id/alightmotion";
 const DEFAULT_API_ROOT = "https://ndxhs.my.id";
+const API_KEY = "aks-1d3bd53f4d857a690a77471d"; // Key diatur secara langsung di sini
 
 function cleanString(value, max = 4000) {
   return String(value ?? "").trim().slice(0, max);
@@ -57,16 +61,10 @@ function sanitize(value, depth = 0) {
 
 export async function callAlightMotion(action, params = {}) {
   const token = cleanString(process.env.AM_TOKEN, 4096);
-  const accessToken = cleanString(process.env.ZNN_ACCESS_TOKEN, 4096);
+  const accessToken = API_KEY; // Menggunakan key baru secara permanen
 
   if (!token) {
     const error = new Error("AM_TOKEN belum diatur di Environment Variables Vercel.");
-    error.statusCode = 500;
-    throw error;
-  }
-
-  if (!accessToken) {
-    const error = new Error("ZNN_ACCESS_TOKEN belum diatur di Environment Variables Vercel.");
     error.statusCode = 500;
     throw error;
   }
@@ -89,7 +87,7 @@ export async function callAlightMotion(action, params = {}) {
         accept: "application/json",
         "X-ZNN-Access": accessToken,
         "X-AM-Token": token,
-        "user-agent": "znn-am-activation/1.3"
+        "user-agent": "xMSHaomi-am-activation/1.3"
       },
       redirect: "follow",
       signal: AbortSignal.timeout(28000)
@@ -122,13 +120,7 @@ export async function callAlightMotion(action, params = {}) {
 }
 
 export async function callTempMailRead(email) {
-  const accessToken = cleanString(process.env.ZNN_ACCESS_TOKEN, 4096);
-
-  if (!accessToken) {
-    const error = new Error("ZNN_ACCESS_TOKEN belum diatur di Environment Variables Vercel.");
-    error.statusCode = 500;
-    throw error;
-  }
+  const accessToken = API_KEY; // Menggunakan key baru secara permanen
 
   const root = cleanString(process.env.TEMPMAIL_API_BASE || DEFAULT_API_ROOT, 1024).replace(/\/+$/, "");
   const url = new URL(root + "/tempmail-read");
@@ -142,7 +134,7 @@ export async function callTempMailRead(email) {
       headers: {
         accept: "application/json",
         "X-ZNN-Access": accessToken,
-        "user-agent": "znn-am-activation/1.3"
+        "user-agent": "xMSHaomi-am-activation/1.3"
       },
       redirect: "follow",
       signal: AbortSignal.timeout(28000)
@@ -192,3 +184,5 @@ export function onlyPost(req, res) {
   }
   return true;
 }
+
+
