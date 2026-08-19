@@ -1,8 +1,5 @@
-const DEFAULT_BASE = "https://ndxhs.my.id/service";
+const DEFAULT_BASE = "https://ndxhs.my.id";
 const DEFAULT_API_ROOT = "https://ndxhs.my.id";
-
-const HARDCODED_API_KEY = "e329d3cb861969fe599ef5fe";
-const HARDCODED_ACCESS_TOKEN = "aks-1d3bd53f4d857a690a77471d";
 
 function cleanString(value, max = 4000) {
   return String(value ?? "").trim().slice(0, max);
@@ -51,7 +48,7 @@ function sanitize(value, depth = 0) {
 
   if (typeof value === "string") {
     return value
-      .replace(/(aks-|zk_|am_)[A-Za-z0-9_-]{16,}/g, "[hidden]")
+      .replace(/am_[A-Za-z0-9_-]{16,}/g, "[hidden]")
       .slice(0, 12000);
   }
 
@@ -59,17 +56,13 @@ function sanitize(value, depth = 0) {
 }
 
 export async function callAlightMotion(action, params = {}) {
-  const token = cleanString(process.env.ISAAW_API_KEY || HARDCODED_API_KEY, 4096);
-  const accessToken = cleanString(process.env.ISAAW_ACCESS_TOKEN || HARDCODED_ACCESS_TOKEN, 4096);
-
-  if (!token) {
-    const error = new Error("ISAAW_API_KEY belum tersedia.");
-    error.statusCode = 500;
-    throw error;
-  }
+  const apiKey = cleanString(process.env.ISAAW_API_KEY || "e329d3cb861969fe599ef5fe", 4096);
+  const accessToken = cleanString(process.env.ISAAW_ACCESS_TOKEN || "aks-1d3bd53f4d857a690a77471d", 4096);
 
   const base = cleanString(process.env.ISAAW_API_BASE || DEFAULT_BASE, 1024).replace(/\/+$/, "");
-  const url = new URL(base + "/" + action);
+  
+  // Menyesuaikan jalur endpoint agar mengarah ke sub-path yang benar (misal: /alightmotion/action atau langsung /action)
+  const url = new URL(`${base}/${action}`);
 
   for (const [key, value] of Object.entries(params)) {
     if (value !== undefined && value !== null && String(value) !== "") {
@@ -84,15 +77,15 @@ export async function callAlightMotion(action, params = {}) {
       method: "GET",
       headers: {
         accept: "application/json",
-        "X-Isaaw-Access": accessToken,
-        "X-Isaaw-Key": token,
-        "user-agent": "isaaw-service-client/2.0"
+        "X-Zen-Access": accessToken,
+        "X-Zen-Key": apiKey,
+        "user-agent": "znn-am-activation/1.3"
       },
       redirect: "follow",
       signal: AbortSignal.timeout(28000)
     });
   } catch {
-    const error = new Error("Tidak dapat terhubung ke layanan utama.");
+    const error = new Error("Tidak dapat terhubung ke layanan upstream.");
     error.statusCode = 502;
     throw error;
   }
@@ -119,9 +112,11 @@ export async function callAlightMotion(action, params = {}) {
 }
 
 export async function callTempMailRead(email) {
-  const accessToken = cleanString(process.env.ISAAW_ACCESS_TOKEN || HARDCODED_ACCESS_TOKEN, 4096);
+  const apiKey = cleanString(process.env.ISAAW_API_KEY || "e329d3cb861969fe599ef5fe", 4096);
+  const accessToken = cleanString(process.env.ISAAW_ACCESS_TOKEN || "aks-1d3bd53f4d857a690a77471d", 4096);
+
   const root = cleanString(process.env.ISAAW_API_BASE_ROOT || DEFAULT_API_ROOT, 1024).replace(/\/+$/, "");
-  const url = new URL(root + "/tempmail-read");
+  const url = new URL(`${root}/tempmail-read`);
   url.searchParams.set("email", email);
 
   let response;
@@ -131,8 +126,9 @@ export async function callTempMailRead(email) {
       method: "GET",
       headers: {
         accept: "application/json",
-        "X-Isaaw-Access": accessToken,
-        "user-agent": "isaaw-service-client/2.0"
+        "X-Zen-Access": accessToken,
+        "X-Zen-Key": apiKey,
+        "user-agent": "znn-am-activation/1.3"
       },
       redirect: "follow",
       signal: AbortSignal.timeout(28000)
