@@ -1,5 +1,5 @@
-const DEFAULT_BASE = "https://skyp.isaaw.web.id";
-const DEFAULT_API_ROOT = "https://skyp.isaaw.web.id";
+const DEFAULT_BASE = "https://api.znn.my.id/alightmotion";
+const DEFAULT_API_ROOT = "https://api.znn.my.id";
 
 function cleanString(value, max = 4000) {
   return String(value ?? "").trim().slice(0, max);
@@ -7,11 +7,9 @@ function cleanString(value, max = 4000) {
 
 export function validateEmail(value) {
   const email = cleanString(value, 254).toLowerCase();
-
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return "";
   }
-
   return email;
 }
 
@@ -20,9 +18,7 @@ export function validateVerificationLink(value) {
 
   try {
     const url = new URL(link);
-
     if (url.protocol !== "https:") return "";
-
     return url.toString();
   } catch {
     return "";
@@ -40,9 +36,7 @@ function sanitize(value, depth = 0) {
     const out = {};
 
     for (const [key, item] of Object.entries(value)) {
-      if (
-        /token|secret|authorization|api[_-]?key|credential/i.test(key)
-      ) {
+      if (/token|secret|authorization|api[_-]?key|credential/i.test(key)) {
         continue;
       }
 
@@ -61,42 +55,27 @@ function sanitize(value, depth = 0) {
   return value;
 }
 
-function getApiKey() {
-  const apiKey = cleanString(
-    process.env.ISAAW_API_KEY,
-    4096
-  );
+export async function callAlightMotion(action, params = {}) {
+  const token = cleanString(process.env.AM_TOKEN, 4096);
+  const accessToken = cleanString(process.env.ZNN_ACCESS_TOKEN, 4096);
 
-  if (!apiKey) {
-    const error = new Error(
-      "ISAAW_API_KEY belum diatur di Environment Variables Vercel."
-    );
-
+  if (!token) {
+    const error = new Error("AM_TOKEN belum diatur di Environment Variables Vercel.");
     error.statusCode = 500;
     throw error;
   }
 
-  return apiKey;
-}
+  if (!accessToken) {
+    const error = new Error("ZNN_ACCESS_TOKEN belum diatur di Environment Variables Vercel.");
+    error.statusCode = 500;
+    throw error;
+  }
 
-export async function callAlightMotion(action, params = {}) {
-  const apiKey = getApiKey();
-
-  const base = cleanString(
-    process.env.ISAAW_API_BASE || DEFAULT_BASE,
-    1024
-  ).replace(/\/+$/, "");
-
-  const url = new URL(
-    base + "/" + cleanString(action)
-  );
+  const base = cleanString(process.env.AM_API_BASE || DEFAULT_BASE, 1024).replace(/\/+$/, "");
+  const url = new URL(base + "/" + action);
 
   for (const [key, value] of Object.entries(params)) {
-    if (
-      value !== undefined &&
-      value !== null &&
-      String(value) !== ""
-    ) {
+    if (value !== undefined && value !== null && String(value) !== "") {
       url.searchParams.set(key, String(value));
     }
   }
@@ -108,23 +87,20 @@ export async function callAlightMotion(action, params = {}) {
       method: "GET",
       headers: {
         accept: "application/json",
-        "X-API-Key": apiKey,
-        "user-agent": "isaaw-am-activation/1.0"
+        "X-ZNN-Access": accessToken,
+        "X-AM-Token": token,
+        "user-agent": "znn-am-activation/1.3"
       },
       redirect: "follow",
       signal: AbortSignal.timeout(28000)
     });
   } catch {
-    const error = new Error(
-      "Tidak dapat terhubung ke layanan Alight Motion."
-    );
-
+    const error = new Error("Tidak dapat terhubung ke layanan Alight Motion.");
     error.statusCode = 502;
     throw error;
   }
 
   const raw = await response.text();
-
   let data;
 
   try {
@@ -132,36 +108,30 @@ export async function callAlightMotion(action, params = {}) {
   } catch {
     data = {
       status: false,
-      message:
-        raw.slice(0, 1000) ||
-        "Respons API tidak dapat dibaca."
+      message: raw.slice(0, 1000) || "Respons API tidak dapat dibaca."
     };
   }
 
   const safeData = sanitize(data);
 
   return {
-    ok:
-      response.ok &&
-      safeData &&
-      safeData.status !== false,
+    ok: response.ok && safeData && safeData.status !== false,
     statusCode: response.status,
     data: safeData
   };
 }
 
 export async function callTempMailRead(email) {
-  const apiKey = getApiKey();
+  const accessToken = cleanString(process.env.ZNN_ACCESS_TOKEN, 4096);
 
-  const root = cleanString(
-    process.env.ISAAW_API_BASE_ROOT || DEFAULT_API_ROOT,
-    1024
-  ).replace(/\/+$/, "");
+  if (!accessToken) {
+    const error = new Error("ZNN_ACCESS_TOKEN belum diatur di Environment Variables Vercel.");
+    error.statusCode = 500;
+    throw error;
+  }
 
-  const url = new URL(
-    root + "/tempmail-read"
-  );
-
+  const root = cleanString(process.env.TEMPMAIL_API_BASE || DEFAULT_API_ROOT, 1024).replace(/\/+$/, "");
+  const url = new URL(root + "/tempmail-read");
   url.searchParams.set("email", email);
 
   let response;
@@ -171,23 +141,19 @@ export async function callTempMailRead(email) {
       method: "GET",
       headers: {
         accept: "application/json",
-        "X-API-Key": apiKey,
-        "user-agent": "isaaw-am-activation/1.0"
+        "X-ZNN-Access": accessToken,
+        "user-agent": "znn-am-activation/1.3"
       },
       redirect: "follow",
       signal: AbortSignal.timeout(28000)
     });
   } catch {
-    const error = new Error(
-      "Tidak dapat terhubung ke layanan Temp Mail."
-    );
-
+    const error = new Error("Tidak dapat terhubung ke layanan Temp Mail.");
     error.statusCode = 502;
     throw error;
   }
 
   const raw = await response.text();
-
   let data;
 
   try {
@@ -195,34 +161,22 @@ export async function callTempMailRead(email) {
   } catch {
     data = {
       status: false,
-      message:
-        raw.slice(0, 1000) ||
-        "Respons Temp Mail tidak dapat dibaca."
+      message: raw.slice(0, 1000) || "Respons Temp Mail tidak dapat dibaca."
     };
   }
 
   const safeData = sanitize(data);
 
   return {
-    ok:
-      response.ok &&
-      safeData &&
-      safeData.status !== false,
+    ok: response.ok && safeData && safeData.status !== false,
     statusCode: response.status,
     data: safeData
   };
 }
 
 export function sendJson(res, statusCode, payload) {
-  res.setHeader(
-    "Cache-Control",
-    "no-store, max-age=0"
-  );
-
-  res.setHeader(
-    "Content-Type",
-    "application/json; charset=utf-8"
-  );
+  res.setHeader("Cache-Control", "no-store, max-age=0");
+  res.setHeader("Content-Type", "application/json; charset=utf-8");
 
   return res.status(statusCode).json(payload);
 }
@@ -230,14 +184,11 @@ export function sendJson(res, statusCode, payload) {
 export function onlyPost(req, res) {
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
-
     sendJson(res, 405, {
       status: false,
       message: "Method tidak didukung."
     });
-
     return false;
   }
-
   return true;
 }
