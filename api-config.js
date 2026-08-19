@@ -1,28 +1,22 @@
 /**
- * API Configuration & Helper Functions
- * Connects Frontend to All API Endpoints
+ * API Configuration - Login Based System
  */
 
-// Detect environment
 const API_BASE_URL = window.location.hostname.includes('localhost') 
   ? 'http://localhost:3000' 
   : 'https://haomi-alightmotion.vercel.app';
 
-// API Endpoints
 const API_ENDPOINTS = {
+  login: `${API_BASE_URL}/api/login`,
+  logout: `${API_BASE_URL}/api/logout`,
+  checkToken: `${API_BASE_URL}/api/check-token`,
+  generateToken: `${API_BASE_URL}/api/generate-token`,
   send: `${API_BASE_URL}/api/send`,
   verify: `${API_BASE_URL}/api/verify`,
   bulk: `${API_BASE_URL}/api/bulk`,
-  inbox: `${API_BASE_URL}/api/inbox`,
-  checkToken: `${API_BASE_URL}/api/check-token`,
-  generateToken: `${API_BASE_URL}/api/generate-token`,
-  admin: `${API_BASE_URL}/api/admin`,
-  logout: `${API_BASE_URL}/api/logout`
+  inbox: `${API_BASE_URL}/api/inbox`
 };
 
-/**
- * Generic API Call Handler
- */
 async function apiCall(endpoint, method = 'POST', data = {}) {
   try {
     const response = await fetch(endpoint, {
@@ -46,70 +40,26 @@ async function apiCall(endpoint, method = 'POST', data = {}) {
   }
 }
 
-/**
- * Send Magic Link - API Call
- */
-async function callApiSendMagicLink(email) {
-  return apiCall(API_ENDPOINTS.send, 'POST', { email });
-}
+// LOGIN
+window.API_login = (username, password) => apiCall(API_ENDPOINTS.login, 'POST', { username, password });
 
-/**
- * Verify Magic Link - API Call
- */
-async function callApiVerifyMagicLink(email, link) {
-  return apiCall(API_ENDPOINTS.verify, 'POST', { email, link });
-}
+// LOGOUT
+window.API_logout = (token) => apiCall(API_ENDPOINTS.logout, 'POST', { token });
 
-/**
- * Bulk Process - API Call
- */
-async function callApiBulk(amount) {
-  return apiCall(API_ENDPOINTS.bulk, 'POST', { amount });
-}
+// CHECK TOKEN
+window.API_checkToken = (token) => apiCall(API_ENDPOINTS.checkToken, 'POST', { token });
 
-/**
- * Inbox Check - API Call
- */
-async function callApiInbox(email) {
-  return apiCall(API_ENDPOINTS.inbox, 'POST', { email });
-}
+// GENERATE TOKEN (Admin)
+window.API_generateToken = (token, duration) => apiCall(API_ENDPOINTS.generateToken, 'POST', { token, duration });
 
-/**
- * Check Token - API Call
- */
-async function callApiCheckToken(token) {
-  return apiCall(API_ENDPOINTS.checkToken, 'POST', { token });
-}
+// SEND MAGIC LINK
+window.API_sendMagicLink = (email) => apiCall(API_ENDPOINTS.send, 'POST', { email });
 
-/**
- * Generate Token - API Call
- */
-async function callApiGenerateToken(duration) {
-  return apiCall(API_ENDPOINTS.generateToken, 'POST', { duration });
-}
+// VERIFY MAGIC LINK
+window.API_verifyMagicLink = (email, link) => apiCall(API_ENDPOINTS.verify, 'POST', { email, link });
 
-/**
- * Admin Action - API Call
- */
-async function callApiAdmin(action, payload) {
-  return apiCall(API_ENDPOINTS.admin, 'POST', { action, ...payload });
-}
+// BULK
+window.API_bulk = (amount) => apiCall(API_ENDPOINTS.bulk, 'POST', { amount });
 
-/**
- * Logout - API Call
- */
-async function callApiLogout(token) {
-  return apiCall(API_ENDPOINTS.logout, 'POST', { token });
-}
-
-// Export untuk digunakan di index.html
-window.API = {
-  sendMagicLink: callApiSendMagicLink,
-  verifyMagicLink: callApiVerifyMagicLink,
-  bulk: callApiBulk,
-  inbox: callApiInbox,
-  checkToken: callApiCheckToken,
-  generateToken: callApiGenerateToken,
-  admin: callApiAdmin,
-  logout: callApiLogout
-};
+// INBOX
+window.API_inbox = (email) => apiCall(API_ENDPOINTS.inbox, 'POST', { email });
