@@ -1,900 +1,666 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Image Enhancer — Thanz X AI</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="description" content="AM Pro Toolkit — Modern Monochrome Edition" />
+  <title>AM Pro Toolkit | 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    };
+  </script>
+
   <style>
     :root {
-      --accent: #00F0FF;
-      --accent-dim: rgba(0, 240, 255, 0.14);
-      --accent-glow: rgba(0, 240, 255, 0.35);
-      --bg-0: #060709;
-      --bg-1: #0c0e12;
-      --glass-fill: rgba(255, 255, 255, 0.055);
-      --glass-border: rgba(0, 240, 255, 0.18);
-      --glass-border-hi: rgba(0, 240, 255, 0.35);
-      --text-hi: #f5f7f8;
-      --text-mid: #a7b0b8;
-      --text-low: #6b747c;
-      --danger: #ff5c72;
-      --success: #33e6a0;
-      --radius-xl: 30px;
-      --radius-lg: 22px;
-      --radius-md: 16px;
-      --radius-sm: 12px;
+      --bg: #000000;
+      --panel: rgba(18, 18, 20, 0.65);
+      --panel-hover: rgba(28, 28, 32, 0.75);
+      --border: rgba(255, 255, 255, 0.12);
+      --border-focus: rgba(255, 255, 255, 0.4);
+      --text: #f4f4f5;
+      --muted: #a1a1aa;
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--bg);
+    }
 
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background:
-        radial-gradient(circle at 15% -10%, rgba(0, 240, 255, 0.08), transparent 45%),
-        radial-gradient(circle at 100% 10%, rgba(0, 240, 255, 0.04), transparent 40%),
-        linear-gradient(160deg, var(--bg-0), var(--bg-1) 60%, #08090b);
-      background-attachment: fixed;
-      color: var(--text-hi);
+      margin: 0;
       min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
+      overflow-x: hidden;
+      color: var(--text);
+      background: 
+        radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.08), transparent 50%),
+        #000000;
+      font-family: 'Plus Jakarta Sans', sans-serif;
     }
 
-    .app-container {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      max-width: 900px;
-      background: rgba(8, 18, 30, 0.82);
+    /* Efek Grid Abstrak di Background */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      pointer-events: none;
+      background-image: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 32px 32px;
+      mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
+    }
+
+    /* Glassmorphism Utama */
+    .glass {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(30px) saturate(150%);
+      -webkit-backdrop-filter: blur(30px) saturate(150%);
+      box-shadow: 
+        0 24px 48px rgba(0, 0, 0, 0.8),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--radius-xl);
-      padding: 26px;
-      box-shadow:
-        0 30px 80px rgba(0, 0, 0, 0.6),
-        0 0 25px rgba(0, 240, 255, 0.08),
-        inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      transition: all .25s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    /* Header */
-    .app-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .brand { display: flex; align-items: center; gap: 12px; }
-
-    .brand-icon {
-      width: 42px; height: 42px;
-      background: linear-gradient(135deg, #66F5FF, var(--accent) 55%, #00A3AD);
-      border-radius: 13px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.15rem;
-      color: #060709;
-      box-shadow: 0 6px 18px rgba(0, 240, 255, 0.3);
-    }
-
-    .brand-title h1 {
-      font-family: 'Manrope', sans-serif;
-      font-size: 1.2rem;
-      font-weight: 800;
-      letter-spacing: -0.3px;
-      color: var(--text-hi);
-    }
-
-    .brand-title p {
-      font-size: 0.75rem;
-      color: var(--text-mid);
-      margin-top: 1px;
-    }
-
-    .status-pill {
-      background: var(--accent-dim);
-      border: 1px solid rgba(0, 240, 255, 0.3);
-      color: var(--accent);
-      padding: 6px 12px;
-      border-radius: 100px;
-      font-size: 0.7rem;
-      font-weight: 700;
-      display: flex; align-items: center; gap: 6px;
-    }
-
-    .status-pill i { font-size: 0.45rem; }
-
-    /* Input Section */
-    .workspace-grid { display: grid; gap: 14px; margin-bottom: 18px; }
-
-    .input-box-wrapper { position: relative; }
-
-    .url-input {
-      width: 100%;
-      background: rgba(255, 255, 255, 0.045);
-      border: 1px solid var(--glass-border);
-      border-radius: 100px;
-      padding: 14px 18px 14px 46px;
-      color: var(--text-hi);
-      font-size: 0.9rem;
-      font-family: inherit;
-      outline: none;
-      transition: all 0.2s ease;
-    }
-
-    .url-input::placeholder { color: var(--text-low); }
-
-    .url-input:focus {
-      border-color: var(--accent);
-      background: rgba(255, 255, 255, 0.07);
-      box-shadow: 0 0 0 3px var(--accent-dim);
-    }
-
-    .url-input-icon {
-      position: absolute; left: 18px; top: 50%; transform: translateY(-50%);
-      color: var(--text-low); font-size: 0.9rem;
-    }
-
-    /* Drop Zone */
-    .drop-zone {
-      border: 1.5px dashed rgba(0, 240, 255, 0.3);
-      border-radius: var(--radius-lg);
-      padding: 22px 18px;
-      text-align: center;
-      background: rgba(0, 240, 255, 0.02);
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .drop-zone:hover, .drop-zone.dragover {
-      border-color: var(--accent);
-      background: var(--accent-dim);
-    }
-
-    .drop-zone i {
-      font-size: 1.7rem;
-      color: var(--accent);
-      margin-bottom: 6px;
-      display: block;
-    }
-
-    .drop-zone span { font-size: 0.85rem; color: var(--text-mid); display: block; }
-    .drop-zone strong { color: var(--text-hi); }
-
-    .file-name-info { margin-top: 6px; font-size: 0.75rem; color: var(--accent); font-weight: 600; }
-
-    #fileInput { display: none; }
-
-    /* Toolbar Controls */
-    .toolbar-grid {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 14px;
-      margin-bottom: 18px;
-      align-items: stretch;
-    }
-
-    @media (max-width: 650px) { .toolbar-grid { grid-template-columns: 1fr; } }
-
-    .control-card {
-      background: rgba(255, 255, 255, 0.035);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--radius-md);
-      padding: 12px 16px;
-      display: flex; flex-direction: column; gap: 8px;
-    }
-
-    .control-label {
-      font-size: 0.75rem; font-weight: 700; color: var(--text-mid);
-      display: flex; justify-content: space-between; align-items: center;
-    }
-
-    .control-label i { color: var(--accent); }
-
-    .range-slider {
-      -webkit-appearance: none;
-      width: 100%; height: 4px;
-      background: rgba(255, 255, 255, 0.12);
-      border-radius: 3px; outline: none;
-    }
-
-    .range-slider::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 18px; height: 18px; border-radius: 50%;
-      background: var(--accent);
-      cursor: pointer;
-      box-shadow: 0 0 10px var(--accent-glow);
-      border: 2px solid #060709;
-    }
-
-    /* Mode Resolution Trigger Button */
-    .mode-trigger-btn {
+    .glass-card:hover {
       background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--radius-md);
-      padding: 12px 16px;
-      color: var(--text-hi);
-      display: flex; align-items: center; justify-content: space-between; gap: 14px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      min-width: 220px;
+      border-color: rgba(255, 255, 255, 0.18);
     }
 
-    .mode-trigger-btn:hover {
-      background: var(--accent-dim);
-      border-color: var(--glass-border-hi);
+    input, select {
+      width: 100%;
+      color: #ffffff !important;
+      background: rgba(10, 10, 12, 0.8) !important;
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
+      border-radius: 14px !important;
+      outline: none;
+      transition: all .2s ease;
+      font-family: 'Plus Jakarta Sans', sans-serif;
     }
 
-    /* Modal Popup Panel */
-    .modal-overlay {
-      position: fixed; inset: 0;
-      background: rgba(3, 4, 6, 0.75);
-      display: flex; align-items: center; justify-content: center;
-      z-index: 1000; opacity: 0; pointer-events: none;
-      transition: opacity 0.2s ease;
-      padding: 20px;
+    input::placeholder {
+      color: #52525b;
     }
 
-    .modal-overlay.active { opacity: 1; pointer-events: auto; }
-
-    .modal-card {
-      width: 100%; max-width: 420px;
-      background: #0f131a;
-      border: 1px solid var(--glass-border-hi);
-      border-radius: 22px;
-      padding: 22px;
-      box-shadow: 0 25px 50px rgba(0,0,0,0.7);
+    input:focus, select:focus {
+      border-color: #ffffff !important;
+      background: rgba(18, 18, 22, 0.95) !important;
+      box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.08), 0 0 20px rgba(255, 255, 255, 0.05) !important;
     }
 
-    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-
-    .modal-header h3 {
-      font-family: 'Manrope', sans-serif;
-      font-size: 1.02rem; font-weight: 800; color: var(--text-hi);
-      display: flex; align-items: center; gap: 8px;
+    select option {
+      background: #121214;
+      color: white;
     }
 
-    .modal-close {
-      background: rgba(255,255,255,0.06); border: none;
-      width: 30px; height: 30px; border-radius: 50%;
-      color: var(--text-hi); cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .modal-close:hover { background: rgba(255,255,255,0.12); }
-
-    .mode-options-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
-
-    .mode-option-item {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--radius-sm);
-      padding: 11px 13px;
-      display: flex; align-items: center; gap: 12px;
-      cursor: pointer;
-      transition: background 0.15s ease;
-    }
-
-    .mode-option-item:hover { background: rgba(255,255,255,0.06); }
-
-    .mode-option-item.selected {
-      background: var(--accent-dim);
-      border-color: var(--accent);
-    }
-
-    .mode-option-icon {
-      width: 32px; height: 32px; border-radius: 9px;
-      background: rgba(0, 240, 255, 0.1);
-      color: var(--accent);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.88rem;
-      flex-shrink: 0;
-    }
-    .mode-option-item.selected .mode-option-icon {
-      background: var(--accent);
-      color: #060709;
-    }
-
-    .mode-option-info h4 { font-size: 0.85rem; font-weight: 700; color: var(--text-hi); margin-bottom: 2px; }
-    .mode-option-info p { font-size: 0.72rem; color: var(--text-mid); line-height: 1.3; }
-
-    /* Action Buttons */
-    .action-group { display: flex; gap: 10px; margin-bottom: 16px; }
-
+    /* Tombol Kustom */
     .btn {
-      padding: 13px 20px;
-      border: none;
-      border-radius: 100px;
-      font-weight: 700;
-      font-size: 0.9rem;
-      font-family: inherit;
-      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-      cursor: pointer;
-      transition: opacity 0.2s ease, transform 0.1s ease;
+      border-radius: 14px;
+      font-weight: 600;
+      transition: all .2s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
     }
 
-    .btn:active { transform: scale(0.98); }
+    .btn:active {
+      transform: scale(0.97);
+    }
 
     .btn-primary {
-      flex: 1;
-      background: linear-gradient(135deg, #66F5FF, var(--accent) 55%, #008F99);
-      color: #060709;
-      box-shadow: 0 6px 20px rgba(0, 240, 255, 0.25);
+      background: #ffffff;
+      color: #000000;
+      border: 1px solid #ffffff;
+      box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
     }
 
-    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-primary:hover {
+      background: #e4e4e7;
+      box-shadow: 0 6px 25px rgba(255, 255, 255, 0.35);
+      transform: translateY(-1px);
+    }
 
     .btn-secondary {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--glass-border);
-      color: var(--text-hi);
-      padding: 13px 16px;
-    }
-    .btn-secondary:hover { background: rgba(255, 255, 255, 0.09); }
-
-    /* Status Area */
-    .status-container { margin-bottom: 12px; }
-
-    .status-message { width: 100%; text-align: center; font-size: 0.8rem; color: var(--text-mid); }
-    .status-message.error { color: var(--danger); }
-    .status-message.success { color: var(--success); }
-
-    /* Side-by-Side Before & After Grid */
-    .comparison-split-section { display: none; flex-direction: column; gap: 12px; margin-bottom: 16px; }
-    .comparison-split-section.show { display: flex; }
-
-    .split-title {
-      font-size: 0.88rem; font-weight: 700; color: var(--text-hi);
-      display: flex; align-items: center; gap: 7px;
+      background: rgba(255, 255, 255, 0.06);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.12);
     }
 
-    .split-cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    @media (max-width: 650px) { .split-cards-grid { grid-template-columns: 1fr; } }
-
-    .split-card {
-      background: rgba(0, 0, 0, 0.3);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--radius-md);
-      padding: 12px;
-      display: flex; flex-direction: column; gap: 10px;
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.25);
     }
 
-    .split-card-header {
-      font-size: 0.68rem; font-weight: 800; letter-spacing: 0.5px;
-      padding: 3px 8px; border-radius: 6px; display: inline-flex; align-items: center; gap: 6px; width: fit-content;
+    /* Navigasi / Dock Style Baru */
+    .nav-pill {
+      position: relative;
+      color: #71717a;
+      transition: all .25s ease;
     }
 
-    .split-card.before .split-card-header {
-      background: rgba(255, 92, 114, 0.12); color: #ff8a9a; border: 1px solid rgba(255, 92, 114, 0.25);
-    }
-    .split-card.after .split-card-header {
-      background: var(--accent-dim); color: var(--accent); border: 1px solid rgba(0, 240, 255, 0.3);
+    .nav-pill:hover {
+      color: #d4d4d8;
     }
 
-    .split-image-box {
-      width: 100%; height: 210px;
-      background: rgba(0, 0, 0, 0.4);
-      border-radius: 10px;
-      overflow: hidden;
-      display: flex; align-items: center; justify-content: center;
+    .nav-pill.active {
+      color: #000000;
+      background: #ffffff;
+      font-weight: 700;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
     }
-    .split-image-box img { width: 100%; height: 100%; object-fit: contain; }
 
-    /* Download Footer Actions */
-    .download-footer-actions { display: none; gap: 10px; }
-    .download-footer-actions.show { display: flex; }
-
-    .spinner {
-      display: inline-block; width: 16px; height: 16px;
-      border: 2px solid rgba(6,7,9,0.25);
-      border-top-color: #060709;
-      border-radius: 50%;
-      animation: spin 0.7s linear infinite;
+    .toast {
+      transform: translate(-50%, 20px);
+      opacity: 0;
+      pointer-events: none;
+      transition: all .3s cubic-bezier(0.16, 1, 0.3, 1);
+      background: rgba(18, 18, 22, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.8), 0 0 20px rgba(255,255,255,0.1);
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
 
-    .footer-note {
-      margin-top: 18px; text-align: center; font-size: 0.68rem;
-      color: rgba(255, 255, 255, 0.25);
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-      padding-top: 12px;
+    .toast.show {
+      transform: translate(-50%, 0);
+      opacity: 1;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-fade {
+      animation: fadeIn .3s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
   </style>
 </head>
-<body>
 
-<div class="app-container">
-  <!-- Header -->
-  <header class="app-header">
-    <div class="brand">
-      <div class="brand-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
-      <div class="brand-title">
-        <h1>Image Enhancer</h1>
-        <p>ThanzDev</p>
-      </div>
-    </div>
-    <div class="status-pill"><i class="fas fa-circle"></i> Online</div>
-  </header>
+<body class="min-h-screen px-4 py-5 flex flex-col items-center justify-between">
 
-  <!-- Input Sources -->
-  <div class="workspace-grid">
-    <div class="input-box-wrapper">
-      <i class="fas fa-link url-input-icon"></i>
-      <input type="url" id="imageUrl" class="url-input" placeholder="Masukkan URL gambar langsung (https://...)">
-    </div>
+  <!-- WRAPPER UTAMA -->
+  <div class="w-full max-w-lg flex flex-col gap-5 my-auto">
 
-    <div class="drop-zone" id="dropZone">
-      <i class="fas fa-cloud-arrow-up"></i>
-      <span>Seret &amp; letakkan file gambar di sini, atau <strong>pilih berkas</strong></span>
-      <div class="file-name-info" id="fileNameDisplay"></div>
-      <input type="file" id="fileInput" accept="image/*">
-    </div>
-  </div>
-
-  <!-- Toolbar Controls -->
-  <div class="toolbar-grid">
-    <div class="control-card">
-      <div class="control-label">
-        <span><i class="fas fa-sliders"></i> Kekuatan Enhancer</span>
-        <span id="strengthIndicator" style="color:var(--accent); font-weight:700;"><i class="fas fa-circle-check mr-1"></i> Optimal</span>
-      </div>
-      <input type="range" id="strengthRange" class="range-slider" min="10" max="100" value="60">
-    </div>
-
-    <!-- Mode Selector Trigger -->
-    <div class="mode-trigger-btn" id="openModeModal">
-      <div style="display:flex; align-items:center; gap:10px;">
-        <i class="fas fa-layer-group" style="color:var(--accent);"></i>
-        <div style="text-align:left;">
-          <div style="font-size:0.65rem; color:var(--text-mid);"><i class="fas fa-gear mr-1"></i> Mode Resolusi</div>
-          <div id="currentModeLabel" style="font-weight:700; color:var(--text-hi); font-size: 0.85rem;">Upscale 2x + Sharpness</div>
+    <!-- HEADER / KEPALA MINIMALIS -->
+    <header class="glass rounded-[24px] p-4 flex items-center justify-between">
+      <div class="flex items-center gap-3.5">
+        <div class="w-11 h-11 rounded-[16px] bg-white/10 border border-white/20 flex items-center justify-center text-white text-base shadow-[0_0_15px_rgba(255,255,255,0.1)]">
+          <i class="fa-solid fa-cube"></i>
         </div>
-      </div>
-      <i class="fas fa-chevron-right" style="color:var(--text-low); font-size:0.75rem;"></i>
-    </div>
-  </div>
-
-  <!-- Action Buttons -->
-  <div class="action-group">
-    <button class="btn btn-primary" id="enhanceBtn">
-      <i class="fas fa-bolt"></i> Mulai Proses Enhancement
-    </button>
-    <button class="btn btn-secondary" id="resetBtn" title="Reset Semua">
-      <i class="fas fa-rotate-left"></i>
-    </button>
-  </div>
-
-  <!-- Status Area -->
-  <div class="status-container">
-    <div class="status-message" id="statusMessage"></div>
-  </div>
-
-  <!-- Side-by-Side Before & After Display -->
-  <div class="comparison-split-section" id="comparisonSplitSection">
-    <div class="split-title"><i class="fas fa-columns" style="color:var(--accent);"></i> Hasil Perbandingan Gambar</div>
-    <div class="split-cards-grid">
-      <div class="split-card before">
-        <div class="split-card-header"><i class="fas fa-image"></i> SEBELUM (ORIGINAL)</div>
-        <div class="split-image-box"><img id="splitImgBefore" alt="Sebelum"></div>
-      </div>
-      <div class="split-card after">
-        <div class="split-card-header"><i class="fas fa-sparkles"></i> SESUDAH (ENHANCED HD)</div>
-        <div class="split-image-box"><img id="splitImgAfter" alt="Sesudah"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Download Action Bar -->
-  <div class="download-footer-actions" id="downloadFooterActions">
-    <button class="btn btn-primary" id="downloadBtn">
-      <i class="fas fa-download"></i> Unduh Gambar HD (.PNG)
-    </button>
-    <button class="btn btn-secondary" id="copyUrlBtn">
-      <i class="fas fa-copy"></i> Salin URL
-    </button>
-  </div>
-
-  <div class="footer-note">
-    <i class="fas fa-copyright"></i> ThanzDev Image Enhancer
-  </div>
-</div>
-
-<!-- Modal Popup Panel for Resolution Mode -->
-<div class="modal-overlay" id="modeModalOverlay">
-  <div class="modal-card">
-    <div class="modal-header">
-      <h3><i class="fas fa-wand-magic-sparkles" style="color:var(--accent);"></i> Pilih Mode Resolusi</h3>
-      <button class="modal-close" id="closeModeModal"><i class="fas fa-xmark"></i></button>
-    </div>
-
-    <div class="mode-options-list">
-      <div class="mode-option-item selected" data-mode="2x">
-        <div class="mode-option-icon"><i class="fas fa-expand"></i></div>
-        <div class="mode-option-info">
-          <h4>Upscale 2x + Sharpness</h4>
-          <p>Memperbesar dimensi piksel dua kali lipat dengan penajaman tepi optimal.</p>
+        <div>
+          <h1 class="font-bold text-[15px] tracking-tight text-white flex items-center gap-2">
+            AM Pro Toolkit
+            <span class="text-[9px] px-2 py-0.5 rounded-full bg-white/10 text-white border border-white/20 font-mono">v3.0</span>
+          </h1>
+          <p class="text-[11px] text-zinc-400 mt-0.5">𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞 Enterprise System</p>
         </div>
       </div>
 
-      <div class="mode-option-item" data-mode="1x">
-        <div class="mode-option-icon"><i class="fas fa-filter"></i></div>
-        <div class="mode-option-info">
-          <h4>Original Size + High Filter</h4>
-          <p>Mempertahankan resolusi asli namun membersihkan noise &amp; mempertajam detail.</p>
+      <div class="flex items-center gap-2">
+        <div class="w-2.5 h-2.5 rounded-full bg-white shadow-[0_0_10px_#ffffff] animate-pulse"></div>
+        <span class="text-[11px] font-medium text-zinc-300 hidden sm:inline">Active</span>
+      </div>
+    </header>
+
+    <!-- PANEL UTAMA DENGAN TATA LETAK BARU -->
+    <main class="glass rounded-[28px] p-5 sm:p-6 flex flex-col gap-5">
+
+      <!-- DASHBOARD / STATUS PANEL KECIL -->
+      <div class="glass-card rounded-[20px] p-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-[14px] bg-white text-black flex items-center justify-center font-bold text-sm shadow-[0_0_15px_rgba(255,255,255,0.3)]">
+            A
+          </div>
+          <div>
+            <div class="text-[13px] font-bold text-white" id="displayUsername">Administrator</div>
+            <div class="text-[10px] text-zinc-400 flex items-center gap-1 mt-0.5">
+              <i class="fa-solid fa-shield-halved text-[9px]"></i> Unlimited Access Mode
+            </div>
+          </div>
+        </div>
+        <div class="text-right">
+          <div class="text-[9px] uppercase tracking-wider text-zinc-500 font-bold">Status</div>
+          <div class="text-[11px] font-mono text-white font-semibold mt-0.5">ONLINE</div>
         </div>
       </div>
 
-      <div class="mode-option-item" data-mode="hdr">
-        <div class="mode-option-icon"><i class="fas fa-sun"></i></div>
-        <div class="mode-option-info">
-          <h4>HDR Boost &amp; Denoise</h4>
-          <p>Menaikkan kontras, keseimbangan warna, serta meredam bintik gambar gelap.</p>
-        </div>
+      <!-- NAVIGASI TAB PILL BERGAYA ISLAND -->
+      <div class="grid grid-cols-3 gap-1.5 p-1 bg-white/[0.03] border border-white/10 rounded-[18px]">
+        <button id="tabSend" onclick="switchTab('send')" class="nav-pill active py-2.5 rounded-[14px] text-[11px] font-semibold transition-all">
+          <i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i> Aktivasi
+        </button>
+        <button id="tabBulk" onclick="switchTab('bulk')" class="nav-pill py-2.5 rounded-[14px] text-[11px] font-semibold transition-all">
+          <i class="fa-solid fa-layer-group mr-1.5"></i> Bulk
+        </button>
+        <button id="tabInbox" onclick="switchTab('inbox')" class="nav-pill py-2.5 rounded-[14px] text-[11px] font-semibold transition-all">
+          <i class="fa-solid fa-inbox mr-1.5"></i> Inbox
+        </button>
       </div>
-    </div>
 
-    <button class="btn btn-primary" id="applyModeBtn" style="width:100%;"><i class="fas fa-check mr-2"></i> Terapkan Mode</button>
+      <!-- KONTEN TAB: AKTIVASI -->
+      <div id="contentSend" class="animate-fade space-y-4">
+        <div>
+          <div class="text-[10px] uppercase font-bold tracking-widest text-zinc-400 mb-1">Secure Protocol</div>
+          <h2 class="text-[16px] font-bold text-white">Aktivasi Alight Motion</h2>
+          <p id="flowInstruction" class="text-[11px] text-zinc-400 mt-1 leading-relaxed">
+            Kirimkan magic link ke alamat email aktif Anda untuk memulai proses sinkronisasi.
+          </p>
+        </div>
+
+        <div id="stepEmailBox" class="space-y-3">
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-zinc-500">
+              <i class="fa-regular fa-envelope"></i>
+            </span>
+            <input id="inputEmail" type="email" placeholder="nama@domain.com" class="pl-11 pr-4 py-3.5 text-[12px]" />
+          </div>
+          <button onclick="handleSendMagicLink()" class="btn btn-primary w-full py-3.5 text-[12px] flex items-center justify-center gap-2">
+            <span>Kirim Magic Link</span>
+            <i class="fa-solid fa-arrow-right text-[10px]"></i>
+          </button>
+        </div>
+
+        <div id="stepVerifyBox" class="hidden space-y-3">
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-zinc-500">
+              <i class="fa-solid fa-link"></i>
+            </span>
+            <input id="inputLink" type="text" placeholder="Tempel link verifikasi https://..." class="pl-11 pr-4 py-3.5 text-[12px]" />
+          </div>
+          <div class="grid grid-cols-[1fr_auto] gap-2">
+            <button onclick="handleVerifyMagicLink()" class="btn btn-primary py-3.5 text-[12px] font-bold">
+              Verifikasi & Eksekusi
+            </button>
+            <button onclick="resetInjectFlow()" class="btn btn-secondary px-4 text-white">
+              <i class="fa-solid fa-rotate-left"></i>
+            </button>
+          </div>
+        </div>
+
+        <div id="sendResult" class="glass-card hidden p-4 rounded-[16px] text-[11px] border border-white/10"></div>
+      </div>
+
+      <!-- KONTEN TAB: BULK -->
+      <div id="contentBulk" class="animate-fade space-y-4 hidden">
+        <div>
+          <div class="text-[10px] uppercase font-bold tracking-widest text-zinc-400 mb-1">Batch Automation</div>
+          <h2 class="text-[16px] font-bold text-white">Bulk Generator</h2>
+          <p class="text-[11px] text-zinc-400 mt-1">Buat banyak token akun premium secara simultan dengan cepat.</p>
+        </div>
+
+        <div class="space-y-3">
+          <div>
+            <label class="block text-[10px] uppercase font-bold text-zinc-400 mb-1.5">Jumlah Akun (1 - 100)</label>
+            <input id="inputBulkAmount" type="number" min="1" max="100" value="5" class="px-4 py-3.5 text-[12px]" />
+          </div>
+          <button onclick="runBulkInject()" class="btn btn-primary w-full py-3.5 text-[12px]">
+            Mulai Generate Bulk
+          </button>
+        </div>
+
+        <div id="bulkResult" class="glass-card hidden p-4 rounded-[16px] text-[11px] max-h-48 overflow-y-auto font-mono"></div>
+      </div>
+
+      <!-- KONTEN TAB: INBOX -->
+      <div id="contentInbox" class="animate-fade space-y-4 hidden">
+        <div>
+          <div class="text-[10px] uppercase font-bold tracking-widest text-zinc-400 mb-1">Mail Scanner</div>
+          <h2 class="text-[16px] font-bold text-white">Pindai Kotak Masuk</h2>
+          <p class="text-[11px] text-zinc-400 mt-1">Ambil link verifikasi langsung dari mail server secara otomatis.</p>
+        </div>
+
+        <div class="space-y-3">
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-zinc-500">
+              <i class="fa-solid fa-at"></i>
+            </span>
+            <input id="inputInboxEmail" type="email" placeholder="email@tempmail.com" class="pl-11 pr-4 py-3.5 text-[12px]" />
+          </div>
+          <button onclick="runInboxCheck()" class="btn btn-primary w-full py-3.5 text-[12px] flex items-center justify-center gap-2">
+            <i class="fa-solid fa-radar"></i>
+            <span>Pindai Pesan Masuk</span>
+          </button>
+        </div>
+
+        <div id="inboxNotice" class="hidden p-3 rounded-[12px] text-[11px] bg-white/5 border border-white/10 text-zinc-300"></div>
+        <div id="inboxResult" class="space-y-2.5 max-h-48 overflow-y-auto"></div>
+      </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="text-center">
+      <p class="text-[11px] text-zinc-500 font-medium">
+        AM Pro Toolkit <span class="mx-1.5 text-zinc-700">•</span> Secure Monochrome <span class="mx-1.5 text-zinc-700">•</span> 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞
+      </p>
+    </footer>
+
   </div>
-</div>
+
+  <!-- TOAST NOTIFIKASI -->
+  <div id="toast" class="toast fixed z-50 bottom-6 left-1/2 rounded-[16px] px-5 py-3 text-[11px] text-white shadow-2xl max-w-[calc(100vw-32px)]"></div>
 
 <script>
-  (function() {
-    "use strict";
+  let activeInjectEmail = "";
 
-    const urlInput = document.getElementById('imageUrl');
-    const dropZone = document.getElementById('dropZone');
-    const fileInput = document.getElementById('fileInput');
-    const fileNameDisplay = document.getElementById('fileNameDisplay');
-    const strengthRange = document.getElementById('strengthRange');
-    const strengthIndicator = document.getElementById('strengthIndicator');
+  function showToast(message) {
+    const toast = document.getElementById("toast");
+    toast.textContent = message;
+    toast.classList.add("show");
+    clearTimeout(window.__toastTimer);
+    window.__toastTimer = setTimeout(() => toast.classList.remove("show"), 3000);
+  }
 
-    const openModeModal = document.getElementById('openModeModal');
-    const closeModeModal = document.getElementById('closeModeModal');
-    const modeModalOverlay = document.getElementById('modeModalOverlay');
-    const applyModeBtn = document.getElementById('applyModeBtn');
-    const currentModeLabel = document.getElementById('currentModeLabel');
-    const modeItems = document.querySelectorAll('.mode-option-item');
+  function switchTab(tab) {
+    const contents = {
+      send: document.getElementById("contentSend"),
+      bulk: document.getElementById("contentBulk"),
+      inbox: document.getElementById("contentInbox")
+    };
 
-    const enhanceBtn = document.getElementById('enhanceBtn');
-    const resetBtn = document.getElementById('resetBtn');
+    const tabs = {
+      send: document.getElementById("tabSend"),
+      bulk: document.getElementById("tabBulk"),
+      inbox: document.getElementById("tabInbox")
+    };
 
-    const comparisonSplitSection = document.getElementById('comparisonSplitSection');
-    const splitImgBefore = document.getElementById('splitImgBefore');
-    const splitImgAfter = document.getElementById('splitImgAfter');
+    Object.values(contents).forEach(el => el.classList.add("hidden"));
+    Object.values(tabs).forEach(el => el.classList.remove("active"));
 
-    const statusMessage = document.getElementById('statusMessage');
-    const downloadFooterActions = document.getElementById('downloadFooterActions');
-    const downloadBtn = document.getElementById('downloadBtn');
-    const copyUrlBtn = document.getElementById('copyUrlBtn');
+    contents[tab].classList.remove("hidden");
+    tabs[tab].classList.add("active");
+  }
 
-    let selectedFile = null;
-    let selectedMode = '2x';
-    let tempSelectedMode = '2x';
-    let originalBlobUrl = null;
-    let enhancedBlobUrl = null;
+  async function handleSendMagicLink() {
+    const email = document.getElementById("inputEmail").value.trim();
 
-    const strengthLabels = [
-      { max: 30, text: 'Lembut' },
-      { max: 70, text: 'Optimal' },
-      { max: 100, text: 'Maksimal' }
-    ];
-
-    strengthRange.addEventListener('input', () => {
-      const val = parseInt(strengthRange.value, 10);
-      let label = 'Optimal';
-      for (let item of strengthLabels) {
-        if (val <= item.max) { label = item.text; break; }
-      }
-      strengthIndicator.innerHTML = `<i class="fas fa-circle-check mr-1"></i> ${label}`;
-    });
-
-    openModeModal.addEventListener('click', () => {
-      tempSelectedMode = selectedMode;
-      updateModalSelectionUI();
-      modeModalOverlay.classList.add('active');
-    });
-
-    const closeModalFunc = () => modeModalOverlay.classList.remove('active');
-    closeModeModal.addEventListener('click', closeModalFunc);
-    modeModalOverlay.addEventListener('click', (e) => {
-      if (e.target === modeModalOverlay) closeModalFunc();
-    });
-
-    modeItems.forEach(item => {
-      item.addEventListener('click', () => {
-        modeItems.forEach(i => i.classList.remove('selected'));
-        item.classList.add('selected');
-        tempSelectedMode = item.getAttribute('data-mode');
-      });
-    });
-
-    function updateModalSelectionUI() {
-      modeItems.forEach(item => {
-        if (item.getAttribute('data-mode') === tempSelectedMode) item.classList.add('selected');
-        else item.classList.remove('selected');
-      });
+    if (!email || !email.includes("@")) {
+      return showToast("Masukkan format email yang valid.");
     }
 
-    applyModeBtn.addEventListener('click', () => {
-      selectedMode = tempSelectedMode;
-      const modeTexts = {
-        '2x': 'Upscale 2x + Sharpness',
-        '1x': 'Original Size + High Filter',
-        'hdr': 'HDR Boost & Denoise'
-      };
-      currentModeLabel.textContent = modeTexts[selectedMode];
-      closeModalFunc();
-    });
+    showToast("Mengirim magic link...");
 
-    dropZone.addEventListener('click', () => fileInput.click());
+    try {
+      const res = await fetch("/api/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email })
+      });
 
-    ['dragenter', 'dragover'].forEach(eventName => {
-      dropZone.addEventListener(eventName, (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
-    });
+      const contentType = res.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        const text = await res.text();
+        throw new Error(text || "Terjadi kesalahan pada server.");
+      }
 
-    ['dragleave', 'drop'].forEach(eventName => {
-      dropZone.addEventListener(eventName, (e) => { e.preventDefault(); dropZone.classList.remove('dragover'); });
-    });
+      const json = await res.json();
 
-    dropZone.addEventListener('drop', (e) => {
-      const files = e.dataTransfer.files;
-      if (files && files[0]) handleFile(files[0]);
-    });
+      if (!res.ok || json.status === false) {
+        throw new Error(json.message || "Gagal mengirim magic link.");
+      }
 
-    fileInput.addEventListener('change', (e) => {
-      if (e.target.files && e.target.files[0]) handleFile(e.target.files[0]);
-    });
+      activeInjectEmail = email;
 
-    function handleFile(file) {
-      if (!file.type.startsWith('image/')) {
-        setStatus('Format file tidak valid, harap pilih berkas gambar.', 'error');
+      document.getElementById("stepEmailBox").classList.add("hidden");
+      document.getElementById("stepVerifyBox").classList.remove("hidden");
+      document.getElementById("flowInstruction").textContent =
+        `Magic link dikirim ke ${email}. Masukkan link verifikasi Anda di bawah ini.`;
+
+      showToast("Magic link berhasil dikirim.");
+    } catch (err) {
+      showToast(err.message || "Koneksi gagal.");
+    }
+  }
+
+  async function handleVerifyMagicLink() {
+    const link = document.getElementById("inputLink").value.trim();
+
+    if (!link) return showToast("Masukkan link verifikasi.");
+
+    showToast("Memverifikasi data...");
+
+    let success = false;
+    let resultMessage = "";
+
+    try {
+      const res = await fetch("/api/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: activeInjectEmail,
+          link
+        })
+      });
+
+      const contentType = res.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        const text = await res.text();
+        throw new Error(text || "Terjadi kesalahan pada server.");
+      }
+
+      const json = await res.json();
+
+      success = res.ok && json.status !== false;
+      resultMessage = json.message || "Verifikasi berhasil.";
+
+      const result = document.getElementById("sendResult");
+      result.innerHTML = `
+        <div class="font-bold ${success ? "text-white" : "text-zinc-400"}">
+          ${success ? "STATUS: BERHASIL" : "STATUS: GAGAL"}
+        </div>
+        <div class="text-[11px] text-zinc-300 mt-1 leading-relaxed">
+          ${escapeHtml(resultMessage)}
+        </div>
+      `;
+      result.classList.remove("hidden");
+    } catch (err) {
+      success = false;
+      showToast(err.message || "Kesalahan jaringan.");
+    }
+
+    if (success) {
+      showToast("Verifikasi berhasil.");
+      setTimeout(resetInjectFlow, 900);
+    } else {
+      showToast("Verifikasi gagal.");
+    }
+  }
+
+  function resetInjectFlow() {
+    activeInjectEmail = "";
+
+    document.getElementById("inputEmail").value = "";
+    document.getElementById("inputLink").value = "";
+
+    document.getElementById("stepVerifyBox").classList.add("hidden");
+    document.getElementById("stepEmailBox").classList.remove("hidden");
+
+    document.getElementById("flowInstruction").textContent =
+      "Kirimkan magic link ke alamat email aktif Anda untuk memulai proses sinkronisasi.";
+
+    document.getElementById("sendResult").classList.add("hidden");
+  }
+
+  async function runBulkInject() {
+    const amount = Number(document.getElementById("inputBulkAmount").value);
+
+    if (!amount || amount < 1 || amount > 100) {
+      return showToast("Jumlah harus di antara 1 - 100.");
+    }
+
+    showToast("Memproses bulk generator...");
+
+    let success = false;
+    let resultMessage = "";
+
+    try {
+      const res = await fetch("/api/bulk", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount })
+      });
+
+      const contentType = res.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        const text = await res.text();
+        throw new Error(text || "Terjadi kesalahan pada server.");
+      }
+
+      const json = await res.json();
+
+      success = res.ok && json.status !== false;
+      resultMessage = json.message || JSON.stringify(json, null, 2);
+
+      const result = document.getElementById("bulkResult");
+
+      result.innerHTML = `
+        <div class="font-bold ${success ? "text-white" : "text-zinc-400"}">
+          ${success ? "BULK GENERATE SUCCESS" : "BULK GENERATE FAILED"}
+        </div>
+        <pre class="whitespace-pre-wrap text-[10px] text-zinc-300 mt-1">${escapeHtml(resultMessage)}</pre>
+      `;
+
+      result.classList.remove("hidden");
+    } catch (err) {
+      success = false;
+      showToast(err.message || "Koneksi gagal.");
+    }
+
+    if (success) {
+      showToast("Proses bulk selesai.");
+    } else {
+      showToast("Proses bulk gagal.");
+    }
+  }
+
+  async function runInboxCheck() {
+    const email = document.getElementById("inputInboxEmail").value.trim();
+    const notice = document.getElementById("inboxNotice");
+    const container = document.getElementById("inboxResult");
+
+    if (!email) return showToast("Masukkan alamat email.");
+
+    notice.textContent = "Memindai kotak masuk...";
+    notice.classList.remove("hidden");
+
+    container.innerHTML = "";
+
+    try {
+      const res = await fetch("/api/inbox", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email })
+      });
+
+      const contentType = res.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        const text = await res.text();
+        throw new Error(text || "Terjadi kesalahan pada server.");
+      }
+
+      const json = await res.json();
+
+      if (!res.ok || json.status === false) {
+        throw new Error(json.message || "Gagal memindai inbox.");
+      }
+
+      notice.textContent = "Pemindaian kotak masuk selesai.";
+
+      const messages = json.data?.messages || [];
+
+      if (!messages.length) {
+        container.innerHTML =
+          '<div class="text-[11px] text-zinc-500 p-4 text-center">Tidak ada pesan ditemukan.</div>';
         return;
       }
-      if (file.size > 25 * 1024 * 1024) {
-        setStatus('Ukuran berkas terlalu besar (Maksimal 25MB).', 'error');
-        return;
-      }
-      selectedFile = file;
-      fileNameDisplay.innerHTML = `<i class="fas fa-file-image mr-1"></i> Berkas: ${file.name} (${(file.size / 1024 / 1024).toFixed(1)} MB)`;
-      urlInput.value = '';
-      clearStatus();
-    }
 
-    function setStatus(text, type = '') {
-      statusMessage.textContent = text;
-      statusMessage.className = 'status-message' + (type ? ' ' + type : '');
-    }
+      messages.forEach(msg => {
+        const card = document.createElement("div");
+        card.className =
+          "glass-card p-3.5 rounded-[14px] space-y-2.5";
 
-    function clearStatus() {
-      statusMessage.textContent = '';
-      statusMessage.className = 'status-message';
-    }
+        const subject = msg.subject || "Tanpa Subjek";
+        const link = msg.login_url || "";
 
-    function resetApp() {
-      selectedFile = null;
-      fileInput.value = '';
-      fileNameDisplay.textContent = '';
-      urlInput.value = '';
-      if (originalBlobUrl) URL.revokeObjectURL(originalBlobUrl);
-      if (enhancedBlobUrl) URL.revokeObjectURL(enhancedBlobUrl);
-      originalBlobUrl = null;
-      enhancedBlobUrl = null;
-
-      comparisonSplitSection.classList.remove('show');
-      downloadFooterActions.classList.remove('show');
-      clearStatus();
-    }
-
-    resetBtn.addEventListener('click', resetApp);
-
-    enhanceBtn.addEventListener('click', async () => {
-      const urlVal = urlInput.value.trim();
-      if (!urlVal && !selectedFile) {
-        setStatus('Masukkan URL web atau unggah berkas gambar terlebih dahulu.', 'error');
-        return;
-      }
-
-      enhanceBtn.disabled = true;
-      enhanceBtn.innerHTML = '<span class="spinner"></span> Menganalisis Berkas...';
-      setStatus('⏳ Memuat sumber gambar dan menjalankan engine...', '');
-
-      try {
-        let sourceImg = null;
-        let origBlob = null;
-
-        if (selectedFile) {
-          origBlob = selectedFile;
-          sourceImg = await loadImageFromFile(selectedFile);
-        } else {
-          origBlob = await fetchUrlBlob(urlVal);
-          sourceImg = await loadImageFromBlob(origBlob);
-        }
-
-        originalBlobUrl = URL.createObjectURL(origBlob);
-        splitImgBefore.src = originalBlobUrl;
-
-        let enhancedBlob = null;
-        let methodUsed = '';
-        const apiList = [
-          'https://api-nanzz.my.id/docs/api/tools/image/enhancer.php?url=',
-          'https://api-nanzz.my.id/api/tools/image/enhancer?url='
-        ];
-
-        let targetFetchUrl = urlVal || originalBlobUrl;
-        for (const api of apiList) {
-          try {
-            const resp = await fetch(api + encodeURIComponent(targetFetchUrl), { headers: { 'Accept': 'image/*' } });
-            if (resp.ok) {
-              const b = await resp.blob();
-              if (b && b.size > 400 && b.type.startsWith('image/')) {
-                enhancedBlob = b;
-                methodUsed = 'Cloud AI Engine (API Nanzz)';
-                break;
-              }
-            }
-          } catch(e) {}
-        }
-
-        if (!enhancedBlob) {
-          setStatus('⚙️ Menjalankan Neural Canvas Local Upscaler...', '');
-          const factorVal = parseInt(strengthRange.value, 10);
-          enhancedBlob = await runLocalEnhancer(sourceImg, factorVal, selectedMode);
-          methodUsed = 'Local Matrix Canvas Engine';
-        }
-
-        enhancedBlobUrl = URL.createObjectURL(enhancedBlob);
-        splitImgAfter.src = enhancedBlobUrl;
-
-        comparisonSplitSection.classList.add('show');
-        downloadFooterActions.classList.add('show');
-
-        setStatus(`✅ Berhasil ditingkatkan menggunakan ${methodUsed}`, 'success');
-      } catch (err) {
-        console.error(err);
-        setStatus('❌ Proses gagal: ' + err.message, 'error');
-      } finally {
-        enhanceBtn.disabled = false;
-        enhanceBtn.innerHTML = '<i class="fas fa-bolt"></i> Mulai Proses Enhancement';
-      }
-    });
-
-    function fetchUrlBlob(url) {
-      return new Promise(async (resolve, reject) => {
-        try {
-          const res = await fetch(url);
-          if (!res.ok) throw new Error('Akses URL ditolak atau tidak ditemukan.');
-          const blob = await res.blob();
-          resolve(blob);
-        } catch (e) {
-          reject(new Error('Gagal mengambil URL akibat pembatasan CORS. Gunakan unggah berkas lokal.'));
-        }
-      });
-    }
-
-    function loadImageFromFile(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = e => {
-          const img = new Image();
-          img.onload = () => resolve(img);
-          img.onerror = reject;
-          img.src = e.target.result;
-        };
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
-    }
-
-    function loadImageFromBlob(blob) {
-      return new Promise((resolve, reject) => {
-        const url = URL.createObjectURL(blob);
-        const img = new Image();
-        img.onload = () => resolve(img);
-        img.onerror = reject;
-        img.src = url;
-      });
-    }
-
-    function runLocalEnhancer(img, strengthVal, mode) {
-      return new Promise((resolve, reject) => {
-        try {
-          const sw = img.naturalWidth || img.width;
-          const sh = img.naturalHeight || img.height;
-
-          let multiplier = 1.6;
-          if (mode === '2x') multiplier = 2.0;
-          if (mode === 'hdr') multiplier = 1.75;
-
-          const limitMax = 3840;
-          if ((sw * multiplier) > limitMax || (sh * multiplier) > limitMax) {
-            multiplier = Math.min(limitMax / sw, limitMax / sh);
+        card.innerHTML = `
+          <div class="text-[11px] font-bold text-white">${escapeHtml(subject)}</div>
+          ${
+            link
+              ? `
+                <div class="p-2.5 rounded-[10px] bg-black/40 border border-white/10 text-zinc-300 text-[10px] break-all font-mono">
+                  ${escapeHtml(link)}
+                </div>
+                <button class="btn btn-primary w-full py-2.5 text-[10px] font-bold">
+                  Salin Link Verifikasi
+                </button>
+              `
+              : `
+                <div class="text-[10px] text-zinc-500">
+                  Link verifikasi belum tersedia.
+                </div>
+              `
           }
+        `;
 
-          const w = Math.round(sw * multiplier);
-          const h = Math.round(sh * multiplier);
-
-          const canvas = document.createElement('canvas');
-          canvas.width = w;
-          canvas.height = h;
-          const ctx = canvas.getContext('2d', { willReadFrequently: true });
-
-          ctx.imageSmoothingEnabled = true;
-          ctx.imageSmoothingQuality = 'high';
-
-          const intensity = strengthVal / 100;
-          let contrast = 1.06 + (intensity * 0.12);
-          let saturate = 1.05 + (intensity * 0.15);
-          let brightness = 1.01 + (intensity * 0.03);
-
-          if (mode === 'hdr') { contrast += 0.08; saturate += 0.12; }
-
-          ctx.filter = `contrast(${contrast}) saturate(${saturate}) brightness(${brightness})`;
-          ctx.drawImage(img, 0, 0, w, h);
-          ctx.filter = 'none';
-
-          if (w * h <= 16000000) {
-            const imgData = ctx.getImageData(0, 0, w, h);
-            const data = imgData.data;
-            const output = ctx.createImageData(w, h);
-            const outData = output.data;
-            const amount = 0.22 + (intensity * 0.32);
-
-            for (let y = 0; y < h; y++) {
-              for (let x = 0; x < w; x++) {
-                const i = (y * w + x) * 4;
-                for (let c = 0; c < 3; c++) {
-                  const center = data[i + c];
-                  const left = data[(y * w + Math.max(0, x - 1)) * 4 + c];
-                  const right = data[(y * w + Math.min(w - 1, x + 1)) * 4 + c];
-                  const up = data[(Math.max(0, y - 1) * w + x) * 4 + c];
-                  const down = data[(Math.min(h - 1, y + 1) * w + x) * 4 + c];
-                  const sharp = center + amount * (4 * center - left - right - up - down);
-                  outData[i + c] = Math.max(0, Math.min(255, sharp));
-                }
-                outData[i + 3] = data[i + 3];
-              }
+        if (link) {
+          card.querySelector("button").addEventListener("click", async () => {
+            try {
+              await navigator.clipboard.writeText(link);
+              showToast("Link berhasil disalin.");
+            } catch {
+              showToast("Gagal menyalin link.");
             }
-            ctx.putImageData(output, 0, 0);
-          }
-
-          canvas.toBlob((blob) => {
-            if (blob) resolve(blob);
-            else reject(new Error('Gagal mengekspor gambar canvas.'));
-          }, 'image/png', 0.98);
-        } catch (err) {
-          reject(err);
+          });
         }
+
+        container.appendChild(card);
       });
+    } catch (err) {
+      notice.textContent = err.message;
     }
+  }
 
-    downloadBtn.addEventListener('click', () => {
-      if (enhancedBlobUrl) {
-        const a = document.createElement('a');
-        a.href = enhancedBlobUrl;
-        a.download = `enhanced_matrix_${Date.now()}.png`;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-      }
-    });
-
-    copyUrlBtn.addEventListener('click', () => {
-      if (enhancedBlobUrl) {
-        navigator.clipboard.writeText(enhancedBlobUrl).then(() => {
-          setStatus('URL Blob berhasil disalin ke clipboard!', 'success');
-        }).catch(() => {
-          setStatus('Gagal menyalin URL.', 'error');
-        });
-      }
-    });
-
-  })();
+  function escapeHtml(value) {
+    return String(value ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
 </script>
 </body>
 </html>
-
