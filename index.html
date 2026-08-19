@@ -1,1037 +1,899 @@
 <!DOCTYPE html>
-<html lang="id" class="dark">
+<html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#050505" />
-  <meta name="description" content="Professional Alight Motion & Media Suite by 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞" />
-  <title>AM Premium Suite Pro | 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞</title>
-
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
-
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-            display: ['Space Grotesk', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace'],
-            manrope: ['Manrope', 'sans-serif'],
-          },
-          colors: {
-            darkbg: '#030303',
-            surface: '#0f0f11',
-            primary: '#0ea5e9',
-            accent: '#38bdf8',
-            gold: '#fbbf24',
-          }
-        }
-      }
-    }
-  </script>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Image Enhancer — Thanz X AI</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none; }
-    html, body { margin: 0; padding: 0; width: 100%; overflow-x: hidden; background-color: #030303; color: #f1f5f9; font-family: 'Inter', sans-serif; touch-action: manipulation; }
-    body::before { content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at 15% 50%, rgba(14, 165, 233, 0.05), transparent 40%), radial-gradient(circle at 85% 30%, rgba(56, 189, 248, 0.04), transparent 40%), url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjMDMwMzAzIj48L3JlY3Q+CjxyZWN0IHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9IiMxYTFhMWEiPjwvcmVjdD4KPC9zdmc+'); z-index: -2; }
-    #particleCanvas { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
-    .pro-glass { background: rgba(15, 15, 17, 0.7); backdrop-filter: blur(20px) saturate(150%); -webkit-backdrop-filter: blur(20px) saturate(150%); border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255,255,255,0.1); }
-    .pro-card { background: linear-gradient(145deg, rgba(22, 22, 25, 0.6) 0%, rgba(15, 15, 17, 0.8) 100%); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 16px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-    .pro-card:hover { border-color: rgba(14, 165, 233, 0.3); box-shadow: 0 8px 25px -5px rgba(14, 165, 233, 0.15); transform: translateY(-2px); }
-    input, select { width: 100%; color: #ffffff !important; background: rgba(0, 0, 0, 0.5) !important; border: 1px solid rgba(255, 255, 255, 0.1) !important; border-radius: 12px !important; outline: none; transition: all 0.3s ease; font-family: 'Inter', sans-serif; }
-    input:focus, select:focus { border-color: #0ea5e9 !important; background: rgba(14, 165, 233, 0.05) !important; box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.1) !important; }
-    .btn-super { position: relative; border-radius: 12px; font-weight: 600; transition: all 0.3s ease; overflow: hidden; z-index: 1; font-family: 'Space Grotesk', sans-serif; text-transform: uppercase; letter-spacing: 0.5px; }
-    .btn-super::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent); transform: translateX(-100%); transition: transform 0.6s ease; z-index: -1; }
-    .btn-super:hover::before { transform: translateX(100%); }
-    .btn-super:active { transform: scale(0.97); }
-    .btn-primary { background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 100%); color: #ffffff; border: 1px solid #38bdf8; box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3); }
-    .btn-primary:hover { box-shadow: 0 6px 20px rgba(14, 165, 233, 0.5); border-color: #7dd3fc; }
-    .btn-dark { background: #111113; color: #e2e8f0; border: 1px solid rgba(255,255,255,0.1); }
-    .btn-dark:hover { background: #1a1a1e; border-color: rgba(255,255,255,0.25); }
-    .ad-premium { background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 50%, #d97706 100%); color: #451a03; border: 1px solid #fde68a; box-shadow: 0 0 20px rgba(251, 191, 36, 0.4), inset 0 2px 4px rgba(255,255,255,0.5); animation: pulse-gold 2.5s infinite; }
-    @keyframes pulse-gold { 0% { box-shadow: 0 0 15px rgba(251, 191, 36, 0.4), inset 0 2px 4px rgba(255,255,255,0.5); } 50% { box-shadow: 0 0 30px rgba(251, 191, 36, 0.8), inset 0 2px 4px rgba(255,255,255,0.7); } 100% { box-shadow: 0 0 15px rgba(251, 191, 36, 0.4), inset 0 2px 4px rgba(255,255,255,0.5); } }
-    .tab-btn { color: #64748b; transition: all 0.3s ease; position: relative; }
-    .tab-btn.active { color: #ffffff; background: rgba(255,255,255,0.1); border-radius: 10px; }
-    .tab-btn.active::after { content: ''; position: absolute; bottom: -4px; left: 20%; right: 20%; height: 2px; background: #0ea5e9; border-radius: 2px; box-shadow: 0 0 8px #0ea5e9; }
-    .warning-block { background: repeating-linear-gradient(45deg, rgba(220, 38, 38, 0.05), rgba(220, 38, 38, 0.05) 10px, rgba(0, 0, 0, 0) 10px, rgba(0, 0, 0, 0) 20px), rgba(20, 0, 0, 0.8); border: 1px solid rgba(220, 38, 38, 0.4); box-shadow: 0 0 15px rgba(220, 38, 38, 0.15); }
-    .animate-fade { animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-    .toast-pro { transform: translate(-50%, 30px); opacity: 0; pointer-events: none; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); background: #0f0f11; border: 1px solid #0ea5e9; box-shadow: 0 10px 30px rgba(14, 165, 233, 0.2); z-index: 99999; }
-    .toast-pro.show { transform: translate(-50%, 0); opacity: 1; }
-    .drop-zone { border: 1.5px dashed rgba(0, 240, 255, 0.3); border-radius: 16px; padding: 22px 18px; text-align: center; background: rgba(0, 240, 255, 0.02); cursor: pointer; transition: all 0.2s ease; }
-    .drop-zone:hover, .drop-zone.dragover { border-color: #00F0FF; background: rgba(0, 240, 255, 0.08); }
-    .range-slider { -webkit-appearance: none; width: 100%; height: 4px; background: rgba(255, 255, 255, 0.12); border-radius: 3px; outline: none; }
-    .range-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #00F0FF; cursor: pointer; box-shadow: 0 0 10px rgba(0, 240, 255, 0.35); border: 2px solid #060709; }
-    ::-webkit-scrollbar { width: 5px; } ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); } ::-webkit-scrollbar-thumb { background: rgba(14, 165, 233, 0.5); border-radius: 10px; } ::-webkit-scrollbar-thumb:hover { background: rgba(14, 165, 233, 0.8); }
+    :root {
+      --accent: #00F0FF;
+      --accent-dim: rgba(0, 240, 255, 0.14);
+      --accent-glow: rgba(0, 240, 255, 0.35);
+      --bg-0: #060709;
+      --bg-1: #0c0e12;
+      --glass-fill: rgba(255, 255, 255, 0.055);
+      --glass-border: rgba(0, 240, 255, 0.18);
+      --glass-border-hi: rgba(0, 240, 255, 0.35);
+      --text-hi: #f5f7f8;
+      --text-mid: #a7b0b8;
+      --text-low: #6b747c;
+      --danger: #ff5c72;
+      --success: #33e6a0;
+      --radius-xl: 30px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --radius-sm: 12px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background:
+        radial-gradient(circle at 15% -10%, rgba(0, 240, 255, 0.08), transparent 45%),
+        radial-gradient(circle at 100% 10%, rgba(0, 240, 255, 0.04), transparent 40%),
+        linear-gradient(160deg, var(--bg-0), var(--bg-1) 60%, #08090b);
+      background-attachment: fixed;
+      color: var(--text-hi);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .app-container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 900px;
+      background: rgba(8, 18, 30, 0.82);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-xl);
+      padding: 26px;
+      box-shadow:
+        0 30px 80px rgba(0, 0, 0, 0.6),
+        0 0 25px rgba(0, 240, 255, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    }
+
+    /* Header */
+    .app-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .brand { display: flex; align-items: center; gap: 12px; }
+
+    .brand-icon {
+      width: 42px; height: 42px;
+      background: linear-gradient(135deg, #66F5FF, var(--accent) 55%, #00A3AD);
+      border-radius: 13px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.15rem;
+      color: #060709;
+      box-shadow: 0 6px 18px rgba(0, 240, 255, 0.3);
+    }
+
+    .brand-title h1 {
+      font-family: 'Manrope', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      color: var(--text-hi);
+    }
+
+    .brand-title p {
+      font-size: 0.75rem;
+      color: var(--text-mid);
+      margin-top: 1px;
+    }
+
+    .status-pill {
+      background: var(--accent-dim);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      color: var(--accent);
+      padding: 6px 12px;
+      border-radius: 100px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      display: flex; align-items: center; gap: 6px;
+    }
+
+    .status-pill i { font-size: 0.45rem; }
+
+    /* Input Section */
+    .workspace-grid { display: grid; gap: 14px; margin-bottom: 18px; }
+
+    .input-box-wrapper { position: relative; }
+
+    .url-input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.045);
+      border: 1px solid var(--glass-border);
+      border-radius: 100px;
+      padding: 14px 18px 14px 46px;
+      color: var(--text-hi);
+      font-size: 0.9rem;
+      font-family: inherit;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .url-input::placeholder { color: var(--text-low); }
+
+    .url-input:focus {
+      border-color: var(--accent);
+      background: rgba(255, 255, 255, 0.07);
+      box-shadow: 0 0 0 3px var(--accent-dim);
+    }
+
+    .url-input-icon {
+      position: absolute; left: 18px; top: 50%; transform: translateY(-50%);
+      color: var(--text-low); font-size: 0.9rem;
+    }
+
+    /* Drop Zone */
+    .drop-zone {
+      border: 1.5px dashed rgba(0, 240, 255, 0.3);
+      border-radius: var(--radius-lg);
+      padding: 22px 18px;
+      text-align: center;
+      background: rgba(0, 240, 255, 0.02);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .drop-zone:hover, .drop-zone.dragover {
+      border-color: var(--accent);
+      background: var(--accent-dim);
+    }
+
+    .drop-zone i {
+      font-size: 1.7rem;
+      color: var(--accent);
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .drop-zone span { font-size: 0.85rem; color: var(--text-mid); display: block; }
+    .drop-zone strong { color: var(--text-hi); }
+
+    .file-name-info { margin-top: 6px; font-size: 0.75rem; color: var(--accent); font-weight: 600; }
+
+    #fileInput { display: none; }
+
+    /* Toolbar Controls */
+    .toolbar-grid {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 14px;
+      margin-bottom: 18px;
+      align-items: stretch;
+    }
+
+    @media (max-width: 650px) { .toolbar-grid { grid-template-columns: 1fr; } }
+
+    .control-card {
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+
+    .control-label {
+      font-size: 0.75rem; font-weight: 700; color: var(--text-mid);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+
+    .control-label i { color: var(--accent); }
+
+    .range-slider {
+      -webkit-appearance: none;
+      width: 100%; height: 4px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 3px; outline: none;
+    }
+
+    .range-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px; height: 18px; border-radius: 50%;
+      background: var(--accent);
+      cursor: pointer;
+      box-shadow: 0 0 10px var(--accent-glow);
+      border: 2px solid #060709;
+    }
+
+    /* Mode Resolution Trigger Button */
+    .mode-trigger-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      color: var(--text-hi);
+      display: flex; align-items: center; justify-content: space-between; gap: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      min-width: 220px;
+    }
+
+    .mode-trigger-btn:hover {
+      background: var(--accent-dim);
+      border-color: var(--glass-border-hi);
+    }
+
+    /* Modal Popup Panel */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(3, 4, 6, 0.75);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 1000; opacity: 0; pointer-events: none;
+      transition: opacity 0.2s ease;
+      padding: 20px;
+    }
+
+    .modal-overlay.active { opacity: 1; pointer-events: auto; }
+
+    .modal-card {
+      width: 100%; max-width: 420px;
+      background: #0f131a;
+      border: 1px solid var(--glass-border-hi);
+      border-radius: 22px;
+      padding: 22px;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.7);
+    }
+
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+
+    .modal-header h3 {
+      font-family: 'Manrope', sans-serif;
+      font-size: 1.02rem; font-weight: 800; color: var(--text-hi);
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    .modal-close {
+      background: rgba(255,255,255,0.06); border: none;
+      width: 30px; height: 30px; border-radius: 50%;
+      color: var(--text-hi); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .modal-close:hover { background: rgba(255,255,255,0.12); }
+
+    .mode-options-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+
+    .mode-option-item {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-sm);
+      padding: 11px 13px;
+      display: flex; align-items: center; gap: 12px;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    .mode-option-item:hover { background: rgba(255,255,255,0.06); }
+
+    .mode-option-item.selected {
+      background: var(--accent-dim);
+      border-color: var(--accent);
+    }
+
+    .mode-option-icon {
+      width: 32px; height: 32px; border-radius: 9px;
+      background: rgba(0, 240, 255, 0.1);
+      color: var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.88rem;
+      flex-shrink: 0;
+    }
+    .mode-option-item.selected .mode-option-icon {
+      background: var(--accent);
+      color: #060709;
+    }
+
+    .mode-option-info h4 { font-size: 0.85rem; font-weight: 700; color: var(--text-hi); margin-bottom: 2px; }
+    .mode-option-info p { font-size: 0.72rem; color: var(--text-mid); line-height: 1.3; }
+
+    /* Action Buttons */
+    .action-group { display: flex; gap: 10px; margin-bottom: 16px; }
+
+    .btn {
+      padding: 13px 20px;
+      border: none;
+      border-radius: 100px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      font-family: inherit;
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      cursor: pointer;
+      transition: opacity 0.2s ease, transform 0.1s ease;
+    }
+
+    .btn:active { transform: scale(0.98); }
+
+    .btn-primary {
+      flex: 1;
+      background: linear-gradient(135deg, #66F5FF, var(--accent) 55%, #008F99);
+      color: #060709;
+      box-shadow: 0 6px 20px rgba(0, 240, 255, 0.25);
+    }
+
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--glass-border);
+      color: var(--text-hi);
+      padding: 13px 16px;
+    }
+    .btn-secondary:hover { background: rgba(255, 255, 255, 0.09); }
+
+    /* Status Area */
+    .status-container { margin-bottom: 12px; }
+
+    .status-message { width: 100%; text-align: center; font-size: 0.8rem; color: var(--text-mid); }
+    .status-message.error { color: var(--danger); }
+    .status-message.success { color: var(--success); }
+
+    /* Side-by-Side Before & After Grid */
+    .comparison-split-section { display: none; flex-direction: column; gap: 12px; margin-bottom: 16px; }
+    .comparison-split-section.show { display: flex; }
+
+    .split-title {
+      font-size: 0.88rem; font-weight: 700; color: var(--text-hi);
+      display: flex; align-items: center; gap: 7px;
+    }
+
+    .split-cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 650px) { .split-cards-grid { grid-template-columns: 1fr; } }
+
+    .split-card {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+
+    .split-card-header {
+      font-size: 0.68rem; font-weight: 800; letter-spacing: 0.5px;
+      padding: 3px 8px; border-radius: 6px; display: inline-flex; align-items: center; gap: 6px; width: fit-content;
+    }
+
+    .split-card.before .split-card-header {
+      background: rgba(255, 92, 114, 0.12); color: #ff8a9a; border: 1px solid rgba(255, 92, 114, 0.25);
+    }
+    .split-card.after .split-card-header {
+      background: var(--accent-dim); color: var(--accent); border: 1px solid rgba(0, 240, 255, 0.3);
+    }
+
+    .split-image-box {
+      width: 100%; height: 210px;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .split-image-box img { width: 100%; height: 100%; object-fit: contain; }
+
+    /* Download Footer Actions */
+    .download-footer-actions { display: none; gap: 10px; }
+    .download-footer-actions.show { display: flex; }
+
+    .spinner {
+      display: inline-block; width: 16px; height: 16px;
+      border: 2px solid rgba(6,7,9,0.25);
+      border-top-color: #060709;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .footer-note {
+      margin-top: 18px; text-align: center; font-size: 0.68rem;
+      color: rgba(255, 255, 255, 0.25);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 12px;
+    }
   </style>
 </head>
+<body>
 
-<body class="min-h-screen px-3 py-6 flex flex-col items-center justify-start pb-20">
-
-  <canvas id="particleCanvas"></canvas>
-
-  <!-- MODAL TOKEN AKSES -->
-  <div id="tokenModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-lg animate-fade">
-    <div class="pro-glass w-full max-w-sm rounded-3xl p-6 text-center shadow-2xl relative overflow-hidden">
-      <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent"></div>
-      
-      <div class="w-16 h-16 mx-auto rounded-2xl bg-primary/10 border border-primary/30 flex items-center justify-center text-primary text-3xl shadow-[0_0_30px_rgba(14,165,233,0.3)] mb-4">
-        <i class="fa-solid fa-shield-halved animate-pulse"></i>
+<div class="app-container">
+  <!-- Header -->
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
+      <div class="brand-title">
+        <h1>Image Enhancer</h1>
+        <p>ThanzDev</p>
       </div>
-      
-      <div class="space-y-1 mb-5">
-        <h2 class="text-xl font-display font-bold text-white">SECURITY GATEWAY</h2>
-        <p class="text-[11px] text-slate-400 font-mono">Authentication Required • v2.0</p>
-      </div>
+    </div>
+    <div class="status-pill"><i class="fas fa-circle"></i> Online</div>
+  </header>
 
-      <div class="warning-block rounded-xl p-3 mb-5 text-left relative overflow-hidden animate-fade">
-        <div class="absolute top-0 left-0 w-1 h-full bg-red-500"></div>
-        <h3 class="text-red-400 font-bold text-[11px] flex items-center gap-1.5 mb-1.5 uppercase font-display tracking-wider">
-          <i class="fa-solid fa-triangle-exclamation"></i> Peringatan Sistem
-        </h3>
-        <p class="text-[9px] text-red-200/80 leading-relaxed font-mono">
-          Dilarang keras membagikan token, melakukan bruteforce, bypass, atau aktivitas ilegal lainnya. 
-          <strong class="text-white">IP Anda (<span id="warnIp">Mendeteksi...</span>) telah dicatat.</strong> Pelanggaran akan mengakibatkan pemblokiran PERMANEN!
-        </p>
+  <!-- Input Sources -->
+  <div class="workspace-grid">
+    <div class="input-box-wrapper">
+      <i class="fas fa-link url-input-icon"></i>
+      <input type="url" id="imageUrl" class="url-input" placeholder="Masukkan URL gambar langsung (https://...)">
+    </div>
+
+    <div class="drop-zone" id="dropZone">
+      <i class="fas fa-cloud-arrow-up"></i>
+      <span>Seret &amp; letakkan file gambar di sini, atau <strong>pilih berkas</strong></span>
+      <div class="file-name-info" id="fileNameDisplay"></div>
+      <input type="file" id="fileInput" accept="image/*">
+    </div>
+  </div>
+
+  <!-- Toolbar Controls -->
+  <div class="toolbar-grid">
+    <div class="control-card">
+      <div class="control-label">
+        <span><i class="fas fa-sliders"></i> Kekuatan Enhancer</span>
+        <span id="strengthIndicator" style="color:var(--accent); font-weight:700;"><i class="fas fa-circle-check mr-1"></i> Optimal</span>
       </div>
-      
-      <div class="space-y-3">
-        <div class="relative">
-          <i class="fa-solid fa-key absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-500"></i>
-          <input id="inputTokenAccess" type="text" placeholder="MASUKKAN TOKEN PRO..." class="pl-10 pr-4 py-4 text-[13px] text-center uppercase tracking-widest font-mono font-bold" />
+      <input type="range" id="strengthRange" class="range-slider" min="10" max="100" value="60">
+    </div>
+
+    <!-- Mode Selector Trigger -->
+    <div class="mode-trigger-btn" id="openModeModal">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <i class="fas fa-layer-group" style="color:var(--accent);"></i>
+        <div style="text-align:left;">
+          <div style="font-size:0.65rem; color:var(--text-mid);"><i class="fas fa-gear mr-1"></i> Mode Resolusi</div>
+          <div id="currentModeLabel" style="font-weight:700; color:var(--text-hi); font-size: 0.85rem;">Upscale 2x + Sharpness</div>
         </div>
-        
-        <button onclick="verifyTokenAccess()" class="btn-super btn-primary w-full py-4 text-[13px] flex items-center justify-center gap-2">
-          <span>Verifikasi Otorisasi</span>
-          <i class="fa-solid fa-arrow-right-to-bracket"></i>
-        </button>
-
-        <div id="freeTokenContainer" class="pt-2">
-          <button id="btnClaimFree" onclick="claimFreeTrialToken()" class="btn-super btn-dark w-full py-3 text-[11px] flex items-center justify-center gap-2">
-            <i class="fa-solid fa-gift text-accent"></i>
-            <span>Klaim Token Trial (5 Menit)</span>
-          </button>
-        </div>
       </div>
+      <i class="fas fa-chevron-right" style="color:var(--text-low); font-size:0.75rem;"></i>
+    </div>
+  </div>
 
-      <div class="mt-5 border-t border-white/10 pt-4">
-        <button onclick="toggleTokenPackages()" class="btn-super btn-dark w-full py-3 text-[11px] flex items-center justify-center gap-2 border-primary/30 text-primary hover:bg-primary/10">
-          <i class="fa-brands fa-whatsapp"></i>
-          <span id="btnGetTokenText">Dapatkan Token Resmi</span>
-        </button>
+  <!-- Action Buttons -->
+  <div class="action-group">
+    <button class="btn btn-primary" id="enhanceBtn">
+      <i class="fas fa-bolt"></i> Mulai Proses Enhancement
+    </button>
+    <button class="btn btn-secondary" id="resetBtn" title="Reset Semua">
+      <i class="fas fa-rotate-left"></i>
+    </button>
+  </div>
 
-        <div id="tokenPackagesSection" class="hidden space-y-2 mt-3 text-left animate-fade">
-          <a href="https://Wa.me/+6282231669053?text=Mau%20Token%20Web%201day%20Mas%20Hao" target="_blank" class="pro-card py-3 px-4 flex items-center justify-between no-underline group">
-            <span class="text-slate-300 text-[11px] font-medium group-hover:text-white transition"><i class="fa-regular fa-clock mr-2 text-primary"></i>1 Hari</span>
-            <span class="text-[11px] text-white font-mono font-bold bg-white/10 px-2 py-1 rounded">Rp 3.000</span>
-          </a>
-          <a href="https://Wa.me/+6282231669053?text=Mau%20Token%20Web%207day%20Mas%20Hao" target="_blank" class="pro-card py-3 px-4 flex items-center justify-between no-underline group">
-            <span class="text-slate-300 text-[11px] font-medium group-hover:text-white transition"><i class="fa-regular fa-calendar mr-2 text-primary"></i>7 Hari</span>
-            <span class="text-[11px] text-white font-mono font-bold bg-white/10 px-2 py-1 rounded">Rp 15.000</span>
-          </a>
-          <a href="https://Wa.me/+6282231669053?text=Mau%20Token%20Web%20Permanen%20Mas%20Hao" target="_blank" class="ad-premium rounded-xl py-3 px-4 flex items-center justify-between no-underline mt-2">
-            <span class="font-bold text-[12px] flex items-center"><i class="fa-solid fa-crown mr-2"></i>Permanen</span>
-            <span class="text-[11px] font-mono font-black bg-black/20 px-2 py-1 rounded">Rp 40.000</span>
-          </a>
-        </div>
+  <!-- Status Area -->
+  <div class="status-container">
+    <div class="status-message" id="statusMessage"></div>
+  </div>
+
+  <!-- Side-by-Side Before & After Display -->
+  <div class="comparison-split-section" id="comparisonSplitSection">
+    <div class="split-title"><i class="fas fa-columns" style="color:var(--accent);"></i> Hasil Perbandingan Gambar</div>
+    <div class="split-cards-grid">
+      <div class="split-card before">
+        <div class="split-card-header"><i class="fas fa-image"></i> SEBELUM (ORIGINAL)</div>
+        <div class="split-image-box"><img id="splitImgBefore" alt="Sebelum"></div>
+      </div>
+      <div class="split-card after">
+        <div class="split-card-header"><i class="fas fa-sparkles"></i> SESUDAH (ENHANCED HD)</div>
+        <div class="split-image-box"><img id="splitImgAfter" alt="Sesudah"></div>
       </div>
     </div>
   </div>
 
-  <!-- DASHBOARD OWNER (ADMIN) -->
-  <div id="ownerDashboardModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/95 backdrop-blur-xl animate-fade hidden">
-    <div class="pro-glass w-full max-w-lg rounded-3xl p-5 text-left border border-primary/40 shadow-[0_0_50px_rgba(14,165,233,0.15)] relative">
-      <div class="flex items-center justify-between border-b border-white/10 pb-4 mb-4">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-primary/20 border border-primary/50 flex items-center justify-center text-primary shadow-[0_0_15px_rgba(14,165,233,0.4)]">
-            <i class="fa-solid fa-terminal"></i>
-          </div>
-          <div>
-            <h2 class="text-[15px] font-display font-bold text-white">COMMAND CENTER</h2>
-            <p class="text-[10px] text-primary font-mono font-semibold">ROOT_ACCESS: GRANTED</p>
-          </div>
-        </div>
-        <button onclick="closeOwnerDashboard()" class="text-slate-500 hover:text-white transition-colors bg-white/5 p-2 rounded-lg">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-
-      <div class="grid grid-cols-2 gap-2 p-1.5 bg-black/50 border border-white/10 rounded-xl mb-4">
-        <button id="tabAdminGen" onclick="switchAdminTab('gen')" class="tab-btn active py-2.5 text-[11px] font-semibold font-display tracking-wide uppercase rounded-lg">
-          <i class="fa-solid fa-key mr-1"></i> Generator
-        </button>
-        <button id="tabAdminUsers" onclick="switchAdminTab('users'); loadActiveUsers();" class="tab-btn py-2.5 text-[11px] font-semibold font-display tracking-wide uppercase rounded-lg">
-          <i class="fa-solid fa-clock-rotate-left mr-1"></i> Riwayat Token
-        </button>
-      </div>
-
-      <div id="adminContentGen" class="space-y-4 animate-fade">
-        <div class="pro-card p-4 border border-white/10">
-          <label class="block text-[11px] text-slate-300 mb-2 font-mono font-semibold">DURASI TOKEN BARU:</label>
-          <select id="newGenDays" class="px-4 py-3.5 text-[12px] bg-black/80 mb-4">
-            <option value="5_MIN">5 Menit (Trial)</option>
-            <option value="1">1 Hari</option>
-            <option value="3">3 Hari</option>
-            <option value="7">7 Hari</option>
-            <option value="15">15 Hari</option>
-            <option value="30" selected>30 Hari (1 Bulan)</option>
-            <option value="90">90 Hari (3 Bulan)</option>
-            <option value="365">365 Hari (1 Tahun)</option>
-            <option value="PERMANENT">Permanen (Tanpa Batas)</option>
-          </select>
-          <button onclick="generateOwnerToken()" class="btn-super btn-primary w-full py-3.5 text-[12px]">
-            Execute Generation
-          </button>
-        </div>
-        
-        <div id="ownerTokenResult" class="pro-card hidden p-4 text-[12px] font-mono text-center border-primary/40 bg-primary/5">
-          <div id="ownerTokenText" class="mb-3 text-slate-200"></div>
-          <button onclick="copyGeneratedToken()" class="btn-super btn-dark w-full py-2.5 border-primary/50 text-primary flex justify-center gap-2 items-center">
-            <i class="fa-solid fa-copy"></i> Copy to Clipboard
-          </button>
-        </div>
-      </div>
-
-      <div id="adminContentUsers" class="space-y-3 animate-fade hidden">
-        <div class="flex items-center justify-between mb-2">
-          <span class="text-[10px] font-mono text-slate-400 uppercase">Token Dibuat (Lokal)</span>
-          <button onclick="loadActiveUsers()" class="text-primary text-[10px] hover:text-white"><i class="fa-solid fa-rotate mr-1"></i>Refresh</button>
-        </div>
-        <div id="userListContainer" class="space-y-2 max-h-[300px] overflow-y-auto pr-2"></div>
-      </div>
-    </div>
+  <!-- Download Action Bar -->
+  <div class="download-footer-actions" id="downloadFooterActions">
+    <button class="btn btn-primary" id="downloadBtn">
+      <i class="fas fa-download"></i> Unduh Gambar HD (.PNG)
+    </button>
+    <button class="btn btn-secondary" id="copyUrlBtn">
+      <i class="fas fa-copy"></i> Salin URL
+    </button>
   </div>
 
-  <!-- MAIN APP CONTAINER -->
-  <div class="w-full max-w-md flex flex-col gap-4 relative z-10">
-
-    <!-- HEADER PRO -->
-    <header class="pro-glass rounded-3xl p-4 flex items-center justify-between relative overflow-hidden">
-      <div class="absolute -top-10 -right-10 w-32 h-32 bg-primary/20 blur-3xl rounded-full"></div>
-      
-      <div class="flex items-center gap-3.5 relative z-10">
-        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-slate-800 to-black border border-slate-700 flex items-center justify-center text-white text-xl shadow-lg relative overflow-hidden group">
-          <div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-          <i class="fa-solid fa-layer-group text-primary"></i>
-        </div>
-        <div>
-          <h1 class="font-display font-bold text-[16px] text-white flex items-center gap-2">
-            AM SUITE <span class="text-[9px] px-1.5 py-0.5 rounded bg-primary/20 text-primary border border-primary/30 uppercase tracking-wider">Professional</span>
-          </h1>
-          <p class="text-[10px] text-slate-400 font-mono mt-0.5 flex items-center gap-1">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> System Online
-          </p>
-        </div>
-      </div>
-
-      <button onclick="openProfileModal()" class="relative z-10 w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-300 hover:text-white hover:bg-white/10 transition-all shadow-sm">
-        <i class="fa-solid fa-user-astronaut"></i>
-      </button>
-    </header>
-
-    <!-- PREMIUM UNLIMITED ADS BANNER -->
-    <div id="premiumAdContainer" class="animate-fade">
-      <a href="https://Wa.me/+6282231669053?text=Halo%20Mas%20Hao,%20Saya%20mau%20beli%20Token%20Permanen%20Unlimited" target="_blank" class="ad-premium block rounded-2xl p-3 no-underline transition-transform hover:scale-[1.01] relative overflow-hidden group">
-        <div class="absolute inset-0 bg-white/20 transform -skew-x-12 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
-        <div class="flex items-center justify-between relative z-10">
-           <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-full bg-black/20 text-yellow-900 flex items-center justify-center text-lg">
-                 <i class="fa-solid fa-bolt"></i>
-              </div>
-              <div>
-                 <h3 class="font-display font-bold text-[13px] uppercase tracking-wide">Premium Unlimited</h3>
-                 <p class="text-[9px] font-medium opacity-80 mt-0.5">Akses semua tools selamanya & hapus iklan. Klik untuk beli!</p>
-              </div>
-           </div>
-           <i class="fa-solid fa-arrow-right bg-black/10 p-2 rounded-full text-xs"></i>
-        </div>
-      </a>
-    </div>
-
-    <!-- MAIN DASHBOARD -->
-    <main class="pro-glass rounded-3xl p-4 sm:p-5 flex flex-col gap-5">
-      
-      <!-- Info Bar -->
-      <div class="flex items-center justify-between p-3.5 bg-black/40 rounded-2xl border border-white/5">
-        <div class="flex items-center gap-3">
-           <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20">
-             <i class="fa-solid fa-clock-rotate-left text-primary text-xs"></i>
-           </div>
-           <div>
-             <div class="text-[9px] uppercase tracking-widest text-slate-400 font-mono">Sisa Waktu Akses</div>
-             <div class="text-[13px] font-mono text-white font-bold tracking-wide" id="tokenCountdown">--:--:--</div>
-           </div>
-        </div>
-        <div class="text-right border-l border-white/10 pl-4">
-           <div class="text-[9px] uppercase tracking-widest text-slate-400 font-mono">Server Ping</div>
-           <div class="text-[12px] font-mono text-emerald-400 font-bold">12ms</div>
-        </div>
-      </div>
-
-      <!-- OWNER BUTTON -->
-      <div id="ownerMenuButtonContainer" class="hidden">
-        <button onclick="openOwnerDashboardModal()" class="btn-super w-full py-3.5 text-[12px] bg-indigo-600/20 text-indigo-300 border border-indigo-500/30 hover:bg-indigo-600/40 hover:border-indigo-400 flex items-center justify-center gap-2">
-          <i class="fa-solid fa-terminal"></i> <span>Buka Panel Admin (Root)</span>
-        </button>
-      </div>
-
-      <!-- MAIN NAVIGATION TABS -->
-      <div class="grid grid-cols-4 gap-1 p-1.5 bg-[#0a0a0c] border border-white/10 rounded-2xl relative z-20">
-        <button id="tabSend" onclick="switchTab('send')" class="tab-btn active py-3 text-[10px] font-display font-bold tracking-wide flex flex-col items-center gap-1">
-          <i class="fa-solid fa-wand-magic-sparkles text-sm"></i> Aktifasi
-        </button>
-        <button id="tabBulk" onclick="switchTab('bulk')" class="tab-btn py-3 text-[10px] font-display font-bold tracking-wide flex flex-col items-center gap-1">
-          <i class="fa-solid fa-cubes text-sm"></i> Bulk
-        </button>
-        <button id="tabInbox" onclick="switchTab('inbox')" class="tab-btn py-3 text-[10px] font-display font-bold tracking-wide flex flex-col items-center gap-1">
-          <i class="fa-solid fa-envelope-open-text text-sm"></i> Inbox
-        </button>
-        <button id="tabHdPhoto" onclick="switchTab('hdphoto')" class="tab-btn py-3 text-[10px] font-display font-bold tracking-wide flex flex-col items-center gap-1">
-          <i class="fa-solid fa-image text-sm"></i> HD Foto
-        </button>
-      </div>
-
-      <!-- TAB 1: AKTIVASI -->
-      <div id="contentSend" class="animate-fade space-y-4">
-        <div class="border-l-2 border-primary pl-3">
-          <div class="text-[9px] text-primary font-mono tracking-widest uppercase mb-0.5">Secure Protocol v2</div>
-          <h2 class="text-[16px] font-display font-bold text-white">Aktivasi AM Premium</h2>
-          <p id="flowInstruction" class="text-[11px] text-slate-400 mt-1">
-            Inject lisensi pro langsung ke akun via magic link.
-          </p>
-        </div>
-        <div id="stepEmailBox" class="space-y-3">
-          <div class="relative">
-            <i class="fa-solid fa-at absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-500"></i>
-            <input id="inputEmail" type="email" placeholder="Masukkan Email Tujuan..." class="pl-11 pr-4 py-4 text-[12px] font-mono" />
-          </div>
-          <button onclick="handleSendMagicLink()" class="btn-super btn-primary w-full py-4 text-[12px] flex items-center justify-center gap-2">
-            <span>Kirim Payload Inject</span>
-            <i class="fa-solid fa-paper-plane"></i>
-          </button>
-        </div>
-        <div id="stepVerifyBox" class="hidden space-y-3">
-          <div class="relative">
-            <i class="fa-solid fa-link absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-500"></i>
-            <input id="inputLink" type="text" placeholder="Paste Magic Link (https://...)" class="pl-11 pr-4 py-4 text-[12px] font-mono" />
-          </div>
-          <div class="grid grid-cols-[1fr_auto] gap-2">
-            <button onclick="handleVerifyMagicLink()" class="btn-super btn-primary py-4 text-[12px]">
-              Eksekusi & Verifikasi
-            </button>
-            <button onclick="resetInjectFlow()" class="btn-super btn-dark px-5 text-slate-300">
-              <i class="fa-solid fa-rotate-left"></i>
-            </button>
-          </div>
-        </div>
-        <div id="sendResult" class="pro-card hidden p-4 text-[11px] border border-white/10 font-mono"></div>
-      </div>
-
-      <!-- TAB 2: BULK -->
-      <div id="contentBulk" class="animate-fade space-y-4 hidden">
-        <div class="border-l-2 border-accent pl-3">
-          <div class="text-[9px] text-accent font-mono tracking-widest uppercase mb-0.5">Batch Process</div>
-          <h2 class="text-[16px] font-display font-bold text-white">Bulk Generator</h2>
-          <p class="text-[11px] text-slate-400 mt-1">Buat banyak token akun premium secara simultan.</p>
-        </div>
-        <div class="space-y-3">
-          <div class="pro-card p-3 flex justify-between items-center">
-             <label class="text-[11px] font-mono text-slate-300">Jumlah Target (Max 100):</label>
-             <input id="inputBulkAmount" type="number" min="1" max="100" value="50" class="w-20 text-center py-2 text-[12px] bg-black/50" />
-          </div>
-          <button onclick="runBulkInject()" class="btn-super btn-primary w-full py-4 text-[12px] border-accent">
-            Execute Batch Script
-          </button>
-        </div>
-        <div id="bulkResult" class="pro-card hidden p-4 text-[10px] max-h-48 overflow-y-auto font-mono text-slate-300 bg-black/60"></div>
-      </div>
-
-      <!-- TAB 3: INBOX -->
-      <div id="contentInbox" class="animate-fade space-y-4 hidden">
-        <div class="border-l-2 border-purple-500 pl-3">
-          <div class="text-[9px] text-purple-400 font-mono tracking-widest uppercase mb-0.5">Mail Sniffer</div>
-          <h2 class="text-[16px] font-display font-bold text-white">Pindai Inbox</h2>
-          <p class="text-[11px] text-slate-400 mt-1">Ambil link verifikasi langsung dari mail server.</p>
-        </div>
-        <div class="space-y-3">
-          <div class="relative">
-            <i class="fa-solid fa-envelope-open-text absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-500"></i>
-            <input id="inputInboxEmail" type="email" placeholder="email@domain.com" class="pl-11 pr-4 py-4 text-[12px] font-mono" />
-          </div>
-          <button onclick="runInboxCheck()" class="btn-super w-full py-4 text-[12px] bg-gradient-to-r from-purple-600 to-indigo-600 text-white border border-purple-400 shadow-[0_4px_15px_rgba(147,51,234,0.3)]">
-            <i class="fa-solid fa-satellite-dish mr-2"></i> Scan Target Email
-          </button>
-        </div>
-        <div id="inboxNotice" class="hidden p-3 rounded-xl text-[10px] bg-purple-900/20 border border-purple-500/30 text-purple-200 font-mono text-center"></div>
-        <div id="inboxResult" class="space-y-3 max-h-56 overflow-y-auto pr-1"></div>
-      </div>
-
-      <!-- TAB 4: HD FOTO -->
-      <div id="contentHdPhoto" class="animate-fade space-y-4 hidden">
-        <div class="border-l-2 border-[#00F0FF] pl-3">
-          <div class="text-[9px] text-[#00F0FF] font-mono tracking-widest uppercase mb-0.5">AI Image Enhancer</div>
-          <h2 class="text-[16px] font-display font-bold text-white">HD Foto Generator</h2>
-          <p class="text-[11px] text-slate-400 mt-1">Tingkatkan resolusi gambar, tambah ketajaman, dan optimalkan HDR.</p>
-        </div>
-        <div class="space-y-3">
-          <div class="relative">
-            <i class="fa-solid fa-link absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-500"></i>
-            <input type="url" id="imageUrl" class="url-input pl-11 pr-4 py-3.5 text-[12px]" placeholder="Masukkan URL gambar langsung (https://...)">
-          </div>
-          <div class="drop-zone" id="dropZone">
-            <i class="fa-solid fa-cloud-arrow-up text-2xl text-[#00F0FF] mb-2 block"></i>
-            <span class="text-[11px] text-slate-300">Seret &amp; letakkan file gambar di sini, atau <strong class="text-white">pilih berkas</strong></span>
-            <div class="text-[10px] text-[#00F0FF] font-semibold mt-1" id="fileNameDisplay"></div>
-            <input type="file" id="fileInput" accept="image/*" class="hidden">
-          </div>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div class="pro-card p-3 flex flex-col gap-2">
-            <div class="text-[11px] font-bold text-slate-300 flex justify-between items-center">
-              <span><i class="fa-solid fa-sliders text-[#00F0FF]"></i> Kekuatan</span>
-              <span id="strengthIndicator" class="text-[#00F0FF]">Optimal</span>
-            </div>
-            <input type="range" id="strengthRange" class="range-slider" min="10" max="100" value="60">
-          </div>
-          <div class="pro-card p-3 flex items-center justify-between cursor-pointer hover:border-[#00F0FF]/50 transition" id="openModeModal">
-            <div class="flex items-center gap-2">
-              <i class="fa-solid fa-layer-group text-[#00F0FF]"></i>
-              <div>
-                <div class="text-[9px] text-slate-400">Mode Resolusi</div>
-                <div id="currentModeLabel" class="text-[11px] font-bold text-white">Upscale 2x + Sharpness</div>
-              </div>
-            </div>
-            <i class="fa-solid fa-chevron-right text-[10px] text-slate-500"></i>
-          </div>
-        </div>
-        <div class="flex gap-2">
-          <button id="enhanceBtn" class="btn-super btn-primary flex-1 py-3.5 text-[12px] flex items-center justify-center gap-2">
-            <i class="fa-solid fa-bolt"></i> Mulai Proses Enhancement
-          </button>
-          <button id="resetBtn" class="btn-super btn-dark px-4 text-slate-300" title="Reset Semua">
-            <i class="fa-solid fa-rotate-left"></i>
-          </button>
-        </div>
-        <div id="statusMessage" class="text-[11px] text-center font-mono"></div>
-        <div class="comparison-split-section hidden flex-col gap-3" id="comparisonSplitSection">
-          <div class="text-[12px] font-bold text-white flex items-center gap-2">
-            <i class="fa-solid fa-columns text-[#00F0FF]"></i> Hasil Perbandingan
-          </div>
-          <div class="grid grid-cols-2 gap-2">
-            <div class="pro-card p-2 flex flex-col gap-1">
-              <div class="text-[9px] font-bold text-red-400"><i class="fa-solid fa-image"></i> SEBELUM</div>
-              <div class="h-36 bg-black/40 rounded-lg overflow-hidden flex items-center justify-center">
-                <img id="splitImgBefore" class="w-full h-full object-contain" alt="Sebelum">
-              </div>
-            </div>
-            <div class="pro-card p-2 flex flex-col gap-1 border-[#00F0FF]/30">
-              <div class="text-[9px] font-bold text-[#00F0FF]"><i class="fa-solid fa-sparkles"></i> SESUDAH HD</div>
-              <div class="h-36 bg-black/40 rounded-lg overflow-hidden flex items-center justify-center">
-                <img id="splitImgAfter" class="w-full h-full object-contain" alt="Sesudah">
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="download-footer-actions hidden gap-2" id="downloadFooterActions">
-          <button id="downloadBtn" class="btn-super btn-primary flex-1 py-3 text-[11px] flex items-center justify-center gap-2">
-            <i class="fa-solid fa-download"></i> Unduh Gambar HD (.PNG)
-          </button>
-          <button id="copyUrlBtn" class="btn-super btn-dark px-4 text-[11px] flex items-center justify-center gap-1">
-            <i class="fa-solid fa-copy"></i> Salin URL
-          </button>
-        </div>
-      </div>
-    </main>
-    
-    <!-- Footer Link Options -->
-    <div class="grid grid-cols-2 gap-3 mt-1">
-      <a href="https://whatsapp.com/channel/0029Vaf0GfTJ3jv2hhFz1j2K" target="_blank" class="pro-card py-3 px-3 text-[10px] font-display font-bold flex items-center justify-center gap-2 no-underline text-white hover:border-emerald-500">
-        <i class="fa-brands fa-whatsapp text-emerald-400 text-sm"></i> Saluran WA
-      </a>
-      <a href="https://Wa.me/+6282231669053" target="_blank" class="pro-card py-3 px-3 text-[10px] font-display font-bold flex items-center justify-center gap-2 no-underline text-white hover:border-primary">
-        <i class="fa-solid fa-headset text-primary text-sm"></i> Hubungi CS
-      </a>
-    </div>
-
-    <!-- MODAL PROFIL -->
-    <div id="profileModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-fade hidden">
-      <div class="pro-glass w-full max-w-sm rounded-3xl p-6 relative">
-        <button onclick="closeProfileModal()" class="absolute top-4 right-4 text-slate-500 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
-        <div class="text-center space-y-3 mb-5">
-          <div class="w-16 h-16 mx-auto rounded-full bg-slate-800 border-2 border-primary flex items-center justify-center text-white text-2xl shadow-[0_0_20px_rgba(14,165,233,0.3)]">
-            <i class="fa-solid fa-user-check"></i>
-          </div>
-          <div>
-            <h2 class="text-[16px] font-display font-bold text-white">SYSTEM IDENTITY</h2>
-            <p class="text-[10px] text-emerald-400 font-mono mt-1">Status: SECURE_CONNECTION</p>
-          </div>
-        </div>
-        <div class="pro-card p-4 space-y-3 text-[11px] font-mono mb-5 border-white/5">
-          <div class="flex justify-between items-center border-b border-white/5 pb-2">
-            <span class="text-slate-500">Token ID</span>
-            <span id="profileActiveToken" class="text-white font-bold tracking-wide">--</span>
-          </div>
-          <div class="flex justify-between items-center border-b border-white/5 pb-2">
-            <span class="text-slate-500">Privilege Level</span>
-            <span id="profileAccessType" class="text-primary font-bold">Standard Member</span>
-          </div>
-          <div class="flex justify-between items-center">
-            <span class="text-slate-500">IP Address</span>
-            <span id="profileUserIp" class="text-white font-bold">Detecting...</span>
-          </div>
-        </div>
-        <button onclick="logoutToken()" class="btn-super w-full py-3 text-[11px] bg-red-500/10 text-red-400 border border-red-500/30 hover:bg-red-500/20">
-          <i class="fa-solid fa-power-off mr-1"></i> Terminate Session
-        </button>
-      </div>
-    </div>
-
-    <!-- MODAL RESOLUSI MODE HD FOTO -->
-    <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-200" id="modeModalOverlay" style="font-family: 'Inter', sans-serif;">
-      <div class="w-full max-w-sm bg-[#0f131a] border border-[#00F0FF]/30 rounded-3xl p-5 shadow-2xl">
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="font-bold text-[14px] text-white flex items-center gap-2">
-            <i class="fa-solid fa-wand-magic-sparkles text-[#00F0FF]"></i> Pilih Mode Resolusi
-          </h3>
-          <button class="w-7 h-7 rounded-full bg-white/5 hover:bg-white/10 text-slate-300 flex items-center justify-center" id="closeModeModal"><i class="fa-solid fa-xmark"></i></button>
-        </div>
-        <div class="space-y-2 mb-4">
-          <div class="mode-option-item p-3 rounded-xl border border-white/10 bg-white/[0.03] flex items-center gap-3 cursor-pointer hover:bg-white/[0.06] selected transition" data-mode="2x">
-            <div class="w-8 h-8 rounded-lg bg-[#00F0FF]/20 text-[#00F0FF] flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-expand"></i></div>
-            <div>
-              <div class="text-[12px] font-bold text-white">Upscale 2x + Sharpness</div>
-              <div class="text-[10px] text-slate-400">Memperbesar dimensi piksel 2x lipat dengan penajaman tepi.</div>
-            </div>
-          </div>
-          <div class="mode-option-item p-3 rounded-xl border border-white/10 bg-white/[0.03] flex items-center gap-3 cursor-pointer hover:bg-white/[0.06] transition" data-mode="1x">
-            <div class="w-8 h-8 rounded-lg bg-white/10 text-slate-300 flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-filter"></i></div>
-            <div>
-              <div class="text-[12px] font-bold text-white">Original Size + High Filter</div>
-              <div class="text-[10px] text-slate-400">Resolusi asli dengan pembersihan noise & detail tajam.</div>
-            </div>
-          </div>
-          <div class="mode-option-item p-3 rounded-xl border border-white/10 bg-white/[0.03] flex items-center gap-3 cursor-pointer hover:bg-white/[0.06] transition" data-mode="hdr">
-            <div class="w-8 h-8 rounded-lg bg-white/10 text-slate-300 flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-sun"></i></div>
-            <div>
-              <div class="text-[12px] font-bold text-white">HDR Boost &amp; Denoise</div>
-              <div class="text-[10px] text-slate-400">Menaikkan kontras, keseimbangan warna, dan meredam bintik gelap.</div>
-            </div>
-          </div>
-        </div>
-        <button id="applyModeBtn" class="btn-super btn-primary w-full py-3 text-[12px]">Terapkan Mode</button>
-      </div>
-    </div>
-
-    <footer class="text-center opacity-60 hover:opacity-100 transition-opacity mt-2">
-      <p class="text-[10px] text-slate-400 font-mono tracking-wide">
-        AM SUITE PRO <span class="mx-1 text-slate-600">|</span> v2.0 <span class="mx-1 text-slate-600">|</span> 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞
-      </p>
-    </footer>
-
+  <div class="footer-note">
+    <i class="fas fa-copyright"></i> ThanzDev Image Enhancer
   </div>
+</div>
 
-  <div id="toast" class="toast-pro fixed z-50 bottom-6 left-1/2 rounded-xl px-5 py-3 text-[11px] font-mono text-white max-w-[calc(100vw-32px)]"></div>
+<!-- Modal Popup Panel for Resolution Mode -->
+<div class="modal-overlay" id="modeModalOverlay">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3><i class="fas fa-wand-magic-sparkles" style="color:var(--accent);"></i> Pilih Mode Resolusi</h3>
+      <button class="modal-close" id="closeModeModal"><i class="fas fa-xmark"></i></button>
+    </div>
+
+    <div class="mode-options-list">
+      <div class="mode-option-item selected" data-mode="2x">
+        <div class="mode-option-icon"><i class="fas fa-expand"></i></div>
+        <div class="mode-option-info">
+          <h4>Upscale 2x + Sharpness</h4>
+          <p>Memperbesar dimensi piksel dua kali lipat dengan penajaman tepi optimal.</p>
+        </div>
+      </div>
+
+      <div class="mode-option-item" data-mode="1x">
+        <div class="mode-option-icon"><i class="fas fa-filter"></i></div>
+        <div class="mode-option-info">
+          <h4>Original Size + High Filter</h4>
+          <p>Mempertahankan resolusi asli namun membersihkan noise &amp; mempertajam detail.</p>
+        </div>
+      </div>
+
+      <div class="mode-option-item" data-mode="hdr">
+        <div class="mode-option-icon"><i class="fas fa-sun"></i></div>
+        <div class="mode-option-info">
+          <h4>HDR Boost &amp; Denoise</h4>
+          <p>Menaikkan kontras, keseimbangan warna, serta meredam bintik gambar gelap.</p>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary" id="applyModeBtn" style="width:100%;"><i class="fas fa-check mr-2"></i> Terapkan Mode</button>
+  </div>
+</div>
 
 <script>
-  // ==========================================
-  // CORE CONFIGURATION & STATE
-  // ==========================================
-  const OWNER_SECRET_KEY = "HAOMI_XML";
-  const TOKEN_SECRET_SALT = 8472; // Secret algoritma token
-  let lastGeneratedCode = "";
-  let clientRealIp = "127.0.0.1";
-  let activeInjectEmail = "";
+  (function() {
+    "use strict";
 
-  // Image Enhancer Variables
-  let selectedFile = null; let selectedMode = '2x'; let tempSelectedMode = '2x'; let originalBlobUrl = null; let enhancedBlobUrl = null;
+    const urlInput = document.getElementById('imageUrl');
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const fileNameDisplay = document.getElementById('fileNameDisplay');
+    const strengthRange = document.getElementById('strengthRange');
+    const strengthIndicator = document.getElementById('strengthIndicator');
 
-  window.addEventListener("DOMContentLoaded", async () => {
-    try {
-      const ipRes = await fetch("https://api.ipify.org?format=json");
-      const ipJson = await ipRes.json();
-      clientRealIp = ipJson.ip || "127.0.0.1";
-      document.getElementById("warnIp").textContent = clientRealIp;
-    } catch (e) {
-      clientRealIp = "192.168.1." + Math.floor(Math.random() * 200);
-      document.getElementById("warnIp").textContent = clientRealIp;
-    }
+    const openModeModal = document.getElementById('openModeModal');
+    const closeModeModal = document.getElementById('closeModeModal');
+    const modeModalOverlay = document.getElementById('modeModalOverlay');
+    const applyModeBtn = document.getElementById('applyModeBtn');
+    const currentModeLabel = document.getElementById('currentModeLabel');
+    const modeItems = document.querySelectorAll('.mode-option-item');
 
-    const savedToken = localStorage.getItem("verified_token");
-    const savedExpiry = localStorage.getItem("token_expiry");
-    const ownerSession = localStorage.getItem("owner_logged_in");
+    const enhanceBtn = document.getElementById('enhanceBtn');
+    const resetBtn = document.getElementById('resetBtn');
 
-    if (ownerSession === "true") {
-      unlockDashboard(true);
-      return;
-    }
+    const comparisonSplitSection = document.getElementById('comparisonSplitSection');
+    const splitImgBefore = document.getElementById('splitImgBefore');
+    const splitImgAfter = document.getElementById('splitImgAfter');
 
-    if (savedToken && savedExpiry) {
-      if (savedExpiry === "PERMANENT") {
-        unlockDashboard(false, true);
-      } else {
-        const now = new Date().getTime();
-        if (now < Number(savedExpiry)) {
-          unlockDashboard(false, false);
-        } else {
-          localStorage.removeItem("verified_token");
-          localStorage.removeItem("token_expiry");
-        }
+    const statusMessage = document.getElementById('statusMessage');
+    const downloadFooterActions = document.getElementById('downloadFooterActions');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const copyUrlBtn = document.getElementById('copyUrlBtn');
+
+    let selectedFile = null;
+    let selectedMode = '2x';
+    let tempSelectedMode = '2x';
+    let originalBlobUrl = null;
+    let enhancedBlobUrl = null;
+
+    const strengthLabels = [
+      { max: 30, text: 'Lembut' },
+      { max: 70, text: 'Optimal' },
+      { max: 100, text: 'Maksimal' }
+    ];
+
+    strengthRange.addEventListener('input', () => {
+      const val = parseInt(strengthRange.value, 10);
+      let label = 'Optimal';
+      for (let item of strengthLabels) {
+        if (val <= item.max) { label = item.text; break; }
       }
-    }
-
-    checkFreeClaimStatus();
-    initImageEnhancerLogic();
-  });
-
-  // ==========================================
-  // UI & ACCESS CONTROLS
-  // ==========================================
-  function unlockDashboard(isOwner, isPermanent = false) {
-    document.getElementById("tokenModal").classList.add("hidden");
-    const adBanner = document.getElementById("premiumAdContainer");
-    if(adBanner) {
-      if(isOwner || isPermanent || localStorage.getItem("token_expiry") === "PERMANENT") {
-        adBanner.style.display = "none";
-      } else {
-        adBanner.style.display = "block";
-      }
-    }
-    if (isOwner) {
-      document.getElementById("ownerMenuButtonContainer").classList.remove("hidden");
-    }
-  }
-
-  function toggleTokenPackages() {
-    const section = document.getElementById("tokenPackagesSection");
-    const btnText = document.getElementById("btnGetTokenText");
-    if (section.classList.contains("hidden")) {
-      section.classList.remove("hidden");
-      btnText.textContent = "Sembunyikan Pilihan";
-    } else {
-      section.classList.add("hidden");
-      btnText.textContent = "Dapatkan Token Resmi";
-    }
-  }
-
-  function switchTab(tab) {
-    const contents = { send: document.getElementById("contentSend"), bulk: document.getElementById("contentBulk"), inbox: document.getElementById("contentInbox"), hdphoto: document.getElementById("contentHdPhoto") };
-    const tabs = { send: document.getElementById("tabSend"), bulk: document.getElementById("tabBulk"), inbox: document.getElementById("tabInbox"), hdphoto: document.getElementById("tabHdPhoto") };
-    Object.values(contents).forEach(el => el.classList.add("hidden"));
-    Object.values(tabs).forEach(el => el.classList.remove("active"));
-    if(contents[tab]) contents[tab].classList.remove("hidden");
-    if(tabs[tab]) tabs[tab].classList.add("active");
-  }
-
-  function showToast(message) {
-    const toast = document.getElementById("toast");
-    toast.innerHTML = `<i class="fa-solid fa-circle-info text-primary mr-2"></i> ${message}`;
-    toast.classList.add("show");
-    clearTimeout(window.__toastTimer);
-    window.__toastTimer = setTimeout(() => { toast.classList.remove("show"); }, 3000);
-  }
-
-  function escapeHtml(value) { return String(value ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;"); }
-
-  // ==========================================
-  // MAGIC TOKEN GENERATOR (ALGORITHMIC LOCAL)
-  // ==========================================
-  function generateMagicToken(daysString, isTrial = false) {
-    let expiryTime;
-    if (daysString === "PERMANENT") {
-      expiryTime = new Date("2099-12-31").getTime();
-    } else if (daysString === "5_MIN") {
-      expiryTime = Date.now() + (5 * 60 * 1000);
-    } else {
-      expiryTime = Date.now() + (Number(daysString) * 24 * 60 * 60 * 1000);
-    }
-    
-    const timeStr = expiryTime.toString(36).toUpperCase();
-    let checksum = 0;
-    for (let i = 0; i < timeStr.length; i++) checksum += timeStr.charCodeAt(i);
-    const signature = (checksum * TOKEN_SECRET_SALT).toString(36).toUpperCase();
-    
-    const randomPart = Math.random().toString(36).substring(2, 6).toUpperCase();
-    const prefix = isTrial ? "TRIAL" : "PRO";
-    
-    return `${prefix}-${timeStr}-${randomPart}-${signature}`;
-  }
-
-  function validateMagicToken(token) {
-    if (token === OWNER_SECRET_KEY) return { valid: true, isOwner: true, expiry: "PERMANENT" };
-    if (token === "HAO-1234") return { valid: true, isOwner: false, expiry: Date.now() + 30*86400000 };
-
-    const parts = token.split("-");
-    if ((parts[0] !== "PRO" && parts[0] !== "TRIAL") || parts.length < 4) {
-      return { valid: false, message: "Format token tidak dikenali." };
-    }
-    
-    const timeStr = parts[1];
-    const signature = parts[3];
-    
-    let checksum = 0;
-    for (let i = 0; i < timeStr.length; i++) checksum += timeStr.charCodeAt(i);
-    const expectedSig = (checksum * TOKEN_SECRET_SALT).toString(36).toUpperCase();
-    
-    if (signature !== expectedSig) return { valid: false, message: "Token invalid atau palsu." };
-    
-    const expiryTime = parseInt(timeStr, 36);
-    if (Date.now() > expiryTime) return { valid: false, message: "Token sudah kedaluwarsa!" };
-    
-    return { valid: true, isOwner: false, expiry: expiryTime };
-  }
-
-  // ==========================================
-  // TOKEN & AUTHENTICATION UI
-  // ==========================================
-  function checkFreeClaimStatus() {
-    const lastClaim = localStorage.getItem("last_free_token_claim_date");
-    const oneWeek = 7 * 24 * 60 * 60 * 1000;
-    const btnClaim = document.getElementById("btnClaimFree");
-    if (lastClaim && btnClaim) {
-      const timePassed = Date.now() - parseInt(lastClaim);
-      if (timePassed < oneWeek) {
-        const timeLeftDays = Math.ceil((oneWeek - timePassed) / (1000 * 60 * 60 * 24));
-        btnClaim.disabled = true; btnClaim.style.opacity = "0.5";
-        btnClaim.innerHTML = `<i class="fa-solid fa-lock"></i> <span>Terklaim (Reset: ${timeLeftDays} hari)</span>`;
-      } else {
-        btnClaim.disabled = false; btnClaim.style.opacity = "1";
-        btnClaim.innerHTML = `<i class="fa-solid fa-gift text-accent"></i> <span>Klaim Token Trial (5 Menit)</span>`;
-      }
-    }
-  }
-
-  function claimFreeTrialToken() {
-    const lastClaim = localStorage.getItem("last_free_token_claim_date");
-    const oneWeek = 7 * 24 * 60 * 60 * 1000;
-    if (lastClaim) {
-      const timePassed = Date.now() - parseInt(lastClaim);
-      if (timePassed < oneWeek) return showToast("Token trial sudah diklaim minggu ini.");
-    }
-
-    const freeTokenCode = generateMagicToken("5_MIN", true);
-    localStorage.setItem("last_free_token_claim_date", Date.now().toString());
-    document.getElementById("inputTokenAccess").value = freeTokenCode;
-    showToast("Token trial berhasil dibuat! Mengautentikasi...");
-    checkFreeClaimStatus();
-    setTimeout(() => { verifyTokenAccess(); }, 800);
-  }
-
-  function verifyTokenAccess() {
-    const inputVal = document.getElementById("inputTokenAccess").value.trim();
-    if (!inputVal) return showToast("Akses Ditolak: Token Kosong");
-    
-    showToast("Memeriksa keamanan token...");
-    
-    setTimeout(() => {
-      const check = validateMagicToken(inputVal.toUpperCase());
-
-      if (check.valid) {
-        if (check.isOwner) {
-          localStorage.setItem("owner_logged_in", "true");
-          showToast("ROOT ACCESS GRANTED");
-          setTimeout(() => { unlockDashboard(true); }, 700);
-        } else {
-          localStorage.setItem("verified_token", inputVal.toUpperCase());
-          if (check.expiry === "PERMANENT") {
-            localStorage.setItem("token_expiry", "PERMANENT");
-          } else {
-            localStorage.setItem("token_expiry", check.expiry.toString());
-          }
-          localStorage.removeItem("owner_logged_in");
-          showToast("Autentikasi Berhasil!");
-          setTimeout(() => { unlockDashboard(false, check.expiry === "PERMANENT"); }, 800);
-        }
-      } else {
-        showToast("Akses Ditolak: " + check.message);
-      }
-    }, 400);
-  }
-
-  function updateTokenCountdown() {
-    const countdownElement = document.getElementById("tokenCountdown");
-    if (!countdownElement) return;
-    if (localStorage.getItem("owner_logged_in") === "true" || localStorage.getItem("token_expiry") === "PERMANENT") {
-      countdownElement.textContent = "UNLIMITED";
-      return;
-    }
-    const savedExpiry = localStorage.getItem("token_expiry");
-    if (!savedExpiry) { countdownElement.textContent = "--:--:--"; return; }
-    
-    const diff = Number(savedExpiry) - new Date().getTime();
-    if (diff <= 0) { countdownElement.textContent = "EXPIRED"; return; }
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    const secs = Math.floor((diff % (1000 * 60)) / 1000);
-    countdownElement.textContent = (days > 0 ? `${days}d ` : "") + `${String(hours).padStart(2,'0')}:${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
-  }
-  setInterval(updateTokenCountdown, 1000);
-
-  // ==========================================
-  // PROFILE LOGIC
-  // ==========================================
-  function openProfileModal() {
-    const isOwner = localStorage.getItem("owner_logged_in") === "true";
-    const token = localStorage.getItem("verified_token") || "UNKNOWN";
-    document.getElementById("profileActiveToken").textContent = isOwner ? "ROOT_ADMIN" : token;
-    document.getElementById("profileAccessType").textContent = isOwner ? "System Owner" : "Token User";
-    document.getElementById("profileUserIp").textContent = clientRealIp;
-    document.getElementById("profileModal").classList.remove("hidden");
-  }
-  function closeProfileModal() { document.getElementById("profileModal").classList.add("hidden"); }
-  
-  function logoutToken() {
-    localStorage.removeItem("verified_token");
-    localStorage.removeItem("token_expiry");
-    localStorage.removeItem("owner_logged_in");
-    showToast("Sesi dihentikan. Melakukan reload...");
-    setTimeout(() => location.reload(), 1000);
-  }
-
-  // ==========================================
-  // ADMIN DASHBOARD LOGIC (Riwayat Lokal)
-  // ==========================================
-  function openOwnerDashboardModal() {
-    if (localStorage.getItem("owner_logged_in") !== "true") return showToast("ACCESS DENIED");
-    document.getElementById("ownerDashboardModal").classList.remove("hidden");
-    loadActiveUsers();
-  }
-  function closeOwnerDashboard() { document.getElementById("ownerDashboardModal").classList.add("hidden"); }
-
-  function switchAdminTab(tab) {
-    document.getElementById("adminContentGen").classList.add("hidden");
-    document.getElementById("adminContentUsers").classList.add("hidden");
-    document.getElementById("tabAdminGen").classList.remove("active");
-    document.getElementById("tabAdminUsers").classList.remove("active");
-    if (tab === 'gen') {
-      document.getElementById("adminContentGen").classList.remove("hidden");
-      document.getElementById("tabAdminGen").classList.add("active");
-    } else {
-      document.getElementById("adminContentUsers").classList.remove("hidden");
-      document.getElementById("tabAdminUsers").classList.add("active");
-    }
-  }
-
-  function generateOwnerToken() {
-    const selectedVal = document.getElementById("newGenDays").value;
-    const randomCode = generateMagicToken(selectedVal);
-    lastGeneratedCode = randomCode;
-
-    const labelText = selectedVal === "PERMANENT" ? "Unlimited" : (selectedVal === "5_MIN" ? "5 Menit" : selectedVal + " Hari");
-    document.getElementById("ownerTokenText").innerHTML = `<b>GENERATED KEY:</b><br><code class="text-primary text-[15px] font-bold mt-1 block">${randomCode}</code><br>Type: ${labelText}`;
-    document.getElementById("ownerTokenResult").classList.remove("hidden");
-    
-    let history = JSON.parse(localStorage.getItem("admin_generated_history") || "[]");
-    history.unshift({ token: randomCode, type: labelText, date: new Date().toLocaleString('id-ID') });
-    localStorage.setItem("admin_generated_history", JSON.stringify(history));
-
-    showToast("Token Pro Generated!");
-  }
-
-  async function copyGeneratedToken() {
-    if (!lastGeneratedCode) return;
-    await navigator.clipboard.writeText(lastGeneratedCode);
-    showToast("Token copied to clipboard!");
-  }
-
-  function loadActiveUsers() {
-    const container = document.getElementById("userListContainer");
-    let history = JSON.parse(localStorage.getItem("admin_generated_history") || "[]");
-
-    if (history.length === 0) {
-      container.innerHTML = `<div class="text-center text-slate-500 py-4 text-[11px] font-mono">Belum ada token yang dibuat.</div>`;
-      return;
-    }
-    
-    container.innerHTML = "";
-    history.forEach((item, index) => {
-      const card = document.createElement("div");
-      card.className = "p-3 bg-black/60 border border-white/5 rounded-lg flex flex-col gap-2 font-mono text-[10px]";
-      card.innerHTML = `
-        <div class="flex items-center justify-between text-slate-300">
-          <span><i class="fa-solid fa-key text-primary mr-1"></i> ${item.type}</span>
-          <span class="text-[9px] opacity-70">${item.date}</span>
-        </div>
-        <div class="p-2 bg-white/5 rounded text-white text-center font-bold tracking-wider">
-          ${item.token}
-        </div>
-        <button onclick="removeHistoryItem(${index})" class="w-full mt-1 py-1.5 bg-red-500/10 text-red-400 rounded hover:bg-red-500/20 transition"><i class="fa-solid fa-trash-can"></i> Hapus dari Riwayat</button>
-      `;
-      container.appendChild(card);
+      strengthIndicator.innerHTML = `<i class="fas fa-circle-check mr-1"></i> ${label}`;
     });
-  }
 
-  function removeHistoryItem(index) {
-    let history = JSON.parse(localStorage.getItem("admin_generated_history") || "[]");
-    history.splice(index, 1);
-    localStorage.setItem("admin_generated_history", JSON.stringify(history));
-    loadActiveUsers();
-    showToast("Riwayat dihapus.");
-  }
+    openModeModal.addEventListener('click', () => {
+      tempSelectedMode = selectedMode;
+      updateModalSelectionUI();
+      modeModalOverlay.classList.add('active');
+    });
 
-  // ==========================================
-  // FITUR ORIGINAL (AKTIVASI, BULK, INBOX) - TIDAK DISENTUH
-  // ==========================================
-  async function handleSendMagicLink() {
-    const email = document.getElementById("inputEmail").value.trim();
-    if (!email || !email.includes("@")) return showToast("Invalid email format.");
-    showToast("Executing payload delivery...");
-    try {
-      const res = await fetch("/api/send", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email }) });
-      const contentType = res.headers.get("content-type");
-      if (!contentType || !contentType.includes("application/json")) { const text = await res.text(); throw new Error(text || "Server unreachable."); }
-      const json = await res.json();
-      if (!res.ok || json.status === false) throw new Error(json.message || "Failed to dispatch link.");
-      activeInjectEmail = email; document.getElementById("stepEmailBox").classList.add("hidden"); document.getElementById("stepVerifyBox").classList.remove("hidden");
-      document.getElementById("flowInstruction").innerHTML = `Payload dispatched to <b>${email}</b>. Input magic link below.`; showToast("Magic link sent successfully.");
-    } catch (err) { showToast(err.message || "Connection timeout."); }
-  }
+    const closeModalFunc = () => modeModalOverlay.classList.remove('active');
+    closeModeModal.addEventListener('click', closeModalFunc);
+    modeModalOverlay.addEventListener('click', (e) => {
+      if (e.target === modeModalOverlay) closeModalFunc();
+    });
 
-  async function handleVerifyMagicLink() {
-    const link = document.getElementById("inputLink").value.trim();
-    if (!link) return showToast("Input required.");
-    showToast("Validating link token...");
-    let success = false; let resultMessage = "";
-    try {
-      const res = await fetch("/api/verify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: activeInjectEmail, link }) });
-      const contentType = res.headers.get("content-type");
-      if (!contentType || !contentType.includes("application/json")) { const text = await res.text(); throw new Error(text || "Server error."); }
-      const json = await res.json();
-      success = res.ok && json.status !== false; resultMessage = json.message || "Validation OK.";
-      const result = document.getElementById("sendResult");
-      result.innerHTML = ` <div class="font-bold ${success ? "text-emerald-400" : "text-red-400"} mb-1">[ ${success ? "VERIFICATION SUCCESS" : "VERIFICATION FAILED"} ]</div><div class="text-[10px] text-slate-300">> ${escapeHtml(resultMessage)}</div>`;
-      result.classList.remove("hidden");
-    } catch (err) { success = false; showToast(err.message || "Network Error."); }
-    if (success) { showToast("System injected successfully."); setTimeout(resetInjectFlow, 1500); } else { showToast("Injection Failed."); }
-  }
-
-  function resetInjectFlow() {
-    activeInjectEmail = ""; document.getElementById("inputEmail").value = ""; document.getElementById("inputLink").value = "";
-    document.getElementById("stepVerifyBox").classList.add("hidden"); document.getElementById("stepEmailBox").classList.remove("hidden");
-    document.getElementById("flowInstruction").textContent = "Inject lisensi pro langsung ke akun via magic link."; document.getElementById("sendResult").classList.add("hidden");
-  }
-
-  async function runBulkInject() {
-    const amount = Number(document.getElementById("inputBulkAmount").value);
-    if (!amount || amount < 1 || amount > 100) return showToast("Value must be 1-100");
-    showToast("Starting Batch Generation...");
-    let success = false; let resultMessage = "";
-    try {
-      const res = await fetch("/api/bulk", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ amount }) });
-      const contentType = res.headers.get("content-type");
-      if (!contentType || !contentType.includes("application/json")) { const text = await res.text(); throw new Error(text || "Server error."); }
-      const json = await res.json();
-      success = res.ok && json.status !== false; resultMessage = json.message || JSON.stringify(json, null, 2);
-      const result = document.getElementById("bulkResult");
-      result.innerHTML = `<div class="font-bold ${success ? "text-accent" : "text-red-400"} mb-2">${success ? "[ BATCH_SUCCESS ]" : "[ BATCH_FAILED ]"}</div><pre class="whitespace-pre-wrap text-[9px] text-slate-400">${escapeHtml(resultMessage)}</pre>`;
-      result.classList.remove("hidden");
-    } catch (err) { success = false; showToast(err.message || "Connection Failed."); }
-    if (success) showToast("Batch task completed."); else showToast("Batch task aborted.");
-  }
-
-  async function runInboxCheck() {
-    const email = document.getElementById("inputInboxEmail").value.trim();
-    const notice = document.getElementById("inboxNotice"); const container = document.getElementById("inboxResult");
-    if (!email) return showToast("Target email required.");
-    notice.textContent = "Listening to server packets..."; notice.classList.remove("hidden"); container.innerHTML = "";
-    try {
-      const res = await fetch("/api/inbox", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email }) });
-      const contentType = res.headers.get("content-type");
-      if (!contentType || !contentType.includes("application/json")) { const text = await res.text(); throw new Error(text || "Server timeout."); }
-      const json = await res.json();
-      if (!res.ok || json.status === false) throw new Error(json.message || "Sniffing failed.");
-      notice.textContent = "Scan process finished.";
-      const messages = json.data?.messages || [];
-      if (!messages.length) { container.innerHTML = '<div class="text-[10px] text-slate-500 font-mono text-center">No incoming packets detected.</div>'; return; }
-      messages.forEach(msg => {
-        const card = document.createElement("div"); card.className = "p-3 bg-black/60 rounded-xl border border-white/5 space-y-2";
-        const subject = msg.subject || "No Subject"; const link = msg.login_url || "";
-        card.innerHTML = `<div class="text-[11px] font-bold text-white font-display">${escapeHtml(subject)}</div>${ link ? `<div class="p-2 rounded bg-purple-900/20 border border-purple-500/20 text-purple-200 text-[9px] break-all font-mono">${escapeHtml(link)}</div><button class="btn-super w-full py-2 text-[10px] bg-white/5 border border-white/10 hover:bg-white/10 text-slate-200">Copy Extraction Link</button>` : `<div class="text-[9px] text-slate-500">Extraction link not found.</div>` }`;
-        if (link) { card.querySelector("button").addEventListener("click", async () => { try { await navigator.clipboard.writeText(link); showToast("Link copied to buffer."); } catch { showToast("Clipboard access denied."); } }); }
-        container.appendChild(card);
+    modeItems.forEach(item => {
+      item.addEventListener('click', () => {
+        modeItems.forEach(i => i.classList.remove('selected'));
+        item.classList.add('selected');
+        tempSelectedMode = item.getAttribute('data-mode');
       });
-    } catch (err) { notice.textContent = "ERR: " + err.message; }
-  }
+    });
 
-  function initImageEnhancerLogic() {
-    const urlInput = document.getElementById('imageUrl'); const dropZone = document.getElementById('dropZone'); const fileInput = document.getElementById('fileInput'); const fileNameDisplay = document.getElementById('fileNameDisplay'); const strengthRange = document.getElementById('strengthRange'); const strengthIndicator = document.getElementById('strengthIndicator'); const openModeModal = document.getElementById('openModeModal'); const closeModeModal = document.getElementById('closeModeModal'); const modeModalOverlay = document.getElementById('modeModalOverlay'); const applyModeBtn = document.getElementById('applyModeBtn'); const currentModeLabel = document.getElementById('currentModeLabel'); const modeItems = document.querySelectorAll('.mode-option-item'); const enhanceBtn = document.getElementById('enhanceBtn'); const resetBtn = document.getElementById('resetBtn'); const comparisonSplitSection = document.getElementById('comparisonSplitSection'); const splitImgBefore = document.getElementById('splitImgBefore'); const splitImgAfter = document.getElementById('splitImgAfter'); const statusMessage = document.getElementById('statusMessage'); const downloadFooterActions = document.getElementById('downloadFooterActions'); const downloadBtn = document.getElementById('downloadBtn'); const copyUrlBtn = document.getElementById('copyUrlBtn'); const strengthLabels = [ { max: 30, text: 'Lembut' }, { max: 70, text: 'Optimal' }, { max: 100, text: 'Maksimal' } ];
-    strengthRange.addEventListener('input', () => { const val = parseInt(strengthRange.value, 10); let label = 'Optimal'; for (let item of strengthLabels) { if (val <= item.max) { label = item.text; break; } } strengthIndicator.textContent = label; });
-    openModeModal.addEventListener('click', () => { tempSelectedMode = selectedMode; updateModalSelectionUI(); modeModalOverlay.style.opacity = '1'; modeModalOverlay.style.pointerEvents = 'auto'; });
-    const closeModalFunc = () => { modeModalOverlay.style.opacity = '0'; modeModalOverlay.style.pointerEvents = 'none'; }; closeModeModal.addEventListener('click', closeModalFunc); modeModalOverlay.addEventListener('click', (e) => { if (e.target === modeModalOverlay) closeModalFunc(); });
-    modeItems.forEach(item => { item.addEventListener('click', () => { modeItems.forEach(i => i.classList.remove('selected', 'border-[#00F0FF]', 'bg-[#00F0FF]/10')); item.classList.add('selected', 'border-[#00F0FF]', 'bg-[#00F0FF]/10'); tempSelectedMode = item.getAttribute('data-mode'); }); });
-    function updateModalSelectionUI() { modeItems.forEach(item => { if (item.getAttribute('data-mode') === tempSelectedMode) { item.classList.add('selected', 'border-[#00F0FF]', 'bg-[#00F0FF]/10'); } else { item.classList.remove('selected', 'border-[#00F0FF]', 'bg-[#00F0FF]/10'); } }); }
-    applyModeBtn.addEventListener('click', () => { selectedMode = tempSelectedMode; const modeTexts = { '2x': 'Upscale 2x + Sharpness', '1x': 'Original Size + High Filter', 'hdr': 'HDR Boost & Denoise' }; currentModeLabel.textContent = modeTexts[selectedMode]; closeModalFunc(); });
+    function updateModalSelectionUI() {
+      modeItems.forEach(item => {
+        if (item.getAttribute('data-mode') === tempSelectedMode) item.classList.add('selected');
+        else item.classList.remove('selected');
+      });
+    }
+
+    applyModeBtn.addEventListener('click', () => {
+      selectedMode = tempSelectedMode;
+      const modeTexts = {
+        '2x': 'Upscale 2x + Sharpness',
+        '1x': 'Original Size + High Filter',
+        'hdr': 'HDR Boost & Denoise'
+      };
+      currentModeLabel.textContent = modeTexts[selectedMode];
+      closeModalFunc();
+    });
+
     dropZone.addEventListener('click', () => fileInput.click());
-    ['dragenter', 'dragover'].forEach(eventName => { dropZone.addEventListener(eventName, (e) => { e.preventDefault(); dropZone.classList.add('dragover'); }); });
-    ['dragleave', 'drop'].forEach(eventName => { dropZone.addEventListener(eventName, (e) => { e.preventDefault(); dropZone.classList.remove('dragover'); }); });
-    dropZone.addEventListener('drop', (e) => { const files = e.dataTransfer.files; if (files && files[0]) handleFile(files[0]); });
-    fileInput.addEventListener('change', (e) => { if (e.target.files && e.target.files[0]) handleFile(e.target.files[0]); });
-    function handleFile(file) { if (!file.type.startsWith('image/')) { setStatus('Format file tidak valid, harap pilih berkas gambar.', 'error'); return; } if (file.size > 25 * 1024 * 1024) { setStatus('Ukuran berkas terlalu besar (Maksimal 25MB).', 'error'); return; } selectedFile = file; fileNameDisplay.textContent = `Berkas: ${file.name} (${(file.size / 1024 / 1024).toFixed(1)} MB)`; urlInput.value = ''; setStatus('', ''); }
-    function setStatus(text, type = '') { statusMessage.textContent = text; statusMessage.className = 'text-[11px] text-center font-mono ' + (type === 'error' ? 'text-red-400' : type === 'success' ? 'text-emerald-400' : 'text-slate-400'); }
-    resetBtn.addEventListener('click', () => { selectedFile = null; fileInput.value = ''; fileNameDisplay.textContent = ''; urlInput.value = ''; if (originalBlobUrl) URL.revokeObjectURL(originalBlobUrl); if (enhancedBlobUrl) URL.revokeObjectURL(enhancedBlobUrl); originalBlobUrl = null; enhancedBlobUrl = null; comparisonSplitSection.classList.add('hidden'); comparisonSplitSection.classList.remove('flex'); downloadFooterActions.classList.add('hidden'); downloadFooterActions.classList.remove('flex'); setStatus('', ''); showToast("Reset berhasil."); });
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropZone.addEventListener(eventName, (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+      dropZone.addEventListener(eventName, (e) => { e.preventDefault(); dropZone.classList.remove('dragover'); });
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+      const files = e.dataTransfer.files;
+      if (files && files[0]) handleFile(files[0]);
+    });
+
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files && e.target.files[0]) handleFile(e.target.files[0]);
+    });
+
+    function handleFile(file) {
+      if (!file.type.startsWith('image/')) {
+        setStatus('Format file tidak valid, harap pilih berkas gambar.', 'error');
+        return;
+      }
+      if (file.size > 25 * 1024 * 1024) {
+        setStatus('Ukuran berkas terlalu besar (Maksimal 25MB).', 'error');
+        return;
+      }
+      selectedFile = file;
+      fileNameDisplay.innerHTML = `<i class="fas fa-file-image mr-1"></i> Berkas: ${file.name} (${(file.size / 1024 / 1024).toFixed(1)} MB)`;
+      urlInput.value = '';
+      clearStatus();
+    }
+
+    function setStatus(text, type = '') {
+      statusMessage.textContent = text;
+      statusMessage.className = 'status-message' + (type ? ' ' + type : '');
+    }
+
+    function clearStatus() {
+      statusMessage.textContent = '';
+      statusMessage.className = 'status-message';
+    }
+
+    function resetApp() {
+      selectedFile = null;
+      fileInput.value = '';
+      fileNameDisplay.textContent = '';
+      urlInput.value = '';
+      if (originalBlobUrl) URL.revokeObjectURL(originalBlobUrl);
+      if (enhancedBlobUrl) URL.revokeObjectURL(enhancedBlobUrl);
+      originalBlobUrl = null;
+      enhancedBlobUrl = null;
+
+      comparisonSplitSection.classList.remove('show');
+      downloadFooterActions.classList.remove('show');
+      clearStatus();
+    }
+
+    resetBtn.addEventListener('click', resetApp);
+
     enhanceBtn.addEventListener('click', async () => {
       const urlVal = urlInput.value.trim();
-      if (!urlVal && !selectedFile) { setStatus('Masukkan URL web atau unggah berkas gambar terlebih dahulu.', 'error'); return; }
-      enhanceBtn.disabled = true; enhanceBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menganalisis Berkas...'; setStatus('⏳ Memuat sumber gambar dan menjalankan engine...', '');
+      if (!urlVal && !selectedFile) {
+        setStatus('Masukkan URL web atau unggah berkas gambar terlebih dahulu.', 'error');
+        return;
+      }
+
+      enhanceBtn.disabled = true;
+      enhanceBtn.innerHTML = '<span class="spinner"></span> Menganalisis Berkas...';
+      setStatus('⏳ Memuat sumber gambar dan menjalankan engine...', '');
+
       try {
-        let sourceImg = null; let origBlob = null;
-        if (selectedFile) { origBlob = selectedFile; sourceImg = await loadImageFromFile(selectedFile); } else { origBlob = await fetchUrlBlob(urlVal); sourceImg = await loadImageFromBlob(origBlob); }
-        originalBlobUrl = URL.createObjectURL(origBlob); splitImgBefore.src = originalBlobUrl;
-        let enhancedBlob = null; let methodUsed = '';
-        const apiList = [ 'https://api-nanzz.my.id/docs/api/tools/image/enhancer.php?url=', 'https://api-nanzz.my.id/api/tools/image/enhancer?url=' ];
+        let sourceImg = null;
+        let origBlob = null;
+
+        if (selectedFile) {
+          origBlob = selectedFile;
+          sourceImg = await loadImageFromFile(selectedFile);
+        } else {
+          origBlob = await fetchUrlBlob(urlVal);
+          sourceImg = await loadImageFromBlob(origBlob);
+        }
+
+        originalBlobUrl = URL.createObjectURL(origBlob);
+        splitImgBefore.src = originalBlobUrl;
+
+        let enhancedBlob = null;
+        let methodUsed = '';
+        const apiList = [
+          'https://api-nanzz.my.id/docs/api/tools/image/enhancer.php?url=',
+          'https://api-nanzz.my.id/api/tools/image/enhancer?url='
+        ];
+
         let targetFetchUrl = urlVal || originalBlobUrl;
-        for (const api of apiList) { try { const resp = await fetch(api + encodeURIComponent(targetFetchUrl), { headers: { 'Accept': 'image/*' } }); if (resp.ok) { const b = await resp.blob(); if (b && b.size > 400 && b.type.startsWith('image/')) { enhancedBlob = b; methodUsed = 'Cloud AI Engine (API Nanzz)'; break; } } } catch(e) {} }
-        if (!enhancedBlob) { setStatus('⚙️ Menjalankan Neural Canvas Local Upscaler...', ''); const factorVal = parseInt(strengthRange.value, 10); enhancedBlob = await runLocalEnhancer(sourceImg, factorVal, selectedMode); methodUsed = 'Local Matrix Canvas Engine'; }
-        enhancedBlobUrl = URL.createObjectURL(enhancedBlob); splitImgAfter.src = enhancedBlobUrl;
-        comparisonSplitSection.classList.remove('hidden'); comparisonSplitSection.classList.add('flex'); downloadFooterActions.classList.remove('hidden'); downloadFooterActions.classList.add('flex');
-        setStatus(`✅ Berhasil ditingkatkan menggunakan ${methodUsed}`, 'success'); showToast("Enhancement Selesai!");
-      } catch (err) { setStatus('❌ Proses gagal: ' + err.message, 'error'); } finally { enhanceBtn.disabled = false; enhanceBtn.innerHTML = '<i class="fa-solid fa-bolt"></i> Mulai Proses Enhancement'; }
+        for (const api of apiList) {
+          try {
+            const resp = await fetch(api + encodeURIComponent(targetFetchUrl), { headers: { 'Accept': 'image/*' } });
+            if (resp.ok) {
+              const b = await resp.blob();
+              if (b && b.size > 400 && b.type.startsWith('image/')) {
+                enhancedBlob = b;
+                methodUsed = 'Cloud AI Engine (API Nanzz)';
+                break;
+              }
+            }
+          } catch(e) {}
+        }
+
+        if (!enhancedBlob) {
+          setStatus('⚙️ Menjalankan Neural Canvas Local Upscaler...', '');
+          const factorVal = parseInt(strengthRange.value, 10);
+          enhancedBlob = await runLocalEnhancer(sourceImg, factorVal, selectedMode);
+          methodUsed = 'Local Matrix Canvas Engine';
+        }
+
+        enhancedBlobUrl = URL.createObjectURL(enhancedBlob);
+        splitImgAfter.src = enhancedBlobUrl;
+
+        comparisonSplitSection.classList.add('show');
+        downloadFooterActions.classList.add('show');
+
+        setStatus(`✅ Berhasil ditingkatkan menggunakan ${methodUsed}`, 'success');
+      } catch (err) {
+        console.error(err);
+        setStatus('❌ Proses gagal: ' + err.message, 'error');
+      } finally {
+        enhanceBtn.disabled = false;
+        enhanceBtn.innerHTML = '<i class="fas fa-bolt"></i> Mulai Proses Enhancement';
+      }
     });
-    function fetchUrlBlob(url) { return new Promise(async (resolve, reject) => { try { const res = await fetch(url); if (!res.ok) throw new Error('Akses URL ditolak atau tidak ditemukan.'); const blob = await res.blob(); resolve(blob); } catch (e) { reject(new Error('Gagal mengambil URL akibat pembatasan CORS. Gunakan unggah berkas lokal.')); } }); }
-    function loadImageFromFile(file) { return new Promise((resolve, reject) => { const reader = new FileReader(); reader.onload = e => { const img = new Image(); img.onload = () => resolve(img); img.onerror = reject; img.src = e.target.result; }; reader.onerror = reject; reader.readAsDataURL(file); }); }
-    function loadImageFromBlob(blob) { return new Promise((resolve, reject) => { const url = URL.createObjectURL(blob); const img = new Image(); img.onload = () => resolve(img); img.onerror = reject; img.src = url; }); }
+
+    function fetchUrlBlob(url) {
+      return new Promise(async (resolve, reject) => {
+        try {
+          const res = await fetch(url);
+          if (!res.ok) throw new Error('Akses URL ditolak atau tidak ditemukan.');
+          const blob = await res.blob();
+          resolve(blob);
+        } catch (e) {
+          reject(new Error('Gagal mengambil URL akibat pembatasan CORS. Gunakan unggah berkas lokal.'));
+        }
+      });
+    }
+
+    function loadImageFromFile(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = e => {
+          const img = new Image();
+          img.onload = () => resolve(img);
+          img.onerror = reject;
+          img.src = e.target.result;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function loadImageFromBlob(blob) {
+      return new Promise((resolve, reject) => {
+        const url = URL.createObjectURL(blob);
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = reject;
+        img.src = url;
+      });
+    }
+
     function runLocalEnhancer(img, strengthVal, mode) {
       return new Promise((resolve, reject) => {
         try {
-          const sw = img.naturalWidth || img.width; const sh = img.naturalHeight || img.height;
-          let multiplier = 1.6; if (mode === '2x') multiplier = 2.0; if (mode === 'hdr') multiplier = 1.75;
-          const limitMax = 3840; if ((sw * multiplier) > limitMax || (sh * multiplier) > limitMax) { multiplier = Math.min(limitMax / sw, limitMax / sh); }
-          const w = Math.round(sw * multiplier); const h = Math.round(sh * multiplier);
-          const canvas = document.createElement('canvas'); canvas.width = w; canvas.height = h; const ctx = canvas.getContext('2d', { willReadFrequently: true });
-          ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
-          const intensity = strengthVal / 100; let contrast = 1.06 + (intensity * 0.12); let saturate = 1.05 + (intensity * 0.15); let brightness = 1.01 + (intensity * 0.03);
+          const sw = img.naturalWidth || img.width;
+          const sh = img.naturalHeight || img.height;
+
+          let multiplier = 1.6;
+          if (mode === '2x') multiplier = 2.0;
+          if (mode === 'hdr') multiplier = 1.75;
+
+          const limitMax = 3840;
+          if ((sw * multiplier) > limitMax || (sh * multiplier) > limitMax) {
+            multiplier = Math.min(limitMax / sw, limitMax / sh);
+          }
+
+          const w = Math.round(sw * multiplier);
+          const h = Math.round(sh * multiplier);
+
+          const canvas = document.createElement('canvas');
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext('2d', { willReadFrequently: true });
+
+          ctx.imageSmoothingEnabled = true;
+          ctx.imageSmoothingQuality = 'high';
+
+          const intensity = strengthVal / 100;
+          let contrast = 1.06 + (intensity * 0.12);
+          let saturate = 1.05 + (intensity * 0.15);
+          let brightness = 1.01 + (intensity * 0.03);
+
           if (mode === 'hdr') { contrast += 0.08; saturate += 0.12; }
-          ctx.filter = `contrast(${contrast}) saturate(${saturate}) brightness(${brightness})`; ctx.drawImage(img, 0, 0, w, h); ctx.filter = 'none';
+
+          ctx.filter = `contrast(${contrast}) saturate(${saturate}) brightness(${brightness})`;
+          ctx.drawImage(img, 0, 0, w, h);
+          ctx.filter = 'none';
+
           if (w * h <= 16000000) {
-            const imgData = ctx.getImageData(0, 0, w, h); const data = imgData.data; const output = ctx.createImageData(w, h); const outData = output.data; const amount = 0.22 + (intensity * 0.32);
-            for (let y = 0; y < h; y++) { for (let x = 0; x < w; x++) { const i = (y * w + x) * 4; for (let c = 0; c < 3; c++) { const center = data[i + c]; const left = data[(y * w + Math.max(0, x - 1)) * 4 + c]; const right = data[(y * w + Math.min(w - 1, x + 1)) * 4 + c]; const up = data[(Math.max(0, y - 1) * w + x) * 4 + c]; const down = data[(Math.min(h - 1, y + 1) * w + x) * 4 + c]; const sharp = center + amount * (4 * center - left - right - up - down); outData[i + c] = Math.max(0, Math.min(255, sharp)); } outData[i + 3] = data[i + 3]; } }
+            const imgData = ctx.getImageData(0, 0, w, h);
+            const data = imgData.data;
+            const output = ctx.createImageData(w, h);
+            const outData = output.data;
+            const amount = 0.22 + (intensity * 0.32);
+
+            for (let y = 0; y < h; y++) {
+              for (let x = 0; x < w; x++) {
+                const i = (y * w + x) * 4;
+                for (let c = 0; c < 3; c++) {
+                  const center = data[i + c];
+                  const left = data[(y * w + Math.max(0, x - 1)) * 4 + c];
+                  const right = data[(y * w + Math.min(w - 1, x + 1)) * 4 + c];
+                  const up = data[(Math.max(0, y - 1) * w + x) * 4 + c];
+                  const down = data[(Math.min(h - 1, y + 1) * w + x) * 4 + c];
+                  const sharp = center + amount * (4 * center - left - right - up - down);
+                  outData[i + c] = Math.max(0, Math.min(255, sharp));
+                }
+                outData[i + 3] = data[i + 3];
+              }
+            }
             ctx.putImageData(output, 0, 0);
           }
-          canvas.toBlob((blob) => { if (blob) resolve(blob); else reject(new Error('Gagal mengekspor gambar canvas.')); }, 'image/png', 0.98);
-        } catch (err) { reject(err); }
+
+          canvas.toBlob((blob) => {
+            if (blob) resolve(blob);
+            else reject(new Error('Gagal mengekspor gambar canvas.'));
+          }, 'image/png', 0.98);
+        } catch (err) {
+          reject(err);
+        }
       });
     }
-    downloadBtn.addEventListener('click', () => { if (enhancedBlobUrl) { const a = document.createElement('a'); a.href = enhancedBlobUrl; a.download = `enhanced_matrix_${Date.now()}.png`; document.body.appendChild(a); a.click(); a.remove(); showToast("Gambar berhasil diunduh."); } });
-    copyUrlBtn.addEventListener('click', () => { if (enhancedBlobUrl) { navigator.clipboard.writeText(enhancedBlobUrl).then(() => { showToast("URL Blob berhasil disalin ke clipboard!"); }).catch(() => { showToast("Gagal menyalin URL."); }); } });
-  }
 
-  // ==========================================
-  // BACKGROUND PARTICLES
-  // ==========================================
-  const canvas = document.getElementById('particleCanvas'); const ctx = canvas.getContext('2d'); let particlesArray = [];
-  function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-  window.addEventListener('resize', resizeCanvas); resizeCanvas();
-  class Particle { constructor() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.size = Math.random() * 1.5 + 0.5; this.speedX = (Math.random() - 0.5) * 0.4; this.speedY = (Math.random() - 0.5) * 0.4; this.alpha = Math.random() * 0.4 + 0.1; } update() { this.x += this.speedX; this.y += this.speedY; if (this.x < 0 || this.x > canvas.width) this.speedX = -this.speedX; if (this.y < 0 || this.y > canvas.height) this.speedY = -this.speedY; } draw() { ctx.fillStyle = `rgba(14, 165, 233, ${this.alpha})`; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); } }
-  for (let i = 0; i < 40; i++) particlesArray.push(new Particle());
-  function animateParticles() { ctx.clearRect(0, 0, canvas.width, canvas.height); particlesArray.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animateParticles); }
-  animateParticles();
+    downloadBtn.addEventListener('click', () => {
+      if (enhancedBlobUrl) {
+        const a = document.createElement('a');
+        a.href = enhancedBlobUrl;
+        a.download = `enhanced_matrix_${Date.now()}.png`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      }
+    });
 
+    copyUrlBtn.addEventListener('click', () => {
+      if (enhancedBlobUrl) {
+        navigator.clipboard.writeText(enhancedBlobUrl).then(() => {
+          setStatus('URL Blob berhasil disalin ke clipboard!', 'success');
+        }).catch(() => {
+          setStatus('Gagal menyalin URL.', 'error');
+        });
+      }
+    });
+
+  })();
 </script>
 </body>
 </html>
