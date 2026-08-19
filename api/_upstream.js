@@ -1,4 +1,4 @@
-const DEFAULT_BASE = "https://ndxhs.my.id/service";
+const DEFAULT_BASE = "https://ndxhs.my.id";
 const DEFAULT_API_ROOT = "https://ndxhs.my.id";
 
 const HARDCODED_API_KEY = "e329d3cb861969fe599ef5fe";
