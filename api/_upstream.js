@@ -1,5 +1,9 @@
-const DEFAULT_BASE = "https://api.znn.my.id/alightmotion";
-const DEFAULT_API_ROOT = "https://api.znn.my.id";
+/**
+ * Creator: 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞
+ */
+const DEFAULT_BASE = "https://ndxhs.my.id/alightmotion";
+const DEFAULT_API_ROOT = "https://ndxhs.my.id";
+const DEFAULT_API_KEY = "aks-1d3bd53f4d857a690a77471d";
 
 function cleanString(value, max = 4000) {
   return String(value ?? "").trim().slice(0, max);
@@ -57,7 +61,7 @@ function sanitize(value, depth = 0) {
 
 export async function callAlightMotion(action, params = {}) {
   const token = cleanString(process.env.AM_TOKEN, 4096);
-  const accessToken = cleanString(process.env.ZNN_ACCESS_TOKEN, 4096);
+  const accessToken = cleanString(process.env.ZNN_ACCESS_TOKEN || DEFAULT_API_KEY, 4096);
 
   if (!token) {
     const error = new Error("AM_TOKEN belum diatur di Environment Variables Vercel.");
@@ -66,7 +70,7 @@ export async function callAlightMotion(action, params = {}) {
   }
 
   if (!accessToken) {
-    const error = new Error("ZNN_ACCESS_TOKEN belum diatur di Environment Variables Vercel.");
+    const error = new Error("API Key / ACCESS_TOKEN tidak ditemukan.");
     error.statusCode = 500;
     throw error;
   }
@@ -89,7 +93,7 @@ export async function callAlightMotion(action, params = {}) {
         accept: "application/json",
         "X-ZNN-Access": accessToken,
         "X-AM-Token": token,
-        "user-agent": "znn-am-activation/1.3"
+        "user-agent": "xMSHaomi-am-activation/1.3"
       },
       redirect: "follow",
       signal: AbortSignal.timeout(28000)
@@ -122,10 +126,10 @@ export async function callAlightMotion(action, params = {}) {
 }
 
 export async function callTempMailRead(email) {
-  const accessToken = cleanString(process.env.ZNN_ACCESS_TOKEN, 4096);
+  const accessToken = cleanString(process.env.ZNN_ACCESS_TOKEN || DEFAULT_API_KEY, 4096);
 
   if (!accessToken) {
-    const error = new Error("ZNN_ACCESS_TOKEN belum diatur di Environment Variables Vercel.");
+    const error = new Error("API Key / ACCESS_TOKEN tidak ditemukan.");
     error.statusCode = 500;
     throw error;
   }
@@ -142,7 +146,7 @@ export async function callTempMailRead(email) {
       headers: {
         accept: "application/json",
         "X-ZNN-Access": accessToken,
-        "user-agent": "znn-am-activation/1.3"
+        "user-agent": "xMSHaomi-am-activation/1.3"
       },
       redirect: "follow",
       signal: AbortSignal.timeout(28000)
@@ -192,3 +196,5 @@ export function onlyPost(req, res) {
   }
   return true;
 }
+
+
