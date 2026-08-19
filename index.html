@@ -1,666 +1,532 @@
 <!DOCTYPE html>
 <html lang="id" class="dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#000000" />
-  <meta name="description" content="AM Pro Toolkit — Modern Monochrome Edition" />
-  <title>AM Pro Toolkit | 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#000000">
+<title>AM Pro Toolkit | ThanzDev</title>
 
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Permanent+Marker&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
 
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Plus Jakarta Sans', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace']
-          }
-        }
+<script>
+tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'],
+        display: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+        marker: ['Permanent Marker', 'cursive', 'sans-serif']
       }
-    };
-  </script>
-
-  <style>
-    :root {
-      --bg: #000000;
-      --panel: rgba(18, 18, 20, 0.65);
-      --panel-hover: rgba(28, 28, 32, 0.75);
-      --border: rgba(255, 255, 255, 0.12);
-      --border-focus: rgba(255, 255, 255, 0.4);
-      --text: #f4f4f5;
-      --muted: #a1a1aa;
     }
+  }
+};
+</script>
 
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
+<style>
+:root {
+  --bg:#000308;
+  --panel:rgba(2,12,24,.82);
+  --panel-soft:rgba(0,255,255,.03);
+  --line:rgba(0,255,255,.22);
+  --line-soft:rgba(0,255,255,.08);
+  --text:#f8fafc;
+  --muted:#94a3b8;
+  --neon-cyan:#00FFFF;
+}
 
-    html {
-      scroll-behavior: smooth;
-      background: var(--bg);
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      overflow-x: hidden;
-      color: var(--text);
-      background: 
-        radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.08), transparent 50%),
-        #000000;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-
-    /* Efek Grid Abstrak di Background */
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      z-index: -2;
-      pointer-events: none;
-      background-image: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-      background-size: 32px 32px;
-      mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
-    }
-
-    /* Glassmorphism Utama */
-    .glass {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      backdrop-filter: blur(30px) saturate(150%);
-      -webkit-backdrop-filter: blur(30px) saturate(150%);
-      box-shadow: 
-        0 24px 48px rgba(0, 0, 0, 0.8),
-        inset 0 1px 0 rgba(255, 255, 255, 0.15);
-    }
-
-    .glass-card {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      transition: all .25s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .glass-card:hover {
-      background: rgba(255, 255, 255, 0.04);
-      border-color: rgba(255, 255, 255, 0.18);
-    }
-
-    input, select {
-      width: 100%;
-      color: #ffffff !important;
-      background: rgba(10, 10, 12, 0.8) !important;
-      border: 1px solid rgba(255, 255, 255, 0.12) !important;
-      border-radius: 14px !important;
-      outline: none;
-      transition: all .2s ease;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-
-    input::placeholder {
-      color: #52525b;
-    }
-
-    input:focus, select:focus {
-      border-color: #ffffff !important;
-      background: rgba(18, 18, 22, 0.95) !important;
-      box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.08), 0 0 20px rgba(255, 255, 255, 0.05) !important;
-    }
-
-    select option {
-      background: #121214;
-      color: white;
-    }
-
-    /* Tombol Kustom */
-    .btn {
-      border-radius: 14px;
-      font-weight: 600;
-      transition: all .2s cubic-bezier(0.16, 1, 0.3, 1);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .btn:active {
-      transform: scale(0.97);
-    }
-
-    .btn-primary {
-      background: #ffffff;
-      color: #000000;
-      border: 1px solid #ffffff;
-      box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
-    }
-
-    .btn-primary:hover {
-      background: #e4e4e7;
-      box-shadow: 0 6px 25px rgba(255, 255, 255, 0.35);
-      transform: translateY(-1px);
-    }
-
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.06);
-      color: #ffffff;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-    }
-
-    .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.12);
-      border-color: rgba(255, 255, 255, 0.25);
-    }
-
-    /* Navigasi / Dock Style Baru */
-    .nav-pill {
-      position: relative;
-      color: #71717a;
-      transition: all .25s ease;
-    }
-
-    .nav-pill:hover {
-      color: #d4d4d8;
-    }
-
-    .nav-pill.active {
-      color: #000000;
-      background: #ffffff;
-      font-weight: 700;
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-    }
-
-    .toast {
-      transform: translate(-50%, 20px);
-      opacity: 0;
-      pointer-events: none;
-      transition: all .3s cubic-bezier(0.16, 1, 0.3, 1);
-      background: rgba(18, 18, 22, 0.9);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(20px);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.8), 0 0 20px rgba(255,255,255,0.1);
-    }
-
-    .toast.show {
-      transform: translate(-50%, 0);
-      opacity: 1;
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .animate-fade {
-      animation: fadeIn .3s cubic-bezier(0.16, 1, 0.3, 1) both;
-    }
-  </style>
+* { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html { scroll-behavior:smooth; background:var(--bg); }
+body {
+  margin:0; min-height:100vh; overflow-x:hidden; color:var(--text);
+  background: radial-gradient(circle at 15% 10%,rgba(0,255,255,.16),transparent 30%), radial-gradient(circle at 85% 90%,rgba(0,200,255,.12),transparent 35%), var(--bg);
+  font-family:Inter,sans-serif;
+}
+input, select { width:100%; color:#f8fafc!important; background:rgba(0,5,12,.85)!important; border:1px solid rgba(0,255,255,.2)!important; border-radius:11px!important; outline:none; transition:.2s ease; }
+input::placeholder { color:#64748b; }
+input:focus, select:focus { border-color:#00FFFF!important; box-shadow:0 0 0 3px rgba(0,255,255,.2), 0 0 20px rgba(0,255,255,.4)!important; }
+.glass { background:var(--panel); border:1px solid var(--line); backdrop-filter:blur(24px) saturate(140%); box-shadow:0 22px 60px rgba(0,0,0,.5), 0 0 25px rgba(0,255,255,.1), inset 0 1px 0 rgba(255,255,255,.08); }
+.glass-soft { background:var(--panel-soft); border:1px solid var(--line-soft); backdrop-filter:blur(16px); }
+.topbar { box-shadow:0 16px 45px rgba(0,0,0,.35), 0 0 20px rgba(0,255,255,.12), inset 0 1px 0 rgba(255,255,255,.08); }
+.brand-mark { background:linear-gradient(145deg,rgba(0,255,255,.3),rgba(0,255,255,.08)); border:1px solid rgba(0,255,255,.4); box-shadow:0 0 20px rgba(0,255,255,.35); }
+.status-dot { box-shadow:0 0 0 3px rgba(52,211,153,.08), 0 0 12px rgba(52,211,153,.55); }
+.btn { border-radius:11px; transition:all .18s ease; position:relative; cursor:pointer; }
+.btn:active { transform:scale(.98); }
+.btn-primary { background:linear-gradient(135deg,#00FFFF,#0891b2); color:#000308; border:1px solid rgba(0,255,255,.6); box-shadow:0 4px 15px rgba(0,255,255,.35); font-weight:700; }
+.btn-primary:hover { background:linear-gradient(135deg,#33ffff,#06b6d4); box-shadow:0 6px 22px rgba(0,255,255,.6); }
+.btn-success { background:linear-gradient(135deg,#059669,#047857); color:white; border:1px solid rgba(110,231,183,.3); box-shadow:0 4px 15px rgba(5,150,105,.35); font-weight:700; }
+.btn-ghost { background:rgba(255,255,255,.035); border:1px solid rgba(0,255,255,.15); color:#a5f3fc; }
+.auth-tabs, .inject-tabs { padding:4px; background:rgba(255,255,255,.025); border:1px solid rgba(0,255,255,.15); }
+.auth-tab, .inject-tab { color:#64748b; transition:.2s ease; cursor:pointer; }
+.auth-tab.active, .inject-tab.active { color:#000308; background:linear-gradient(135deg,#00FFFF,#0891b2); font-weight:700; box-shadow:0 4px 18px rgba(0,255,255,.4); }
+.section-label { color:#00FFFF; font-size:9px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; text-shadow:0 0 10px rgba(0,255,255,.4); }
+.usage-track { height:6px; overflow:hidden; border-radius:999px; background:rgba(255,255,255,.06); }
+.usage-bar { height:100%; width:100%; border-radius:inherit; background:linear-gradient(90deg,#0891b2,#00FFFF); box-shadow:0 0 15px rgba(0,255,255,.7); }
+.hidden { display:none!important; }
+.ambient { position:fixed; width:380px; height:380px; border-radius:50%; pointer-events:none; z-index:-1; filter:blur(80px); opacity:.55; }
+.ambient.one { left:-160px; top:50px; background:rgba(0,255,255,.25); }
+.ambient.two { right:-170px; bottom:60px; background:rgba(0,200,255,.2); }
+</style>
 </head>
 
-<body class="min-h-screen px-4 py-5 flex flex-col items-center justify-between">
+<body class="min-h-screen px-3 py-3 sm:px-5 sm:py-5">
 
-  <!-- WRAPPER UTAMA -->
-  <div class="w-full max-w-lg flex flex-col gap-5 my-auto">
+<div class="ambient one"></div>
+<div class="ambient two"></div>
 
-    <!-- HEADER / KEPALA MINIMALIS -->
-    <header class="glass rounded-[24px] p-4 flex items-center justify-between">
-      <div class="flex items-center gap-3.5">
-        <div class="w-11 h-11 rounded-[16px] bg-white/10 border border-white/20 flex items-center justify-center text-white text-base shadow-[0_0_15px_rgba(255,255,255,0.1)]">
-          <i class="fa-solid fa-cube"></i>
+<div class="w-full max-w-2xl mx-auto flex min-h-[calc(100vh-24px)] flex-col justify-between">
+
+<!-- HEADER -->
+<header class="topbar glass rounded-[16px] px-4 py-3.5 flex items-center justify-between shrink-0">
+  <div class="flex items-center gap-3 min-w-0">
+    <div class="brand-mark w-9 h-9 rounded-[11px] flex items-center justify-center shrink-0">
+      <i class="fa-solid fa-wand-magic-sparkles text-[#00FFFF] text-sm"></i>
+    </div>
+    <div class="min-w-0">
+      <div class="font-display font-bold text-[13px] text-white tracking-tight truncate">AM Pro Toolkit</div>
+      <div class="text-[9px] text-[#00FFFF] mt-0.5 tracking-wide">Thanz Dev</div>
+    </div>
+  </div>
+
+  <div class="flex items-center gap-2">
+    <div class="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-white/[.03] border border-white/[.06] text-[9px] text-[#a5f3fc]">
+      <span class="status-dot w-1.5 h-1.5 rounded-full bg-emerald-400"></span> System Online
+    </div>
+    <button id="hiddenAdminTrigger" class="text-[9px] px-2.5 py-1.5 rounded-full bg-[#00FFFF]/[.12] border border-[#00FFFF]/[.3] text-[#00FFFF] font-bold cursor-pointer hover:bg-[#00FFFF]/[.25] transition-all" title="Klik rahasia ke Admin">
+      v2.5
+    </button>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="flex-1 flex flex-col justify-center py-5">
+
+  <!-- AUTH SECTION -->
+  <section id="authSection" class="w-full max-w-md mx-auto">
+    <div class="text-center mb-5">
+      <div class="section-label mb-2">WELCOME ALL, SELAMAT MEMAKAI FITURNYA</div>
+      <h1 class="font-marker font-normal text-[26px] sm:text-[30px] text-white tracking-wide py-1">Aktivasi</h1>
+      <p class="text-[11px] text-[#64748b] mt-1.5">©THANZ DEV SINCE 2026</p>
+    </div>
+
+    <div class="auth-tabs rounded-[13px] grid grid-cols-2 gap-1 mb-3">
+      <button class="auth-tab active py-2.5 rounded-[9px] text-[11px]" onclick="switchTab('login')" id="loginTab">Login</button>
+      <button class="auth-tab py-2.5 rounded-[9px] text-[11px]" onclick="switchTab('register')" id="registerTab">Register</button>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <div id="loginCard" class="glass rounded-[16px] p-5 sm:p-6">
+      <div class="flex items-center justify-between mb-5">
+        <div>
+          <div class="section-label mb-1.5">Account</div>
+          <h2 class="font-display font-bold text-[14px] text-white">Masuk ke akun</h2>
+        </div>
+        <div class="w-8 h-8 rounded-[10px] glass-soft flex items-center justify-center text-[#00FFFF]">
+          <i class="fa-solid fa-arrow-right-to-bracket text-[11px]"></i>
+        </div>
+      </div>
+
+      <div class="space-y-3.5">
+        <div>
+          <label class="block text-[10px] font-medium text-[#cffafe] mb-1.5">Username</label>
+          <input type="text" id="loginUser" placeholder="Masukkan username" class="px-3.5 py-3 text-[11px]">
         </div>
         <div>
-          <h1 class="font-bold text-[15px] tracking-tight text-white flex items-center gap-2">
-            AM Pro Toolkit
-            <span class="text-[9px] px-2 py-0.5 rounded-full bg-white/10 text-white border border-white/20 font-mono">v3.0</span>
-          </h1>
-          <p class="text-[11px] text-zinc-400 mt-0.5">𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞 Enterprise System</p>
+          <label class="block text-[10px] font-medium text-[#cffafe] mb-1.5">Password</label>
+          <input type="password" id="loginPass" placeholder="Masukkan password" class="px-3.5 py-3 text-[11px]">
+        </div>
+        <button id="submitLogin" class="btn btn-primary w-full py-3 text-[11px]">Login</button>
+      </div>
+    </div>
+
+    <!-- REGISTER FORM -->
+    <div id="registerCard" class="glass rounded-[16px] p-5 sm:p-6 hidden">
+      <div class="flex items-center justify-between mb-5">
+        <div>
+          <div class="section-label mb-1.5">Self Registration</div>
+          <h2 class="font-display font-bold text-[14px] text-white">Buat Akun Baru</h2>
+        </div>
+        <div class="w-8 h-8 rounded-[10px] glass-soft flex items-center justify-center text-[#00FFFF]">
+          <i class="fa-solid fa-user-plus text-[11px]"></i>
         </div>
       </div>
 
-      <div class="flex items-center gap-2">
-        <div class="w-2.5 h-2.5 rounded-full bg-white shadow-[0_0_10px_#ffffff] animate-pulse"></div>
-        <span class="text-[11px] font-medium text-zinc-300 hidden sm:inline">Active</span>
+      <div id="regAlertBox" class="mb-4 p-3 rounded-[11px] bg-[#00FFFF]/[.05] border border-[#00FFFF]/[.2] flex gap-2.5">
+        <i class="fa-solid fa-circle-info text-[#00FFFF] text-[11px] mt-0.5"></i>
+        <p class="text-[10px] leading-relaxed text-cyan-200/80">1 Perangkat hanya dapat mendaftarkan 1 akun untuk selamanya.</p>
       </div>
-    </header>
 
-    <!-- PANEL UTAMA DENGAN TATA LETAK BARU -->
-    <main class="glass rounded-[28px] p-5 sm:p-6 flex flex-col gap-5">
+      <div class="space-y-3.5">
+        <div>
+          <label class="block text-[10px] font-medium text-[#cffafe] mb-1.5">Username Pilihan</label>
+          <input type="text" id="regUser" placeholder="contoh: thanzuser" class="px-3.5 py-3 text-[11px]">
+        </div>
+        <div>
+          <label class="block text-[10px] font-medium text-[#cffafe] mb-1.5">Password Pilihan</label>
+          <input type="password" id="regPass" placeholder="Buat password" class="px-3.5 py-3 text-[11px]">
+        </div>
+        <button id="submitRegister" class="btn btn-success w-full py-3 text-[11px] font-bold">Daftar Akun Permanen</button>
+      </div>
+    </div>
+  </section>
 
-      <!-- DASHBOARD / STATUS PANEL KECIL -->
-      <div class="glass-card rounded-[20px] p-4 flex items-center justify-between">
+  <!-- USER DASHBOARD SECTION -->
+  <section id="dashboardSection" class="w-full max-w-md mx-auto hidden">
+    <div class="glass rounded-[16px] p-4 sm:p-5 mb-3">
+      <div class="flex items-center justify-between gap-3">
         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-[14px] bg-white text-black flex items-center justify-center font-bold text-sm shadow-[0_0_15px_rgba(255,255,255,0.3)]">
-            A
-          </div>
+          <div class="w-10 h-10 rounded-[12px] flex items-center justify-center text-[#00FFFF] font-bold text-xs brand-mark">U</div>
           <div>
-            <div class="text-[13px] font-bold text-white" id="displayUsername">Administrator</div>
-            <div class="text-[10px] text-zinc-400 flex items-center gap-1 mt-0.5">
-              <i class="fa-solid fa-shield-halved text-[9px]"></i> Unlimited Access Mode
+            <div id="loggedInUsername" class="font-display font-bold text-[13px] text-white"></div>
+            <div class="flex items-center gap-1.5 mt-1 text-[9px] text-emerald-400">
+              <span class="status-dot w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Sesi Aktif
             </div>
           </div>
         </div>
-        <div class="text-right">
-          <div class="text-[9px] uppercase tracking-wider text-zinc-500 font-bold">Status</div>
-          <div class="text-[11px] font-mono text-white font-semibold mt-0.5">ONLINE</div>
-        </div>
-      </div>
-
-      <!-- NAVIGASI TAB PILL BERGAYA ISLAND -->
-      <div class="grid grid-cols-3 gap-1.5 p-1 bg-white/[0.03] border border-white/10 rounded-[18px]">
-        <button id="tabSend" onclick="switchTab('send')" class="nav-pill active py-2.5 rounded-[14px] text-[11px] font-semibold transition-all">
-          <i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i> Aktivasi
-        </button>
-        <button id="tabBulk" onclick="switchTab('bulk')" class="nav-pill py-2.5 rounded-[14px] text-[11px] font-semibold transition-all">
-          <i class="fa-solid fa-layer-group mr-1.5"></i> Bulk
-        </button>
-        <button id="tabInbox" onclick="switchTab('inbox')" class="nav-pill py-2.5 rounded-[14px] text-[11px] font-semibold transition-all">
-          <i class="fa-solid fa-inbox mr-1.5"></i> Inbox
+        <button id="userLogoutBtn" class="btn btn-ghost px-3 py-2 text-[9px]">
+          <i class="fa-solid fa-right-from-bracket mr-1"></i> Keluar
         </button>
       </div>
 
-      <!-- KONTEN TAB: AKTIVASI -->
-      <div id="contentSend" class="animate-fade space-y-4">
-        <div>
-          <div class="text-[10px] uppercase font-bold tracking-widest text-zinc-400 mb-1">Secure Protocol</div>
-          <h2 class="text-[16px] font-bold text-white">Aktivasi Alight Motion</h2>
-          <p id="flowInstruction" class="text-[11px] text-zinc-400 mt-1 leading-relaxed">
-            Kirimkan magic link ke alamat email aktif Anda untuk memulai proses sinkronisasi.
-          </p>
-        </div>
-
-        <div id="stepEmailBox" class="space-y-3">
-          <div class="relative">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-zinc-500">
-              <i class="fa-regular fa-envelope"></i>
-            </span>
-            <input id="inputEmail" type="email" placeholder="nama@domain.com" class="pl-11 pr-4 py-3.5 text-[12px]" />
-          </div>
-          <button onclick="handleSendMagicLink()" class="btn btn-primary w-full py-3.5 text-[12px] flex items-center justify-center gap-2">
-            <span>Kirim Magic Link</span>
-            <i class="fa-solid fa-arrow-right text-[10px]"></i>
-          </button>
-        </div>
-
-        <div id="stepVerifyBox" class="hidden space-y-3">
-          <div class="relative">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-zinc-500">
-              <i class="fa-solid fa-link"></i>
-            </span>
-            <input id="inputLink" type="text" placeholder="Tempel link verifikasi https://..." class="pl-11 pr-4 py-3.5 text-[12px]" />
-          </div>
-          <div class="grid grid-cols-[1fr_auto] gap-2">
-            <button onclick="handleVerifyMagicLink()" class="btn btn-primary py-3.5 text-[12px] font-bold">
-              Verifikasi & Eksekusi
-            </button>
-            <button onclick="resetInjectFlow()" class="btn btn-secondary px-4 text-white">
-              <i class="fa-solid fa-rotate-left"></i>
-            </button>
-          </div>
-        </div>
-
-        <div id="sendResult" class="glass-card hidden p-4 rounded-[16px] text-[11px] border border-white/10"></div>
-      </div>
-
-      <!-- KONTEN TAB: BULK -->
-      <div id="contentBulk" class="animate-fade space-y-4 hidden">
-        <div>
-          <div class="text-[10px] uppercase font-bold tracking-widest text-zinc-400 mb-1">Batch Automation</div>
-          <h2 class="text-[16px] font-bold text-white">Bulk Generator</h2>
-          <p class="text-[11px] text-zinc-400 mt-1">Buat banyak token akun premium secara simultan dengan cepat.</p>
-        </div>
-
-        <div class="space-y-3">
+      <div class="mt-5 pt-4 border-t border-white/[.06]">
+        <div class="flex items-center justify-between mb-2">
           <div>
-            <label class="block text-[10px] uppercase font-bold text-zinc-400 mb-1.5">Jumlah Akun (1 - 100)</label>
-            <input id="inputBulkAmount" type="number" min="1" max="100" value="5" class="px-4 py-3.5 text-[12px]" />
+            <div class="section-label">Credit Status</div>
+            <div id="injectCreditStatus" class="mt-1 font-display font-bold text-[12px] text-emerald-400">Tersedia</div>
           </div>
-          <button onclick="runBulkInject()" class="btn btn-primary w-full py-3.5 text-[12px]">
-            Mulai Generate Bulk
+          <div class="text-right">
+            <div class="section-label">Limit Kuota</div>
+            <div class="text-[10px] text-[#00FFFF] mt-1">1x / 24 Jam</div>
+          </div>
+        </div>
+        <div class="usage-track mt-3"><div class="usage-bar"></div></div>
+      </div>
+    </div>
+
+    <!-- TOOLBOX INJECT (DIPISAH MENJADI 2 TAB: AUTO & MANUAL) -->
+    <div class="glass rounded-[16px] overflow-hidden p-4 sm:p-5">
+      <div class="mb-3">
+        <div class="section-label mb-1.5">Inject Engine</div>
+        <h2 class="font-display font-bold text-[14px] text-white">Metode Aktivasi Alight Motion</h2>
+      </div>
+
+      <!-- TAB PILIHAN INJECT -->
+      <div class="inject-tabs rounded-[11px] grid grid-cols-2 gap-1 mb-4">
+        <button class="inject-tab active py-2 rounded-[8px] text-[10px]" onclick="switchInjectMode('auto')" id="autoInjectTab">Auto Inject (1 Klik)</button>
+        <button class="inject-tab py-2 rounded-[8px] text-[10px]" onclick="switchInjectMode('manual')" id="manualInjectTab">Manual Inject</button>
+      </div>
+
+      <!-- 1. AUTO INJECT VIEW -->
+      <div id="autoInjectView" class="space-y-3">
+        <p class="text-[10px] text-slate-400 leading-relaxed">Sistem secara otomatis membuat email sementara, mengirim, dan mengaktifkan Alight Motion tanpa ribet.</p>
+        <button id="autoInjectBtn" class="btn btn-success w-full py-3.5 text-[11px] font-bold">
+          <i class="fa-solid fa-bolt mr-1.5"></i> Jalankan Auto-Inject Instan
+        </button>
+        <div id="autoStatusBox" class="hidden p-3 rounded-[11px] bg-black/40 border border-white/10 text-[10px] text-cyan-300 text-center"></div>
+      </div>
+
+      <!-- 2. MANUAL INJECT VIEW -->
+      <div id="manualInjectView" class="hidden space-y-3">
+        <p class="text-[10px] text-slate-400 leading-relaxed">Kirim magic link ke email pribadi Anda, lalu masukkan URL magic link yang diterima di sini.</p>
+
+        <!-- Step 1: Send Email -->
+        <div id="emailSection" class="space-y-2.5">
+          <input type="email" id="emailInput" placeholder="emailanda@domain.com" class="px-3.5 py-3 text-[11px]">
+          <button id="sendBtn" class="btn btn-primary w-full py-3 text-[11px]">
+            <i class="fa-solid fa-paper-plane mr-1.5"></i> Kirim Magic Link
           </button>
         </div>
 
-        <div id="bulkResult" class="glass-card hidden p-4 rounded-[16px] text-[11px] max-h-48 overflow-y-auto font-mono"></div>
-      </div>
-
-      <!-- KONTEN TAB: INBOX -->
-      <div id="contentInbox" class="animate-fade space-y-4 hidden">
-        <div>
-          <div class="text-[10px] uppercase font-bold tracking-widest text-zinc-400 mb-1">Mail Scanner</div>
-          <h2 class="text-[16px] font-bold text-white">Pindai Kotak Masuk</h2>
-          <p class="text-[11px] text-zinc-400 mt-1">Ambil link verifikasi langsung dari mail server secara otomatis.</p>
-        </div>
-
-        <div class="space-y-3">
-          <div class="relative">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-zinc-500">
-              <i class="fa-solid fa-at"></i>
-            </span>
-            <input id="inputInboxEmail" type="email" placeholder="email@tempmail.com" class="pl-11 pr-4 py-3.5 text-[12px]" />
+        <!-- Step 2: Verify URL -->
+        <div id="magicSection" class="hidden space-y-2.5">
+          <div class="flex justify-between items-center">
+            <label class="text-[10px] text-cyan-300">Tempel Magic Link</label>
+            <button id="changeEmailBtn" class="text-[9px] text-[#00FFFF] hover:underline">Ganti Email</button>
           </div>
-          <button onclick="runInboxCheck()" class="btn btn-primary w-full py-3.5 text-[12px] flex items-center justify-center gap-2">
-            <i class="fa-solid fa-radar"></i>
-            <span>Pindai Pesan Masuk</span>
+          <input type="url" id="magicInput" placeholder="https://..." class="px-3.5 py-3 text-[11px]">
+          <button id="activateBtn" class="btn btn-primary w-full py-3 text-[11px]">
+            <span id="btnDefault">Proses Verifikasi & Inject</span>
+            <span id="loaderContainer" class="hidden">Memproses...</span>
+            <span id="btnSuccess" class="hidden text-emerald-300">✓ Berhasil Diaktifkan!</span>
           </button>
         </div>
-
-        <div id="inboxNotice" class="hidden p-3 rounded-[12px] text-[11px] bg-white/5 border border-white/10 text-zinc-300"></div>
-        <div id="inboxResult" class="space-y-2.5 max-h-48 overflow-y-auto"></div>
       </div>
 
-    </main>
+    </div>
+  </section>
 
-    <!-- FOOTER -->
-    <footer class="text-center">
-      <p class="text-[11px] text-zinc-500 font-medium">
-        AM Pro Toolkit <span class="mx-1.5 text-zinc-700">•</span> Secure Monochrome <span class="mx-1.5 text-zinc-700">•</span> 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞
-      </p>
-    </footer>
+</main>
 
-  </div>
+<footer class="text-center pb-2 pt-1">
+  <div class="text-[9px] text-[#64748b]">AM Pro Toolkit <span class="mx-1 text-[#00FFFF]/55">•</span> Secure API <span class="mx-1 text-[#00FFFF]/55">•</span> ThanzDev</div>
+</footer>
+</div>
 
-  <!-- TOAST NOTIFIKASI -->
-  <div id="toast" class="toast fixed z-50 bottom-6 left-1/2 rounded-[16px] px-5 py-3 text-[11px] text-white shadow-2xl max-w-[calc(100vw-32px)]"></div>
+<div id="errorMsg" class="hidden fixed z-50 bottom-5 left-1/2 -translate-x-1/2 glass rounded-[12px] px-4 py-3 text-[10px] text-rose-300 border border-rose-500/40 shadow-2xl"></div>
 
 <script>
-  let activeInjectEmail = "";
+(function() {
+    'use strict';
+    const authSection = document.getElementById('authSection');
+    const dashboardSection = document.getElementById('dashboardSection');
+    const loginCard = document.getElementById('loginCard');
+    const registerCard = document.getElementById('registerCard');
+    const loginTab = document.getElementById('loginTab');
+    const registerTab = document.getElementById('registerTab');
 
-  function showToast(message) {
-    const toast = document.getElementById("toast");
-    toast.textContent = message;
-    toast.classList.add("show");
-    clearTimeout(window.__toastTimer);
-    window.__toastTimer = setTimeout(() => toast.classList.remove("show"), 3000);
-  }
+    const regUser = document.getElementById('regUser');
+    const regPass = document.getElementById('regPass');
+    const submitRegister = document.getElementById('submitRegister');
+    const regAlertBox = document.getElementById('regAlertBox');
 
-  function switchTab(tab) {
-    const contents = {
-      send: document.getElementById("contentSend"),
-      bulk: document.getElementById("contentBulk"),
-      inbox: document.getElementById("contentInbox")
-    };
+    const loginUser = document.getElementById('loginUser');
+    const loginPass = document.getElementById('loginPass');
+    const submitLogin = document.getElementById('submitLogin');
+    const loggedInUsername = document.getElementById('loggedInUsername');
+    const userLogoutBtn = document.getElementById('userLogoutBtn');
 
-    const tabs = {
-      send: document.getElementById("tabSend"),
-      bulk: document.getElementById("tabBulk"),
-      inbox: document.getElementById("tabInbox")
-    };
+    const autoInjectView = document.getElementById('autoInjectView');
+    const manualInjectView = document.getElementById('manualInjectView');
+    const autoInjectTab = document.getElementById('autoInjectTab');
+    const manualInjectTab = document.getElementById('manualInjectTab');
 
-    Object.values(contents).forEach(el => el.classList.add("hidden"));
-    Object.values(tabs).forEach(el => el.classList.remove("active"));
+    const emailInput = document.getElementById('emailInput');
+    const magicInput = document.getElementById('magicInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const activateBtn = document.getElementById('activateBtn');
+    const btnDefault = document.getElementById('btnDefault');
+    const loaderContainer = document.getElementById('loaderContainer');
+    const btnSuccess = document.getElementById('btnSuccess');
+    const errorMsg = document.getElementById('errorMsg');
 
-    contents[tab].classList.remove("hidden");
-    tabs[tab].classList.add("active");
-  }
+    const emailSection = document.getElementById('emailSection');
+    const magicSection = document.getElementById('magicSection');
+    const changeEmailBtn = document.getElementById('changeEmailBtn');
+    const autoInjectBtn = document.getElementById('autoInjectBtn');
+    const autoStatusBox = document.getElementById('autoStatusBox');
+    const injectCreditStatus = document.getElementById('injectCreditStatus');
+    const hiddenAdminTrigger = document.getElementById('hiddenAdminTrigger');
 
-  async function handleSendMagicLink() {
-    const email = document.getElementById("inputEmail").value.trim();
+    let cachedEmail = '';
+    const COOLDOWN_HOURS = 24;
 
-    if (!email || !email.includes("@")) {
-      return showToast("Masukkan format email yang valid.");
+    hiddenAdminTrigger.addEventListener('click', () => {
+        window.location.href = '/admin';
+    });
+
+    function showError(text) {
+        errorMsg.textContent = text;
+        errorMsg.classList.remove('hidden');
+        setTimeout(() => errorMsg.classList.add('hidden'), 4000);
     }
 
-    showToast("Mengirim magic link...");
-
-    try {
-      const res = await fetch("/api/send", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email })
-      });
-
-      const contentType = res.headers.get("content-type");
-      if (!contentType || !contentType.includes("application/json")) {
-        const text = await res.text();
-        throw new Error(text || "Terjadi kesalahan pada server.");
-      }
-
-      const json = await res.json();
-
-      if (!res.ok || json.status === false) {
-        throw new Error(json.message || "Gagal mengirim magic link.");
-      }
-
-      activeInjectEmail = email;
-
-      document.getElementById("stepEmailBox").classList.add("hidden");
-      document.getElementById("stepVerifyBox").classList.remove("hidden");
-      document.getElementById("flowInstruction").textContent =
-        `Magic link dikirim ke ${email}. Masukkan link verifikasi Anda di bawah ini.`;
-
-      showToast("Magic link berhasil dikirim.");
-    } catch (err) {
-      showToast(err.message || "Koneksi gagal.");
-    }
-  }
-
-  async function handleVerifyMagicLink() {
-    const link = document.getElementById("inputLink").value.trim();
-
-    if (!link) return showToast("Masukkan link verifikasi.");
-
-    showToast("Memverifikasi data...");
-
-    let success = false;
-    let resultMessage = "";
-
-    try {
-      const res = await fetch("/api/verify", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: activeInjectEmail,
-          link
-        })
-      });
-
-      const contentType = res.headers.get("content-type");
-      if (!contentType || !contentType.includes("application/json")) {
-        const text = await res.text();
-        throw new Error(text || "Terjadi kesalahan pada server.");
-      }
-
-      const json = await res.json();
-
-      success = res.ok && json.status !== false;
-      resultMessage = json.message || "Verifikasi berhasil.";
-
-      const result = document.getElementById("sendResult");
-      result.innerHTML = `
-        <div class="font-bold ${success ? "text-white" : "text-zinc-400"}">
-          ${success ? "STATUS: BERHASIL" : "STATUS: GAGAL"}
-        </div>
-        <div class="text-[11px] text-zinc-300 mt-1 leading-relaxed">
-          ${escapeHtml(resultMessage)}
-        </div>
-      `;
-      result.classList.remove("hidden");
-    } catch (err) {
-      success = false;
-      showToast(err.message || "Kesalahan jaringan.");
-    }
-
-    if (success) {
-      showToast("Verifikasi berhasil.");
-      setTimeout(resetInjectFlow, 900);
-    } else {
-      showToast("Verifikasi gagal.");
-    }
-  }
-
-  function resetInjectFlow() {
-    activeInjectEmail = "";
-
-    document.getElementById("inputEmail").value = "";
-    document.getElementById("inputLink").value = "";
-
-    document.getElementById("stepVerifyBox").classList.add("hidden");
-    document.getElementById("stepEmailBox").classList.remove("hidden");
-
-    document.getElementById("flowInstruction").textContent =
-      "Kirimkan magic link ke alamat email aktif Anda untuk memulai proses sinkronisasi.";
-
-    document.getElementById("sendResult").classList.add("hidden");
-  }
-
-  async function runBulkInject() {
-    const amount = Number(document.getElementById("inputBulkAmount").value);
-
-    if (!amount || amount < 1 || amount > 100) {
-      return showToast("Jumlah harus di antara 1 - 100.");
-    }
-
-    showToast("Memproses bulk generator...");
-
-    let success = false;
-    let resultMessage = "";
-
-    try {
-      const res = await fetch("/api/bulk", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount })
-      });
-
-      const contentType = res.headers.get("content-type");
-      if (!contentType || !contentType.includes("application/json")) {
-        const text = await res.text();
-        throw new Error(text || "Terjadi kesalahan pada server.");
-      }
-
-      const json = await res.json();
-
-      success = res.ok && json.status !== false;
-      resultMessage = json.message || JSON.stringify(json, null, 2);
-
-      const result = document.getElementById("bulkResult");
-
-      result.innerHTML = `
-        <div class="font-bold ${success ? "text-white" : "text-zinc-400"}">
-          ${success ? "BULK GENERATE SUCCESS" : "BULK GENERATE FAILED"}
-        </div>
-        <pre class="whitespace-pre-wrap text-[10px] text-zinc-300 mt-1">${escapeHtml(resultMessage)}</pre>
-      `;
-
-      result.classList.remove("hidden");
-    } catch (err) {
-      success = false;
-      showToast(err.message || "Koneksi gagal.");
-    }
-
-    if (success) {
-      showToast("Proses bulk selesai.");
-    } else {
-      showToast("Proses bulk gagal.");
-    }
-  }
-
-  async function runInboxCheck() {
-    const email = document.getElementById("inputInboxEmail").value.trim();
-    const notice = document.getElementById("inboxNotice");
-    const container = document.getElementById("inboxResult");
-
-    if (!email) return showToast("Masukkan alamat email.");
-
-    notice.textContent = "Memindai kotak masuk...";
-    notice.classList.remove("hidden");
-
-    container.innerHTML = "";
-
-    try {
-      const res = await fetch("/api/inbox", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email })
-      });
-
-      const contentType = res.headers.get("content-type");
-      if (!contentType || !contentType.includes("application/json")) {
-        const text = await res.text();
-        throw new Error(text || "Terjadi kesalahan pada server.");
-      }
-
-      const json = await res.json();
-
-      if (!res.ok || json.status === false) {
-        throw new Error(json.message || "Gagal memindai inbox.");
-      }
-
-      notice.textContent = "Pemindaian kotak masuk selesai.";
-
-      const messages = json.data?.messages || [];
-
-      if (!messages.length) {
-        container.innerHTML =
-          '<div class="text-[11px] text-zinc-500 p-4 text-center">Tidak ada pesan ditemukan.</div>';
-        return;
-      }
-
-      messages.forEach(msg => {
-        const card = document.createElement("div");
-        card.className =
-          "glass-card p-3.5 rounded-[14px] space-y-2.5";
-
-        const subject = msg.subject || "Tanpa Subjek";
-        const link = msg.login_url || "";
-
-        card.innerHTML = `
-          <div class="text-[11px] font-bold text-white">${escapeHtml(subject)}</div>
-          ${
-            link
-              ? `
-                <div class="p-2.5 rounded-[10px] bg-black/40 border border-white/10 text-zinc-300 text-[10px] break-all font-mono">
-                  ${escapeHtml(link)}
-                </div>
-                <button class="btn btn-primary w-full py-2.5 text-[10px] font-bold">
-                  Salin Link Verifikasi
-                </button>
-              `
-              : `
-                <div class="text-[10px] text-zinc-500">
-                  Link verifikasi belum tersedia.
-                </div>
-              `
-          }
-        `;
-
-        if (link) {
-          card.querySelector("button").addEventListener("click", async () => {
-            try {
-              await navigator.clipboard.writeText(link);
-              showToast("Link berhasil disalin.");
-            } catch {
-              showToast("Gagal menyalin link.");
-            }
-          });
+    function checkDeviceRegistrationLock() {
+        if (localStorage.getItem('am_device_registered') === 'true') {
+            submitRegister.disabled = true;
+            submitRegister.classList.add('opacity-50', 'cursor-not-allowed');
+            regUser.disabled = true;
+            regPass.disabled = true;
+            regAlertBox.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-amber-400 mr-1"></i> Perangkat ini <strong>sudah terkunci</strong> dan pernah mendaftar akun.`;
+            return true;
         }
-
-        container.appendChild(card);
-      });
-    } catch (err) {
-      notice.textContent = err.message;
+        return false;
     }
-  }
 
-  function escapeHtml(value) {
-    return String(value ?? "")
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#039;");
-  }
+    function checkInjectCredit(username) {
+        let userInjects = JSON.parse(localStorage.getItem('am_user_injects') || '{}');
+        const lastInject = userInjects[username];
+
+        if (!lastInject) {
+            injectCreditStatus.textContent = "Kredit Inject: Tersedia (1/1)";
+            injectCreditStatus.className = "mt-1 font-display font-bold text-[12px] text-emerald-400";
+            return false;
+        }
+        const diffHours = (new Date().getTime() - parseInt(lastInject)) / (1000 * 60 * 60);
+        if (diffHours < COOLDOWN_HOURS) {
+            const left = Math.ceil(COOLDOWN_HOURS - diffHours);
+            injectCreditStatus.textContent = `Cooldown ~${left} jam lagi`;
+            injectCreditStatus.className = "mt-1 font-display font-bold text-[12px] text-amber-400";
+            return true;
+        } else {
+            delete userInjects[username];
+            localStorage.setItem('am_user_injects', JSON.stringify(userInjects));
+            injectCreditStatus.textContent = "Kredit Inject: Tersedia (1/1)";
+            injectCreditStatus.className = "mt-1 font-display font-bold text-[12px] text-emerald-400";
+            return false;
+        }
+    }
+
+    function useInjectCredit(username) {
+        let userInjects = JSON.parse(localStorage.getItem('am_user_injects') || '{}');
+        userInjects[username] = new Date().getTime().toString();
+        localStorage.setItem('am_user_injects', JSON.stringify(userInjects));
+        checkInjectCredit(username);
+    }
+
+    window.switchTab = function(tab) {
+        if (tab === 'login') {
+            loginCard.classList.remove('hidden');
+            registerCard.classList.add('hidden');
+            loginTab.classList.add('active');
+            registerTab.classList.remove('active');
+        } else {
+            loginCard.classList.add('hidden');
+            registerCard.classList.remove('hidden');
+            registerTab.classList.add('active');
+            loginTab.classList.remove('active');
+            checkDeviceRegistrationLock();
+        }
+    };
+
+    window.switchInjectMode = function(mode) {
+        if (mode === 'auto') {
+            autoInjectView.classList.remove('hidden');
+            manualInjectView.classList.add('hidden');
+            autoInjectTab.classList.add('active');
+            manualInjectTab.classList.remove('active');
+        } else {
+            autoInjectView.classList.add('hidden');
+            manualInjectView.classList.remove('hidden');
+            manualInjectTab.classList.add('active');
+            autoInjectTab.classList.remove('active');
+        }
+    };
+
+    submitRegister.addEventListener('click', () => {
+        if (checkDeviceRegistrationLock()) return showError('Perangkat ini sudah terkunci.');
+        const u = regUser.value.trim(), p = regPass.value.trim();
+        if (!u || !p) return showError('Username dan Password wajib diisi.');
+        let users = JSON.parse(localStorage.getItem('am_users') || '{}');
+        if (users[u]) return showError('Username sudah digunakan.');
+        users[u] = p;
+        localStorage.setItem('am_users', JSON.stringify(users));
+        localStorage.setItem('am_device_registered', 'true');
+        alert('Registrasi berhasil! Perangkat terkunci permanen.');
+        switchTab('login');
+    });
+
+    submitLogin.addEventListener('click', () => {
+        const u = loginUser.value.trim(), p = loginPass.value.trim();
+        let users = JSON.parse(localStorage.getItem('am_users') || '{}');
+        if (!users[u] || users[u] !== p) return showError('Username atau Password salah.');
+        localStorage.setItem('am_logged_in_user', u);
+        checkAuthSession();
+    });
+
+    userLogoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('am_logged_in_user');
+        checkAuthSession();
+    });
+
+    function checkAuthSession() {
+        const user = localStorage.getItem('am_logged_in_user');
+        if (user) {
+            authSection.classList.add('hidden');
+            dashboardSection.classList.remove('hidden');
+            loggedInUsername.textContent = user;
+            const isCooldown = checkInjectCredit(user);
+            if (isCooldown) {
+                autoInjectBtn.disabled = true;
+                autoInjectBtn.classList.add('opacity-50');
+                sendBtn.disabled = true;
+                sendBtn.classList.add('opacity-50');
+            } else {
+                autoInjectBtn.disabled = false;
+                autoInjectBtn.classList.remove('opacity-50');
+                sendBtn.disabled = false;
+                sendBtn.classList.remove('opacity-50');
+            }
+        } else {
+            dashboardSection.classList.add('hidden');
+            authSection.classList.remove('hidden');
+            loginUser.value = '';
+            loginPass.value = '';
+        }
+    }
+
+    autoInjectBtn.addEventListener('click', async () => {
+        const user = localStorage.getItem('am_logged_in_user');
+        if (checkInjectCredit(user)) return showError('Kredit inject Anda habis untuk 24 jam ini!');
+
+        autoInjectBtn.disabled = true;
+        autoInjectBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1.5"></i> Memproses Auto-Inject...';
+        autoStatusBox.classList.remove('hidden');
+        autoStatusBox.textContent = 'Membuat email temporer & menunggu magic link masuk...';
+
+        try {
+            const res = await fetch('/api/auto-inject', { method: 'POST' });
+            const data = await res.json();
+            if (data.status) {
+                autoStatusBox.textContent = `Sukses! Email ${data.email} berhasil di-inject otomatis.`;
+                useInjectCredit(user);
+                autoInjectBtn.innerHTML = '<i class="fa-solid fa-check mr-1.5"></i> Sukses Di-inject!';
+            } else {
+                autoStatusBox.textContent = 'Gagal: ' + (data.error || 'Terjadi kesalahan');
+                autoInjectBtn.disabled = false;
+                autoInjectBtn.innerHTML = '<i class="fa-solid fa-bolt mr-1.5"></i> Jalankan Auto-Inject Instan';
+            }
+        } catch(e) {
+            autoStatusBox.textContent = 'Kesalahan jaringan serverless.';
+            autoInjectBtn.disabled = false;
+            autoInjectBtn.innerHTML = '<i class="fa-solid fa-bolt mr-1.5"></i> Jalankan Auto-Inject Instan';
+        }
+    });
+
+    sendBtn.addEventListener('click', async () => {
+        const user = localStorage.getItem('am_logged_in_user');
+        if (checkInjectCredit(user)) return showError('Kredit inject Anda habis untuk 24 jam ini!');
+        const email = emailInput.value.trim();
+        if (!email) return showError('Masukkan alamat email.');
+        sendBtn.disabled = true;
+        try {
+            const res = await fetch('/api/send', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({email}) });
+            const data = await res.json();
+            if (data.status) {
+                cachedEmail = email;
+                emailSection.classList.add('hidden');
+                magicSection.classList.remove('hidden');
+            } else { showError(data.error || 'Gagal mengirim email.'); }
+        } catch(e) { showError('Kesalahan jaringan.'); }
+        sendBtn.disabled = false;
+    });
+
+    changeEmailBtn.addEventListener('click', () => {
+        magicSection.classList.add('hidden');
+        emailSection.classList.remove('hidden');
+    });
+
+    activateBtn.addEventListener('click', async () => {
+        const user = localStorage.getItem('am_logged_in_user');
+        const magic = magicInput.value.trim();
+        if (!magic) return showError('Masukkan URL magic link.');
+        btnDefault.classList.add('hidden');
+        loaderContainer.classList.remove('hidden');
+        try {
+            const res = await fetch('/api/verif', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({email: cachedEmail, magicLink: magic}) });
+            const data = await res.json();
+            if (data.status) {
+                loaderContainer.classList.add('hidden');
+                btnSuccess.classList.remove('hidden');
+                useInjectCredit(user);
+            } else {
+                loaderContainer.classList.add('hidden');
+                btnDefault.classList.remove('hidden');
+                showError(data.error || 'Verifikasi gagal.');
+            }
+        } catch(e) {
+            loaderContainer.classList.add('hidden');
+            btnDefault.classList.remove('hidden');
+            showError('Kesalahan server.');
+        }
+    });
+
+    checkAuthSession();
+})();
 </script>
 </body>
 </html>
