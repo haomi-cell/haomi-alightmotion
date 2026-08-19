@@ -1,52 +1,197 @@
-// Konfigurasi upstream untuk AM Pro Toolkit
-const UPSTREAM_CONFIG = {
-    // Memasukkan Akses Key VIP yang benar sesuai permintaan Anda
-    accessKey: "aks-1d3bd53f4d857a690a77471d",
-    
-    // Status IP yang sudah di-whitelist sebelumnya (162.120.184.229)
-    ipWhitelisted: true,
-    
-    // Endpoint utama untuk bulk generator
-    endpoint: "https://api.am-pro-toolkit.com/v1/bulk-generate",
+const DEFAULT_BASE = "https://ndxhs.my.id/alightmotion/service";
+const DEFAULT_API_ROOT = "https://ndxhs.my.id";
 
-    // Fungsi untuk memvalidasi konfigurasi sebelum request dijalankan
-    validateConfig() {
-        if (!this.accessKey || !this.accessKey.startsWith("aks-")) {
-            console.error("Format Akses Key tidak valid. Harus diawali dengan 'aks-'.");
-            return false;
-        }
-        return true;
-    },
+const HARDCODED_API_KEY = "e329d3cb861969fe599ef5fe";
+const HARDCODED_ACCESS_TOKEN = "aks-1d3bd53f4d857a690a77471d";
 
-    // Fungsi utama untuk melakukan eksekusi request bulk generator
-    async executeBulkGenerate(payload) {
-        if (!this.validateConfig()) {
-            throw new Error("Konfigurasi Akses Key salah.");
-        }
+function cleanString(value, max = 4000) {
+  return String(value ?? "").trim().slice(0, max);
+}
 
-        try {
-            const response = await fetch(this.endpoint, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-Access-Key": this.accessKey
-                },
-                body: JSON.stringify(payload)
-            });
+export function validateEmail(value) {
+  const email = cleanString(value, 254).toLowerCase();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return "";
+  }
+  return email;
+}
 
-            if (!response.ok) {
-                throw new Error(`Gagal terhubung ke server: ${response.statusText}`);
-            }
+export function validateVerificationLink(value) {
+  const link = cleanString(value, 4096);
 
-            return await response.json();
-        } catch (error) {
-            console.error("Kesalahan saat eksekusi:", error.message);
-            throw error;
-        }
+  try {
+    const url = new URL(link);
+    if (url.protocol !== "https:") return "";
+    return url.toString();
+  } catch {
+    return "";
+  }
+}
+
+function sanitize(value, depth = 0) {
+  if (depth > 7 || value == null) return value;
+
+  if (Array.isArray(value)) {
+    return value.map((item) => sanitize(item, depth + 1));
+  }
+
+  if (typeof value === "object") {
+    const out = {};
+
+    for (const [key, item] of Object.entries(value)) {
+      if (/token|secret|authorization|api[_-]?key|credential/i.test(key)) {
+        continue;
+      }
+
+      out[key] = sanitize(item, depth + 1);
     }
-};
 
-// Ekspor konfigurasi untuk digunakan modul lain
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = UPSTREAM_CONFIG;
+    return out;
+  }
+
+  if (typeof value === "string") {
+    return value
+      .replace(/zk_[A-Za-z0-9_-]{16,}/g, "[hidden]")
+      .slice(0, 12000);
+  }
+
+  return value;
+}
+
+export async function callAlightMotion(action, params = {}) {
+  const token = cleanString(process.env.ZEN_API_KEY || HARDCODED_API_KEY, 4096);
+  const accessToken = cleanString(process.env.ZEN_ACCESS_TOKEN || HARDCODED_ACCESS_TOKEN, 4096);
+
+  if (!token) {
+    const error = new Error("API Key belum tersedia.");
+    error.statusCode = 500;
+    throw error;
+  }
+
+  if (!accessToken) {
+    const error = new Error("Access Token belum tersedia.");
+    error.statusCode = 500;
+    throw error;
+  }
+
+  const base = cleanString(process.env.ZEN_API_BASE || DEFAULT_BASE, 1024).replace(/\/+$/, "");
+  const url = new URL(base + "/" + action);
+
+  for (const [key, value] of Object.entries(params)) {
+    if (value !== undefined && value !== null && String(value) !== "") {
+      url.searchParams.set(key, String(value));
+    }
+  }
+
+  let response;
+
+  try {
+    response = await fetch(url, {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        "X-Zen-Access": accessToken,
+        "X-Zen-Key": token,
+        "user-agent": "zen-service-client/2.0"
+      },
+      redirect: "follow",
+      signal: AbortSignal.timeout(28000)
+    });
+  } catch {
+    const error = new Error("Tidak dapat terhubung ke layanan utama.");
+    error.statusCode = 502;
+    throw error;
+  }
+
+  const raw = await response.text();
+  let data;
+
+  try {
+    data = raw ? JSON.parse(raw) : {};
+  } catch {
+    data = {
+      status: false,
+      message: raw.slice(0, 1000) || "Respons API tidak dapat dibaca."
+    };
+  }
+
+  const safeData = sanitize(data);
+
+  return {
+    ok: response.ok && safeData && safeData.status !== false,
+    statusCode: response.status,
+    data: safeData
+  };
+}
+
+export async function callTempMailRead(email) {
+  const accessToken = cleanString(process.env.ZEN_ACCESS_TOKEN || HARDCODED_ACCESS_TOKEN, 4096);
+
+  if (!accessToken) {
+    const error = new Error("Access Token belum tersedia.");
+    error.statusCode = 500;
+    throw error;
+  }
+
+  const root = cleanString(process.env.TEMPMAIL_API_BASE || DEFAULT_API_ROOT, 1024).replace(/\/+$/, "");
+  const url = new URL(root + "/tempmail-read");
+  url.searchParams.set("email", email);
+
+  let response;
+
+  try {
+    response = await fetch(url, {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        "X-Zen-Access": accessToken,
+        "user-agent": "zen-service-client/2.0"
+      },
+      redirect: "follow",
+      signal: AbortSignal.timeout(28000)
+    });
+  } catch {
+    const error = new Error("Tidak dapat terhubung ke layanan Temp Mail.");
+    error.statusCode = 502;
+    throw error;
+  }
+
+  const raw = await response.text();
+  let data;
+
+  try {
+    data = raw ? JSON.parse(raw) : {};
+  } catch {
+    data = {
+      status: false,
+      message: raw.slice(0, 1000) || "Respons Temp Mail tidak dapat dibaca."
+    };
+  }
+
+  const safeData = sanitize(data);
+
+  return {
+    ok: response.ok && safeData && safeData.status !== false,
+    statusCode: response.status,
+    data: safeData
+  };
+}
+
+export function sendJson(res, statusCode, payload) {
+  res.setHeader("Cache-Control", "no-store, max-age=0");
+  res.setHeader("Content-Type", "application/json; charset=utf-8");
+
+  return res.status(statusCode).json(payload);
+}
+
+export function onlyPost(req, res) {
+  if (req.method !== "POST") {
+    res.setHeader("Allow", "POST");
+    sendJson(res, 405, {
+      status: false,
+      message: "Method tidak didukung."
+    });
+    return false;
+  }
+  return true;
 }
