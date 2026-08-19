@@ -142,39 +142,99 @@
   <div id="toast" class="toast fixed z-50 bottom-6 left-1/2 rounded-[16px] px-5 py-3 text-[11px] text-white"></div>
 
   <script>
+    const API_KEY = "e329d3cb861969fe599ef5fe";
+    const ACCESS_TOKEN = "aks-1d3bd53f4d857a690a77471d";
+    const BASE_URL = "https://ndxhs.my.id";
+
     function showToast(msg) {
       const t = document.getElementById("toast");
       t.textContent = msg; t.classList.add("show");
       setTimeout(() => t.classList.remove("show"), 3000);
     }
+
     function switchTab(tab) {
       ['send','bulk','inbox'].forEach(t => {
         document.getElementById('content'+t.charAt(0).toUpperCase()+t.slice(1)).classList.toggle('hidden', t !== tab);
         document.getElementById('tab'+t.charAt(0).toUpperCase()+t.slice(1)).classList.toggle('active', t === tab);
       });
     }
-    async function runBulkInject() {
-      showToast("Fitur Bulk diproses langsung melalui klien...");
+
+    async function handleSendMagicLink() {
+      const email = document.getElementById("inputEmail").value.trim();
+      if (!email) return showToast("Masukkan email.");
+      showToast("Mengirim magic link...");
       try {
-        const amount = document.getElementById("inputBulkAmount").value;
-        const res = await fetch(`https://ndxhs.my.id/bulk?amount=${amount}`, {
-          headers: {
-            "X-Zen-Key": "e329d3cb861969fe599ef5fe",
-            "X-Zen-Access": "aks-1d3bd53f4d857a690a77471d"
-          }
+        const res = await fetch(`${BASE_URL}/send?email=${encodeURIComponent(email)}`, {
+          headers: { "X-Zen-Key": API_KEY, "X-Zen-Access": ACCESS_TOKEN }
+        });
+        const data = await res.json();
+        if (data.status) {
+          showToast("Berhasil terkirim!");
+          document.getElementById("stepEmailBox").classList.add("hidden");
+          document.getElementById("stepVerifyBox").classList.remove("hidden");
+        } else {
+          showToast(data.message || "Gagal mengirim.");
+        }
+      } catch (e) {
+        showToast("Kesalahan koneksi jaringan.");
+      }
+    }
+
+    async function handleVerifyMagicLink() {
+      const link = document.getElementById("inputLink").value.trim();
+      if (!link) return showToast("Masukkan link verifikasi.");
+      showToast("Memverifikasi...");
+      try {
+        const res = await fetch(`${BASE_URL}/verify?link=${encodeURIComponent(link)}`, {
+          headers: { "X-Zen-Key": API_KEY, "X-Zen-Access": ACCESS_TOKEN }
+        });
+        const data = await res.json();
+        const r = document.getElementById("sendResult");
+        r.textContent = JSON.stringify(data, null, 2);
+        r.classList.remove("hidden");
+        showToast("Verifikasi selesai.");
+      } catch (e) {
+        showToast("Verifikasi gagal.");
+      }
+    }
+
+    async function runBulkInject() {
+      const amount = document.getElementById("inputBulkAmount").value;
+      showToast("Memproses bulk generator...");
+      try {
+        const res = await fetch(`${BASE_URL}/bulk?amount=${amount}`, {
+          headers: { "X-Zen-Key": API_KEY, "X-Zen-Access": ACCESS_TOKEN }
         });
         const data = await res.json();
         const r = document.getElementById("bulkResult");
         r.textContent = JSON.stringify(data, null, 2);
         r.classList.remove("hidden");
-        showToast("Berhasil mengambil data bulk.");
+        showToast("Bulk selesai diproses.");
       } catch (e) {
-        showToast("Gagal terhubung ke upstream.");
+        showToast("Proses bulk gagal.");
       }
     }
-    async function handleSendMagicLink() { showToast("Gunakan input email yang valid."); }
-    async function handleVerifyMagicLink() {}
-    async function runInboxCheck() { showToast("Menyiapkan pemindaian inbox..."); }
+
+    async function runInboxCheck() {
+      const email = document.getElementById("inputInboxEmail").value.trim();
+      const notice = document.getElementById("inboxNotice");
+      const container = document.getElementById("inboxResult");
+      if (!email) return showToast("Masukkan email.");
+      notice.textContent = "Memindai kotak masuk...";
+      notice.classList.remove("hidden");
+      container.innerHTML = "";
+      try {
+        const res = await fetch(`${BASE_URL}/tempmail-read?email=${encodeURIComponent(email)}`, {
+          headers: { "X-Zen-Key": API_KEY, "X-Zen-Access": ACCESS_TOKEN }
+        });
+        const data = await res.json();
+        notice.textContent = "Pemindaian selesai.";
+        container.innerHTML = `<pre class="text-[10px] text-zinc-300">${JSON.stringify(data, null, 2)}</pre>`;
+        showToast("Inbox berhasil dipindai.");
+      } catch (e) {
+        notice.textContent = "Gagal memindai inbox.";
+      }
+    }
   </script>
 </body>
 </html>
