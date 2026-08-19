@@ -1,188 +1,52 @@
-/**
- * Creator: 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞
- */
-const DEFAULT_BASE = "https://ndxhs.my.id/alightmotion";
-const DEFAULT_API_ROOT = "https://ndxhs.my.id";
-const API_KEY = "e329d3cb861969fe599ef5fe"; // Key diatur secara langsung di sini
+// Konfigurasi upstream untuk AM Pro Toolkit
+const UPSTREAM_CONFIG = {
+    // Memasukkan Akses Key VIP yang benar sesuai permintaan Anda
+    accessKey: "aks-1d3bd53f4d857a690a77471d",
+    
+    // Status IP yang sudah di-whitelist sebelumnya (162.120.184.229)
+    ipWhitelisted: true,
+    
+    // Endpoint utama untuk bulk generator
+    endpoint: "https://api.am-pro-toolkit.com/v1/bulk-generate",
 
-function cleanString(value, max = 4000) {
-  return String(value ?? "").trim().slice(0, max);
-}
+    // Fungsi untuk memvalidasi konfigurasi sebelum request dijalankan
+    validateConfig() {
+        if (!this.accessKey || !this.accessKey.startsWith("aks-")) {
+            console.error("Format Akses Key tidak valid. Harus diawali dengan 'aks-'.");
+            return false;
+        }
+        return true;
+    },
 
-export function validateEmail(value) {
-  const email = cleanString(value, 254).toLowerCase();
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return "";
-  }
-  return email;
-}
+    // Fungsi utama untuk melakukan eksekusi request bulk generator
+    async executeBulkGenerate(payload) {
+        if (!this.validateConfig()) {
+            throw new Error("Konfigurasi Akses Key salah.");
+        }
 
-export function validateVerificationLink(value) {
-  const link = cleanString(value, 4096);
+        try {
+            const response = await fetch(this.endpoint, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-Access-Key": this.accessKey
+                },
+                body: JSON.stringify(payload)
+            });
 
-  try {
-    const url = new URL(link);
-    if (url.protocol !== "https:") return "";
-    return url.toString();
-  } catch {
-    return "";
-  }
-}
+            if (!response.ok) {
+                throw new Error(`Gagal terhubung ke server: ${response.statusText}`);
+            }
 
-function sanitize(value, depth = 0) {
-  if (depth > 7 || value == null) return value;
-
-  if (Array.isArray(value)) {
-    return value.map((item) => sanitize(item, depth + 1));
-  }
-
-  if (typeof value === "object") {
-    const out = {};
-
-    for (const [key, item] of Object.entries(value)) {
-      if (/token|secret|authorization|api[_-]?key|credential/i.test(key)) {
-        continue;
-      }
-
-      out[key] = sanitize(item, depth + 1);
+            return await response.json();
+        } catch (error) {
+            console.error("Kesalahan saat eksekusi:", error.message);
+            throw error;
+        }
     }
+};
 
-    return out;
-  }
-
-  if (typeof value === "string") {
-    return value
-      .replace(/am_[A-Za-z0-9_-]{16,}/g, "[hidden]")
-      .slice(0, 12000);
-  }
-
-  return value;
+// Ekspor konfigurasi untuk digunakan modul lain
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = UPSTREAM_CONFIG;
 }
-
-export async function callAlightMotion(action, params = {}) {
-  const token = cleanString(process.env.AM_TOKEN, 4096);
-  const accessToken = API_KEY; // Menggunakan key baru secara permanen
-
-  if (!token) {
-    const error = new Error("AM_TOKEN belum diatur di Environment Variables Vercel.");
-    error.statusCode = 500;
-    throw error;
-  }
-
-  const base = cleanString(process.env.AM_API_BASE || DEFAULT_BASE, 1024).replace(/\/+$/, "");
-  const url = new URL(base + "/" + action);
-
-  for (const [key, value] of Object.entries(params)) {
-    if (value !== undefined && value !== null && String(value) !== "") {
-      url.searchParams.set(key, String(value));
-    }
-  }
-
-  let response;
-
-  try {
-    response = await fetch(url, {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        "X-ZNN-Access": accessToken,
-        "X-AM-Token": token,
-        "user-agent": "xMSHaomi-am-activation/1.3"
-      },
-      redirect: "follow",
-      signal: AbortSignal.timeout(28000)
-    });
-  } catch {
-    const error = new Error("Tidak dapat terhubung ke layanan Alight Motion.");
-    error.statusCode = 502;
-    throw error;
-  }
-
-  const raw = await response.text();
-  let data;
-
-  try {
-    data = raw ? JSON.parse(raw) : {};
-  } catch {
-    data = {
-      status: false,
-      message: raw.slice(0, 1000) || "Respons API tidak dapat dibaca."
-    };
-  }
-
-  const safeData = sanitize(data);
-
-  return {
-    ok: response.ok && safeData && safeData.status !== false,
-    statusCode: response.status,
-    data: safeData
-  };
-}
-
-export async function callTempMailRead(email) {
-  const accessToken = API_KEY; // Menggunakan key baru secara permanen
-
-  const root = cleanString(process.env.TEMPMAIL_API_BASE || DEFAULT_API_ROOT, 1024).replace(/\/+$/, "");
-  const url = new URL(root + "/tempmail-read");
-  url.searchParams.set("email", email);
-
-  let response;
-
-  try {
-    response = await fetch(url, {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        "X-ZNN-Access": accessToken,
-        "user-agent": "xMSHaomi-am-activation/1.3"
-      },
-      redirect: "follow",
-      signal: AbortSignal.timeout(28000)
-    });
-  } catch {
-    const error = new Error("Tidak dapat terhubung ke layanan Temp Mail.");
-    error.statusCode = 502;
-    throw error;
-  }
-
-  const raw = await response.text();
-  let data;
-
-  try {
-    data = raw ? JSON.parse(raw) : {};
-  } catch {
-    data = {
-      status: false,
-      message: raw.slice(0, 1000) || "Respons Temp Mail tidak dapat dibaca."
-    };
-  }
-
-  const safeData = sanitize(data);
-
-  return {
-    ok: response.ok && safeData && safeData.status !== false,
-    statusCode: response.status,
-    data: safeData
-  };
-}
-
-export function sendJson(res, statusCode, payload) {
-  res.setHeader("Cache-Control", "no-store, max-age=0");
-  res.setHeader("Content-Type", "application/json; charset=utf-8");
-
-  return res.status(statusCode).json(payload);
-}
-
-export function onlyPost(req, res) {
-  if (req.method !== "POST") {
-    res.setHeader("Allow", "POST");
-    sendJson(res, 405, {
-      status: false,
-      message: "Method tidak didukung."
-    });
-    return false;
-  }
-  return true;
-}
-
-
