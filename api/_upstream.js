@@ -51,7 +51,7 @@ function sanitize(value, depth = 0) {
 
   if (typeof value === "string") {
     return value
-      .replace(/zk_[A-Za-z0-9_-]{16,}/g, "[hidden]")
+      .replace(/(aks-|zk_|am_)[A-Za-z0-9_-]{16,}/g, "[hidden]")
       .slice(0, 12000);
   }
 
