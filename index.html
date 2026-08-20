@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -383,6 +384,15 @@
         <span class="data-value" id="displayUserWa">0822***</span>
       </div>
     </div>
+    
+    <!-- Widget Real-time Total Member -->
+    <div style="background: rgba(0, 242, 254, 0.05); border: 1px solid var(--accent-blue-dim); padding: 10px 14px; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; font-size: 12px;">
+      <span style="color: var(--text-secondary); display: flex; align-items: center; gap: 6px;">
+        <span style="width: 8px; height: 8px; background: var(--accent-green); border-radius: 50%; display: inline-block; animation: pulseDot 1.5s infinite;"></span>
+        Total Anggota Real-Time
+      </span>
+      <span id="liveMemberCount" style="font-family: var(--font-mono); color: var(--accent-blue); font-weight: 700; font-size: 14px;">Memuat...</span>
+    </div>
   </div>
 
   <div id="promoBannerContainer" class="promo-banner">
@@ -488,6 +498,7 @@
             fetchUserSession(sessionStorage.getItem(SESSION_KEY));
         }
         startClock();
+        initRealtimeMemberCounter();
     };
 
     function startClock() {
@@ -512,7 +523,6 @@
         return /^(08|628)\d{8,13}$/.test(cleanNum);
     }
 
-    // Fungsi helper aman untuk mendeteksi status boolean dari teks database
     function parseBool(val) {
         if (val === true || val === 'true' || val === '1' || val === 't' || val === 'TRUE' || val === 'YES' || val === 'yes') {
             return true;
@@ -520,10 +530,30 @@
         return false;
     }
 
+    async function updateLiveMemberCount() {
+        const { count, error } = await supabaseClient
+            .from('users')
+            .select('*', { count: 'exact', head: true });
+        
+        const counterEl = document.getElementById('liveMemberCount');
+        if(counterEl && !error) {
+            counterEl.textContent = `${count ?? 0} Pengguna`;
+        }
+    }
+
+    function initRealtimeMemberCounter() {
+        updateLiveMemberCount();
+        supabaseClient
+            .channel('public:users')
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'users' }, payload => {
+                updateLiveMemberCount();
+            })
+            .subscribe();
+    }
+
     async function fetchUserSession(username) {
         const { data, error } = await supabaseClient.from('users').select('*').eq('username', username).single();
         if (data && !error) {
-            // Hanya anggap banned jika nilainya benar-benar true secara tegas
             if (parseBool(data.is_banned)) {
                 sessionStorage.removeItem(SESSION_KEY);
                 switchView('loginView');
@@ -674,7 +704,6 @@
             const { data: existing } = await supabaseClient.from('users').select('*').eq('username', u).single();
             if(existing) return showMsg('regMsg', 'Username sudah terpakai.');
 
-            // Kirim nilai teks standar yang aman (false) agar tidak salah terbaca banned
             const newUserData = {
                 username: u,
                 password: p,
@@ -736,18 +765,22 @@
             document.getElementById('userAvatar').textContent = user.username.charAt(0).toUpperCase();
 
             const isVip = parseBool(user.is_permanent);
-
             const roleBadge = document.getElementById('displayUserRole');
+            const promoBanner = document.getElementById('promoBannerContainer');
+
             if (user.role === 'Owner') {
                 roleBadge.className = 'user-role-badge role-owner';
                 roleBadge.textContent = 'Owner';
                 document.getElementById('toggleOwnerDashBtn').classList.remove('hidden');
+                if(promoBanner) promoBanner.style.display = 'none'; // Sembunyikan iklan
             } else if (isVip) {
                 roleBadge.className = 'user-role-badge role-vip';
                 roleBadge.textContent = 'VIP';
+                if(promoBanner) promoBanner.style.display = 'none'; // Sembunyikan iklan
             } else {
                 roleBadge.className = 'user-role-badge role-member';
                 roleBadge.textContent = 'Member';
+                if(promoBanner) promoBanner.style.display = 'flex'; // Munculkan iklan khusus member
             }
 
             const limitTextLabel = document.getElementById('limitTextLabel');
