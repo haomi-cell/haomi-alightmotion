@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -526,13 +527,31 @@
     color: var(--text-secondary);
     font-size: 10px;
   }
+  .member-actions-group {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+  }
   .member-wa {
     color: var(--brand-accent);
     font-weight: 500;
     text-decoration: none;
     background: rgba(59, 130, 246, 0.1);
-    padding: 5px 8px;
+    padding: 5px 7px;
     border-radius: 6px;
+    font-size: 10px;
+  }
+  .member-action-btn {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+    padding: 5px 7px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 10px;
+  }
+  .member-action-btn:hover {
+    border-color: var(--brand-accent);
   }
 
   /* Modal Edit Profile & Warning Pop-up */
@@ -576,7 +595,7 @@
 <div class="bg-grid"></div>
 <div class="bg-glow"></div>
 
-<!-- POP-UP PERINGATAN (WARNING/DISCLAIMER HAK CIPTA & KONTEN ILEGAL) -->
+<!-- POP-UP PERINGATAN (WARNING/DISCLAIMER) -->
 <div id="warningModal" class="modal-overlay">
   <div class="modal-box" style="border-color: rgba(239, 68, 68, 0.4);">
     <div style="display: flex; align-items: center; gap: 8px; color: #f87171;">
@@ -629,7 +648,7 @@
   </div>
 </div>
 
-<!-- 2. TAMPILAN REGISTER DENGAN CAPTCHA MATEMATIKA -->
+<!-- 2. TAMPILAN REGISTER -->
 <div id="registerView" class="container hidden">
   <header>
     <div class="badge">Pendaftaran Ahli</div>
@@ -658,7 +677,6 @@
       </div>
     </div>
 
-    <!-- Captcha Matematika -->
     <div class="form-group">
       <label id="captchaLabel" for="regCaptcha">Pengesahan Matematik</label>
       <input type="text" id="regCaptcha" class="input-control" placeholder="Masukkan jawapan" autocomplete="off" />
@@ -674,7 +692,6 @@
 <!-- 3. TAMPILAN APLIKASI UTAMA -->
 <div id="appView" class="container hidden">
   
-  <!-- Kartu Profil Pengguna -->
   <div class="profile-card">
     <div class="profile-info">
       <div class="avatar" id="userAvatar">H</div>
@@ -689,17 +706,23 @@
     </div>
   </div>
 
-  <!-- TOMBOL AKSES DASBOR OWNER (Hanya Muncul untuk Owner) -->
+  <!-- TOMBOL AKSES DASBOR OWNER -->
   <button id="toggleOwnerDashBtn" class="btn btn-owner-dash hidden" onclick="toggleOwnerPanel()">
     ⚙️ Buka Panel Dasbor Owner & Pemantauan
   </button>
 
-  <!-- PANEL DASBOR OWNER (Manajemen & Anti-Kecurangan) -->
+  <!-- PANEL DASBOR OWNER (Manajemen Member, Pencarian Buyer, Tambah Limit, & Akses Permanen) -->
   <div id="ownerPanel" class="card hidden">
     <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-subtle); padding-bottom: 10px;">
       <h2 style="font-size: 14px; font-weight: 600; color: var(--text-primary);">Dasbor Pemantauan Ahli</h2>
       <span id="memberCountBadge" style="font-size: 11px; background: rgba(59, 130, 246, 0.1); color: var(--brand-accent); padding: 2px 8px; border-radius: 99px;">0 Pengguna</span>
     </div>
+
+    <!-- FITUR PENCARIAN BUYER (Berdasarkan Username, User ID, atau No WA) -->
+    <div class="form-group" style="margin-top: 4px;">
+      <input type="text" id="searchMemberInput" class="input-control" placeholder="🔍 Cari Username, ID, atau No WA..." autocomplete="off" oninput="renderMemberList()" style="padding: 10px 14px; font-size: 12.5px;" />
+    </div>
+
     <div id="memberList" style="display: flex; flex-direction: column; max-height: 240px; overflow-y: auto; padding-right: 4px;">
       <!-- Senarai ahli masuk di sini -->
     </div>
@@ -745,7 +768,7 @@
     
   </div>
 
-  <!-- Banner Iklan Akses Permanen di Dashboard Utama -->
+  <!-- Banner Iklan Akses Permanen -->
   <div class="promo-banner">
     <h3>👑 DAPATKAN AKSES KEKAL VIP</h3>
     <p>Mahukan alatan tanpa sebarang had selamanya? Amankan slot kekal anda sekarang!</p>
@@ -792,9 +815,9 @@
 <script>
     // ========== KONFIGURASI GLOBAL & DATABASE ==========
     const OWNER_WA = "+6282231669053";
-    const DB_KEY = 'mshaomi_db_users_v7';
-    const SESSION_KEY = 'mshaomi_active_session_v7';
-    const DEVICE_REG_KEY = 'mshaomi_device_reg_count_v7';
+    const DB_KEY = 'mshaomi_db_users_v10';
+    const SESSION_KEY = 'mshaomi_active_session_v10';
+    const DEVICE_REG_KEY = 'mshaomi_device_reg_count_v10';
 
     let currentCaptchaAnswer = 0;
 
@@ -808,19 +831,14 @@
         }
     }
 
-    // Fungsi Validasi Ketat Nombor WhatsApp (Anti-Spam & Anti-Fake seperti 12345 atau deretan sama)
     function isValidWhatsApp(number) {
         const cleanNum = number.replace(/[^0-9]/g, '');
-        
-        // Format awal wajib Indonesia (08 atau 628) dan panjang 10-15 digit
         const phoneRegex = /^(08|628)\d{8,13}$/;
         if (!phoneRegex.test(cleanNum)) return false;
 
-        // Blokir deretan angka berurutan yang mencurigakan (contoh: 123456, 678910)
         const sequentialPattern = /(0123|1234|2345|3456|4567|5678|6789|7890|9876|8765|7654|6543|5432|4321)/;
         if (sequentialPattern.test(cleanNum)) return false;
 
-        // Blokir deretan angka berulang yang sama persis (contoh: 08111111111, 0822222222)
         const repeatingPattern = /^(\d)\1{7,}$/;
         if (repeatingPattern.test(cleanNum.substring(2))) return false;
 
@@ -839,7 +857,9 @@
                     id: 'OWNER-01',
                     editQuota: { username: 99, password: 99, wa: 99 },
                     limit: 999,
-                    lastReset: Date.now()
+                    lastReset: Date.now(),
+                    isBanned: false,
+                    isPermanent: true
                 }
             };
             localStorage.setItem(DB_KEY, JSON.stringify(db));
@@ -856,6 +876,7 @@
     }
 
     function checkAndResetLimit(userObj) {
+        if (userObj.isPermanent || userObj.role === 'Owner') return userObj;
         const ONE_WEEK_MS = 7 * 24 * 60 * 60 * 1000;
         const now = Date.now();
         if (!userObj.lastReset || (now - userObj.lastReset) > ONE_WEEK_MS) {
@@ -874,6 +895,95 @@
         const promoBtn = document.getElementById('promoDashBtn');
         if(promoBtn) promoBtn.href = url;
     }
+
+    // Fungsi Tambah Limit oleh Owner (+3 Limit)
+    window.addMemberLimit = function(username) {
+        let db = initDatabase();
+        if(db[username]) {
+            db[username].limit = (db[username].limit || 0) + 3;
+            saveToDatabase(db);
+            renderMemberList();
+        }
+    };
+
+    // Fungsi Berikan / Cabut Akses Permanen VIP oleh Owner
+    window.togglePermanentAccess = function(username) {
+        let db = initDatabase();
+        if(db[username]) {
+            db[username].isPermanent = !db[username].isPermanent;
+            if(db[username].isPermanent) {
+                db[username].limit = 999;
+            }
+            saveToDatabase(db);
+            renderMemberList();
+        }
+    };
+
+    // Fungsi Suspend / Ban Member
+    window.toggleSuspendMember = function(username) {
+        let db = initDatabase();
+        if(db[username]) {
+            db[username].isBanned = !db[username].isBanned;
+            saveToDatabase(db);
+            renderMemberList();
+        }
+    };
+
+    // Fungsi Render Daftar Member dengan Fitur Pencarian Real-Time
+    window.renderMemberList = function() {
+        const db = initDatabase();
+        const searchInput = document.getElementById('searchMemberInput');
+        const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
+        const memberList = document.getElementById('memberList');
+        const memberCountBadge = document.getElementById('memberCountBadge');
+
+        if(!memberList) return;
+        memberList.innerHTML = '';
+        let count = 0;
+        let displayedCount = 0;
+
+        for (const key in db) {
+            const m = db[key];
+            count++;
+
+            // Filter Pencarian berdasarkan Username, ID, atau No WhatsApp
+            const matchQuery = key.toLowerCase().includes(query) || 
+                               (m.id && m.id.toLowerCase().includes(query)) || 
+                               (m.wa && m.wa.toLowerCase().includes(query));
+
+            if (!matchQuery) continue;
+            displayedCount++;
+
+            const waClean = m.wa ? m.wa.replace(/[^0-9]/g, '') : '';
+            const waLink = waClean ? `https://wa.me/${waClean}?text=Halo%20${key},%20pesan%20dari%20Owner%20Tools%20xMSXiaomi%20AM.` : '#';
+            
+            const el = document.createElement('div');
+            el.className = 'member-item';
+            const banStatusText = m.isBanned ? 'Nyahsekat' : 'Ban';
+            const permStatusText = m.isPermanent ? 'Cabut VIP' : 'Jadikan VIP';
+            const permBtnColor = m.isPermanent ? 'background: rgba(245, 158, 11, 0.2); color: #f59e0b; border-color: rgba(245, 158, 11, 0.4);' : '';
+
+            el.innerHTML = `
+                <div class="member-info">
+                    <strong>@${key} ${m.isBanned ? '<span style="color:red;">[DISEKAT]</span>' : ''} ${m.isPermanent ? '<span style="color:var(--gold);">[VIP KEKAL]</span>' : ''}</strong>
+                    <span class="member-meta">ID: ${m.id || '-'} | WA: ${m.wa || '-'} | Limit: ${m.isPermanent ? '∞' : (m.limit ?? 3)}</span>
+                    <span class="member-meta" style="color: var(--brand-accent);">Pass: ${m.password}</span>
+                </div>
+                <div class="member-actions-group">
+                    <a href="${waLink}" target="_blank" class="member-wa">WA</a>
+                    ${key !== 'HAOMI' ? `
+                        <button onclick="addMemberLimit('${key}')" class="member-action-btn" title="Tambah 3 Limit">+Limit</button>
+                        <button onclick="togglePermanentAccess('${key}')" class="member-action-btn" style="${permBtnColor}" title="Ubah Status VIP">${permStatusText}</button>
+                        <button onclick="toggleSuspendMember('${key}')" class="member-action-btn" style="color: #f87171;" title="Sekat Pengguna">${banStatusText}</button>
+                    ` : ''}
+                </div>
+            `;
+            memberList.appendChild(el);
+        }
+        if(memberCountBadge) {
+            memberCountBadge.textContent = `${displayedCount} dari ${count} Pengguna`;
+        }
+    };
 
     window.togglePwd = function(inputId, btnEl) {
         const input = document.getElementById(inputId);
@@ -1034,8 +1144,6 @@
         const logoutBtn = document.getElementById('logoutBtn');
         const toggleOwnerDashBtn = document.getElementById('toggleOwnerDashBtn');
         const ownerPanel = document.getElementById('ownerPanel');
-        const memberList = document.getElementById('memberList');
-        const memberCountBadge = document.getElementById('memberCountBadge');
         const limitBadge = document.getElementById('limitBadge');
 
         const API_BASE = 'https://restapidhan.vercel.app';
@@ -1053,15 +1161,31 @@
         let loginAttempts = 0;
         let lockUntil = 0;
 
+        let lastSendTime = 0;
+        let lastActivateTime = 0;
+        const COOLDOWN_TIME = 5000;
+
         function checkSession() {
             const sessionUser = sessionStorage.getItem(SESSION_KEY);
             if (sessionUser && db[sessionUser]) {
+                if (db[sessionUser].isBanned) {
+                    sessionStorage.removeItem(SESSION_KEY);
+                    showMsg('loginErrorMsg', 'Akaun anda telah disekat (Banned) oleh Owner.');
+                    switchView('loginView');
+                    return;
+                }
                 loadAppView(sessionUser);
             }
         }
 
         function loadAppView(username) {
             db = initDatabase();
+            if (db[username].isBanned) {
+                sessionStorage.removeItem(SESSION_KEY);
+                switchView('loginView');
+                return;
+            }
+
             db[username] = checkAndResetLimit(db[username]);
             saveToDatabase(db);
 
@@ -1070,8 +1194,8 @@
             displayUserRole.textContent = user.role + ` (ID: ${user.id || 'N/A'})`;
             userAvatar.textContent = username.charAt(0).toUpperCase();
             
-            if (user.role === 'Owner') {
-                limitBadge.textContent = 'Status: Owner (Tanpa Had)';
+            if (user.role === 'Owner' || user.isPermanent) {
+                limitBadge.textContent = user.role === 'Owner' ? 'Status: Owner (Tanpa Had)' : 'Status: VIP (Akses Kekal)';
             } else {
                 limitBadge.textContent = `Baki Had Mingguan: ${user.limit} / 3`;
             }
@@ -1080,28 +1204,7 @@
 
             if (user.role === 'Owner') {
                 toggleOwnerDashBtn.classList.remove('hidden');
-                memberList.innerHTML = '';
-                let count = 0;
-
-                for (const key in db) {
-                    const m = db[key];
-                    count++;
-                    const waClean = m.wa ? m.wa.replace(/[^0-9]/g, '') : '';
-                    const waLink = waClean ? `https://wa.me/${waClean}?text=Halo%20${key},%20pesan%20dari%20Owner%20Tools%20xMSXiaomi%20AM.` : '#';
-                    
-                    const el = document.createElement('div');
-                    el.className = 'member-item';
-                    el.innerHTML = `
-                        <div class="member-info">
-                            <strong>@${key}</strong>
-                            <span class="member-meta">ID: ${m.id || '-'} | WA: ${m.wa || '-'} | Limit: ${m.limit ?? '∞'}</span>
-                            <span class="member-meta" style="color: var(--brand-accent);">Pass: ${m.password} | Role: ${m.role}</span>
-                        </div>
-                        <a href="${waLink}" target="_blank" class="member-wa">Chat WA</a>
-                    `;
-                    memberList.appendChild(el);
-                }
-                memberCountBadge.textContent = `${count} Pengguna`;
+                renderMemberList();
             } else {
                 toggleOwnerDashBtn.classList.add('hidden');
                 ownerPanel.classList.add('hidden');
@@ -1124,6 +1227,9 @@
             if (!u || !p) return showMsg('loginErrorMsg', 'Username & Password wajib diisi.');
             
             if (db[u] && db[u].password === p) {
+                if (db[u].isBanned) {
+                    return showMsg('loginErrorMsg', 'Akaun anda telah disekat oleh Owner.');
+                }
                 loginAttempts = 0;
                 sessionStorage.setItem(SESSION_KEY, u);
                 loadAppView(u);
@@ -1148,7 +1254,6 @@
 
             if (!u || !w || !p || isNaN(cInput)) return showMsg('regMsg', 'Sila isi semua ruangan termasuk jawapan matematik!', 'error');
             
-            // Validasi Ketat WhatsApp (Anti Deretan Angka Palsu/Urut 1234)
             if (!isValidWhatsApp(w)) {
                 return showMsg('regMsg', 'Nombor WhatsApp tidak sah! Elakkan menggunakan nombor berurutan (cth: 1234) atau nombor berulang.', 'error');
             }
@@ -1173,7 +1278,9 @@
                 id: generateMemberId(),
                 editQuota: { username: 1, password: 1, wa: 1 },
                 limit: 3,
-                lastReset: Date.now()
+                lastReset: Date.now(),
+                isBanned: false,
+                isPermanent: false
             };
             
             saveToDatabase(db);
@@ -1200,9 +1307,15 @@
         }
 
         sendBtn.addEventListener('click', async () => {
+            const now = Date.now();
+            if (now - lastSendTime < COOLDOWN_TIME) {
+                const waitSec = Math.ceil((COOLDOWN_TIME - (now - lastSendTime)) / 1000);
+                return showMsg('appErrorMsg', `Sila tunggu ${waitSec} saat sebelum menghantar emel semula (Rate-Limit).`);
+            }
+
             const activeUser = sessionStorage.getItem(SESSION_KEY);
             db = initDatabase();
-            if (activeUser && db[activeUser] && db[activeUser].role !== 'Owner') {
+            if (activeUser && db[activeUser] && db[activeUser].role !== 'Owner' && !db[activeUser].isPermanent) {
                 db[activeUser] = checkAndResetLimit(db[activeUser]);
                 if (db[activeUser].limit <= 0) {
                     return showMsg('appErrorMsg', 'Had mingguan anda telah habis! Sila hubungi Owner untuk Akses Kekal.', 'error');
@@ -1213,6 +1326,7 @@
             document.getElementById('appErrorMsg').classList.remove('show');
             if (!email || !email.includes('@')) return showMsg('appErrorMsg', 'Emel tidak sah.', 'error');
 
+            lastSendTime = Date.now();
             const oldTxt = sendBtn.textContent;
             sendBtn.textContent = 'Memproses...';
             sendBtn.disabled = true;
@@ -1236,10 +1350,17 @@
 
         activateBtn.addEventListener('click', async () => {
             if (isLoading || isSuccess) return;
+
+            const now = Date.now();
+            if (now - lastActivateTime < COOLDOWN_TIME) {
+                const waitSec = Math.ceil((COOLDOWN_TIME - (now - lastActivateTime)) / 1000);
+                return showMsg('appErrorMsg', `Sila tunggu ${waitSec} saat sebelum mencuba aktivasi semula (Rate-Limit).`);
+            }
+
             const activeUser = sessionStorage.getItem(SESSION_KEY);
             db = initDatabase();
             
-            if (activeUser && db[activeUser] && db[activeUser].role !== 'Owner') {
+            if (activeUser && db[activeUser] && db[activeUser].role !== 'Owner' && !db[activeUser].isPermanent) {
                 db[activeUser] = checkAndResetLimit(db[activeUser]);
                 if (db[activeUser].limit <= 0) {
                     return showMsg('appErrorMsg', 'Had mingguan anda telah habis!', 'error');
@@ -1255,6 +1376,7 @@
 
             if (!email || !magic) return showMsg('appErrorMsg', 'Emel & Pautan Ajaib wajib diisi.', 'error');
 
+            lastActivateTime = Date.now();
             isLoading = true;
             activateBtn.disabled = true;
             btnDefault.classList.add('hidden');
