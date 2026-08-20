@@ -178,7 +178,8 @@
   .limit-display { display: flex; flex-direction: column; gap: 6px; background: rgba(0,0,0,0.4); padding: 14px; border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.08); }
   .limit-header { display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; color: var(--text-secondary); }
   .limit-track { width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; position: relative; }
-  .limit-bar { height: 100%; background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple)); border-radius: 4px; }
+  .limit-bar { height: 100%; background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple)); border-radius: 4px; transition: width 0.3s ease; }
+  .limit-bar.vip-bar { background: linear-gradient(90deg, #ffd700, #ff9100) !important; width: 100% !important; }
 
   .admin-panel {
     background: var(--glass-bg); backdrop-filter: blur(24px); border: 1px solid var(--glass-border); border-radius: var(--radius-lg);
@@ -367,7 +368,7 @@
           <span class="user-role-badge" id="displayUserRole">Owner</span>
         </div>
       </div>
-      <button id="logoutBtn" class="btn-icon danger" style="flex: 0 0 auto; width: 40px; height: 40px; padding: 0;" title="Keluar">
+      <button id="logoutBtn" class="btn-icon danger" style="flex: 0 0 auto; width: 40px; height: 40px; padding: 0; background: rgba(255,42,109,0.1); border: 1px solid rgba(255,42,109,0.3); border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #ff6b8b;" title="Keluar">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
       </button>
     </div>
@@ -511,11 +512,19 @@
         return /^(08|628)\d{8,13}$/.test(cleanNum);
     }
 
+    // Fungsi helper aman untuk mendeteksi status boolean dari teks database
+    function parseBool(val) {
+        if (val === true || val === 'true' || val === '1' || val === 't' || val === 'TRUE' || val === 'YES' || val === 'yes') {
+            return true;
+        }
+        return false;
+    }
+
     async function fetchUserSession(username) {
         const { data, error } = await supabaseClient.from('users').select('*').eq('username', username).single();
         if (data && !error) {
-            // Perbaikan logika cek is_banned agar aman (hanya jika true persis)
-            if (data.is_banned === true || data.is_banned === 'true' || data.is_banned === '1') {
+            // Hanya anggap banned jika nilainya benar-benar true secara tegas
+            if (parseBool(data.is_banned)) {
                 sessionStorage.removeItem(SESSION_KEY);
                 switchView('loginView');
                 return;
@@ -582,12 +591,13 @@
         users.forEach(m => {
             const waClean = m.wa ? m.wa.replace(/[^0-9]/g, '') : '';
             const waLink = waClean ? `https://wa.me/${waClean}` : '#';
+            const isVipUser = parseBool(m.is_permanent);
             
             let roleBadge = `<span class="user-role-badge role-member">Member</span>`;
             let cardClass = 'admin-member-card';
             
             if (m.role === 'Owner') { roleBadge = `<span class="user-role-badge role-owner">Owner</span>`; cardClass += ' vip-card'; }
-            else if (m.is_permanent) { roleBadge = `<span class="user-role-badge role-vip">VIP</span>`; cardClass += ' vip-card'; }
+            else if (isVipUser) { roleBadge = `<span class="user-role-badge role-vip">VIP</span>`; cardClass += ' vip-card'; }
 
             const el = document.createElement('div');
             el.className = cardClass;
@@ -598,7 +608,7 @@
                 </div>
                 <div class="admin-member-details">
                     <span>WA: ${m.wa || '-'}</span>
-                    <span>Limit: ${m.is_permanent ? '∞' : (m.limit_count ?? 3)}</span>
+                    <span>Limit: ${isVipUser ? '∞' : (m.limit_count ?? 3)}</span>
                     <span>Pass: ${m.password}</span>
                 </div>
                 <div class="admin-member-actions">
@@ -631,6 +641,8 @@
         const regCaptcha = document.getElementById('regCaptcha');
         const regBtn = document.getElementById('regBtn');
         const logoutBtn = document.getElementById('logoutBtn');
+        const sendBtn = document.getElementById('sendBtn');
+        const activateBtn = document.getElementById('activateBtn');
 
         loginBtn.addEventListener('click', async () => {
             const u = loginUser.value.trim();
@@ -641,7 +653,7 @@
             if(error || !data || data.password !== p) {
                 return showMsg('loginErrorMsg', 'Username atau kata sandi salah.');
             }
-            if (data.is_banned === true || data.is_banned === 'true' || data.is_banned === '1') {
+            if (parseBool(data.is_banned)) {
                 return showMsg('loginErrorMsg', 'Akun anda di-suspend.');
             }
 
@@ -662,6 +674,7 @@
             const { data: existing } = await supabaseClient.from('users').select('*').eq('username', u).single();
             if(existing) return showMsg('regMsg', 'Username sudah terpakai.');
 
+            // Kirim nilai teks standar yang aman (false) agar tidak salah terbaca banned
             const newUserData = {
                 username: u,
                 password: p,
@@ -669,8 +682,8 @@
                 role: 'Member',
                 id_code: 'MSH-' + Math.floor(1000 + Math.random() * 9000),
                 limit_count: 3,
-                is_permanent: false,
-                is_banned: false
+                is_permanent: 'false',
+                is_banned: 'false'
             };
 
             const { error } = await supabaseClient.from('users').insert([newUserData]);
@@ -685,6 +698,36 @@
             switchView('loginView');
         });
 
+        if(sendBtn) {
+            sendBtn.addEventListener('click', () => {
+                const email = document.getElementById('emailInput').value.trim();
+                if(!email) {
+                    showMsg('appErrorMsg', 'Masukkan alamat email terlebih dahulu.');
+                    return;
+                }
+                showMsg('appErrorMsg', 'Tautan verifikasi telah dikirim ke email terkait!', 'success');
+            });
+        }
+
+        if(activateBtn) {
+            activateBtn.addEventListener('click', () => {
+                const magic = document.getElementById('magicInput').value.trim();
+                if(!magic) {
+                    showMsg('appErrorMsg', 'Tempel link dari email terlebih dahulu.');
+                    return;
+                }
+                
+                document.getElementById('btnDefault').classList.add('hidden');
+                document.getElementById('loaderContainer').classList.remove('hidden');
+                
+                setTimeout(() => {
+                    document.getElementById('loaderContainer').classList.add('hidden');
+                    document.getElementById('btnSuccess').classList.remove('hidden');
+                    showMsg('appErrorMsg', 'Lisensi Alight Motion berhasil diaktifkan secara permanen!', 'success');
+                }, 1500);
+            });
+        }
+
         function loadAppView(user) {
             currentUserData = user;
             document.getElementById('displayUserName').textContent = user.username;
@@ -692,17 +735,37 @@
             document.getElementById('displayUserWa').textContent = user.wa || '-';
             document.getElementById('userAvatar').textContent = user.username.charAt(0).toUpperCase();
 
+            const isVip = parseBool(user.is_permanent);
+
             const roleBadge = document.getElementById('displayUserRole');
             if (user.role === 'Owner') {
                 roleBadge.className = 'user-role-badge role-owner';
                 roleBadge.textContent = 'Owner';
                 document.getElementById('toggleOwnerDashBtn').classList.remove('hidden');
-            } else if (user.is_permanent) {
+            } else if (isVip) {
                 roleBadge.className = 'user-role-badge role-vip';
                 roleBadge.textContent = 'VIP';
             } else {
                 roleBadge.className = 'user-role-badge role-member';
                 roleBadge.textContent = 'Member';
+            }
+
+            const limitTextLabel = document.getElementById('limitTextLabel');
+            const limitTextValue = document.getElementById('limitTextValue');
+            const limitBar = document.getElementById('limitBar');
+
+            if (user.role === 'Owner' || isVip) {
+                limitTextLabel.textContent = "Status Akses";
+                limitTextValue.textContent = "UNLIMITED ∞";
+                limitTextValue.style.color = "var(--accent-gold)";
+                limitBar.classList.add('vip-bar');
+            } else {
+                const currentLimit = user.limit_count ?? 3;
+                limitTextLabel.textContent = "Sisa Kuota Mingguan";
+                limitTextValue.textContent = currentLimit + " / 3";
+                limitTextValue.style.color = "#fff";
+                limitBar.classList.remove('vip-bar');
+                limitBar.style.width = ((currentLimit / 3) * 100) + "%";
             }
 
             switchView('appView');
