@@ -198,24 +198,26 @@
     font-family: var(--font-main); font-size: 13px; resize: vertical; min-height: 70px; outline: none;
   }
 
-  .member-list { display: flex; flex-direction: column; gap: 12px; max-height: 420px; overflow-y: auto; padding-right: 6px; }
+  .member-list { display: flex; flex-direction: column; gap: 12px; max-height: 480px; overflow-y: auto; padding-right: 6px; }
   .admin-member-card {
     background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.06); border-left: 3px solid var(--accent-blue);
-    border-radius: var(--radius-sm); padding: 16px; display: flex; flex-direction: column; gap: 12px;
+    border-radius: var(--radius-sm); padding: 16px; display: flex; flex-direction: column; gap: 10px;
   }
   .admin-member-card.vip-card { border-left-color: var(--accent-gold); background: linear-gradient(135deg, rgba(255,215,0,0.04), rgba(0,0,0,0.5)); }
   .admin-member-header { display: flex; justify-content: space-between; align-items: flex-start; }
   .admin-member-name { font-size: 15px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
   .admin-member-id { font-family: var(--font-mono); font-size: 11px; color: var(--accent-blue); background: var(--bg-main); padding: 4px 8px; border-radius: 6px; }
-  .admin-member-details { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 12px; color: var(--text-secondary); }
-  .admin-member-details span { display: flex; align-items: center; gap: 6px; font-family: var(--font-mono); }
-  .admin-member-actions { display: flex; gap: 6px; padding-top: 12px; border-top: 1px dashed rgba(255,255,255,0.1); flex-wrap: wrap; }
+  .admin-member-details { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 11.5px; color: var(--text-secondary); }
+  .admin-member-details span { display: flex; align-items: center; gap: 4px; font-family: var(--font-mono); }
+  .admin-member-actions { display: flex; gap: 6px; padding-top: 10px; border-top: 1px dashed rgba(255,255,255,0.1); flex-wrap: wrap; }
   
   .btn-tiny {
-    flex: 1; min-width: 70px; padding: 8px; font-size: 11px; font-weight: 700; border-radius: 6px;
+    flex: 1; min-width: 65px; padding: 8px 4px; font-size: 10.5px; font-weight: 700; border-radius: 6px;
     border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.03); color: var(--text-secondary); cursor: pointer; text-align: center; text-decoration: none;
   }
+  .btn-tiny:hover { border-color: var(--accent-blue); color: var(--text-primary); background: rgba(0,242,254,0.1); }
   .btn-tiny.action-wa:hover { border-color: var(--accent-green); color: var(--accent-green); }
+  .btn-tiny.action-vip { border-color: var(--accent-gold); color: var(--accent-gold); }
 
   .message-box { padding: 14px 16px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 500; text-align: center; display: none; line-height: 1.5; margin-bottom: 12px; }
   .message-box.show { display: block; }
@@ -240,6 +242,12 @@
   .warning-desc { font-size: 13px; color: var(--text-secondary); margin-bottom: 16px; line-height: 1.6; }
   .warning-list { text-align: left; font-size: 12.5px; color: #cbd5e1; line-height: 1.7; padding-left: 20px; margin-bottom: 16px; display: flex; flex-direction: column; gap: 8px; }
   
+  /* Modal Broadcast Popup */
+  .broadcast-modal-box { border: 1px solid var(--accent-blue-dim); text-align: center; background: rgba(10, 12, 20, 0.95); }
+  .broadcast-icon { width: 60px; height: 60px; margin: 0 auto 10px; background: rgba(0, 242, 254, 0.12); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--accent-blue); }
+  .broadcast-modal-box h3 { font-size: 18px; font-weight: 800; color: var(--accent-blue); margin-bottom: 6px; }
+  .broadcast-text { font-size: 13.5px; color: #fff; line-height: 1.6; margin-bottom: 20px; word-break: break-word; }
+
   .auth-links { display: flex; justify-content: space-between; font-size: 13px; margin-top: 8px; font-weight: 500; }
   .auth-link { color: var(--text-secondary); cursor: pointer; text-decoration: none; }
   .auth-link:hover { color: var(--accent-blue); text-decoration: underline; }
@@ -271,6 +279,18 @@
       <li>Administrator berhak <b>membanned permanen (Suspend)</b> akun tanpa pemberitahuan jika terdeteksi melanggar.</li>
     </ul>
     <button class="btn btn-primary" style="background: linear-gradient(135deg, #ff2a6d, #ff0044); color: white;" onclick="closeWarningModal()">Saya Memahami & Setuju</button>
+  </div>
+</div>
+
+<!-- POP-UP BROADCAST REAL-TIME UNTUK MEMBER -->
+<div id="broadcastModal" class="modal-overlay">
+  <div class="modal-box broadcast-modal-box">
+    <div class="broadcast-icon">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"></path></svg>
+    </div>
+    <h3>PENGUMUMAN PENTING ADMIN</h3>
+    <p class="broadcast-text" id="broadcastContentText">Memuat informasi dari server...</p>
+    <button class="btn btn-primary" style="background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); color: #fff;" onclick="closeBroadcastModal()">Tandai Sudah Dibaca</button>
   </div>
 </div>
 
@@ -415,7 +435,7 @@
     </a>
   </div>
 
-  <!-- Tombol Control Panel Admin (Hanya muncul untuk Owner) -->
+  <!-- Tombol Control Panel Admin (Hanya Owner) -->
   <button id="toggleOwnerDashBtn" class="btn btn-owner-dash hidden" onclick="toggleOwnerPanel()">Buka Control Panel Admin Server</button>
 
   <div id="ownerPanel" class="admin-panel hidden">
@@ -494,9 +514,11 @@
 
     const OWNER_WA = "+6282231669053";
     const SESSION_KEY = 'mshaomi_active_session_supabase';
+    const BROADCAST_SEEN_KEY = 'mshaomi_last_seen_broadcast_id';
     let currentCaptchaAnswer = 0;
     let currentUserData = null;
     let cachedEmail = '';
+    let activeBroadcastId = null;
 
     window.onload = () => {
         if(!sessionStorage.getItem(SESSION_KEY)) {
@@ -506,6 +528,7 @@
         }
         startClock();
         initRealtimeMemberCounter();
+        initRealtimeBroadcastListener();
     };
 
     function startClock() {
@@ -557,6 +580,67 @@
             })
             .subscribe();
     }
+
+    // ========== SISTEM PENGUMUMAN / BROADCAST REALTIME ==========
+    async function checkForLatestBroadcast() {
+        // Ambil pengumuman terbaru dari tabel 'broadcasts' (urutkan berdasarkan waktu terbaru)
+        const { data, error } = await supabaseClient
+            .from('broadcasts')
+            .select('*')
+            .order('created_at', { ascending: false })
+            .limit(1);
+
+        if (!error && data && data.length > 0) {
+            const latest = data[0];
+            activeBroadcastId = latest.id;
+            const lastSeenId = localStorage.getItem(BROADCAST_SEEN_KEY);
+
+            // Jika broadcast ini belum pernah dilihat oleh member ini, tampilkan pop-up
+            if (lastSeenId !== String(latest.id)) {
+                document.getElementById('broadcastContentText').textContent = latest.message;
+                document.getElementById('broadcastModal').classList.add('show');
+            }
+        }
+    }
+
+    function initRealtimeBroadcastListener() {
+        checkForLatestBroadcast();
+        // Berlangganan perubahan real-time pada tabel 'broadcasts'
+        supabaseClient
+            .channel('public:broadcasts')
+            .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'broadcasts' }, payload => {
+                const newBroadcast = payload.new;
+                activeBroadcastId = newBroadcast.id;
+                document.getElementById('broadcastContentText').textContent = newBroadcast.message;
+                document.getElementById('broadcastModal').classList.add('show');
+            })
+            .subscribe();
+    }
+
+    window.closeBroadcastModal = function() {
+        if (activeBroadcastId) {
+            localStorage.setItem(BROADCAST_SEEN_KEY, String(activeBroadcastId));
+        }
+        document.getElementById('broadcastModal').classList.remove('show');
+    };
+
+    window.sendBroadcastMsg = async function() {
+        const text = document.getElementById('broadcastInput').value.trim();
+        if(!text) return alert("Pesan broadcast tidak boleh kosong!");
+
+        // Masukkan pesan ke tabel 'broadcasts' di Supabase
+        const { error } = await supabaseClient.from('broadcasts').insert([{
+            message: text,
+            created_at: new Date().toISOString()
+        }]);
+
+        if (error) {
+            alert("Gagal mengirim broadcast: " + error.message);
+        } else {
+            alert("Broadcast berhasil dikirim ke seluruh member secara real-time!");
+            document.getElementById('broadcastInput').value = '';
+        }
+    };
 
     async function fetchUserSession(username) {
         const { data, error } = await supabaseClient.from('users').select('*').eq('username', username).single();
@@ -618,6 +702,7 @@
         if(!panel.classList.contains('hidden')) renderMemberList();
     };
 
+    // ========== RENDER DAFTAR MEMBER DI PANEL OWNER (LENGKAP ID, TANGGAL & KONTROL) ==========
     window.renderMemberList = async function() {
         const { data: users, error } = await supabaseClient.from('users').select('*');
         const memberList = document.getElementById('memberList');
@@ -630,6 +715,9 @@
             const waLink = waClean ? `https://wa.me/${waClean}` : '#';
             const isVipUser = parseBool(m.is_permanent);
             
+            // Format tanggal pembuatan akun
+            let createdDate = m.created_at ? new Date(m.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Baru saja';
+
             let roleBadge = `<span class="user-role-badge role-member">Member</span>`;
             let cardClass = 'admin-member-card';
             
@@ -641,15 +729,19 @@
             el.innerHTML = `
                 <div class="admin-member-header">
                     <div class="admin-member-name">@${m.username} ${roleBadge}</div>
-                    <div class="admin-member-id">${m.id_code || 'N/A'}</div>
+                    <div class="admin-member-id">${m.id_code || 'MSH-000'}</div>
                 </div>
                 <div class="admin-member-details">
                     <span>WA: ${m.wa || '-'}</span>
-                    <span>Limit: ${isVipUser ? '∞' : (m.limit_count ?? 3)}</span>
+                    <span>Limit: <b>${isVipUser ? '∞' : (m.limit_count ?? 3)}</b></span>
                     <span>Pass: ${m.password}</span>
+                    <span>Dibuat: ${createdDate}</span>
                 </div>
                 <div class="admin-member-actions">
                     <a href="${waLink}" target="_blank" class="btn-tiny action-wa">WhatsApp</a>
+                    <button class="btn-tiny" onclick="adjustLimit('${m.username}', 1)">+ Limit</button>
+                    <button class="btn-tiny" onclick="adjustLimit('${m.username}', -1)">- Limit</button>
+                    <button class="btn-tiny action-vip" onclick="toggleVipStatus('${m.username}', ${isVipUser})">${isVipUser ? 'Cabut VIP' : 'Jadikan VIP'}</button>
                 </div>
             `;
             memberList.appendChild(el);
@@ -657,15 +749,49 @@
         if(memberCountBadge) memberCountBadge.textContent = `Total: ${users.length} Klien`;
     };
 
+    // Fungsi Tambah/Kurang Limit dari Panel Owner
+    window.adjustLimit = async function(username, amount) {
+        const { data: user, error: fetchErr } = await supabaseClient.from('users').select('limit_count, is_permanent').eq('username', username).single();
+        if (fetchErr || !user) return alert("Gagal mengambil data user.");
+
+        if (parseBool(user.is_permanent)) {
+            return alert("User ini sudah berstatus VIP/Unlimited, limit tidak bisa diubah.");
+        }
+
+        let currentLimit = user.limit_count ?? 3;
+        let newLimit = Math.max(0, currentLimit + amount);
+
+        const { error } = await supabaseClient.from('users').update({ limit_count: newLimit }).eq('username', username);
+        if (error) {
+            alert("Gagal memperbarui limit: " + error.message);
+        } else {
+            renderMemberList();
+            if(currentUserData && currentUserData.username === username) {
+                currentUserData.limit_count = newLimit;
+                loadAppView(currentUserData);
+            }
+        }
+    };
+
+    // Fungsi Ubah Status VIP (Permanen) dari Panel Owner
+    window.toggleVipStatus = async function(username, currentVipStatus) {
+        const newStatus = !currentVipStatus ? 'true' : 'false';
+        const { error } = await supabaseClient.from('users').update({ is_permanent: newStatus }).eq('username', username);
+        
+        if (error) {
+            alert("Gagal mengubah status VIP: " + error.message);
+        } else {
+            renderMemberList();
+            if(currentUserData && currentUserData.username === username) {
+                currentUserData.is_permanent = newStatus;
+                loadAppView(currentUserData);
+            }
+        }
+    };
+
     window.togglePwd = function(inputId, btnEl) {
         const input = document.getElementById(inputId);
         input.type = input.type === 'password' ? 'text' : 'password';
-    };
-
-    window.sendBroadcastMsg = function() {
-        const text = document.getElementById('broadcastInput').value.trim();
-        if(!text) return alert("Pesan kosong!");
-        alert("Broadcast siap dikirim!");
     };
 
     (function() {
@@ -721,7 +847,8 @@
                 id_code: 'MSH-' + Math.floor(1000 + Math.random() * 9000),
                 limit_count: 3,
                 is_permanent: 'false',
-                is_banned: 'false'
+                is_banned: 'false',
+                created_at: new Date().toISOString()
             };
 
             const { error } = await supabaseClient.from('users').insert([newUserData]);
@@ -850,11 +977,11 @@
             if (user.role === 'Owner') {
                 roleBadge.className = 'user-role-badge role-owner';
                 roleBadge.textContent = 'Owner';
-                ownerDashBtn.classList.remove('hidden'); // Tampilkan tombol panel khusus Owner
+                ownerDashBtn.classList.remove('hidden');
                 if(promoBanner) promoBanner.style.display = 'none';
             } else {
-                ownerDashBtn.classList.add('hidden'); // Sembunyikan tombol panel untuk Member/VIP
-                ownerPanel.classList.add('hidden');   // Tutup panel jika terbuka
+                ownerDashBtn.classList.add('hidden');
+                ownerPanel.classList.add('hidden');
                 
                 if (isVip) {
                     roleBadge.className = 'user-role-badge role-vip';
