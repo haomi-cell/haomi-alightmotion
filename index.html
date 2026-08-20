@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -415,6 +416,7 @@
     </a>
   </div>
 
+  <!-- Tombol Control Panel Admin (Hanya muncul untuk Owner) -->
   <button id="toggleOwnerDashBtn" class="btn btn-owner-dash hidden" onclick="toggleOwnerPanel()">Buka Control Panel Admin Server</button>
 
   <div id="ownerPanel" class="admin-panel hidden">
@@ -843,20 +845,27 @@
             const isVip = parseBool(user.is_permanent);
             const roleBadge = document.getElementById('displayUserRole');
             const promoBanner = document.getElementById('promoBannerContainer');
+            const ownerDashBtn = document.getElementById('toggleOwnerDashBtn');
+            const ownerPanel = document.getElementById('ownerPanel');
 
             if (user.role === 'Owner') {
                 roleBadge.className = 'user-role-badge role-owner';
                 roleBadge.textContent = 'Owner';
-                document.getElementById('toggleOwnerDashBtn').classList.remove('hidden');
-                if(promoBanner) promoBanner.style.display = 'none'; // Sembunyikan iklan
-            } else if (isVip) {
-                roleBadge.className = 'user-role-badge role-vip';
-                roleBadge.textContent = 'VIP';
-                if(promoBanner) promoBanner.style.display = 'none'; // Sembunyikan iklan
+                ownerDashBtn.classList.remove('hidden'); // Tampilkan tombol panel khusus Owner
+                if(promoBanner) promoBanner.style.display = 'none';
             } else {
-                roleBadge.className = 'user-role-badge role-member';
-                roleBadge.textContent = 'Member';
-                if(promoBanner) promoBanner.style.display = 'flex'; // Tampilkan iklan untuk member biasa
+                ownerDashBtn.classList.add('hidden'); // Sembunyikan tombol panel untuk Member/VIP
+                ownerPanel.classList.add('hidden');   // Tutup panel jika terbuka
+                
+                if (isVip) {
+                    roleBadge.className = 'user-role-badge role-vip';
+                    roleBadge.textContent = 'VIP';
+                    if(promoBanner) promoBanner.style.display = 'none';
+                } else {
+                    roleBadge.className = 'user-role-badge role-member';
+                    roleBadge.textContent = 'Member';
+                    if(promoBanner) promoBanner.style.display = 'flex';
+                }
             }
 
             const limitTextLabel = document.getElementById('limitTextLabel');
