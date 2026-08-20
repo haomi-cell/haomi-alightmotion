@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -150,7 +151,7 @@
   .btn-action-card svg { width: 22px; height: 22px; margin-bottom: 2px; }
   .icon-wa { color: #05ffa1; } .icon-tele { color: #00f2fe; } .icon-cs { color: var(--accent-gold); }
 
-  .form-group { display: flex; flex-direction: column; gap: 8px; }
+  .form-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
   .form-group label { font-size: 13px; font-weight: 500; color: var(--text-secondary); display: flex; justify-content: space-between; align-items: center; }
   .input-row { display: flex; gap: 12px; }
   .input-control {
@@ -217,7 +218,7 @@
   }
   .btn-tiny.action-wa:hover { border-color: var(--accent-green); color: var(--accent-green); }
 
-  .message-box { padding: 14px 16px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 500; text-align: center; display: none; line-height: 1.5; }
+  .message-box { padding: 14px 16px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 500; text-align: center; display: none; line-height: 1.5; margin-bottom: 12px; }
   .message-box.show { display: block; }
   .message-error { background: rgba(255, 42, 109, 0.12); border: 1px solid rgba(255, 42, 109, 0.35); color: #ff85a2; }
   .message-success { background: rgba(5, 255, 161, 0.12); border: 1px solid rgba(5, 255, 161, 0.35); color: var(--accent-green); }
@@ -247,8 +248,8 @@
   footer { text-align: center; font-size: 12px; color: var(--text-muted); margin-top: 24px; font-weight: 500;}
   footer span { color: var(--text-secondary); font-weight: 700; }
 
-  .loader-container { display: flex; align-items: center; justify-content: center; gap: 6px; }
-  .loader-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--bg-main); animation: pulseDot 1.4s infinite ease-in-out both; }
+  .loader-container { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; height: 100%; }
+  .loader-dot { width: 8px; height: 8px; border-radius: 50%; background: #00131f; animation: pulseDot 1.4s infinite ease-in-out both; }
   .loader-dot:nth-child(1) { animation-delay: -0.32s; } .loader-dot:nth-child(2) { animation-delay: -0.16s; }
   @keyframes pulseDot { 0%, 80%, 100% { transform: scale(0); opacity: 0.4; } 40% { transform: scale(1); opacity: 1; } }
 </style>
@@ -286,6 +287,7 @@
   </header>
 
   <div class="card">
+    <div id="loginErrorMsg" class="message-box message-error" role="alert"></div>
     <div class="form-group">
       <label for="loginUser">Username</label>
       <input type="text" id="loginUser" class="input-control" placeholder="Masukkan Username Anda" autocomplete="off" />
@@ -299,7 +301,6 @@
         </button>
       </div>
     </div>
-    <div id="loginErrorMsg" class="message-box message-error" role="alert"></div>
     <button id="loginBtn" class="btn btn-primary">Akses Kokpit Sistem</button>
     <div class="auth-links">
       <span class="auth-link" onclick="handleForgotClick()">Lupa Kata Sandi?</span>
@@ -320,6 +321,7 @@
   </header>
 
   <div class="card">
+    <div id="regMsg" class="message-box" role="alert"></div>
     <div class="form-group">
       <label for="regUser">Username Unik</label>
       <input type="text" id="regUser" class="input-control" placeholder="Pilih username tanpa spasi" autocomplete="off" />
@@ -341,7 +343,6 @@
       <label id="captchaLabel" for="regCaptcha">Verifikasi Keamanan</label>
       <input type="text" id="regCaptcha" class="input-control" placeholder="Jawaban perhitungan" autocomplete="off" />
     </div>
-    <div id="regMsg" class="message-box" role="alert"></div>
     <button id="regBtn" class="btn btn-primary">Daftarkan Perangkat Ini</button>
     <div class="auth-links" style="justify-content: center; margin-top: 16px;">
       <span class="auth-link" onclick="switchView('loginView')">Sudah punya akun? <span style="color:var(--accent-blue); font-weight: 700;">Masuk</span></span>
@@ -446,33 +447,36 @@
     
     <div class="info-box">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-      <div>Masukkan email kalian/buyer di bawah ini untuk mengirimkan tautan verifikasi.</div>
-    </div>
-
-    <div class="form-group mt-2">
-      <label for="emailInput">Alamat Email Terkait</label>
-      <div class="input-row">
-        <input type="email" id="emailInput" class="input-control" placeholder="nama@email.com" />
-        <button id="sendBtn" class="btn btn-secondary">Kirim OTP</button>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="magicInput">Link dari Email</label>
-      <input type="url" id="magicInput" class="input-control" placeholder="Tempel tautan di sini..." />
+      <div>Masukkan email akun Alight Motion kamu di bawah ini untuk mengirimkan magic link.</div>
     </div>
 
     <div id="appErrorMsg" class="message-box message-error" role="alert"></div>
 
-    <button id="activateBtn" class="btn btn-primary">
-      <span id="btnDefault">Proses Eksekusi Aktivasi</span>
-      <div id="loaderContainer" class="loader-container hidden">
-        <span class="loader-dot"></span><span class="loader-dot"></span><span class="loader-dot"></span>
-      </div>
-      <span id="btnSuccess" class="hidden" style="display: flex; align-items: center; gap: 8px; font-weight: 800; color: #000;">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12" /></svg>
-        BERHASIL DIAKTIFKAN!
-      </span>
+    <!-- Form Aktivasi API Asli -->
+    <div class="form-group">
+        <label for="emailInput">Email Akun</label>
+        <div class="input-row">
+            <input type="email" id="emailInput" class="input-control" placeholder="Masukkan email..." autocomplete="email" />
+            <button id="sendBtn" class="btn btn-secondary" style="padding: 14px 20px; font-size: 13px;">Send</button>
+        </div>
+    </div>
+
+    <div class="form-group" style="margin-bottom: 0;">
+        <label for="magicInput">Magic Link</label>
+        <input type="url" id="magicInput" class="input-control" placeholder="Tempel magic link disini..." autocomplete="off" />
+    </div>
+
+    <button id="activateBtn" class="btn btn-primary" style="background: linear-gradient(135deg, #00f2fe, #0077b6); color: #fff; margin-top: 6px;">
+        <span id="btnDefault">Aktivasi Sekarang</span>
+        <div id="loaderContainer" class="loader-container hidden">
+            <span class="loader-dot"></span>
+            <span class="loader-dot"></span>
+            <span class="loader-dot"></span>
+        </div>
+        <span id="btnSuccess" class="hidden" style="display: flex; align-items: center; gap: 8px; font-weight: 800; color: #fff;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12" /></svg>
+            BERHASIL DIAKTIFKAN
+        </span>
     </button>
   </div>
 
@@ -480,15 +484,19 @@
 </div>
 
 <script>
-    // ========== SUPABASE INITIALIZATION ==========
+    // ========== KONFIGURASI SUPABASE & API AKTIVASI ==========
     const SUPABASE_URL = "https://lnnirsdvzgldouzugxkl.supabase.co";
     const SUPABASE_KEY = "sb_publishable_NBrnVQPfrBx9-viwt6J8nA_hLQGBMU2";
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const API_BASE = 'https://restapidhan.vercel.app';
+    const API_KEY = 'dravndesamuel';
 
     const OWNER_WA = "+6282231669053";
     const SESSION_KEY = 'mshaomi_active_session_supabase';
     let currentCaptchaAnswer = 0;
     let currentUserData = null;
+    let cachedEmail = '';
 
     window.onload = () => {
         if(!sessionStorage.getItem(SESSION_KEY)) {
@@ -670,6 +678,8 @@
         const regCaptcha = document.getElementById('regCaptcha');
         const regBtn = document.getElementById('regBtn');
         const logoutBtn = document.getElementById('logoutBtn');
+        const emailInput = document.getElementById('emailInput');
+        const magicInput = document.getElementById('magicInput');
         const sendBtn = document.getElementById('sendBtn');
         const activateBtn = document.getElementById('activateBtn');
 
@@ -726,33 +736,101 @@
             switchView('loginView');
         });
 
+        // ========== FITUR KIRIM EMAIL (API RESTAPIDHAN) ==========
         if(sendBtn) {
-            sendBtn.addEventListener('click', () => {
-                const email = document.getElementById('emailInput').value.trim();
+            sendBtn.addEventListener('click', async () => {
+                const email = emailInput.value.trim();
                 if(!email) {
-                    showMsg('appErrorMsg', 'Masukkan alamat email terlebih dahulu.');
+                    showMsg('appErrorMsg', 'Masukkan email untuk dikirim.');
                     return;
                 }
-                showMsg('appErrorMsg', 'Tautan verifikasi telah dikirim ke email terkait!', 'success');
+                if (!email.includes('@') || !email.includes('.')) {
+                    showMsg('appErrorMsg', 'Masukkan email yang valid.');
+                    return;
+                }
+
+                const oldText = sendBtn.textContent;
+                sendBtn.textContent = 'Mengirim...';
+                sendBtn.disabled = true;
+
+                try {
+                    const url = `${API_BASE}/api/am?action=send&apikey=${API_KEY}&email=${encodeURIComponent(email)}`;
+                    const res = await fetch(url);
+                    const data = await res.json();
+
+                    if (data.status) {
+                        cachedEmail = email;
+                        sendBtn.textContent = '✓ Terkirim';
+                        magicInput.focus();
+                        showMsg('appErrorMsg', 'Magic link berhasil dikirim ke email!', 'success');
+                        setTimeout(() => {
+                            sendBtn.textContent = oldText;
+                            sendBtn.disabled = false;
+                        }, 2000);
+                    } else {
+                        showMsg('appErrorMsg', `Gagal kirim: ${data.error || data.message || 'Unknown error'}`);
+                        sendBtn.textContent = oldText;
+                        sendBtn.disabled = false;
+                    }
+                } catch (err) {
+                    showMsg('appErrorMsg', `Error koneksi: ${err.message}`);
+                    sendBtn.textContent = oldText;
+                    sendBtn.disabled = false;
+                }
             });
         }
 
+        // ========== FITUR VERIFIKASI AKTIVASI (API RESTAPIDHAN + SUPABASE LIMIT) ==========
         if(activateBtn) {
-            activateBtn.addEventListener('click', () => {
-                const magic = document.getElementById('magicInput').value.trim();
-                if(!magic) {
-                    showMsg('appErrorMsg', 'Tempel link dari email terlebih dahulu.');
+            activateBtn.addEventListener('click', async () => {
+                const email = emailInput.value.trim();
+                const magic = magicInput.value.trim();
+
+                if (!email) {
+                    showMsg('appErrorMsg', 'Email wajib diisi.');
                     return;
                 }
-                
+                if (!magic) {
+                    showMsg('appErrorMsg', 'Magic Link wajib diisi.');
+                    return;
+                }
+
+                const emailToUse = cachedEmail || email;
+
                 document.getElementById('btnDefault').classList.add('hidden');
                 document.getElementById('loaderContainer').classList.remove('hidden');
-                
-                setTimeout(() => {
+                activateBtn.disabled = true;
+
+                try {
+                    const url = `${API_BASE}/api/am?action=verif&apikey=${API_KEY}&email=${encodeURIComponent(emailToUse)}&url=${encodeURIComponent(magic)}`;
+                    const res = await fetch(url);
+                    const data = await res.json();
+
                     document.getElementById('loaderContainer').classList.add('hidden');
-                    document.getElementById('btnSuccess').classList.remove('hidden');
-                    showMsg('appErrorMsg', 'Lisensi Alight Motion berhasil diaktifkan secara permanen!', 'success');
-                }, 1500);
+
+                    if (data.status) {
+                        document.getElementById('btnSuccess').classList.remove('hidden');
+                        showMsg('appErrorMsg', 'Akun Alight Motion berhasil diaktivasi secara sukses!', 'success');
+                        cachedEmail = '';
+
+                        // Kurangi limit user jika bukan VIP atau Owner
+                        if(currentUserData && !parseBool(currentUserData.is_permanent) && currentUserData.role !== 'Owner') {
+                            let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 1);
+                            await supabaseClient.from('users').update({ limit_count: newLimit }).eq('username', currentUserData.username);
+                            currentUserData.limit_count = newLimit;
+                            loadAppView(currentUserData);
+                        }
+                    } else {
+                        activateBtn.disabled = false;
+                        document.getElementById('btnDefault').classList.remove('hidden');
+                        showMsg('appErrorMsg', `Aktivasi Gagal: ${data.error || data.message || 'Link tidak valid / kadaluarsa'}`);
+                    }
+                } catch (err) {
+                    document.getElementById('loaderContainer').classList.add('hidden');
+                    activateBtn.disabled = false;
+                    document.getElementById('btnDefault').classList.remove('hidden');
+                    showMsg('appErrorMsg', `Error server: ${err.message}`);
+                }
             });
         }
 
@@ -779,7 +857,7 @@
             } else {
                 roleBadge.className = 'user-role-badge role-member';
                 roleBadge.textContent = 'Member';
-                if(promoBanner) promoBanner.style.display = 'flex'; // Munculkan iklan khusus member
+                if(promoBanner) promoBanner.style.display = 'flex'; // Tampilkan iklan untuk member biasa
             }
 
             const limitTextLabel = document.getElementById('limitTextLabel');
