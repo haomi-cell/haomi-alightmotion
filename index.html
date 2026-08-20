@@ -24,6 +24,7 @@
     --error-text: #fecaca;
     --success-bg: #14532d;
     --success-text: #bbf7d0;
+    --gold: #f59e0b;
   }
 
   * {
@@ -43,6 +44,7 @@
     justify-content: center;
     position: relative;
     overflow-x: hidden;
+    padding: 20px 0;
   }
 
   /* =========================
@@ -78,10 +80,10 @@
     z-index: 10;
     width: 100%;
     max-width: 440px;
-    padding: 40px 24px;
+    padding: 20px 24px;
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 20px;
   }
 
   /* =========================
@@ -92,7 +94,7 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
   }
 
   .badge {
@@ -107,7 +109,7 @@
     font-size: 12px;
     font-weight: 500;
     color: var(--brand-accent);
-    margin-bottom: 8px;
+    margin-bottom: 4px;
   }
 
   .badge::before {
@@ -120,7 +122,7 @@
   }
 
   h1 {
-    font-size: 26px;
+    font-size: 24px;
     font-weight: 700;
     letter-spacing: -0.03em;
     line-height: 1.2;
@@ -128,7 +130,7 @@
   }
 
   header p {
-    font-size: 14px;
+    font-size: 13px;
     color: var(--text-secondary);
     line-height: 1.5;
   }
@@ -140,11 +142,11 @@
     background: var(--bg-surface);
     border: 1px solid var(--border-subtle);
     border-radius: 16px;
-    padding: 24px;
+    padding: 20px 24px;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 16px;
   }
 
   /* =========================
@@ -153,11 +155,11 @@
   .form-group {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
   }
 
   .form-group label {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 500;
     color: var(--text-secondary);
   }
@@ -189,8 +191,46 @@
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
   }
 
+  .pwd-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .pwd-wrapper .input-control {
+    padding-right: 44px;
+  }
+
+  .pwd-toggle {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    transition: color 0.2s;
+  }
+
+  .pwd-toggle:hover {
+    color: var(--text-primary);
+  }
+
+  .pwd-toggle svg {
+    width: 18px;
+    height: 18px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
   /* =========================
-     BUTTONS
+     BUTTONS & LINKS
      ========================= */
   .btn {
     font-family: inherit;
@@ -203,6 +243,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 8px;
   }
 
   .btn:disabled {
@@ -228,7 +269,6 @@
     width: 100%;
     font-weight: 600;
     font-size: 15px;
-    margin-top: 8px;
   }
 
   .btn-primary:hover:not(:disabled) {
@@ -236,8 +276,89 @@
     transform: translateY(-1px);
   }
 
-  .btn-primary:active:not(:disabled) {
-    transform: translateY(0);
+  .btn-owner-dash {
+    background: rgba(59, 130, 246, 0.15);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    color: var(--brand-accent);
+    padding: 12px;
+    width: 100%;
+    font-weight: 600;
+  }
+
+  .btn-owner-dash:hover {
+    background: rgba(59, 130, 246, 0.25);
+  }
+
+  .auth-links {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    font-size: 13px;
+  }
+
+  .auth-link {
+    color: var(--brand-accent);
+    cursor: pointer;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .auth-link:hover {
+    color: var(--text-primary);
+    text-decoration: underline;
+  }
+
+  .auth-link-center {
+    text-align: center;
+    display: block;
+    margin-top: 12px;
+  }
+
+  /* =========================
+     PROMO AD BANNER (AKSES PERMANEN)
+     ========================= */
+  .promo-banner {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(59, 130, 246, 0.15));
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .promo-banner h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 0.5px;
+  }
+
+  .promo-banner p {
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+
+  .btn-promo {
+    background: var(--gold);
+    color: #000;
+    font-weight: 600;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    text-decoration: none;
+    margin-top: 4px;
+    transition: opacity 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .btn-promo:hover {
+    opacity: 0.9;
   }
 
   /* =========================
@@ -261,6 +382,12 @@
     background: rgba(239, 68, 68, 0.1);
     border: 1px solid rgba(239, 68, 68, 0.2);
     color: #f87171;
+  }
+
+  .message-success {
+    background: rgba(20, 83, 45, 0.3);
+    border: 1px solid rgba(74, 222, 128, 0.2);
+    color: var(--success-text);
   }
 
   /* Loader */
@@ -313,12 +440,128 @@
   }
 
   /* =========================
-     FOOTER
+     PROFILE & OWNER PANEL UI
      ========================= */
+  .profile-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .profile-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(59, 130, 246, 0.15);
+    color: var(--brand-accent);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 15px;
+  }
+  .user-details {
+    display: flex;
+    flex-direction: column;
+  }
+  .user-name {
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--text-primary);
+  }
+  .user-role {
+    font-size: 11px;
+    color: var(--brand-accent);
+    font-weight: 500;
+  }
+  .profile-actions {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  .btn-icon-action {
+    background: var(--bg-base);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
+    padding: 7px 10px;
+    font-size: 11px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-icon-action:hover {
+    color: var(--text-primary);
+    border-color: var(--brand-accent);
+  }
+
+  .member-item {
+    background: var(--bg-base);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    padding: 10px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    margin-bottom: 6px;
+  }
+  .member-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .member-info strong {
+    color: var(--text-primary);
+  }
+  .member-meta {
+    color: var(--text-secondary);
+    font-size: 10px;
+  }
+  .member-wa {
+    color: var(--brand-accent);
+    font-weight: 500;
+    text-decoration: none;
+    background: rgba(59, 130, 246, 0.1);
+    padding: 5px 8px;
+    border-radius: 6px;
+  }
+
+  /* Modal Edit Profile & Warning Pop-up */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal-box {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    width: 100%;
+    max-width: 380px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
   footer {
     text-align: center;
-    margin-top: 24px;
-    font-size: 12px;
+    margin-top: 16px;
+    font-size: 11px;
     color: var(--text-secondary);
   }
   footer a {
@@ -333,37 +576,160 @@
 <div class="bg-grid"></div>
 <div class="bg-glow"></div>
 
-<div class="container">
-  
+<!-- POP-UP PERINGATAN (WARNING/DISCLAIMER HAK CIPTA & KONTEN ILEGAL) -->
+<div id="warningModal" class="modal-overlay">
+  <div class="modal-box" style="border-color: rgba(239, 68, 68, 0.4);">
+    <div style="display: flex; align-items: center; gap: 8px; color: #f87171;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+      <h3 style="font-size: 15px; font-weight: 700;">Amaran Sistem & Polisi</h3>
+    </div>
+    <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.5;">
+      Dengan log masuk atau menggunakan perkhidmatan <b>Tools 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞 AM</b>, anda bersetuju mematuhi peraturan ketat kami:
+    </p>
+    <ul style="font-size: 11.5px; color: var(--text-secondary); padding-left: 18px; display: flex; flex-direction: column; gap: 4px; line-height: 1.4;">
+      <li>Dilarang keras menggunakan alatan ini untuk tindakan <b>haram, penggodaman, kecurian data, atau penyalahgunaan API</b>.</li>
+      <li>Sebarang pelanggaran <b>Hak Cipta (Copyright)</b>, duplikasi haram, atau eksploitasi sistem akan mengakibatkan akaun disekat serta-merta tanpa amaran.</li>
+      <li>Owner berhak memantau seluruh aktiviti ahli demi keselamatan dan integriti perkhidmatan.</li>
+    </ul>
+    <button class="btn btn-primary" style="margin-top: 6px;" onclick="closeWarningModal()">Saya Faham & Bersetuju</button>
+  </div>
+</div>
+
+<!-- 1. TAMPILAN LOGIN -->
+<div id="loginView" class="container hidden">
   <header>
-    <div class="badge">Sistem Aktif</div>
+    <div class="badge" style="color: var(--text-primary); border-color: var(--border-subtle); background: var(--bg-surface);">Autentikasi Sistem</div>
+    <h1>Portal Log Masuk</h1>
+    <p>Sila log masuk menggunakan akaun berdaftar.</p>
+  </header>
+
+  <div class="card">
+    <div class="form-group">
+      <label for="loginUser">Nama Pengguna (Username)</label>
+      <input type="text" id="loginUser" class="input-control" placeholder="Masukkan username" autocomplete="off" />
+    </div>
+    
+    <div class="form-group">
+      <label for="loginPwd">Kata Laluan (Password)</label>
+      <div class="pwd-wrapper">
+        <input type="password" id="loginPwd" class="input-control" placeholder="••••••••" autocomplete="off" />
+        <button type="button" class="pwd-toggle" onclick="togglePwd('loginPwd', this)">
+          <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+        </button>
+      </div>
+    </div>
+
+    <div id="loginErrorMsg" class="message-box message-error" role="alert"></div>
+    <button id="loginBtn" class="btn btn-primary">Masuk ke Sistem</button>
+
+    <div class="auth-links">
+      <span class="auth-link" onclick="handleForgotClick()">Lupa Kata Laluan?</span>
+      <span class="auth-link" onclick="switchView('registerView')">Daftar Akaun</span>
+    </div>
+  </div>
+</div>
+
+<!-- 2. TAMPILAN REGISTER DENGAN CAPTCHA MATEMATIKA -->
+<div id="registerView" class="container hidden">
+  <header>
+    <div class="badge">Pendaftaran Ahli</div>
+    <h1>Bina Akaun Baharu</h1>
+    <p>Daftar akaun baharu untuk mula menggunakan sistem.</p>
+  </header>
+
+  <div class="card">
+    <div class="form-group">
+      <label for="regUser">Nama Pengguna (Username)</label>
+      <input type="text" id="regUser" class="input-control" placeholder="Pilih username unik" autocomplete="off" />
+    </div>
+
+    <div class="form-group">
+      <label for="regWa">Nombor WhatsApp</label>
+      <input type="text" id="regWa" class="input-control" placeholder="Contoh: 081234567890" autocomplete="off" />
+    </div>
+    
+    <div class="form-group">
+      <label for="regPwd">Kata Laluan (Password)</label>
+      <div class="pwd-wrapper">
+        <input type="password" id="regPwd" class="input-control" placeholder="Bina password" autocomplete="off" />
+        <button type="button" class="pwd-toggle" onclick="togglePwd('regPwd', this)">
+          <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Captcha Matematika Tanpa Tulisan Anti-Bot -->
+    <div class="form-group">
+      <label id="captchaLabel" for="regCaptcha">Pengesahan Matematik</label>
+      <input type="text" id="regCaptcha" class="input-control" placeholder="Masukkan jawapan" autocomplete="off" />
+    </div>
+
+    <div id="regMsg" class="message-box" role="alert"></div>
+    <button id="regBtn" class="btn btn-primary">Daftar Sekarang</button>
+
+    <span class="auth-link auth-link-center" onclick="switchView('loginView')">Sudah ada akaun? Log Masuk</span>
+  </div>
+</div>
+
+<!-- 3. TAMPILAN APLIKASI UTAMA -->
+<div id="appView" class="container hidden">
+  
+  <!-- Kartu Profil Pengguna -->
+  <div class="profile-card">
+    <div class="profile-info">
+      <div class="avatar" id="userAvatar">H</div>
+      <div class="user-details">
+        <span class="user-name" id="displayUserName">HAOMI</span>
+        <span class="user-role" id="displayUserRole">Owner</span>
+      </div>
+    </div>
+    <div class="profile-actions">
+      <button id="editProfileBtn" class="btn-icon-action" onclick="openEditModal()">Edit</button>
+      <button id="logoutBtn" class="btn-icon-action" style="color: var(--error-text);">Keluar</button>
+    </div>
+  </div>
+
+  <!-- TOMBOL AKSES DASBOR OWNER (Hanya Muncul untuk Owner) -->
+  <button id="toggleOwnerDashBtn" class="btn btn-owner-dash hidden" onclick="toggleOwnerPanel()">
+    ⚙️ Buka Panel Dasbor Owner & Pemantauan
+  </button>
+
+  <!-- PANEL DASBOR OWNER (Manajemen & Anti-Kecurangan) -->
+  <div id="ownerPanel" class="card hidden">
+    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-subtle); padding-bottom: 10px;">
+      <h2 style="font-size: 14px; font-weight: 600; color: var(--text-primary);">Dasbor Pemantauan Ahli</h2>
+      <span id="memberCountBadge" style="font-size: 11px; background: rgba(59, 130, 246, 0.1); color: var(--brand-accent); padding: 2px 8px; border-radius: 99px;">0 Pengguna</span>
+    </div>
+    <div id="memberList" style="display: flex; flex-direction: column; max-height: 240px; overflow-y: auto; padding-right: 4px;">
+      <!-- Senarai ahli masuk di sini -->
+    </div>
+  </div>
+
+  <header>
+    <div class="badge" id="limitBadge">Had Baki: 3 / 3</div>
     <h1>Tools 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞<br>AM Premium</h1>
-    <p>Aktivasi akun Alight Motion premium dengan cepat, aman, dan terotomatisasi.</p>
+    <p>Pengaktifan akaun Alight Motion premium dengan pantas dan selamat.</p>
   </header>
 
   <div class="card">
     
-    <!-- Email Input -->
     <div class="form-group">
-      <label for="emailInput">Alamat Email</label>
+      <label for="emailInput">Alamat Emel</label>
       <div class="input-row">
-        <input type="email" id="emailInput" class="input-control" placeholder="nama@email.com" autocomplete="email" />
-        <button id="sendBtn" class="btn btn-secondary">Kirim</button>
+        <input type="email" id="emailInput" class="input-control" placeholder="nama@emel.com" autocomplete="email" />
+        <button id="sendBtn" class="btn btn-secondary">Hantar</button>
       </div>
     </div>
 
-    <!-- Magic Link Input -->
     <div class="form-group">
-      <label for="magicInput">Tautan Magic (Magic Link)</label>
+      <label for="magicInput">Pautan Ajaib (Magic Link)</label>
       <input type="url" id="magicInput" class="input-control" placeholder="https://alightmotion.com/magic..." autocomplete="off" />
     </div>
 
-    <!-- Error Message -->
-    <div id="errorMsg" class="message-box message-error" role="alert"></div>
+    <div id="appErrorMsg" class="message-box message-error" role="alert"></div>
 
-    <!-- Activation Button -->
     <button id="activateBtn" class="btn btn-primary" aria-label="Aktivasi Sekarang">
-      <span id="btnDefault">Aktivasi Akun</span>
+      <span id="btnDefault">Aktifkan Akaun</span>
       
       <div id="loaderContainer" class="loader-container hidden">
         <span class="loader-dot"></span>
@@ -373,27 +739,286 @@
       
       <span id="btnSuccess" class="hidden success-content">
         <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>
-        Berhasil Diaktivasi
+        Berjaya Diaktifkan
       </span>
     </button>
     
   </div>
 
-  <footer>
-    &copy; 2024 <a>Tools 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞</a>. All rights reserved.
-  </footer>
+  <!-- Banner Iklan Akses Permanen di Dashboard Utama -->
+  <div class="promo-banner">
+    <h3>👑 DAPATKAN AKSES KEKAL VIP</h3>
+    <p>Mahukan alatan tanpa sebarang had selamanya? Amankan slot kekal anda sekarang!</p>
+    <a id="promoDashBtn" href="#" target="_blank" class="btn-promo">
+      Tempah Akses Kekal (WhatsApp)
+    </a>
+  </div>
 
+  <footer>
+    &copy; 2026 <a>Tools 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞</a>. Hak cipta terpelihara.
+  </footer>
+</div>
+
+<!-- MODAL EDIT PROFIL -->
+<div id="editModal" class="modal-overlay hidden">
+  <div class="modal-box">
+    <h3 style="font-size: 15px; font-weight: 600; color: var(--text-primary);">Tetapan & Kuota Tukar Data</h3>
+    <p style="font-size: 11px; color: var(--text-secondary);">Setiap maklumat mempunyai had kuota pertukaran sebanyak 1 kali demi keselamatan akaun.</p>
+    
+    <div class="form-group">
+      <label id="editUserLabel">Username (Baki Kuota: 1)</label>
+      <input type="text" id="editUsername" class="input-control" />
+    </div>
+
+    <div class="form-group">
+      <label id="editPwdLabel">Kata Laluan Baharu (Baki Kuota: 1)</label>
+      <input type="password" id="editPassword" class="input-control" placeholder="Kosongkan jika tidak diubah" />
+    </div>
+
+    <div class="form-group">
+      <label id="editWaLabel">Nombor WhatsApp (Baki Kuota: 1)</label>
+      <input type="text" id="editWa" class="input-control" />
+    </div>
+
+    <div id="editModalMsg" class="message-box" role="alert"></div>
+
+    <div style="display: flex; gap: 8px; margin-top: 6px;">
+      <button class="btn btn-secondary" style="flex: 1;" onclick="closeEditModal()">Batal</button>
+      <button class="btn btn-primary" style="flex: 1;" onclick="saveProfileChanges()">Simpan</button>
+    </div>
+  </div>
 </div>
 
 <script>
+    // ========== KONFIGURASI GLOBAL & DATABASE ==========
+    const OWNER_WA = "+6282231669053";
+    const DB_KEY = 'mshaomi_db_users_v5';
+    const SESSION_KEY = 'mshaomi_active_session_v5';
+    const DEVICE_REG_KEY = 'mshaomi_device_reg_count_v5';
+
+    // State Captcha Matematik
+    let currentCaptchaAnswer = 0;
+
+    function generateCaptcha() {
+        const num1 = Math.floor(Math.random() * 10) + 1;
+        const num2 = Math.floor(Math.random() * 10) + 1;
+        currentCaptchaAnswer = num1 + num2;
+        const label = document.getElementById('captchaLabel');
+        if(label) {
+            label.textContent = `Berapakah hasil dari ${num1} + ${num2} ?`;
+        }
+    }
+
+    function initDatabase() {
+        let db = localStorage.getItem(DB_KEY);
+        if (!db) {
+            db = {
+                'HAOMI': { 
+                    password: 'HAOMI_XML', 
+                    role: 'Owner', 
+                    name: 'HAOMI', 
+                    wa: '082231669053', 
+                    id: 'OWNER-01',
+                    editQuota: { username: 99, password: 99, wa: 99 },
+                    limit: 999,
+                    lastReset: Date.now()
+                }
+            };
+            localStorage.setItem(DB_KEY, JSON.stringify(db));
+        }
+        return JSON.parse(localStorage.getItem(DB_KEY));
+    }
+
+    function saveToDatabase(dbData) {
+        localStorage.setItem(DB_KEY, JSON.stringify(dbData));
+    }
+
+    function generateMemberId() {
+        return 'MSH-' + Math.floor(10000 + Math.random() * 90000);
+    }
+
+    function checkAndResetLimit(userObj) {
+        const ONE_WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+        const now = Date.now();
+        if (!userObj.lastReset || (now - userObj.lastReset) > ONE_WEEK_MS) {
+            userObj.limit = 3;
+            userObj.lastReset = now;
+        }
+        return userObj;
+    }
+
+    function updatePromoLinks(userData = null) {
+        let text = "Halo Owner HAOMI, saya ingin membeli Akses Kekal VIP Tools 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞 AM.";
+        if (userData) {
+            text += ` %0A%0AData Saya:%0AID: ${userData.id}%0AUsername: ${userData.username}%0ANo WA: ${userData.wa}`;
+        }
+        const url = `https://wa.me/${OWNER_WA.replace('+', '')}?text=${text}`;
+        const promoBtn = document.getElementById('promoDashBtn');
+        if(promoBtn) promoBtn.href = url;
+    }
+
+    window.togglePwd = function(inputId, btnEl) {
+        const input = document.getElementById(inputId);
+        const svg = btnEl.querySelector('svg');
+        if (input.type === 'password') {
+            input.type = 'text';
+            svg.innerHTML = `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>`;
+        } else {
+            input.type = 'password';
+            svg.innerHTML = `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>`;
+        }
+    };
+
+    window.switchView = function(viewId) {
+        ['loginView', 'registerView', 'appView'].forEach(v => {
+            document.getElementById(v).classList.add('hidden');
+        });
+        document.getElementById(viewId).classList.remove('hidden');
+        if(viewId === 'registerView') {
+            generateCaptcha();
+            document.getElementById('regCaptcha').value = '';
+        }
+        clearFormMessages();
+    };
+
+    function clearFormMessages() {
+        document.querySelectorAll('.message-box').forEach(el => {
+            el.classList.remove('show', 'message-success', 'message-error');
+            el.textContent = '';
+        });
+    }
+
+    function showMsg(elId, text, type = 'error') {
+        const el = document.getElementById(elId);
+        el.textContent = text;
+        el.className = 'message-box show';
+        if (type === 'error') el.classList.add('message-error');
+        if (type === 'success') el.classList.add('message-success');
+    }
+
+    window.closeWarningModal = function() {
+        document.getElementById('warningModal').classList.add('hidden');
+        if(!sessionStorage.getItem(SESSION_KEY)) {
+            document.getElementById('loginView').classList.remove('hidden');
+        }
+    };
+
+    window.handleForgotClick = function() {
+        const msg = encodeURIComponent("Halo Owner HAOMI, saya lupa Username atau Password akaun saya di Tools 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞 AM. Mohon bantuannya.");
+        window.open(`https://wa.me/${OWNER_WA.replace('+', '')}?text=${msg}`, '_blank');
+    };
+
+    window.toggleOwnerPanel = function() {
+        const panel = document.getElementById('ownerPanel');
+        panel.classList.toggle('hidden');
+    };
+
+    window.openEditModal = function() {
+        const currentSession = sessionStorage.getItem(SESSION_KEY);
+        const db = initDatabase();
+        const user = db[currentSession];
+
+        document.getElementById('editUsername').value = currentSession;
+        document.getElementById('editPassword').value = '';
+        document.getElementById('editWa').value = user.wa || '';
+
+        document.getElementById('editUserLabel').textContent = `Username (Baki Kuota: ${user.editQuota.username})`;
+        document.getElementById('editPwdLabel').textContent = `Kata Laluan Baharu (Baki Kuota: ${user.editQuota.password})`;
+        document.getElementById('editWaLabel').textContent = `Nombor WhatsApp (Baki Kuota: ${user.editQuota.wa})`;
+
+        document.getElementById('editModal').classList.remove('hidden');
+    };
+
+    window.closeEditModal = function() {
+        document.getElementById('editModal').classList.add('hidden');
+    };
+
+    window.saveProfileChanges = function() {
+        const currentSession = sessionStorage.getItem(SESSION_KEY);
+        let db = initDatabase();
+        let user = db[currentSession];
+
+        const newU = document.getElementById('editUsername').value.trim();
+        const newP = document.getElementById('editPassword').value.trim();
+        const newWa = document.getElementById('editWa').value.trim();
+
+        let changed = false;
+
+        if (newU !== currentSession) {
+            if (user.editQuota.username <= 0) {
+                return showMsg('editModalMsg', 'Kuota tukar Username sudah habis (maksimal 1x).', 'error');
+            }
+            if (db[newU]) {
+                return showMsg('editModalMsg', 'Username tersebut sudah digunakan.', 'error');
+            }
+            db[newU] = user;
+            delete db[currentSession];
+            db[newU].editQuota.username -= 1;
+            sessionStorage.setItem(SESSION_KEY, newU);
+            changed = true;
+        }
+
+        const activeKey = sessionStorage.getItem(SESSION_KEY);
+        if (newP) {
+            if (db[activeKey].editQuota.password <= 0) {
+                return showMsg('editModalMsg', 'Kuota tukar Password sudah habis (maksimal 1x).', 'error');
+            }
+            if (newP.length < 5) {
+                return showMsg('editModalMsg', 'Password minimal 5 aksara.', 'error');
+            }
+            db[activeKey].password = newP;
+            db[activeKey].editQuota.password -= 1;
+            changed = true;
+        }
+
+        if (newWa !== db[activeKey].wa) {
+            if (db[activeKey].editQuota.wa <= 0) {
+                return showMsg('editModalMsg', 'Kuota tukar Nombor WhatsApp sudah habis (maksimal 1x).', 'error');
+            }
+            db[activeKey].wa = newWa;
+            db[activeKey].editQuota.wa -= 1;
+            changed = true;
+        }
+
+        if (changed) {
+            saveToDatabase(db);
+            showMsg('editModalMsg', 'Perubahan berjaya disimpan!', 'success');
+            setTimeout(() => {
+                closeEditModal();
+                loadAppView(sessionStorage.getItem(SESSION_KEY));
+            }, 1000);
+        } else {
+            closeEditModal();
+        }
+    };
+
     (function() {
         'use strict';
+        let db = initDatabase();
+        updatePromoLinks();
 
-        // ========== KONFIGURASI API ==========
+        const loginUser = document.getElementById('loginUser');
+        const loginPwd = document.getElementById('loginPwd');
+        const loginBtn = document.getElementById('loginBtn');
+        
+        const regUser = document.getElementById('regUser');
+        const regWa = document.getElementById('regWa');
+        const regPwd = document.getElementById('regPwd');
+        const regCaptcha = document.getElementById('regCaptcha');
+        const regBtn = document.getElementById('regBtn');
+
+        const displayUserName = document.getElementById('displayUserName');
+        const displayUserRole = document.getElementById('displayUserRole');
+        const userAvatar = document.getElementById('userAvatar');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const toggleOwnerDashBtn = document.getElementById('toggleOwnerDashBtn');
+        const ownerPanel = document.getElementById('ownerPanel');
+        const memberList = document.getElementById('memberList');
+        const memberCountBadge = document.getElementById('memberCountBadge');
+        const limitBadge = document.getElementById('limitBadge');
+
         const API_BASE = 'https://restapidhan.vercel.app';
         const API_KEY = 'dravndesamuel';
-
-        // ========== DOM REFS ==========
         const emailInput = document.getElementById('emailInput');
         const magicInput = document.getElementById('magicInput');
         const sendBtn = document.getElementById('sendBtn');
@@ -401,106 +1026,207 @@
         const btnDefault = document.getElementById('btnDefault');
         const loaderContainer = document.getElementById('loaderContainer');
         const btnSuccess = document.getElementById('btnSuccess');
-        const errorMsg = document.getElementById('errorMsg');
+        
+        let isLoading = false, isSuccess = false, cachedEmail = '';
+        
+        let loginAttempts = 0;
+        let lockUntil = 0;
 
-        // ========== STATE ==========
-        let isLoading = false;
-        let isSuccess = false;
-        let cachedEmail = '';
-
-        // ========== UTILITY ==========
-        function showError(text) {
-            errorMsg.textContent = text;
-            errorMsg.classList.add('show');
+        function checkSession() {
+            const sessionUser = sessionStorage.getItem(SESSION_KEY);
+            if (sessionUser && db[sessionUser]) {
+                loadAppView(sessionUser);
+            }
         }
 
-        function hideError() {
-            errorMsg.classList.remove('show');
-            errorMsg.textContent = '';
+        function loadAppView(username) {
+            db = initDatabase();
+            db[username] = checkAndResetLimit(db[username]);
+            saveToDatabase(db);
+
+            const user = db[username];
+            displayUserName.textContent = username;
+            displayUserRole.textContent = user.role + ` (ID: ${user.id || 'N/A'})`;
+            userAvatar.textContent = username.charAt(0).toUpperCase();
+            
+            if (user.role === 'Owner') {
+                limitBadge.textContent = 'Status: Owner (Tanpa Had)';
+            } else {
+                limitBadge.textContent = `Baki Had Mingguan: ${user.limit} / 3`;
+            }
+
+            updatePromoLinks({ id: user.id || 'OWNER', username: username, wa: user.wa });
+
+            if (user.role === 'Owner') {
+                toggleOwnerDashBtn.classList.remove('hidden');
+                memberList.innerHTML = '';
+                let count = 0;
+
+                for (const key in db) {
+                    const m = db[key];
+                    count++;
+                    const waClean = m.wa ? m.wa.replace(/[^0-9]/g, '') : '';
+                    const waLink = waClean ? `https://wa.me/${waClean}?text=Halo%20${key},%20pesan%20dari%20Owner%20Tools%20xMSXiaomi%20AM.` : '#';
+                    
+                    const el = document.createElement('div');
+                    el.className = 'member-item';
+                    el.innerHTML = `
+                        <div class="member-info">
+                            <strong>@${key}</strong>
+                            <span class="member-meta">ID: ${m.id || '-'} | WA: ${m.wa || '-'} | Limit: ${m.limit ?? '∞'}</span>
+                            <span class="member-meta" style="color: var(--brand-accent);">Pass: ${m.password} | Role: ${m.role}</span>
+                        </div>
+                        <a href="${waLink}" target="_blank" class="member-wa">Chat WA</a>
+                    `;
+                    memberList.appendChild(el);
+                }
+                memberCountBadge.textContent = `${count} Pengguna`;
+            } else {
+                toggleOwnerDashBtn.classList.add('hidden');
+                ownerPanel.classList.add('hidden');
+            }
+
+            switchView('appView');
         }
 
-        // ========== API CALLS ==========
-        async function callSend(email) {
-            const url = `${API_BASE}/api/am?action=send&apikey=${API_KEY}&email=${encodeURIComponent(email)}`;
+        loginBtn.addEventListener('click', () => {
+            const now = Date.now();
+            if (now < lockUntil) {
+                const remaining = Math.ceil((lockUntil - now) / 1000);
+                return showMsg('loginErrorMsg', `Terlalu banyak cubaan gagal. Sila tunggu ${remaining} saat.`);
+            }
+
+            db = initDatabase();
+            const u = loginUser.value.trim();
+            const p = loginPwd.value.trim();
+
+            if (!u || !p) return showMsg('loginErrorMsg', 'Username & Password wajib diisi.');
+            
+            if (db[u] && db[u].password === p) {
+                loginAttempts = 0;
+                sessionStorage.setItem(SESSION_KEY, u);
+                loadAppView(u);
+            } else {
+                loginAttempts++;
+                if (loginAttempts >= 5) {
+                    lockUntil = Date.now() + 30000;
+                    loginAttempts = 0;
+                    showMsg('loginErrorMsg', 'Terlalu banyak cubaan salah. Akses dikunci selama 30 saat.');
+                } else {
+                    showMsg('loginErrorMsg', `Username atau Password salah! (Cubaan ke-${loginAttempts}/5)`);
+                }
+            }
+        });
+
+        regBtn.addEventListener('click', () => {
+            db = initDatabase();
+            const u = regUser.value.trim();
+            const w = regWa.value.trim();
+            const p = regPwd.value.trim();
+            const cInput = parseInt(regCaptcha.value.trim());
+
+            if (!u || !w || !p || isNaN(cInput)) return showMsg('regMsg', 'Sila isi semua ruangan termasuk jawapan matematik!', 'error');
+            if (cInput !== currentCaptchaAnswer) {
+                generateCaptcha();
+                regCaptcha.value = '';
+                return showMsg('regMsg', 'Jawapan pengesahan matematik salah! Sila cuba lagi.', 'error');
+            }
+            if (db[u]) return showMsg('regMsg', 'Username sudah berdaftar!', 'error');
+            if (p.length < 5) return showMsg('regMsg', 'Password minimal 5 aksara!', 'error');
+
+            let deviceCount = parseInt(localStorage.getItem(DEVICE_REG_KEY) || '0');
+            if (deviceCount >= 2) {
+                return showMsg('regMsg', 'Had maksimum bina akaun pada peranti ini adalah 2 akaun sahaja!', 'error');
+            }
+
+            db[u] = { 
+                password: p, 
+                role: 'Member', 
+                wa: w, 
+                id: generateMemberId(),
+                editQuota: { username: 1, password: 1, wa: 1 },
+                limit: 3,
+                lastReset: Date.now()
+            };
+            
+            saveToDatabase(db);
+            localStorage.setItem(DEVICE_REG_KEY, (deviceCount + 1).toString());
+            
+            showMsg('regMsg', 'Akaun berjaya dicipta! Mengalihkan...', 'success');
+            
+            setTimeout(() => {
+                sessionStorage.setItem(SESSION_KEY, u);
+                loadAppView(u);
+            }, 1200);
+        });
+
+        logoutBtn.addEventListener('click', () => {
+            sessionStorage.removeItem(SESSION_KEY);
+            switchView('loginView');
+        });
+
+        async function callApi(action, email, magic = '') {
+            const url = `${API_BASE}/api/am?action=${action}&apikey=${API_KEY}&email=${encodeURIComponent(email)}` + (magic ? `&url=${encodeURIComponent(magic)}` : '');
             const res = await fetch(url);
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             return res.json();
         }
 
-        async function callVerif(email, magicLink) {
-            const url = `${API_BASE}/api/am?action=verif&apikey=${API_KEY}&email=${encodeURIComponent(email)}&url=${encodeURIComponent(magicLink)}`;
-            const res = await fetch(url);
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            return res.json();
-        }
+        sendBtn.addEventListener('click', async () => {
+            const activeUser = sessionStorage.getItem(SESSION_KEY);
+            db = initDatabase();
+            if (activeUser && db[activeUser] && db[activeUser].role !== 'Owner') {
+                db[activeUser] = checkAndResetLimit(db[activeUser]);
+                if (db[activeUser].limit <= 0) {
+                    return showMsg('appErrorMsg', 'Had mingguan anda telah habis! Sila hubungi Owner untuk Akses Kekal.', 'error');
+                }
+            }
 
-        // ========== HANDLE SEND ==========
-        async function handleSend() {
             const email = emailInput.value.trim();
-            hideError();
+            document.getElementById('appErrorMsg').classList.remove('show');
+            if (!email || !email.includes('@')) return showMsg('appErrorMsg', 'Emel tidak sah.', 'error');
 
-            if (!email) {
-                showError('Masukkan alamat email untuk melanjutkan.');
-                return;
-            }
-            if (!email.includes('@') || !email.includes('.')) {
-                showError('Format email tidak valid.');
-                return;
-            }
-
-            const oldText = sendBtn.textContent;
+            const oldTxt = sendBtn.textContent;
             sendBtn.textContent = 'Memproses...';
             sendBtn.disabled = true;
 
             try {
-                const data = await callSend(email);
+                const data = await callApi('send', email);
                 if (data.status) {
                     cachedEmail = email;
-                    sendBtn.textContent = 'Terkirim ✓';
+                    sendBtn.textContent = 'Hantar ✓';
                     magicInput.focus();
-                    setTimeout(() => {
-                        sendBtn.textContent = oldText;
-                        sendBtn.disabled = false;
-                    }, 2000);
+                    setTimeout(() => { sendBtn.textContent = oldTxt; sendBtn.disabled = false; }, 2000);
                 } else {
-                    showError(`Gagal mengirim: ${data.error || data.message || 'Kesalahan sistem'}`);
-                    sendBtn.textContent = oldText;
-                    sendBtn.disabled = false;
+                    showMsg('appErrorMsg', `Gagal: ${data.error || 'Unknown error'}`, 'error');
+                    sendBtn.textContent = oldTxt; sendBtn.disabled = false;
                 }
             } catch (err) {
-                showError(`Terjadi kesalahan: ${err.message}`);
-                sendBtn.textContent = oldText;
-                sendBtn.disabled = false;
+                showMsg('appErrorMsg', `Ralat: ${err.message}`, 'error');
+                sendBtn.textContent = oldTxt; sendBtn.disabled = false;
             }
-        }
+        });
 
-        // ========== HANDLE ACTIVATION ==========
-        async function handleActivation() {
+        activateBtn.addEventListener('click', async () => {
             if (isLoading || isSuccess) return;
+            const activeUser = sessionStorage.getItem(SESSION_KEY);
+            db = initDatabase();
+            
+            if (activeUser && db[activeUser] && db[activeUser].role !== 'Owner') {
+                db[activeUser] = checkAndResetLimit(db[activeUser]);
+                if (db[activeUser].limit <= 0) {
+                    return showMsg('appErrorMsg', 'Had mingguan anda telah habis!', 'error');
+                }
+                db[activeUser].limit -= 1;
+                saveToDatabase(db);
+                limitBadge.textContent = `Baki Had Mingguan: ${db[activeUser].limit} / 3`;
+            }
 
             const email = emailInput.value.trim();
             const magic = magicInput.value.trim();
+            document.getElementById('appErrorMsg').classList.remove('show');
 
-            hideError();
-
-            if (!email) {
-                showError('Alamat email wajib diisi.');
-                return;
-            }
-            if (!email.includes('@') || !email.includes('.')) {
-                showError('Format email tidak valid.');
-                return;
-            }
-            if (!magic) {
-                showError('Tautan Magic wajib diisi.');
-                return;
-            }
-            if (!magic.startsWith('http://') && !magic.startsWith('https://')) {
-                showError('Tautan Magic harus berupa URL (http/https).');
-                return;
-            }
-
-            const emailToUse = cachedEmail || email;
+            if (!email || !magic) return showMsg('appErrorMsg', 'Emel & Pautan Ajaib wajib diisi.', 'error');
 
             isLoading = true;
             activateBtn.disabled = true;
@@ -508,51 +1234,39 @@
             loaderContainer.classList.remove('hidden');
 
             try {
-                const data = await callVerif(emailToUse, magic);
+                const data = await callApi('verif', cachedEmail || email, magic);
                 if (data.status) {
-                    isLoading = false;
-                    isSuccess = true;
+                    isLoading = false; isSuccess = true;
                     loaderContainer.classList.add('hidden');
                     btnSuccess.classList.remove('hidden');
                     activateBtn.style.background = 'var(--success-text)';
                     cachedEmail = '';
                 } else {
-                    isLoading = false;
-                    activateBtn.disabled = false;
-                    loaderContainer.classList.add('hidden');
-                    btnDefault.classList.remove('hidden');
-                    showError(`Aktivasi gagal: ${data.error || data.message || 'Kesalahan sistem'}`);
+                    isLoading = false; activateBtn.disabled = false;
+                    loaderContainer.classList.add('hidden'); btnDefault.classList.remove('hidden');
+                    showMsg('appErrorMsg', `Gagal: ${data.error || 'Unknown error'}`, 'error');
                 }
             } catch (err) {
-                isLoading = false;
-                activateBtn.disabled = false;
-                loaderContainer.classList.add('hidden');
-                btnDefault.classList.remove('hidden');
-                showError(`Terjadi kesalahan: ${err.message}`);
-            }
-        }
-
-        // ========== EVENT LISTENERS ==========
-        sendBtn.addEventListener('click', handleSend);
-        activateBtn.addEventListener('click', handleActivation);
-
-        magicInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                handleActivation();
+                isLoading = false; activateBtn.disabled = false;
+                loaderContainer.classList.add('hidden'); btnDefault.classList.remove('hidden');
+                showMsg('appErrorMsg', `Ralat: ${err.message}`, 'error');
             }
         });
 
-        emailInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                handleSend(); // Auto send saat tekan enter di kolom email
-            }
+        [loginPwd, regPwd, magicInput].forEach(el => {
+            el.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    if(el === loginPwd) loginBtn.click();
+                    if(el === regPwd) regBtn.click();
+                    if(el === magicInput) activateBtn.click();
+                }
+            });
         });
 
-        emailInput.addEventListener('input', hideError);
-        magicInput.addEventListener('input', hideError);
+        [emailInput, magicInput].forEach(el => el.addEventListener('input', () => document.getElementById('appErrorMsg').classList.remove('show')));
 
+        checkSession();
     })();
 </script>
 
