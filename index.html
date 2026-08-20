@@ -126,14 +126,6 @@
   .data-item { display: flex; flex-direction: column; gap: 2px; }
   .data-label { font-size: 10px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
   .data-value { font-size: 12px; font-family: var(--font-mono); color: var(--text-primary); }
-  
-  .profile-actions { display: flex; gap: 10px; margin-top: 4px; }
-  .btn-icon {
-    flex: 1; background: rgba(255,255,255,0.06); border: 1px solid var(--glass-border); color: var(--text-primary); padding: 11px;
-    border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 12px; font-weight: 600; transition: all 0.2s;
-  }
-  .btn-icon:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.3); }
-  .btn-icon.danger { color: #ff6b8b; background: rgba(255,42,109,0.1); border-color: rgba(255,42,109,0.3); }
 
   .promo-banner {
     background: linear-gradient(135deg, rgba(255, 215, 0, 0.18) 0%, rgba(255, 145, 0, 0.05) 100%);
@@ -187,7 +179,6 @@
   .limit-header { display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; color: var(--text-secondary); }
   .limit-track { width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; position: relative; }
   .limit-bar { height: 100%; background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple)); border-radius: 4px; }
-  .limit-bar.vip-bar { background: linear-gradient(90deg, #ffd700, #ff9100); width: 100% !important; }
 
   .admin-panel {
     background: var(--glass-bg); backdrop-filter: blur(24px); border: 1px solid var(--glass-border); border-radius: var(--radius-lg);
@@ -224,7 +215,6 @@
     border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.03); color: var(--text-secondary); cursor: pointer; text-align: center; text-decoration: none;
   }
   .btn-tiny.action-wa:hover { border-color: var(--accent-green); color: var(--accent-green); }
-  .btn-tiny.action-vip { border-color: var(--accent-gold-dim); color: var(--accent-gold); }
 
   .message-box { padding: 14px 16px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 500; text-align: center; display: none; line-height: 1.5; }
   .message-box.show { display: block; }
@@ -280,28 +270,6 @@
       <li>Administrator berhak <b>membanned permanen (Suspend)</b> akun tanpa pemberitahuan jika terdeteksi melanggar.</li>
     </ul>
     <button class="btn btn-primary" style="background: linear-gradient(135deg, #ff2a6d, #ff0044); color: white;" onclick="closeWarningModal()">Saya Memahami & Setuju</button>
-  </div>
-</div>
-
-<!-- POP-UP VIP WELCOME -->
-<div id="vipWelcomeModal" class="modal-overlay">
-  <div class="modal-box vip-modal-box" style="text-align: center;">
-    <div style="font-size: 55px; margin-bottom: -10px;">👑</div>
-    <h3 style="font-size: 22px; font-weight: 800; color: var(--accent-gold); text-transform: uppercase;">Penawaran Spesial VIP</h3>
-    <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6;">Selamat datang! Ingin fitur <b>UNLIMITED</b> dan akses tanpa batas selamanya? Upgrade ke <b>VIP Permanen</b> sekarang!</p>
-    <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
-      <a href="https://wa.me/6282231669053?text=Halo%20Admin,%20saya%20ingin%20upgrade%20menjadi%20VIP%20Permanen." target="_blank" class="btn btn-primary" style="background: linear-gradient(135deg, #ffd700, #ff9100); color: #000; text-decoration: none;">Hubungi Owner (Upgrade)</a>
-      <button class="btn btn-secondary" onclick="document.getElementById('vipWelcomeModal').classList.remove('show')">Mungkin Nanti Saja</button>
-    </div>
-  </div>
-</div>
-
-<!-- POP-UP BROADCAST -->
-<div id="broadcastModal" class="modal-overlay">
-  <div class="modal-box broadcast-modal-box" style="text-align: center;">
-    <h3 style="font-size: 20px; font-weight: 800; color: var(--text-primary); margin-bottom: 4px;">PENGUMUMAN PENTING</h3>
-    <div style="background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 16px; text-align: left; font-size: 14px; color: #cbd5e1; margin-bottom: 16px; white-space: pre-wrap;" id="broadcastMessageText"></div>
-    <button class="btn btn-primary" style="background: linear-gradient(135deg, #7f00ff, #9d4edd); color: white;" onclick="closeBroadcastModal()">Saya Mengerti</button>
   </div>
 </div>
 
@@ -419,7 +387,7 @@
   <div id="promoBannerContainer" class="promo-banner">
     <h3>Upgrade VIP Permanen</h3>
     <p>Hilangkan batasan kuota! Amankan akses tanpa batas selamanya.</p>
-    <a id="promoDashBtn" href="#" target="_blank" class="btn-promo">Pesan via WhatsApp Sekarang</a>
+    <a id="promoDashBtn" href="https://wa.me/6282231669053?text=Halo%20Admin,%20saya%20ingin%20upgrade%20menjadi%20VIP%20Permanen." target="_blank" class="btn-promo">Pesan via WhatsApp Sekarang</a>
   </div>
 
   <div class="action-grid-3">
@@ -546,7 +514,8 @@
     async function fetchUserSession(username) {
         const { data, error } = await supabaseClient.from('users').select('*').eq('username', username).single();
         if (data && !error) {
-            if (data.is_banned) {
+            // Perbaikan logika cek is_banned agar aman (hanya jika true persis)
+            if (data.is_banned === true || data.is_banned === 'true' || data.is_banned === '1') {
                 sessionStorage.removeItem(SESSION_KEY);
                 switchView('loginView');
                 return;
@@ -629,7 +598,7 @@
                 </div>
                 <div class="admin-member-details">
                     <span>WA: ${m.wa || '-'}</span>
-                    <span>Limit: ${m.is_permanent ? '∞' : m.limit_count}</span>
+                    <span>Limit: ${m.is_permanent ? '∞' : (m.limit_count ?? 3)}</span>
                     <span>Pass: ${m.password}</span>
                 </div>
                 <div class="admin-member-actions">
@@ -652,10 +621,6 @@
         alert("Broadcast siap dikirim!");
     };
 
-    window.closeBroadcastModal = function() {
-        document.getElementById('broadcastModal').classList.remove('show');
-    };
-
     (function() {
         const loginUser = document.getElementById('loginUser');
         const loginPwd = document.getElementById('loginPwd');
@@ -676,7 +641,9 @@
             if(error || !data || data.password !== p) {
                 return showMsg('loginErrorMsg', 'Username atau kata sandi salah.');
             }
-            if(data.is_banned) return showMsg('loginErrorMsg', 'Akun anda di-suspend.');
+            if (data.is_banned === true || data.is_banned === 'true' || data.is_banned === '1') {
+                return showMsg('loginErrorMsg', 'Akun anda di-suspend.');
+            }
 
             sessionStorage.setItem(SESSION_KEY, u);
             loadAppView(data);
