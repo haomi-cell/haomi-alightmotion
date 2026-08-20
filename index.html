@@ -3,221 +3,589 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#000000" />
-  <title>AM Pro Toolkit | 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞</title>
+  <meta name="theme-color" content="#09090b" />
+  <title>Tools 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞 AM | Professional Workspace</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
   <script>
     tailwind.config = {
-      darkMode: 'class',
       theme: {
         extend: {
           fontFamily: {
-            sans: ['Plus Jakarta Sans', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace']
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            zinc: {
+              850: '#1f1f22',
+              900: '#18181b',
+              950: '#09090b',
+            }
           }
         }
       }
-    };
+    }
   </script>
 
   <style>
-    :root {
-      --bg: #000000;
-      --panel: rgba(18, 18, 20, 0.65);
-      --border: rgba(255, 255, 255, 0.12);
-      --text: #f4f4f5;
-    }
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    html { scroll-behavior: smooth; background: var(--bg); }
+    
     body {
-      margin: 0; min-height: 100vh; overflow-x: hidden; color: var(--text);
-      background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.08), transparent 50%), #000000;
-      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #09090b;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+      background-size: 24px 24px;
+      color: #f4f4f5;
+      min-height: 100vh;
+      overflow-x: hidden;
     }
-    .glass {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      backdrop-filter: blur(30px) saturate(150%);
-      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+
+    .ambient-glow {
+      position: fixed;
+      top: 0; left: 50%;
+      width: 100vw; height: 500px;
+      transform: translateX(-50%);
+      background: radial-gradient(ellipse at top, rgba(37, 99, 235, 0.12), transparent 70%);
+      pointer-events: none;
+      z-index: -1;
     }
-    .glass-card {
-      background: rgba(255, 255, 255, 0.02);
+
+    .pro-card {
+      background: rgba(24, 24, 27, 0.65);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       border: 1px solid rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(16px);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     }
+
     input {
-      width: 100%; color: #ffffff !important; background: rgba(10, 10, 12, 0.8) !important;
-      border: 1px solid rgba(255, 255, 255, 0.12) !important; border-radius: 14px !important;
-      outline: none; transition: all .2s ease;
+      background: #09090b !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      color: #f4f4f5 !important;
+      transition: all 0.2s ease;
     }
-    input:focus { border-color: #ffffff !important; box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.08); }
+    input::placeholder { color: #52525b; }
+    input:hover { border-color: rgba(255, 255, 255, 0.2) !important; }
+    input:focus {
+      border-color: #3b82f6 !important;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15) !important;
+      outline: none;
+    }
+
     .btn {
-      border-radius: 14px; font-weight: 600; transition: all .2s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.2s ease;
+      position: relative;
+      overflow: hidden;
     }
-    .btn-primary { background: #ffffff; color: #000000; border: 1px solid #ffffff; }
-    .btn-primary:hover { background: #e4e4e7; transform: translateY(-1px); }
-    .nav-pill { color: #71717a; transition: all .25s ease; }
-    .nav-pill.active { color: #000000; background: #ffffff; font-weight: 700; box-shadow: 0 0 20px rgba(255, 255, 255, 0.3); }
+    .btn:active { transform: scale(0.98); }
+    
+    .btn-primary {
+      background-color: #2563eb;
+      border: 1px solid #3b82f6;
+      color: white;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    }
+    .btn-primary:hover {
+      background-color: #1d4ed8;
+      border-color: #2563eb;
+      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
+    }
+
+    .btn-secondary {
+      background-color: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #d4d4d8;
+    }
+    .btn-secondary:hover {
+      background-color: rgba(255, 255, 255, 0.08);
+      color: white;
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .code-box {
+      background: #09090b;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
     .toast {
-      transform: translate(-50%, 20px); opacity: 0; pointer-events: none;
-      transition: all .3s cubic-bezier(0.16, 1, 0.3, 1);
-      background: rgba(18, 18, 22, 0.9); border: 1px solid rgba(255, 255, 255, 0.2);
+      transform: translate(-50%, 20px); 
+      opacity: 0; 
+      pointer-events: none; 
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .toast.show { transform: translate(-50%, 0); opacity: 1; }
-    .hidden { display: none !important; }
+    .toast.show { 
+      transform: translate(-50%, 0); 
+      opacity: 1; 
+      pointer-events: auto; 
+    }
+    
+    .status-dot {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    /* Nav Item Active State */
+    .nav-item { color: #a1a1aa; transition: all 0.2s; }
+    .nav-item:hover { color: #f4f4f5; background: rgba(255, 255, 255, 0.05); }
+    .nav-item.active { color: #3b82f6; background: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.3); }
+
+    /* Hide scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #3f3f46; }
   </style>
 </head>
 
-<body class="min-h-screen px-4 py-5 flex flex-col items-center justify-between">
-  <div class="w-full max-w-lg flex flex-col gap-5 my-auto">
-    <header class="glass rounded-[24px] p-4 flex items-center justify-between">
-      <div class="flex items-center gap-3.5">
-        <div class="w-11 h-11 rounded-[16px] bg-white/10 border border-white/20 flex items-center justify-center text-white text-base">
-          <i class="fa-solid fa-cube"></i>
-        </div>
-        <div>
-          <h1 class="font-bold text-[15px] tracking-tight text-white flex items-center gap-2">
-            AM Pro Toolkit <span class="text-[9px] px-2 py-0.5 rounded-full bg-white/10 text-white font-mono">v3.0</span>
-          </h1>
-          <p class="text-[11px] text-zinc-400 mt-0.5">𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞 Enterprise System</p>
-        </div>
-      </div>
-      <div class="flex items-center gap-2">
-        <div class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></div>
-        <span class="text-[11px] font-medium text-zinc-300">Online</span>
-      </div>
-    </header>
+<body class="antialiased">
+  <div class="ambient-glow"></div>
 
-    <main class="glass rounded-[28px] p-5 sm:p-6 flex flex-col gap-5">
-      <!-- Input Akses Key Global (VIP) -->
-      <div class="space-y-1.5">
-        <label class="text-[11px] font-medium text-zinc-400 ml-1">Akses Key (VIP)</label>
-        <input id="inputAksesKey" type="text" value="aks-1d3bd53f4d857a690a77471d" placeholder="Masukkan akseskey..." class="p-3 text-[12px] font-mono" />
+  <!-- ================= VIEW LOGIN ================= -->
+  <div id="loginView" class="fixed inset-0 flex items-center justify-center p-4 z-50">
+    <div class="pro-card rounded-3xl p-8 w-full max-w-[400px] shadow-2xl">
+      <div class="text-center mb-8">
+        <div class="w-14 h-14 mx-auto rounded-2xl bg-zinc-950 border border-zinc-800 flex items-center justify-center shadow-inner mb-4">
+          <i class="fa-solid fa-layer-group text-blue-500 text-2xl"></i>
+        </div>
+        <h1 class="font-bold text-2xl text-zinc-100">Tools 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞</h1>
+        <p class="text-xs text-zinc-400 mt-1">Sign in to access workspace</p>
       </div>
 
-      <div class="grid grid-cols-3 gap-1.5 p-1 bg-white/[0.03] border border-white/10 rounded-[18px]">
-        <button id="tabSend" onclick="switchTab('send')" class="nav-pill active py-2.5 rounded-[14px] text-[11px] font-semibold">Aktivasi</button>
-        <button id="tabBulk" onclick="switchTab('bulk')" class="nav-pill py-2.5 rounded-[14px] text-[11px] font-semibold">Bulk</button>
-        <button id="tabVerify" onclick="switchTab('verify')" class="nav-pill py-2.5 rounded-[14px] text-[11px] font-semibold">Verifikasi</button>
-      </div>
-
-      <!-- Tab 1: AM Send -->
-      <div id="contentSend" class="space-y-4">
-        <h2 class="text-[16px] font-bold text-white">Alight Motion Send</h2>
-        <div class="space-y-3">
-          <input id="inputSendEmail" type="email" placeholder="email_pembeli@domain.com" class="p-3.5 text-[12px]" />
-          <button onclick="runAmSend()" class="btn btn-primary w-full py-3.5 text-[12px]">Kirim Magic Link</button>
+      <form onsubmit="handleLogin(event)" class="space-y-5">
+        <div class="space-y-2">
+          <label class="block text-xs font-medium text-zinc-300">Username</label>
+          <div class="relative">
+            <i class="fa-solid fa-user absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 text-sm"></i>
+            <input id="loginUser" type="text" placeholder="Enter username" class="w-full rounded-xl pl-10 pr-4 py-3.5 text-sm" required />
+          </div>
         </div>
-        <div id="sendResult" class="glass-card hidden p-4 rounded-[16px] text-[11px] font-mono overflow-y-auto max-h-40"></div>
-      </div>
-
-      <!-- Tab 2: AM Bulk -->
-      <div id="contentBulk" class="space-y-4 hidden">
-        <h2 class="text-[16px] font-bold text-white">Alight Motion Bulk Email</h2>
-        <div class="space-y-3">
-          <input id="inputBulkAmount" type="number" min="1" max="100" value="5" placeholder="Jumlah akun" class="p-3.5 text-[12px]" />
-          <button onclick="runAmBulk()" class="btn btn-primary w-full py-3.5 text-[12px]">Mulai Generate Bulk</button>
+        <div class="space-y-2">
+          <label class="block text-xs font-medium text-zinc-300">Password</label>
+          <div class="relative">
+            <i class="fa-solid fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 text-sm"></i>
+            <input id="loginPass" type="password" placeholder="••••••••" class="w-full rounded-xl pl-10 pr-4 py-3.5 text-sm" required />
+          </div>
         </div>
-        <div id="bulkResult" class="glass-card hidden p-4 rounded-[16px] text-[11px] max-h-48 overflow-y-auto font-mono"></div>
-      </div>
-
-      <!-- Tab 3: AM Verify -->
-      <div id="contentVerify" class="space-y-4 hidden">
-        <h2 class="text-[16px] font-bold text-white">Alight Motion Verify</h2>
-        <div class="space-y-3">
-          <input id="inputVerifyEmail" type="email" placeholder="Email dari hasil bulk" class="p-3.5 text-[12px]" />
-          <input id="inputVerifyLink" type="text" placeholder="Tempel link verifikasi" class="p-3.5 text-[12px]" />
-          <button onclick="runAmVerify()" class="btn btn-primary w-full py-3.5 text-[12px]">Verifikasi & Aktifkan</button>
-        </div>
-        <div id="verifyResult" class="glass-card hidden p-4 rounded-[16px] text-[11px] font-mono overflow-y-auto max-h-40"></div>
-      </div>
-    </main>
+        <button type="submit" class="btn btn-primary w-full py-3.5 rounded-xl text-sm font-semibold mt-2">
+          Authenticate
+        </button>
+      </form>
+    </div>
   </div>
 
-  <div id="toast" class="toast fixed z-50 bottom-6 left-1/2 rounded-[16px] px-5 py-3 text-[11px] text-white"></div>
+  <!-- ================= VIEW APP DASHBOARD ================= -->
+  <div id="appView" class="hidden h-screen w-full flex-col md:flex-row overflow-hidden">
+    
+    <!-- SIDEBAR (Desktop) / BOTTOM NAV (Mobile) -->
+    <nav class="pro-card md:w-64 md:h-full md:border-r border-t md:border-t-0 border-zinc-800/50 flex md:flex-col justify-between fixed md:relative bottom-0 w-full z-40 px-2 py-2 md:p-4 order-last md:order-first">
+      
+      <!-- Logo (Desktop Only) -->
+      <div class="hidden md:flex items-center gap-3 px-2 mb-8 mt-2">
+        <div class="w-8 h-8 rounded-lg bg-zinc-950 border border-zinc-800 flex items-center justify-center">
+          <i class="fa-solid fa-layer-group text-blue-500 text-xs"></i>
+        </div>
+        <div>
+          <h1 class="font-bold text-sm text-zinc-100">Tools 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞</h1>
+          <p class="text-[9px] text-emerald-400 font-mono">SYSTEM ONLINE</p>
+        </div>
+      </div>
+
+      <!-- Menu Items -->
+      <div class="flex md:flex-col flex-1 justify-around md:justify-start gap-1 md:gap-2">
+        <button onclick="switchTab('generator')" id="navGenerator" class="nav-item active flex-1 md:flex-none flex flex-col md:flex-row items-center gap-1 md:gap-3 px-3 md:px-4 py-2 md:py-3 rounded-xl border border-transparent">
+          <i class="fa-solid fa-wand-magic-sparkles text-lg md:text-sm"></i>
+          <span class="text-[10px] md:text-sm font-medium">Generator</span>
+        </button>
+        
+        <button onclick="switchTab('profile')" id="navProfile" class="nav-item flex-1 md:flex-none flex flex-col md:flex-row items-center gap-1 md:gap-3 px-3 md:px-4 py-2 md:py-3 rounded-xl border border-transparent">
+          <i class="fa-regular fa-id-badge text-lg md:text-sm"></i>
+          <span class="text-[10px] md:text-sm font-medium">Profile</span>
+        </button>
+
+        <button onclick="switchTab('owner')" id="navOwner" class="nav-item hidden flex-1 md:flex-none flex flex-col md:flex-row items-center gap-1 md:gap-3 px-3 md:px-4 py-2 md:py-3 rounded-xl border border-transparent">
+          <i class="fa-solid fa-shield-halved text-lg md:text-sm"></i>
+          <span class="text-[10px] md:text-sm font-medium">Owner Panel</span>
+        </button>
+      </div>
+
+      <!-- Logout (Desktop Only) -->
+      <div class="hidden md:block mt-auto">
+        <button onclick="handleLogout()" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:text-red-400 hover:bg-red-500/10 border border-transparent">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span class="text-sm font-medium">Sign Out</span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="flex-1 h-[calc(100vh-64px)] md:h-full overflow-y-auto p-4 md:p-8 relative">
+      
+      <!-- Top Actions (Mobile Logout) -->
+      <div class="md:hidden flex justify-end mb-4">
+        <button onclick="handleLogout()" class="px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-800 text-xs text-zinc-400 hover:text-red-400 flex items-center gap-2">
+          <i class="fa-solid fa-right-from-bracket"></i> Keluar
+        </button>
+      </div>
+
+      <!-- TAB 1: GENERATOR (AM V1) -->
+      <div id="tabGenerator" class="tab-content max-w-[500px] mx-auto w-full">
+        <div class="pro-card rounded-3xl p-6 sm:p-8 shadow-2xl">
+          <div class="mb-8">
+            <div class="inline-block px-2.5 py-1 rounded-md bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-semibold tracking-wider uppercase mb-3">
+              AM Version 1.0
+            </div>
+            <h2 class="font-bold text-xl text-zinc-100 mb-2">Pro Account Generator</h2>
+            <p id="flowInstruction" class="text-sm text-zinc-400 leading-relaxed">
+              Please enter your active email to receive the magic authentication link.
+            </p>
+          </div>
+
+          <!-- Step 1: Email -->
+          <div id="stepEmailBox" class="space-y-5">
+            <div class="space-y-2">
+              <label class="block text-xs font-medium text-zinc-300">Email Address</label>
+              <div class="relative">
+                <i class="fa-regular fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 text-sm"></i>
+                <input id="inputEmail" type="email" placeholder="name@example.com" class="w-full rounded-xl pl-10 pr-4 py-3.5 text-sm" />
+              </div>
+            </div>
+            <button onclick="handleSendMagicLink()" class="btn btn-primary w-full py-3.5 rounded-xl text-sm font-medium flex items-center justify-center gap-2">
+              Send Magic Link <i class="fa-solid fa-arrow-right text-xs"></i>
+            </button>
+          </div>
+
+          <!-- Step 2: Verify -->
+          <div id="stepVerifyBox" class="hidden space-y-5">
+            <div class="space-y-2">
+              <label class="block text-xs font-medium text-zinc-300">Verification URL</label>
+              <div class="relative">
+                <i class="fa-solid fa-link absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 text-sm"></i>
+                <input id="inputLink" type="url" placeholder="https://alightcreative.com/..." class="w-full rounded-xl pl-10 pr-4 py-3.5 text-sm" />
+              </div>
+            </div>
+            <div class="flex gap-3">
+              <button onclick="resetAmFlow()" class="btn btn-secondary px-4 rounded-xl flex items-center justify-center">
+                <i class="fa-solid fa-arrow-left text-sm"></i>
+              </button>
+              <button onclick="handleVerifyLink()" class="btn btn-primary flex-1 py-3.5 rounded-xl text-sm font-medium">
+                Verify Account
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 3: Success -->
+          <div id="stepSuccessBox" class="hidden space-y-6">
+            <div class="flex flex-col items-center text-center pb-2">
+              <div class="w-16 h-16 bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 rounded-2xl flex items-center justify-center text-2xl mb-4">
+                <i class="fa-solid fa-check"></i>
+              </div>
+              <h3 class="font-semibold text-lg text-zinc-100">Account Activated</h3>
+              <p class="text-sm text-zinc-400 mt-1">Your Pro privileges have been granted successfully.</p>
+            </div>
+            
+            <div class="code-box rounded-xl p-4 overflow-hidden relative">
+              <div class="absolute top-0 left-0 w-full h-8 bg-zinc-900 border-b border-zinc-800 flex items-center px-4 gap-2">
+                <div class="w-2.5 h-2.5 rounded-full bg-zinc-700"></div>
+                <div class="w-2.5 h-2.5 rounded-full bg-zinc-700"></div>
+                <div class="w-2.5 h-2.5 rounded-full bg-zinc-700"></div>
+                <span class="text-[9px] text-zinc-500 font-mono ml-2 uppercase">Server Response</span>
+              </div>
+              <pre id="jsonResult" class="font-mono text-xs text-blue-300 mt-6 overflow-x-auto whitespace-pre-wrap leading-relaxed"></pre>
+            </div>
+
+            <button onclick="resetAmFlow()" class="btn btn-secondary w-full py-3.5 rounded-xl text-sm font-medium">
+              Generate Another Account
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: PROFILE -->
+      <div id="tabProfile" class="tab-content hidden max-w-[500px] mx-auto w-full">
+        <div class="pro-card rounded-3xl p-6 sm:p-8 shadow-2xl text-center">
+          <div class="w-24 h-24 mx-auto rounded-full bg-gradient-to-tr from-blue-600 to-cyan-400 p-1 mb-4">
+            <div class="w-full h-full bg-zinc-900 rounded-full flex items-center justify-center border-[4px] border-zinc-900">
+              <i class="fa-solid fa-user-astronaut text-3xl text-zinc-300"></i>
+            </div>
+          </div>
+          
+          <h2 id="dispProfileName" class="font-bold text-2xl text-zinc-100 uppercase tracking-wide">USER</h2>
+          <div class="inline-block mt-2 px-3 py-1 rounded-full bg-zinc-800 border border-zinc-700 text-xs font-semibold text-zinc-300">
+            Role: <span id="dispProfileRole" class="text-blue-400">MEMBER</span>
+          </div>
+
+          <div class="mt-8 grid grid-cols-2 gap-4 text-left">
+            <div class="bg-zinc-900/50 p-4 rounded-2xl border border-zinc-800/50">
+              <div class="text-[10px] text-zinc-500 font-medium uppercase mb-1">Status</div>
+              <div class="text-sm font-semibold text-emerald-400 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span> Active
+              </div>
+            </div>
+            <div class="bg-zinc-900/50 p-4 rounded-2xl border border-zinc-800/50">
+              <div class="text-[10px] text-zinc-500 font-medium uppercase mb-1">Access Level</div>
+              <div id="dispAccessLvl" class="text-sm font-semibold text-zinc-200">Standard</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 3: OWNER PANEL -->
+      <div id="tabOwner" class="tab-content hidden max-w-[600px] mx-auto w-full">
+        <div class="pro-card rounded-3xl p-6 sm:p-8 shadow-2xl">
+          <div class="flex items-center justify-between mb-8 pb-4 border-b border-zinc-800">
+            <div>
+              <h2 class="font-bold text-xl text-zinc-100 flex items-center gap-2">
+                <i class="fa-solid fa-crown text-amber-400"></i> Owner Dashboard
+              </h2>
+              <p class="text-xs text-zinc-400 mt-1">System monitoring and controls</p>
+            </div>
+            <div class="px-2.5 py-1 rounded-md bg-red-500/10 border border-red-500/20 text-red-400 text-[10px] font-bold uppercase">
+              Admin Only
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4 mb-8">
+            <!-- Dummy Stats -->
+            <div class="bg-zinc-900/80 p-4 rounded-2xl border border-zinc-800 relative overflow-hidden">
+              <div class="absolute -right-4 -bottom-4 opacity-5"><i class="fa-solid fa-server text-6xl"></i></div>
+              <div class="text-[10px] text-zinc-500 font-semibold uppercase tracking-wider mb-2">Server Load</div>
+              <div class="text-2xl font-mono font-bold text-zinc-100">14<span class="text-sm text-zinc-500">%</span></div>
+              <div class="w-full bg-zinc-800 h-1.5 rounded-full mt-3">
+                <div class="bg-blue-500 h-1.5 rounded-full w-[14%]"></div>
+              </div>
+            </div>
+            
+            <div class="bg-zinc-900/80 p-4 rounded-2xl border border-zinc-800 relative overflow-hidden">
+              <div class="absolute -right-4 -bottom-4 opacity-5"><i class="fa-solid fa-users text-6xl"></i></div>
+              <div class="text-[10px] text-zinc-500 font-semibold uppercase tracking-wider mb-2">Gen Today</div>
+              <div class="text-2xl font-mono font-bold text-zinc-100">1,204</div>
+              <div class="text-[10px] text-emerald-400 mt-2 font-medium"><i class="fa-solid fa-arrow-trend-up"></i> +12% from yesterday</div>
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            <h3 class="text-xs font-semibold text-zinc-400 uppercase tracking-wide mb-3">System Actions</h3>
+            <button onclick="showToast('Cache cleared successfully', 'success')" class="btn btn-secondary w-full py-3 rounded-xl text-sm font-medium flex justify-between items-center px-4">
+              <span><i class="fa-solid fa-broom mr-2 text-zinc-400"></i> Clear System Cache</span>
+              <i class="fa-solid fa-chevron-right text-xs text-zinc-600"></i>
+            </button>
+            <button onclick="showToast('API Keys rotated', 'success')" class="btn btn-secondary w-full py-3 rounded-xl text-sm font-medium flex justify-between items-center px-4">
+              <span><i class="fa-solid fa-key mr-2 text-zinc-400"></i> Rotate API Keys</span>
+              <i class="fa-solid fa-chevron-right text-xs text-zinc-600"></i>
+            </button>
+            <button onclick="showToast('Server restart initiated...', 'info')" class="w-full py-3 rounded-xl text-sm font-medium flex justify-between items-center px-4 bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500/20 transition-colors">
+              <span><i class="fa-solid fa-power-off mr-2"></i> Restart Services</span>
+              <i class="fa-solid fa-chevron-right text-xs opacity-50"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="toast fixed z-[60] bottom-20 md:bottom-6 left-1/2 pro-card rounded-xl px-5 py-3.5 flex items-center gap-3 shadow-2xl border-zinc-700">
+    <i id="toastIcon" class="fa-solid fa-circle-info text-blue-400"></i>
+    <span id="toastMsg" class="text-xs font-medium text-zinc-200"></span>
+  </div>
 
   <script>
-    const BASE_URL = "https://ndxhs.my.id/alightmotion";
+    /* =========================================
+       STATE & AUTHENTICATION
+       ========================================= */
+    let currentUser = null;
 
-    function showToast(msg) {
-      const t = document.getElementById("toast");
-      t.textContent = msg; t.classList.add("show");
-      setTimeout(() => t.classList.remove("show"), 3000);
+    function handleLogin(e) {
+      e.preventDefault();
+      const user = document.getElementById('loginUser').value.trim();
+      const pass = document.getElementById('loginPass').value.trim();
+
+      if (!user || !pass) return;
+
+      // Cek apakah kredensial = HAOMI / HAOMI_XML (Sesuai request)
+      if (user === 'HAOMI' && pass === 'HAOMI_XML') {
+        currentUser = { username: user, role: 'owner' };
+        showToast('Welcome back, Owner.', 'success');
+      } else {
+        // Jika login menggunakan data lain, masuk sebagai member biasa
+        currentUser = { username: user, role: 'member' };
+        showToast('Login successful.', 'success');
+      }
+
+      // Update UI Profil
+      document.getElementById('dispProfileName').innerText = currentUser.username;
+      document.getElementById('dispProfileRole').innerText = currentUser.role;
+      document.getElementById('dispProfileRole').className = currentUser.role === 'owner' ? 'text-amber-400' : 'text-blue-400';
+      document.getElementById('dispAccessLvl').innerText = currentUser.role === 'owner' ? 'Administrator (God Mode)' : 'Standard User';
+
+      // Sembunyikan / Tampilkan Menu Owner
+      const navOwner = document.getElementById('navOwner');
+      if (currentUser.role === 'owner') {
+        navOwner.classList.remove('hidden');
+        navOwner.classList.add('flex'); // untuk mobile flex view
+      } else {
+        navOwner.classList.add('hidden');
+        navOwner.classList.remove('flex');
+      }
+
+      // Transisi View
+      document.getElementById('loginView').classList.add('hidden');
+      document.getElementById('appView').classList.remove('hidden');
+      document.getElementById('appView').classList.add('flex');
+      
+      switchTab('generator');
     }
 
-    function switchTab(tab) {
-      ['send','bulk','verify'].forEach(t => {
-        document.getElementById('content'+t.charAt(0).toUpperCase()+t.slice(1)).classList.toggle('hidden', t !== tab);
-        document.getElementById('tab'+t.charAt(0).toUpperCase()+t.slice(1)).classList.toggle('active', t === tab);
+    function handleLogout() {
+      currentUser = null;
+      document.getElementById('loginUser').value = '';
+      document.getElementById('loginPass').value = '';
+      
+      document.getElementById('appView').classList.add('hidden');
+      document.getElementById('appView').classList.remove('flex');
+      document.getElementById('loginView').classList.remove('hidden');
+      
+      showToast('Logged out successfully.', 'info');
+    }
+
+    /* =========================================
+       TAB NAVIGATION
+       ========================================= */
+    function switchTab(tabName) {
+      // Sembunyikan semua tab content
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      // Hapus active class dari semua nav items
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+
+      // Tampilkan tab yg dipilih
+      document.getElementById('tab' + tabName.charAt(0).toUpperCase() + tabName.slice(1)).classList.remove('hidden');
+      // Set active nav item
+      const navBtn = document.getElementById('nav' + tabName.charAt(0).toUpperCase() + tabName.slice(1));
+      if(navBtn) navBtn.classList.add('active');
+    }
+
+    /* =========================================
+       TOAST UTILITY
+       ========================================= */
+    window.showToast = function(msg, type = 'info') {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMsg');
+      const toastIcon = document.getElementById('toastIcon');
+      
+      toastMsg.innerText = msg;
+      
+      if(type === 'error') {
+        toastIcon.className = 'fa-solid fa-circle-exclamation text-red-400';
+      } else if (type === 'success') {
+        toastIcon.className = 'fa-solid fa-circle-check text-emerald-400';
+      } else {
+        toastIcon.className = 'fa-solid fa-circle-info text-blue-400';
+      }
+
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    /* =========================================
+       MOCK API & GENERATOR LOGIC (AM V1)
+       ========================================= */
+    const sendLinkApi = async (email) => {
+      return new Promise((resolve) => {
+        setTimeout(() => resolve({ message: "Magic link has been sent" }), 1500);
       });
-    }
+    };
 
-    function getAksesKey() {
-      return document.getElementById("inputAksesKey").value.trim();
-    }
+    const verifyReqPrem = async (email, link) => {
+      return new Promise((resolve) => {
+        setTimeout(() => resolve({ 
+          status: "success",
+          code: 200,
+          data: {
+            user_email: email, 
+            subscription: "Pro Lifetime",
+            region: "ID",
+            activated_at: new Date().toISOString()
+          }
+        }), 2000);
+      });
+    };
 
-    async function runAmSend() {
-      const akseskey = getAksesKey();
-      const email = document.getElementById("inputSendEmail").value.trim();
-      if (!akseskey) return showToast("Masukkan Akses Key VIP.");
-      if (!email) return showToast("Masukkan email tujuan.");
+    let savedEmail = "";
 
-      showToast("Mengirim magic link...");
-      try {
-        const res = await fetch(`${BASE_URL}/send?akseskey=${encodeURIComponent(akseskey)}&email=${encodeURIComponent(email)}`);
-        const data = await res.json();
-        const r = document.getElementById("sendResult");
-        r.textContent = JSON.stringify(data, null, 2);
-        r.classList.remove("hidden");
-        showToast("Proses AM Send selesai.");
-      } catch (e) {
-        showToast("Gagal terhubung ke server.");
+    window.handleSendMagicLink = async function() {
+      const email = document.getElementById('inputEmail').value.trim();
+      const btn = event.currentTarget;
+      
+      if (!email || !email.includes('@')) {
+        showToast("Invalid email address provided.", "error");
+        return;
       }
-    }
+      
+      savedEmail = email;
+      const originalText = btn.innerHTML;
+      btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Processing...`;
+      btn.disabled = true;
 
-    async function runAmBulk() {
-      const akseskey = getAksesKey();
-      const amount = document.getElementById("inputBulkAmount").value;
-      if (!akseskey) return showToast("Masukkan Akses Key VIP.");
-      if (!amount) return showToast("Masukkan jumlah akun.");
-
-      showToast("Memproses bulk generator...");
       try {
-        const res = await fetch(`${BASE_URL}/bulk?akseskey=${encodeURIComponent(akseskey)}&amount=${amount}`);
-        const data = await res.json();
-        const r = document.getElementById("bulkResult");
-        r.textContent = JSON.stringify(data, null, 2);
-        r.classList.remove("hidden");
-        showToast("Bulk generator selesai.");
-      } catch (e) {
-        showToast("Proses bulk gagal.");
+        const res = await sendLinkApi(email);
+        showToast(res.message, "success");
+        
+        document.getElementById('stepEmailBox').classList.add('hidden');
+        document.getElementById('stepVerifyBox').classList.remove('hidden');
+        document.getElementById('flowInstruction').innerHTML = `Verification link sent to <strong class="text-zinc-200">${email}</strong>. Please enter it below.`;
+      } catch (err) {
+        showToast("Failed to communicate with server.", "error");
+      } finally {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
       }
-    }
+    };
 
-    async function runAmVerify() {
-      const akseskey = getAksesKey();
-      const email = document.getElementById("inputVerifyEmail").value.trim();
-      const link = document.getElementById("inputVerifyLink").value.trim();
-      if (!akseskey) return showToast("Masukkan Akses Key VIP.");
-      if (!email || !link) return showToast("Lengkapi email dan link verifikasi.");
+    window.handleVerifyLink = async function() {
+      const link = document.getElementById('inputLink').value.trim();
+      const btn = event.currentTarget;
 
-      showToast("Memverifikasi akun...");
+      if (!link) {
+        showToast("Please provide the verification URL.", "error");
+        return;
+      }
+
+      const originalText = btn.innerHTML;
+      btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Verifying...`;
+      btn.disabled = true;
+
       try {
-        const res = await fetch(`${BASE_URL}/verify?akseskey=${encodeURIComponent(akseskey)}&email=${encodeURIComponent(email)}&link=${encodeURIComponent(link)}`);
-        const data = await res.json();
-        const r = document.getElementById("verifyResult");
-        r.textContent = JSON.stringify(data, null, 2);
-        r.classList.remove("hidden");
-        showToast("Verifikasi selesai.");
-      } catch (e) {
-        showToast("Proses verifikasi gagal.");
+        const res = await verifyReqPrem(savedEmail, link);
+        showToast("Account successfully verified!", "success");
+        
+        document.getElementById('stepVerifyBox').classList.add('hidden');
+        document.getElementById('stepSuccessBox').classList.remove('hidden');
+        document.getElementById('jsonResult').innerText = JSON.stringify(res, null, 2);
+        document.getElementById('flowInstruction').innerText = "Process completed successfully.";
+      } catch (err) {
+        showToast("Verification failed. Invalid link.", "error");
+      } finally {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
       }
-    }
+    };
+
+    window.resetAmFlow = function() {
+      document.getElementById('inputEmail').value = "";
+      document.getElementById('inputLink').value = "";
+      document.getElementById('stepSuccessBox').classList.add('hidden');
+      document.getElementById('stepVerifyBox').classList.add('hidden');
+      document.getElementById('stepEmailBox').classList.remove('hidden');
+      document.getElementById('flowInstruction').innerText = "Please enter your active email to receive the magic authentication link.";
+    };
   </script>
 </body>
-</html>
-
