@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -644,8 +645,8 @@
     </div>
 
     <div class="form-group">
-      <label for="regWa">Nombor WhatsApp</label>
-      <input type="text" id="regWa" class="input-control" placeholder="Contoh: 081234567890" autocomplete="off" />
+      <label for="regWa">Nombor WhatsApp (Contoh: 08123456789)</label>
+      <input type="text" id="regWa" class="input-control" placeholder="08xxxxxxxxxx" autocomplete="off" />
     </div>
     
     <div class="form-group">
@@ -658,7 +659,7 @@
       </div>
     </div>
 
-    <!-- Captcha Matematika Tanpa Tulisan Anti-Bot -->
+    <!-- Captcha Matematika -->
     <div class="form-group">
       <label id="captchaLabel" for="regCaptcha">Pengesahan Matematik</label>
       <input type="text" id="regCaptcha" class="input-control" placeholder="Masukkan jawapan" autocomplete="off" />
@@ -792,11 +793,10 @@
 <script>
     // ========== KONFIGURASI GLOBAL & DATABASE ==========
     const OWNER_WA = "+6282231669053";
-    const DB_KEY = 'mshaomi_db_users_v5';
-    const SESSION_KEY = 'mshaomi_active_session_v5';
-    const DEVICE_REG_KEY = 'mshaomi_device_reg_count_v5';
+    const DB_KEY = 'mshaomi_db_users_v7';
+    const SESSION_KEY = 'mshaomi_active_session_v7';
+    const DEVICE_REG_KEY = 'mshaomi_device_reg_count_v7';
 
-    // State Captcha Matematik
     let currentCaptchaAnswer = 0;
 
     function generateCaptcha() {
@@ -807,6 +807,25 @@
         if(label) {
             label.textContent = `Berapakah hasil dari ${num1} + ${num2} ?`;
         }
+    }
+
+    // Fungsi Validasi Ketat Nombor WhatsApp (Anti-Spam & Anti-Fake seperti 12345 atau deretan sama)
+    function isValidWhatsApp(number) {
+        const cleanNum = number.replace(/[^0-9]/g, '');
+        
+        // Format awal wajib Indonesia (08 atau 628) dan panjang 10-15 digit
+        const phoneRegex = /^(08|628)\d{8,13}$/;
+        if (!phoneRegex.test(cleanNum)) return false;
+
+        // Blokir deretan angka berurutan yang mencurigakan (contoh: 123456, 678910)
+        const sequentialPattern = /(0123|1234|2345|3456|4567|5678|6789|7890|9876|8765|7654|6543|5432|4321)/;
+        if (sequentialPattern.test(cleanNum)) return false;
+
+        // Blokir deretan angka berulang yang sama persis (contoh: 08111111111, 0822222222)
+        const repeatingPattern = /^(\d)\1{7,}$/;
+        if (repeatingPattern.test(cleanNum.substring(2))) return false;
+
+        return true;
     }
 
     function initDatabase() {
@@ -975,6 +994,9 @@
             if (db[activeKey].editQuota.wa <= 0) {
                 return showMsg('editModalMsg', 'Kuota tukar Nombor WhatsApp sudah habis (maksimal 1x).', 'error');
             }
+            if (!isValidWhatsApp(newWa)) {
+                return showMsg('editModalMsg', 'Nombor WhatsApp tidak sah atau menggunakan deretan angka berurutan/palsu!', 'error');
+            }
             db[activeKey].wa = newWa;
             db[activeKey].editQuota.wa -= 1;
             changed = true;
@@ -1126,6 +1148,12 @@
             const cInput = parseInt(regCaptcha.value.trim());
 
             if (!u || !w || !p || isNaN(cInput)) return showMsg('regMsg', 'Sila isi semua ruangan termasuk jawapan matematik!', 'error');
+            
+            // Validasi Ketat WhatsApp (Anti Deretan Angka Palsu/Urut 1234)
+            if (!isValidWhatsApp(w)) {
+                return showMsg('regMsg', 'Nombor WhatsApp tidak sah! Elakkan menggunakan nombor berurutan (cth: 1234) atau nombor berulang.', 'error');
+            }
+
             if (cInput !== currentCaptchaAnswer) {
                 generateCaptcha();
                 regCaptcha.value = '';
