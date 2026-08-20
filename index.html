@@ -1,634 +1,483 @@
+```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tools 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞 AM — Premium Activation</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Alight Motion — Premium Activation Center</title>
 
-<!-- Menggunakan font Inter untuk kesan profesional dan modern -->
+<!-- Modern Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
   :root {
-    --bg-base: #09090b;
-    --bg-surface: #18181b;
-    --border-subtle: #27272a;
-    --border-focus: #3b82f6;
-    --text-primary: #fafafa;
-    --text-secondary: #a1a1aa;
-    --brand-accent: #3b82f6;
-    --brand-accent-hover: #2563eb;
-    --error-bg: #7f1d1d;
-    --error-text: #fecaca;
-    --success-bg: #14532d;
-    --success-text: #bbf7d0;
-    --gold: #f59e0b;
+    /* Color Palette - Cyberpunk Dark Glass Theme */
+    --bg-main: #020305;
+    --bg-surface: #0a0c14;
+    
+    /* Realistic Glassmorphism properties */
+    --glass-bg: rgba(15, 18, 28, 0.55);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-highlight: rgba(255, 255, 255, 0.12);
+    --glass-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.7);
+    
+    --accent-blue: #00f2fe;
+    --accent-blue-dim: rgba(0, 242, 254, 0.15);
+    --accent-purple: #7f00ff;
+    --accent-gold: #ffd700;
+    --accent-gold-dim: rgba(255, 215, 0, 0.15);
+    --accent-red: #ff2a6d;
+    --accent-green: #05ffa1;
+
+    --text-primary: #ffffff;
+    --text-secondary: #94a3b8;
+    --text-muted: #475569;
+
+    --font-main: 'Outfit', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    
+    --radius-sm: 10px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-xl: 32px;
   }
 
   * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    -webkit-tap-highlight-color: transparent;
   }
 
   body {
     min-height: 100vh;
-    background-color: var(--bg-base);
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-main);
+    font-family: var(--font-main);
     color: var(--text-primary);
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     position: relative;
     overflow-x: hidden;
-    padding: 20px 0;
+    padding: 24px 16px;
+    background-image: 
+      radial-gradient(circle at 10% 10%, rgba(0, 242, 254, 0.08) 0%, transparent 45%),
+      radial-gradient(circle at 90% 90%, rgba(127, 0, 255, 0.08) 0%, transparent 45%);
+    background-attachment: fixed;
   }
 
-  /* =========================
-     BACKGROUND & AMBIENCE
-     ========================= */
+  /* Background Cyber Grid */
   .bg-grid {
     position: fixed;
     inset: 0;
-    z-index: 0;
-    background-image: radial-gradient(var(--border-subtle) 1px, transparent 1px);
+    z-index: -2;
+    background-image: 
+      linear-gradient(to right, rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.025) 1px, transparent 1px);
     background-size: 32px 32px;
-    opacity: 0.4;
-    pointer-events: none;
+    mask-image: radial-gradient(circle at center, black 60%, transparent 100%);
+    -webkit-mask-image: radial-gradient(circle at center, black 60%, transparent 100%);
   }
 
-  .bg-glow {
-    position: fixed;
-    top: -10%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 800px;
-    height: 500px;
-    background: radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, transparent 60%);
-    z-index: 0;
-    pointer-events: none;
-  }
-
-  /* =========================
-     MAIN WRAPPER
-     ========================= */
   .container {
     position: relative;
     z-index: 10;
     width: 100%;
-    max-width: 440px;
-    padding: 20px 24px;
+    max-width: 480px;
     display: flex;
     flex-direction: column;
     gap: 20px;
+    animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
 
-  /* =========================
-     HEADER
-     ========================= */
-  header {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-bottom: 4px;
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); filter: blur(5px); }
+    to { opacity: 1; transform: translateY(0); filter: blur(0); }
   }
 
+  /* Header & Logo */
+  header { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 4px; }
+  .logo-box {
+    width: 68px; height: 68px;
+    background: linear-gradient(135deg, rgba(0, 242, 254, 0.15), rgba(127, 0, 255, 0.15));
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--accent-blue-dim);
+    border-radius: var(--radius-lg);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 30px var(--accent-blue-dim), inset 0 1px 0 rgba(255,255,255,0.2);
+  }
+  .logo-box svg { width: 36px; height: 36px; stroke: var(--accent-blue); filter: drop-shadow(0 0 8px var(--accent-blue)); }
+  
+  h1 { 
+    font-size: 28px; font-weight: 800; letter-spacing: -0.5px; line-height: 1.2; 
+    background: linear-gradient(to right, #ffffff, #a5b4fc, var(--accent-blue)); 
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
+  }
+  header p { font-size: 13px; color: var(--text-secondary); max-width: 90%; line-height: 1.5; }
+
+  /* Live Clock */
+  .clock-container {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(0, 242, 254, 0.08); border: 1px solid var(--accent-blue-dim);
+    padding: 6px 16px; border-radius: 20px; font-family: var(--font-mono);
+    font-size: 13px; font-weight: 700; color: var(--accent-blue);
+    box-shadow: 0 0 20px rgba(0, 242, 254, 0.1); margin-top: 4px;
+  }
+  .clock-container svg { width: 14px; height: 14px; }
+
+  /* Badges */
   .badge {
-    display: inline-flex;
-    align-items: center;
-    align-self: center;
-    gap: 6px;
-    padding: 4px 12px;
-    background: rgba(59, 130, 246, 0.1);
-    border: 1px solid rgba(59, 130, 246, 0.2);
-    border-radius: 999px;
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--brand-accent);
-    margin-bottom: 4px;
+    display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px;
+    background: var(--glass-bg); border: 1px solid var(--glass-border);
+    border-radius: var(--radius-xl); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+    box-shadow: inset 0 1px 0 var(--glass-highlight);
   }
+  .badge-blue { color: var(--accent-blue); border-color: var(--accent-blue-dim); background: rgba(0,242,254,0.05); }
+  .badge-gold { color: var(--accent-gold); border-color: var(--accent-gold-dim); background: rgba(255,215,0,0.05); }
 
-  .badge::before {
-    content: "";
-    width: 6px;
-    height: 6px;
-    background-color: var(--brand-accent);
-    border-radius: 50%;
-    box-shadow: 0 0 8px var(--brand-accent);
-  }
-
-  h1 {
-    font-size: 24px;
-    font-weight: 700;
-    letter-spacing: -0.03em;
-    line-height: 1.2;
-    color: var(--text-primary);
-  }
-
-  header p {
-    font-size: 13px;
-    color: var(--text-secondary);
-    line-height: 1.5;
-  }
-
-  /* =========================
-     SURFACE CARD
-     ========================= */
+  /* Surface Card (Glassmorphism) */
   .card {
-    background: var(--bg-surface);
-    border: 1px solid var(--border-subtle);
-    border-radius: 16px;
-    padding: 20px 24px;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-top: 1px solid rgba(255, 255, 255, 0.2); border-left: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-lg); padding: 24px; box-shadow: var(--glass-shadow);
+    display: flex; flex-direction: column; gap: 20px; position: relative; overflow: hidden;
   }
 
-  /* =========================
-     FORM ELEMENTS
-     ========================= */
-  .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .form-group label {
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--text-secondary);
-  }
-
-  .input-row {
-    display: flex;
-    gap: 12px;
-  }
-
-  .input-control {
-    width: 100%;
-    padding: 12px 16px;
-    font-size: 14px;
-    font-family: inherit;
-    background: var(--bg-base);
-    border: 1px solid var(--border-subtle);
-    border-radius: 10px;
-    color: var(--text-primary);
-    transition: all 0.2s ease;
-    outline: none;
-  }
-
-  .input-control::placeholder {
-    color: #52525b;
-  }
-
-  .input-control:focus {
-    border-color: var(--border-focus);
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
-  }
-
-  .pwd-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-  }
-
-  .pwd-wrapper .input-control {
-    padding-right: 44px;
-  }
-
-  .pwd-toggle {
-    position: absolute;
-    right: 12px;
-    background: none;
-    border: none;
-    color: var(--text-secondary);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 4px;
-    transition: color 0.2s;
-  }
-
-  .pwd-toggle:hover {
-    color: var(--text-primary);
-  }
-
-  .pwd-toggle svg {
-    width: 18px;
-    height: 18px;
-    stroke: currentColor;
-    fill: none;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-
-  /* =========================
-     BUTTONS & LINKS
-     ========================= */
-  .btn {
-    font-family: inherit;
-    font-size: 14px;
-    font-weight: 500;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-  }
-
-  .btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-
-  .btn-secondary {
-    background: var(--bg-base);
-    border: 1px solid var(--border-subtle);
-    color: var(--text-primary);
-    padding: 12px 18px;
-  }
-
-  .btn-secondary:hover:not(:disabled) {
-    background: #27272a;
-  }
-
-  .btn-primary {
-    background: var(--text-primary);
-    color: var(--bg-base);
+  /* Info Box */
+  .info-box {
+    background: rgba(255, 215, 0, 0.08);
+    border: 1px solid var(--accent-gold-dim);
+    border-left: 3px solid var(--accent-gold);
+    border-radius: var(--radius-sm);
     padding: 14px;
-    width: 100%;
-    font-weight: 600;
-    font-size: 15px;
+    display: flex; align-items: flex-start; gap: 10px;
+    font-size: 12.5px; color: #fff; line-height: 1.5;
   }
+  .info-box svg { width: 20px; height: 20px; color: var(--accent-gold); flex-shrink: 0; margin-top: 2px; }
 
-  .btn-primary:hover:not(:disabled) {
-    background: #e4e4e7;
-    transform: translateY(-1px);
+  /* Profile Card */
+  .profile-card {
+    background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(0,0,0,0.3));
+    backdrop-filter: blur(14px); border: 1px solid var(--glass-border);
+    border-top: 1px solid rgba(255,255,255,0.15); border-radius: var(--radius-md);
+    padding: 20px; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 12px 35px rgba(0,0,0,0.4);
   }
+  .profile-header { display: flex; align-items: center; justify-content: space-between; }
+  .profile-info { display: flex; align-items: center; gap: 16px; }
+  .avatar {
+    width: 52px; height: 52px; border-radius: 16px;
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+    color: #fff; display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 22px; box-shadow: 0 6px 20px rgba(0, 242, 254, 0.4);
+    border: 2px solid rgba(255,255,255,0.3);
+  }
+  .user-details { display: flex; flex-direction: column; gap: 4px; }
+  .user-name { font-weight: 800; font-size: 17px; color: var(--text-primary); letter-spacing: 0.5px; }
+  
+  .user-role-badge {
+    font-size: 10px; padding: 3px 10px; border-radius: 6px; font-weight: 800;
+    text-transform: uppercase; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 4px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
+  }
+  .role-owner { color: #000; background: linear-gradient(135deg, #ff2a6d, #ff6b8b); box-shadow: 0 2px 12px rgba(255,42,109,0.5); }
+  .role-vip { color: #000; background: linear-gradient(135deg, #ffd700, #ff9100); box-shadow: 0 2px 12px rgba(255,215,0,0.5); animation: pulseVip 2s infinite alternate;}
+  @keyframes pulseVip { 0% { box-shadow: 0 2px 12px rgba(255,215,0,0.4); } 100% { box-shadow: 0 2px 25px rgba(255,215,0,0.9); } }
+  .role-member { color: #fff; background: linear-gradient(135deg, #00f2fe, #0077b6); }
+
+  .profile-data-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    background: rgba(0,0,0,0.5); padding: 14px; border-radius: var(--radius-sm);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .data-item { display: flex; flex-direction: column; gap: 2px; }
+  .data-label { font-size: 10px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+  .data-value { font-size: 12px; font-family: var(--font-mono); color: var(--text-primary); }
+  
+  .profile-actions { display: flex; gap: 10px; margin-top: 4px; }
+  .btn-icon {
+    flex: 1; background: rgba(255,255,255,0.06); border: 1px solid var(--glass-border);
+    color: var(--text-primary); padding: 11px; border-radius: var(--radius-sm);
+    cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+    font-size: 12px; font-weight: 600; font-family: var(--font-main); transition: all 0.2s;
+  }
+  .btn-icon:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.3); }
+  .btn-icon:active { transform: scale(0.96); }
+  .btn-icon.danger { color: #ff6b8b; background: rgba(255,42,109,0.1); border-color: rgba(255,42,109,0.3); }
+  .btn-icon.danger:hover { background: rgba(255,42,109,0.2); }
+
+  /* VIP Promo Banner */
+  .promo-banner {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.18) 0%, rgba(255, 145, 0, 0.05) 100%);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--accent-gold); border-radius: var(--radius-md);
+    padding: 18px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px;
+    position: relative; overflow: hidden;
+    box-shadow: 0 12px 35px rgba(255, 215, 0, 0.15), inset 0 1px 0 rgba(255,255,255,0.3);
+    animation: pulseBorder 3s infinite alternate;
+  }
+  @keyframes pulseBorder { 0% { border-color: rgba(255, 215, 0, 0.4); } 100% { border-color: rgba(255, 215, 0, 1); } }
+  .promo-banner h3 { font-size: 16px; font-weight: 800; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 1.5px; display: flex; align-items: center; gap: 8px; text-shadow: 0 0 12px rgba(255, 215, 0, 0.6); }
+  .promo-banner p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .btn-promo {
+    background: linear-gradient(135deg, #ffd700, #ff9100); color: #000; font-weight: 800;
+    padding: 12px 24px; border-radius: var(--radius-sm); font-size: 14px; text-decoration: none;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); display: inline-flex; align-items: center; gap: 8px;
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4); text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .btn-promo:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(255, 215, 0, 0.7); }
+  .btn-promo:active { transform: scale(0.95); }
+
+  /* 3 Buttons Grid (WA, Telegram, CS) */
+  .action-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .btn-action-card {
+    background: linear-gradient(145deg, rgba(255,255,255,0.06), rgba(0,0,0,0.4));
+    backdrop-filter: blur(10px); border: 1px solid var(--glass-border);
+    padding: 14px 10px; border-radius: var(--radius-md);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+    color: var(--text-primary); text-decoration: none; font-size: 11px; font-weight: 700;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 6px 20px rgba(0,0,0,0.3); text-align: center;
+  }
+  .btn-action-card svg { width: 22px; height: 22px; margin-bottom: 2px; }
+  .btn-action-card:hover { background: rgba(255,255,255,0.12); border-color: var(--accent-blue); transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,242,254,0.3); }
+  .btn-action-card:active { transform: scale(0.94); }
+  .icon-wa { color: #05ffa1; } .icon-tele { color: #00f2fe; } .icon-cs { color: var(--accent-gold); }
+
+  /* Form Elements */
+  .form-group { display: flex; flex-direction: column; gap: 8px; }
+  .form-group label { font-size: 13px; font-weight: 500; color: var(--text-secondary); display: flex; justify-content: space-between; align-items: center; }
+  .input-row { display: flex; gap: 12px; }
+  .input-control {
+    width: 100%; padding: 14px 16px; font-size: 14px; font-family: var(--font-main);
+    background: rgba(0,0,0,0.6); border: 1px solid var(--glass-border); border-radius: var(--radius-sm);
+    color: var(--text-primary); transition: all 0.3s ease; outline: none;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.4);
+  }
+  .input-control:focus { border-color: var(--accent-blue); box-shadow: 0 0 0 4px var(--accent-blue-dim), inset 0 2px 5px rgba(0,0,0,0.4); background: rgba(0,0,0,0.8); }
+  .input-control::placeholder { color: var(--text-muted); }
+
+  .pwd-wrapper { position: relative; display: flex; align-items: center; }
+  .pwd-wrapper .input-control { padding-right: 48px; }
+  .pwd-toggle {
+    position: absolute; right: 14px; background: none; border: none; color: var(--text-secondary);
+    cursor: pointer; display: flex; align-items: center; justify-content: center; transition: color 0.2s;
+  }
+  .pwd-toggle:hover { color: var(--accent-blue); }
+  .pwd-toggle svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; }
+  .pwd-toggle:active { transform: scale(0.9); }
+
+  /* Buttons */
+  .btn {
+    font-family: var(--font-main); font-size: 15px; font-weight: 700; border: none; border-radius: var(--radius-sm);
+    cursor: pointer; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 15px; width: 100%;
+  }
+  .btn:active:not(:disabled) { transform: scale(0.96); }
+  .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+  
+  .btn-primary { background: linear-gradient(135deg, #ffffff, #e2e8f0); color: var(--bg-main); box-shadow: 0 4px 15px rgba(255,255,255,0.25); }
+  .btn-primary:hover:not(:disabled) { background: linear-gradient(135deg, var(--accent-blue), #0077b6); color: #000; box-shadow: 0 6px 25px var(--accent-blue-dim); transform: translateY(-2px); }
+  
+  .btn-secondary { background: rgba(255,255,255,0.06); border: 1px solid var(--glass-border); color: var(--text-primary); width: auto; padding: 14px 20px; backdrop-filter: blur(5px); }
+  .btn-secondary:hover:not(:disabled) { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.4); }
 
   .btn-owner-dash {
-    background: rgba(59, 130, 246, 0.15);
-    border: 1px solid rgba(59, 130, 246, 0.3);
-    color: var(--brand-accent);
-    padding: 12px;
-    width: 100%;
-    font-weight: 600;
+    background: linear-gradient(90deg, rgba(0, 242, 254, 0.15), rgba(127, 0, 255, 0.15));
+    border: 1px solid var(--accent-blue); color: var(--text-primary);
+    text-transform: uppercase; letter-spacing: 1px; font-size: 13px; box-shadow: 0 0 20px var(--accent-blue-dim);
   }
+  .btn-owner-dash:hover { box-shadow: 0 0 30px rgba(0, 242, 254, 0.4); background: linear-gradient(90deg, rgba(0, 242, 254, 0.25), rgba(127, 0, 255, 0.25)); }
 
-  .btn-owner-dash:hover {
-    background: rgba(59, 130, 246, 0.25);
+  /* Limit Display */
+  .limit-display { display: flex; flex-direction: column; gap: 6px; background: rgba(0,0,0,0.4); padding: 14px; border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.08); }
+  .limit-header { display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; color: var(--text-secondary); }
+  .limit-track { width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; position: relative; }
+  .limit-bar { height: 100%; background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple)); transition: width 0.3s; border-radius: 4px; box-shadow: 0 0 10px var(--accent-blue); }
+  .limit-bar.vip-bar { background: linear-gradient(90deg, #ffd700, #ff9100); width: 100% !important; box-shadow: 0 0 15px var(--accent-gold); animation: shineBar 2s infinite linear; }
+  @keyframes shineBar { 0% { filter: brightness(1); } 50% { filter: brightness(1.4); } 100% { filter: brightness(1); } }
+
+  /* Owner Dashboard (Admin Panel) */
+  .admin-panel {
+    background: var(--glass-bg); backdrop-filter: blur(24px); border: 1px solid var(--glass-border); border-radius: var(--radius-lg);
+    padding: 24px; display: flex; flex-direction: column; gap: 16px; box-shadow: var(--glass-shadow);
   }
-
-  .auth-links {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 8px;
-    font-size: 13px;
+  .admin-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  .admin-header h2 { font-size: 18px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+  
+  .broadcast-section {
+    background: rgba(127, 0, 255, 0.12); border: 1px solid rgba(127, 0, 255, 0.35); border-radius: var(--radius-sm); padding: 16px;
+    display: flex; flex-direction: column; gap: 10px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
   }
-
-  .auth-link {
-    color: var(--brand-accent);
-    cursor: pointer;
-    font-weight: 500;
-    text-decoration: none;
-    transition: color 0.2s;
+  .broadcast-section h4 { font-size: 13px; color: var(--text-primary); display: flex; align-items: center; gap: 6px; font-weight: 700; }
+  .broadcast-section textarea {
+    width: 100%; background: rgba(0,0,0,0.6); border: 1px solid var(--glass-border); color: #fff; padding: 12px; border-radius: 8px;
+    font-family: var(--font-main); font-size: 13px; resize: vertical; min-height: 70px; outline: none;
   }
+  .broadcast-section textarea:focus { border-color: var(--accent-purple); box-shadow: 0 0 10px rgba(127,0,255,0.3); }
 
-  .auth-link:hover {
-    color: var(--text-primary);
-    text-decoration: underline;
+  .member-list { display: flex; flex-direction: column; gap: 12px; max-height: 420px; overflow-y: auto; padding-right: 6px; }
+  .member-list::-webkit-scrollbar { width: 6px; }
+  .member-list::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 10px; }
+  .member-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.25); border-radius: 10px; }
+
+  .admin-member-card {
+    background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.06); border-left: 3px solid var(--accent-blue);
+    border-radius: var(--radius-sm); padding: 16px; display: flex; flex-direction: column; gap: 12px; transition: transform 0.2s, background 0.2s;
   }
-
-  .auth-link-center {
-    text-align: center;
-    display: block;
-    margin-top: 12px;
+  .admin-member-card:hover { transform: translateX(4px); background: rgba(255,255,255,0.03); }
+  .admin-member-card.vip-card { border-left-color: var(--accent-gold); background: linear-gradient(135deg, rgba(255,215,0,0.04), rgba(0,0,0,0.5)); }
+  .admin-member-card.banned-card { border-left-color: var(--accent-red); opacity: 0.7; }
+  
+  .admin-member-header { display: flex; justify-content: space-between; align-items: flex-start; }
+  .admin-member-name { font-size: 15px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+  .admin-member-id { font-family: var(--font-mono); font-size: 11px; color: var(--accent-blue); background: var(--bg-main); padding: 4px 8px; border-radius: 6px; border: 1px solid var(--accent-blue-dim); font-weight: 700; }
+  
+  .admin-member-details { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 12px; color: var(--text-secondary); }
+  .admin-member-details span { display: flex; align-items: center; gap: 6px; font-family: var(--font-mono); }
+  
+  .admin-member-actions { display: flex; gap: 6px; padding-top: 12px; border-top: 1px dashed rgba(255,255,255,0.1); flex-wrap: wrap; }
+  .btn-tiny {
+    flex: 1; min-width: 70px; padding: 8px; font-size: 11px; font-weight: 700; border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.03); color: var(--text-secondary);
+    cursor: pointer; text-align: center; text-decoration: none; transition: 0.2s;
   }
+  .btn-tiny:hover { background: rgba(255,255,255,0.12); color: #fff; }
+  .btn-tiny:active { transform: scale(0.94); }
+  .btn-tiny.action-wa:hover { border-color: var(--accent-green); color: var(--accent-green); background: rgba(5,255,161,0.1); }
+  .btn-tiny.action-limit-add:hover { border-color: var(--accent-blue); color: var(--accent-blue); background: rgba(0,242,254,0.1); }
+  .btn-tiny.action-limit-sub:hover { border-color: #ff9100; color: #ff9100; background: rgba(255,145,0,0.1); }
+  .btn-tiny.action-vip { border-color: var(--accent-gold-dim); color: var(--accent-gold); }
+  .btn-tiny.action-vip:hover { background: rgba(255,215,0,0.15); border-color: var(--accent-gold); }
+  .btn-tiny.action-ban:hover { border-color: var(--accent-red); color: var(--accent-red); background: rgba(255,42,109,0.15); }
 
-  /* =========================
-     PROMO AD BANNER (AKSES PERMANEN)
-     ========================= */
-  .promo-banner {
-    background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(59, 130, 246, 0.15));
-    border: 1px solid rgba(245, 158, 11, 0.3);
-    border-radius: 12px;
-    padding: 16px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .promo-banner h3 {
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--gold);
-    letter-spacing: 0.5px;
-  }
-
-  .promo-banner p {
-    font-size: 12px;
-    color: var(--text-secondary);
-  }
-
-  .btn-promo {
-    background: var(--gold);
-    color: #000;
-    font-weight: 600;
-    padding: 10px;
-    border-radius: 8px;
-    font-size: 13px;
-    text-decoration: none;
-    margin-top: 4px;
-    transition: opacity 0.2s;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-  }
-
-  .btn-promo:hover {
-    opacity: 0.9;
-  }
-
-  /* =========================
-     MESSAGES & STATES
-     ========================= */
+  /* Messages & Alerts */
   .message-box {
-    padding: 12px 16px;
-    border-radius: 10px;
-    font-size: 13px;
-    font-weight: 500;
-    text-align: center;
-    display: none;
-    animation: fadeIn 0.3s ease;
+    padding: 14px 16px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 500;
+    text-align: center; display: none; animation: fadeUp 0.3s ease; line-height: 1.5;
   }
+  .message-box.show { display: block; }
+  .message-error { background: rgba(255, 42, 109, 0.12); border: 1px solid rgba(255, 42, 109, 0.35); color: #ff85a2; }
+  .message-success { background: rgba(5, 255, 161, 0.12); border: 1px solid rgba(5, 255, 161, 0.35); color: var(--accent-green); }
 
-  .message-box.show {
-    display: block;
+  /* Modals (Glassmorphism) */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    z-index: 999; display: flex; align-items: center; justify-content: center; padding: 20px;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
   }
+  .modal-overlay.show { opacity: 1; pointer-events: auto; }
+  .modal-box {
+    background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: var(--radius-lg);
+    width: 100%; max-width: 420px; padding: 28px; display: flex; flex-direction: column; gap: 16px;
+    transform: scale(0.9) translateY(20px); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.15);
+  }
+  .modal-overlay.show .modal-box { transform: scale(1) translateY(0); }
+  
+  /* Warning Modal Specific */
+  .warning-modal-box { border: 1px solid rgba(255, 42, 109, 0.5); text-align: center; box-shadow: 0 0 50px rgba(255,42,109,0.2); }
+  .warning-icon {
+    width: 70px; height: 70px; margin: 0 auto 10px; background: rgba(255, 42, 109, 0.12); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; color: var(--accent-red);
+    box-shadow: 0 0 35px rgba(255, 42, 109, 0.4); animation: pulseWarning 2s infinite;
+  }
+  @keyframes pulseWarning { 0% { transform: scale(1); box-shadow: 0 0 20px rgba(255,42,109,0.3); } 50% { transform: scale(1.06); box-shadow: 0 0 45px rgba(255,42,109,0.6); } 100% { transform: scale(1); box-shadow: 0 0 20px rgba(255,42,109,0.3); } }
+  .warning-modal-box h3 { font-size: 20px; font-weight: 800; color: var(--accent-red); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 1px; }
+  .warning-desc { font-size: 13px; color: var(--text-secondary); margin-bottom: 16px; line-height: 1.6; }
+  .warning-list { text-align: left; font-size: 12.5px; color: #cbd5e1; line-height: 1.7; padding-left: 20px; margin-bottom: 16px; display: flex; flex-direction: column; gap: 8px; }
+  
+  /* Broadcast Modal */
+  .broadcast-modal-box { border-color: var(--accent-purple); box-shadow: 0 0 50px rgba(127,0,255,0.2); }
+  .broadcast-modal-box .icon { color: var(--accent-purple); background: rgba(127,0,255,0.15); box-shadow: 0 0 35px rgba(127,0,255,0.4); }
 
-  .message-error {
-    background: rgba(239, 68, 68, 0.1);
-    border: 1px solid rgba(239, 68, 68, 0.2);
-    color: #f87171;
-  }
+  /* VIP Welcome Modal */
+  .vip-modal-box { border-color: var(--accent-gold); box-shadow: 0 0 60px rgba(255,215,0,0.2); text-align: center; }
 
-  .message-success {
-    background: rgba(20, 83, 45, 0.3);
-    border: 1px solid rgba(74, 222, 128, 0.2);
-    color: var(--success-text);
-  }
+  /* Utilities & Links */
+  .auth-links { display: flex; justify-content: space-between; font-size: 13px; margin-top: 8px; font-weight: 500; }
+  .auth-link { color: var(--text-secondary); cursor: pointer; text-decoration: none; transition: color 0.2s; }
+  .auth-link:hover { color: var(--accent-blue); text-decoration: underline; }
+  .hidden { display: none !important; }
+  footer { text-align: center; font-size: 12px; color: var(--text-muted); margin-top: 24px; letter-spacing: 0.5px; font-weight: 500;}
+  footer span { color: var(--text-secondary); font-weight: 700; }
 
   /* Loader */
-  .loader-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-  }
-
-  .loader-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--bg-base);
-    animation: pulseDot 1.4s infinite ease-in-out both;
-  }
-
-  .loader-dot:nth-child(1) { animation-delay: -0.32s; }
-  .loader-dot:nth-child(2) { animation-delay: -0.16s; }
-
-  @keyframes pulseDot {
-    0%, 80%, 100% { transform: scale(0); opacity: 0.4; }
-    40% { transform: scale(1); opacity: 1; }
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-4px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .success-content {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .success-content svg {
-    width: 18px;
-    height: 18px;
-    stroke: var(--bg-base);
-    fill: none;
-    stroke-width: 2.5;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-
-  .hidden {
-    display: none !important;
-  }
-
-  /* =========================
-     PROFILE & OWNER PANEL UI
-     ========================= */
-  .profile-card {
-    background: var(--bg-surface);
-    border: 1px solid var(--border-subtle);
-    border-radius: 12px;
-    padding: 14px 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .profile-info {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .avatar {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    background: rgba(59, 130, 246, 0.15);
-    color: var(--brand-accent);
-    border: 1px solid rgba(59, 130, 246, 0.3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 15px;
-  }
-  .user-details {
-    display: flex;
-    flex-direction: column;
-  }
-  .user-name {
-    font-weight: 600;
-    font-size: 13px;
-    color: var(--text-primary);
-  }
-  .user-role {
-    font-size: 11px;
-    color: var(--brand-accent);
-    font-weight: 500;
-  }
-  .profile-actions {
-    display: flex;
-    gap: 6px;
-    align-items: center;
-  }
-  .btn-icon-action {
-    background: var(--bg-base);
-    border: 1px solid var(--border-subtle);
-    color: var(--text-secondary);
-    padding: 7px 10px;
-    font-size: 11px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .btn-icon-action:hover {
-    color: var(--text-primary);
-    border-color: var(--brand-accent);
-  }
-
-  .member-item {
-    background: var(--bg-base);
-    border: 1px solid var(--border-subtle);
-    border-radius: 8px;
-    padding: 10px 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 12px;
-    margin-bottom: 6px;
-  }
-  .member-info {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-  .member-info strong {
-    color: var(--text-primary);
-  }
-  .member-meta {
-    color: var(--text-secondary);
-    font-size: 10px;
-  }
-  .member-actions-group {
-    display: flex;
-    gap: 4px;
-    align-items: center;
-  }
-  .member-wa {
-    color: var(--brand-accent);
-    font-weight: 500;
-    text-decoration: none;
-    background: rgba(59, 130, 246, 0.1);
-    padding: 5px 7px;
-    border-radius: 6px;
-    font-size: 10px;
-  }
-  .member-action-btn {
-    background: var(--bg-surface);
-    border: 1px solid var(--border-subtle);
-    color: var(--text-primary);
-    padding: 5px 7px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 10px;
-  }
-  .member-action-btn:hover {
-    border-color: var(--brand-accent);
-  }
-
-  /* Modal Edit Profile & Warning Pop-up */
-  .modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.75);
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-  }
-  .modal-box {
-    background: var(--bg-surface);
-    border: 1px solid var(--border-subtle);
-    border-radius: 16px;
-    width: 100%;
-    max-width: 380px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
-
-  footer {
-    text-align: center;
-    margin-top: 16px;
-    font-size: 11px;
-    color: var(--text-secondary);
-  }
-  footer a {
-    color: var(--text-primary);
-    text-decoration: none;
-    font-weight: 500;
-  }
+  .loader-container { display: flex; align-items: center; justify-content: center; gap: 6px; }
+  .loader-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--bg-main); animation: pulseDot 1.4s infinite ease-in-out both; }
+  .loader-dot:nth-child(1) { animation-delay: -0.32s; } .loader-dot:nth-child(2) { animation-delay: -0.16s; }
+  @keyframes pulseDot { 0%, 80%, 100% { transform: scale(0); opacity: 0.4; } 40% { transform: scale(1); opacity: 1; } }
 </style>
 </head>
 <body>
 
 <div class="bg-grid"></div>
-<div class="bg-glow"></div>
 
-<!-- POP-UP PERINGATAN (WARNING/DISCLAIMER) -->
+<!-- POP-UP WARNING HAK CIPTA & ATURAN -->
 <div id="warningModal" class="modal-overlay">
-  <div class="modal-box" style="border-color: rgba(239, 68, 68, 0.4);">
-    <div style="display: flex; align-items: center; gap: 8px; color: #f87171;">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-      <h3 style="font-size: 15px; font-weight: 700;">Amaran Sistem & Polisi</h3>
+  <div class="modal-box warning-modal-box">
+    <div class="warning-icon">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
     </div>
-    <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.5;">
-      Dengan log masuk atau menggunakan perkhidmatan <b>Tools 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞 AM</b>, anda bersetuju mematuhi peraturan ketat kami:
-    </p>
-    <ul style="font-size: 11.5px; color: var(--text-secondary); padding-left: 18px; display: flex; flex-direction: column; gap: 4px; line-height: 1.4;">
-      <li>Dilarang keras menggunakan alatan ini untuk tindakan <b>haram, penggodaman, kecurian data, atau penyalahgunaan API</b>.</li>
-      <li>Sebarang pelanggaran <b>Hak Cipta (Copyright)</b>, duplikasi haram, atau eksploitasi sistem akan mengakibatkan akaun disekat serta-merta tanpa amaran.</li>
-      <li>Owner berhak memantau seluruh aktiviti ahli demi keselamatan dan integriti perkhidmatan.</li>
+    <h3>WARNING: Hak Cipta & Keamanan</h3>
+    <p class="warning-desc">Sistem ini dilindungi enkripsi penuh. Dengan membuat akun atau login, Anda terikat secara hukum pada ketentuan berikut:</p>
+    <ul class="warning-list">
+      <li>Dilarang keras melakukan <b>Sniffing, Bypass, DDOS</b>, atau eksploitasi API pada server. IP Anda telah direkam otomatis.</li>
+      <li>Dilarang memperjualbelikan ulang akses, duplikasi skrip, atau pencurian aset intelektual (Copyright Infringement).</li>
+      <li>Penggunaan alat untuk tindakan ilegal/kriminal sepenuhnya menjadi tanggung jawab pengguna pribadi.</li>
+      <li>Administrator berhak <b>membanned permanen (Suspend)</b> akun tanpa pemberitahuan jika terdeteksi melanggar.</li>
     </ul>
-    <button class="btn btn-primary" style="margin-top: 6px;" onclick="closeWarningModal()">Saya Faham & Bersetuju</button>
+    <button class="btn btn-primary" style="background: linear-gradient(135deg, #ff2a6d, #ff0044); color: white; box-shadow: 0 4px 20px rgba(255,42,109,0.5);" onclick="closeWarningModal()">Saya Memahami & Setuju</button>
+  </div>
+</div>
+
+<!-- POP-UP PROMO VIP (UNTUK USER BARU) -->
+<div id="vipWelcomeModal" class="modal-overlay">
+  <div class="modal-box vip-modal-box">
+    <div style="font-size: 55px; margin-bottom: -10px; filter: drop-shadow(0 0 15px rgba(255,215,0,0.6));">👑</div>
+    <h3 style="font-size: 22px; font-weight: 800; color: var(--accent-gold); text-transform: uppercase;">Penawaran Spesial VIP</h3>
+    <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6;">Selamat datang! Akun Anda saat ini memiliki limitasi kuota harian.<br><br>Ingin fitur <b>UNLIMITED</b> dan akses tanpa batas selamanya? Upgrade ke <b>VIP Permanen</b> sekarang juga!</p>
+    <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+      <a href="https://wa.me/6282231669053?text=Halo%20Admin,%20saya%20user%20baru%20ingin%20upgrade%20akun%20menjadi%20VIP%20Permanen." target="_blank" class="btn btn-primary" style="background: linear-gradient(135deg, #ffd700, #ff9100); color: #000; font-weight: 800; text-decoration: none;">Hubungi Owner (Upgrade)</a>
+      <button class="btn btn-secondary" onclick="document.getElementById('vipWelcomeModal').classList.remove('show')">Mungkin Nanti Saja</button>
+    </div>
+  </div>
+</div>
+
+<!-- POP-UP BROADCAST INFORMASI DARI OWNER -->
+<div id="broadcastModal" class="modal-overlay">
+  <div class="modal-box broadcast-modal-box" style="text-align: center;">
+    <div class="warning-icon icon">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"></path></svg>
+    </div>
+    <h3 style="font-size: 20px; font-weight: 800; color: var(--text-primary); margin-bottom: 4px;">PENGUMUMAN PENTING</h3>
+    <p style="font-size: 12px; color: var(--accent-purple); margin-bottom: 16px; font-family: var(--font-mono);">Dari Administrator Server Utama</p>
+    <div style="background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 16px; text-align: left; font-size: 14px; line-height: 1.6; color: #cbd5e1; margin-bottom: 16px; white-space: pre-wrap;" id="broadcastMessageText"></div>
+    <button class="btn btn-primary" style="background: linear-gradient(135deg, #7f00ff, #9d4edd); color: white;" onclick="closeBroadcastModal()">Saya Mengerti</button>
   </div>
 </div>
 
 <!-- 1. TAMPILAN LOGIN -->
 <div id="loginView" class="container hidden">
   <header>
-    <div class="badge" style="color: var(--text-primary); border-color: var(--border-subtle); background: var(--bg-surface);">Autentikasi Sistem</div>
-    <h1>Portal Log Masuk</h1>
-    <p>Sila log masuk menggunakan akaun berdaftar.</p>
+    <div class="logo-box">
+      <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+    </div>
+    <div class="badge badge-blue">Autentikasi Server</div>
+    <h1>Portal Login</h1>
+    <p>Silakan masukkan kredensial untuk mengakses dasbor utama sistem.</p>
   </header>
 
   <div class="card">
     <div class="form-group">
-      <label for="loginUser">Nama Pengguna (Username)</label>
-      <input type="text" id="loginUser" class="input-control" placeholder="Masukkan username" autocomplete="off" />
+      <label for="loginUser">Username (ID Pengguna)</label>
+      <input type="text" id="loginUser" class="input-control" placeholder="Masukkan Username Anda" autocomplete="off" />
     </div>
     
     <div class="form-group">
-      <label for="loginPwd">Kata Laluan (Password)</label>
+      <label for="loginPwd">Kata Sandi</label>
       <div class="pwd-wrapper">
         <input type="password" id="loginPwd" class="input-control" placeholder="••••••••" autocomplete="off" />
         <button type="button" class="pwd-toggle" onclick="togglePwd('loginPwd', this)">
@@ -638,11 +487,11 @@
     </div>
 
     <div id="loginErrorMsg" class="message-box message-error" role="alert"></div>
-    <button id="loginBtn" class="btn btn-primary">Masuk ke Sistem</button>
+    <button id="loginBtn" class="btn btn-primary">Akses Kokpit Sistem</button>
 
     <div class="auth-links">
-      <span class="auth-link" onclick="handleForgotClick()">Lupa Kata Laluan?</span>
-      <span class="auth-link" onclick="switchView('registerView')">Daftar Akaun</span>
+      <span class="auth-link" onclick="handleForgotClick()">Lupa Kata Sandi?</span>
+      <span class="auth-link" style="color: var(--accent-blue); font-weight: 700;" onclick="switchView('registerView')">Daftar Akun Baru</span>
     </div>
   </div>
 </div>
@@ -650,26 +499,30 @@
 <!-- 2. TAMPILAN REGISTER -->
 <div id="registerView" class="container hidden">
   <header>
-    <div class="badge">Pendaftaran Ahli</div>
-    <h1>Bina Akaun Baharu</h1>
-    <p>Daftar akaun baharu untuk mula menggunakan sistem.</p>
+    <!-- Logo Register Diperbaiki (Terlihat Jelas) -->
+    <div class="logo-box" style="border-color: var(--accent-gold-dim); background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 42, 109, 0.15)); box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);">
+      <svg viewBox="0 0 24 24" style="stroke: var(--accent-gold); fill: none;" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+    </div>
+    <div class="badge badge-gold">Registrasi Klien</div>
+    <h1>Buat Akun Baru</h1>
+    <p>Registrasi untuk mendapatkan akses eksklusif ke peralatan premium kami.</p>
   </header>
 
   <div class="card">
     <div class="form-group">
-      <label for="regUser">Nama Pengguna (Username)</label>
-      <input type="text" id="regUser" class="input-control" placeholder="Pilih username unik" autocomplete="off" />
+      <label for="regUser">Username Unik</label>
+      <input type="text" id="regUser" class="input-control" placeholder="Pilih username tanpa spasi" autocomplete="off" />
     </div>
 
     <div class="form-group">
-      <label for="regWa">Nombor WhatsApp (Contoh: 08123456789)</label>
-      <input type="text" id="regWa" class="input-control" placeholder="08xxxxxxxxxx" autocomplete="off" />
+      <label for="regWa">Nomor WhatsApp Aktif</label>
+      <input type="text" id="regWa" class="input-control" placeholder="Contoh: 08123456789" autocomplete="off" />
     </div>
     
     <div class="form-group">
-      <label for="regPwd">Kata Laluan (Password)</label>
+      <label for="regPwd">Kata Sandi</label>
       <div class="pwd-wrapper">
-        <input type="password" id="regPwd" class="input-control" placeholder="Bina password" autocomplete="off" />
+        <input type="password" id="regPwd" class="input-control" placeholder="Ciptakan kata sandi yang kuat" autocomplete="off" />
         <button type="button" class="pwd-toggle" onclick="togglePwd('regPwd', this)">
           <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
         </button>
@@ -677,136 +530,213 @@
     </div>
 
     <div class="form-group">
-      <label id="captchaLabel" for="regCaptcha">Pengesahan Matematik</label>
-      <input type="text" id="regCaptcha" class="input-control" placeholder="Masukkan jawapan" autocomplete="off" />
+      <label id="captchaLabel" for="regCaptcha">Verifikasi Keamanan (Anti-Bot)</label>
+      <input type="text" id="regCaptcha" class="input-control" placeholder="Jawab perhitungan matematika" autocomplete="off" />
     </div>
 
     <div id="regMsg" class="message-box" role="alert"></div>
-    <button id="regBtn" class="btn btn-primary">Daftar Sekarang</button>
+    <button id="regBtn" class="btn btn-primary">Daftarkan Perangkat Ini</button>
 
-    <span class="auth-link auth-link-center" onclick="switchView('loginView')">Sudah ada akaun? Log Masuk</span>
+    <div class="auth-links" style="justify-content: center; margin-top: 16px;">
+      <span class="auth-link" onclick="switchView('loginView')">Sudah memiliki akun? <span style="color:var(--accent-blue); font-weight: 700;">Masuk Sekarang</span></span>
+    </div>
   </div>
 </div>
 
 <!-- 3. TAMPILAN APLIKASI UTAMA -->
 <div id="appView" class="container hidden">
   
+  <header style="margin-top: 4px;">
+    <!-- Jam Realtime -->
+    <div class="clock-container" id="realtimeClockContainer">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+      <span id="realtimeClock">00:00:00 WIB</span>
+    </div>
+    
+    <h1 style="font-size: 32px; margin-top: 8px;">Alight Motion<br><span style="font-size: 16px; color: var(--accent-blue); font-weight: 600; letter-spacing: 4px;">PREMIUM EDITION</span></h1>
+  </header>
+
+  <!-- Profil Pengguna -->
   <div class="profile-card">
-    <div class="profile-info">
-      <div class="avatar" id="userAvatar">H</div>
-      <div class="user-details">
-        <span class="user-name" id="displayUserName">HAOMI</span>
-        <span class="user-role" id="displayUserRole">Owner</span>
+    <div class="profile-header">
+      <div class="profile-info">
+        <div class="avatar" id="userAvatar">H</div>
+        <div class="user-details">
+          <span class="user-name" id="displayUserName">HAOMI</span>
+          <span class="user-role-badge" id="displayUserRole">Owner</span>
+        </div>
+      </div>
+      <button id="logoutBtn" class="btn-icon danger" style="flex: 0 0 auto; width: 40px; height: 40px; padding: 0;" title="Keluar dari Sistem">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+      </button>
+    </div>
+    
+    <div class="profile-data-grid">
+      <div class="data-item">
+        <span class="data-label">User ID (Sistem)</span>
+        <span class="data-value" style="color: var(--accent-blue); font-weight: 700;" id="displayUserId">#OWN-01X</span>
+      </div>
+      <div class="data-item">
+        <span class="data-label">Nomor Terdaftar</span>
+        <span class="data-value" id="displayUserWa">0822***</span>
+      </div>
+      <div class="data-item" style="grid-column: span 2;">
+        <span class="data-label">Tanggal Registrasi Sistem</span>
+        <span class="data-value" id="displayUserDate">21 Agu 2026, 03:14 WIB</span>
       </div>
     </div>
+
     <div class="profile-actions">
-      <button id="editProfileBtn" class="btn-icon-action" onclick="openEditModal()">Edit</button>
-      <button id="logoutBtn" class="btn-icon-action" style="color: var(--error-text);">Keluar</button>
+      <button id="editProfileBtn" class="btn-icon" onclick="openEditModal()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        Edit Konfigurasi Akun
+      </button>
     </div>
+  </div>
+
+  <!-- Banner Iklan VIP (Di bawah profil) -->
+  <div id="promoBannerContainer" class="promo-banner">
+    <h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg> Upgrade VIP Permanen</h3>
+    <p>Hilangkan semua batasan kuota! Dapatkan akses fitur tanpa henti selamanya. Amankan slot eksklusif Anda hari ini.</p>
+    <a id="promoDashBtn" href="#" target="_blank" class="btn-promo">
+      Pesan via WhatsApp Sekarang
+    </a>
+  </div>
+
+  <!-- 3 Tombol Aksi Bersandingan -->
+  <div class="action-grid-3">
+    <a href="https://whatsapp.com/channel/0029Vaf0GfTJ3jv2hhFz1j2K" target="_blank" class="btn-action-card">
+      <svg class="icon-wa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+      Saluran WA
+    </a>
+    <a href="https://t.me/HAOMIXML" target="_blank" class="btn-action-card">
+      <svg class="icon-tele" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+      Telegram
+    </a>
+    <a href="https://wa.me/6282231669053" target="_blank" class="btn-action-card">
+      <svg class="icon-cs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+      CS Owner
+    </a>
   </div>
 
   <!-- TOMBOL AKSES DASBOR OWNER -->
   <button id="toggleOwnerDashBtn" class="btn btn-owner-dash hidden" onclick="toggleOwnerPanel()">
-    ⚙️ Buka Panel Dasbor Owner & Pemantauan
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+    Buka Control Panel Admin Server
   </button>
 
-  <!-- PANEL DASBOR OWNER (Manajemen Member, Pencarian Buyer, Tambah Limit, & Akses Permanen) -->
-  <div id="ownerPanel" class="card hidden">
-    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-subtle); padding-bottom: 10px;">
-      <h2 style="font-size: 14px; font-weight: 600; color: var(--text-primary);">Dasbor Pemantauan Ahli</h2>
-      <span id="memberCountBadge" style="font-size: 11px; background: rgba(59, 130, 246, 0.1); color: var(--brand-accent); padding: 2px 8px; border-radius: 99px;">0 Pengguna</span>
+  <!-- PANEL DASBOR OWNER -->
+  <div id="ownerPanel" class="admin-panel hidden">
+    <div class="admin-header">
+      <h2>Database Klien <span style="font-size: 12px; font-weight:400; color:var(--text-secondary);">| Root Access</span></h2>
+      <span id="memberCountBadge" class="badge badge-blue" style="font-size: 10px;">0 Pengguna</span>
+    </div>
+    
+    <!-- Fitur Broadcast -->
+    <div class="broadcast-section">
+      <h4><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"></path></svg> Broadcast Informasi Global</h4>
+      <textarea id="broadcastInput" placeholder="Ketik pesan informasi penting untuk seluruh member yang online..."></textarea>
+      <button class="btn btn-primary" style="padding: 10px; font-size: 13px; background: linear-gradient(135deg, #7f00ff, #9d4edd);" onclick="sendBroadcastMsg()">Kirim Broadcast Sekarang</button>
     </div>
 
-    <!-- FITUR PENCARIAN BUYER (Berdasarkan Username, User ID, atau No WA) -->
-    <div class="form-group" style="margin-top: 4px;">
-      <input type="text" id="searchMemberInput" class="input-control" placeholder="🔍 Cari Username, ID, atau No WA..." autocomplete="off" oninput="renderMemberList()" style="padding: 10px 14px; font-size: 12.5px;" />
+    <div class="form-group" style="margin-top: 5px;">
+      <div class="pwd-wrapper">
+        <input type="text" id="searchMemberInput" class="input-control" placeholder="Cari Username / WA / ID..." autocomplete="off" oninput="renderMemberList()" />
+        <div class="pwd-toggle" style="cursor:default;"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
+      </div>
     </div>
 
-    <div id="memberList" style="display: flex; flex-direction: column; max-height: 240px; overflow-y: auto; padding-right: 4px;">
+    <div id="memberList" class="member-list">
       <!-- Senarai ahli masuk di sini -->
     </div>
   </div>
 
-  <header>
-    <div class="badge" id="limitBadge">Had Baki: 3 / 3</div>
-    <h1>Tools 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞<br>AM Premium</h1>
-    <p>Pengaktifan akaun Alight Motion premium dengan pantas dan selamat.</p>
-  </header>
-
+  <!-- PANEL UTAMA AKTIVASI -->
   <div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: -10px;">
+      <h3 style="font-size: 18px; font-weight: 800; display: flex; align-items: center; gap: 8px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--accent-blue);"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+        Aktivasi Lisensi
+      </h3>
+    </div>
+
+    <div class="limit-display">
+      <div class="limit-header">
+        <span id="limitTextLabel">Sisa Kuota Mingguan</span>
+        <span id="limitTextValue" style="color: #fff;">3 / 3</span>
+      </div>
+      <div class="limit-track">
+        <div id="limitBar" class="limit-bar" style="width: 100%;"></div>
+      </div>
+    </div>
     
-    <div class="form-group">
-      <label for="emailInput">Alamat Emel</label>
+    <!-- Info Instruksi -->
+    <div class="info-box">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+      <div>
+        <span style="font-weight: 700; display: block; margin-bottom: 4px;">Instruksi Eksekusi:</span>
+        Masukkan gmail kalian/buyer di bawah ini, pastikan akun aktif dan setelah gmail di kirim cek gmail kalian/buyer, jika tidak ada gmail masuk silahkan cek di bagian spam di gmail. Jika eror masukkan gmail yang lain.
+      </div>
+    </div>
+
+    <div class="form-group mt-2">
+      <label for="emailInput">Alamat Email Terkait</label>
       <div class="input-row">
-        <input type="email" id="emailInput" class="input-control" placeholder="nama@emel.com" autocomplete="email" />
-        <button id="sendBtn" class="btn btn-secondary">Hantar</button>
+        <input type="email" id="emailInput" class="input-control" placeholder="nama@email.com" autocomplete="email" />
+        <button id="sendBtn" class="btn btn-secondary">Kirim OTP</button>
       </div>
     </div>
 
     <div class="form-group">
-      <label for="magicInput">Pautan Ajaib (Magic Link)</label>
-      <input type="url" id="magicInput" class="input-control" placeholder="https://alightmotion.com/magic..." autocomplete="off" />
+      <label for="magicInput">Link yang dikirim dari Gmail kalian/buyer</label>
+      <input type="url" id="magicInput" class="input-control" placeholder="Tempel tautan (link) di sini..." autocomplete="off" />
     </div>
 
     <div id="appErrorMsg" class="message-box message-error" role="alert"></div>
 
     <button id="activateBtn" class="btn btn-primary" aria-label="Aktivasi Sekarang">
-      <span id="btnDefault">Aktifkan Akaun</span>
-      
+      <span id="btnDefault">Proses Eksekusi Aktivasi</span>
       <div id="loaderContainer" class="loader-container hidden">
-        <span class="loader-dot"></span>
-        <span class="loader-dot"></span>
-        <span class="loader-dot"></span>
+        <span class="loader-dot"></span><span class="loader-dot"></span><span class="loader-dot"></span>
       </div>
-      
-      <span id="btnSuccess" class="hidden success-content">
-        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>
-        Berjaya Diaktifkan
+      <span id="btnSuccess" class="hidden" style="display: flex; align-items: center; gap: 8px; font-weight: 800; color: #000;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12" /></svg>
+        BERHASIL DIAKTIFKAN!
       </span>
     </button>
-    
-  </div>
-
-  <!-- Banner Iklan Akses Permanen -->
-  <div class="promo-banner">
-    <h3>👑 DAPATKAN AKSES KEKAL VIP</h3>
-    <p>Mahukan alatan tanpa sebarang had selamanya? Amankan slot kekal anda sekarang!</p>
-    <a id="promoDashBtn" href="#" target="_blank" class="btn-promo">
-      Tempah Akses Kekal (WhatsApp)
-    </a>
   </div>
 
   <footer>
-    &copy; 2026 <a>Tools 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞</a>. Hak cipta terpelihara.
+    &copy; 2026 <span>Alight Motion Premium System</span>.<br>All Systems Encrypted & Nominal.
   </footer>
 </div>
 
 <!-- MODAL EDIT PROFIL -->
-<div id="editModal" class="modal-overlay hidden">
+<div id="editModal" class="modal-overlay">
   <div class="modal-box">
-    <h3 style="font-size: 15px; font-weight: 600; color: var(--text-primary);">Tetapan & Kuota Tukar Data</h3>
-    <p style="font-size: 11px; color: var(--text-secondary);">Setiap maklumat mempunyai had kuota pertukaran sebanyak 1 kali demi keselamatan akaun.</p>
+    <h3 style="font-size: 20px; font-weight: 800; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">Pengaturan Akun</h3>
+    <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5;">Untuk mencegah pengambilalihan akun, sistem hanya memberikan batas perubahan data sebanyak <b>1 (satu) kali</b>.</p>
     
-    <div class="form-group">
-      <label id="editUserLabel">Username (Baki Kuota: 1)</label>
+    <div class="form-group mt-2">
+      <label id="editUserLabel">Username Baru <span style="font-size: 11px; color: var(--accent-blue); background: rgba(0,242,254,0.1); padding: 2px 6px; border-radius: 4px;">Sisa: 1</span></label>
       <input type="text" id="editUsername" class="input-control" />
     </div>
 
     <div class="form-group">
-      <label id="editPwdLabel">Kata Laluan Baharu (Baki Kuota: 1)</label>
-      <input type="password" id="editPassword" class="input-control" placeholder="Kosongkan jika tidak diubah" />
+      <label id="editPwdLabel">Kata Sandi Baru <span style="font-size: 11px; color: var(--accent-blue); background: rgba(0,242,254,0.1); padding: 2px 6px; border-radius: 4px;">Sisa: 1</span></label>
+      <input type="password" id="editPassword" class="input-control" placeholder="Biarkan kosong jika tidak diubah" />
     </div>
 
     <div class="form-group">
-      <label id="editWaLabel">Nombor WhatsApp (Baki Kuota: 1)</label>
+      <label id="editWaLabel">Nomor WhatsApp <span style="font-size: 11px; color: var(--accent-blue); background: rgba(0,242,254,0.1); padding: 2px 6px; border-radius: 4px;">Sisa: 1</span></label>
       <input type="text" id="editWa" class="input-control" />
     </div>
 
     <div id="editModalMsg" class="message-box" role="alert"></div>
 
-    <div style="display: flex; gap: 8px; margin-top: 6px;">
-      <button class="btn btn-secondary" style="flex: 1;" onclick="closeEditModal()">Batal</button>
-      <button class="btn btn-primary" style="flex: 1;" onclick="saveProfileChanges()">Simpan</button>
+    <div style="display: flex; gap: 12px; margin-top: 10px;">
+      <button class="btn btn-secondary" style="flex: 1;" onclick="closeEditModal()">Batalkan</button>
+      <button class="btn btn-primary" style="flex: 1;" onclick="saveProfileChanges()">Simpan Konfigurasi</button>
     </div>
   </div>
 </div>
@@ -814,33 +744,53 @@
 <script>
     // ========== KONFIGURASI GLOBAL & DATABASE ==========
     const OWNER_WA = "+6282231669053";
-    const DB_KEY = 'mshaomi_db_users_v10';
-    const SESSION_KEY = 'mshaomi_active_session_v10';
-    const DEVICE_REG_KEY = 'mshaomi_device_reg_count_v10';
+    const DB_KEY = 'mshaomi_db_users_v14'; 
+    const SESSION_KEY = 'mshaomi_active_session_v14';
+    const DEVICE_REG_KEY = 'mshaomi_device_reg_count_v14';
+    const NEW_USER_FLAG = 'mshaomi_is_new_user';
+    const BROADCAST_KEY = 'mshaomi_global_broadcast';
 
     let currentCaptchaAnswer = 0;
+
+    window.onload = () => {
+        if(!sessionStorage.getItem(SESSION_KEY)) {
+            document.getElementById('warningModal').classList.add('show');
+        }
+        startClock();
+    };
+
+    function startClock() {
+        const clockEl = document.getElementById('realtimeClock');
+        if(!clockEl) return;
+        setInterval(() => {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            clockEl.textContent = timeString + ' WIB';
+        }, 1000);
+    }
+
+    function getFormattedDate() {
+        const now = new Date();
+        const options = { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZoneName: 'short' };
+        return now.toLocaleDateString('id-ID', options).replace(/\./g, ':');
+    }
 
     function generateCaptcha() {
         const num1 = Math.floor(Math.random() * 10) + 1;
         const num2 = Math.floor(Math.random() * 10) + 1;
         currentCaptchaAnswer = num1 + num2;
         const label = document.getElementById('captchaLabel');
-        if(label) {
-            label.textContent = `Berapakah hasil dari ${num1} + ${num2} ?`;
-        }
+        if(label) label.innerHTML = `Verifikasi Keamanan <span style="color:var(--text-primary); font-family:var(--font-mono); background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius:4px;">${num1} + ${num2} = ?</span>`;
     }
 
     function isValidWhatsApp(number) {
         const cleanNum = number.replace(/[^0-9]/g, '');
         const phoneRegex = /^(08|628)\d{8,13}$/;
         if (!phoneRegex.test(cleanNum)) return false;
-
         const sequentialPattern = /(0123|1234|2345|3456|4567|5678|6789|7890|9876|8765|7654|6543|5432|4321)/;
         if (sequentialPattern.test(cleanNum)) return false;
-
         const repeatingPattern = /^(\d)\1{7,}$/;
         if (repeatingPattern.test(cleanNum.substring(2))) return false;
-
         return true;
     }
 
@@ -849,16 +799,9 @@
         if (!db) {
             db = {
                 'HAOMI': { 
-                    password: 'HAOMI_XML', 
-                    role: 'Owner', 
-                    name: 'HAOMI', 
-                    wa: '082231669053', 
-                    id: 'OWNER-01',
-                    editQuota: { username: 99, password: 99, wa: 99 },
-                    limit: 999,
-                    lastReset: Date.now(),
-                    isBanned: false,
-                    isPermanent: true
+                    password: 'HAOMI_XML', role: 'Owner', name: 'HAOMI', wa: '082231669053', id: 'OWN-01X',
+                    editQuota: { username: 99, password: 99, wa: 99 }, limit: 999, lastReset: Date.now(),
+                    isBanned: false, isPermanent: true, createdAt: getFormattedDate(), vipActivatedAt: '-', lastReadBroadcast: 0
                 }
             };
             localStorage.setItem(DB_KEY, JSON.stringify(db));
@@ -871,7 +814,7 @@
     }
 
     function generateMemberId() {
-        return 'MSH-' + Math.floor(10000 + Math.random() * 90000);
+        return 'MSH-' + Math.floor(1000 + Math.random() * 9000);
     }
 
     function checkAndResetLimit(userObj) {
@@ -886,16 +829,16 @@
     }
 
     function updatePromoLinks(userData = null) {
-        let text = "Halo Owner HAOMI, saya ingin membeli Akses Kekal VIP Tools 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞 AM.";
+        let text = "Halo Admin HAOMI, saya berminat untuk Upgrade ke Akses VIP Permanen Alight Motion.";
         if (userData) {
-            text += ` %0A%0AData Saya:%0AID: ${userData.id}%0AUsername: ${userData.username}%0ANo WA: ${userData.wa}`;
+            text += ` %0A%0AData Akun:%0AID: ${userData.id}%0AUsername: ${userData.username}`;
         }
         const url = `https://wa.me/${OWNER_WA.replace('+', '')}?text=${text}`;
         const promoBtn = document.getElementById('promoDashBtn');
         if(promoBtn) promoBtn.href = url;
     }
 
-    // Fungsi Tambah Limit oleh Owner (+3 Limit)
+    // Owner Functions (Tambah & Kurang Limit, VIP, Suspend)
     window.addMemberLimit = function(username) {
         let db = initDatabase();
         if(db[username]) {
@@ -905,20 +848,30 @@
         }
     };
 
-    // Fungsi Berikan / Cabut Akses Permanen VIP oleh Owner
+    window.subMemberLimit = function(username) {
+        let db = initDatabase();
+        if(db[username]) {
+            db[username].limit = Math.max(0, (db[username].limit || 0) - 1);
+            saveToDatabase(db);
+            renderMemberList();
+        }
+    };
+
     window.togglePermanentAccess = function(username) {
         let db = initDatabase();
         if(db[username]) {
             db[username].isPermanent = !db[username].isPermanent;
             if(db[username].isPermanent) {
                 db[username].limit = 999;
+                db[username].vipActivatedAt = getFormattedDate(); // Rekam tanggal VIP diaktifkan
+            } else {
+                db[username].vipActivatedAt = '-';
             }
             saveToDatabase(db);
             renderMemberList();
         }
     };
 
-    // Fungsi Suspend / Ban Member
     window.toggleSuspendMember = function(username) {
         let db = initDatabase();
         if(db[username]) {
@@ -927,8 +880,38 @@
             renderMemberList();
         }
     };
+    
+    window.sendBroadcastMsg = function() {
+        const input = document.getElementById('broadcastInput');
+        const text = input.value.trim();
+        if(!text) return alert("Pesan pengumuman tidak boleh kosong!");
+        
+        const broadcastData = { message: text, timestamp: Date.now() };
+        localStorage.setItem(BROADCAST_KEY, JSON.stringify(broadcastData));
+        input.value = '';
+        alert("Broadcast berhasil dikirim ke seluruh pengguna!");
+    };
 
-    // Fungsi Render Daftar Member dengan Fitur Pencarian Real-Time
+    window.checkBroadcast = function(username) {
+        const storedBroadcast = localStorage.getItem(BROADCAST_KEY);
+        if(!storedBroadcast) return;
+        const bData = JSON.parse(storedBroadcast);
+        let db = initDatabase();
+        let user = db[username];
+        if(!user.lastReadBroadcast) user.lastReadBroadcast = 0;
+        
+        if(bData.timestamp > user.lastReadBroadcast) {
+            document.getElementById('broadcastMessageText').textContent = bData.message;
+            document.getElementById('broadcastModal').classList.add('show');
+            user.lastReadBroadcast = bData.timestamp;
+            saveToDatabase(db);
+        }
+    };
+    
+    window.closeBroadcastModal = function() {
+        document.getElementById('broadcastModal').classList.remove('show');
+    };
+
     window.renderMemberList = function() {
         const db = initDatabase();
         const searchInput = document.getElementById('searchMemberInput');
@@ -938,14 +921,12 @@
 
         if(!memberList) return;
         memberList.innerHTML = '';
-        let count = 0;
-        let displayedCount = 0;
+        let count = 0; let displayedCount = 0;
 
         for (const key in db) {
             const m = db[key];
             count++;
 
-            // Filter Pencarian berdasarkan Username, ID, atau No WhatsApp
             const matchQuery = key.toLowerCase().includes(query) || 
                                (m.id && m.id.toLowerCase().includes(query)) || 
                                (m.wa && m.wa.toLowerCase().includes(query));
@@ -954,33 +935,48 @@
             displayedCount++;
 
             const waClean = m.wa ? m.wa.replace(/[^0-9]/g, '') : '';
-            const waLink = waClean ? `https://wa.me/${waClean}?text=Halo%20${key},%20pesan%20dari%20Owner%20Tools%20xMSXiaomi%20AM.` : '#';
+            const waLink = waClean ? `https://wa.me/${waClean}?text=Halo%20${key},%20pesan%20dari%20Admin%20Alight%20Motion.` : '#';
             
-            const el = document.createElement('div');
-            el.className = 'member-item';
-            const banStatusText = m.isBanned ? 'Nyahsekat' : 'Ban';
-            const permStatusText = m.isPermanent ? 'Cabut VIP' : 'Jadikan VIP';
-            const permBtnColor = m.isPermanent ? 'background: rgba(245, 158, 11, 0.2); color: #f59e0b; border-color: rgba(245, 158, 11, 0.4);' : '';
+            let roleBadge = `<span class="user-role-badge role-member">Member</span>`;
+            let cardClass = 'admin-member-card';
+            
+            if (m.role === 'Owner') { roleBadge = `<span class="user-role-badge role-owner">Owner</span>`; cardClass += ' vip-card'; }
+            else if (m.isPermanent) { roleBadge = `<span class="user-role-badge role-vip">VIP Permanen</span>`; cardClass += ' vip-card'; }
 
+            let banBadge = m.isBanned ? `<span class="user-role-badge" style="background:#ff2a6d; color:#fff;">SUSPENDED</span>` : '';
+            if(m.isBanned) cardClass += ' banned-card';
+
+            const banStatusText = m.isBanned ? 'Unsuspend' : 'Suspend';
+            const permStatusText = m.isPermanent ? '-VIP' : '+VIP';
+
+            const el = document.createElement('div');
+            el.className = cardClass;
             el.innerHTML = `
-                <div class="member-info">
-                    <strong>@${key} ${m.isBanned ? '<span style="color:red;">[DISEKAT]</span>' : ''} ${m.isPermanent ? '<span style="color:var(--gold);">[VIP KEKAL]</span>' : ''}</strong>
-                    <span class="member-meta">ID: ${m.id || '-'} | WA: ${m.wa || '-'} | Limit: ${m.isPermanent ? '∞' : (m.limit ?? 3)}</span>
-                    <span class="member-meta" style="color: var(--brand-accent);">Pass: ${m.password}</span>
+                <div class="admin-member-header">
+                    <div class="admin-member-name">@${key} ${roleBadge} ${banBadge}</div>
+                    <div class="admin-member-id">${m.id || 'N/A'}</div>
                 </div>
-                <div class="member-actions-group">
-                    <a href="${waLink}" target="_blank" class="member-wa">WA</a>
+                <div class="admin-member-details">
+                    <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg> ${m.wa || '-'}</span>
+                    <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg> Limit: ${m.isPermanent ? '∞' : (m.limit ?? 3)}</span>
+                    <span style="color:var(--accent-blue);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> Pass: ${m.password}</span>
+                    <span style="color:var(--text-muted);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> Reg: ${m.createdAt || 'Lama'}</span>
+                    ${m.isPermanent ? `<span style="grid-column: span 2; color:var(--accent-gold);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"></path></svg> VIP Aktif Sejak: ${m.vipActivatedAt || '-'}</span>` : ''}
+                </div>
+                <div class="admin-member-actions">
+                    <a href="${waLink}" target="_blank" class="btn-tiny action-wa">WhatsApp</a>
                     ${key !== 'HAOMI' ? `
-                        <button onclick="addMemberLimit('${key}')" class="member-action-btn" title="Tambah 3 Limit">+Limit</button>
-                        <button onclick="togglePermanentAccess('${key}')" class="member-action-btn" style="${permBtnColor}" title="Ubah Status VIP">${permStatusText}</button>
-                        <button onclick="toggleSuspendMember('${key}')" class="member-action-btn" style="color: #f87171;" title="Sekat Pengguna">${banStatusText}</button>
+                        <button onclick="addMemberLimit('${key}')" class="btn-tiny action-limit-add">+Limit</button>
+                        <button onclick="subMemberLimit('${key}')" class="btn-tiny action-limit-sub">-Limit</button>
+                        <button onclick="togglePermanentAccess('${key}')" class="btn-tiny action-vip">${permStatusText}</button>
+                        <button onclick="toggleSuspendMember('${key}')" class="btn-tiny action-ban">${banStatusText}</button>
                     ` : ''}
                 </div>
             `;
             memberList.appendChild(el);
         }
         if(memberCountBadge) {
-            memberCountBadge.textContent = `${displayedCount} dari ${count} Pengguna`;
+            memberCountBadge.textContent = `Total: ${displayedCount} Klien`;
         }
     };
 
@@ -1017,27 +1013,28 @@
 
     function showMsg(elId, text, type = 'error') {
         const el = document.getElementById(elId);
-        el.textContent = text;
+        el.innerHTML = text; 
         el.className = 'message-box show';
         if (type === 'error') el.classList.add('message-error');
         if (type === 'success') el.classList.add('message-success');
     }
 
     window.closeWarningModal = function() {
-        document.getElementById('warningModal').classList.add('hidden');
+        document.getElementById('warningModal').classList.remove('show');
         if(!sessionStorage.getItem(SESSION_KEY)) {
             document.getElementById('loginView').classList.remove('hidden');
         }
     };
 
     window.handleForgotClick = function() {
-        const msg = encodeURIComponent("Halo Owner HAOMI, saya lupa Username atau Password akaun saya di Tools 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞 AM. Mohon bantuannya.");
+        const msg = encodeURIComponent("Halo CS Admin, saya memerlukan bantuan teknis karena lupa Username atau Kata Sandi akun saya di sistem Alight Motion.");
         window.open(`https://wa.me/${OWNER_WA.replace('+', '')}?text=${msg}`, '_blank');
     };
 
     window.toggleOwnerPanel = function() {
         const panel = document.getElementById('ownerPanel');
         panel.classList.toggle('hidden');
+        if(!panel.classList.contains('hidden')) renderMemberList();
     };
 
     window.openEditModal = function() {
@@ -1049,15 +1046,15 @@
         document.getElementById('editPassword').value = '';
         document.getElementById('editWa').value = user.wa || '';
 
-        document.getElementById('editUserLabel').textContent = `Username (Baki Kuota: ${user.editQuota.username})`;
-        document.getElementById('editPwdLabel').textContent = `Kata Laluan Baharu (Baki Kuota: ${user.editQuota.password})`;
-        document.getElementById('editWaLabel').textContent = `Nombor WhatsApp (Baki Kuota: ${user.editQuota.wa})`;
+        document.getElementById('editUserLabel').innerHTML = `Username Baru <span style="font-size: 11px; color: var(--accent-blue); background: rgba(0,242,254,0.1); padding: 2px 6px; border-radius: 4px;">Sisa: ${user.editQuota.username}</span>`;
+        document.getElementById('editPwdLabel').innerHTML = `Kata Sandi Baru <span style="font-size: 11px; color: var(--accent-blue); background: rgba(0,242,254,0.1); padding: 2px 6px; border-radius: 4px;">Sisa: ${user.editQuota.password}</span>`;
+        document.getElementById('editWaLabel').innerHTML = `Nomor WhatsApp <span style="font-size: 11px; color: var(--accent-blue); background: rgba(0,242,254,0.1); padding: 2px 6px; border-radius: 4px;">Sisa: ${user.editQuota.wa}</span>`;
 
-        document.getElementById('editModal').classList.remove('hidden');
+        document.getElementById('editModal').classList.add('show');
     };
 
     window.closeEditModal = function() {
-        document.getElementById('editModal').classList.add('hidden');
+        document.getElementById('editModal').classList.remove('show');
     };
 
     window.saveProfileChanges = function() {
@@ -1072,12 +1069,8 @@
         let changed = false;
 
         if (newU !== currentSession) {
-            if (user.editQuota.username <= 0) {
-                return showMsg('editModalMsg', 'Kuota tukar Username sudah habis (maksimal 1x).', 'error');
-            }
-            if (db[newU]) {
-                return showMsg('editModalMsg', 'Username tersebut sudah digunakan.', 'error');
-            }
+            if (user.editQuota.username <= 0) return showMsg('editModalMsg', 'Kuota pergantian Username telah habis.', 'error');
+            if (db[newU]) return showMsg('editModalMsg', 'Username tersebut tidak tersedia.', 'error');
             db[newU] = user;
             delete db[currentSession];
             db[newU].editQuota.username -= 1;
@@ -1087,24 +1080,16 @@
 
         const activeKey = sessionStorage.getItem(SESSION_KEY);
         if (newP) {
-            if (db[activeKey].editQuota.password <= 0) {
-                return showMsg('editModalMsg', 'Kuota tukar Password sudah habis (maksimal 1x).', 'error');
-            }
-            if (newP.length < 5) {
-                return showMsg('editModalMsg', 'Password minimal 5 aksara.', 'error');
-            }
+            if (db[activeKey].editQuota.password <= 0) return showMsg('editModalMsg', 'Kuota pergantian Kata Sandi telah habis.', 'error');
+            if (newP.length < 5) return showMsg('editModalMsg', 'Kata sandi membutuhkan minimal 5 karakter.', 'error');
             db[activeKey].password = newP;
             db[activeKey].editQuota.password -= 1;
             changed = true;
         }
 
         if (newWa !== db[activeKey].wa) {
-            if (db[activeKey].editQuota.wa <= 0) {
-                return showMsg('editModalMsg', 'Kuota tukar Nombor WhatsApp sudah habis (maksimal 1x).', 'error');
-            }
-            if (!isValidWhatsApp(newWa)) {
-                return showMsg('editModalMsg', 'Nombor WhatsApp tidak sah atau menggunakan deretan angka berurutan/palsu!', 'error');
-            }
+            if (db[activeKey].editQuota.wa <= 0) return showMsg('editModalMsg', 'Kuota pergantian Nomor WA telah habis.', 'error');
+            if (!isValidWhatsApp(newWa)) return showMsg('editModalMsg', 'Format nomor WhatsApp tidak valid!', 'error');
             db[activeKey].wa = newWa;
             db[activeKey].editQuota.wa -= 1;
             changed = true;
@@ -1112,11 +1097,8 @@
 
         if (changed) {
             saveToDatabase(db);
-            showMsg('editModalMsg', 'Perubahan berjaya disimpan!', 'success');
-            setTimeout(() => {
-                closeEditModal();
-                loadAppView(sessionStorage.getItem(SESSION_KEY));
-            }, 1000);
+            showMsg('editModalMsg', 'Konfigurasi profil berhasil disimpan di server.', 'success');
+            setTimeout(() => { closeEditModal(); loadAppView(sessionStorage.getItem(SESSION_KEY)); }, 1200);
         } else {
             closeEditModal();
         }
@@ -1143,7 +1125,15 @@
         const logoutBtn = document.getElementById('logoutBtn');
         const toggleOwnerDashBtn = document.getElementById('toggleOwnerDashBtn');
         const ownerPanel = document.getElementById('ownerPanel');
-        const limitBadge = document.getElementById('limitBadge');
+        
+        const displayUserId = document.getElementById('displayUserId');
+        const displayUserWa = document.getElementById('displayUserWa');
+        const displayUserDate = document.getElementById('displayUserDate');
+
+        const limitTextLabel = document.getElementById('limitTextLabel');
+        const limitTextValue = document.getElementById('limitTextValue');
+        const limitBar = document.getElementById('limitBar');
+        const promoBannerContainer = document.getElementById('promoBannerContainer');
 
         const API_BASE = 'https://restapidhan.vercel.app';
         const API_KEY = 'dravndesamuel';
@@ -1156,12 +1146,8 @@
         const btnSuccess = document.getElementById('btnSuccess');
         
         let isLoading = false, isSuccess = false, cachedEmail = '';
-        
-        let loginAttempts = 0;
-        let lockUntil = 0;
-
-        let lastSendTime = 0;
-        let lastActivateTime = 0;
+        let loginAttempts = 0; let lockUntil = 0;
+        let lastSendTime = 0; let lastActivateTime = 0;
         const COOLDOWN_TIME = 5000;
 
         function checkSession() {
@@ -1169,7 +1155,7 @@
             if (sessionUser && db[sessionUser]) {
                 if (db[sessionUser].isBanned) {
                     sessionStorage.removeItem(SESSION_KEY);
-                    showMsg('loginErrorMsg', 'Akaun anda telah disekat (Banned) oleh Owner.');
+                    showMsg('loginErrorMsg', 'Akses ke server ditolak (Akun Anda Di-Suspend).');
                     switchView('loginView');
                     return;
                 }
@@ -1190,56 +1176,88 @@
 
             const user = db[username];
             displayUserName.textContent = username;
-            displayUserRole.textContent = user.role + ` (ID: ${user.id || 'N/A'})`;
+            
+            promoBannerContainer.style.display = 'flex'; 
+            
+            if (user.role === 'Owner') {
+                displayUserRole.className = 'user-role-badge role-owner';
+                displayUserRole.innerHTML = `Owner`;
+                promoBannerContainer.style.display = 'none'; 
+            } else if (user.isPermanent) {
+                displayUserRole.className = 'user-role-badge role-vip';
+                displayUserRole.innerHTML = `VIP Permanen`;
+                promoBannerContainer.style.display = 'none'; 
+            } else {
+                displayUserRole.className = 'user-role-badge role-member';
+                displayUserRole.innerHTML = `Member Regular`;
+            }
+
+            displayUserId.textContent = `${user.id || 'N/A'}`;
+            displayUserWa.textContent = user.wa || '-';
+            displayUserDate.textContent = user.createdAt || 'Data Lama';
+            
             userAvatar.textContent = username.charAt(0).toUpperCase();
             
             if (user.role === 'Owner' || user.isPermanent) {
-                limitBadge.textContent = user.role === 'Owner' ? 'Status: Owner (Tanpa Had)' : 'Status: VIP (Akses Kekal)';
+                limitTextLabel.textContent = "Status Lisensi";
+                limitTextValue.innerHTML = `<span style="color:var(--accent-gold);">UNLIMITED / PERMANEN</span>`;
+                limitBar.className = 'limit-bar vip-bar';
+                limitBar.style.width = '100%';
             } else {
-                limitBadge.textContent = `Baki Had Mingguan: ${user.limit} / 3`;
+                limitTextLabel.textContent = "Sisa Kuota Mingguan";
+                limitTextValue.innerHTML = `${user.limit} <span style="color:var(--text-muted);">/ 3</span>`;
+                limitBar.className = 'limit-bar';
+                const percentage = (user.limit / 3) * 100;
+                limitBar.style.width = `${percentage}%`;
+                if(user.limit === 1) limitBar.style.background = 'var(--accent-gold)';
+                if(user.limit <= 0) limitBar.style.background = 'var(--accent-red)';
             }
 
-            updatePromoLinks({ id: user.id || 'OWNER', username: username, wa: user.wa });
+            updatePromoLinks({ id: user.id || 'N/A', username: username });
 
             if (user.role === 'Owner') {
                 toggleOwnerDashBtn.classList.remove('hidden');
-                renderMemberList();
             } else {
                 toggleOwnerDashBtn.classList.add('hidden');
                 ownerPanel.classList.add('hidden');
             }
 
             switchView('appView');
+            checkBroadcast(username);
+
+            if (sessionStorage.getItem(NEW_USER_FLAG) === 'true' && !user.isPermanent && user.role !== 'Owner') {
+                setTimeout(() => {
+                    document.getElementById('vipWelcomeModal').classList.add('show');
+                    sessionStorage.removeItem(NEW_USER_FLAG);
+                }, 800);
+            }
         }
 
         loginBtn.addEventListener('click', () => {
             const now = Date.now();
             if (now < lockUntil) {
                 const remaining = Math.ceil((lockUntil - now) / 1000);
-                return showMsg('loginErrorMsg', `Terlalu banyak cubaan gagal. Sila tunggu ${remaining} saat.`);
+                return showMsg('loginErrorMsg', `Sistem terkunci karena aktivitas mencurigakan. Tunggu ${remaining}s.`);
             }
 
             db = initDatabase();
             const u = loginUser.value.trim();
             const p = loginPwd.value.trim();
 
-            if (!u || !p) return showMsg('loginErrorMsg', 'Username & Password wajib diisi.');
+            if (!u || !p) return showMsg('loginErrorMsg', 'Data kredensial tidak boleh kosong.');
             
             if (db[u] && db[u].password === p) {
-                if (db[u].isBanned) {
-                    return showMsg('loginErrorMsg', 'Akaun anda telah disekat oleh Owner.');
-                }
+                if (db[u].isBanned) return showMsg('loginErrorMsg', 'Akses ditolak. Akun dalam masa penangguhan (Suspend).');
                 loginAttempts = 0;
                 sessionStorage.setItem(SESSION_KEY, u);
                 loadAppView(u);
             } else {
                 loginAttempts++;
                 if (loginAttempts >= 5) {
-                    lockUntil = Date.now() + 30000;
-                    loginAttempts = 0;
-                    showMsg('loginErrorMsg', 'Terlalu banyak cubaan salah. Akses dikunci selama 30 saat.');
+                    lockUntil = Date.now() + 30000; loginAttempts = 0;
+                    showMsg('loginErrorMsg', 'Upaya masuk gagal berulang. Akses diblokir sementara (30s).');
                 } else {
-                    showMsg('loginErrorMsg', `Username atau Password salah! (Cubaan ke-${loginAttempts}/5)`);
+                    showMsg('loginErrorMsg', `Kredensial tidak valid di database. (Gagal ${loginAttempts}/5)`);
                 }
             }
         });
@@ -1251,46 +1269,36 @@
             const p = regPwd.value.trim();
             const cInput = parseInt(regCaptcha.value.trim());
 
-            if (!u || !w || !p || isNaN(cInput)) return showMsg('regMsg', 'Sila isi semua ruangan termasuk jawapan matematik!', 'error');
+            if (!u || !w || !p || isNaN(cInput)) return showMsg('regMsg', 'Seluruh parameter pendaftaran wajib diisi penuh.', 'error');
+            if (!isValidWhatsApp(w)) return showMsg('regMsg', 'Format nomor WhatsApp tidak valid.', 'error');
             
-            if (!isValidWhatsApp(w)) {
-                return showMsg('regMsg', 'Nombor WhatsApp tidak sah! Elakkan menggunakan nombor berurutan (cth: 1234) atau nombor berulang.', 'error');
-            }
-
             if (cInput !== currentCaptchaAnswer) {
-                generateCaptcha();
-                regCaptcha.value = '';
-                return showMsg('regMsg', 'Jawapan pengesahan matematik salah! Sila cuba lagi.', 'error');
+                generateCaptcha(); regCaptcha.value = '';
+                return showMsg('regMsg', 'Verifikasi Anti-Bot salah.', 'error');
             }
-            if (db[u]) return showMsg('regMsg', 'Username sudah berdaftar!', 'error');
-            if (p.length < 5) return showMsg('regMsg', 'Password minimal 5 aksara!', 'error');
+            if (db[u]) return showMsg('regMsg', 'Username tersebut sudah terdaftar.', 'error');
+            if (p.length < 5) return showMsg('regMsg', 'Kata sandi minimal membutuhkan 5 karakter.', 'error');
 
             let deviceCount = parseInt(localStorage.getItem(DEVICE_REG_KEY) || '0');
-            if (deviceCount >= 2) {
-                return showMsg('regMsg', 'Had maksimum bina akaun pada peranti ini adalah 2 akaun sahaja!', 'error');
-            }
+            if (deviceCount >= 2) return showMsg('regMsg', 'Batas maksimal pembuatan akun per-device (2 Akun) tercapai.', 'error');
 
             db[u] = { 
-                password: p, 
-                role: 'Member', 
-                wa: w, 
-                id: generateMemberId(),
+                password: p, role: 'Member', wa: w, id: generateMemberId(),
                 editQuota: { username: 1, password: 1, wa: 1 },
-                limit: 3,
-                lastReset: Date.now(),
-                isBanned: false,
-                isPermanent: false
+                limit: 3, lastReset: Date.now(), isBanned: false, isPermanent: false,
+                createdAt: getFormattedDate(), vipActivatedAt: '-', lastReadBroadcast: 0
             };
             
             saveToDatabase(db);
             localStorage.setItem(DEVICE_REG_KEY, (deviceCount + 1).toString());
             
-            showMsg('regMsg', 'Akaun berjaya dicipta! Mengalihkan...', 'success');
+            showMsg('regMsg', 'Akun berhasil didaftarkan. Mengalihkan...', 'success');
             
             setTimeout(() => {
                 sessionStorage.setItem(SESSION_KEY, u);
+                sessionStorage.setItem(NEW_USER_FLAG, 'true'); 
                 loadAppView(u);
-            }, 1200);
+            }, 1500);
         });
 
         logoutBtn.addEventListener('click', () => {
@@ -1301,7 +1309,7 @@
         async function callApi(action, email, magic = '') {
             const url = `${API_BASE}/api/am?action=${action}&apikey=${API_KEY}&email=${encodeURIComponent(email)}` + (magic ? `&url=${encodeURIComponent(magic)}` : '');
             const res = await fetch(url);
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            if (!res.ok) throw new Error(`HTTP Error ${res.status}`);
             return res.json();
         }
 
@@ -1309,21 +1317,19 @@
             const now = Date.now();
             if (now - lastSendTime < COOLDOWN_TIME) {
                 const waitSec = Math.ceil((COOLDOWN_TIME - (now - lastSendTime)) / 1000);
-                return showMsg('appErrorMsg', `Sila tunggu ${waitSec} saat sebelum menghantar emel semula (Rate-Limit).`);
+                return showMsg('appErrorMsg', `Sistem Anti-Spam aktif. Harap tunggu ${waitSec}s.`);
             }
 
             const activeUser = sessionStorage.getItem(SESSION_KEY);
             db = initDatabase();
             if (activeUser && db[activeUser] && db[activeUser].role !== 'Owner' && !db[activeUser].isPermanent) {
                 db[activeUser] = checkAndResetLimit(db[activeUser]);
-                if (db[activeUser].limit <= 0) {
-                    return showMsg('appErrorMsg', 'Had mingguan anda telah habis! Sila hubungi Owner untuk Akses Kekal.', 'error');
-                }
+                if (db[activeUser].limit <= 0) return showMsg('appErrorMsg', 'Akses ditolak: Kuota eksekusi Anda telah habis.', 'error');
             }
 
             const email = emailInput.value.trim();
             document.getElementById('appErrorMsg').classList.remove('show');
-            if (!email || !email.includes('@')) return showMsg('appErrorMsg', 'Emel tidak sah.', 'error');
+            if (!email || !email.includes('@')) return showMsg('appErrorMsg', 'Format email tidak valid.', 'error');
 
             lastSendTime = Date.now();
             const oldTxt = sendBtn.textContent;
@@ -1334,15 +1340,15 @@
                 const data = await callApi('send', email);
                 if (data.status) {
                     cachedEmail = email;
-                    sendBtn.textContent = 'Hantar ✓';
+                    sendBtn.textContent = 'Terkirim ✓';
                     magicInput.focus();
-                    setTimeout(() => { sendBtn.textContent = oldTxt; sendBtn.disabled = false; }, 2000);
+                    setTimeout(() => { sendBtn.textContent = oldTxt; sendBtn.disabled = false; }, 2500);
                 } else {
-                    showMsg('appErrorMsg', `Gagal: ${data.error || 'Unknown error'}`, 'error');
+                    showMsg('appErrorMsg', `Gagal: ${data.error || 'Kesalahan Tak Dikenal'}`, 'error');
                     sendBtn.textContent = oldTxt; sendBtn.disabled = false;
                 }
             } catch (err) {
-                showMsg('appErrorMsg', `Ralat: ${err.message}`, 'error');
+                showMsg('appErrorMsg', `Kegagalan Jaringan: ${err.message}`, 'error');
                 sendBtn.textContent = oldTxt; sendBtn.disabled = false;
             }
         });
@@ -1353,7 +1359,7 @@
             const now = Date.now();
             if (now - lastActivateTime < COOLDOWN_TIME) {
                 const waitSec = Math.ceil((COOLDOWN_TIME - (now - lastActivateTime)) / 1000);
-                return showMsg('appErrorMsg', `Sila tunggu ${waitSec} saat sebelum mencuba aktivasi semula (Rate-Limit).`);
+                return showMsg('appErrorMsg', `Sistem Rate-Limit menunda eksekusi. Tunggu ${waitSec}s.`);
             }
 
             const activeUser = sessionStorage.getItem(SESSION_KEY);
@@ -1361,43 +1367,46 @@
             
             if (activeUser && db[activeUser] && db[activeUser].role !== 'Owner' && !db[activeUser].isPermanent) {
                 db[activeUser] = checkAndResetLimit(db[activeUser]);
-                if (db[activeUser].limit <= 0) {
-                    return showMsg('appErrorMsg', 'Had mingguan anda telah habis!', 'error');
-                }
+                if (db[activeUser].limit <= 0) return showMsg('appErrorMsg', 'Batas penggunaan habis. Permintaan eksekusi ditolak.', 'error');
+                
                 db[activeUser].limit -= 1;
                 saveToDatabase(db);
-                limitBadge.textContent = `Baki Had Mingguan: ${db[activeUser].limit} / 3`;
+                
+                limitTextValue.innerHTML = `${db[activeUser].limit} <span style="color:var(--text-muted);">/ 3</span>`;
+                const percentage = (db[activeUser].limit / 3) * 100;
+                limitBar.style.width = `${percentage}%`;
+                if(db[activeUser].limit === 1) limitBar.style.background = 'var(--accent-gold)';
+                if(db[activeUser].limit <= 0) limitBar.style.background = 'var(--accent-red)';
             }
 
             const email = emailInput.value.trim();
             const magic = magicInput.value.trim();
             document.getElementById('appErrorMsg').classList.remove('show');
 
-            if (!email || !magic) return showMsg('appErrorMsg', 'Emel & Pautan Ajaib wajib diisi.', 'error');
+            if (!email || !magic) return showMsg('appErrorMsg', 'Parameter eksekusi (Email & Link) tidak lengkap.', 'error');
 
             lastActivateTime = Date.now();
-            isLoading = true;
-            activateBtn.disabled = true;
-            btnDefault.classList.add('hidden');
-            loaderContainer.classList.remove('hidden');
+            isLoading = true; activateBtn.disabled = true;
+            btnDefault.classList.add('hidden'); loaderContainer.classList.remove('hidden');
 
             try {
                 const data = await callApi('verif', cachedEmail || email, magic);
                 if (data.status) {
                     isLoading = false; isSuccess = true;
-                    loaderContainer.classList.add('hidden');
-                    btnSuccess.classList.remove('hidden');
-                    activateBtn.style.background = 'var(--success-text)';
+                    loaderContainer.classList.add('hidden'); btnSuccess.classList.remove('hidden');
+                    activateBtn.style.background = 'linear-gradient(135deg, #05ffa1, #00c853)'; 
+                    activateBtn.style.color = '#000';
+                    activateBtn.style.boxShadow = '0 6px 25px rgba(5,255,161,0.5)';
                     cachedEmail = '';
                 } else {
                     isLoading = false; activateBtn.disabled = false;
                     loaderContainer.classList.add('hidden'); btnDefault.classList.remove('hidden');
-                    showMsg('appErrorMsg', `Gagal: ${data.error || 'Unknown error'}`, 'error');
+                    showMsg('appErrorMsg', `Aktivasi Gagal: ${data.error || 'Server menolak'}`, 'error');
                 }
             } catch (err) {
                 isLoading = false; activateBtn.disabled = false;
                 loaderContainer.classList.add('hidden'); btnDefault.classList.remove('hidden');
-                showMsg('appErrorMsg', `Ralat: ${err.message}`, 'error');
+                showMsg('appErrorMsg', `Sistem Error: ${err.message}`, 'error');
             }
         });
 
@@ -1419,3 +1428,4 @@
 </script>
 
 </body>
+</html>
