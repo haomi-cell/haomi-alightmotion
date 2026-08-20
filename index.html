@@ -198,6 +198,12 @@
     font-family: var(--font-main); font-size: 13px; resize: vertical; min-height: 70px; outline: none;
   }
 
+  .member-search-box {
+    width: 100%; padding: 12px 14px; background: rgba(0,0,0,0.6); border: 1px solid var(--glass-border); border-radius: var(--radius-sm);
+    color: var(--text-primary); font-family: var(--font-main); font-size: 13px; outline: none;
+  }
+  .member-search-box:focus { border-color: var(--accent-blue); box-shadow: 0 0 0 3px var(--accent-blue-dim); }
+
   .member-list { display: flex; flex-direction: column; gap: 12px; max-height: 480px; overflow-y: auto; padding-right: 6px; }
   .admin-member-card {
     background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.06); border-left: 3px solid var(--accent-blue);
@@ -450,6 +456,12 @@
       <button class="btn btn-primary" style="padding: 10px; font-size: 13px; background: linear-gradient(135deg, #7f00ff, #9d4edd); color:#fff;" onclick="sendBroadcastMsg()">Kirim Broadcast</button>
     </div>
 
+    <!-- Kolom Pencarian Member -->
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <label style="font-size: 12px; font-weight: 600; color: var(--text-secondary);">Cari Anggota (Username / ID)</label>
+      <input type="text" id="memberSearchInput" class="member-search-box" placeholder="Ketik nama atau ID member..." oninput="renderMemberList()" autocomplete="off" />
+    </div>
+
     <div id="memberList" class="member-list"></div>
   </div>
 
@@ -583,7 +595,6 @@
 
     // ========== SISTEM PENGUMUMAN / BROADCAST REALTIME ==========
     async function checkForLatestBroadcast() {
-        // Ambil pengumuman terbaru dari tabel 'broadcasts' (urutkan berdasarkan waktu terbaru)
         const { data, error } = await supabaseClient
             .from('broadcasts')
             .select('*')
@@ -595,7 +606,6 @@
             activeBroadcastId = latest.id;
             const lastSeenId = localStorage.getItem(BROADCAST_SEEN_KEY);
 
-            // Jika broadcast ini belum pernah dilihat oleh member ini, tampilkan pop-up
             if (lastSeenId !== String(latest.id)) {
                 document.getElementById('broadcastContentText').textContent = latest.message;
                 document.getElementById('broadcastModal').classList.add('show');
@@ -605,7 +615,6 @@
 
     function initRealtimeBroadcastListener() {
         checkForLatestBroadcast();
-        // Berlangganan perubahan real-time pada tabel 'broadcasts'
         supabaseClient
             .channel('public:broadcasts')
             .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'broadcasts' }, payload => {
@@ -628,7 +637,6 @@
         const text = document.getElementById('broadcastInput').value.trim();
         if(!text) return alert("Pesan broadcast tidak boleh kosong!");
 
-        // Masukkan pesan ke tabel 'broadcasts' di Supabase
         const { error } = await supabaseClient.from('broadcasts').insert([{
             message: text,
             created_at: new Date().toISOString()
@@ -702,21 +710,45 @@
         if(!panel.classList.contains('hidden')) renderMemberList();
     };
 
-    // ========== RENDER DAFTAR MEMBER DI PANEL OWNER (LENGKAP ID, TANGGAL & KONTROL) ==========
+    // ========== RENDER DAFTAR MEMBER DI PANEL OWNER (DENGAN PENCARIAN & TANGGAL VIP) ==========
     window.renderMemberList = async function() {
         const { data: users, error } = await supabaseClient.from('users').select('*');
         const memberList = document.getElementById('memberList');
         const memberCountBadge = document.getElementById('memberCountBadge');
+        const searchInput = document.getElementById('memberSearchInput');
         if(!memberList || error) return;
 
+        const searchQuery = searchInput ? searchInput.value.toLowerCase().trim() : '';
+
+        // Filter data berdasarkan input pencarian (Username atau ID Code)
+        const filteredUsers = users.filter(m => {
+            const uname = (m.username || '').toLowerCase();
+            const idCode = (m.id_code || '').toLowerCase();
+            return uname.includes(searchQuery) || idCode.includes(searchQuery);
+        });
+
         memberList.innerHTML = '';
-        users.forEach(m => {
+        
+        if (filteredUsers.length === 0) {
+            memberList.innerHTML = `<div style="text-align: center; color: var(--text-secondary); padding: 20px; font-size: 13px;">Member tidak ditemukan.</div>`;
+            if(memberCountBadge) memberCountBadge.textContent = `Ditemukan: 0`;
+            return;
+        }
+
+        filteredUsers.forEach(m => {
             const waClean = m.wa ? m.wa.replace(/[^0-9]/g, '') : '';
             const waLink = waClean ? `https://wa.me/${waClean}` : '#';
             const isVipUser = parseBool(m.is_permanent);
             
-            // Format tanggal pembuatan akun
             let createdDate = m.created_at ? new Date(m.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Baru saja';
+            
+            // Format Tanggal VIP jika ada
+            let vipDateFormatted = '-';
+            if (m.vip_since) {
+                vipDateFormatted = new Date(m.vip_since).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+            } else if (isVipUser) {
+                vipDateFormatted = 'Permanen / Aktif';
+            }
 
             let roleBadge = `<span class="user-role-badge role-member">Member</span>`;
             let cardClass = 'admin-member-card';
@@ -736,6 +768,7 @@
                     <span>Limit: <b>${isVipUser ? '∞' : (m.limit_count ?? 3)}</b></span>
                     <span>Pass: ${m.password}</span>
                     <span>Dibuat: ${createdDate}</span>
+                    <span style="grid-column: span 2; color: ${isVipUser ? 'var(--accent-gold)' : 'var(--text-secondary)'};">VIP Sejak: <b>${vipDateFormatted}</b></span>
                 </div>
                 <div class="admin-member-actions">
                     <a href="${waLink}" target="_blank" class="btn-tiny action-wa">WhatsApp</a>
@@ -746,7 +779,7 @@
             `;
             memberList.appendChild(el);
         });
-        if(memberCountBadge) memberCountBadge.textContent = `Total: ${users.length} Klien`;
+        if(memberCountBadge) memberCountBadge.textContent = `Total: ${filteredUsers.length} Klien`;
     };
 
     // Fungsi Tambah/Kurang Limit dari Panel Owner
@@ -773,10 +806,19 @@
         }
     };
 
-    // Fungsi Ubah Status VIP (Permanen) dari Panel Owner
+    // Fungsi Ubah Status VIP (Permanen) dari Panel Owner dengan Catatan Tanggal Akses
     window.toggleVipStatus = async function(username, currentVipStatus) {
         const newStatus = !currentVipStatus ? 'true' : 'false';
-        const { error } = await supabaseClient.from('users').update({ is_permanent: newStatus }).eq('username', username);
+        const updatePayload = { is_permanent: newStatus };
+        
+        // Catat tanggal saat diberi akses VIP jika baru diaktifkan
+        if (!currentVipStatus) {
+            updatePayload.vip_since = new Date().toISOString();
+        } else {
+            updatePayload.vip_since = null;
+        }
+
+        const { error } = await supabaseClient.from('users').update(updatePayload).eq('username', username);
         
         if (error) {
             alert("Gagal mengubah status VIP: " + error.message);
@@ -784,6 +826,7 @@
             renderMemberList();
             if(currentUserData && currentUserData.username === username) {
                 currentUserData.is_permanent = newStatus;
+                currentUserData.vip_since = updatePayload.vip_since;
                 loadAppView(currentUserData);
             }
         }
@@ -848,6 +891,7 @@
                 limit_count: 3,
                 is_permanent: 'false',
                 is_banned: 'false',
+                vip_since: null,
                 created_at: new Date().toISOString()
             };
 
