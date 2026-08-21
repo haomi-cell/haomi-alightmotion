@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -1187,17 +1188,12 @@
                 currentUserData = data;
                 loadAppView(data);
             } else {
-                if (error && error.code === 'PGRST116') {
-                    localStorage.removeItem(SESSION_KEY);
-                    switchView('loginView');
-                } else {
-                    document.getElementById('displayUserName').textContent = username;
-                    switchView('appView');
-                }
+                localStorage.removeItem(SESSION_KEY);
+                switchView('loginView');
             }
         } catch (err) {
-            document.getElementById('displayUserName').textContent = username;
-            switchView('appView');
+            localStorage.removeItem(SESSION_KEY);
+            switchView('loginView');
         }
     }
 
