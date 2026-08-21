@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -161,7 +162,7 @@
   .btn-promo {
     background: linear-gradient(135deg, #ffd700, #ff9100); color: #000; font-weight: 800; padding: 12px 24px;
     border-radius: var(--radius-sm); font-size: 14px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
-    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4); text-transform: uppercase; letter-spacing: 0.5px;
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4); text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer;
   }
 
   .action-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
@@ -597,7 +598,7 @@
   <div id="promoBannerContainer" class="promo-banner">
     <h3>Upgrade VIP Permanen</h3>
     <p>Hilangkan batasan kuota! Amankan akses tanpa batas selamanya.</p>
-    <a id="promoDashBtn" href="https://wa.me/6282231669053?text=Halo%20Admin,%20saya%20ingin%20upgrade%20menjadi%20VIP%20Permanen." target="_blank" class="btn-promo">Pesan via WhatsApp Sekarang</a>
+    <a id="promoDashBtn" onclick="handleVipPromoClick()" class="btn-promo">Pesan via WhatsApp Sekarang</a>
   </div>
 
   <div class="action-grid-3">
@@ -925,6 +926,17 @@
             })
             .subscribe();
     }
+
+    window.handleVipPromoClick = function() {
+        if (!currentUserData) {
+            window.open(`https://wa.me/6282231669053?text=` + encodeURIComponent("Halo Admin, saya ingin upgrade menjadi VIP Permanen."), '_blank');
+            return;
+        }
+
+        const textMessage = `Halo Admin, saya ingin melakukan Upgrade VIP Permanen.\n\nBerikut adalah data diri akun saya:\n- Username: @${currentUserData.username}\n- User ID: ${currentUserData.id_code || 'MSH-01'}\n- No WhatsApp: ${currentUserData.wa || '-'}`;
+        
+        window.open(`https://wa.me/6282231669053?text=` + encodeURIComponent(textMessage), '_blank');
+    };
 
     window.handleAvatarUpload = async function(event) {
         const file = event.target.files[0];
