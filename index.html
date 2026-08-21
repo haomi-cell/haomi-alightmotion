@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Alight Motion — Premium Activation Center</title>
+<title>Alight Motion — Premium Activation & Image Enhancer Center</title>
 
-<!-- Modern Fonts -->
+<!-- Modern Fonts & Icons -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <!-- Supabase JS Library -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -28,6 +29,12 @@
     --accent-gold-dim: rgba(255, 215, 0, 0.15);
     --accent-red: #ff2a6d;
     --accent-green: #05ffa1;
+    
+    /* Enhancer specific variables */
+    --enhancer-accent: #00F0FF;
+    --enhancer-dim: rgba(0, 240, 255, 0.14);
+    --enhancer-glow: rgba(0, 240, 255, 0.35);
+
     --text-primary: #ffffff;
     --text-secondary: #94a3b8;
     --text-muted: #475569;
@@ -55,7 +62,7 @@
   }
 
   .container {
-    position: relative; z-index: 10; width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 20px;
+    position: relative; z-index: 10; width: 100%; max-width: 520px; display: flex; flex-direction: column; gap: 20px;
     animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
 
@@ -180,6 +187,7 @@
   .limit-track { width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; position: relative; }
   .limit-bar { height: 100%; background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple)); border-radius: 4px; transition: width 0.3s ease; }
   .limit-bar.vip-bar { background: linear-gradient(90deg, #ffd700, #ff9100) !important; width: 100% !important; }
+  .limit-footer-note { font-size: 11px; color: var(--text-secondary); line-height: 1.4; margin-top: 4px; }
 
   .admin-panel {
     background: var(--glass-bg); backdrop-filter: blur(24px); border: 1px solid var(--glass-border); border-radius: var(--radius-lg);
@@ -258,13 +266,121 @@
   .auth-link { color: var(--text-secondary); cursor: pointer; text-decoration: none; }
   .auth-link:hover { color: var(--accent-blue); text-decoration: underline; }
   .hidden { display: none !important; }
+  
+  /* ================= IMAGE ENHANCER (𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞) MODULE ================= */
+  .enhancer-wrapper {
+    margin-top: 10px;
+    background: rgba(8, 18, 30, 0.82);
+    border: 1px solid rgba(0, 240, 255, 0.18);
+    border-radius: var(--radius-lg);
+    padding: 22px;
+    font-family: 'Inter', sans-serif;
+  }
+  .enhancer-header {
+    display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .enhancer-brand { display: flex; align-items: center; gap: 10px; }
+  .enhancer-brand-icon {
+    width: 36px; height: 36px; background: linear-gradient(135deg, #66F5FF, var(--enhancer-accent) 55%, #00A3AD);
+    border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1rem; color: #060709;
+    box-shadow: 0 4px 14px rgba(0, 240, 255, 0.3);
+  }
+  .enhancer-title h3 { font-family: 'Manrope', sans-serif; font-size: 1rem; font-weight: 800; color: var(--text-primary); }
+  .enhancer-title p { font-size: 0.7rem; color: var(--text-secondary); }
+
+  .workspace-grid { display: grid; gap: 12px; margin-bottom: 16px; }
+  .input-box-wrapper { position: relative; }
+  .url-input {
+    width: 100%; background: rgba(255, 255, 255, 0.045); border: 1px solid rgba(0, 240, 255, 0.18);
+    border-radius: 100px; padding: 12px 16px 12px 42px; color: var(--text-primary); font-size: 0.85rem; outline: none;
+  }
+  .url-input:focus { border-color: var(--enhancer-accent); box-shadow: 0 0 0 3px var(--enhancer-dim); }
+  .url-input-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.85rem; }
+
+  .drop-zone {
+    border: 1.5px dashed rgba(0, 240, 255, 0.3); border-radius: var(--radius-md); padding: 18px 14px;
+    text-align: center; background: rgba(0, 240, 255, 0.02); cursor: pointer; transition: all 0.2s ease;
+  }
+  .drop-zone:hover, .drop-zone.dragover { border-color: var(--enhancer-accent); background: var(--enhancer-dim); }
+  .drop-zone i { font-size: 1.5rem; color: var(--enhancer-accent); margin-bottom: 4px; display: block; }
+  .drop-zone span { font-size: 0.8rem; color: var(--text-secondary); display: block; }
+  .drop-zone strong { color: var(--text-primary); }
+  .file-name-info { margin-top: 4px; font-size: 0.7rem; color: var(--enhancer-accent); font-weight: 600; }
+  #fileInput { display: none; }
+
+  .toolbar-grid { display: grid; grid-template-columns: 1fr auto; gap: 12px; margin-bottom: 16px; align-items: stretch; }
+  @media (max-width: 480px) { .toolbar-grid { grid-template-columns: 1fr; } }
+
+  .control-card {
+    background: rgba(255, 255, 255, 0.035); border: 1px solid rgba(0, 240, 255, 0.18);
+    border-radius: var(--radius-sm); padding: 10px 14px; display: flex; flex-direction: column; gap: 6px;
+  }
+  .control-label { font-size: 0.72rem; font-weight: 700; color: var(--text-secondary); display: flex; justify-content: space-between; align-items: center; }
+  .control-label i { color: var(--enhancer-accent); }
+  .range-slider {
+    -webkit-appearance: none; width: 100%; height: 4px; background: rgba(255, 255, 255, 0.12); border-radius: 3px; outline: none;
+  }
+  .range-slider::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%; background: var(--enhancer-accent); cursor: pointer;
+    box-shadow: 0 0 10px var(--enhancer-glow); border: 2px solid #060709;
+  }
+
+  .mode-trigger-btn {
+    background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(0, 240, 255, 0.18); border-radius: var(--radius-sm);
+    padding: 10px 14px; color: var(--text-primary); display: flex; align-items: center; justify-content: space-between; gap: 10px; cursor: pointer;
+  }
+  .mode-trigger-btn:hover { background: var(--enhancer-dim); }
+
+  .enhancer-action-group { display: flex; gap: 8px; margin-bottom: 14px; }
+  .btn-enhancer-primary {
+    flex: 1; background: linear-gradient(135deg, #66F5FF, var(--enhancer-accent) 55%, #008F99); color: #060709;
+    padding: 12px 18px; border-radius: 100px; font-weight: 700; font-size: 0.85rem; border: none; cursor: pointer;
+    box-shadow: 0 6px 18px rgba(0, 240, 255, 0.25); display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .btn-enhancer-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-enhancer-secondary {
+    background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(0, 240, 255, 0.18); color: var(--text-primary);
+    padding: 12px 14px; border-radius: 100px; cursor: pointer;
+  }
+
+  .comparison-split-section { display: none; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+  .comparison-split-section.show { display: flex; }
+  .split-title { font-size: 0.82rem; font-weight: 700; color: var(--text-primary); display: flex; align-items: center; gap: 6px; }
+  .split-cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 480px) { .split-cards-grid { grid-template-columns: 1fr; } }
+  .split-card { background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(0, 240, 255, 0.18); border-radius: var(--radius-sm); padding: 10px; display: flex; flex-direction: column; gap: 8px; }
+  .split-card-header { font-size: 0.65rem; font-weight: 800; padding: 2px 6px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px; width: fit-content; }
+  .split-card.before .split-card-header { background: rgba(255, 92, 114, 0.12); color: #ff8a9a; border: 1px solid rgba(255, 92, 114, 0.25); }
+  .split-card.after .split-card-header { background: var(--enhancer-dim); color: var(--enhancer-accent); border: 1px solid rgba(0, 240, 255, 0.3); }
+  .split-image-box { width: 100%; height: 180px; background: rgba(0, 0, 0, 0.4); border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .split-image-box img { width: 100%; height: 100%; object-fit: contain; }
+
+  .download-footer-actions { display: none; gap: 8px; }
+  .download-footer-actions.show { display: flex; }
+
+  /* Modal Resolution Panel Specific */
+  .mode-options-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+  .mode-option-item {
+    background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(0, 240, 255, 0.18); border-radius: var(--radius-sm);
+    padding: 10px 12px; display: flex; align-items: center; gap: 10px; cursor: pointer;
+  }
+  .mode-option-item.selected { background: var(--enhancer-dim); border-color: var(--enhancer-accent); }
+  .mode-option-icon {
+    width: 28px; height: 28px; border-radius: 8px; background: rgba(0, 240, 255, 0.1); color: var(--enhancer-accent);
+    display: flex; align-items: center; justify-content: center; font-size: 0.8rem; flex-shrink: 0;
+  }
+  .mode-option-item.selected .mode-option-icon { background: var(--enhancer-accent); color: #060709; }
+  .mode-option-info h4 { font-size: 0.8rem; font-weight: 700; color: var(--text-primary); margin-bottom: 2px; }
+  .mode-option-info p { font-size: 0.68rem; color: var(--text-secondary); line-height: 1.3; }
+
   footer { text-align: center; font-size: 12px; color: var(--text-muted); margin-top: 24px; font-weight: 500;}
   footer span { color: var(--text-secondary); font-weight: 700; }
 
-  .loader-container { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; height: 100%; }
-  .loader-dot { width: 8px; height: 8px; border-radius: 50%; background: #00131f; animation: pulseDot 1.4s infinite ease-in-out both; }
-  .loader-dot:nth-child(1) { animation-delay: -0.32s; } .loader-dot:nth-child(2) { animation-delay: -0.16s; }
-  @keyframes pulseDot { 0%, 80%, 100% { transform: scale(0); opacity: 0.4; } 40% { transform: scale(1); opacity: 1; } }
+  .spinner {
+    display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(6,7,9,0.25); border-top-color: #060709; border-radius: 50%; animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
 </style>
 </head>
 <body>
@@ -475,6 +591,7 @@
       <div class="limit-track">
         <div id="limitBar" class="limit-bar" style="width: 100%;"></div>
       </div>
+      <div class="limit-footer-note">Limit akan direset setiap minggu. Jika limit habis, bisa kontak owner untuk tambah limit eceran (1 limit = 500P).</div>
     </div>
     
     <div class="info-box">
@@ -512,7 +629,132 @@
     </button>
   </div>
 
-  <footer>&copy; 2026 <span>Alight Motion Supabase System</span></footer>
+  <!-- ================= IMAGE ENHANCER (𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞) MODULE ================= -->
+  <div class="enhancer-wrapper">
+    <div class="enhancer-header">
+      <div class="enhancer-brand">
+        <div class="enhancer-brand-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
+        <div class="enhancer-title">
+          <h3>Image Enhancer</h3>
+          <p>𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞 Integration</p>
+        </div>
+      </div>
+      <div class="badge badge-blue"><i class="fas fa-circle" style="font-size:5px;"></i> HD Engine</div>
+    </div>
+
+    <div class="workspace-grid">
+      <div class="input-box-wrapper">
+        <i class="fas fa-link url-input-icon"></i>
+        <input type="url" id="imageUrl" class="url-input" placeholder="URL gambar langsung (https://...)">
+      </div>
+
+      <div class="drop-zone" id="dropZone">
+        <i class="fas fa-cloud-arrow-up"></i>
+        <span>Seret &amp; letakkan file gambar, atau <strong>pilih berkas</strong></span>
+        <div class="file-name-info" id="fileNameDisplay"></div>
+        <input type="file" id="fileInput" accept="image/*">
+      </div>
+    </div>
+
+    <div class="toolbar-grid">
+      <div class="control-card">
+        <div class="control-label">
+          <span><i class="fas fa-sliders"></i> Kekuatan Enhancer</span>
+          <span id="strengthIndicator" style="color:var(--enhancer-accent); font-weight:700;">Optimal</span>
+        </div>
+        <input type="range" id="strengthRange" class="range-slider" min="10" max="100" value="60">
+      </div>
+
+      <div class="mode-trigger-btn" id="openModeModal">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <i class="fas fa-layer-group" style="color:var(--enhancer-accent);"></i>
+          <div style="text-align:left;">
+            <div style="font-size:0.6rem; color:var(--text-secondary);">Mode Resolusi</div>
+            <div id="currentModeLabel" style="font-weight:700; color:var(--text-primary); font-size: 0.78rem;">Upscale 2x + Sharpness</div>
+          </div>
+        </div>
+        <i class="fas fa-chevron-right" style="color:var(--text-muted); font-size:0.7rem;"></i>
+      </div>
+    </div>
+
+    <div class="enhancer-action-group">
+      <button class="btn-enhancer-primary" id="enhanceBtn">
+        <i class="fas fa-bolt"></i> Mulai Proses Enhancement HD
+      </button>
+      <button class="btn-enhancer-secondary" id="resetBtn" title="Reset">
+        <i class="fas fa-rotate-left"></i>
+      </button>
+    </div>
+
+    <div style="margin-bottom: 10px;">
+      <div class="status-message" id="statusMessage"></div>
+    </div>
+
+    <div class="comparison-split-section" id="comparisonSplitSection">
+      <div class="split-title"><i class="fas fa-columns" style="color:var(--enhancer-accent);"></i> Hasil Perbandingan Gambar</div>
+      <div class="split-cards-grid">
+        <div class="split-card before">
+          <div class="split-card-header"><i class="fas fa-image"></i> SEBELUM (ORIGINAL)</div>
+          <div class="split-image-box"><img id="splitImgBefore" alt="Sebelum"></div>
+        </div>
+        <div class="split-card after">
+          <div class="split-card-header"><i class="fas fa-sparkles"></i> SESUDAH (ENHANCED HD)</div>
+          <div class="split-image-box"><img id="splitImgAfter" alt="Sesudah"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="download-footer-actions" id="downloadFooterActions">
+      <button class="btn-enhancer-primary" id="downloadBtn">
+        <i class="fas fa-download"></i> Unduh Gambar HD (.PNG)
+      </button>
+      <button class="btn-enhancer-secondary" id="copyUrlBtn">
+        <i class="fas fa-copy"></i> Salin URL
+      </button>
+    </div>
+  </div>
+
+  <footer>&copy; 2026 <span>Alight Motion &amp; 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞 Systems</span></footer>
+</div>
+
+<!-- Modal Popup Panel for Resolution Mode -->
+<div class="modal-overlay" id="modeModalOverlay">
+  <div class="modal-box" style="background:#0f131a; border: 1px solid rgba(0, 240, 255, 0.35);">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+      <h3 style="font-size: 0.95rem; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 6px;">
+        <i class="fas fa-wand-magic-sparkles" style="color:var(--enhancer-accent);"></i> Pilih Mode Resolusi
+      </h3>
+      <button class="modal-close" id="closeModeModal" style="background:rgba(255,255,255,0.06); border:none; width:28px; height:28px; border-radius:50%; color:#fff; cursor:pointer;"><i class="fas fa-xmark"></i></button>
+    </div>
+
+    <div class="mode-options-list">
+      <div class="mode-option-item selected" data-mode="2x">
+        <div class="mode-option-icon"><i class="fas fa-expand"></i></div>
+        <div class="mode-option-info">
+          <h4>Upscale 2x + Sharpness</h4>
+          <p>Memperbesar dimensi piksel dua kali lipat dengan penajaman tepi optimal.</p>
+        </div>
+      </div>
+
+      <div class="mode-option-item" data-mode="1x">
+        <div class="mode-option-icon"><i class="fas fa-filter"></i></div>
+        <div class="mode-option-info">
+          <h4>Original Size + High Filter</h4>
+          <p>Mempertahankan resolusi asli namun membersihkan noise &amp; mempertajam detail.</p>
+        </div>
+      </div>
+
+      <div class="mode-option-item" data-mode="hdr">
+        <div class="mode-option-icon"><i class="fas fa-sun"></i></div>
+        <div class="mode-option-info">
+          <h4>HDR Boost &amp; Denoise</h4>
+          <p>Menaikkan kontras, keseimbangan warna, serta meredam bintik gambar gelap.</p>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-enhancer-primary" id="applyModeBtn" style="width:100%;"><i class="fas fa-check"></i> Terapkan Mode</button>
+  </div>
 </div>
 
 <script>
@@ -541,6 +783,7 @@
         startClock();
         initRealtimeMemberCounter();
         initRealtimeBroadcastListener();
+        initImageEnhancerEngine();
     };
 
     function startClock() {
@@ -710,7 +953,6 @@
         if(!panel.classList.contains('hidden')) renderMemberList();
     };
 
-    // ========== RENDER DAFTAR MEMBER DI PANEL OWNER (DENGAN PENCARIAN & TANGGAL VIP) ==========
     window.renderMemberList = async function() {
         const { data: users, error } = await supabaseClient.from('users').select('*');
         const memberList = document.getElementById('memberList');
@@ -720,7 +962,6 @@
 
         const searchQuery = searchInput ? searchInput.value.toLowerCase().trim() : '';
 
-        // Filter data berdasarkan input pencarian (Username atau ID Code)
         const filteredUsers = users.filter(m => {
             const uname = (m.username || '').toLowerCase();
             const idCode = (m.id_code || '').toLowerCase();
@@ -741,8 +982,6 @@
             const isVipUser = parseBool(m.is_permanent);
             
             let createdDate = m.created_at ? new Date(m.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Baru saja';
-            
-            // Format Tanggal VIP jika ada
             let vipDateFormatted = '-';
             if (m.vip_since) {
                 vipDateFormatted = new Date(m.vip_since).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
@@ -782,7 +1021,6 @@
         if(memberCountBadge) memberCountBadge.textContent = `Total: ${filteredUsers.length} Klien`;
     };
 
-    // Fungsi Tambah/Kurang Limit dari Panel Owner
     window.adjustLimit = async function(username, amount) {
         const { data: user, error: fetchErr } = await supabaseClient.from('users').select('limit_count, is_permanent').eq('username', username).single();
         if (fetchErr || !user) return alert("Gagal mengambil data user.");
@@ -806,12 +1044,10 @@
         }
     };
 
-    // Fungsi Ubah Status VIP (Permanen) dari Panel Owner dengan Catatan Tanggal Akses
     window.toggleVipStatus = async function(username, currentVipStatus) {
         const newStatus = !currentVipStatus ? 'true' : 'false';
         const updatePayload = { is_permanent: newStatus };
         
-        // Catat tanggal saat diberi akses VIP jika baru diaktifkan
         if (!currentVipStatus) {
             updatePayload.vip_since = new Date().toISOString();
         } else {
@@ -836,6 +1072,345 @@
         const input = document.getElementById(inputId);
         input.type = input.type === 'password' ? 'text' : 'password';
     };
+
+    // ========== IMAGE ENHANCER LOGIC ENGINE ==========
+    function initImageEnhancerEngine() {
+        const urlInput = document.getElementById('imageUrl');
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const fileNameDisplay = document.getElementById('fileNameDisplay');
+        const strengthRange = document.getElementById('strengthRange');
+        const strengthIndicator = document.getElementById('strengthIndicator');
+
+        const openModeModal = document.getElementById('openModeModal');
+        const closeModeModal = document.getElementById('closeModeModal');
+        const modeModalOverlay = document.getElementById('modeModalOverlay');
+        const applyModeBtn = document.getElementById('applyModeBtn');
+        const currentModeLabel = document.getElementById('currentModeLabel');
+        const modeItems = document.querySelectorAll('.mode-option-item');
+
+        const enhanceBtn = document.getElementById('enhanceBtn');
+        const resetBtn = document.getElementById('resetBtn');
+
+        const comparisonSplitSection = document.getElementById('comparisonSplitSection');
+        const splitImgBefore = document.getElementById('splitImgBefore');
+        const splitImgAfter = document.getElementById('splitImgAfter');
+
+        const statusMessage = document.getElementById('statusMessage');
+        const downloadFooterActions = document.getElementById('downloadFooterActions');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const copyUrlBtn = document.getElementById('copyUrlBtn');
+
+        let selectedFile = null;
+        let selectedMode = '2x';
+        let tempSelectedMode = '2x';
+        let originalBlobUrl = null;
+        let enhancedBlobUrl = null;
+
+        const strengthLabels = [
+          { max: 30, text: 'Lembut' },
+          { max: 70, text: 'Optimal' },
+          { max: 100, text: 'Maksimal' }
+        ];
+
+        strengthRange.addEventListener('input', () => {
+          const val = parseInt(strengthRange.value, 10);
+          let label = 'Optimal';
+          for (let item of strengthLabels) {
+            if (val <= item.max) { label = item.text; break; }
+          }
+          strengthIndicator.textContent = label;
+        });
+
+        openModeModal.addEventListener('click', () => {
+          tempSelectedMode = selectedMode;
+          modeItems.forEach(item => {
+            if (item.getAttribute('data-mode') === tempSelectedMode) item.classList.add('selected');
+            else item.classList.remove('selected');
+          });
+          modeModalOverlay.classList.add('show');
+        });
+
+        const closeModalFunc = () => modeModalOverlay.classList.remove('show');
+        closeModeModal.addEventListener('click', closeModalFunc);
+        modeModalOverlay.addEventListener('click', (e) => {
+          if (e.target === modeModalOverlay) closeModalFunc();
+        });
+
+        modeItems.forEach(item => {
+          item.addEventListener('click', () => {
+            modeItems.forEach(i => i.classList.remove('selected'));
+            item.classList.add('selected');
+            tempSelectedMode = item.getAttribute('data-mode');
+          });
+        });
+
+        applyModeBtn.addEventListener('click', () => {
+          selectedMode = tempSelectedMode;
+          const modeTexts = {
+            '2x': 'Upscale 2x + Sharpness',
+            '1x': 'Original Size + High Filter',
+            'hdr': 'HDR Boost & Denoise'
+          };
+          currentModeLabel.textContent = modeTexts[selectedMode];
+          closeModalFunc();
+        });
+
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+          dropZone.addEventListener(eventName, (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+          dropZone.addEventListener(eventName, (e) => { e.preventDefault(); dropZone.classList.remove('dragover'); });
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+          const files = e.dataTransfer.files;
+          if (files && files[0]) handleFile(files[0]);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+          if (e.target.files && e.target.files[0]) handleFile(e.target.files[0]);
+        });
+
+        function handleFile(file) {
+          if (!file.type.startsWith('image/')) {
+            setEnhancerStatus('Format file tidak valid, harap pilih berkas gambar.', 'error');
+            return;
+          }
+          if (file.size > 25 * 1024 * 1024) {
+            setEnhancerStatus('Ukuran berkas terlalu besar (Maksimal 25MB).', 'error');
+            return;
+          }
+          selectedFile = file;
+          fileNameDisplay.textContent = `Berkas: ${file.name} (${(file.size / 1024 / 1024).toFixed(1)} MB)`;
+          urlInput.value = '';
+          setEnhancerStatus('');
+        }
+
+        function setEnhancerStatus(text, type = '') {
+          statusMessage.textContent = text;
+          statusMessage.className = 'status-message' + (type ? ' ' + type : '');
+        }
+
+        resetBtn.addEventListener('click', () => {
+          selectedFile = null;
+          fileInput.value = '';
+          fileNameDisplay.textContent = '';
+          urlInput.value = '';
+          if (originalBlobUrl) URL.revokeObjectURL(originalBlobUrl);
+          if (enhancedBlobUrl) URL.revokeObjectURL(enhancedBlobUrl);
+          originalBlobUrl = null;
+          enhancedBlobUrl = null;
+
+          comparisonSplitSection.classList.remove('show');
+          downloadFooterActions.classList.remove('show');
+          setEnhancerStatus('');
+        });
+
+        enhanceBtn.addEventListener('click', async () => {
+          const urlVal = urlInput.value.trim();
+          if (!urlVal && !selectedFile) {
+            setEnhancerStatus('Masukkan URL web atau unggah berkas gambar terlebih dahulu.', 'error');
+            return;
+          }
+
+          enhanceBtn.disabled = true;
+          enhanceBtn.innerHTML = '<span class="spinner"></span> Menganalisis Berkas...';
+          setEnhancerStatus('⏳ Memuat sumber gambar dan menjalankan engine...', '');
+
+          try {
+            let sourceImg = null;
+            let origBlob = null;
+
+            if (selectedFile) {
+              origBlob = selectedFile;
+              sourceImg = await loadImageFromFile(selectedFile);
+            } else {
+              origBlob = await fetchUrlBlob(urlVal);
+              sourceImg = await loadImageFromBlob(origBlob);
+            }
+
+            originalBlobUrl = URL.createObjectURL(origBlob);
+            splitImgBefore.src = originalBlobUrl;
+
+            let enhancedBlob = null;
+            let methodUsed = '';
+            const apiList = [
+              'https://api-nanzz.my.id/docs/api/tools/image/enhancer.php?url=',
+              'https://api-nanzz.my.id/api/tools/image/enhancer?url='
+            ];
+
+            let targetFetchUrl = urlVal || originalBlobUrl;
+            for (const api of apiList) {
+              try {
+                const resp = await fetch(api + encodeURIComponent(targetFetchUrl), { headers: { 'Accept': 'image/*' } });
+                if (resp.ok) {
+                  const b = await resp.blob();
+                  if (b && b.size > 400 && b.type.startsWith('image/')) {
+                    enhancedBlob = b;
+                    methodUsed = 'Cloud AI Engine (API Nanzz)';
+                    break;
+                  }
+                }
+              } catch(e) {}
+            }
+
+            if (!enhancedBlob) {
+              setEnhancerStatus('⚙️ Menjalankan Neural Canvas Local Upscaler...', '');
+              const factorVal = parseInt(strengthRange.value, 10);
+              enhancedBlob = await runLocalEnhancer(sourceImg, factorVal, selectedMode);
+              methodUsed = 'Local Matrix Canvas Engine';
+            }
+
+            enhancedBlobUrl = URL.createObjectURL(enhancedBlob);
+            splitImgAfter.src = enhancedBlobUrl;
+
+            comparisonSplitSection.classList.add('show');
+            downloadFooterActions.classList.add('show');
+
+            setEnhancerStatus(`✅ Berhasil ditingkatkan menggunakan ${methodUsed}`, 'success');
+          } catch (err) {
+            console.error(err);
+            setEnhancerStatus('❌ Proses gagal: ' + err.message, 'error');
+          } finally {
+            enhanceBtn.disabled = false;
+            enhanceBtn.innerHTML = '<i class="fas fa-bolt"></i> Mulai Proses Enhancement HD';
+          }
+        });
+
+        function fetchUrlBlob(url) {
+          return new Promise(async (resolve, reject) => {
+            try {
+              const res = await fetch(url);
+              if (!res.ok) throw new Error('Akses URL ditolak atau tidak ditemukan.');
+              const blob = await res.blob();
+              resolve(blob);
+            } catch (e) {
+              reject(new Error('Gagal mengambil URL akibat pembatasan CORS. Gunakan unggah berkas lokal.'));
+            }
+          });
+        }
+
+        function loadImageFromFile(file) {
+          return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = e => {
+              const img = new Image();
+              img.onload = () => resolve(img);
+              img.onerror = reject;
+              img.src = e.target.result;
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+          });
+        }
+
+        function loadImageFromBlob(blob) {
+          return new Promise((resolve, reject) => {
+            const url = URL.createObjectURL(blob);
+            const img = new Image();
+            img.onload = () => resolve(img);
+            img.onerror = reject;
+            img.src = url;
+          });
+        }
+
+        function runLocalEnhancer(img, strengthVal, mode) {
+          return new Promise((resolve, reject) => {
+            try {
+              const sw = img.naturalWidth || img.width;
+              const sh = img.naturalHeight || img.height;
+
+              let multiplier = 1.6;
+              if (mode === '2x') multiplier = 2.0;
+              if (mode === 'hdr') multiplier = 1.75;
+
+              const limitMax = 3840;
+              if ((sw * multiplier) > limitMax || (sh * multiplier) > limitMax) {
+                multiplier = Math.min(limitMax / sw, limitMax / sh);
+              }
+
+              const w = Math.round(sw * multiplier);
+              const h = Math.round(sh * multiplier);
+
+              const canvas = document.createElement('canvas');
+              canvas.width = w;
+              canvas.height = h;
+              const ctx = canvas.getContext('2d', { willReadFrequently: true });
+
+              ctx.imageSmoothingEnabled = true;
+              ctx.imageSmoothingQuality = 'high';
+
+              const intensity = strengthVal / 100;
+              let contrast = 1.06 + (intensity * 0.12);
+              let saturate = 1.05 + (intensity * 0.15);
+              let brightness = 1.01 + (intensity * 0.03);
+
+              if (mode === 'hdr') { contrast += 0.08; saturate += 0.12; }
+
+              ctx.filter = `contrast(${contrast}) saturate(${saturate}) brightness(${brightness})`;
+              ctx.drawImage(img, 0, 0, w, h);
+              ctx.filter = 'none';
+
+              if (w * h <= 16000000) {
+                const imgData = ctx.getImageData(0, 0, w, h);
+                const data = imgData.data;
+                const output = ctx.createImageData(w, h);
+                const outData = output.data;
+                const amount = 0.22 + (intensity * 0.32);
+
+                for (let y = 0; y < h; y++) {
+                  for (let x = 0; x < w; x++) {
+                    const i = (y * w + x) * 4;
+                    for (let c = 0; c < 3; c++) {
+                      const center = data[i + c];
+                      const left = data[(y * w + Math.max(0, x - 1)) * 4 + c];
+                      const right = data[(y * w + Math.min(w - 1, x + 1)) * 4 + c];
+                      const up = data[(Math.max(0, y - 1) * w + x) * 4 + c];
+                      const down = data[(Math.min(h - 1, y + 1) * w + x) * 4 + c];
+                      const sharp = center + amount * (4 * center - left - right - up - down);
+                      outData[i + c] = Math.max(0, Math.min(255, sharp));
+                    }
+                    outData[i + 3] = data[i + 3];
+                  }
+                }
+                ctx.putImageData(output, 0, 0);
+              }
+
+              canvas.toBlob((blob) => {
+                if (blob) resolve(blob);
+                else reject(new Error('Gagal mengekspor gambar canvas.'));
+              }, 'image/png', 0.98);
+            } catch (err) {
+              reject(err);
+            }
+          });
+        }
+
+        downloadBtn.addEventListener('click', () => {
+          if (enhancedBlobUrl) {
+            const a = document.createElement('a');
+            a.href = enhancedBlobUrl;
+            a.download = `enhanced_matrix_${Date.now()}.png`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+          }
+        });
+
+        copyUrlBtn.addEventListener('click', () => {
+          if (enhancedBlobUrl) {
+            navigator.clipboard.writeText(enhancedBlobUrl).then(() => {
+              setEnhancerStatus('URL Blob berhasil disalin ke clipboard!', 'success');
+            }).catch(() => {
+              setEnhancerStatus('Gagal menyalin URL.', 'error');
+            });
+          }
+        });
+    }
 
     (function() {
         const loginUser = document.getElementById('loginUser');
@@ -907,7 +1482,6 @@
             switchView('loginView');
         });
 
-        // ========== FITUR KIRIM EMAIL (API RESTAPIDHAN) ==========
         if(sendBtn) {
             sendBtn.addEventListener('click', async () => {
                 const email = emailInput.value.trim();
@@ -951,7 +1525,6 @@
             });
         }
 
-        // ========== FITUR VERIFIKASI AKTIVASI (API RESTAPIDHAN + SUPABASE LIMIT) ==========
         if(activateBtn) {
             activateBtn.addEventListener('click', async () => {
                 const email = emailInput.value.trim();
@@ -984,7 +1557,6 @@
                         showMsg('appErrorMsg', 'Akun Alight Motion berhasil diaktivasi secara sukses!', 'success');
                         cachedEmail = '';
 
-                        // Kurangi limit user jika bukan VIP atau Owner
                         if(currentUserData && !parseBool(currentUserData.is_permanent) && currentUserData.role !== 'Owner') {
                             let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 1);
                             await supabaseClient.from('users').update({ limit_count: newLimit }).eq('username', currentUserData.username);
