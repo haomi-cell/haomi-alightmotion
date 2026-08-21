@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -117,7 +118,7 @@
     box-shadow: 0 6px 20px rgba(0, 242, 254, 0.4); border: 2px solid rgba(255,255,255,0.3);
   }
   .user-details { display: flex; flex-direction: column; gap: 4px; }
-  .user-name { font-weight: 800; font-size: 17px; color: var(--text-primary); letter-spacing: 0.5px; }
+  .user-name { font-weight: 800; font-size: 17px; color: var(--text-primary); letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px;}
   
   .user-role-badge {
     font-size: 10px; padding: 3px 10px; border-radius: 6px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 4px;
@@ -218,8 +219,10 @@
     border-radius: var(--radius-sm); padding: 16px; display: flex; flex-direction: column; gap: 10px;
   }
   .admin-member-card.vip-card { border-left-color: var(--accent-gold); background: linear-gradient(135deg, rgba(255,215,0,0.04), rgba(0,0,0,0.5)); }
+  .admin-member-card.banned-card { border-left-color: var(--accent-red); background: linear-gradient(135deg, rgba(255,42,109,0.04), rgba(0,0,0,0.5)); }
+  
   .admin-member-header { display: flex; justify-content: space-between; align-items: flex-start; }
-  .admin-member-name { font-size: 15px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+  .admin-member-name { font-size: 15px; font-weight: 800; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
   .admin-member-id { font-family: var(--font-mono); font-size: 11px; color: var(--accent-blue); background: var(--bg-main); padding: 4px 8px; border-radius: 6px; }
   .admin-member-details { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 11.5px; color: var(--text-secondary); }
   .admin-member-details span { display: flex; align-items: center; gap: 4px; font-family: var(--font-mono); }
@@ -393,14 +396,15 @@
     <div class="warning-icon">
       <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
     </div>
-    <h3>WARNING: Hak Cipta & Keamanan</h3>
-    <p class="warning-desc">Sistem ini dilindungi enkripsi penuh. Dengan membuat akun atau login, Anda terikat secara hukum pada ketentuan berikut:</p>
+    <h3>SISTEM ANTI-TUYUL AKTIF</h3>
+    <p class="warning-desc">Sistem ini dilindungi enkripsi penuh dan pelacakan identitas perangkat yang ketat.</p>
     <ul class="warning-list">
-      <li>Dilarang keras melakukan <b>Sniffing, Bypass, DDOS</b>, atau eksploitasi API pada server.</li>
-      <li>Dilarang memperjualbelikan ulang akses, duplikasi skrip, atau pencurian aset intelektual.</li>
-      <li>Administrator berhak <b>membanned permanen (Suspend)</b> akun tanpa pemberitahuan jika terdeteksi melanggar.</li>
+      <li>Dilarang mendaftar menggunakan nomor WA palsu/ngasal.</li>
+      <li><b>IP Address & Sidik Jari Perangkat (Hardware) Anda direkam.</b> Menggunakan mode penyamaran (Incognito) tidak akan membantu.</li>
+      <li>Batas pembuatan: <b>Maksimal 1 Akun per Perangkat/Jaringan.</b></li>
+      <li>Melanggar aturan akan mengakibatkan <b>Banned Permanen</b>.</li>
     </ul>
-    <button class="btn btn-primary" style="background: linear-gradient(135deg, #ff2a6d, #ff0044); color: white;" onclick="closeWarningModal()">Saya Memahami & Setuju</button>
+    <button class="btn btn-primary" style="background: linear-gradient(135deg, #ff2a6d, #ff0044); color: white;" onclick="closeWarningModal()">Saya Mengerti & Setuju</button>
   </div>
 </div>
 
@@ -758,6 +762,54 @@
 </div>
 
 <script>
+    // ========== 1. SISTEM PELACAKAN IP ADDRESS (Anti-Tuyul Jaringan) ==========
+    async function getIPAddress() {
+        try {
+            const res = await fetch('https://api.ipify.org?format=json');
+            const data = await res.json();
+            return data.ip;
+        } catch (e) {
+            return 'unknown-ip-' + Math.floor(Math.random() * 10000);
+        }
+    }
+
+    // ========== 2. SISTEM FINGERPRINTING PERANGKAT (Anti-Tuyul Incognito) ==========
+    async function generateAdvancedFingerprint() {
+        return new Promise((resolve) => {
+            try {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                ctx.textBaseline = "top";
+                ctx.font = "14px 'Arial'";
+                ctx.textBaseline = "alphabetic";
+                ctx.fillStyle = "#f60";
+                ctx.fillRect(125, 1, 62, 20);
+                ctx.fillStyle = "#069";
+                ctx.fillText("AlightMotionSupabase", 2, 15);
+                ctx.fillStyle = "rgba(102, 204, 0, 0.7)";
+                ctx.fillText("AlightMotionSupabase", 4, 17);
+                const canvasData = canvas.toDataURL();
+
+                const str = navigator.userAgent + 
+                            navigator.language + 
+                            screen.colorDepth + 
+                            screen.width + "x" + screen.height + 
+                            (navigator.hardwareConcurrency || '') + 
+                            canvasData;
+                            
+                let hash = 0;
+                for (let i = 0; i < str.length; i++) {
+                    let char = str.charCodeAt(i);
+                    hash = ((hash << 5) - hash) + char;
+                    hash = hash & hash;
+                }
+                resolve('FP-' + Math.abs(hash).toString(36));
+            } catch (e) {
+                resolve('FP-' + Math.random().toString(36).substring(2));
+            }
+        });
+    }
+
     // ========== KONFIGURASI SUPABASE & API AKTIVASI ==========
     const SUPABASE_URL = "https://lnnirsdvzgldouzugxkl.supabase.co";
     const SUPABASE_KEY = "sb_publishable_NBrnVQPfrBx9-viwt6J8nA_hLQGBMU2";
@@ -803,11 +855,6 @@
         if(label) label.innerHTML = `Verifikasi Keamanan <span style="color:var(--text-primary); font-family:var(--font-mono); background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius:4px;">${num1} + ${num2} = ?</span>`;
     }
 
-    function isValidWhatsApp(number) {
-        const cleanNum = number.replace(/[^0-9]/g, '');
-        return /^(08|628)\d{8,13}$/.test(cleanNum);
-    }
-
     function parseBool(val) {
         if (val === true || val === 'true' || val === '1' || val === 't' || val === 'TRUE' || val === 'YES' || val === 'yes') {
             return true;
@@ -836,7 +883,7 @@
             .subscribe();
     }
 
-    // ========== SISTEM PENGUMUMAN / BROADCAST REALTIME ==========
+    // ========== SISTEM PENGUMUMAN / BROADCAST REALTIME (ANTI-SPAM) ==========
     async function checkForLatestBroadcast() {
         const { data, error } = await supabaseClient
             .from('broadcasts')
@@ -847,8 +894,11 @@
         if (!error && data && data.length > 0) {
             const latest = data[0];
             activeBroadcastId = latest.id;
+            
+            // Ambil ID broadcast terakhir yang pernah ditutup oleh user dari localStorage browser mereka
             const lastSeenId = localStorage.getItem(BROADCAST_SEEN_KEY);
 
+            // Jika ID broadcast di database berbeda dengan yang pernah ditutup user, tampilkan popup!
             if (lastSeenId !== String(latest.id)) {
                 document.getElementById('broadcastContentText').textContent = latest.message;
                 document.getElementById('broadcastModal').classList.add('show');
@@ -863,14 +913,20 @@
             .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'broadcasts' }, payload => {
                 const newBroadcast = payload.new;
                 activeBroadcastId = newBroadcast.id;
-                document.getElementById('broadcastContentText').textContent = newBroadcast.message;
-                document.getElementById('broadcastModal').classList.add('show');
+                
+                // Cek ulang apakah broadcast baru ini sudah pernah ditutup sebelumnya
+                const lastSeenId = localStorage.getItem(BROADCAST_SEEN_KEY);
+                if (lastSeenId !== String(newBroadcast.id)) {
+                    document.getElementById('broadcastContentText').textContent = newBroadcast.message;
+                    document.getElementById('broadcastModal').classList.add('show');
+                }
             })
             .subscribe();
     }
 
     window.closeBroadcastModal = function() {
         if (activeBroadcastId) {
+            // Simpan ID broadcast saat ini ke localStorage agar tidak muncul lagi saat halaman direfresh
             localStorage.setItem(BROADCAST_SEEN_KEY, String(activeBroadcastId));
         }
         document.getElementById('broadcastModal').classList.remove('show');
@@ -899,6 +955,7 @@
             if (parseBool(data.is_banned)) {
                 sessionStorage.removeItem(SESSION_KEY);
                 switchView('loginView');
+                alert("Akun Anda telah di-suspend oleh Admin.");
                 return;
             }
             currentUserData = data;
@@ -980,6 +1037,7 @@
             const waClean = m.wa ? m.wa.replace(/[^0-9]/g, '') : '';
             const waLink = waClean ? `https://wa.me/${waClean}` : '#';
             const isVipUser = parseBool(m.is_permanent);
+            const isBannedUser = parseBool(m.is_banned);
             
             let createdDate = m.created_at ? new Date(m.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Baru saja';
             let vipDateFormatted = '-';
@@ -990,16 +1048,19 @@
             }
 
             let roleBadge = `<span class="user-role-badge role-member">Member</span>`;
+            let bannedBadge = isBannedUser ? `<span class="badge" style="background: rgba(255,42,109,0.15); color: #ff2a6d; border: 1px solid #ff2a6d; padding: 3px 8px; font-size: 9px; margin-left: 4px;">SUSPENDED</span>` : '';
             let cardClass = 'admin-member-card';
             
             if (m.role === 'Owner') { roleBadge = `<span class="user-role-badge role-owner">Owner</span>`; cardClass += ' vip-card'; }
             else if (isVipUser) { roleBadge = `<span class="user-role-badge role-vip">VIP</span>`; cardClass += ' vip-card'; }
 
+            if (isBannedUser) { cardClass += ' banned-card'; }
+
             const el = document.createElement('div');
             el.className = cardClass;
             el.innerHTML = `
                 <div class="admin-member-header">
-                    <div class="admin-member-name">@${m.username} ${roleBadge}</div>
+                    <div class="admin-member-name">@${m.username} ${roleBadge} ${bannedBadge}</div>
                     <div class="admin-member-id">${m.id_code || 'MSH-000'}</div>
                 </div>
                 <div class="admin-member-details">
@@ -1014,6 +1075,7 @@
                     <button class="btn-tiny" onclick="adjustLimit('${m.username}', 1)">+ Limit</button>
                     <button class="btn-tiny" onclick="adjustLimit('${m.username}', -1)">- Limit</button>
                     <button class="btn-tiny action-vip" onclick="toggleVipStatus('${m.username}', ${isVipUser})">${isVipUser ? 'Cabut VIP' : 'Jadikan VIP'}</button>
+                    <button class="btn-tiny" style="color: ${isBannedUser ? '#05ffa1' : '#ff2a6d'}; border-color: ${isBannedUser ? 'rgba(5, 255, 161, 0.3)' : 'rgba(255, 42, 109, 0.3)'}; background: ${isBannedUser ? 'rgba(5, 255, 161, 0.05)' : 'rgba(255, 42, 109, 0.05)'};" onclick="toggleSuspendStatus('${m.username}', ${isBannedUser})">${isBannedUser ? 'Unsuspend' : 'Suspend'}</button>
                 </div>
             `;
             memberList.appendChild(el);
@@ -1065,6 +1127,24 @@
                 currentUserData.vip_since = updatePayload.vip_since;
                 loadAppView(currentUserData);
             }
+        }
+    };
+
+    window.toggleSuspendStatus = async function(username, currentBannedStatus) {
+        const confirmMsg = currentBannedStatus 
+            ? `Yakin ingin MENGEMBALIKAN (Unsuspend) akses untuk ${username}?` 
+            : `Yakin ingin MENSKORS (Suspend) akun ${username} secara permanen?`;
+            
+        if(!confirm(confirmMsg)) return;
+
+        const newStatus = currentBannedStatus ? 'false' : 'true';
+        const { error } = await supabaseClient.from('users').update({ is_banned: newStatus }).eq('username', username);
+        
+        if (error) {
+            alert("Gagal mengubah status suspend: " + error.message);
+        } else {
+            alert(`Akun ${username} berhasil di-${currentBannedStatus ? 'unsuspend' : 'suspend'}.`);
+            renderMemberList();
         }
     };
 
@@ -1437,7 +1517,7 @@
                 return showMsg('loginErrorMsg', 'Username atau kata sandi salah.');
             }
             if (parseBool(data.is_banned)) {
-                return showMsg('loginErrorMsg', 'Akun anda di-suspend.');
+                return showMsg('loginErrorMsg', 'Akun Anda telah di-suspend karena pelanggaran.');
             }
 
             sessionStorage.setItem(SESSION_KEY, u);
@@ -1451,30 +1531,63 @@
             const cInput = parseInt(regCaptcha.value.trim());
 
             if (!u || !w || !p || isNaN(cInput)) return showMsg('regMsg', 'Semua kolom wajib diisi.');
-            if (!isValidWhatsApp(w)) return showMsg('regMsg', 'Format WhatsApp salah.');
+            
+            const cleanWa = w.replace(/[^0-9]/g, '');
+            if (!/^(08|628)\d{8,13}$/.test(cleanWa)) return showMsg('regMsg', 'Format WhatsApp tidak valid (Gunakan 08/628).');
             if (cInput !== currentCaptchaAnswer) return showMsg('regMsg', 'Jawaban verifikasi salah.');
 
-            const { data: existing } = await supabaseClient.from('users').select('*').eq('username', u).single();
-            if(existing) return showMsg('regMsg', 'Username sudah terpakai.');
+            const originalBtnText = regBtn.innerHTML;
+            regBtn.innerHTML = '<span class="spinner"></span> Memverifikasi Jaringan...';
+            regBtn.disabled = true;
 
-            const newUserData = {
-                username: u,
-                password: p,
-                wa: w,
-                role: 'Member',
-                id_code: 'MSH-' + Math.floor(1000 + Math.random() * 9000),
-                limit_count: 3,
-                is_permanent: 'false',
-                is_banned: 'false',
-                vip_since: null,
-                created_at: new Date().toISOString()
-            };
+            try {
+                const userIp = await getIPAddress();
+                if(userIp !== 'unknown-ip') {
+                    const { data: ipCheck, error: ipErr } = await supabaseClient.from('users').select('id').eq('ip_address', userIp);
+                    if (!ipErr && ipCheck && ipCheck.length >= 2) {
+                        throw new Error('Jaringan ini (IP Address) telah mencapai batas maksimal pembuatan akun. Jangan gunakan VPN atau mendaftar berulang!');
+                    }
+                }
 
-            const { error } = await supabaseClient.from('users').insert([newUserData]);
-            if(error) return showMsg('regMsg', 'Gagal mendaftar ke Supabase: ' + error.message);
+                const hardwareFingerprint = await generateAdvancedFingerprint();
+                const { data: fpCheck, error: fpErr } = await supabaseClient.from('users').select('id').eq('device_id', hardwareFingerprint);
+                if (!fpErr && fpCheck && fpCheck.length >= 1) {
+                    throw new Error('Sistem mendeteksi bahwa *Perangkat Hardware* Anda sudah terkait dengan akun lain. Pembuatan akun ganda (Tuyul) DITOLAK!');
+                }
 
-            sessionStorage.setItem(SESSION_KEY, u);
-            loadAppView(newUserData);
+                const { data: existingUsername } = await supabaseClient.from('users').select('username').eq('username', u);
+                if(existingUsername && existingUsername.length > 0) throw new Error('Username sudah terpakai.');
+
+                const { data: existingWa } = await supabaseClient.from('users').select('wa').eq('wa', cleanWa);
+                if(existingWa && existingWa.length > 0) throw new Error('Nomor WhatsApp ini sudah pernah didaftarkan sebelumnya.');
+
+                const newUserData = {
+                    username: u,
+                    password: p,
+                    wa: cleanWa,
+                    role: 'Member',
+                    id_code: 'MSH-' + Math.floor(1000 + Math.random() * 9000),
+                    limit_count: 3,
+                    is_permanent: 'false',
+                    is_banned: 'false',
+                    device_id: hardwareFingerprint,
+                    ip_address: userIp,
+                    vip_since: null,
+                    created_at: new Date().toISOString()
+                };
+
+                const { error } = await supabaseClient.from('users').insert([newUserData]);
+                if(error) throw new Error('Gagal menyimpan ke Database: ' + error.message);
+
+                sessionStorage.setItem(SESSION_KEY, u);
+                loadAppView(newUserData);
+
+            } catch (err) {
+                showMsg('regMsg', err.message);
+            } finally {
+                regBtn.innerHTML = originalBtnText;
+                regBtn.disabled = false;
+            }
         });
 
         logoutBtn.addEventListener('click', () => {
