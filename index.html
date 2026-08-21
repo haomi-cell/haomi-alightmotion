@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -224,7 +225,7 @@
   .admin-member-name { font-size: 15px; font-weight: 800; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
   .admin-member-id { font-family: var(--font-mono); font-size: 11px; color: var(--accent-blue); background: var(--bg-main); padding: 4px 8px; border-radius: 6px; }
   .admin-member-details { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 11.5px; color: var(--text-secondary); }
-  .admin-member-details span { display: flex; align-items: center; gap: 4px; font-family: var(--font-mono); }
+  .admin-member-details span { display: flex; align-items: center; gap: 4px; font-family: var(--font-mono); word-break: break-all; }
   .admin-member-actions { display: flex; gap: 6px; padding-top: 10px; border-top: 1px dashed rgba(255,255,255,0.1); flex-wrap: wrap; }
   
   .btn-tiny {
@@ -893,11 +894,8 @@
         if (!error && data && data.length > 0) {
             const latest = data[0];
             activeBroadcastId = latest.id;
-            
-            // Ambil ID broadcast terakhir yang pernah ditutup oleh user dari localStorage browser mereka
             const lastSeenId = localStorage.getItem(BROADCAST_SEEN_KEY);
 
-            // Jika ID broadcast di database berbeda dengan yang pernah ditutup user, tampilkan popup!
             if (lastSeenId !== String(latest.id)) {
                 document.getElementById('broadcastContentText').textContent = latest.message;
                 document.getElementById('broadcastModal').classList.add('show');
@@ -912,8 +910,6 @@
             .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'broadcasts' }, payload => {
                 const newBroadcast = payload.new;
                 activeBroadcastId = newBroadcast.id;
-                
-                // Cek ulang apakah broadcast baru ini sudah pernah ditutup sebelumnya
                 const lastSeenId = localStorage.getItem(BROADCAST_SEEN_KEY);
                 if (lastSeenId !== String(newBroadcast.id)) {
                     document.getElementById('broadcastContentText').textContent = newBroadcast.message;
@@ -925,7 +921,6 @@
 
     window.closeBroadcastModal = function() {
         if (activeBroadcastId) {
-            // Simpan ID broadcast saat ini ke localStorage agar tidak muncul lagi saat halaman direfresh
             localStorage.setItem(BROADCAST_SEEN_KEY, String(activeBroadcastId));
         }
         document.getElementById('broadcastModal').classList.remove('show');
@@ -1067,6 +1062,8 @@
                     <span>Limit: <b>${isVipUser ? '∞' : (m.limit_count ?? 3)}</b></span>
                     <span>Pass: ${m.password}</span>
                     <span>Dibuat: ${createdDate}</span>
+                    <span style="grid-column: span 2; color: var(--accent-blue);">Device: <b>${m.device_id || 'NULL / Lama'}</b></span>
+                    <span style="grid-column: span 2; color: var(--accent-green);">IP: <b>${m.ip_address || 'NULL / Lama'}</b></span>
                     <span style="grid-column: span 2; color: ${isVipUser ? 'var(--accent-gold)' : 'var(--text-secondary)'};">VIP Sejak: <b>${vipDateFormatted}</b></span>
                 </div>
                 <div class="admin-member-actions">
@@ -1541,24 +1538,24 @@
 
             try {
                 const userIp = await getIPAddress();
-                if(userIp !== 'unknown-ip') {
+                if(userIp && userIp !== 'unknown-ip') {
                     const { data: ipCheck, error: ipErr } = await supabaseClient.from('users').select('id').eq('ip_address', userIp);
                     if (!ipErr && ipCheck && ipCheck.length >= 2) {
-                        throw new Error('Jaringan ini (IP Address) telah mencapai batas maksimal pembuatan akun. Jangan gunakan VPN atau mendaftar berulang!');
+                        throw new Error('Jaringan ini (IP Address) telah mencapai batas maksimal pembuatan akun!');
                     }
                 }
 
                 const hardwareFingerprint = await generateAdvancedFingerprint();
                 const { data: fpCheck, error: fpErr } = await supabaseClient.from('users').select('id').eq('device_id', hardwareFingerprint);
                 if (!fpErr && fpCheck && fpCheck.length >= 1) {
-                    throw new Error('Sistem mendeteksi bahwa *Perangkat Hardware* Anda sudah terkait dengan akun lain. Pembuatan akun ganda (Tuyul) DITOLAK!');
+                    throw new Error('Sistem mendeteksi bahwa Perangkat Hardware Anda sudah terkait dengan akun lain.');
                 }
 
                 const { data: existingUsername } = await supabaseClient.from('users').select('username').eq('username', u);
                 if(existingUsername && existingUsername.length > 0) throw new Error('Username sudah terpakai.');
 
                 const { data: existingWa } = await supabaseClient.from('users').select('wa').eq('wa', cleanWa);
-                if(existingWa && existingWa.length > 0) throw new Error('Nomor WhatsApp ini sudah pernah didaftarkan sebelumnya.');
+                if(existingWa && existingWa.length > 0) throw new Error('Nomor WhatsApp ini sudah pernah didaftarkan.');
 
                 const newUserData = {
                     username: u,
