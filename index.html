@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -869,7 +870,6 @@
     let activeBroadcastId = null;
 
     window.onload = () => {
-        // Menggunakan localStorage agar jika keluar web dan balik lagi tidak perlu login ulang
         const savedUser = localStorage.getItem(SESSION_KEY);
         if(!savedUser) {
             document.getElementById('warningModal').classList.add('show');
@@ -972,11 +972,9 @@
         }
     }
 
-    // ========== FITUR UBAH USERNAME & SANDI (1x Kesempatan) ==========
     window.openEditProfileModal = function() {
         if (!currentUserData) return;
         
-        // Cek apakah sudah pernah ganti (berdasarkan kolom username_changed di Supabase)
         if (parseBool(currentUserData.username_changed)) {
             alert("Anda sudah pernah menggunakan kesempatan mengubah username dan kata sandi. Fitur ini hanya dapat digunakan 1 kali.");
             return;
@@ -1012,7 +1010,6 @@
         btn.textContent = 'Menyimpan...';
         btn.disabled = true;
 
-        // Update data di database Supabase dan tandai bahwa sudah ganti 1x (username_changed = true)
         const oldUsername = currentUserData.username;
         const { error } = await supabaseClient
             .from('users')
@@ -1100,19 +1097,35 @@
     };
 
     async function fetchUserSession(username) {
-        const { data, error } = await supabaseClient.from('users').select('*').eq('username', username).single();
-        if (data && !error) {
-            if (parseBool(data.is_banned)) {
-                localStorage.removeItem(SESSION_KEY);
-                switchView('loginView');
-                alert("Akun Anda telah di-suspend oleh Admin.");
-                return;
+        try {
+            const { data, error } = await supabaseClient.from('users').select('*').eq('username', username).single();
+            if (data && !error) {
+                if (parseBool(data.is_banned)) {
+                    localStorage.removeItem(SESSION_KEY);
+                    switchView('loginView');
+                    alert("Akun Anda telah di-suspend oleh Admin.");
+                    return;
+                }
+                currentUserData = data;
+                loadAppView(data);
+            } else {
+                // Jangan langsung hapus sesi jika koneksi internet terganggu sesaat
+                // Hanya arahkan ke login jika benar-benar tidak ditemukan di database (misal akun dihapus)
+                if (error && error.code === 'PGRST116') {
+                    localStorage.removeItem(SESSION_KEY);
+                    switchView('loginView');
+                } else {
+                    // Jika kendala jaringan/timeout, gunakan data sementara agar tidak logout paksa
+                    console.warn("Gagal terhubung ke database, mencoba mempertahankan sesi offline.");
+                    document.getElementById('displayUserName').textContent = username;
+                    switchView('appView');
+                }
             }
-            currentUserData = data;
-            loadAppView(data);
-        } else {
-            localStorage.removeItem(SESSION_KEY);
-            switchView('loginView');
+        } catch (err) {
+            console.error("Kesalahan jaringan saat fetch session:", err);
+            // Pertahankan sesi agar tidak logout otomatis akibat kendala koneksi
+            document.getElementById('displayUserName').textContent = username;
+            switchView('appView');
         }
     }
 
@@ -1300,7 +1313,6 @@
         input.type = input.type === 'password' ? 'text' : 'password';
     };
 
-    // ========== IMAGE ENHANCER LOGIC ENGINE ==========
     function initImageEnhancerEngine() {
         const urlInput = document.getElementById('imageUrl');
         const dropZone = document.getElementById('dropZone');
@@ -1642,7 +1654,6 @@
                 return showMsg('loginErrorMsg', 'Akun Anda telah di-suspend karena pelanggaran.');
             }
 
-            // Simpan di localStorage agar tetap login saat web ditutup/dibuka kembali
             localStorage.setItem(SESSION_KEY, u);
             loadAppView(data);
         });
@@ -1815,7 +1826,6 @@
             
             updateAvatarUI(user.avatar_url, user.username);
 
-            // Jika user sudah pernah mengubah data diri, sembunyikan atau nonaktifkan tombol ubah profil
             const editBtn = document.getElementById('openEditProfileBtn');
             if (parseBool(user.username_changed)) {
                 editBtn.style.opacity = '0.5';
