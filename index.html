@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -30,7 +31,6 @@
     --accent-red: #ff2a6d;
     --accent-green: #05ffa1;
     
-    /* Enhancer specific variables */
     --enhancer-accent: #00F0FF;
     --enhancer-dim: rgba(0, 240, 255, 0.14);
     --enhancer-glow: rgba(0, 240, 255, 0.35);
@@ -143,6 +143,13 @@
   .data-item { display: flex; flex-direction: column; gap: 2px; }
   .data-label { font-size: 10px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
   .data-value { font-size: 12px; font-family: var(--font-mono); color: var(--text-primary); }
+
+  .btn-edit-profile {
+    background: rgba(0, 242, 254, 0.1); border: 1px solid var(--accent-blue-dim); color: var(--accent-blue);
+    padding: 10px; border-radius: var(--radius-sm); font-size: 12px; font-weight: 700; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 6px; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .btn-edit-profile:hover { background: rgba(0, 242, 254, 0.2); }
 
   .promo-banner {
     background: linear-gradient(135deg, rgba(255, 215, 0, 0.18) 0%, rgba(255, 145, 0, 0.05) 100%);
@@ -268,7 +275,6 @@
   .warning-desc { font-size: 13px; color: var(--text-secondary); margin-bottom: 16px; line-height: 1.6; }
   .warning-list { text-align: left; font-size: 12.5px; color: #cbd5e1; line-height: 1.7; padding-left: 20px; margin-bottom: 16px; display: flex; flex-direction: column; gap: 8px; }
   
-  /* Modal Broadcast Popup */
   .broadcast-modal-box { border: 1px solid var(--accent-blue-dim); text-align: center; background: rgba(10, 12, 20, 0.95); }
   .broadcast-icon { width: 60px; height: 60px; margin: 0 auto 10px; background: rgba(0, 242, 254, 0.12); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--accent-blue); }
   .broadcast-modal-box h3 { font-size: 18px; font-weight: 800; color: var(--accent-blue); margin-bottom: 6px; }
@@ -371,7 +377,6 @@
   .download-footer-actions { display: none; gap: 8px; }
   .download-footer-actions.show { display: flex; }
 
-  /* Modal Resolution Panel Specific */
   .mode-options-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
   .mode-option-item {
     background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(0, 240, 255, 0.18); border-radius: var(--radius-sm);
@@ -417,7 +422,7 @@
   </div>
 </div>
 
-<!-- POP-UP BROADCAST REAL-TIME UNTUK MEMBER -->
+<!-- POP-UP BROADCAST REAL-TIME -->
 <div id="broadcastModal" class="modal-overlay">
   <div class="modal-box broadcast-modal-box">
     <div class="broadcast-icon">
@@ -426,6 +431,34 @@
     <h3>PENGUMUMAN PENTING ADMIN</h3>
     <p class="broadcast-text" id="broadcastContentText">Memuat informasi dari server...</p>
     <button class="btn btn-primary" style="background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); color: #fff;" onclick="closeBroadcastModal()">Tandai Sudah Dibaca</button>
+  </div>
+</div>
+
+<!-- MODAL EDIT PROFIL (UBAH USERNAME & SANDI 1X) -->
+<div id="editProfileModal" class="modal-overlay">
+  <div class="modal-box" style="background: #0e111a; border: 1px solid var(--accent-blue-dim);">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+      <h3 style="font-size: 16px; font-weight: 800; color: #fff;">Ubah Username & Kata Sandi</h3>
+      <button onclick="closeEditProfileModal()" style="background:rgba(255,255,255,0.06); border:none; width:28px; height:28px; border-radius:50%; color:#fff; cursor:pointer;"><i class="fas fa-xmark"></i></button>
+    </div>
+    <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.4;">Catatan: Anda **hanya diberikan kesempatan 1 kali** untuk mengubah data diri Anda.</p>
+    
+    <div id="editProfileMsg" class="message-box" role="alert"></div>
+
+    <div class="form-group" style="margin-bottom: 12px;">
+      <label for="editUsernameInput">Username Baru</label>
+      <input type="text" id="editUsernameInput" class="input-control" placeholder="Masukkan username baru..." autocomplete="off">
+    </div>
+    <div class="form-group" style="margin-bottom: 16px;">
+      <label for="editPasswordInput">Kata Sandi Baru</label>
+      <div class="pwd-wrapper">
+        <input type="password" id="editPasswordInput" class="input-control" placeholder="••••••••" autocomplete="off">
+        <button type="button" class="pwd-toggle" onclick="togglePwd('editPasswordInput', this)">
+          <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+        </button>
+      </div>
+    </div>
+    <button id="saveProfileChangesBtn" class="btn btn-primary" style="background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); color: #fff;">Simpan Perubahan Permanen</button>
   </div>
 </div>
 
@@ -517,7 +550,6 @@
   <div class="profile-card">
     <div class="profile-header">
       <div class="profile-info">
-        <!-- Avatar yang bisa diklik untuk ganti foto profil -->
         <div class="avatar-wrapper" onclick="document.getElementById('avatarFileInput').click()" title="Ketuk untuk Ganti Foto Profil">
           <div class="avatar" id="userAvatarContainer">
             <span id="userAvatarText">H</span>
@@ -548,8 +580,12 @@
         <span class="data-value" id="displayUserWa">0822***</span>
       </div>
     </div>
+
+    <!-- Tombol Ubah Username/Sandi (Hanya bisa 1x) -->
+    <button id="openEditProfileBtn" class="btn-edit-profile" onclick="openEditProfileModal()">
+      <i class="fas fa-user-pen"></i> Ubah Username &amp; Sandi (1x Kesempatan)
+    </button>
     
-    <!-- Widget Real-time Total Member -->
     <div style="background: rgba(0, 242, 254, 0.05); border: 1px solid var(--accent-blue-dim); padding: 10px 14px; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; font-size: 12px;">
       <span style="color: var(--text-secondary); display: flex; align-items: center; gap: 6px;">
         <span style="width: 8px; height: 8px; background: var(--accent-green); border-radius: 50%; display: inline-block; animation: pulseDot 1.5s infinite;"></span>
@@ -580,7 +616,6 @@
     </a>
   </div>
 
-  <!-- Tombol Control Panel Admin (Hanya Owner) -->
   <button id="toggleOwnerDashBtn" class="btn btn-owner-dash hidden" onclick="toggleOwnerPanel()">Buka Control Panel Admin Server</button>
 
   <div id="ownerPanel" class="admin-panel hidden">
@@ -595,7 +630,6 @@
       <button class="btn btn-primary" style="padding: 10px; font-size: 13px; background: linear-gradient(135deg, #7f00ff, #9d4edd); color:#fff;" onclick="sendBroadcastMsg()">Kirim Broadcast</button>
     </div>
 
-    <!-- Kolom Pencarian Member -->
     <div style="display: flex; flex-direction: column; gap: 6px;">
       <label style="font-size: 12px; font-weight: 600; color: var(--text-secondary);">Cari Anggota (Username / ID)</label>
       <input type="text" id="memberSearchInput" class="member-search-box" placeholder="Ketik nama atau ID member..." oninput="renderMemberList()" autocomplete="off" />
@@ -624,7 +658,6 @@
 
     <div id="appErrorMsg" class="message-box message-error" role="alert"></div>
 
-    <!-- Form Aktivasi API Asli -->
     <div class="form-group">
         <label for="emailInput">Email Akun</label>
         <div class="input-row">
@@ -652,7 +685,7 @@
     </button>
   </div>
 
-  <!-- ================= IMAGE ENHANCER (𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞) MODULE ================= -->
+  <!-- ================= IMAGE ENHANCER MODULE ================= -->
   <div class="enhancer-wrapper">
     <div class="enhancer-header">
       <div class="enhancer-brand">
@@ -740,7 +773,7 @@
   <footer>&copy; 2026 <span>Alight Motion &amp; 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞 Systems</span></footer>
 </div>
 
-<!-- Modal Popup Panel for Resolution Mode -->
+<!-- Modal Resolution Mode -->
 <div class="modal-overlay" id="modeModalOverlay">
   <div class="modal-box" style="background:#0f131a; border: 1px solid rgba(0, 240, 255, 0.35);">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
@@ -781,7 +814,6 @@
 </div>
 
 <script>
-    // ========== 1. SISTEM PELACAKAN IP ADDRESS (Anti-Tuyul Jaringan) ==========
     async function getIPAddress() {
         try {
             const res = await fetch('https://api.ipify.org?format=json');
@@ -792,7 +824,6 @@
         }
     }
 
-    // ========== 2. SISTEM FINGERPRINTING PERANGKAT (Anti-Tuyul Incognito) ==========
     async function generateAdvancedFingerprint() {
         return new Promise((resolve) => {
             try {
@@ -809,13 +840,7 @@
                 ctx.fillText("AlightMotionSupabase", 4, 17);
                 const canvasData = canvas.toDataURL();
 
-                const str = navigator.userAgent + 
-                            navigator.language + 
-                            screen.colorDepth + 
-                            screen.width + "x" + screen.height + 
-                            (navigator.hardwareConcurrency || '') + 
-                            canvasData;
-                            
+                const str = navigator.userAgent + navigator.language + screen.colorDepth + screen.width + "x" + screen.height + (navigator.hardwareConcurrency || '') + canvasData;
                 let hash = 0;
                 for (let i = 0; i < str.length; i++) {
                     let char = str.charCodeAt(i);
@@ -829,7 +854,6 @@
         });
     }
 
-    // ========== KONFIGURASI SUPABASE & API AKTIVASI ==========
     const SUPABASE_URL = "https://lnnirsdvzgldouzugxkl.supabase.co";
     const SUPABASE_KEY = "sb_publishable_NBrnVQPfrBx9-viwt6J8nA_hLQGBMU2";
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -846,10 +870,12 @@
     let activeBroadcastId = null;
 
     window.onload = () => {
-        if(!sessionStorage.getItem(SESSION_KEY)) {
+        // Menggunakan localStorage agar jika keluar web dan balik lagi tidak perlu login ulang
+        const savedUser = localStorage.getItem(SESSION_KEY);
+        if(!savedUser) {
             document.getElementById('warningModal').classList.add('show');
         } else {
-            fetchUserSession(sessionStorage.getItem(SESSION_KEY));
+            fetchUserSession(savedUser);
         }
         startClock();
         initRealtimeMemberCounter();
@@ -902,7 +928,6 @@
             .subscribe();
     }
 
-    // ========== SISTEM UPLOAD FOTO PROFIL ==========
     window.handleAvatarUpload = async function(event) {
         const file = event.target.files[0];
         if (!file) return;
@@ -919,13 +944,8 @@
         const reader = new FileReader();
         reader.onload = async function(e) {
             const base64Image = e.target.result;
+            if (!currentUserData || !currentUserData.username) return;
 
-            if (!currentUserData || !currentUserData.username) {
-                alert("Sesi pengguna tidak valid.");
-                return;
-            }
-
-            // Simpan Base64 gambar langsung ke kolom avatar_url di tabel users Supabase
             const { error } = await supabaseClient
                 .from('users')
                 .update({ avatar_url: base64Image })
@@ -953,7 +973,74 @@
         }
     }
 
-    // ========== SISTEM PENGUMUMAN / BROADCAST REALTIME (ANTI-SPAM) ==========
+    // ========== FITUR UBAH USERNAME & SANDI (1x Kesempatan) ==========
+    window.openEditProfileModal = function() {
+        if (!currentUserData) return;
+        
+        // Cek apakah sudah pernah ganti (berdasarkan kolom username_changed di Supabase)
+        if (parseBool(currentUserData.username_changed)) {
+            alert("Anda sudah pernah menggunakan kesempatan mengubah username dan kata sandi. Fitur ini hanya dapat digunakan 1 kali.");
+            return;
+        }
+
+        document.getElementById('editUsernameInput').value = currentUserData.username;
+        document.getElementById('editPasswordInput').value = currentUserData.password;
+        document.getElementById('editProfileModal').classList.add('show');
+    };
+
+    window.closeEditProfileModal = function() {
+        document.getElementById('editProfileModal').classList.remove('show');
+    };
+
+    document.getElementById('saveProfileChangesBtn').addEventListener('click', async () => {
+        const newU = document.getElementById('editUsernameInput').value.trim();
+        const newP = document.getElementById('editPasswordInput').value.trim();
+
+        if (!newU || !newP) {
+            showMsg('editProfileMsg', 'Username dan kata sandi tidak boleh kosong.');
+            return;
+        }
+
+        if (newU !== currentUserData.username) {
+            const { data: checkU } = await supabaseClient.from('users').select('username').eq('username', newU);
+            if (checkU && checkU.length > 0) {
+                showMsg('editProfileMsg', 'Username tersebut sudah digunakan orang lain.');
+                return;
+            }
+        }
+
+        const btn = document.getElementById('saveProfileChangesBtn');
+        btn.textContent = 'Menyimpan...';
+        btn.disabled = true;
+
+        // Update data di database Supabase dan tandai bahwa sudah ganti 1x (username_changed = true)
+        const oldUsername = currentUserData.username;
+        const { error } = await supabaseClient
+            .from('users')
+            .update({
+                username: newU,
+                password: newP,
+                username_changed: true
+            })
+            .eq('username', oldUsername);
+
+        btn.textContent = 'Simpan Perubahan Permanen';
+        btn.disabled = false;
+
+        if (error) {
+            showMsg('editProfileMsg', 'Gagal memperbarui profil: ' + error.message);
+        } else {
+            currentUserData.username = newU;
+            currentUserData.password = newP;
+            currentUserData.username_changed = true;
+            
+            localStorage.setItem(SESSION_KEY, newU);
+            loadAppView(currentUserData);
+            closeEditProfileModal();
+            alert("Profil berhasil diperbarui! Kesempatan mengubah username dan sandi Anda telah habis.");
+        }
+    });
+
     async function checkForLatestBroadcast() {
         const { data, error } = await supabaseClient
             .from('broadcasts')
@@ -1017,7 +1104,7 @@
         const { data, error } = await supabaseClient.from('users').select('*').eq('username', username).single();
         if (data && !error) {
             if (parseBool(data.is_banned)) {
-                sessionStorage.removeItem(SESSION_KEY);
+                localStorage.removeItem(SESSION_KEY);
                 switchView('loginView');
                 alert("Akun Anda telah di-suspend oleh Admin.");
                 return;
@@ -1025,7 +1112,7 @@
             currentUserData = data;
             loadAppView(data);
         } else {
-            sessionStorage.removeItem(SESSION_KEY);
+            localStorage.removeItem(SESSION_KEY);
             switchView('loginView');
         }
     }
@@ -1059,7 +1146,7 @@
 
     window.closeWarningModal = function() {
         document.getElementById('warningModal').classList.remove('show');
-        if(!sessionStorage.getItem(SESSION_KEY)) {
+        if(!localStorage.getItem(SESSION_KEY)) {
             document.getElementById('loginView').classList.remove('hidden');
         }
     };
@@ -1104,12 +1191,7 @@
             const isBannedUser = parseBool(m.is_banned);
             
             let createdDate = m.created_at ? new Date(m.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Baru saja';
-            let vipDateFormatted = '-';
-            if (m.vip_since) {
-                vipDateFormatted = new Date(m.vip_since).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
-            } else if (isVipUser) {
-                vipDateFormatted = 'Permanen / Aktif';
-            }
+            let vipDateFormatted = m.vip_since ? new Date(m.vip_since).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : (isVipUser ? 'Permanen / Aktif' : '-');
 
             let roleBadge = `<span class="user-role-badge role-member">Member</span>`;
             let bannedBadge = isBannedUser ? `<span class="badge" style="background: rgba(255,42,109,0.15); color: #ff2a6d; border: 1px solid #ff2a6d; padding: 3px 8px; font-size: 9px; margin-left: 4px;">SUSPENDED</span>` : '';
@@ -1132,8 +1214,8 @@
                     <span>Limit: <b>${isVipUser ? '∞' : (m.limit_count ?? 3)}</b></span>
                     <span>Pass: ${m.password}</span>
                     <span>Dibuat: ${createdDate}</span>
-                    <span style="grid-column: span 2; color: var(--accent-blue);">Device: <b>${m.device_id || 'NULL / Lama'}</b></span>
-                    <span style="grid-column: span 2; color: var(--accent-green);">IP: <b>${m.ip_address || 'NULL / Lama'}</b></span>
+                    <span style="grid-column: span 2; color: var(--accent-blue);">Device: <b>${m.device_id || 'NULL'}</b></span>
+                    <span style="grid-column: span 2; color: var(--accent-green);">IP: <b>${m.ip_address || 'NULL'}</b></span>
                     <span style="grid-column: span 2; color: ${isVipUser ? 'var(--accent-gold)' : 'var(--text-secondary)'};">VIP Sejak: <b>${vipDateFormatted}</b></span>
                 </div>
                 <div class="admin-member-actions">
@@ -1435,7 +1517,7 @@
               const blob = await res.blob();
               resolve(blob);
             } catch (e) {
-              reject(new Error('Gagal mengambil URL akibat pembatasan CORS. Gunakan unggah berkas lokal.'));
+              reject(new Error('Gagal mengambil URL akibat pembatasan CORS.'));
             }
           });
         }
@@ -1501,31 +1583,6 @@
               ctx.drawImage(img, 0, 0, w, h);
               ctx.filter = 'none';
 
-              if (w * h <= 16000000) {
-                const imgData = ctx.getImageData(0, 0, w, h);
-                const data = imgData.data;
-                const output = ctx.createImageData(w, h);
-                const outData = output.data;
-                const amount = 0.22 + (intensity * 0.32);
-
-                for (let y = 0; y < h; y++) {
-                  for (let x = 0; x < w; x++) {
-                    const i = (y * w + x) * 4;
-                    for (let c = 0; c < 3; c++) {
-                      const center = data[i + c];
-                      const left = data[(y * w + Math.max(0, x - 1)) * 4 + c];
-                      const right = data[(y * w + Math.min(w - 1, x + 1)) * 4 + c];
-                      const up = data[(Math.max(0, y - 1) * w + x) * 4 + c];
-                      const down = data[(Math.min(h - 1, y + 1) * w + x) * 4 + c];
-                      const sharp = center + amount * (4 * center - left - right - up - down);
-                      outData[i + c] = Math.max(0, Math.min(255, sharp));
-                    }
-                    outData[i + 3] = data[i + 3];
-                  }
-                }
-                ctx.putImageData(output, 0, 0);
-              }
-
               canvas.toBlob((blob) => {
                 if (blob) resolve(blob);
                 else reject(new Error('Gagal mengekspor gambar canvas.'));
@@ -1586,7 +1643,8 @@
                 return showMsg('loginErrorMsg', 'Akun Anda telah di-suspend karena pelanggaran.');
             }
 
-            sessionStorage.setItem(SESSION_KEY, u);
+            // Simpan di localStorage agar tetap login saat web ditutup/dibuka kembali
+            localStorage.setItem(SESSION_KEY, u);
             loadAppView(data);
         });
 
@@ -1640,13 +1698,14 @@
                     ip_address: userIp,
                     avatar_url: null,
                     vip_since: null,
+                    username_changed: false,
                     created_at: new Date().toISOString()
                 };
 
                 const { error } = await supabaseClient.from('users').insert([newUserData]);
                 if(error) throw new Error('Gagal menyimpan ke Database: ' + error.message);
 
-                sessionStorage.setItem(SESSION_KEY, u);
+                localStorage.setItem(SESSION_KEY, u);
                 loadAppView(newUserData);
 
             } catch (err) {
@@ -1658,18 +1717,14 @@
         });
 
         logoutBtn.addEventListener('click', () => {
-            sessionStorage.removeItem(SESSION_KEY);
+            localStorage.removeItem(SESSION_KEY);
             switchView('loginView');
         });
 
         if(sendBtn) {
             sendBtn.addEventListener('click', async () => {
                 const email = emailInput.value.trim();
-                if(!email) {
-                    showMsg('appErrorMsg', 'Masukkan email untuk dikirim.');
-                    return;
-                }
-                if (!email.includes('@') || !email.includes('.')) {
+                if(!email || !email.includes('@')) {
                     showMsg('appErrorMsg', 'Masukkan email yang valid.');
                     return;
                 }
@@ -1710,12 +1765,8 @@
                 const email = emailInput.value.trim();
                 const magic = magicInput.value.trim();
 
-                if (!email) {
-                    showMsg('appErrorMsg', 'Email wajib diisi.');
-                    return;
-                }
-                if (!magic) {
-                    showMsg('appErrorMsg', 'Magic Link wajib diisi.');
+                if (!email || !magic) {
+                    showMsg('appErrorMsg', 'Email dan Magic Link wajib diisi.');
                     return;
                 }
 
@@ -1746,7 +1797,7 @@
                     } else {
                         activateBtn.disabled = false;
                         document.getElementById('btnDefault').classList.remove('hidden');
-                        showMsg('appErrorMsg', `Aktivasi Gagal: ${data.error || data.message || 'Link tidak valid / kadaluarsa'}`);
+                        showMsg('appErrorMsg', `Aktivasi Gagal: ${data.error || data.message || 'Link tidak valid'}`);
                     }
                 } catch (err) {
                     document.getElementById('loaderContainer').classList.add('hidden');
@@ -1763,8 +1814,17 @@
             document.getElementById('displayUserId').textContent = user.id_code || 'MSH-01';
             document.getElementById('displayUserWa').textContent = user.wa || '-';
             
-            // Tampilkan foto profil avatar jika ada, jika tidak pakai inisial huruf
             updateAvatarUI(user.avatar_url, user.username);
+
+            // Jika user sudah pernah mengubah data diri, sembunyikan atau nonaktifkan tombol ubah profil
+            const editBtn = document.getElementById('openEditProfileBtn');
+            if (parseBool(user.username_changed)) {
+                editBtn.style.opacity = '0.5';
+                editBtn.innerHTML = '<i class="fas fa-lock"></i> Ubah Username &amp; Sandi (Sudah Digunakan)';
+            } else {
+                editBtn.style.opacity = '1';
+                editBtn.innerHTML = '<i class="fas fa-user-pen"></i> Ubah Username &amp; Sandi (1x Kesempatan)';
+            }
 
             const isVip = parseBool(user.is_permanent);
             const roleBadge = document.getElementById('displayUserRole');
