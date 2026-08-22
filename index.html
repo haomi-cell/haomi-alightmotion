@@ -16,15 +16,15 @@
 
 <style>
   :root {
-    /* Jelly Glass Theme Colors */
-    --bg-base: #05050a;
+    /* Jelly Glass Theme Colors - Enhanced Glass Effect */
+    --bg-base: #030308;
     
-    /* Glass Properties */
-    --glass-bg: rgba(20, 20, 30, 0.4);
+    /* Glass Properties - Stronger Blur & Highlight */
+    --glass-bg: rgba(15, 15, 22, 0.25);
     --glass-border: rgba(255, 255, 255, 0.15);
     --glass-border-light: rgba(255, 255, 255, 0.3);
-    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
-    --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.2), inset 1px 0 0 rgba(255, 255, 255, 0.1);
+    --glass-shadow: 0 15px 35px 0 rgba(0, 0, 0, 0.6);
+    --glass-highlight: inset 0 1px 1px rgba(255, 255, 255, 0.25), inset 1px 0 1px rgba(255, 255, 255, 0.1);
     
     /* Text & Accents */
     --text-pure: #ffffff;
@@ -52,18 +52,18 @@
     overflow-x: hidden;
   }
 
-  /* ================= JELLY BLOBS & PARTICLES (TEMA) ================= */
+  /* ================= JELLY BLOBS & PARTICLES ================= */
   .bg-jelly {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -3;
     overflow: hidden; background: #020205;
   }
   .blob {
-    position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.6;
+    position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.7;
     animation: drift 20s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
   }
   .blob-1 { top: -10%; left: -10%; width: 60vw; height: 60vw; background: #6a00ff; }
   .blob-2 { bottom: -20%; right: -10%; width: 70vw; height: 70vw; background: #00f2fe; animation-duration: 25s; animation-direction: alternate-reverse;}
-  .blob-3 { top: 30%; left: 30%; width: 50vw; height: 50vw; background: #ff007b; animation-duration: 30s; opacity: 0.4;}
+  .blob-3 { top: 30%; left: 30%; width: 50vw; height: 50vw; background: #ff007b; animation-duration: 30s; opacity: 0.5;}
   
   @keyframes drift {
     0% { transform: translate(0, 0) scale(1) rotate(0deg); }
@@ -72,7 +72,7 @@
 
   .particle-overlay {
     position: fixed; inset: 0; z-index: -2; pointer-events: none;
-    background-image: radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px);
+    background-image: radial-gradient(rgba(255,255,255,0.15) 1px, transparent 1px);
     background-size: 30px 30px;
     mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
     -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
@@ -107,7 +107,7 @@
 
   .jelly-card {
     background: var(--glass-bg);
-    backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+    backdrop-filter: blur(50px) saturate(150%); -webkit-backdrop-filter: blur(50px) saturate(150%);
     border: 1px solid var(--glass-border);
     border-radius: 28px;
     padding: 24px;
@@ -123,74 +123,90 @@
   .brand-logo { font-size: 22px; font-weight: 900; letter-spacing: -1px; display: flex; align-items: center; gap: 8px;}
   .brand-logo i { background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
   .time-capsule {
-    background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border);
-    padding: 6px 14px; border-radius: 100px; font-family: var(--font-data); font-size: 11px;
-    color: var(--text-dim); backdrop-filter: blur(10px); display: flex; gap: 6px; align-items: center;
+    background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border);
+    padding: 8px 16px; border-radius: 100px; font-family: var(--font-data); font-size: 12px;
+    color: var(--text-pure); backdrop-filter: blur(10px); display: flex; gap: 8px; align-items: center;
+    box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
   }
 
-  /* ================= KARTU IDENTITAS DASHBOARD (Di Luar Sesuai Permintaan) ================= */
+  /* ================= KARTU IDENTITAS DASHBOARD ================= */
   .id-card-module {
-    background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.2) 100%);
+    background: linear-gradient(145deg, rgba(255,255,255,0.08) 0%, rgba(0,0,0,0.3) 100%);
     border: 1px solid var(--glass-border-light);
     border-radius: 28px; padding: 20px;
     box-shadow: var(--glass-shadow), var(--glass-highlight);
-    backdrop-filter: blur(30px); position: relative; overflow: hidden;
+    backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%);
+    position: relative; overflow: hidden;
   }
   .id-card-glow {
     position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-    background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1), transparent 60%);
+    background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.15), transparent 60%);
     pointer-events: none;
   }
   .id-card-header { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; position: relative; z-index: 2;}
   
+  /* FRAME PROFIL PROFESIONAL */
   .avatar-ring {
     width: 64px; height: 64px; border-radius: 22px;
-    background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border-light);
+    background: rgba(0,0,0,0.6); 
+    border: 2px solid var(--accent-primary);
+    box-shadow: 0 0 0 3px rgba(0, 242, 254, 0.2), inset 0 0 10px rgba(0,0,0,0.8), 0 8px 20px rgba(0,0,0,0.4);
     display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 800;
-    overflow: hidden; cursor: pointer; transition: 0.3s;
+    overflow: hidden; cursor: pointer; transition: 0.3s; padding: 2px;
   }
-  .avatar-ring:hover { transform: scale(1.05); border-color: var(--text-pure); box-shadow: 0 0 20px rgba(255,255,255,0.2); }
-  .avatar-ring img { width: 100%; height: 100%; object-fit: cover; }
+  .avatar-ring:hover { transform: scale(1.05); box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.4), 0 0 20px rgba(255,255,255,0.2); border-color: #fff;}
+  .avatar-ring img { width: 100%; height: 100%; object-fit: cover; border-radius: 18px; }
   
-  .id-user-info h2 { font-size: 20px; font-weight: 800; margin-bottom: 4px; letter-spacing: -0.5px;}
+  /* Frame Khusus di Dalam Modal Profil agar lebih mewah */
+  .profile-modal-content .avatar-ring {
+    border: 3px solid var(--accent-secondary);
+    box-shadow: 0 0 0 6px rgba(0, 242, 254, 0.15), inset 0 0 20px rgba(0,0,0,0.8), 0 15px 30px rgba(0,0,0,0.6);
+    padding: 3px;
+  }
+  .profile-modal-content .avatar-ring img { border-radius: 30px; }
+
+  .id-user-info h2 { font-size: 20px; font-weight: 800; margin-bottom: 4px; letter-spacing: -0.5px; text-shadow: 0 2px 10px rgba(0,0,0,0.5);}
   .role-badge {
     display: inline-flex; padding: 4px 12px; border-radius: 100px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
-    background: rgba(255,255,255,0.1); border: 1px solid var(--glass-border); color: var(--text-pure);
+    background: rgba(255,255,255,0.15); border: 1px solid var(--glass-border); color: var(--text-pure);
   }
   .role-badge.vip { background: linear-gradient(135deg, #f9d423, #ff4e50); color: #fff; border: none; box-shadow: 0 4px 15px rgba(255, 78, 80, 0.4); }
 
-  /* Info Grid dalam Kartu ID (ID & WA di Luar) */
-  .id-data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; position: relative; z-index: 2;}
+  .id-data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; position: relative; z-index: 2;}
   .data-cell {
-    background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border);
-    border-radius: 16px; padding: 12px 14px;
+    background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border);
+    border-radius: 16px; padding: 12px 14px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.3);
   }
   .data-cell label { display: block; font-size: 10px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 4px; font-weight: 600;}
   .data-cell span { font-family: var(--font-data); font-size: 14px; font-weight: 700; color: var(--text-pure); }
 
-  /* Limit Bar di Luar */
-  .limit-section { position: relative; z-index: 2; }
-  .limit-head { display: flex; justify-content: space-between; font-size: 11px; font-weight: 600; color: var(--text-dim); margin-bottom: 8px; text-transform: uppercase; }
-  .limit-track { width: 100%; height: 6px; background: rgba(0,0,0,0.4); border-radius: 10px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05);}
-  .limit-fill { height: 100%; background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary)); transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 0 10px var(--accent-secondary); }
-  .limit-fill.vip { background: linear-gradient(90deg, #f9d423, #ff4e50); width: 100% !important; box-shadow: 0 0 15px rgba(255, 78, 80, 0.5);}
-
-  /* ================= NAVIGASI FITUR KAPSUL (Sangat Elegan) ================= */
+  /* ================= NAVIGASI FITUR KAPSUL ================= */
   .jelly-nav {
-    display: flex; gap: 8px; background: rgba(0,0,0,0.3); padding: 8px;
+    display: flex; gap: 8px; background: rgba(0,0,0,0.4); padding: 8px;
     border-radius: 20px; border: 1px solid var(--glass-border);
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(30px);
   }
   .nav-btn {
     flex: 1; padding: 14px 10px; border-radius: 14px; border: 1px solid transparent;
     background: transparent; color: var(--text-dim); font-family: var(--font-ui); font-size: 13px; font-weight: 600;
     cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 8px;
   }
-  .nav-btn:hover { color: var(--text-pure); background: rgba(255,255,255,0.05); }
+  .nav-btn:hover { color: var(--text-pure); background: rgba(255,255,255,0.08); }
   .nav-btn.active {
-    background: rgba(255,255,255,0.1); border-color: var(--glass-border-light);
-    color: var(--text-pure); box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    background: rgba(255,255,255,0.15); border-color: var(--glass-border-light);
+    color: var(--text-pure); box-shadow: 0 4px 15px rgba(0,0,0,0.4);
   }
+
+  /* ================= LIMIT UI (DIPERBESAR DI ACTIVATOR) ================= */
+  .limit-section.oversized {
+    background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border);
+    border-radius: 22px; padding: 24px; margin-bottom: 24px;
+    box-shadow: inset 0 2px 15px rgba(0,0,0,0.4);
+  }
+  .limit-head { display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; color: var(--text-pure); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;}
+  .limit-track { width: 100%; height: 10px; background: rgba(0,0,0,0.6); border-radius: 10px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);}
+  .limit-fill { height: 100%; background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary)); transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 0 15px var(--accent-secondary); }
+  .limit-fill.vip { background: linear-gradient(90deg, #f9d423, #ff4e50); width: 100% !important; box-shadow: 0 0 20px rgba(255, 78, 80, 0.6);}
 
   /* ================= FORMS & INPUTS ================= */
   .form-group { margin-bottom: 20px; display: flex; flex-direction: column; gap: 8px; }
@@ -198,11 +214,11 @@
   .input-wrapper { position: relative; display: flex; align-items: center; width: 100%; }
   
   .glass-input {
-    width: 100%; background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border);
+    width: 100%; background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border);
     color: var(--text-pure); border-radius: 18px; padding: 16px 20px; font-family: var(--font-data);
-    font-size: 14px; outline: none; transition: 0.3s; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
+    font-size: 14px; outline: none; transition: 0.3s; box-shadow: inset 0 2px 8px rgba(0,0,0,0.6);
   }
-  .glass-input:focus { border-color: var(--accent-primary); background: rgba(0,242,254,0.05); box-shadow: inset 0 2px 5px rgba(0,0,0,0.5), 0 0 15px rgba(0,242,254,0.2); }
+  .glass-input:focus { border-color: var(--accent-primary); background: rgba(0,242,254,0.08); box-shadow: inset 0 2px 8px rgba(0,0,0,0.6), 0 0 15px rgba(0,242,254,0.2); }
   .glass-input::placeholder { color: var(--text-dark); }
   
   .pwd-toggle {
@@ -227,12 +243,12 @@
   .btn-primary:disabled { opacity: 0.5; pointer-events: none; }
   
   .btn-outline {
-    background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border-light); color: var(--text-pure);
+    background: rgba(255,255,255,0.1); border: 1px solid var(--glass-border-light); color: var(--text-pure);
     backdrop-filter: blur(10px);
   }
-  .btn-outline:hover { background: rgba(255,255,255,0.15); border-color: var(--text-pure); }
+  .btn-outline:hover { background: rgba(255,255,255,0.2); border-color: var(--text-pure); }
 
-  /* ================= MESSAGES ================= */
+  /* ================= MESSAGES & TOASTS ================= */
   .message-box {
     padding: 14px 18px; border-radius: 16px; font-size: 12px; font-weight: 600; 
     display: none; align-items: center; gap: 12px; margin-bottom: 20px;
@@ -241,68 +257,57 @@
   .message-box.show { display: flex; animation: jellyPop 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
   @keyframes jellyPop { 0%{ opacity:0; transform:scale(0.9); } 100%{ opacity:1; transform:scale(1); } }
   
-  .message-error { background: rgba(255, 51, 102, 0.1); border-color: rgba(255, 51, 102, 0.3); color: #ff85a2; }
-  .message-success { background: rgba(0, 255, 136, 0.1); border-color: rgba(0, 255, 136, 0.3); color: #8effc3; }
+  .message-error { background: rgba(255, 51, 102, 0.15); border-color: rgba(255, 51, 102, 0.4); color: #ff85a2; }
+  .message-success { background: rgba(0, 255, 136, 0.15); border-color: rgba(0, 255, 136, 0.4); color: #8effc3; }
+
+  #globalToast {
+    position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%);
+    background: rgba(10,10,15,0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border); padding: 14px 24px; border-radius: 100px;
+    color: #fff; font-size: 13px; font-weight: 600; z-index: 9999; transition: bottom 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex; align-items: center; gap: 10px; box-shadow: var(--glass-shadow);
+  }
 
   /* ================= SECTION CONTENT ================= */
-  .section-title { font-size: 24px; font-weight: 800; margin-bottom: 6px; letter-spacing: -1px; }
+  .section-title { font-size: 24px; font-weight: 800; margin-bottom: 6px; letter-spacing: -1px; text-shadow: 0 2px 10px rgba(0,0,0,0.5);}
   .section-desc { font-size: 13px; color: var(--text-dim); margin-bottom: 24px; line-height: 1.5; }
 
-  /* Enhancer Upload */
-  .upload-jelly {
-    border: 1.5px dashed var(--glass-border-light); border-radius: 24px;
-    padding: 30px 20px; text-align: center; background: rgba(0,0,0,0.2);
-    cursor: pointer; transition: 0.3s; margin-bottom: 24px; position: relative;
+  /* ================= ADMIN DASHBOARD ================= */
+  .global-stat-capsule {
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0.4) 100%);
+    border: 1px solid var(--glass-border-light); border-radius: 20px; padding: 16px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    backdrop-filter: blur(30px); box-shadow: var(--glass-shadow); margin-bottom: 5px;
   }
-  .upload-jelly:hover { background: rgba(255,255,255,0.05); border-color: var(--accent-primary); box-shadow: inset 0 0 20px rgba(0,242,254,0.1); }
-  .upload-jelly i { font-size: 36px; margin-bottom: 12px; color: var(--text-pure); }
-  .file-name-info { margin-top: 10px; font-size: 11px; font-family: var(--font-data); color: var(--accent-green); font-weight: 700;}
-  
-  .comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
-  .compare-img-box { border-radius: 18px; overflow: hidden; position: relative; height: 160px; border: 1px solid var(--glass-border); background: rgba(0,0,0,0.5);}
-  .compare-img-box img { width: 100%; height: 100%; object-fit: cover; }
-  .compare-label { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); padding: 4px 10px; border-radius: 8px; font-size: 9px; font-family: var(--font-data); font-weight: 800; border: 1px solid var(--glass-border-light);}
-
-  /* ================= ADMIN DASHBOARD (Kotak Total Akun & Grid) ================= */
-  .stat-box {
-    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.02) 100%);
-    border: 1px solid var(--glass-border-light); border-radius: 24px; padding: 24px;
-    display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px;
-    box-shadow: var(--glass-shadow);
-  }
-  .stat-box-info h3 { font-size: 13px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;}
-  .stat-box-info p { font-size: 32px; font-family: var(--font-data); font-weight: 800; color: var(--text-pure); line-height: 1;}
-  .stat-icon { width: 56px; height: 56px; border-radius: 18px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 24px;}
 
   .admin-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
   .admin-user-card {
-    background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border);
+    background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border);
     border-radius: 20px; padding: 20px; display: flex; flex-direction: column; gap: 16px;
-    transition: 0.3s;
+    transition: 0.3s; box-shadow: inset 0 2px 10px rgba(0,0,0,0.3);
   }
-  .admin-user-card:hover { border-color: var(--text-pure); background: rgba(255,255,255,0.03); }
-  /* Card VIP khusus ditaruh di atas lewat JS, stylingnya: */
-  .admin-user-card.is-vip { border-left: 3px solid var(--accent-vip); background: linear-gradient(90deg, rgba(255, 183, 3, 0.05) 0%, transparent 100%);}
-  .admin-user-card.is-banned { border-left: 3px solid var(--accent-red); opacity: 0.6; filter: grayscale(1); }
+  .admin-user-card:hover { border-color: var(--text-pure); background: rgba(255,255,255,0.05); }
+  .admin-user-card.is-vip { border-left: 4px solid var(--accent-vip); background: linear-gradient(90deg, rgba(255, 183, 3, 0.08) 0%, transparent 100%);}
+  .admin-user-card.is-banned { border-left: 4px solid var(--accent-red); opacity: 0.6; filter: grayscale(1); }
   
   .auc-header { display: flex; justify-content: space-between; align-items: center; }
   .auc-name { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
-  .auc-id { font-family: var(--font-data); font-size: 11px; color: var(--text-dim); background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 8px;}
+  .auc-id { font-family: var(--font-data); font-size: 11px; color: var(--text-dim); background: rgba(255,255,255,0.15); padding: 4px 8px; border-radius: 8px;}
   
-  .auc-details { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 11px; color: var(--text-dim); font-family: var(--font-data); background: rgba(0,0,0,0.3); padding: 12px; border-radius: 14px;}
+  .auc-details { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 11px; color: var(--text-dim); font-family: var(--font-data); background: rgba(0,0,0,0.4); padding: 12px; border-radius: 14px;}
   .auc-details b { color: var(--text-pure); font-weight: 600; font-size: 12px;}
   
   .auc-actions { display: flex; gap: 8px; flex-wrap: wrap; }
   .btn-micro { 
     flex: 1; padding: 10px; font-size: 10px; font-weight: 700; border-radius: 12px; 
-    background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); color: var(--text-pure); cursor: pointer; transition: 0.2s; text-transform: uppercase;
+    background: rgba(255,255,255,0.1); border: 1px solid var(--glass-border); color: var(--text-pure); cursor: pointer; transition: 0.2s; text-transform: uppercase;
   }
-  .btn-micro:hover { background: rgba(255,255,255,0.15); border-color: var(--text-pure);}
+  .btn-micro:hover { background: rgba(255,255,255,0.2); border-color: var(--text-pure);}
 
-  /* ================= FULL MODALS (Profil & Warning) ================= */
+  /* ================= FULL MODALS ================= */
   .full-modal {
-    position: fixed; inset: 0; background: rgba(2, 2, 5, 0.7);
-    backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+    position: fixed; inset: 0; background: rgba(2, 2, 5, 0.8);
+    backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
     z-index: 999; display: flex; flex-direction: column; align-items: center; justify-content: center;
     padding: 20px; opacity: 0; pointer-events: none; transition: 0.4s ease;
   }
@@ -310,23 +315,24 @@
   
   .modal-close-btn {
     position: absolute; top: 24px; right: 24px; width: 44px; height: 44px;
-    background: rgba(255,255,255,0.1); border: 1px solid var(--glass-border-light); border-radius: 50%;
+    background: rgba(255,255,255,0.15); border: 1px solid var(--glass-border-light); border-radius: 50%;
     color: var(--text-pure); font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center;
-    transition: 0.3s; z-index: 1000;
+    transition: 0.3s; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
   }
   .modal-close-btn:hover { background: var(--text-pure); color: #000; transform: rotate(90deg);}
 
-  /* Profil di Dalam Modal (Sesuai Permintaan: Satukan Semua Data) */
+  /* Profil di Dalam Modal */
   .profile-modal-content {
     width: 100%; max-width: 420px; max-height: 90vh; overflow-y: auto;
     display: flex; flex-direction: column; gap: 20px; padding-bottom: 20px;
+    margin-top: 40px; /* space for close btn */
   }
   .profile-modal-content::-webkit-scrollbar { display: none; }
   
   .center-glass-box {
     background: var(--glass-bg); border: 1px solid var(--glass-border-light);
     border-radius: 32px; padding: 32px 24px; text-align: center;
-    box-shadow: var(--glass-shadow);
+    box-shadow: var(--glass-shadow), var(--glass-highlight);
   }
   
   .mb-2 { margin-bottom: 8px; }
@@ -353,14 +359,32 @@
 </div>
 
 <!-- ================= SYSTEM MODALS ================= -->
-<!-- Modal Peringatan -->
+<!-- Global Toast Alert (Pengganti window.alert) -->
+<div id="globalToast">
+  <i class="fas fa-info-circle"></i> <span id="toastMsg">Pesan Sistem</span>
+</div>
+
+<!-- Custom Confirm Modal -->
+<div id="customConfirmModal" class="full-modal">
+  <div class="center-glass-box" id="confirmBox" style="transform: scale(0.9); transition: 0.4s; padding: 30px 24px;">
+    <div style="font-size: 40px; color: var(--accent-red); margin-bottom: 16px;"><i class="fas fa-exclamation-triangle"></i></div>
+    <h3 class="mb-2" style="font-size: 22px; font-weight: 800;">Konfirmasi Aksi</h3>
+    <p id="confirmText" style="font-size: 13px; color: var(--text-dim); margin-bottom: 24px; line-height: 1.5;">Apakah Anda yakin?</p>
+    <div class="flex-row">
+      <button class="btn-jelly btn-outline" id="btnConfirmCancel">Batal</button>
+      <button class="btn-jelly btn-primary" id="btnConfirmOk" style="background: linear-gradient(135deg, var(--accent-red) 0%, #cc0033 100%); color:#fff; border:none;">Lanjutkan</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Peringatan Awal -->
 <div id="warningModal" class="full-modal">
   <div class="center-glass-box" style="transform: scale(0.9); transition: 0.4s;" id="warnBox">
     <div style="font-size: 48px; color: var(--text-pure); margin-bottom: 20px;"><i class="fas fa-shield-halved"></i></div>
     <h3 class="mb-2" style="font-size: 22px; font-weight: 800;">Sistem Keamanan Ketat</h3>
     <p style="font-size: 13px; color: var(--text-dim); margin-bottom: 24px; line-height: 1.5;">Platform ini dilindungi enkripsi kelas atas dan mendeteksi identitas perangkat keras Anda secara real-time.</p>
     
-    <div style="text-align: left; background: rgba(0,0,0,0.4); padding: 20px; border-radius: 20px; margin-bottom: 24px; border: 1px solid var(--glass-border);">
+    <div style="text-align: left; background: rgba(0,0,0,0.5); padding: 20px; border-radius: 20px; margin-bottom: 24px; border: 1px solid var(--glass-border);">
       <div class="mb-3" style="font-size: 12px; color: var(--text-dim);"><i class="fas fa-microchip" style="width:24px; color:var(--text-pure);"></i> HWID & IP dicatat. Mode samaran tidak berlaku.</div>
       <div class="mb-3" style="font-size: 12px; color: var(--text-dim);"><i class="fas fa-network-wired" style="width:24px; color:var(--text-pure);"></i> Maksimal 1 Entitas Akun per Perangkat/Jaringan.</div>
       <div style="font-size: 12px; color: var(--accent-red); font-weight: 600;"><i class="fas fa-ban" style="width:24px;"></i> Pelanggaran aturan = Banned Permanen.</div>
@@ -374,7 +398,7 @@
   <div class="center-glass-box" style="transform: scale(0.9); transition: 0.4s;" id="broadBox">
     <div style="font-size: 40px; margin-bottom: 16px;"><i class="fas fa-satellite-dish"></i></div>
     <h3 class="mb-3" style="font-weight: 800;">Informasi Sistem</h3>
-    <div id="broadcastContentText" style="background: rgba(0,0,0,0.5); border-radius: 20px; padding: 20px; font-size: 13px; margin-bottom: 24px; text-align: left; line-height: 1.6; border: 1px solid var(--glass-border);">Memuat...</div>
+    <div id="broadcastContentText" style="background: rgba(0,0,0,0.6); border-radius: 20px; padding: 20px; font-size: 13px; margin-bottom: 24px; text-align: left; line-height: 1.6; border: 1px solid var(--glass-border); box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);">Memuat...</div>
     <button class="btn-jelly btn-primary" onclick="closeBroadcastModal()">Tandai Sudah Dibaca</button>
   </div>
 </div>
@@ -439,25 +463,31 @@
   <!-- Minimalist Header -->
   <div class="top-header">
     <div class="brand-logo"><i class="fas fa-bolt"></i> AM Cloud</div>
-    <div class="time-capsule"><div style="width:6px; height:6px; background:var(--accent-green); border-radius:50%; box-shadow:0 0 10px var(--accent-green);"></div> <span id="realtimeClock">00:00 WIB</span></div>
   </div>
 
-  <!-- KARTU IDENTITAS DASHBOARD (Di Luar - Sesuai Permintaan) -->
+  <!-- KARTU IDENTITAS DASHBOARD -->
   <div class="id-card-module" onclick="openProfileSheet()" style="cursor: pointer;" title="Klik untuk Buka Profil Lengkap">
      <div class="id-card-glow"></div>
-     <div class="id-card-header">
-        <div class="avatar-ring">
-           <!-- Class target untuk update massal via JS -->
-           <span class="disp-avatar-text">?</span>
+     
+     <div class="id-card-header" style="justify-content: space-between; align-items: flex-start;">
+        <div style="display: flex; align-items: center; gap: 16px;">
+            <div class="avatar-ring">
+               <span class="disp-avatar-text">?</span>
+            </div>
+            <div class="id-user-info">
+               <h2 class="disp-username">Username</h2>
+               <span class="role-badge disp-userrole">Role</span>
+            </div>
         </div>
-        <div class="id-user-info">
-           <h2 class="disp-username">Username</h2>
-           <span class="role-badge disp-userrole">Role</span>
+        <!-- JAM DI DALAM KOTAK PROFIL DASBOR -->
+        <div class="time-capsule" style="background: rgba(0,0,0,0.5); padding: 6px 12px; font-size: 10px; border-radius: 8px;">
+           <div style="width:6px; height:6px; background:var(--accent-green); border-radius:50%; box-shadow:0 0 10px var(--accent-green);"></div> 
+           <span id="realtimeClock">00:00 WIB</span>
         </div>
      </div>
 
      <!-- ID & WA Tampil di Luar -->
-     <div class="id-data-grid">
+     <div class="id-data-grid" style="margin-bottom: 10px;">
         <div class="data-cell">
            <label>ID Sistem</label>
            <span class="disp-userid">MSH-000</span>
@@ -468,20 +498,22 @@
         </div>
      </div>
 
-     <!-- Limit Tampil di Luar -->
-     <div class="limit-section">
-        <div class="limit-head">
-           <span class="disp-limit-label">Limit API Mingguan</span>
-           <span class="disp-limit-value" style="font-family: var(--font-data); font-size: 13px; color: var(--text-pure); font-weight: 700;">- / -</span>
-        </div>
-        <div class="limit-track">
-           <div class="limit-fill disp-limit-bar" style="width: 0%;"></div>
-        </div>
+     <!-- TOTAL AKUN DI DALAM KOTAK PROFIL DASBOR -->
+     <div class="data-cell" style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.6);">
+        <label style="margin-bottom: 0; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;"><i class="fas fa-globe-asia" style="color: var(--accent-primary); margin-right: 4px;"></i> Total Akun Terdaftar</label>
+        <span id="globalTotalUsers" style="color: var(--text-pure); font-size: 16px;">0</span>
      </div>
   </div>
 
-  <!-- Promo VIP -->
-  <div id="promoBannerContainer" class="jelly-card" style="padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; border-color: rgba(255, 215, 0, 0.4); background: rgba(255, 215, 0, 0.05);" onclick="handleVipPromoClick()">
+  <!-- NAVIGASI KAPSUL TOOLS -->
+  <div class="jelly-nav">
+     <button class="nav-btn active" id="btnTabActivator" onclick="switchTab('activator')"><i class="fas fa-key"></i> Activator</button>
+     <button class="nav-btn" id="btnTabEnhancer" onclick="switchTab('enhancer')"><i class="fas fa-wand-magic-sparkles"></i> Enhancer</button>
+     <button class="nav-btn hidden" id="toggleOwnerDashBtn" onclick="switchTab('admin')"><i class="fas fa-database"></i> Admin</button>
+  </div>
+
+  <!-- Promo VIP (Dipindahkan ke bawah menu tools) -->
+  <div id="promoBannerContainer" class="jelly-card" style="padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; border-color: rgba(255, 215, 0, 0.4); background: rgba(255, 215, 0, 0.1);" onclick="handleVipPromoClick()">
      <div>
        <h4 style="color: var(--accent-vip); font-size: 14px; margin-bottom: 4px; font-weight: 800;"><i class="fas fa-crown"></i> Upgrade ke VIP Permanen</h4>
        <p style="font-size: 11px; color: var(--text-dim);">Hapus batasan kuota, akses server tanpa batas.</p>
@@ -489,20 +521,26 @@
      <i class="fas fa-arrow-right" style="color: var(--accent-vip);"></i>
   </div>
 
-  <!-- NAVIGASI KAPSUL (Tombol Fitur yang Jauh Lebih Bagus) -->
-  <div class="jelly-nav">
-     <button class="nav-btn active" id="btnTabActivator" onclick="switchTab('activator')"><i class="fas fa-key"></i> Activator</button>
-     <button class="nav-btn" id="btnTabEnhancer" onclick="switchTab('enhancer')"><i class="fas fa-wand-magic-sparkles"></i> Enhancer</button>
-     <button class="nav-btn hidden" id="toggleOwnerDashBtn" onclick="switchTab('admin')"><i class="fas fa-database"></i> Admin</button>
-  </div>
 
   <!-- ================= SECTION 1: ACTIVATOR ================= -->
   <div id="sectionActivator" class="app-section">
     <div class="jelly-card">
+      
+      <!-- LIMIT UI DIPERBESAR DAN DILETAKKAN DI ATAS JUDUL -->
+      <div class="limit-section oversized">
+         <div class="limit-head">
+            <span class="disp-limit-label">Batas API Mingguan</span>
+            <span class="disp-limit-value" style="font-family: var(--font-data); font-size: 18px; color: var(--text-pure); font-weight: 800;">- / -</span>
+         </div>
+         <div class="limit-track">
+            <div class="limit-fill disp-limit-bar" style="width: 0%;"></div>
+         </div>
+      </div>
+
       <h2 class="section-title">Aktivasi Lisensi</h2>
       <p class="section-desc">Bypass sistem dan hubungkan perangkat Anda langsung ke server pusat Alight Motion.</p>
 
-      <div style="background: rgba(0,0,0,0.3); border-radius: 20px; padding: 20px; margin-bottom: 24px; border: 1px solid var(--glass-border);">
+      <div style="background: rgba(0,0,0,0.5); border-radius: 20px; padding: 20px; margin-bottom: 24px; border: 1px solid var(--glass-border); box-shadow: inset 0 2px 10px rgba(0,0,0,0.3);">
          <h4 style="font-size: 12px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim);"><i class="fas fa-bolt" style="color:var(--text-pure);"></i> Prosedur Sistem:</h4>
          <ol style="padding-left: 16px; font-size: 12px; color: var(--text-dim); line-height: 1.6; margin:0;">
             <li>Ketik <b>Email Akun AM</b> Anda, lalu eksekusi "Kirim".</li>
@@ -533,6 +571,7 @@
   </div>
 
   <!-- ================= SECTION 2: HD ENHANCER ================= -->
+  <!-- (Bagian Enhancer dan Admin Panel tidak diubah strukturnya, hanya styling otomatis mengikuti class) -->
   <div id="sectionEnhancer" class="app-section hidden">
     <div class="jelly-card">
       <h2 class="section-title">Neural Enhancer</h2>
@@ -545,23 +584,23 @@
         </div>
       </div>
 
-      <div class="upload-jelly" id="dropZone">
-        <i class="fas fa-cloud-upload-alt"></i>
+      <div class="upload-jelly" id="dropZone" style="border: 1.5px dashed var(--glass-border-light); border-radius: 24px; padding: 30px 20px; text-align: center; background: rgba(0,0,0,0.4); cursor: pointer; transition: 0.3s; margin-bottom: 24px;">
+        <i class="fas fa-cloud-upload-alt" style="font-size: 36px; margin-bottom: 12px; color: var(--text-pure);"></i>
         <h4 style="font-size: 14px; margin-bottom: 6px;">Pilih File dari Penyimpanan</h4>
-        <p style="font-size: 11px; color: var(--text-dark);">Format yang didukung: JPG, PNG, WEBP (Maks 25MB)</p>
-        <div class="file-name-info" id="fileNameDisplay"></div>
+        <p style="font-size: 11px; color: var(--text-dark);">Format: JPG, PNG, WEBP (Maks 25MB)</p>
+        <div class="file-name-info" id="fileNameDisplay" style="margin-top: 10px; font-size: 11px; font-family: var(--font-data); color: var(--accent-green); font-weight: 700;"></div>
         <input type="file" id="fileInput" accept="image/*" style="display: none;">
       </div>
 
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px;">
-        <div style="background: rgba(0,0,0,0.4); border-radius: 18px; padding: 16px; border: 1px solid var(--glass-border);">
+        <div style="background: rgba(0,0,0,0.5); border-radius: 18px; padding: 16px; border: 1px solid var(--glass-border); box-shadow: inset 0 2px 10px rgba(0,0,0,0.3);">
           <div style="display:flex; justify-content:space-between; font-size:11px; font-weight: 600; color:var(--text-dim); margin-bottom:12px; text-transform: uppercase;">
             <span>Intensitas</span> <span id="strengthIndicator" style="color:var(--text-pure);">Optimal</span>
           </div>
-          <input type="range" id="strengthRange" min="10" max="100" value="60" style="width: 100%; height:4px; appearance:none; background:rgba(255,255,255,0.1); border-radius:4px; outline:none;">
+          <input type="range" id="strengthRange" min="10" max="100" value="60" style="width: 100%; height:4px; appearance:none; background:rgba(255,255,255,0.15); border-radius:4px; outline:none;">
         </div>
 
-        <div id="openModeModal" style="background: rgba(0,0,0,0.4); border-radius: 18px; padding: 16px; border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: 0.3s;">
+        <div id="openModeModal" style="background: rgba(0,0,0,0.5); border-radius: 18px; padding: 16px; border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: 0.3s; box-shadow: inset 0 2px 10px rgba(0,0,0,0.3);">
           <div>
             <div style="font-size:11px; font-weight: 600; color:var(--text-dim); text-transform:uppercase; margin-bottom:4px;">Model AI</div>
             <div id="currentModeLabel" style="font-size:13px; font-weight:700; font-family: var(--font-data);">Upscale 2x</div>
@@ -577,14 +616,14 @@
 
       <div id="statusMessage" class="message-box mb-3"></div>
 
-      <div class="comparison-grid hidden" id="comparisonSplitSection">
-        <div class="compare-img-box before">
-          <div class="compare-label" style="color:#ff85a2; border-color: rgba(255,51,102,0.3);">ORIGINAL</div>
-          <img id="splitImgBefore" alt="Sebelum">
+      <div class="comparison-grid hidden" id="comparisonSplitSection" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0;">
+        <div class="compare-img-box before" style="border-radius: 18px; overflow: hidden; position: relative; height: 160px; border: 1px solid var(--glass-border); background: rgba(0,0,0,0.5);">
+          <div class="compare-label" style="position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); padding: 4px 10px; border-radius: 8px; font-size: 9px; font-family: var(--font-data); font-weight: 800; border: 1px solid rgba(255,51,102,0.3); color:#ff85a2;">ORIGINAL</div>
+          <img id="splitImgBefore" alt="Sebelum" style="width: 100%; height: 100%; object-fit: cover;">
         </div>
-        <div class="compare-img-box after">
-          <div class="compare-label" style="color:#8effc3; border-color: rgba(0,255,136,0.3);">ENHANCED</div>
-          <img id="splitImgAfter" alt="Sesudah">
+        <div class="compare-img-box after" style="border-radius: 18px; overflow: hidden; position: relative; height: 160px; border: 1px solid var(--glass-border); background: rgba(0,0,0,0.5);">
+          <div class="compare-label" style="position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); padding: 4px 10px; border-radius: 8px; font-size: 9px; font-family: var(--font-data); font-weight: 800; border: 1px solid rgba(0,255,136,0.3); color:#8effc3;">ENHANCED</div>
+          <img id="splitImgAfter" alt="Sesudah" style="width: 100%; height: 100%; object-fit: cover;">
         </div>
       </div>
 
@@ -597,20 +636,10 @@
 
   <!-- ================= SECTION 3: ADMIN PANEL ================= -->
   <div id="ownerPanel" class="app-section hidden">
-    
-    <!-- Kotak Total Pembuat Akun (Sesuai Permintaan) -->
-    <div class="stat-box">
-       <div class="stat-box-info">
-          <h3>Total Node / Klien</h3>
-          <p id="totalUsersCount">0</p>
-       </div>
-       <div class="stat-icon"><i class="fas fa-users" style="color: var(--text-pure);"></i></div>
-    </div>
-
     <div class="jelly-card">
       <h2 class="section-title">Manajemen Database</h2>
       
-      <div style="background: rgba(0,0,0,0.3); border-radius: 20px; padding: 20px; margin-bottom: 24px; border: 1px solid var(--glass-border); margin-top: 16px;">
+      <div style="background: rgba(0,0,0,0.4); border-radius: 20px; padding: 20px; margin-bottom: 24px; border: 1px solid var(--glass-border); margin-top: 16px; box-shadow: inset 0 2px 10px rgba(0,0,0,0.3);">
         <h4 style="font-size: 11px; margin-bottom: 12px; color: var(--text-dim); font-weight: 700; text-transform: uppercase;"><i class="fas fa-broadcast-tower"></i> Distribusi Siaran Global</h4>
         <textarea id="broadcastInput" placeholder="Ketik pesan untuk didistribusikan ke seluruh node..." style="width: 100%; background: transparent; border: none; border-bottom: 1px solid var(--glass-border); padding: 10px 0; color: var(--text-pure); font-family: var(--font-data); font-size: 13px; outline: none; margin-bottom: 16px; resize: none; min-height: 40px;"></textarea>
         <button class="btn-jelly btn-outline" style="padding: 12px; font-size: 13px;" onclick="sendBroadcastMsg()">Siarkan Pesan</button>
@@ -627,70 +656,71 @@
 </div> <!-- End Container -->
 
 
-<!-- ================= PROFIL MODAL (Data Gabungan Dalam) ================= -->
+<!-- ================= PROFIL MODAL (PENUH FITUR) ================= -->
 <div id="profileSheet" class="full-modal">
   <button class="modal-close-btn" onclick="closeProfileSheet()"><i class="fas fa-times"></i></button>
   
   <div class="profile-modal-content">
     
-    <div class="center-glass-box" style="padding: 40px 24px;">
-       <div class="avatar-ring" style="width: 100px; height: 100px; border-radius: 35px; margin: 0 auto 16px; font-size: 40px;" onclick="document.getElementById('avatarFileInput').click()">
+    <div class="center-glass-box" style="padding: 40px 24px; position: relative;">
+       
+       <!-- FOTO PROFIL DENGAN FRAME LEBIH PREMIUM -->
+       <div class="avatar-ring" style="width: 110px; height: 110px; border-radius: 35px; margin: 0 auto 16px; font-size: 40px;" onclick="document.getElementById('avatarFileInput').click()" title="Ubah Foto Profil">
           <span class="disp-avatar-text">?</span>
        </div>
        <input type="file" id="avatarFileInput" accept="image/*" style="display: none;" onchange="handleAvatarUpload(event)">
        
-       <h2 class="disp-username" style="font-size: 26px; font-weight: 800; margin-bottom: 6px;">Username</h2>
+       <h2 class="disp-username" style="font-size: 26px; font-weight: 900; margin-bottom: 6px; text-shadow: 0 4px 15px rgba(0,0,0,0.6);">Username</h2>
        <span class="role-badge disp-userrole" style="font-size: 11px; padding: 6px 16px;">Role</span>
     </div>
 
-    <!-- SEMUA DATA DISATUKAN (Versi Dalam) -->
-    <div style="display: grid; grid-template-columns: 1fr; gap: 12px;">
-       <div class="data-cell" style="background: var(--glass-bg); padding: 24px; border-radius: 24px; box-shadow: var(--glass-shadow); border-color: var(--glass-border-light);">
-          <label style="display:flex; justify-content:space-between; align-items:center;">
-             <span class="disp-limit-label">Status Akses API</span>
-             <i class="fas fa-chart-pie" style="font-size: 16px; color: var(--text-pure);"></i>
-          </label>
-          <span class="disp-limit-value" style="font-size: 24px; display:block; margin: 8px 0;">- / -</span>
-          <div class="limit-track" style="margin-top: 12px; height: 8px;">
-             <div class="limit-fill disp-limit-bar" style="width: 0%;"></div>
-          </div>
+    <!-- DATA GRID LENGKAP TERMASUK IP -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+       <div class="data-cell" style="background: var(--glass-bg); padding: 20px; border-radius: 20px; box-shadow: var(--glass-shadow);">
+          <label>ID Sistem</label>
+          <span class="disp-userid" style="font-size: 16px;">MSH-000</span>
        </div>
-
-       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-           <div class="data-cell" style="background: var(--glass-bg); padding: 20px; border-radius: 24px; box-shadow: var(--glass-shadow);">
-              <label>ID Sistem Node</label>
-              <span class="disp-userid" style="font-size: 16px;">MSH-000</span>
-           </div>
-           <div class="data-cell" style="background: var(--glass-bg); padding: 20px; border-radius: 24px; box-shadow: var(--glass-shadow);">
-              <label>Kontak Validasi</label>
-              <span class="disp-userwa" style="font-size: 16px;">08...</span>
-           </div>
+       <div class="data-cell" style="background: var(--glass-bg); padding: 20px; border-radius: 20px; box-shadow: var(--glass-shadow);">
+          <label>Kontak Validasi</label>
+          <span class="disp-userwa" style="font-size: 16px;">08...</span>
+       </div>
+       <!-- TAMPILAN IP ADDRESS -->
+       <div class="data-cell" style="background: var(--glass-bg); padding: 20px; border-radius: 20px; box-shadow: var(--glass-shadow); grid-column: span 2; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <label><i class="fas fa-network-wired" style="margin-right: 4px;"></i> Alamat IP Perangkat</label>
+            <span class="disp-userip" style="font-size: 16px; font-family: monospace; letter-spacing: 1px; color: var(--accent-primary);">Memuat...</span>
+          </div>
+          <i class="fas fa-shield-check" style="font-size: 24px; color: rgba(255,255,255,0.2);"></i>
        </div>
     </div>
 
-    <!-- Ubah Kredensial -->
-    <div class="center-glass-box" style="padding: 24px; text-align: left;">
-       <div style="font-size: 14px; font-weight: 700; margin-bottom: 16px;"><i class="fas fa-lock"></i> Kredensial Akses</div>
+    <!-- UBAH NICK/PW -->
+    <div class="center-glass-box" style="padding: 24px; text-align: left; background: rgba(0,0,0,0.5);">
+       <div style="font-size: 15px; font-weight: 800; margin-bottom: 16px; color: var(--text-pure);"><i class="fas fa-user-lock" style="color: var(--accent-primary);"></i> Manajemen Kredensial</div>
+       <p style="font-size: 11px; color: var(--text-dim); margin-bottom: 16px; line-height: 1.5;">Anda hanya dapat mengubah Username 1 kali. Pastikan mengingat kata sandi baru.</p>
+       
        <div id="editProfileMsg" class="message-box" role="alert"></div>
-       <div class="form-group mb-3"><input type="text" id="editUsernameInput" class="glass-input" placeholder="Username Baru" autocomplete="off" style="padding: 12px 16px; font-size: 13px;"></div>
+       <div class="form-group mb-3"><input type="text" id="editUsernameInput" class="glass-input" placeholder="Username Baru" autocomplete="off" style="padding: 14px 16px; font-size: 13px;"></div>
        <div class="form-group mb-4">
          <div class="input-wrapper">
-           <input type="password" id="editPasswordInput" class="glass-input" placeholder="Kata Sandi Baru" autocomplete="off" style="padding: 12px 16px; font-size: 13px;">
+           <input type="password" id="editPasswordInput" class="glass-input" placeholder="Kata Sandi Baru" autocomplete="off" style="padding: 14px 16px; font-size: 13px;">
            <button type="button" class="pwd-toggle" onclick="togglePwd('editPasswordInput', this)"><i class="far fa-eye"></i></button>
          </div>
        </div>
-       <button id="saveProfileChangesBtn" class="btn-jelly btn-outline" style="padding: 14px; font-size: 13px;">Simpan Permanen</button>
-       <button id="openEditProfileBtn" class="hidden">Trigger JS</button> 
+       <button id="saveProfileChangesBtn" class="btn-jelly btn-outline" style="padding: 14px; font-size: 13px; background: rgba(0, 242, 254, 0.1); border-color: rgba(0, 242, 254, 0.3); color: #fff;">Simpan Permanen</button>
     </div>
 
-    <button id="logoutBtn" class="btn-jelly" style="background: rgba(255, 51, 102, 0.1); border: 1px solid rgba(255, 51, 102, 0.3); color: #ff85a2;"><i class="fas fa-power-off"></i> Terminasi Sesi</button>
+    <!-- TOMBOL LOGOUT (JELAS & MENONJOL) -->
+    <button id="logoutBtn" class="btn-jelly" style="background: linear-gradient(135deg, rgba(255, 51, 102, 0.2) 0%, rgba(204, 0, 51, 0.4) 100%); border: 1px solid rgba(255, 51, 102, 0.5); color: #fff; box-shadow: 0 4px 15px rgba(255, 51, 102, 0.3); margin-top: 10px; font-size: 16px; padding: 18px;">
+       <i class="fas fa-power-off"></i> Keluar (Logout)
+    </button>
   </div>
 </div>
 
 
 <!-- ENHANCER RESOLUTION MODE MODAL -->
 <div class="full-modal" id="modeModalOverlay" style="align-items: flex-end; padding: 0;">
-  <div style="background: var(--bg-base); width: 100%; max-width: 500px; border-radius: 36px 36px 0 0; padding: 32px; border-top: 1px solid var(--glass-border-light); box-shadow: 0 -20px 50px rgba(0,0,0,0.8); transform: translateY(100%); transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);" id="modeModalSheet">
+  <div style="background: rgba(10,10,15, 0.95); backdrop-filter: blur(40px); width: 100%; max-width: 500px; border-radius: 36px 36px 0 0; padding: 32px; border-top: 1px solid var(--glass-border-light); box-shadow: 0 -20px 50px rgba(0,0,0,0.8); transform: translateY(100%); transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);" id="modeModalSheet">
     
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
       <h3 style="font-size: 20px; font-weight: 800;">Model Konfigurasi AI</h3>
@@ -698,7 +728,7 @@
     </div>
 
     <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px;">
-      <div class="mode-option-item selected" data-mode="2x" style="padding: 20px; border-radius: 24px; border: 1px solid var(--glass-border); display: flex; align-items: center; gap: 20px; cursor: pointer; transition: 0.3s; background: rgba(0,0,0,0.3);">
+      <div class="mode-option-item selected" data-mode="2x" style="padding: 20px; border-radius: 24px; border: 1px solid var(--text-pure); display: flex; align-items: center; gap: 20px; cursor: pointer; transition: 0.3s; background: rgba(0,0,0,0.5);">
         <div style="font-size: 26px; color: var(--text-pure);"><i class="fas fa-expand"></i></div>
         <div>
           <h4 style="font-size: 15px; margin-bottom: 4px; font-weight: 700;">Super Resolution 2x</h4>
@@ -706,7 +736,7 @@
         </div>
       </div>
 
-      <div class="mode-option-item" data-mode="1x" style="padding: 20px; border-radius: 24px; border: 1px solid var(--glass-border); display: flex; align-items: center; gap: 20px; cursor: pointer; transition: 0.3s; background: rgba(0,0,0,0.3);">
+      <div class="mode-option-item" data-mode="1x" style="padding: 20px; border-radius: 24px; border: 1px solid var(--glass-border); display: flex; align-items: center; gap: 20px; cursor: pointer; transition: 0.3s; background: rgba(0,0,0,0.5);">
         <div style="font-size: 26px; color: var(--text-dark);"><i class="fas fa-wand-magic"></i></div>
         <div>
           <h4 style="font-size: 15px; margin-bottom: 4px; font-weight: 700;">Clean & Sharpen (1x)</h4>
@@ -714,7 +744,7 @@
         </div>
       </div>
 
-      <div class="mode-option-item" data-mode="hdr" style="padding: 20px; border-radius: 24px; border: 1px solid var(--glass-border); display: flex; align-items: center; gap: 20px; cursor: pointer; transition: 0.3s; background: rgba(0,0,0,0.3);">
+      <div class="mode-option-item" data-mode="hdr" style="padding: 20px; border-radius: 24px; border: 1px solid var(--glass-border); display: flex; align-items: center; gap: 20px; cursor: pointer; transition: 0.3s; background: rgba(0,0,0,0.5);">
         <div style="font-size: 26px; color: var(--text-dark);"><i class="fas fa-sun"></i></div>
         <div>
           <h4 style="font-size: 15px; margin-bottom: 4px; font-weight: 700;">Dynamic HDR Boost</h4>
@@ -727,8 +757,38 @@
 </div>
 
 
-<!-- ================= LOGIC JAVASCRIPT (TERJAGA AMAN & SESUAI DOM BARU) ================= -->
+<!-- ================= LOGIC JAVASCRIPT ================= -->
 <script>
+    // Custom Alert / Toast (Pengganti alert bawaan)
+    window.customAlert = function(msg, isError = false) {
+        const toast = document.getElementById('globalToast');
+        document.getElementById('toastMsg').textContent = msg;
+        toast.style.borderColor = isError ? 'rgba(255, 51, 102, 0.5)' : 'rgba(0, 255, 136, 0.5)';
+        toast.style.boxShadow = isError ? '0 5px 20px rgba(255, 51, 102, 0.3)' : '0 5px 20px rgba(0, 255, 136, 0.3)';
+        toast.querySelector('i').className = isError ? 'fas fa-exclamation-circle' : 'fas fa-check-circle';
+        toast.querySelector('i').style.color = isError ? '#ff85a2' : '#8effc3';
+        toast.style.bottom = '30px';
+        setTimeout(() => { toast.style.bottom = '-100px'; }, 3500);
+    };
+
+    // Custom Confirm (Pengganti confirm bawaan)
+    window.customConfirm = function(msg, callback) {
+        document.getElementById('confirmText').textContent = msg;
+        const modal = document.getElementById('customConfirmModal');
+        modal.classList.add('show');
+        setTimeout(() => { document.getElementById('confirmBox').style.transform = 'scale(1)'; }, 10);
+        
+        document.getElementById('btnConfirmCancel').onclick = function() {
+            document.getElementById('confirmBox').style.transform = 'scale(0.9)';
+            setTimeout(() => { modal.classList.remove('show'); }, 300);
+        };
+        document.getElementById('btnConfirmOk').onclick = function() {
+            document.getElementById('confirmBox').style.transform = 'scale(0.9)';
+            setTimeout(() => { modal.classList.remove('show'); }, 300);
+            callback();
+        };
+    };
+
     async function getIPAddress() {
         try {
             const res = await fetch('https://api.ipify.org?format=json');
@@ -791,6 +851,7 @@
             fetchUserSession(savedUser);
         }
         startClock();
+        fetchGlobalStats(); // Ambil total akun untuk dasbor
         initRealtimeBroadcastListener();
         initImageEnhancerEngine();
     };
@@ -802,6 +863,17 @@
             const now = new Date();
             clockEl.textContent = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB';
         }, 1000);
+    }
+
+    // Mengambil total semua akun di database
+    async function fetchGlobalStats() {
+        try {
+            const { count, error } = await supabaseClient.from('users').select('*', { count: 'exact', head: true });
+            if (!error && count !== null) {
+                const el = document.getElementById('globalTotalUsers');
+                if(el) el.textContent = count;
+            }
+        } catch (e) { console.error("Gagal memuat total stat", e); }
     }
 
     function generateCaptcha() {
@@ -833,10 +905,10 @@
         if (!file) return;
 
         if (!file.type.startsWith('image/')) {
-            alert("Harap pilih file gambar yang valid."); return;
+            customAlert("Harap pilih file gambar yang valid.", true); return;
         }
         if (file.size > 2 * 1024 * 1024) {
-            alert("Ukuran gambar terlalu besar! Maksimal 2MB."); return;
+            customAlert("Ukuran gambar terlalu besar! Maksimal 2MB.", true); return;
         }
 
         const reader = new FileReader();
@@ -850,18 +922,17 @@
                 .eq('username', currentUserData.username);
 
             if (error) {
-                alert("Gagal memperbarui foto profil: " + error.message);
+                customAlert("Gagal memperbarui foto profil: " + error.message, true);
             } else {
                 currentUserData.avatar_url = base64Image;
                 updateAvatarUI(base64Image, currentUserData.username);
-                alert("Foto profil berhasil diperbarui!");
+                customAlert("Foto profil berhasil diperbarui!");
             }
         };
         reader.readAsDataURL(file);
     };
 
     function updateAvatarUI(avatarUrl, username) {
-        // Update massal ke semua elemen avatar (baik luar maupun dalam)
         const avatarContainers = document.querySelectorAll('.avatar-ring');
         avatarContainers.forEach(container => {
             if (avatarUrl && avatarUrl.startsWith('data:image')) {
@@ -872,7 +943,6 @@
         });
     }
 
-    // Fungsi update UI massal berdasarkan class
     function massUpdateText(selector, text) {
         document.querySelectorAll(selector).forEach(el => el.textContent = text);
     }
@@ -964,10 +1034,10 @@
 
     window.sendBroadcastMsg = async function() {
         const text = document.getElementById('broadcastInput').value.trim();
-        if(!text) return alert("Pesan broadcast tidak boleh kosong!");
+        if(!text) return customAlert("Pesan broadcast tidak boleh kosong!", true);
         const { error } = await supabaseClient.from('broadcasts').insert([{ message: text, created_at: new Date().toISOString() }]);
-        if (error) { alert("Gagal mengirim broadcast: " + error.message); } 
-        else { alert("Broadcast berhasil dikirim ke seluruh member!"); document.getElementById('broadcastInput').value = ''; }
+        if (error) { customAlert("Gagal mengirim broadcast: " + error.message, true); } 
+        else { customAlert("Broadcast berhasil dikirim ke seluruh member!"); document.getElementById('broadcastInput').value = ''; }
     };
 
     async function fetchUserSession(username) {
@@ -976,7 +1046,7 @@
             if (data && !error) {
                 if (parseBool(data.is_banned)) {
                     localStorage.removeItem(SESSION_KEY); switchView('loginView');
-                    alert("Akun Anda telah di-suspend oleh Admin."); return;
+                    customAlert("Akun Anda telah di-suspend oleh Admin.", true); return;
                 }
                 currentUserData = data; loadAppView(data);
             } else {
@@ -1018,7 +1088,6 @@
     window.renderMemberList = async function() {
         const { data: users, error } = await supabaseClient.from('users').select('*');
         const memberList = document.getElementById('memberList');
-        const totalUsersCount = document.getElementById('totalUsersCount');
         const searchInput = document.getElementById('memberSearchInput');
         if(!memberList || error) return;
 
@@ -1029,16 +1098,15 @@
             return uname.includes(searchQuery) || idCode.includes(searchQuery);
         });
 
-        // LOGIKA SORTING BARU: VIP/Owner ke paling atas, baru sisanya berdasarkan waktu pembuatan
+        // SORTING: VIP/Owner di atas, sisanya berdasar waktu
         filteredUsers.sort((a, b) => {
             const aVip = parseBool(a.is_permanent) || a.role === 'Owner' ? 1 : 0;
             const bVip = parseBool(b.is_permanent) || b.role === 'Owner' ? 1 : 0;
-            if (aVip !== bVip) return bVip - aVip; // Jika beda, VIP ditaruh di atas
-            return new Date(a.created_at) - new Date(b.created_at); // Sisanya urut pembuatan
+            if (aVip !== bVip) return bVip - aVip;
+            return new Date(a.created_at) - new Date(b.created_at);
         });
 
         memberList.innerHTML = '';
-        if(totalUsersCount) totalUsersCount.textContent = users.length;
         
         if (filteredUsers.length === 0) {
             memberList.innerHTML = `<div style="text-align: center; color: var(--text-dim); padding: 20px; font-size: 13px;">Tidak ada pengguna ditemukan.</div>`;
@@ -1096,16 +1164,17 @@
 
     window.adjustLimit = async function(username, amount) {
         const { data: user, error: fetchErr } = await supabaseClient.from('users').select('limit_count, is_permanent').eq('username', username).single();
-        if (fetchErr || !user) return alert("Gagal mengambil data user.");
-        if (parseBool(user.is_permanent)) return alert("User ini sudah berstatus VIP/Unlimited.");
+        if (fetchErr || !user) return customAlert("Gagal mengambil data user.", true);
+        if (parseBool(user.is_permanent)) return customAlert("User ini sudah berstatus VIP/Unlimited.", true);
 
         let currentLimit = user.limit_count ?? 3;
         let newLimit = Math.max(0, currentLimit + amount);
 
         const { error } = await supabaseClient.from('users').update({ limit_count: newLimit }).eq('username', username);
-        if (error) alert("Gagal memperbarui limit: " + error.message);
+        if (error) customAlert("Gagal memperbarui limit: " + error.message, true);
         else {
             renderMemberList();
+            customAlert("Limit diperbarui!");
             if(currentUserData && currentUserData.username === username) { currentUserData.limit_count = newLimit; loadAppView(currentUserData); }
         }
     };
@@ -1115,9 +1184,10 @@
         const updatePayload = { is_permanent: newStatus, vip_since: !currentVipStatus ? new Date().toISOString() : null };
         const { error } = await supabaseClient.from('users').update(updatePayload).eq('username', username);
         
-        if (error) alert("Gagal mengubah status VIP: " + error.message);
+        if (error) customAlert("Gagal mengubah status VIP: " + error.message, true);
         else {
             renderMemberList();
+            customAlert("Status VIP berhasil diubah.");
             if(currentUserData && currentUserData.username === username) {
                 currentUserData.is_permanent = newStatus; currentUserData.vip_since = updatePayload.vip_since;
                 loadAppView(currentUserData);
@@ -1127,13 +1197,14 @@
 
     window.toggleSuspendStatus = async function(username, currentBannedStatus) {
         const confirmMsg = currentBannedStatus ? `MENGEMBALIKAN (Unsuspend) akses untuk ${username}?` : `MENSKORS (Suspend) akun ${username} secara permanen?`;
-        if(!confirm(confirmMsg)) return;
-
-        const newStatus = currentBannedStatus ? 'false' : 'true';
-        const { error } = await supabaseClient.from('users').update({ is_banned: newStatus }).eq('username', username);
         
-        if (error) alert("Gagal mengubah status suspend: " + error.message);
-        else { alert(`Akun ${username} berhasil di-${currentBannedStatus ? 'unsuspend' : 'suspend'}.`); renderMemberList(); }
+        customConfirm(confirmMsg, async () => {
+            const newStatus = currentBannedStatus ? 'false' : 'true';
+            const { error } = await supabaseClient.from('users').update({ is_banned: newStatus }).eq('username', username);
+            
+            if (error) customAlert("Gagal mengubah status suspend: " + error.message, true);
+            else { customAlert(`Akun ${username} berhasil di-${currentBannedStatus ? 'unsuspend' : 'suspend'}.`); renderMemberList(); }
+        });
     };
 
     window.togglePwd = function(inputId, btnEl) {
@@ -1205,8 +1276,8 @@
         });
 
         dropZone.addEventListener('click', () => fileInput.click());
-        ['dragenter', 'dragover'].forEach(e => dropZone.addEventListener(e, ev => { ev.preventDefault(); dropZone.style.borderColor = 'var(--accent-primary)'; dropZone.style.background = 'rgba(0,242,254,0.05)'; }));
-        ['dragleave', 'drop'].forEach(e => dropZone.addEventListener(e, ev => { ev.preventDefault(); dropZone.style.borderColor = 'var(--glass-border-light)'; dropZone.style.background = 'rgba(0,0,0,0.2)'; }));
+        ['dragenter', 'dragover'].forEach(e => dropZone.addEventListener(e, ev => { ev.preventDefault(); dropZone.style.borderColor = 'var(--accent-primary)'; dropZone.style.background = 'rgba(0,242,254,0.08)'; }));
+        ['dragleave', 'drop'].forEach(e => dropZone.addEventListener(e, ev => { ev.preventDefault(); dropZone.style.borderColor = 'var(--glass-border-light)'; dropZone.style.background = 'rgba(0,0,0,0.4)'; }));
 
         dropZone.addEventListener('drop', (e) => { const files = e.dataTransfer.files; if (files && files[0]) handleFile(files[0]); });
         fileInput.addEventListener('change', (e) => { if (e.target.files && e.target.files[0]) handleFile(e.target.files[0]); });
@@ -1368,11 +1439,16 @@
                 if(error) throw new Error('Gangguan Basis Data: ' + error.message);
 
                 localStorage.setItem(SESSION_KEY, u); loadAppView(newUserData);
+                fetchGlobalStats(); // Update stat dasbor
             } catch (err) { showMsg('regMsg', err.message); } 
             finally { regBtn.innerHTML = originalBtnText; regBtn.disabled = false; }
         });
 
-        logoutBtn.addEventListener('click', () => { localStorage.removeItem(SESSION_KEY); closeProfileSheet(); switchView('loginView'); });
+        logoutBtn.addEventListener('click', () => { 
+            customConfirm("Anda yakin ingin mengakhiri sesi ini (Logout)?", () => {
+                localStorage.removeItem(SESSION_KEY); closeProfileSheet(); switchView('loginView'); 
+            });
+        });
 
         if(sendBtn) {
             sendBtn.addEventListener('click', async () => {
@@ -1430,6 +1506,7 @@
             massUpdateText('.disp-username', user.username);
             massUpdateText('.disp-userid', user.id_code || 'MSH-01');
             massUpdateText('.disp-userwa', user.wa || '-');
+            massUpdateText('.disp-userip', user.ip_address || 'Tidak Diketahui');
             
             updateAvatarUI(user.avatar_url, user.username);
             updateEditProfileUIStatus(user);
