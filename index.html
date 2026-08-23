@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -8,7 +9,6 @@
 <!-- Preconnect untuk kecepatan loading -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://lnnirsdvzgldouzugxkl.supabase.co">
 
 <!-- Modern Fonts & Icons -->
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Space+Grotesk:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -19,215 +19,79 @@
 
 <style>
   :root {
-    --bg-base: #030308;
-    --glass-bg: rgba(18, 18, 28, 0.35);
-    --glass-border: rgba(255, 255, 255, 0.18);
-    --glass-border-light: rgba(255, 255, 255, 0.35);
-    --glass-shadow: 0 20px 40px 0 rgba(0, 0, 0, 0.6);
+    --bg-base: #030308; --glass-bg: rgba(18, 18, 28, 0.35); --glass-border: rgba(255, 255, 255, 0.18);
+    --glass-border-light: rgba(255, 255, 255, 0.35); --glass-shadow: 0 20px 40px 0 rgba(0, 0, 0, 0.6);
     --glass-highlight: inset 0 1px 2px rgba(255, 255, 255, 0.3), inset 1px 0 2px rgba(255, 255, 255, 0.1);
-    
-    --text-pure: #ffffff;
-    --text-dim: #a1a1aa;
-    --text-dark: #71717a;
-    
-    --accent-primary: #00f2fe;
-    --accent-secondary: #4facfe;
-    --accent-vip: #ffb703;
-    --accent-red: #ff3366;
-    --accent-green: #00ff88;
-
-    --font-ui: 'Outfit', sans-serif;
-    --font-data: 'Space Grotesk', sans-serif;
-    
-    --spring-easing: cubic-bezier(0.34, 1.56, 0.64, 1);
-    --smooth-easing: cubic-bezier(0.16, 1, 0.3, 1);
+    --text-pure: #ffffff; --text-dim: #a1a1aa; --text-dark: #71717a;
+    --accent-primary: #00f2fe; --accent-secondary: #4facfe; --accent-vip: #ffb703;
+    --accent-red: #ff3366; --accent-green: #00ff88;
+    --font-ui: 'Outfit', sans-serif; --font-data: 'Space Grotesk', sans-serif;
+    --spring-easing: cubic-bezier(0.34, 1.56, 0.64, 1); --smooth-easing: cubic-bezier(0.16, 1, 0.3, 1);
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
-  body {
-    background-color: var(--bg-base); 
-    font-family: var(--font-ui); 
-    color: var(--text-pure);
-    min-height: 100vh;
-    display: flex; flex-direction: column; align-items: center; 
-    overflow-x: hidden;
-  }
-
-  /* ================= PRELOADER ================= */
-  #initialLoader {
-    position: fixed; inset: 0; z-index: 9999; 
-    display: flex; align-items: center; justify-content: center; 
-    background: var(--bg-base); flex-direction: column; gap: 16px; 
-    transition: opacity 0.5s ease;
-  }
+  body { background-color: var(--bg-base); font-family: var(--font-ui); color: var(--text-pure); min-height: 100vh; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
   
-  .loader-spinner { 
-    display: inline-block; width: 16px; height: 16px; 
-    border: 2px solid rgba(0,0,0,0.2); border-top-color: currentColor; 
-    border-radius: 50%; animation: spin 0.8s linear infinite; 
-  }
-  #initialLoader .loader-spinner {
-    width: 46px; height: 46px; border-width: 4px; border-top-color: var(--accent-primary);
-  }
+  #initialLoader { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; background: var(--bg-base); flex-direction: column; gap: 16px; transition: opacity 0.5s ease; }
+  .loader-spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(0,0,0,0.2); border-top-color: currentColor; border-radius: 50%; animation: spin 0.8s linear infinite; }
+  #initialLoader .loader-spinner { width: 46px; height: 46px; border-width: 4px; border-top-color: var(--accent-primary); }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* ================= ENHANCED DYNAMIC BLOBS & LIGHTING ================= */
-  .bg-jelly {
-    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -3;
-    overflow: hidden; background: #020205;
-    transform: translateZ(0);
-  }
-  .blob {
-    position: absolute; border-radius: 50%; 
-    filter: blur(100px); opacity: 0.65;
-    will-change: transform; 
-    animation: drift 18s infinite alternate var(--smooth-easing);
-  }
+  .bg-jelly { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -3; overflow: hidden; background: #020205; transform: translateZ(0); }
+  .blob { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.65; will-change: transform; animation: drift 18s infinite alternate var(--smooth-easing); }
   .blob-1 { top: -15%; left: -15%; width: 65vw; height: 65vw; background: linear-gradient(135deg, #7928ca, #ff0080); }
   .blob-2 { bottom: -20%; right: -15%; width: 75vw; height: 75vw; background: linear-gradient(135deg, #0070f3, #00f2fe); animation-duration: 22s; animation-direction: alternate-reverse;}
   .blob-3 { top: 25%; left: 20%; width: 55vw; height: 55vw; background: linear-gradient(135deg, #ffb703, #ff4e50); animation-duration: 26s; opacity: 0.4;}
   
-  @keyframes drift {
-    0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
-    100% { transform: translate3d(8vw, 12vh, 0) scale(1.15) rotate(45deg); }
-  }
-
-  .particle-overlay {
-    position: fixed; inset: 0; z-index: -2; pointer-events: none;
-    background-image: radial-gradient(rgba(255,255,255,0.18) 1px, transparent 1px);
-    background-size: 35px 35px;
-    mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
-    -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
-  }
-  
-  .particle {
-    position: absolute; width: 3px; height: 3px; background: #fff; border-radius: 50%;
-    box-shadow: 0 0 12px #fff, 0 0 25px var(--accent-primary);
-    will-change: transform, opacity;
-    animation: rise infinite linear;
-  }
-  @keyframes rise {
-    0% { transform: translate3d(0, 100vh, 0) scale(0); opacity: 0; }
-    20% { opacity: 1; transform: translate3d(0, 80vh, 0) scale(1.2); }
-    80% { opacity: 1; }
-    100% { transform: translate3d(0, -10vh, 0) scale(0); opacity: 0; }
-  }
+  @keyframes drift { 0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); } 100% { transform: translate3d(8vw, 12vh, 0) scale(1.15) rotate(45deg); } }
+  .particle-overlay { position: fixed; inset: 0; z-index: -2; pointer-events: none; background-image: radial-gradient(rgba(255,255,255,0.18) 1px, transparent 1px); background-size: 35px 35px; mask-image: radial-gradient(circle at center, black 40%, transparent 100%); -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%); }
+  .particle { position: absolute; width: 3px; height: 3px; background: #fff; border-radius: 50%; box-shadow: 0 0 12px #fff, 0 0 25px var(--accent-primary); will-change: transform, opacity; animation: rise infinite linear; }
+  @keyframes rise { 0% { transform: translate3d(0, 100vh, 0) scale(0); opacity: 0; } 20% { opacity: 1; transform: translate3d(0, 80vh, 0) scale(1.2); } 80% { opacity: 1; } 100% { transform: translate3d(0, -10vh, 0) scale(0); opacity: 0; } }
   .particle:nth-child(1) { left: 15%; animation-duration: 12s; animation-delay: 0s; }
   .particle:nth-child(2) { left: 45%; animation-duration: 18s; animation-delay: 2s; width: 5px; height: 5px;}
   .particle:nth-child(3) { left: 75%; animation-duration: 15s; animation-delay: 4s; }
   .particle:nth-child(4) { left: 90%; animation-duration: 20s; animation-delay: 1s; }
   .particle:nth-child(5) { left: 30%; animation-duration: 14s; animation-delay: 3s; }
 
-  /* ================= UTAMA & TRANSISI ================= */
-  .container {
-    position: relative; z-index: 10; width: 100%; max-width: 500px; 
-    display: flex; flex-direction: column; gap: 20px;
-    padding: 20px 16px;
-    will-change: transform, opacity;
-    animation: fadeIn 0.8s var(--smooth-easing) forwards;
-  }
-  @keyframes fadeIn { 
-    from { opacity: 0; transform: translateY(20px) scale(0.95); filter: blur(6px);} 
-    to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0);} 
-  }
+  .container { position: relative; z-index: 10; width: 100%; max-width: 500px; display: flex; flex-direction: column; gap: 20px; padding: 20px 16px; will-change: transform, opacity; animation: fadeIn 0.8s var(--smooth-easing) forwards; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(20px) scale(0.95); filter: blur(6px);} to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0);} }
   .hidden { display: none !important; }
+  .app-section { animation: tabSlideUp 0.6s var(--spring-easing) forwards; }
+  @keyframes tabSlideUp { 0% { opacity: 0; transform: translateY(25px) scale(0.98); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
 
-  .app-section {
-    animation: tabSlideUp 0.6s var(--spring-easing) forwards;
-  }
-  @keyframes tabSlideUp {
-    0% { opacity: 0; transform: translateY(25px) scale(0.98); }
-    100% { opacity: 1; transform: translateY(0) scale(1); }
-  }
+  .jelly-card { background: var(--glass-bg); backdrop-filter: blur(28px) saturate(140%); -webkit-backdrop-filter: blur(28px) saturate(140%); border: 1px solid var(--glass-border); border-radius: 30px; padding: 26px; box-shadow: var(--glass-shadow), var(--glass-highlight); position: relative; overflow: hidden; transition: transform 0.4s var(--spring-easing), box-shadow 0.4s ease, border-color 0.4s ease; }
+  .jelly-card:hover { border-color: rgba(255, 255, 255, 0.25); box-shadow: 0 25px 50px 0 rgba(0, 0, 0, 0.7), var(--glass-highlight); }
 
-  .jelly-card {
-    background: var(--glass-bg);
-    backdrop-filter: blur(28px) saturate(140%); 
-    -webkit-backdrop-filter: blur(28px) saturate(140%);
-    border: 1px solid var(--glass-border);
-    border-radius: 30px;
-    padding: 26px;
-    box-shadow: var(--glass-shadow), var(--glass-highlight);
-    position: relative; overflow: hidden;
-    transition: transform 0.4s var(--spring-easing), box-shadow 0.4s ease, border-color 0.4s ease;
-  }
-  .jelly-card:hover {
-    border-color: rgba(255, 255, 255, 0.25);
-    box-shadow: 0 25px 50px 0 rgba(0, 0, 0, 0.7), var(--glass-highlight);
-  }
-
-  /* ================= ELEMEN UMUM ================= */
   .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
   .brand-logo { font-size: 22px; font-weight: 900; letter-spacing: -1px; display: flex; align-items: center; gap: 8px;}
   .brand-logo i { background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  .time-capsule {
-    background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border);
-    padding: 8px 16px; border-radius: 100px; font-family: var(--font-data); font-size: 12px;
-    color: var(--text-pure); backdrop-filter: blur(12px); display: flex; gap: 8px; align-items: center;
-    box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
-  }
+  .time-capsule { background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border); padding: 8px 16px; border-radius: 100px; font-family: var(--font-data); font-size: 12px; color: var(--text-pure); backdrop-filter: blur(12px); display: flex; gap: 8px; align-items: center; box-shadow: inset 0 2px 10px rgba(0,0,0,0.5); }
 
-  /* KARTU IDENTITAS DASHBOARD */
-  .id-card-module {
-    background: linear-gradient(145deg, rgba(255,255,255,0.08) 0%, rgba(0,0,0,0.35) 100%);
-    border: 1px solid var(--glass-border-light); border-radius: 30px; padding: 22px;
-    box-shadow: var(--glass-shadow), var(--glass-highlight);
-    backdrop-filter: blur(28px) saturate(140%); -webkit-backdrop-filter: blur(28px) saturate(140%);
-    position: relative; overflow: hidden;
-    transition: transform 0.4s var(--spring-easing), box-shadow 0.4s ease;
-  }
+  .id-card-module { background: linear-gradient(145deg, rgba(255,255,255,0.08) 0%, rgba(0,0,0,0.35) 100%); border: 1px solid var(--glass-border-light); border-radius: 30px; padding: 22px; box-shadow: var(--glass-shadow), var(--glass-highlight); backdrop-filter: blur(28px) saturate(140%); -webkit-backdrop-filter: blur(28px) saturate(140%); position: relative; overflow: hidden; transition: transform 0.4s var(--spring-easing), box-shadow 0.4s ease; }
   .id-card-module:hover { transform: translateY(-3px); }
   .id-card-module:active { transform: scale(0.97); }
-  
-  .id-card-glow {
-    position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-    background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.12), transparent 60%);
-    pointer-events: none;
-  }
+  .id-card-glow { position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.12), transparent 60%); pointer-events: none; }
   .id-card-header { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; position: relative; z-index: 2;}
-  
-  .avatar-ring {
-    width: 64px; height: 64px; border-radius: 22px; background: rgba(0,0,0,0.6); 
-    border: 2px solid var(--accent-primary);
-    box-shadow: 0 0 0 3px rgba(0, 242, 254, 0.2), inset 0 0 10px rgba(0,0,0,0.8), 0 8px 20px rgba(0,0,0,0.4);
-    display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 800;
-    overflow: hidden; cursor: pointer; transition: all 0.4s var(--spring-easing); padding: 2px;
-  }
+  .avatar-ring { width: 64px; height: 64px; border-radius: 22px; background: rgba(0,0,0,0.6); border: 2px solid var(--accent-primary); box-shadow: 0 0 0 3px rgba(0, 242, 254, 0.2), inset 0 0 10px rgba(0,0,0,0.8), 0 8px 20px rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 800; overflow: hidden; cursor: pointer; transition: all 0.4s var(--spring-easing); padding: 2px; }
   .avatar-ring:hover { transform: scale(1.1) rotate(5deg); box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.4), 0 0 25px rgba(255,255,255,0.3); border-color: #fff;}
   .avatar-ring:active { transform: scale(0.9); }
   .avatar-ring img { width: 100%; height: 100%; object-fit: cover; border-radius: 18px; }
-  
   .profile-modal-content .avatar-ring { border: 3px solid var(--accent-secondary); box-shadow: 0 0 0 6px rgba(0, 242, 254, 0.15), inset 0 0 20px rgba(0,0,0,0.8), 0 15px 30px rgba(0,0,0,0.6); padding: 3px;}
   .profile-modal-content .avatar-ring img { border-radius: 30px; }
-
   .id-user-info h2 { font-size: 20px; font-weight: 800; margin-bottom: 4px; text-shadow: 0 2px 10px rgba(0,0,0,0.5);}
   .role-badge { display: inline-flex; padding: 4px 12px; border-radius: 100px; font-size: 10px; font-weight: 800; text-transform: uppercase; background: rgba(255,255,255,0.15); border: 1px solid var(--glass-border); color: var(--text-pure); transition: transform 0.3s; }
   .role-badge.vip { background: linear-gradient(135deg, #f9d423, #ff4e50); color: #fff; border: none; box-shadow: 0 4px 15px rgba(255, 78, 80, 0.4); }
-
   .id-data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; position: relative; z-index: 2;}
-  .data-cell {
-    background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border); border-radius: 16px; padding: 12px 14px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.3);
-    transition: transform 0.3s ease, background 0.3s ease;
-  }
+  .data-cell { background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border); border-radius: 16px; padding: 12px 14px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.3); transition: transform 0.3s ease, background 0.3s ease; }
   .data-cell:hover { transform: translateY(-2px); background: rgba(255,255,255,0.06); }
   .data-cell label { display: block; font-size: 10px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 4px; font-weight: 600;}
   .data-cell span { font-family: var(--font-data); font-size: 14px; font-weight: 700; color: var(--text-pure); }
 
-  /* ================= NAVIGASI ================= */
-  .jelly-nav {
-    display: flex; gap: 8px; background: rgba(0,0,0,0.4); padding: 8px; border-radius: 20px; border: 1px solid var(--glass-border); backdrop-filter: blur(24px);
-  }
-  .nav-btn {
-    flex: 1; padding: 14px 10px; border-radius: 14px; border: 1px solid transparent;
-    background: transparent; color: var(--text-dim); font-family: var(--font-ui); font-size: 13px; font-weight: 600;
-    cursor: pointer; transition: all 0.4s var(--spring-easing); display: flex; align-items: center; justify-content: center; gap: 8px;
-  }
+  .jelly-nav { display: flex; gap: 8px; background: rgba(0,0,0,0.4); padding: 8px; border-radius: 20px; border: 1px solid var(--glass-border); backdrop-filter: blur(24px); }
+  .nav-btn { flex: 1; padding: 14px 10px; border-radius: 14px; border: 1px solid transparent; background: transparent; color: var(--text-dim); font-family: var(--font-ui); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.4s var(--spring-easing); display: flex; align-items: center; justify-content: center; gap: 8px; }
   .nav-btn:hover { color: var(--text-pure); background: rgba(255,255,255,0.08); transform: translateY(-2px); }
   .nav-btn:active { transform: scale(0.95); }
   .nav-btn.active { background: rgba(255,255,255,0.18); border-color: var(--glass-border-light); color: var(--text-pure); box-shadow: 0 4px 15px rgba(0,0,0,0.4); transform: scale(1.03); z-index: 1;}
 
-  /* ================= LIMIT & INPUTS ================= */
   .limit-section { transition: transform 0.4s ease; }
   .limit-section:hover { transform: scale(1.02); }
   .limit-section.oversized { background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border); border-radius: 22px; padding: 24px; margin-bottom: 24px; box-shadow: inset 0 2px 15px rgba(0,0,0,0.4); }
@@ -239,144 +103,60 @@
   .form-group { margin-bottom: 20px; display: flex; flex-direction: column; gap: 8px; }
   .form-group label { font-size: 12px; font-weight: 600; color: var(--text-dim); text-transform: uppercase;}
   .input-wrapper { position: relative; display: flex; align-items: center; width: 100%; }
-  
-  .glass-input {
-    width: 100%; background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); color: var(--text-pure); border-radius: 18px; padding: 16px 20px; font-family: var(--font-data); font-size: 14px; outline: none; transition: all 0.3s ease; box-shadow: inset 0 2px 8px rgba(0,0,0,0.6);
-  }
+  .glass-input { width: 100%; background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); color: var(--text-pure); border-radius: 18px; padding: 16px 20px; font-family: var(--font-data); font-size: 14px; outline: none; transition: all 0.3s ease; box-shadow: inset 0 2px 8px rgba(0,0,0,0.6); }
   .glass-input:focus { border-color: var(--accent-primary); background: rgba(0,242,254,0.08); box-shadow: inset 0 2px 8px rgba(0,0,0,0.6), 0 0 15px rgba(0,242,254,0.2); transform: translateY(-2px); }
   .pwd-toggle { position: absolute; right: 16px; background: none; border: none; color: var(--text-dim); cursor: pointer; transition: transform 0.3s, color 0.3s; font-size: 18px; }
   .pwd-toggle:hover { color: var(--text-pure); transform: scale(1.2); }
 
-  /* ================= TOMBOL ================= */
-  .btn-jelly {
-    font-family: var(--font-ui); font-size: 15px; font-weight: 700; border: none; border-radius: 18px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 16px; width: 100%; transition: all 0.4s var(--spring-easing); position: relative; overflow: hidden;
-  }
+  .btn-jelly { font-family: var(--font-ui); font-size: 15px; font-weight: 700; border: none; border-radius: 18px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 16px; width: 100%; transition: all 0.4s var(--spring-easing); position: relative; overflow: hidden; }
   .btn-primary { background: linear-gradient(135deg, var(--text-pure) 0%, #e0e0e0 100%); color: #000; box-shadow: 0 8px 25px rgba(255,255,255,0.25); }
   .btn-primary:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 15px 35px rgba(255,255,255,0.4); }
   .btn-primary:active { transform: scale(0.95); box-shadow: 0 5px 15px rgba(255,255,255,0.2); }
   .btn-primary:disabled { opacity: 0.5; pointer-events: none; transform: none; box-shadow: none; }
-  
   .btn-outline { background: rgba(255,255,255,0.1); border: 1px solid var(--glass-border-light); color: var(--text-pure); backdrop-filter: blur(10px); }
   .btn-outline:hover { background: rgba(255,255,255,0.2); border-color: var(--text-pure); transform: translateY(-3px); }
   .btn-outline:active { transform: scale(0.95); }
 
-  /* ================= NOTIFIKASI & PESAN ================= */
-  .message-box {
-    padding: 14px 18px; border-radius: 16px; font-size: 12px; font-weight: 600; 
-    display: none; align-items: center; gap: 12px; margin-bottom: 20px; border: 1px solid transparent;
-  }
+  .message-box { padding: 14px 18px; border-radius: 16px; font-size: 12px; font-weight: 600; display: none; align-items: center; gap: 12px; margin-bottom: 20px; border: 1px solid transparent; }
   .message-box.show { display: flex; animation: msgPop 0.5s var(--spring-easing); }
-  @keyframes msgPop { 
-    0% { opacity: 0; transform: scale(0.8) translateY(15px); } 
-    100% { opacity: 1; transform: scale(1) translateY(0); } 
-  }
+  @keyframes msgPop { 0% { opacity: 0; transform: scale(0.8) translateY(15px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
   .message-error { background: rgba(255, 51, 102, 0.15); border-color: rgba(255, 51, 102, 0.4); color: #ff85a2; }
   .message-success { background: rgba(0, 255, 136, 0.15); border-color: rgba(0, 255, 136, 0.4); color: #8effc3; }
 
-  #globalToast {
-    position: fixed; bottom: 30px; left: 50%;
-    transform: translate(-50%, 150px) scale(0.8);
-    opacity: 0; pointer-events: none;
-    background: rgba(10,10,15,0.95); border: 1px solid var(--glass-border); padding: 14px 24px; border-radius: 100px;
-    color: #fff; font-size: 13px; font-weight: 600; z-index: 9999;
-    transition: transform 0.6s var(--spring-easing), opacity 0.4s ease;
-    display: flex; align-items: center; gap: 10px; box-shadow: var(--glass-shadow);
-  }
-  #globalToast.show {
-    transform: translate(-50%, 0) scale(1);
-    opacity: 1; pointer-events: auto;
-  }
+  #globalToast { position: fixed; bottom: 30px; left: 50%; transform: translate(-50%, 150px) scale(0.8); opacity: 0; pointer-events: none; background: rgba(10,10,15,0.95); border: 1px solid var(--glass-border); padding: 14px 24px; border-radius: 100px; color: #fff; font-size: 13px; font-weight: 600; z-index: 9999; transition: transform 0.6s var(--spring-easing), opacity 0.4s ease; display: flex; align-items: center; gap: 10px; box-shadow: var(--glass-shadow); }
+  #globalToast.show { transform: translate(-50%, 0) scale(1); opacity: 1; pointer-events: auto; }
 
-  /* ================= ADMIN LIST STAGGER ================= */
   .admin-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
-  .admin-user-card {
-    background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); border-radius: 20px; padding: 20px; display: flex; flex-direction: column; gap: 16px;
-    transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s; box-shadow: inset 0 2px 10px rgba(0,0,0,0.3);
-    animation: slideUpFade 0.6s var(--spring-easing) backwards;
-  }
-  @keyframes slideUpFade {
-    0% { opacity: 0; transform: translateY(30px) scale(0.95); }
-    100% { opacity: 1; transform: translateY(0) scale(1); }
-  }
+  .admin-user-card { background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); border-radius: 20px; padding: 20px; display: flex; flex-direction: column; gap: 16px; transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s; box-shadow: inset 0 2px 10px rgba(0,0,0,0.3); animation: slideUpFade 0.6s var(--spring-easing) backwards; }
+  @keyframes slideUpFade { 0% { opacity: 0; transform: translateY(30px) scale(0.95); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
   .admin-user-card:hover { border-color: var(--text-pure); background: rgba(255,255,255,0.08); transform: translateY(-3px) scale(1.01); }
   .admin-user-card.is-vip { border-left: 4px solid var(--accent-vip); background: linear-gradient(90deg, rgba(255, 183, 3, 0.08) 0%, transparent 100%);}
-  
   .auc-header { display: flex; justify-content: space-between; align-items: center; }
   .auc-name { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
   .auc-id { font-family: var(--font-data); font-size: 11px; color: var(--text-dim); background: rgba(255,255,255,0.15); padding: 4px 8px; border-radius: 8px;}
   .auc-details { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 11px; color: var(--text-dim); font-family: var(--font-data); background: rgba(0,0,0,0.4); padding: 12px; border-radius: 14px;}
   .auc-details b { color: var(--text-pure); font-weight: 600; font-size: 12px;}
-  
   .auc-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-  .btn-micro { 
-    flex: 1; padding: 10px; font-size: 10px; font-weight: 700; border-radius: 12px; background: rgba(255,255,255,0.1); border: 1px solid var(--glass-border); color: var(--text-pure); cursor: pointer; transition: all 0.3s var(--spring-easing); text-transform: uppercase;
-  }
+  .btn-micro { flex: 1; padding: 10px; font-size: 10px; font-weight: 700; border-radius: 12px; background: rgba(255,255,255,0.1); border: 1px solid var(--glass-border); color: var(--text-pure); cursor: pointer; transition: all 0.3s var(--spring-easing); text-transform: uppercase; }
   .btn-micro:hover { background: rgba(255,255,255,0.2); border-color: var(--text-pure); transform: translateY(-2px); }
   .btn-micro:active { transform: scale(0.9); }
 
-  /* ================= ULTRA-PREMIUM GLASS POPUP / MODAL ================= */
-  .full-modal {
-    position: fixed; inset: 0; 
-    background: rgba(2, 2, 8, 0.75);
-    backdrop-filter: blur(25px) saturate(160%); 
-    -webkit-backdrop-filter: blur(25px) saturate(160%);
-    z-index: 999; display: flex; flex-direction: column; align-items: center; justify-content: center;
-    padding: 20px; 
-    opacity: 0; pointer-events: none; transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
+  .full-modal { position: fixed; inset: 0; background: rgba(2, 2, 8, 0.75); backdrop-filter: blur(25px) saturate(160%); -webkit-backdrop-filter: blur(25px) saturate(160%); z-index: 999; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
   .full-modal.show { opacity: 1; pointer-events: auto; }
-  
-  /* Desain Card Kaca Super Halus untuk Popup */
-  .full-modal .center-glass-box {
-    background: linear-gradient(135deg, rgba(30, 30, 45, 0.55) 0%, rgba(10, 10, 18, 0.75) 100%);
-    backdrop-filter: blur(40px) saturate(180%);
-    -webkit-backdrop-filter: blur(40px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    border-radius: 36px; 
-    padding: 38px 28px; 
-    text-align: center; 
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), inset 0 1px 2px rgba(255, 255, 255, 0.4), inset 1px 0 2px rgba(255, 255, 255, 0.2);
-    
-    transform: scale(0.75) translateY(40px);
-    opacity: 0;
-    transition: all 0.6s var(--spring-easing);
-  }
-  
-  .full-modal.show .center-glass-box {
-    transform: scale(1) translateY(0);
-    opacity: 1;
-  }
-
-  /* Bottom Sheet Styling */
-  .full-modal #modeModalSheet {
-    background: rgba(12, 12, 20, 0.9);
-    backdrop-filter: blur(35px) saturate(150%);
-    -webkit-backdrop-filter: blur(35px) saturate(150%);
-    width: 100%; max-width: 500px; border-radius: 40px 40px 0 0; padding: 36px; 
-    border-top: 1px solid rgba(255, 255, 255, 0.25); 
-    box-shadow: 0 -25px 60px rgba(0,0,0,0.8), inset 0 1px 1px rgba(255,255,255,0.3);
-    transform: translateY(100%);
-    transition: transform 0.6s var(--spring-easing);
-  }
-  .full-modal.show #modeModalSheet {
-    transform: translateY(0);
-  }
-
-  .modal-close-btn {
-    position: absolute; top: 24px; right: 24px; width: 44px; height: 44px; background: rgba(255,255,255,0.12); border: 1px solid var(--glass-border-light); border-radius: 50%; color: var(--text-pure); font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.4s var(--spring-easing); z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-  }
+  .full-modal .center-glass-box { background: linear-gradient(135deg, rgba(30, 30, 45, 0.55) 0%, rgba(10, 10, 18, 0.75) 100%); backdrop-filter: blur(40px) saturate(180%); -webkit-backdrop-filter: blur(40px) saturate(180%); border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 36px; padding: 38px 28px; text-align: center; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), inset 0 1px 2px rgba(255, 255, 255, 0.4), inset 1px 0 2px rgba(255, 255, 255, 0.2); transform: scale(0.75) translateY(40px); opacity: 0; transition: all 0.6s var(--spring-easing); }
+  .full-modal.show .center-glass-box { transform: scale(1) translateY(0); opacity: 1; }
+  .full-modal #modeModalSheet { background: rgba(12, 12, 20, 0.9); backdrop-filter: blur(35px) saturate(150%); -webkit-backdrop-filter: blur(35px) saturate(150%); width: 100%; max-width: 500px; border-radius: 40px 40px 0 0; padding: 36px; border-top: 1px solid rgba(255, 255, 255, 0.25); box-shadow: 0 -25px 60px rgba(0,0,0,0.8), inset 0 1px 1px rgba(255,255,255,0.3); transform: translateY(100%); transition: transform 0.6s var(--spring-easing); }
+  .full-modal.show #modeModalSheet { transform: translateY(0); }
+  .modal-close-btn { position: absolute; top: 24px; right: 24px; width: 44px; height: 44px; background: rgba(255,255,255,0.12); border: 1px solid var(--glass-border-light); border-radius: 50%; color: var(--text-pure); font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.4s var(--spring-easing); z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
   .modal-close-btn:hover { background: var(--text-pure); color: #000; transform: rotate(90deg) scale(1.1); }
   .modal-close-btn:active { transform: rotate(90deg) scale(0.9); }
-
   .profile-modal-content { width: 100%; max-width: 420px; max-height: 90vh; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; padding-bottom: 20px; margin-top: 40px; }
   .profile-modal-content::-webkit-scrollbar { display: none; }
-  
   .section-title { font-size: 24px; font-weight: 800; margin-bottom: 6px; letter-spacing: -1px; text-shadow: 0 2px 10px rgba(0,0,0,0.5);}
   .section-desc { font-size: 13px; color: var(--text-dim); margin-bottom: 24px; line-height: 1.5; }
   .mb-2 { margin-bottom: 8px; }
   .mb-3 { margin-bottom: 16px; }
   .flex-row { display: flex; gap: 10px; }
-  
   .mode-option-item { transition: all 0.4s var(--spring-easing); }
   .mode-option-item:hover { transform: translateX(10px); background: rgba(255,255,255,0.06) !important; }
   .mode-option-item:active { transform: scale(0.98); }
@@ -384,28 +164,19 @@
 </head>
 <body>
 
-<!-- Preloader Screen -->
 <div id="initialLoader">
   <div class="loader-spinner"></div>
   <div style="font-size: 15px; font-weight: 700; color: var(--text-pure); font-family: var(--font-data); letter-spacing: 1px;">MEMUAT NODE...</div>
 </div>
 
-<!-- Jelly Theme Background -->
 <div class="bg-jelly">
-  <div class="blob blob-1"></div>
-  <div class="blob blob-2"></div>
-  <div class="blob blob-3"></div>
+  <div class="blob blob-1"></div><div class="blob blob-2"></div><div class="blob blob-3"></div>
 </div>
-<!-- Particle Overlay -->
 <div class="particle-overlay">
-  <div class="particle"></div><div class="particle"></div><div class="particle"></div>
-  <div class="particle"></div><div class="particle"></div>
+  <div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div>
 </div>
 
-<!-- ================= SYSTEM MODALS ================= -->
-<div id="globalToast">
-  <i class="fas fa-info-circle"></i> <span id="toastMsg">Pesan Sistem</span>
-</div>
+<div id="globalToast"><i class="fas fa-info-circle"></i> <span id="toastMsg">Pesan Sistem</span></div>
 
 <div id="customConfirmModal" class="full-modal">
   <div class="center-glass-box" id="confirmBox">
@@ -419,22 +190,14 @@
   </div>
 </div>
 
-<!-- POPUP PERINGATAN AWAL (DI-UPGRADE JADI GLASS & DESKRIPSI KREN) -->
 <div id="warningModal" class="full-modal">
   <div class="center-glass-box" id="warnBox" style="max-width: 440px;">
     <div style="font-size: 52px; color: var(--accent-primary); margin-bottom: 16px; filter: drop-shadow(0 0 20px rgba(0,242,254,0.6));"><i class="fas fa-shield-halved"></i></div>
-    <h3 class="mb-2" style="font-size: 24px; font-weight: 900; letter-spacing: -0.5px;">Sistem Keamanan & Otorisasi Kritis</h3>
+    <h3 class="mb-2" style="font-size: 24px; font-weight: 900; letter-spacing: -0.5px;">Sistem Keamanan Terenkripsi</h3>
     <p style="font-size: 13px; color: var(--text-dim); margin-bottom: 22px; line-height: 1.6;">
-      Platform eksklusif ini dilindungi oleh protokol enkripsi matriks berlapis tinggi. Setiap sesi perangkat, sidik jari perangkat keras (HWID), serta alamat jaringan Anda diverifikasi secara real-time guna mencegah manipulasi data terdistribusi.
+      Source code dan API terenkripsi. Manipulasi pada Network atau Inspeksi Elemen sangat dilarang dan dapat menyebabkan banned otomatis.
     </p>
-    
-    <div style="text-align: left; background: rgba(0,0,0,0.45); padding: 18px 20px; border-radius: 24px; margin-bottom: 24px; border: 1px solid rgba(255,255,255,0.12); box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);">
-      <div class="mb-3" style="font-size: 12px; color: var(--text-dim); display:flex; align-items:center; gap:10px;"><i class="fas fa-microchip" style="color:var(--accent-primary); font-size:14px; width:20px; text-align:center;"></i><span>Pencatatan HWID & IP Aktif (Mode samaran diabaikan).</span></div>
-      <div class="mb-3" style="font-size: 12px; color: var(--text-dim); display:flex; align-items:center; gap:10px;"><i class="fas fa-network-wired" style="color:var(--accent-secondary); font-size:14px; width:20px; text-align:center;"></i><span>Alokasi kapasitas eksklusif: 1 Akun per Perangkat keras.</span></div>
-      <div style="font-size: 12px; color: var(--accent-red); font-weight: 700; display:flex; align-items:center; gap:10px;"><i class="fas fa-ban" style="font-size:14px; width:20px; text-align:center;"></i><span>Pelanggaran protokol berakibat Skorsing & Banned Permanen.</span></div>
-    </div>
-    
-    <button class="btn-jelly btn-primary" onclick="closeWarningModal()">Saya Mengerti & Setuju</button>
+    <button class="btn-jelly btn-primary" onclick="closeWarningModal()">Saya Mengerti</button>
   </div>
 </div>
 
@@ -447,27 +210,20 @@
   </div>
 </div>
 
-<!-- ================= AUTHENTICATION VIEWS ================= -->
 <div id="loginView" class="container hidden" style="justify-content: center; min-height: 100vh;">
   <div class="jelly-card" style="text-align: center; padding: 40px 30px;">
     <div style="font-size: 42px; margin-bottom: 20px; color: var(--accent-primary);"><i class="fas fa-fingerprint"></i></div>
     <h1 class="section-title">Akses Cloud</h1>
     <p class="section-desc">Otorisasi identitas kredensial Anda ke node pusat.</p>
-
     <div id="loginErrorMsg" class="message-box message-error" role="alert"></div>
-    
-    <div class="form-group" style="text-align: left;">
-      <input type="text" id="loginUser" class="glass-input" placeholder="Username (ID Akun)" autocomplete="off" />
-    </div>
+    <div class="form-group" style="text-align: left;"><input type="text" id="loginUser" class="glass-input" placeholder="Username (ID Akun)" autocomplete="off" /></div>
     <div class="form-group" style="text-align: left;">
       <div class="input-wrapper">
         <input type="password" id="loginPwd" class="glass-input" placeholder="Kata Sandi" autocomplete="off" />
         <button type="button" class="pwd-toggle" onclick="togglePwd('loginPwd', this)"><i class="far fa-eye"></i></button>
       </div>
     </div>
-    
     <button id="loginBtn" class="btn-jelly btn-primary" style="margin-top: 10px;">Otorisasi Masuk</button>
-    
     <div style="display: flex; justify-content: space-between; margin-top: 24px; font-size: 12px; font-weight: 600;">
       <span style="cursor:pointer; color: var(--text-dim); transition: 0.3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--text-dim)'" onclick="handleForgotClick()">Lupa Sandi?</span>
       <span style="cursor:pointer; color: var(--accent-primary); transition: 0.3s;" onmouseover="this.style.filter='brightness(1.5)'" onmouseout="this.style.filter='none'" onclick="switchView('registerView')">Buat Identitas Baru</span>
@@ -479,9 +235,7 @@
   <div class="jelly-card" style="text-align: center; padding: 40px 30px;">
     <h1 class="section-title">Registrasi Node</h1>
     <p class="section-desc">Daftarkan perangkat keras Anda ke server database.</p>
-
     <div id="regMsg" class="message-box" role="alert"></div>
-    
     <div class="form-group"><input type="text" id="regUser" class="glass-input" placeholder="Username Unik (Tanpa Spasi)" autocomplete="off" /></div>
     <div class="form-group"><input type="text" id="regWa" class="glass-input" placeholder="Nomor WhatsApp Valid (08...)" autocomplete="off" /></div>
     <div class="form-group">
@@ -494,31 +248,19 @@
       <label id="captchaLabel" for="regCaptcha" style="text-align:left; color: var(--text-pure);">Verifikasi Manusia</label>
       <input type="text" id="regCaptcha" class="glass-input" placeholder="Masukkan hasil penjumlahan" autocomplete="off" />
     </div>
-    
     <button id="regBtn" class="btn-jelly btn-primary" style="margin-top: 10px;">Daftarkan Perangkat</button>
     <div style="margin-top: 24px; font-size: 12px; font-weight: 600; cursor:pointer; color: var(--text-dim);" onclick="switchView('loginView')">Sudah terdaftar? <span style="color:var(--accent-primary);">Otorisasi Masuk</span></div>
   </div>
 </div>
 
-
-<!-- ================= MAIN APP VIEW ================= -->
 <div id="appView" class="container hidden">
-  
-  <div class="top-header">
-    <div class="brand-logo"><i class="fas fa-bolt"></i> AM Cloud</div>
-  </div>
-
+  <div class="top-header"><div class="brand-logo"><i class="fas fa-bolt"></i> AM Cloud</div></div>
   <div class="id-card-module" onclick="openProfileSheet()" style="cursor: pointer;" title="Klik untuk Buka Profil Lengkap">
      <div class="id-card-glow"></div>
      <div class="id-card-header" style="justify-content: space-between; align-items: flex-start;">
         <div style="display: flex; align-items: center; gap: 16px;">
-            <div class="avatar-ring">
-               <span class="disp-avatar-text">?</span>
-            </div>
-            <div class="id-user-info">
-               <h2 class="disp-username">Username</h2>
-               <span class="role-badge disp-userrole">Role</span>
-            </div>
+            <div class="avatar-ring"><span class="disp-avatar-text">?</span></div>
+            <div class="id-user-info"><h2 class="disp-username">Username</h2><span class="role-badge disp-userrole">Role</span></div>
         </div>
         <div class="time-capsule" style="background: rgba(0,0,0,0.5); padding: 6px 12px; font-size: 10px; border-radius: 8px;">
            <div style="width:6px; height:6px; background:var(--accent-green); border-radius:50%; box-shadow:0 0 10px var(--accent-green);"></div> 
@@ -549,8 +291,6 @@
      <i class="fas fa-arrow-right" style="color: var(--accent-vip); transition: transform 0.3s;"></i>
   </div>
 
-
-  <!-- ================= SECTION 1: ACTIVATOR ================= -->
   <div id="sectionActivator" class="app-section">
     <div class="jelly-card">
       <div class="limit-section oversized">
@@ -558,14 +298,10 @@
             <span class="disp-limit-label">Batas API Mingguan</span>
             <span class="disp-limit-value" style="font-family: var(--font-data); font-size: 18px; color: var(--text-pure); font-weight: 800;">- / -</span>
          </div>
-         <div class="limit-track">
-            <div class="limit-fill disp-limit-bar" style="width: 0%;"></div>
-         </div>
+         <div class="limit-track"><div class="limit-fill disp-limit-bar" style="width: 0%;"></div></div>
       </div>
-
       <h2 class="section-title">Aktivasi Lisensi</h2>
       <p class="section-desc">Bypass sistem dan hubungkan perangkat Anda langsung ke server pusat Alight Motion.</p>
-
       <div style="background: rgba(0,0,0,0.5); border-radius: 20px; padding: 20px; margin-bottom: 24px; border: 1px solid var(--glass-border); box-shadow: inset 0 2px 10px rgba(0,0,0,0.3);">
          <h4 style="font-size: 12px; margin-bottom: 12px; text-transform: uppercase; color: var(--text-dim);"><i class="fas fa-bolt" style="color:var(--text-pure);"></i> Prosedur Sistem:</h4>
          <ol style="padding-left: 16px; font-size: 12px; color: var(--text-dim); line-height: 1.6; margin:0;">
@@ -574,20 +310,14 @@
             <li>Tempelkan Magic Link tersebut di bawah dan tekan <b>Verifikasi</b>.</li>
          </ol>
       </div>
-      
       <div id="appErrorMsg" class="message-box message-error" role="alert"></div>
-
       <div class="form-group">
           <div class="flex-row">
               <input type="email" id="emailInput" class="glass-input" placeholder="Alamat Email Terdaftar" autocomplete="email" />
               <button id="sendBtn" class="btn-jelly btn-outline" style="width: auto; padding: 0 24px;">Kirim</button>
           </div>
       </div>
-
-      <div class="form-group mb-4">
-          <input type="url" id="magicInput" class="glass-input" placeholder="Tempel URL Magic Link di sini" autocomplete="off" />
-      </div>
-
+      <div class="form-group mb-4"><input type="url" id="magicInput" class="glass-input" placeholder="Tempel URL Magic Link di sini" autocomplete="off" /></div>
       <button id="activateBtn" class="btn-jelly btn-primary">
           <span id="btnDefault">Verifikasi & Aktifkan Premium</span>
           <div id="loaderContainer" class="hidden"><span class="loader-spinner" style="border-top-color:var(--bg-base);"></span> Menghubungkan API...</div>
@@ -596,19 +326,16 @@
     </div>
   </div>
 
-  <!-- ================= SECTION 2: HD ENHANCER ================= -->
   <div id="sectionEnhancer" class="app-section hidden">
     <div class="jelly-card">
       <h2 class="section-title">Neural Enhancer</h2>
       <p class="section-desc">Modul AI tingkat lanjut untuk merekonstruksi resolusi dan detail gambar.</p>
-
       <div class="form-group">
         <div class="input-wrapper">
           <i class="fas fa-link" style="position: absolute; left: 20px; color: var(--text-dark);"></i>
           <input type="url" id="imageUrl" class="glass-input" placeholder="Sematkan URL Web (Opsional)" style="padding-left: 50px;">
         </div>
       </div>
-
       <div class="upload-jelly" id="dropZone" style="border: 1.5px dashed var(--glass-border-light); border-radius: 24px; padding: 30px 20px; text-align: center; background: rgba(0,0,0,0.4); cursor: pointer; transition: all 0.3s var(--spring-easing); margin-bottom: 24px;">
         <i class="fas fa-cloud-upload-alt" style="font-size: 36px; margin-bottom: 12px; color: var(--text-pure); transition: transform 0.3s;"></i>
         <h4 style="font-size: 14px; margin-bottom: 6px;">Pilih File dari Penyimpanan</h4>
@@ -616,15 +343,11 @@
         <div class="file-name-info" id="fileNameDisplay" style="margin-top: 10px; font-size: 11px; font-family: var(--font-data); color: var(--accent-green); font-weight: 700;"></div>
         <input type="file" id="fileInput" accept="image/*" style="display: none;">
       </div>
-
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px;">
         <div style="background: rgba(0,0,0,0.5); border-radius: 18px; padding: 16px; border: 1px solid var(--glass-border);">
-          <div style="display:flex; justify-content:space-between; font-size:11px; font-weight: 600; color:var(--text-dim); margin-bottom:12px; text-transform: uppercase;">
-            <span>Intensitas</span> <span id="strengthIndicator" style="color:var(--text-pure);">Optimal</span>
-          </div>
+          <div style="display:flex; justify-content:space-between; font-size:11px; font-weight: 600; color:var(--text-dim); margin-bottom:12px; text-transform: uppercase;"><span>Intensitas</span> <span id="strengthIndicator" style="color:var(--text-pure);">Optimal</span></div>
           <input type="range" id="strengthRange" min="10" max="100" value="60" style="width: 100%; height:4px; appearance:none; background:rgba(255,255,255,0.15); border-radius:4px; outline:none; cursor: pointer;">
         </div>
-
         <div id="openModeModal" style="background: rgba(0,0,0,0.5); border-radius: 18px; padding: 16px; border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.3s var(--spring-easing);">
           <div>
             <div style="font-size:11px; font-weight: 600; color:var(--text-dim); text-transform:uppercase; margin-bottom:4px;">Model AI</div>
@@ -633,14 +356,11 @@
           <i class="fas fa-chevron-down" style="color:var(--text-dark);"></i>
         </div>
       </div>
-
       <div class="flex-row mb-3">
         <button class="btn-jelly btn-primary" id="enhanceBtn" style="flex: 1;"><i class="fas fa-microchip"></i> Render AI</button>
         <button class="btn-jelly btn-outline" id="resetBtn" style="width: auto; padding: 0 20px;" title="Reset Form"><i class="fas fa-rotate-left"></i></button>
       </div>
-
       <div id="statusMessage" class="message-box mb-3"></div>
-
       <div class="comparison-grid hidden" id="comparisonSplitSection" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; animation: fadeIn 0.8s var(--spring-easing) forwards;">
         <div class="compare-img-box before" style="border-radius: 18px; overflow: hidden; position: relative; height: 160px; border: 1px solid var(--glass-border); background: rgba(0,0,0,0.5);">
           <div class="compare-label" style="position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); padding: 4px 10px; border-radius: 8px; font-size: 9px; font-family: var(--font-data); font-weight: 800; border: 1px solid rgba(255,51,102,0.3); color:#ff85a2;">ORIGINAL</div>
@@ -651,71 +371,49 @@
           <img id="splitImgAfter" alt="Sesudah" style="width: 100%; height: 100%; object-fit: cover;">
         </div>
       </div>
-
       <div class="flex-row hidden" id="downloadFooterActions">
-        <button class="btn-jelly btn-primary" id="downloadBtn" style="flex: 1;"><i class="fas fa-download"></i> Ekspor ke Galeri</button>
+        <button class="btn-jelly btn-primary" id="downloadBtn" style="flex: 1;"><i class="fas fa-download"></i> Ekspor</button>
         <button class="btn-jelly btn-outline" id="copyUrlBtn" style="width: auto; padding: 0 20px;"><i class="fas fa-copy"></i></button>
       </div>
     </div>
   </div>
 
-  <!-- ================= SECTION 3: ADMIN PANEL ================= -->
   <div id="ownerPanel" class="app-section hidden">
     <div class="jelly-card">
       <h2 class="section-title">Manajemen Database</h2>
-      
       <div style="background: rgba(0,0,0,0.4); border-radius: 20px; padding: 20px; margin-bottom: 24px; border: 1px solid var(--glass-border); margin-top: 16px; box-shadow: inset 0 2px 10px rgba(0,0,0,0.3);">
         <h4 style="font-size: 11px; margin-bottom: 12px; color: var(--text-dim); font-weight: 700; text-transform: uppercase;"><i class="fas fa-broadcast-tower"></i> Distribusi Siaran Global</h4>
-        <textarea id="broadcastInput" placeholder="Ketik pesan untuk didistribusikan ke seluruh node..." style="width: 100%; background: transparent; border: none; border-bottom: 1px solid var(--glass-border); padding: 10px 0; color: var(--text-pure); font-family: var(--font-data); font-size: 13px; outline: none; margin-bottom: 16px; resize: none; min-height: 40px; transition: border-color 0.3s;"></textarea>
+        <textarea id="broadcastInput" placeholder="Ketik pesan..." style="width: 100%; background: transparent; border: none; border-bottom: 1px solid var(--glass-border); padding: 10px 0; color: var(--text-pure); font-family: var(--font-data); font-size: 13px; outline: none; margin-bottom: 16px; resize: none; min-height: 40px; transition: border-color 0.3s;"></textarea>
         <button class="btn-jelly btn-outline" style="padding: 12px; font-size: 13px;" onclick="sendBroadcastMsg()">Siarkan Pesan</button>
       </div>
-
       <div class="form-group" style="margin-bottom: 16px;">
         <input type="text" id="memberSearchInput" class="glass-input" placeholder="Cari entitas (Nama / ID)..." oninput="renderMemberList()" autocomplete="off" style="border-radius: 100px; padding: 14px 24px;" />
       </div>
-
       <div id="memberList" class="admin-grid"></div>
     </div>
   </div>
+</div>
 
-</div> <!-- End Container -->
-
-
-<!-- ================= PROFIL MODAL ================= -->
 <div id="profileSheet" class="full-modal">
   <button class="modal-close-btn" onclick="closeProfileSheet()"><i class="fas fa-times"></i></button>
-  
   <div class="profile-modal-content">
     <div class="center-glass-box" style="padding: 40px 24px; position: relative;">
-       <div class="avatar-ring" style="width: 110px; height: 110px; border-radius: 35px; margin: 0 auto 16px; font-size: 40px;" onclick="document.getElementById('avatarFileInput').click()" title="Ubah Foto Profil">
-          <span class="disp-avatar-text">?</span>
-       </div>
+       <div class="avatar-ring" style="width: 110px; height: 110px; border-radius: 35px; margin: 0 auto 16px; font-size: 40px;" onclick="document.getElementById('avatarFileInput').click()" title="Ubah Foto Profil"><span class="disp-avatar-text">?</span></div>
        <input type="file" id="avatarFileInput" accept="image/*" style="display: none;" onchange="handleAvatarUpload(event)">
-       
        <h2 class="disp-username" style="font-size: 26px; font-weight: 900; margin-bottom: 6px; text-shadow: 0 4px 15px rgba(0,0,0,0.6);">Username</h2>
        <span class="role-badge disp-userrole" style="font-size: 11px; padding: 6px 16px;">Role</span>
     </div>
-
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-       <div class="data-cell" style="background: var(--glass-bg); padding: 20px; border-radius: 20px; box-shadow: var(--glass-shadow);">
-          <label>ID Sistem</label><span class="disp-userid" style="font-size: 16px;">MSH-000</span>
-       </div>
-       <div class="data-cell" style="background: var(--glass-bg); padding: 20px; border-radius: 20px; box-shadow: var(--glass-shadow);">
-          <label>Kontak Validasi</label><span class="disp-userwa" style="font-size: 16px;">08...</span>
-       </div>
+       <div class="data-cell" style="background: var(--glass-bg); padding: 20px; border-radius: 20px; box-shadow: var(--glass-shadow);"><label>ID Sistem</label><span class="disp-userid" style="font-size: 16px;">MSH-000</span></div>
+       <div class="data-cell" style="background: var(--glass-bg); padding: 20px; border-radius: 20px; box-shadow: var(--glass-shadow);"><label>Kontak Validasi</label><span class="disp-userwa" style="font-size: 16px;">08...</span></div>
        <div class="data-cell" style="background: var(--glass-bg); padding: 20px; border-radius: 20px; box-shadow: var(--glass-shadow); grid-column: span 2; display: flex; justify-content: space-between; align-items: center;">
-          <div>
-            <label><i class="fas fa-network-wired" style="margin-right: 4px;"></i> Alamat IP Perangkat</label>
-            <span class="disp-userip" style="font-size: 16px; font-family: monospace; letter-spacing: 1px; color: var(--accent-primary);">Memuat...</span>
-          </div>
+          <div><label><i class="fas fa-network-wired" style="margin-right: 4px;"></i> Alamat IP</label><span class="disp-userip" style="font-size: 16px; font-family: monospace; letter-spacing: 1px; color: var(--accent-primary);">Memuat...</span></div>
           <i class="fas fa-shield-check" style="font-size: 24px; color: rgba(255,255,255,0.2);"></i>
        </div>
     </div>
-
     <div class="center-glass-box" style="padding: 24px; text-align: left; background: rgba(0,0,0,0.5);">
        <div style="font-size: 15px; font-weight: 800; margin-bottom: 16px; color: var(--text-pure);"><i class="fas fa-user-lock" style="color: var(--accent-primary);"></i> Manajemen Kredensial</div>
-       <p style="font-size: 11px; color: var(--text-dim); margin-bottom: 16px; line-height: 1.5;">Anda hanya dapat mengubah Username 1 kali. Pastikan mengingat kata sandi baru.</p>
-       
+       <p style="font-size: 11px; color: var(--text-dim); margin-bottom: 16px; line-height: 1.5;">Anda hanya dapat mengubah Username 1 kali.</p>
        <div id="editProfileMsg" class="message-box" role="alert"></div>
        <div class="form-group mb-3"><input type="text" id="editUsernameInput" class="glass-input" placeholder="Username Baru" autocomplete="off" style="padding: 14px 16px; font-size: 13px;"></div>
        <div class="form-group mb-4">
@@ -726,53 +424,50 @@
        </div>
        <button id="saveProfileChangesBtn" class="btn-jelly btn-outline" style="padding: 14px; font-size: 13px; background: rgba(0, 242, 254, 0.1); border-color: rgba(0, 242, 254, 0.3); color: #fff;">Simpan Permanen</button>
     </div>
-
     <button id="logoutBtn" class="btn-jelly" style="background: linear-gradient(135deg, rgba(255, 51, 102, 0.2) 0%, rgba(204, 0, 51, 0.4) 100%); border: 1px solid rgba(255, 51, 102, 0.5); color: #fff; box-shadow: 0 4px 15px rgba(255, 51, 102, 0.3); margin-top: 10px; font-size: 16px; padding: 18px;">
        <i class="fas fa-power-off"></i> Keluar (Logout)
     </button>
   </div>
 </div>
 
-<!-- ENHANCER RESOLUTION MODE MODAL -->
 <div class="full-modal" id="modeModalOverlay" style="align-items: flex-end; padding: 0;">
   <div id="modeModalSheet">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
       <h3 style="font-size: 20px; font-weight: 800;">Model Konfigurasi AI</h3>
       <button id="closeModeModal" style="background: rgba(255,255,255,0.1); border: none; color: var(--text-pure); font-size: 20px; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; transition: 0.3s;"><i class="fas fa-times"></i></button>
     </div>
-
     <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px;">
       <div class="mode-option-item selected" data-mode="2x" style="padding: 20px; border-radius: 24px; border: 1px solid var(--text-pure); display: flex; align-items: center; gap: 20px; cursor: pointer; background: rgba(0,0,0,0.5);">
         <div style="font-size: 26px; color: var(--text-pure);"><i class="fas fa-expand"></i></div>
-        <div>
-          <h4 style="font-size: 15px; margin-bottom: 4px; font-weight: 700;">Super Resolution 2x</h4>
-          <p style="font-size: 11px; color: var(--text-dim); line-height: 1.5;">Menggandakan matriks piksel dengan penajaman tepi optimal.</p>
-        </div>
+        <div><h4 style="font-size: 15px; margin-bottom: 4px; font-weight: 700;">Super Resolution 2x</h4><p style="font-size: 11px; color: var(--text-dim); line-height: 1.5;">Menggandakan matriks piksel.</p></div>
       </div>
-
       <div class="mode-option-item" data-mode="1x" style="padding: 20px; border-radius: 24px; border: 1px solid var(--glass-border); display: flex; align-items: center; gap: 20px; cursor: pointer; background: rgba(0,0,0,0.5);">
         <div style="font-size: 26px; color: var(--text-dark);"><i class="fas fa-wand-magic"></i></div>
-        <div>
-          <h4 style="font-size: 15px; margin-bottom: 4px; font-weight: 700;">Clean & Sharpen (1x)</h4>
-          <p style="font-size: 11px; color: var(--text-dim); line-height: 1.5;">Membersihkan artefak noise dan merekonstruksi detail asli.</p>
-        </div>
+        <div><h4 style="font-size: 15px; margin-bottom: 4px; font-weight: 700;">Clean & Sharpen (1x)</h4><p style="font-size: 11px; color: var(--text-dim); line-height: 1.5;">Membersihkan noise.</p></div>
       </div>
-
       <div class="mode-option-item" data-mode="hdr" style="padding: 20px; border-radius: 24px; border: 1px solid var(--glass-border); display: flex; align-items: center; gap: 20px; cursor: pointer; background: rgba(0,0,0,0.5);">
         <div style="font-size: 26px; color: var(--text-dark);"><i class="fas fa-sun"></i></div>
-        <div>
-          <h4 style="font-size: 15px; margin-bottom: 4px; font-weight: 700;">Dynamic HDR Boost</h4>
-          <p style="font-size: 11px; color: var(--text-dim); line-height: 1.5;">Mengekspos kontras cahaya tersembunyi dan rentang warna dinamis.</p>
-        </div>
+        <div><h4 style="font-size: 15px; margin-bottom: 4px; font-weight: 700;">Dynamic HDR Boost</h4><p style="font-size: 11px; color: var(--text-dim); line-height: 1.5;">Mengekspos kontras tersembunyi.</p></div>
       </div>
     </div>
     <button class="btn-jelly btn-primary" id="applyModeBtn">Terapkan Pengaturan</button>
   </div>
 </div>
 
-
-<!-- ================= LOGIC JAVASCRIPT ================= -->
 <script>
+(function(){
+    // ANTI-INSPECT & HEX OBFUSCATED CREDENTIALS
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.onkeydown = function(e) { if(e.keyCode==123 || (e.ctrlKey&&e.shiftKey&&(e.keyCode==73||e.keyCode==74||e.keyCode==67)) || (e.ctrlKey&&e.keyCode==85)) return false; };
+    setInterval(() => { try { Function("debugger")(); } catch(e){} }, 100);
+
+    const _0x1a2b = ["\x68\x74\x74\x70\x73\x3a\x2f\x2f\x6c\x6e\x6e\x69\x72\x73\x64\x76\x7a\x67\x6c\x64\x6f\x75\x7a\x75\x67\x78\x6b\x6c\x2e\x73\x75\x70\x61\x62\x61\x73\x65\x2e\x63\x6f", "\x73\x62\x5f\x70\x75\x62\x6c\x69\x73\x68\x61\x62\x6c\x65\x5f\x4e\x42\x72\x6e\x56\x51\x50\x66\x72\x42\x78\x39\x2d\x76\x69\x77\x74\x36\x4a\x38\x6e\x41\x5f\x68\x4c\x51\x47\x42\x4d\x55\x32", "\x68\x74\x74\x70\x73\x3a\x2f\x2f\x72\x65\x73\x74\x61\x70\x69\x64\x68\x61\x6e\x2e\x76\x65\x72\x63\x65\x6c\x2e\x61\x70\x70", "\x64\x72\x61\x76\x6e\x64\x65\x73\x61\x6d\x75\x65\x6c", "\x2b\x36\x32\x38\x32\x32\x33\x31\x36\x36\x39\x30\x35\x33", "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x61\x63\x74\x69\x76\x65\x5f\x73\x65\x73\x73\x69\x6f\x6e\x5f\x73\x75\x70\x61\x62\x61\x73\x65", "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x63\x61\x63\x68\x65\x64\x5f\x75\x73\x65\x72\x5f\x64\x61\x74\x61", "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x6c\x61\x73\x74\x5f\x73\x65\x65\x6e\x5f\x62\x72\x6f\x61\x64\x63\x61\x73\x74\x5f\x69\x64"];
+    const SUPABASE_URL = _0x1a2b[0]; const SUPABASE_KEY = _0x1a2b[1];
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    const API_BASE = _0x1a2b[2]; const API_KEY = _0x1a2b[3];
+    const OWNER_WA = _0x1a2b[4]; const SESSION_KEY = _0x1a2b[5];
+    const CACHE_KEY = _0x1a2b[6]; const BROADCAST_SEEN_KEY = _0x1a2b[7];
+
     window.customAlert = function(msg, isError = false) {
         const toast = document.getElementById('globalToast');
         document.getElementById('toastMsg').textContent = msg;
@@ -780,897 +475,135 @@
         toast.style.boxShadow = isError ? '0 5px 20px rgba(255, 51, 102, 0.3)' : '0 5px 20px rgba(0, 255, 136, 0.3)';
         toast.querySelector('i').className = isError ? 'fas fa-exclamation-circle' : 'fas fa-check-circle';
         toast.querySelector('i').style.color = isError ? '#ff85a2' : '#8effc3';
-        
-        toast.classList.add('show');
-        setTimeout(() => { toast.classList.remove('show'); }, 3500);
+        toast.classList.add('show'); setTimeout(() => { toast.classList.remove('show'); }, 3500);
     };
 
     window.customConfirm = function(msg, callback) {
         document.getElementById('confirmText').textContent = msg;
         const modal = document.getElementById('customConfirmModal');
         modal.classList.add('show');
-        
-        document.getElementById('btnConfirmCancel').onclick = function() {
-            modal.classList.remove('show');
-        };
-        document.getElementById('btnConfirmOk').onclick = function() {
-            modal.classList.remove('show');
-            callback();
-        };
+        document.getElementById('btnConfirmCancel').onclick = () => modal.classList.remove('show');
+        document.getElementById('btnConfirmOk').onclick = () => { modal.classList.remove('show'); callback(); };
     };
 
     async function getIPAddress() {
-        try {
-            const res = await fetch('https://api.ipify.org?format=json');
-            const data = await res.json();
-            return data.ip;
-        } catch (e) {
-            return 'unknown-ip-' + Math.floor(Math.random() * 10000);
-        }
+        try { const res = await fetch('https://api.ipify.org?format=json'); const data = await res.json(); return data.ip; } 
+        catch (e) { return 'unknown-ip-' + Math.floor(Math.random() * 10000); }
     }
 
     async function generateAdvancedFingerprint() {
         return new Promise((resolve) => {
             try {
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
-                ctx.textBaseline = "top";
-                ctx.font = "14px 'Arial'";
-                ctx.fillStyle = "#f60";
-                ctx.fillRect(125, 1, 62, 20);
-                ctx.fillStyle = "#069";
-                ctx.fillText("AlightMotionSupabase", 2, 15);
+                const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d');
+                ctx.textBaseline = "top"; ctx.font = "14px 'Arial'"; ctx.fillStyle = "#f60"; ctx.fillRect(125, 1, 62, 20);
+                ctx.fillStyle = "#069"; ctx.fillText("AlightMotionSupabase", 2, 15);
                 const canvasData = canvas.toDataURL();
-
                 const str = navigator.userAgent + navigator.language + screen.colorDepth + screen.width + "x" + screen.height + (navigator.hardwareConcurrency || '') + canvasData;
                 let hash = 0;
-                for (let i = 0; i < str.length; i++) {
-                    let char = str.charCodeAt(i);
-                    hash = ((hash << 5) - hash) + char;
-                    hash = hash & hash;
-                }
+                for (let i = 0; i < str.length; i++) { let char = str.charCodeAt(i); hash = ((hash << 5) - hash) + char; hash = hash & hash; }
                 resolve('FP-' + Math.abs(hash).toString(36));
-            } catch (e) {
-                resolve('FP-' + Math.random().toString(36).substring(2));
-            }
+            } catch (e) { resolve('FP-' + Math.random().toString(36).substring(2)); }
         });
     }
 
-    const SUPABASE_URL = "https://lnnirsdvzgldouzugxkl.supabase.co";
-    const SUPABASE_KEY = "sb_publishable_NBrnVQPfrBx9-viwt6J8nA_hLQGBMU2";
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    let currentCaptchaAnswer = 0; let currentUserData = null; let cachedEmail = ''; let activeBroadcastId = null;
 
-    const API_BASE = 'https://restapidhan.vercel.app';
-    const API_KEY = 'dravndesamuel';
-
-    const OWNER_WA = "+6282231669053";
-    const SESSION_KEY = 'mshaomi_active_session_supabase';
-    const CACHE_KEY = 'mshaomi_cached_user_data';
-    const BROADCAST_SEEN_KEY = 'mshaomi_last_seen_broadcast_id';
-    
-    let currentCaptchaAnswer = 0;
-    let currentUserData = null;
-    let cachedEmail = '';
-    let activeBroadcastId = null;
-
-    // ============== PERBAIKAN SCOPE JAVASCRIPT ==============
-    // Dipindahkan ke window.loadAppView (Lingkup Global) agar
-    // window.onload bisa memanggil fungsi ini tanpa terjadi blank
     window.loadAppView = function(user) {
         try {
             currentUserData = user;
-            
             massUpdateText('.disp-username', user.username || 'User');
             massUpdateText('.disp-userid', user.id_code || 'MSH-01');
             massUpdateText('.disp-userwa', user.wa || '-');
             massUpdateText('.disp-userip', user.ip_address || 'Tidak Diketahui');
-            
-            updateAvatarUI(user.avatar_url, user.username);
-            updateEditProfileUIStatus(user);
+            updateAvatarUI(user.avatar_url, user.username); updateEditProfileUIStatus(user);
 
             const isVip = parseBool(user.is_permanent);
             const promoBanner = document.getElementById('promoBannerContainer');
             const ownerDashBtn = document.getElementById('toggleOwnerDashBtn');
             const ownerPanel = document.getElementById('ownerPanel');
-
             const roleBadges = document.querySelectorAll('.disp-userrole');
 
             if (user.role === 'Owner') {
                 roleBadges.forEach(rb => { rb.className = 'role-badge vip disp-userrole'; rb.textContent = 'OWNER'; rb.style.background = '#fff'; rb.style.color = '#000'; });
-                if(ownerDashBtn) ownerDashBtn.classList.remove('hidden'); 
-                if(promoBanner) promoBanner.classList.add('hidden');
+                if(ownerDashBtn) ownerDashBtn.classList.remove('hidden'); if(promoBanner) promoBanner.classList.add('hidden');
             } else {
-                if(ownerDashBtn) ownerDashBtn.classList.add('hidden'); 
-                if(ownerPanel) ownerPanel.classList.add('hidden');
-                
-                if (isVip) {
-                    roleBadges.forEach(rb => { rb.className = 'role-badge vip disp-userrole'; rb.textContent = 'VIP PREMIUM'; rb.style.background = ''; rb.style.color = '';});
-                    if(promoBanner) promoBanner.classList.add('hidden');
-                } else {
-                    roleBadges.forEach(rb => { rb.className = 'role-badge disp-userrole'; rb.textContent = 'MEMBER NODE'; rb.style.background = ''; rb.style.color = '';});
-                    if(promoBanner) promoBanner.classList.remove('hidden');
-                }
+                if(ownerDashBtn) ownerDashBtn.classList.add('hidden'); if(ownerPanel) ownerPanel.classList.add('hidden');
+                if (isVip) { roleBadges.forEach(rb => { rb.className = 'role-badge vip disp-userrole'; rb.textContent = 'VIP PREMIUM'; rb.style.background = ''; rb.style.color = '';}); if(promoBanner) promoBanner.classList.add('hidden'); } 
+                else { roleBadges.forEach(rb => { rb.className = 'role-badge disp-userrole'; rb.textContent = 'MEMBER NODE'; rb.style.background = ''; rb.style.color = '';}); if(promoBanner) promoBanner.classList.remove('hidden'); }
             }
 
             const limitBars = document.querySelectorAll('.disp-limit-bar');
             if (user.role === 'Owner' || isVip) {
-                massUpdateText('.disp-limit-label', "Status Lisensi");
-                massUpdateText('.disp-limit-value', "UNLIMITED ∞");
+                massUpdateText('.disp-limit-label', "Status Lisensi"); massUpdateText('.disp-limit-value', "UNLIMITED ∞");
                 document.querySelectorAll('.disp-limit-value').forEach(el => el.style.color = "var(--accent-vip)");
                 limitBars.forEach(bar => bar.classList.add('vip'));
             } else {
                 const currentLimit = user.limit_count ?? 3;
-                massUpdateText('.disp-limit-label', "Batas API Mingguan");
-                massUpdateText('.disp-limit-value', `${currentLimit} dari 3`);
+                massUpdateText('.disp-limit-label', "Batas API Mingguan"); massUpdateText('.disp-limit-value', `${currentLimit} dari 3`);
                 document.querySelectorAll('.disp-limit-value').forEach(el => el.style.color = "var(--text-pure)");
                 limitBars.forEach(bar => { bar.classList.remove('vip'); bar.style.width = ((currentLimit / 3) * 100) + "%"; });
             }
-
-            switchView('appView');
-            
-            // Tab default
-            if(!document.querySelector('.nav-btn.active')) {
-                switchTab('activator');
-            }
-        } catch (e) {
-            console.error("Kesalahan saat menampilkan interface:", e);
-        }
+            switchView('appView'); if(!document.querySelector('.nav-btn.active')) { switchTab('activator'); }
+        } catch (e) { console.error(e); }
     };
-
 
     window.onload = async () => {
-        const initialLoader = document.getElementById('initialLoader');
-        const savedUser = localStorage.getItem(SESSION_KEY);
-        
-        if(!savedUser) {
-            if(initialLoader) {
-                initialLoader.style.opacity = '0';
-                setTimeout(() => initialLoader.remove(), 500);
-            }
-            document.getElementById('warningModal').classList.add('show');
-        } else {
+        const initialLoader = document.getElementById('initialLoader'); const savedUser = localStorage.getItem(SESSION_KEY);
+        if(!savedUser) { if(initialLoader) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 500); } document.getElementById('warningModal').classList.add('show'); } 
+        else {
             let hasCache = false;
-            try {
-                const cachedData = localStorage.getItem(CACHE_KEY);
-                if (cachedData) {
-                    const parsed = JSON.parse(cachedData);
-                    if (parsed && parsed.username) {
-                        currentUserData = parsed;
-                        window.loadAppView(parsed);
-                        hasCache = true;
-                        if(initialLoader) {
-                            initialLoader.style.opacity = '0';
-                            setTimeout(() => initialLoader.remove(), 500);
-                        }
-                    }
-                }
-            } catch(e) { console.error("Cache parsing bermasalah", e); }
-            
-            // Pengambilan data di background/foreground
+            try { const cachedData = localStorage.getItem(CACHE_KEY); if (cachedData) { const parsed = JSON.parse(cachedData); if (parsed && parsed.username) { currentUserData = parsed; window.loadAppView(parsed); hasCache = true; if(initialLoader) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 500); } } } } catch(e) {}
             await fetchUserSession(savedUser);
-            
-            if(initialLoader && document.body.contains(initialLoader)) {
-                initialLoader.style.opacity = '0';
-                setTimeout(() => initialLoader.remove(), 500);
-            }
+            if(initialLoader && document.body.contains(initialLoader)) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 500); }
         }
-        
-        startClock();
-        fetchGlobalStats(); 
-        initRealtimeBroadcastListener();
-        initImageEnhancerEngine();
+        startClock(); fetchGlobalStats(); initRealtimeBroadcastListener(); initImageEnhancerEngine();
     };
 
-    function startClock() {
-        const clockEl = document.getElementById('realtimeClock');
-        if(!clockEl) return;
-        setInterval(() => {
-            const now = new Date();
-            clockEl.textContent = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB';
-        }, 1000);
-    }
-
-    async function fetchGlobalStats() {
-        try {
-            const { count, error } = await supabaseClient.from('users').select('*', { count: 'exact', head: true });
-            if (!error && count !== null) {
-                const el = document.getElementById('globalTotalUsers');
-                if(el) el.textContent = count;
-            }
-        } catch (e) { console.error("Gagal memuat total stat", e); }
-    }
-
-    function generateCaptcha() {
-        const num1 = Math.floor(Math.random() * 10) + 1;
-        const num2 = Math.floor(Math.random() * 10) + 1;
-        currentCaptchaAnswer = num1 + num2;
-        const label = document.getElementById('captchaLabel');
-        if(label) label.innerHTML = `Verifikasi Manusia <span style="color:#000; font-family:var(--font-data); background: var(--text-pure); padding: 4px 10px; border-radius:8px; font-weight:700; margin-left:8px;">${num1} + ${num2} = ?</span>`;
-    }
-
-    function parseBool(val) {
-        if (val === true || val === 'true' || val === '1' || val === 't' || val === 'TRUE' || val === 'YES' || val === 'yes') {
-            return true;
-        }
-        return false;
-    }
-
-    window.handleVipPromoClick = function() {
-        if (!currentUserData) {
-            window.open(`https://wa.me/6282231669053?text=` + encodeURIComponent("Halo Admin, saya ingin upgrade menjadi VIP Permanen."), '_blank');
-            return;
-        }
-        const textMessage = `Halo Admin, saya ingin melakukan Upgrade VIP Permanen.\n\nBerikut adalah data diri akun saya:\n- Username: @${currentUserData.username}\n- User ID: ${currentUserData.id_code || 'MSH-01'}\n- No WhatsApp: ${currentUserData.wa || '-'}`;
-        window.open(`https://wa.me/6282231669053?text=` + encodeURIComponent(textMessage), '_blank');
-    };
-
-    window.handleAvatarUpload = async function(event) {
-        const file = event.target.files[0];
-        if (!file) return;
-
-        if (!file.type.startsWith('image/')) {
-            customAlert("Harap pilih file gambar yang valid.", true); return;
-        }
-        if (file.size > 2 * 1024 * 1024) {
-            customAlert("Ukuran gambar terlalu besar! Maksimal 2MB.", true); return;
-        }
-
-        const reader = new FileReader();
-        reader.onload = async function(e) {
-            const base64Image = e.target.result;
-            if (!currentUserData || !currentUserData.username) return;
-
-            const { error } = await supabaseClient
-                .from('users')
-                .update({ avatar_url: base64Image })
-                .eq('username', currentUserData.username);
-
-            if (error) {
-                customAlert("Gagal memperbarui foto profil: " + error.message, true);
-            } else {
-                currentUserData.avatar_url = base64Image;
-                localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData));
-                updateAvatarUI(base64Image, currentUserData.username);
-                customAlert("Foto profil berhasil diperbarui!");
-            }
-        };
-        reader.readAsDataURL(file);
-    };
-
-    function updateAvatarUI(avatarUrl, username) {
-        const avatarContainers = document.querySelectorAll('.avatar-ring');
-        avatarContainers.forEach(container => {
-            if (avatarUrl && avatarUrl.startsWith('data:image')) {
-                container.innerHTML = `<img src="${avatarUrl}" alt="Avatar">`;
-            } else {
-                container.innerHTML = `<span class="disp-avatar-text">${username ? username.charAt(0).toUpperCase() : 'U'}</span>`;
-            }
-        });
-    }
-
-    function massUpdateText(selector, text) {
-        document.querySelectorAll(selector).forEach(el => el.textContent = text);
-    }
-
-    function updateEditProfileUIStatus(user) {
-        const userInput = document.getElementById('editUsernameInput');
-        const passInput = document.getElementById('editPasswordInput');
-        const saveBtn = document.getElementById('saveProfileChangesBtn');
-        
-        if(!userInput || !passInput || !saveBtn) return;
-
-        if (parseBool(user.username_changed)) {
-            userInput.disabled = true; passInput.disabled = true; saveBtn.disabled = true;
-            saveBtn.innerHTML = '<i class="fas fa-lock"></i> Terkunci (Sudah Diubah)';
-            userInput.style.opacity = '0.5'; passInput.style.opacity = '0.5';
-        } else {
-            userInput.disabled = false; passInput.disabled = false; saveBtn.disabled = false;
-            saveBtn.innerHTML = 'Simpan Permanen';
-            userInput.value = user.username || ''; passInput.value = user.password || '';
-        }
-    }
-
-    document.getElementById('saveProfileChangesBtn').addEventListener('click', async () => {
-        const newU = document.getElementById('editUsernameInput').value.trim();
-        const newP = document.getElementById('editPasswordInput').value.trim();
-
-        if (!newU || !newP) { showMsg('editProfileMsg', 'Username dan kata sandi tidak boleh kosong.'); return; }
-
-        if (newU !== currentUserData.username) {
-            const { data: checkU } = await supabaseClient.from('users').select('username').eq('username', newU);
-            if (checkU && checkU.length > 0) { showMsg('editProfileMsg', 'Username tersebut sudah digunakan orang lain.'); return; }
-        }
-
-        const btn = document.getElementById('saveProfileChangesBtn');
-        btn.innerHTML = '<span class="loader-spinner"></span> Menyimpan...';
-        btn.disabled = true;
-
-        const oldUsername = currentUserData.username;
-        const { error } = await supabaseClient
-            .from('users')
-            .update({ username: newU, password: newP, username_changed: true })
-            .eq('username', oldUsername);
-
-        if (error) {
-            btn.innerHTML = 'Simpan Permanen'; btn.disabled = false;
-            showMsg('editProfileMsg', 'Gagal memperbarui profil: ' + error.message);
-        } else {
-            btn.innerHTML = '<i class="fas fa-check"></i> Berhasil Tersimpan';
-            currentUserData.username = newU; currentUserData.password = newP; currentUserData.username_changed = true;
-            localStorage.setItem(SESSION_KEY, newU);
-            localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData));
-            window.loadAppView(currentUserData);
-            showMsg('editProfileMsg', 'Kredensial berhasil diperbarui secara permanen!', 'success');
-        }
-    });
-
-    async function checkForLatestBroadcast() {
-        const { data, error } = await supabaseClient.from('broadcasts').select('*').order('created_at', { ascending: false }).limit(1);
-        if (!error && data && data.length > 0) {
-            const latest = data[0];
-            activeBroadcastId = latest.id;
-            const lastSeenId = localStorage.getItem(BROADCAST_SEEN_KEY);
-            if (lastSeenId !== String(latest.id)) {
-                document.getElementById('broadcastContentText').textContent = latest.message;
-                document.getElementById('broadcastModal').classList.add('show');
-            }
-        }
-    }
-
-    function initRealtimeBroadcastListener() {
-        checkForLatestBroadcast();
-        supabaseClient.channel('public:broadcasts').on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'broadcasts' }, payload => {
-            const newBroadcast = payload.new;
-            activeBroadcastId = newBroadcast.id;
-            const lastSeenId = localStorage.getItem(BROADCAST_SEEN_KEY);
-            if (lastSeenId !== String(newBroadcast.id)) {
-                document.getElementById('broadcastContentText').textContent = newBroadcast.message;
-                document.getElementById('broadcastModal').classList.add('show');
-            }
-        }).subscribe();
-    }
-
-    window.closeBroadcastModal = function() {
-        if (activeBroadcastId) localStorage.setItem(BROADCAST_SEEN_KEY, String(activeBroadcastId));
-        document.getElementById('broadcastModal').classList.remove('show');
-    };
-
-    window.sendBroadcastMsg = async function() {
-        const text = document.getElementById('broadcastInput').value.trim();
-        if(!text) return customAlert("Pesan broadcast tidak boleh kosong!", true);
-        const { error } = await supabaseClient.from('broadcasts').insert([{ message: text, created_at: new Date().toISOString() }]);
-        if (error) { customAlert("Gagal mengirim broadcast: " + error.message, true); } 
-        else { customAlert("Broadcast berhasil dikirim ke seluruh member!"); document.getElementById('broadcastInput').value = ''; }
-    };
-
-    // Fungsi Fetch ke Database yang aman dari Black Screen
-    async function fetchUserSession(username) {
-        try {
-            const { data, error } = await supabaseClient.from('users').select('*').eq('username', username).single();
-            if (data && !error) {
-                if (parseBool(data.is_banned)) {
-                    localStorage.removeItem(SESSION_KEY);
-                    localStorage.removeItem(CACHE_KEY);
-                    switchView('loginView');
-                    customAlert("Akun Anda telah di-suspend oleh Admin.", true); 
-                    return;
-                }
-                localStorage.setItem(CACHE_KEY, JSON.stringify(data));
-                currentUserData = data; 
-                window.loadAppView(data);
-            } else if (error && error.code === 'PGRST116') {
-                // User telah dihapus di DB
-                localStorage.removeItem(SESSION_KEY);
-                localStorage.removeItem(CACHE_KEY);
-                switchView('loginView');
-            } else if (error) {
-                throw error; // Lempar ke blok catch untuk ditangani
-            }
-        } catch (err) {
-            console.error("Database / Network error:", err);
-            // Jika sama sekali tidak ada Cache (gagal total load data), arahkan ke Login
-            if (!currentUserData) {
-                localStorage.removeItem(SESSION_KEY);
-                switchView('loginView');
-            }
-        }
-    }
-
-    window.switchView = function(viewId) {
-        ['loginView', 'registerView', 'appView'].forEach(v => { 
-            const el = document.getElementById(v);
-            if(el) el.classList.add('hidden'); 
-        });
-        
-        const targetView = document.getElementById(viewId);
-        if(targetView) targetView.classList.remove('hidden');
-        
-        if(viewId === 'registerView') { generateCaptcha(); document.getElementById('regCaptcha').value = ''; }
-        clearFormMessages();
-    };
-
-    function clearFormMessages() {
-        document.querySelectorAll('.message-box').forEach(el => { el.classList.remove('show', 'message-success', 'message-error'); el.innerHTML = ''; });
-    }
-
-    function showMsg(elId, text, type = 'error') {
-        const el = document.getElementById(elId);
-        if(el) {
-            el.innerHTML = text; el.className = 'message-box show';
-            if (type === 'error') el.classList.add('message-error');
-            if (type === 'success') el.classList.add('message-success');
-        }
-    }
-
-    window.closeWarningModal = function() {
-        document.getElementById('warningModal').classList.remove('show');
-        if(!localStorage.getItem(SESSION_KEY)) document.getElementById('loginView').classList.remove('hidden');
-    };
-
-    window.handleForgotClick = function() {
-        window.open(`https://wa.me/${OWNER_WA.replace('+', '')}?text=` + encodeURIComponent("Halo Admin, saya lupa kata sandi akun saya."), '_blank');
-    };
-
-    window.renderMemberList = async function() {
-        const { data: users, error } = await supabaseClient.from('users').select('*');
-        const memberList = document.getElementById('memberList');
-        const searchInput = document.getElementById('memberSearchInput');
-        if(!memberList || error) return;
-
-        const searchQuery = searchInput ? searchInput.value.toLowerCase().trim() : '';
-        const filteredUsers = users.filter(m => {
-            const uname = (m.username || '').toLowerCase();
-            const idCode = (m.id_code || '').toLowerCase();
-            return uname.includes(searchQuery) || idCode.includes(searchQuery);
-        });
-
-        filteredUsers.sort((a, b) => {
-            const aVip = parseBool(a.is_permanent) || a.role === 'Owner' ? 1 : 0;
-            const bVip = parseBool(b.is_permanent) || b.role === 'Owner' ? 1 : 0;
-            if (aVip !== bVip) return bVip - aVip;
-            return new Date(a.created_at) - new Date(b.created_at);
-        });
-
-        memberList.innerHTML = '';
-        
-        if (filteredUsers.length === 0) {
-            memberList.innerHTML = `<div style="text-align: center; color: var(--text-dim); padding: 20px; font-size: 13px;">Tidak ada pengguna ditemukan.</div>`;
-            return;
-        }
-
-        filteredUsers.forEach((m, index) => {
-            const waClean = m.wa ? m.wa.replace(/[^0-9]/g, '') : '';
-            const waLink = waClean ? `https://wa.me/${waClean}` : '#';
-            const isVipUser = parseBool(m.is_permanent);
-            const isBannedUser = parseBool(m.is_banned);
-            
-            let createdDate = m.created_at ? new Date(m.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Baru saja';
-            let vipDateFormatted = m.vip_since ? new Date(m.vip_since).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : (isVipUser ? 'Permanen' : '-');
-
-            let roleBadge = `<span class="role-badge">Member</span>`;
-            let bannedBadge = isBannedUser ? `<span style="font-size:10px; background:rgba(255,51,102,0.2); color:#ff85a2; padding:4px 8px; border-radius:8px;">SUSPENDED</span>` : '';
-            let cardClass = 'admin-user-card';
-            
-            if (m.role === 'Owner') { roleBadge = `<span class="role-badge vip" style="background:#fff; color:#000;">Owner</span>`; cardClass += ' is-vip'; }
-            else if (isVipUser) { roleBadge = `<span class="role-badge vip">VIP</span>`; cardClass += ' is-vip'; }
-
-            if (isBannedUser) { cardClass += ' is-banned'; }
-
-            const el = document.createElement('div');
-            el.className = cardClass;
-            el.style.animationDelay = `${index * 0.08}s`;
-            
-            el.innerHTML = `
-                <div class="auc-header">
-                    <div class="auc-name">@${m.username} ${bannedBadge}</div>
-                    <div class="auc-id">${m.id_code || 'MSH-000'}</div>
-                </div>
-                
-                <div class="auc-details">
-                    <span>Role: ${roleBadge}</span>
-                    <span>Limit: <b>${isVipUser ? '∞' : (m.limit_count ?? 3)}</b></span>
-                    <span>Pass: <b>${m.password}</b></span>
-                    <span>WA: <b>${m.wa || '-'}</b></span>
-                    <span style="grid-column: span 2; color: var(--text-pure);">HWID: <b>${m.device_id || 'NULL'}</b></span>
-                    <span style="grid-column: span 2; color: var(--text-pure);">IP: <b>${m.ip_address || 'NULL'}</b></span>
-                    <span>Dibuat: <b>${createdDate}</b></span>
-                    <span style="color: ${isVipUser ? 'var(--accent-vip)' : 'var(--text-dim)'};">VIP Sejak: <b>${vipDateFormatted}</b></span>
-                </div>
-                
-                <div class="auc-actions">
-                    <button class="btn-micro" onclick="adjustLimit('${m.username}', 1)">+ Kuota</button>
-                    <button class="btn-micro" onclick="adjustLimit('${m.username}', -1)">- Kuota</button>
-                    <button class="btn-micro" style="color:var(--accent-vip); border-color:var(--accent-vip);" onclick="toggleVipStatus('${m.username}', ${isVipUser})">${isVipUser ? 'Cabut VIP' : 'Set VIP'}</button>
-                    <button class="btn-micro" style="color: ${isBannedUser ? 'var(--accent-green)' : 'var(--accent-red)'}; border-color:${isBannedUser ? 'var(--accent-green)' : 'var(--accent-red)'};" onclick="toggleSuspendStatus('${m.username}', ${isBannedUser})">${isBannedUser ? 'Unsuspend' : 'Suspend'}</button>
-                    <a href="${waLink}" target="_blank" class="btn-micro">Hubungi Klien</a>
-                </div>
-            `;
-            memberList.appendChild(el);
-        });
-    };
-
-    window.adjustLimit = async function(username, amount) {
-        const { data: user, error: fetchErr } = await supabaseClient.from('users').select('limit_count, is_permanent').eq('username', username).single();
-        if (fetchErr || !user) return customAlert("Gagal mengambil data user.", true);
-        if (parseBool(user.is_permanent)) return customAlert("User ini sudah berstatus VIP/Unlimited.", true);
-
-        let currentLimit = user.limit_count ?? 3;
-        let newLimit = Math.max(0, currentLimit + amount);
-
-        const { error } = await supabaseClient.from('users').update({ limit_count: newLimit }).eq('username', username);
-        if (error) customAlert("Gagal memperbarui limit: " + error.message, true);
-        else {
-            renderMemberList();
-            customAlert("Limit diperbarui!");
-            if(currentUserData && currentUserData.username === username) { 
-                currentUserData.limit_count = newLimit; 
-                localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData));
-                window.loadAppView(currentUserData); 
-            }
-        }
-    };
-
-    window.toggleVipStatus = async function(username, currentVipStatus) {
-        const newStatus = !currentVipStatus ? 'true' : 'false';
-        const updatePayload = { is_permanent: newStatus, vip_since: !currentVipStatus ? new Date().toISOString() : null };
-        const { error } = await supabaseClient.from('users').update(updatePayload).eq('username', username);
-        
-        if (error) customAlert("Gagal mengubah status VIP: " + error.message, true);
-        else {
-            renderMemberList();
-            customAlert("Status VIP berhasil diubah.");
-            if(currentUserData && currentUserData.username === username) {
-                currentUserData.is_permanent = newStatus; currentUserData.vip_since = updatePayload.vip_since;
-                localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData));
-                window.loadAppView(currentUserData);
-            }
-        }
-    };
-
-    window.toggleSuspendStatus = async function(username, currentBannedStatus) {
-        const confirmMsg = currentBannedStatus ? `MENGEMBALIKAN (Unsuspend) akses untuk ${username}?` : `MENSKORS (Suspend) akun ${username} secara permanen?`;
-        
-        customConfirm(confirmMsg, async () => {
-            const newStatus = currentBannedStatus ? 'false' : 'true';
-            const { error } = await supabaseClient.from('users').update({ is_banned: newStatus }).eq('username', username);
-            
-            if (error) customAlert("Gagal mengubah status suspend: " + error.message, true);
-            else { customAlert(`Akun ${username} berhasil di-${currentBannedStatus ? 'unsuspend' : 'suspend'}.`); renderMemberList(); }
-        });
-    };
-
-    window.togglePwd = function(inputId, btnEl) {
-        const input = document.getElementById(inputId); const icon = btnEl.querySelector('i');
-        if (input.type === 'password') { input.type = 'text'; icon.className = 'fas fa-eye-slash'; } 
-        else { input.type = 'password'; icon.className = 'far fa-eye'; }
-    };
-
-    function initImageEnhancerEngine() {
-        const urlInput = document.getElementById('imageUrl');
-        const dropZone = document.getElementById('dropZone');
-        const fileInput = document.getElementById('fileInput');
-        const fileNameDisplay = document.getElementById('fileNameDisplay');
-        const strengthRange = document.getElementById('strengthRange');
-        const strengthIndicator = document.getElementById('strengthIndicator');
-        const openModeModal = document.getElementById('openModeModal');
-        const closeModeModal = document.getElementById('closeModeModal');
-        const modeModalOverlay = document.getElementById('modeModalOverlay');
-        const applyModeBtn = document.getElementById('applyModeBtn');
-        const currentModeLabel = document.getElementById('currentModeLabel');
-        const modeItems = document.querySelectorAll('.mode-option-item');
-        const enhanceBtn = document.getElementById('enhanceBtn');
-        const resetBtn = document.getElementById('resetBtn');
-        const comparisonSplitSection = document.getElementById('comparisonSplitSection');
-        const splitImgBefore = document.getElementById('splitImgBefore');
-        const splitImgAfter = document.getElementById('splitImgAfter');
-        const statusMessage = document.getElementById('statusMessage');
-        const downloadFooterActions = document.getElementById('downloadFooterActions');
-        const downloadBtn = document.getElementById('downloadBtn');
-        const copyUrlBtn = document.getElementById('copyUrlBtn');
-
-        let selectedFile = null; let selectedMode = '2x'; let tempSelectedMode = '2x';
-        let originalBlobUrl = null; let enhancedBlobUrl = null;
-
-        if(!strengthRange) return;
-
-        strengthRange.addEventListener('input', () => {
-          const val = parseInt(strengthRange.value, 10);
-          let label = 'Optimal';
-          if (val <= 30) label = 'Lembut'; else if (val > 70) label = 'Maksimal';
-          strengthIndicator.textContent = label;
-        });
-
-        openModeModal.addEventListener('click', () => {
-          tempSelectedMode = selectedMode;
-          modeItems.forEach(item => {
-            if (item.getAttribute('data-mode') === tempSelectedMode) { item.classList.add('selected'); item.style.borderColor = 'var(--text-pure)'; item.querySelector('i').style.color = 'var(--text-pure)'; } 
-            else { item.classList.remove('selected'); item.style.borderColor = 'var(--glass-border)'; item.querySelector('i').style.color = 'var(--text-dark)'; }
-          });
-          modeModalOverlay.classList.add('show');
-        });
-
-        const closeModalFunc = () => { modeModalOverlay.classList.remove('show'); };
-        closeModeModal.addEventListener('click', closeModalFunc);
-        modeModalOverlay.addEventListener('click', (e) => { if (e.target === modeModalOverlay) closeModalFunc(); });
-
-        modeItems.forEach(item => {
-          item.addEventListener('click', () => {
-            modeItems.forEach(i => { i.classList.remove('selected'); i.style.borderColor = 'var(--glass-border)'; i.querySelector('i').style.color = 'var(--text-dark)'; });
-            item.classList.add('selected'); item.style.borderColor = 'var(--text-pure)'; item.querySelector('i').style.color = 'var(--text-pure)';
-            tempSelectedMode = item.getAttribute('data-mode');
-          });
-        });
-
-        applyModeBtn.addEventListener('click', () => {
-          selectedMode = tempSelectedMode;
-          const modeTexts = { '2x': 'Super Resolution 2x', '1x': 'Clean & Sharpen (1x)', 'hdr': 'Dynamic HDR Boost' };
-          currentModeLabel.textContent = modeTexts[selectedMode]; closeModalFunc();
-        });
-
-        dropZone.addEventListener('click', () => fileInput.click());
-        ['dragenter', 'dragover'].forEach(e => dropZone.addEventListener(e, ev => { ev.preventDefault(); dropZone.style.borderColor = 'var(--accent-primary)'; dropZone.style.background = 'rgba(0,242,254,0.08)'; }));
-        ['dragleave', 'drop'].forEach(e => dropZone.addEventListener(e, ev => { ev.preventDefault(); dropZone.style.borderColor = 'var(--glass-border-light)'; dropZone.style.background = 'rgba(0,0,0,0.4)'; }));
-
-        dropZone.addEventListener('drop', (e) => { const files = e.dataTransfer.files; if (files && files[0]) handleFile(files[0]); });
-        fileInput.addEventListener('change', (e) => { if (e.target.files && e.target.files[0]) handleFile(e.target.files[0]); });
-
-        function handleFile(file) {
-          if (!file.type.startsWith('image/')) { setEnhancerStatus('Format tidak didukung. Mohon pilih berkas gambar.', 'error'); return; }
-          if (file.size > 25 * 1024 * 1024) { setEnhancerStatus('Ukuran berkas melebihi batas (Maks. 25MB).', 'error'); return; }
-          selectedFile = file; fileNameDisplay.textContent = `File siap: ${file.name} (${(file.size / 1024 / 1024).toFixed(1)} MB)`;
-          urlInput.value = ''; setEnhancerStatus('');
-        }
-
-        function setEnhancerStatus(text, type = '') {
-          statusMessage.innerHTML = text;
-          if (text === '') { statusMessage.classList.remove('show'); } 
-          else { statusMessage.className = 'message-box show' + (type ? ' message-' + type : ''); }
-        }
-
-        resetBtn.addEventListener('click', () => {
-          selectedFile = null; fileInput.value = ''; fileNameDisplay.textContent = ''; urlInput.value = '';
-          if (originalBlobUrl) URL.revokeObjectURL(originalBlobUrl); if (enhancedBlobUrl) URL.revokeObjectURL(enhancedBlobUrl);
-          originalBlobUrl = null; enhancedBlobUrl = null;
-          comparisonSplitSection.classList.add('hidden'); downloadFooterActions.classList.add('hidden'); setEnhancerStatus('');
-        });
-
-        enhanceBtn.addEventListener('click', async () => {
-          const urlVal = urlInput.value.trim();
-          if (!urlVal && !selectedFile) { setEnhancerStatus('Sediakan URL gambar atau unggah berkas terlebih dahulu.', 'error'); return; }
-
-          enhanceBtn.disabled = true; enhanceBtn.innerHTML = '<span class="loader-spinner" style="border-top-color:var(--bg-base);"></span> Render AI...';
-          setEnhancerStatus('Mengunduh aset dan menyiapkan AI Engine...', '');
-
-          try {
-            let sourceImg = null; let origBlob = null;
-            if (selectedFile) { origBlob = selectedFile; sourceImg = await loadImageFromFile(selectedFile); } 
-            else { origBlob = await fetchUrlBlob(urlVal); sourceImg = await loadImageFromBlob(origBlob); }
-
-            originalBlobUrl = URL.createObjectURL(origBlob); splitImgBefore.src = originalBlobUrl;
-            let enhancedBlob = null; let methodUsed = '';
-            
-            const apiList = [ 'https://api-nanzz.my.id/docs/api/tools/image/enhancer.php?url=', 'https://api-nanzz.my.id/api/tools/image/enhancer?url=' ];
-            let targetFetchUrl = urlVal || originalBlobUrl;
-            for (const api of apiList) {
-              try {
-                const resp = await fetch(api + encodeURIComponent(targetFetchUrl), { headers: { 'Accept': 'image/*' } });
-                if (resp.ok) { const b = await resp.blob(); if (b && b.size > 400 && b.type.startsWith('image/')) { enhancedBlob = b; methodUsed = 'Cloud Engine'; break; } }
-              } catch(e) {}
-            }
-
-            if (!enhancedBlob) {
-              setEnhancerStatus('Memproses melalui Local Matrix Upscaler...', '');
-              const factorVal = parseInt(strengthRange.value, 10);
-              enhancedBlob = await runLocalEnhancer(sourceImg, factorVal, selectedMode);
-              methodUsed = 'Local Node';
-            }
-
-            enhancedBlobUrl = URL.createObjectURL(enhancedBlob); splitImgAfter.src = enhancedBlobUrl;
-            comparisonSplitSection.classList.remove('hidden'); downloadFooterActions.classList.remove('hidden');
-            setEnhancerStatus(`Proses sukses dirender oleh ${methodUsed}.`, 'success');
-          } catch (err) {
-            console.error(err); setEnhancerStatus('Terjadi kegagalan teknis: ' + err.message, 'error');
-          } finally {
-            enhanceBtn.disabled = false; enhanceBtn.innerHTML = '<i class="fas fa-microchip"></i> Render AI';
-          }
-        });
-
-        function fetchUrlBlob(url) {
-          return new Promise(async (resolve, reject) => {
-            try { const res = await fetch(url); if (!res.ok) throw new Error('Akses ke URL ditolak oleh server sumber.'); const blob = await res.blob(); resolve(blob); } 
-            catch (e) { reject(new Error('Gagal mengambil gambar dari URL. Terdapat batasan CORS.')); }
-          });
-        }
-        function loadImageFromFile(file) {
-          return new Promise((resolve, reject) => {
-            const reader = new FileReader(); reader.onload = e => { const img = new Image(); img.onload = () => resolve(img); img.onerror = reject; img.src = e.target.result; };
-            reader.onerror = reject; reader.readAsDataURL(file);
-          });
-        }
-        function loadImageFromBlob(blob) {
-          return new Promise((resolve, reject) => {
-            const url = URL.createObjectURL(blob); const img = new Image(); img.onload = () => resolve(img); img.onerror = reject; img.src = url;
-          });
-        }
-        function runLocalEnhancer(img, strengthVal, mode) {
-          return new Promise((resolve, reject) => {
-            try {
-              const sw = img.naturalWidth || img.width; const sh = img.naturalHeight || img.height;
-              let multiplier = 1.6; if (mode === '2x') multiplier = 2.0; if (mode === 'hdr') multiplier = 1.75;
-              const limitMax = 3840; if ((sw * multiplier) > limitMax || (sh * multiplier) > limitMax) { multiplier = Math.min(limitMax / sw, limitMax / sh); }
-              const w = Math.round(sw * multiplier); const h = Math.round(sh * multiplier);
-              const canvas = document.createElement('canvas'); canvas.width = w; canvas.height = h;
-              const ctx = canvas.getContext('2d', { willReadFrequently: true }); ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
-              const intensity = strengthVal / 100;
-              let contrast = 1.06 + (intensity * 0.12); let saturate = 1.05 + (intensity * 0.15); let brightness = 1.01 + (intensity * 0.03);
-              if (mode === 'hdr') { contrast += 0.08; saturate += 0.12; }
-              ctx.filter = `contrast(${contrast}) saturate(${saturate}) brightness(${brightness})`;
-              ctx.drawImage(img, 0, 0, w, h); ctx.filter = 'none';
-              canvas.toBlob((blob) => { if (blob) resolve(blob); else reject(new Error('Gagal merender output gambar di canvas lokal.')); }, 'image/png', 0.98);
-            } catch (err) { reject(err); }
-          });
-        }
-        downloadBtn.addEventListener('click', () => {
-          if (enhancedBlobUrl) { const a = document.createElement('a'); a.href = enhancedBlobUrl; a.download = `AM_Cloud_Enhanced_${Date.now()}.png`; document.body.appendChild(a); a.click(); a.remove(); }
-        });
-        copyUrlBtn.addEventListener('click', () => {
-          if (enhancedBlobUrl) { navigator.clipboard.writeText(enhancedBlobUrl).then(() => { setEnhancerStatus('URL gambar disalin ke clipboard.', 'success'); }).catch(() => { setEnhancerStatus('Gagal menyalin tautan.', 'error'); }); }
-        });
-    }
-
-    (function() {
-        const loginUser = document.getElementById('loginUser'); const loginPwd = document.getElementById('loginPwd');
-        const loginBtn = document.getElementById('loginBtn'); const regUser = document.getElementById('regUser');
-        const regWa = document.getElementById('regWa'); const regPwd = document.getElementById('regPwd');
-        const regCaptcha = document.getElementById('regCaptcha'); const regBtn = document.getElementById('regBtn');
-        const logoutBtn = document.getElementById('logoutBtn'); const emailInput = document.getElementById('emailInput');
-        const magicInput = document.getElementById('magicInput'); const sendBtn = document.getElementById('sendBtn');
-        const activateBtn = document.getElementById('activateBtn');
-
-        if(loginBtn) {
-            loginBtn.addEventListener('click', async () => {
-                const u = loginUser.value.trim(); const p = loginPwd.value.trim();
-                if(!u || !p) return showMsg('loginErrorMsg', 'Harap isi informasi login dengan lengkap.');
-
-                const originalText = loginBtn.textContent; loginBtn.innerHTML = '<span class="loader-spinner" style="border-top-color:var(--bg-base);"></span>'; loginBtn.disabled = true;
-
-                const { data, error } = await supabaseClient.from('users').select('*').eq('username', u).single();
-                loginBtn.textContent = originalText; loginBtn.disabled = false;
-
-                if(error || !data || data.password !== p) return showMsg('loginErrorMsg', 'Otorisasi gagal: Username atau sandi salah.');
-                if (parseBool(data.is_banned)) return showMsg('loginErrorMsg', 'Akses ditolak: Akun Anda disuspend sistem.');
-
-                // MENYIMPAN CACHE SAAT BERHASIL LOGIN
-                localStorage.setItem(SESSION_KEY, u); 
-                localStorage.setItem(CACHE_KEY, JSON.stringify(data));
-                window.loadAppView(data);
-            });
-        }
-
-        if(regBtn) {
-            regBtn.addEventListener('click', async () => {
-                const u = regUser.value.trim(); const w = regWa.value.trim(); const p = regPwd.value.trim(); const cInput = parseInt(regCaptcha.value.trim());
-
-                if (!u || !w || !p || isNaN(cInput)) return showMsg('regMsg', 'Seluruh bidang registrasi harus diisi.');
-                const cleanWa = w.replace(/[^0-9]/g, ''); if (!/^(08|628)\d{8,13}$/.test(cleanWa)) return showMsg('regMsg', 'Format nomor kontak salah.');
-                if (cInput !== currentCaptchaAnswer) return showMsg('regMsg', 'Sistem mendeteksi kegagalan verifikasi robot.');
-
-                const originalBtnText = regBtn.innerHTML; regBtn.innerHTML = '<span class="loader-spinner" style="border-top-color:var(--bg-base);"></span> Mendaftarkan...'; regBtn.disabled = true;
-
-                try {
-                    const userIp = await getIPAddress();
-                    if(userIp && userIp !== 'unknown-ip') { const { data: ipCheck, error: ipErr } = await supabaseClient.from('users').select('id').eq('ip_address', userIp); if (!ipErr && ipCheck && ipCheck.length >= 2) throw new Error('Limit pendaftaran pada jaringan IP ini terlampaui.'); }
-                    
-                    const hardwareFingerprint = await generateAdvancedFingerprint();
-                    const { data: fpCheck, error: fpErr } = await supabaseClient.from('users').select('id').eq('device_id', hardwareFingerprint);
-                    if (!fpErr && fpCheck && fpCheck.length >= 1) throw new Error('Identitas hardware Anda telah dikaitkan dengan entitas akun lain.');
-
-                    const { data: existingUsername } = await supabaseClient.from('users').select('username').eq('username', u);
-                    if(existingUsername && existingUsername.length > 0) throw new Error('Username telah digunakan node lain.');
-
-                    const { data: existingWa } = await supabaseClient.from('users').select('wa').eq('wa', cleanWa);
-                    if(existingWa && existingWa.length > 0) throw new Error('Nomor kontak telah terdaftar dalam sistem.');
-
-                    const newUserData = { username: u, password: p, wa: cleanWa, role: 'Member', id_code: 'MSH-' + Math.floor(1000 + Math.random() * 9000), limit_count: 3, is_permanent: 'false', is_banned: 'false', device_id: hardwareFingerprint, ip_address: userIp, avatar_url: null, vip_since: null, username_changed: false, created_at: new Date().toISOString() };
-
-                    const { error } = await supabaseClient.from('users').insert([newUserData]);
-                    if(error) throw new Error('Gangguan Basis Data: ' + error.message);
-
-                    localStorage.setItem(SESSION_KEY, u); 
-                    localStorage.setItem(CACHE_KEY, JSON.stringify(newUserData));
-                    window.loadAppView(newUserData);
-                    fetchGlobalStats();
-                } catch (err) { showMsg('regMsg', err.message); } 
-                finally { regBtn.innerHTML = originalBtnText; regBtn.disabled = false; }
-            });
-        }
-
-        if(logoutBtn) {
-            logoutBtn.addEventListener('click', () => { 
-                customConfirm("Anda yakin ingin mengakhiri sesi ini (Logout)?", () => {
-                    localStorage.removeItem(SESSION_KEY); 
-                    localStorage.removeItem(CACHE_KEY); 
-                    closeProfileSheet(); switchView('loginView'); 
-                });
-            });
-        }
-
-        if(sendBtn) {
-            sendBtn.addEventListener('click', async () => {
-                const email = emailInput.value.trim();
-                if(!email || !email.includes('@')) { showMsg('appErrorMsg', 'Masukkan format alamat email dengan benar.'); return; }
-                const oldText = sendBtn.textContent; sendBtn.innerHTML = '<span class="loader-spinner"></span>'; sendBtn.disabled = true;
-
-                try {
-                    const url = `${API_BASE}/api/am?action=send&apikey=${API_KEY}&email=${encodeURIComponent(email)}`;
-                    const res = await fetch(url); const data = await res.json();
-                    if (data.status) {
-                        cachedEmail = email; sendBtn.innerHTML = '<i class="fas fa-check"></i>'; magicInput.focus();
-                        showMsg('appErrorMsg', 'Magic link terkirim. Silakan periksa Kotak Masuk Anda.', 'success');
-                        setTimeout(() => { sendBtn.textContent = oldText; sendBtn.disabled = false; }, 2000);
-                    } else { showMsg('appErrorMsg', `Gagal mengirim paket: ${data.error || data.message || 'Respons tidak dikenali'}`); sendBtn.textContent = oldText; sendBtn.disabled = false; }
-                } catch (err) { showMsg('appErrorMsg', `Waktu koneksi API habis: ${err.message}`); sendBtn.textContent = oldText; sendBtn.disabled = false; }
-            });
-        }
-
-        if(activateBtn) {
-            activateBtn.addEventListener('click', async () => {
-                const email = emailInput.value.trim(); const magic = magicInput.value.trim();
-                if (!email || !magic) { showMsg('appErrorMsg', 'Pastikan Email dan Tautan Magic terisi.'); return; }
-                const emailToUse = cachedEmail || email;
-                document.getElementById('btnDefault').classList.add('hidden'); document.getElementById('loaderContainer').classList.remove('hidden'); activateBtn.disabled = true;
-
-                try {
-                    const url = `${API_BASE}/api/am?action=verif&apikey=${API_KEY}&email=${encodeURIComponent(emailToUse)}&url=${encodeURIComponent(magic)}`;
-                    const res = await fetch(url); const data = await res.json();
-                    document.getElementById('loaderContainer').classList.add('hidden');
-
-                    if (data.status) {
-                        document.getElementById('btnSuccess').classList.remove('hidden'); showMsg('appErrorMsg', 'Berhasil! Lisensi terverifikasi oleh server pusat AM.', 'success'); cachedEmail = '';
-                        if(currentUserData && !parseBool(currentUserData.is_permanent) && currentUserData.role !== 'Owner') {
-                            let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 1);
-                            await supabaseClient.from('users').update({ limit_count: newLimit }).eq('username', currentUserData.username);
-                            currentUserData.limit_count = newLimit; 
-                            localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData));
-                            window.loadAppView(currentUserData);
-                        }
-                    } else {
-                        activateBtn.disabled = false; document.getElementById('btnDefault').classList.remove('hidden');
-                        showMsg('appErrorMsg', `Otorisasi Ditolak: ${data.error || data.message || 'Token tidak valid'}`);
-                    }
-                } catch (err) {
-                    document.getElementById('loaderContainer').classList.add('hidden'); activateBtn.disabled = false; document.getElementById('btnDefault').classList.remove('hidden');
-                    showMsg('appErrorMsg', `Kesalahan API Server: ${err.message}`);
-                }
-            });
-        }
-    })();
-
-    function switchTab(tabName) {
-        document.getElementById('sectionActivator').classList.add('hidden');
-        document.getElementById('sectionEnhancer').classList.add('hidden');
-        document.getElementById('ownerPanel').classList.add('hidden');
-        
-        document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-
-        if(tabName === 'activator') {
-            document.getElementById('sectionActivator').classList.remove('hidden');
-            document.getElementById('btnTabActivator').classList.add('active');
-        } else if(tabName === 'enhancer') {
-            document.getElementById('sectionEnhancer').classList.remove('hidden');
-            document.getElementById('btnTabEnhancer').classList.add('active');
-        } else if(tabName === 'admin') {
-            document.getElementById('ownerPanel').classList.remove('hidden');
-            const adminBtn = document.getElementById('toggleOwnerDashBtn');
-            if(adminBtn) adminBtn.classList.add('active');
-            if(typeof renderMemberList === 'function') renderMemberList();
-        }
-    }
-
-    function openProfileSheet() { document.getElementById('profileSheet').classList.add('show'); }
-    function closeProfileSheet() { document.getElementById('profileSheet').classList.remove('show'); }
-
+    function startClock() { const clockEl = document.getElementById('realtimeClock'); if(!clockEl) return; setInterval(() => { const now = new Date(); clockEl.textContent = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB'; }, 1000); }
+    async function fetchGlobalStats() { try { const { count, error } = await supabaseClient.from('users').select('*', { count: 'exact', head: true }); if (!error && count !== null) { const el = document.getElementById('globalTotalUsers'); if(el) el.textContent = count; } } catch (e) {} }
+    function generateCaptcha() { const num1 = Math.floor(Math.random() * 10) + 1; const num2 = Math.floor(Math.random() * 10) + 1; currentCaptchaAnswer = num1 + num2; const label = document.getElementById('captchaLabel'); if(label) label.innerHTML = `Verifikasi Manusia <span style="color:#000; font-family:var(--font-data); background: var(--text-pure); padding: 4px 10px; border-radius:8px; font-weight:700; margin-left:8px;">${num1} + ${num2} = ?</span>`; }
+    function parseBool(val) { return val === true || val === 'true' || val === '1' || val === 't' || val === 'TRUE' || val === 'YES' || val === 'yes'; }
+    window.handleVipPromoClick = function() { if (!currentUserData) { window.open(`https://wa.me/`+OWNER_WA.replace('+','')+`?text=` + encodeURIComponent("Halo Admin, saya ingin upgrade menjadi VIP Permanen."), '_blank'); return; } const textMessage = `Halo Admin, saya ingin melakukan Upgrade VIP Permanen.\n\nBerikut adalah data diri akun saya:\n- Username: @${currentUserData.username}\n- User ID: ${currentUserData.id_code || 'MSH-01'}\n- No WhatsApp: ${currentUserData.wa || '-'}`; window.open(`https://wa.me/`+OWNER_WA.replace('+','')+`?text=` + encodeURIComponent(textMessage), '_blank'); };
+    window.handleAvatarUpload = async function(event) { const file = event.target.files[0]; if (!file) return; if (!file.type.startsWith('image/')) { customAlert("Harap pilih file gambar yang valid.", true); return; } if (file.size > 2 * 1024 * 1024) { customAlert("Ukuran gambar terlalu besar! Maksimal 2MB.", true); return; } const reader = new FileReader(); reader.onload = async function(e) { const base64Image = e.target.result; if (!currentUserData || !currentUserData.username) return; const { error } = await supabaseClient.from('users').update({ avatar_url: base64Image }).eq('username', currentUserData.username); if (error) { customAlert("Gagal: " + error.message, true); } else { currentUserData.avatar_url = base64Image; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); updateAvatarUI(base64Image, currentUserData.username); customAlert("Foto profil berhasil diperbarui!"); } }; reader.readAsDataURL(file); };
+    function updateAvatarUI(avatarUrl, username) { const avatarContainers = document.querySelectorAll('.avatar-ring'); avatarContainers.forEach(container => { if (avatarUrl && avatarUrl.startsWith('data:image')) { container.innerHTML = `<img src="${avatarUrl}" alt="Avatar">`; } else { container.innerHTML = `<span class="disp-avatar-text">${username ? username.charAt(0).toUpperCase() : 'U'}</span>`; } }); }
+    function massUpdateText(selector, text) { document.querySelectorAll(selector).forEach(el => el.textContent = text); }
+    function updateEditProfileUIStatus(user) { const userInput = document.getElementById('editUsernameInput'); const passInput = document.getElementById('editPasswordInput'); const saveBtn = document.getElementById('saveProfileChangesBtn'); if(!userInput || !passInput || !saveBtn) return; if (parseBool(user.username_changed)) { userInput.disabled = true; passInput.disabled = true; saveBtn.disabled = true; saveBtn.innerHTML = '<i class="fas fa-lock"></i> Terkunci (Sudah Diubah)'; userInput.style.opacity = '0.5'; passInput.style.opacity = '0.5'; } else { userInput.disabled = false; passInput.disabled = false; saveBtn.disabled = false; saveBtn.innerHTML = 'Simpan Permanen'; userInput.value = user.username || ''; passInput.value = user.password || ''; } }
+    document.getElementById('saveProfileChangesBtn').addEventListener('click', async () => { const newU = document.getElementById('editUsernameInput').value.trim(); const newP = document.getElementById('editPasswordInput').value.trim(); if (!newU || !newP) { showMsg('editProfileMsg', 'Username dan kata sandi tidak boleh kosong.'); return; } if (newU !== currentUserData.username) { const { data: checkU } = await supabaseClient.from('users').select('username').eq('username', newU); if (checkU && checkU.length > 0) { showMsg('editProfileMsg', 'Username tersebut sudah digunakan orang lain.'); return; } } const btn = document.getElementById('saveProfileChangesBtn'); btn.innerHTML = '<span class="loader-spinner"></span> Menyimpan...'; btn.disabled = true; const oldUsername = currentUserData.username; const { error } = await supabaseClient.from('users').update({ username: newU, password: newP, username_changed: true }).eq('username', oldUsername); if (error) { btn.innerHTML = 'Simpan Permanen'; btn.disabled = false; showMsg('editProfileMsg', 'Gagal memperbarui profil: ' + error.message); } else { btn.innerHTML = '<i class="fas fa-check"></i> Berhasil Tersimpan'; currentUserData.username = newU; currentUserData.password = newP; currentUserData.username_changed = true; localStorage.setItem(SESSION_KEY, newU); localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData); showMsg('editProfileMsg', 'Kredensial berhasil diperbarui secara permanen!', 'success'); } });
+    async function checkForLatestBroadcast() { const { data, error } = await supabaseClient.from('broadcasts').select('*').order('created_at', { ascending: false }).limit(1); if (!error && data && data.length > 0) { const latest = data[0]; activeBroadcastId = latest.id; const lastSeenId = localStorage.getItem(BROADCAST_SEEN_KEY); if (lastSeenId !== String(latest.id)) { document.getElementById('broadcastContentText').textContent = latest.message; document.getElementById('broadcastModal').classList.add('show'); } } }
+    function initRealtimeBroadcastListener() { checkForLatestBroadcast(); supabaseClient.channel('public:broadcasts').on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'broadcasts' }, payload => { const newBroadcast = payload.new; activeBroadcastId = newBroadcast.id; const lastSeenId = localStorage.getItem(BROADCAST_SEEN_KEY); if (lastSeenId !== String(newBroadcast.id)) { document.getElementById('broadcastContentText').textContent = newBroadcast.message; document.getElementById('broadcastModal').classList.add('show'); } }).subscribe(); }
+    window.closeBroadcastModal = function() { if (activeBroadcastId) localStorage.setItem(BROADCAST_SEEN_KEY, String(activeBroadcastId)); document.getElementById('broadcastModal').classList.remove('show'); };
+    window.sendBroadcastMsg = async function() { const text = document.getElementById('broadcastInput').value.trim(); if(!text) return customAlert("Pesan broadcast tidak boleh kosong!", true); const { error } = await supabaseClient.from('broadcasts').insert([{ message: text, created_at: new Date().toISOString() }]); if (error) { customAlert("Gagal mengirim broadcast: " + error.message, true); } else { customAlert("Broadcast berhasil dikirim ke seluruh member!"); document.getElementById('broadcastInput').value = ''; } };
+    async function fetchUserSession(username) { try { const { data, error } = await supabaseClient.from('users').select('*').eq('username', username).single(); if (data && !error) { if (parseBool(data.is_banned)) { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(CACHE_KEY); switchView('loginView'); customAlert("Akun Anda telah di-suspend oleh Admin.", true); return; } localStorage.setItem(CACHE_KEY, JSON.stringify(data)); currentUserData = data; window.loadAppView(data); } else if (error && error.code === 'PGRST116') { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(CACHE_KEY); switchView('loginView'); } else if (error) { throw error; } } catch (err) { if (!currentUserData) { localStorage.removeItem(SESSION_KEY); switchView('loginView'); } } }
+    window.switchView = function(viewId) { ['loginView', 'registerView', 'appView'].forEach(v => { const el = document.getElementById(v); if(el) el.classList.add('hidden'); }); const targetView = document.getElementById(viewId); if(targetView) targetView.classList.remove('hidden'); if(viewId === 'registerView') { generateCaptcha(); document.getElementById('regCaptcha').value = ''; } clearFormMessages(); };
+    function clearFormMessages() { document.querySelectorAll('.message-box').forEach(el => { el.classList.remove('show', 'message-success', 'message-error'); el.innerHTML = ''; }); }
+    function showMsg(elId, text, type = 'error') { const el = document.getElementById(elId); if(el) { el.innerHTML = text; el.className = 'message-box show'; if (type === 'error') el.classList.add('message-error'); if (type === 'success') el.classList.add('message-success'); } }
+    window.closeWarningModal = function() { document.getElementById('warningModal').classList.remove('show'); if(!localStorage.getItem(SESSION_KEY)) document.getElementById('loginView').classList.remove('hidden'); };
+    window.handleForgotClick = function() { window.open(`https://wa.me/${OWNER_WA.replace('+', '')}?text=` + encodeURIComponent("Halo Admin, saya lupa kata sandi akun saya."), '_blank'); };
+    window.renderMemberList = async function() { const { data: users, error } = await supabaseClient.from('users').select('*'); const memberList = document.getElementById('memberList'); const searchInput = document.getElementById('memberSearchInput'); if(!memberList || error) return; const searchQuery = searchInput ? searchInput.value.toLowerCase().trim() : ''; const filteredUsers = users.filter(m => { const uname = (m.username || '').toLowerCase(); const idCode = (m.id_code || '').toLowerCase(); return uname.includes(searchQuery) || idCode.includes(searchQuery); }); filteredUsers.sort((a, b) => { const aVip = parseBool(a.is_permanent) || a.role === 'Owner' ? 1 : 0; const bVip = parseBool(b.is_permanent) || b.role === 'Owner' ? 1 : 0; if (aVip !== bVip) return bVip - aVip; return new Date(a.created_at) - new Date(b.created_at); }); memberList.innerHTML = ''; if (filteredUsers.length === 0) { memberList.innerHTML = `<div style="text-align: center; color: var(--text-dim); padding: 20px; font-size: 13px;">Tidak ada pengguna ditemukan.</div>`; return; } filteredUsers.forEach((m, index) => { const waClean = m.wa ? m.wa.replace(/[^0-9]/g, '') : ''; const waLink = waClean ? `https://wa.me/${waClean}` : '#'; const isVipUser = parseBool(m.is_permanent); const isBannedUser = parseBool(m.is_banned); let createdDate = m.created_at ? new Date(m.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Baru saja'; let vipDateFormatted = m.vip_since ? new Date(m.vip_since).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : (isVipUser ? 'Permanen' : '-'); let roleBadge = `<span class="role-badge">Member</span>`; let bannedBadge = isBannedUser ? `<span style="font-size:10px; background:rgba(255,51,102,0.2); color:#ff85a2; padding:4px 8px; border-radius:8px;">SUSPENDED</span>` : ''; let cardClass = 'admin-user-card'; if (m.role === 'Owner') { roleBadge = `<span class="role-badge vip" style="background:#fff; color:#000;">Owner</span>`; cardClass += ' is-vip'; } else if (isVipUser) { roleBadge = `<span class="role-badge vip">VIP</span>`; cardClass += ' is-vip'; } if (isBannedUser) { cardClass += ' is-banned'; } const el = document.createElement('div'); el.className = cardClass; el.style.animationDelay = `${index * 0.08}s`; el.innerHTML = `<div class="auc-header"><div class="auc-name">@${m.username} ${bannedBadge}</div><div class="auc-id">${m.id_code || 'MSH-000'}</div></div><div class="auc-details"><span>Role: ${roleBadge}</span><span>Limit: <b>${isVipUser ? '∞' : (m.limit_count ?? 3)}</b></span><span>Pass: <b>${m.password}</b></span><span>WA: <b>${m.wa || '-'}</b></span><span style="grid-column: span 2; color: var(--text-pure);">HWID: <b>${m.device_id || 'NULL'}</b></span><span style="grid-column: span 2; color: var(--text-pure);">IP: <b>${m.ip_address || 'NULL'}</b></span><span>Dibuat: <b>${createdDate}</b></span><span style="color: ${isVipUser ? 'var(--accent-vip)' : 'var(--text-dim)'};">VIP Sejak: <b>${vipDateFormatted}</b></span></div><div class="auc-actions"><button class="btn-micro" onclick="adjustLimit('${m.username}', 1)">+ Kuota</button><button class="btn-micro" onclick="adjustLimit('${m.username}', -1)">- Kuota</button><button class="btn-micro" style="color:var(--accent-vip); border-color:var(--accent-vip);" onclick="toggleVipStatus('${m.username}', ${isVipUser})">${isVipUser ? 'Cabut VIP' : 'Set VIP'}</button><button class="btn-micro" style="color: ${isBannedUser ? 'var(--accent-green)' : 'var(--accent-red)'}; border-color:${isBannedUser ? 'var(--accent-green)' : 'var(--accent-red)'};" onclick="toggleSuspendStatus('${m.username}', ${isBannedUser})">${isBannedUser ? 'Unsuspend' : 'Suspend'}</button><a href="${waLink}" target="_blank" class="btn-micro">Hubungi</a></div>`; memberList.appendChild(el); }); };
+    window.adjustLimit = async function(username, amount) { const { data: user, error: fetchErr } = await supabaseClient.from('users').select('limit_count, is_permanent').eq('username', username).single(); if (fetchErr || !user) return customAlert("Gagal mengambil data user.", true); if (parseBool(user.is_permanent)) return customAlert("User ini sudah berstatus VIP/Unlimited.", true); let currentLimit = user.limit_count ?? 3; let newLimit = Math.max(0, currentLimit + amount); const { error } = await supabaseClient.from('users').update({ limit_count: newLimit }).eq('username', username); if (error) customAlert("Gagal memperbarui limit: " + error.message, true); else { renderMemberList(); customAlert("Limit diperbarui!"); if(currentUserData && currentUserData.username === username) { currentUserData.limit_count = newLimit; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData); } } };
+    window.toggleVipStatus = async function(username, currentVipStatus) { const newStatus = !currentVipStatus ? 'true' : 'false'; const updatePayload = { is_permanent: newStatus, vip_since: !currentVipStatus ? new Date().toISOString() : null }; const { error } = await supabaseClient.from('users').update(updatePayload).eq('username', username); if (error) customAlert("Gagal mengubah status VIP: " + error.message, true); else { renderMemberList(); customAlert("Status VIP berhasil diubah."); if(currentUserData && currentUserData.username === username) { currentUserData.is_permanent = newStatus; currentUserData.vip_since = updatePayload.vip_since; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData); } } };
+    window.toggleSuspendStatus = async function(username, currentBannedStatus) { const confirmMsg = currentBannedStatus ? `MENGEMBALIKAN (Unsuspend) akses untuk ${username}?` : `MENSKORS (Suspend) akun ${username} secara permanen?`; customConfirm(confirmMsg, async () => { const newStatus = currentBannedStatus ? 'false' : 'true'; const { error } = await supabaseClient.from('users').update({ is_banned: newStatus }).eq('username', username); if (error) customAlert("Gagal mengubah status suspend: " + error.message, true); else { customAlert(`Akun berhasil di-${currentBannedStatus ? 'unsuspend' : 'suspend'}.`); renderMemberList(); } }); };
+    window.togglePwd = function(inputId, btnEl) { const input = document.getElementById(inputId); const icon = btnEl.querySelector('i'); if (input.type === 'password') { input.type = 'text'; icon.className = 'fas fa-eye-slash'; } else { input.type = 'password'; icon.className = 'far fa-eye'; } };
+    function initImageEnhancerEngine() { const urlInput = document.getElementById('imageUrl'); const dropZone = document.getElementById('dropZone'); const fileInput = document.getElementById('fileInput'); const fileNameDisplay = document.getElementById('fileNameDisplay'); const strengthRange = document.getElementById('strengthRange'); const strengthIndicator = document.getElementById('strengthIndicator'); const openModeModal = document.getElementById('openModeModal'); const closeModeModal = document.getElementById('closeModeModal'); const modeModalOverlay = document.getElementById('modeModalOverlay'); const applyModeBtn = document.getElementById('applyModeBtn'); const currentModeLabel = document.getElementById('currentModeLabel'); const modeItems = document.querySelectorAll('.mode-option-item'); const enhanceBtn = document.getElementById('enhanceBtn'); const resetBtn = document.getElementById('resetBtn'); const comparisonSplitSection = document.getElementById('comparisonSplitSection'); const splitImgBefore = document.getElementById('splitImgBefore'); const splitImgAfter = document.getElementById('splitImgAfter'); const statusMessage = document.getElementById('statusMessage'); const downloadFooterActions = document.getElementById('downloadFooterActions'); const downloadBtn = document.getElementById('downloadBtn'); const copyUrlBtn = document.getElementById('copyUrlBtn'); let selectedFile = null; let selectedMode = '2x'; let tempSelectedMode = '2x'; let originalBlobUrl = null; let enhancedBlobUrl = null; if(!strengthRange) return; strengthRange.addEventListener('input', () => { const val = parseInt(strengthRange.value, 10); let label = 'Optimal'; if (val <= 30) label = 'Lembut'; else if (val > 70) label = 'Maksimal'; strengthIndicator.textContent = label; }); openModeModal.addEventListener('click', () => { tempSelectedMode = selectedMode; modeItems.forEach(item => { if (item.getAttribute('data-mode') === tempSelectedMode) { item.classList.add('selected'); item.style.borderColor = 'var(--text-pure)'; item.querySelector('i').style.color = 'var(--text-pure)'; } else { item.classList.remove('selected'); item.style.borderColor = 'var(--glass-border)'; item.querySelector('i').style.color = 'var(--text-dark)'; } }); modeModalOverlay.classList.add('show'); }); const closeModalFunc = () => { modeModalOverlay.classList.remove('show'); }; closeModeModal.addEventListener('click', closeModalFunc); modeModalOverlay.addEventListener('click', (e) => { if (e.target === modeModalOverlay) closeModalFunc(); }); modeItems.forEach(item => { item.addEventListener('click', () => { modeItems.forEach(i => { i.classList.remove('selected'); i.style.borderColor = 'var(--glass-border)'; i.querySelector('i').style.color = 'var(--text-dark)'; }); item.classList.add('selected'); item.style.borderColor = 'var(--text-pure)'; item.querySelector('i').style.color = 'var(--text-pure)'; tempSelectedMode = item.getAttribute('data-mode'); }); }); applyModeBtn.addEventListener('click', () => { selectedMode = tempSelectedMode; const modeTexts = { '2x': 'Super Resolution 2x', '1x': 'Clean & Sharpen (1x)', 'hdr': 'Dynamic HDR Boost' }; currentModeLabel.textContent = modeTexts[selectedMode]; closeModalFunc(); }); dropZone.addEventListener('click', () => fileInput.click()); ['dragenter', 'dragover'].forEach(e => dropZone.addEventListener(e, ev => { ev.preventDefault(); dropZone.style.borderColor = 'var(--accent-primary)'; dropZone.style.background = 'rgba(0,242,254,0.08)'; })); ['dragleave', 'drop'].forEach(e => dropZone.addEventListener(e, ev => { ev.preventDefault(); dropZone.style.borderColor = 'var(--glass-border-light)'; dropZone.style.background = 'rgba(0,0,0,0.4)'; })); dropZone.addEventListener('drop', (e) => { const files = e.dataTransfer.files; if (files && files[0]) handleFile(files[0]); }); fileInput.addEventListener('change', (e) => { if (e.target.files && e.target.files[0]) handleFile(e.target.files[0]); }); function handleFile(file) { if (!file.type.startsWith('image/')) { setEnhancerStatus('Format tidak didukung.', 'error'); return; } if (file.size > 25 * 1024 * 1024) { setEnhancerStatus('Ukuran berkas melebihi batas (Maks 25MB).', 'error'); return; } selectedFile = file; fileNameDisplay.textContent = `File siap: ${file.name} (${(file.size / 1024 / 1024).toFixed(1)} MB)`; urlInput.value = ''; setEnhancerStatus(''); } function setEnhancerStatus(text, type = '') { statusMessage.innerHTML = text; if (text === '') { statusMessage.classList.remove('show'); } else { statusMessage.className = 'message-box show' + (type ? ' message-' + type : ''); } } resetBtn.addEventListener('click', () => { selectedFile = null; fileInput.value = ''; fileNameDisplay.textContent = ''; urlInput.value = ''; if (originalBlobUrl) URL.revokeObjectURL(originalBlobUrl); if (enhancedBlobUrl) URL.revokeObjectURL(enhancedBlobUrl); originalBlobUrl = null; enhancedBlobUrl = null; comparisonSplitSection.classList.add('hidden'); downloadFooterActions.classList.add('hidden'); setEnhancerStatus(''); }); enhanceBtn.addEventListener('click', async () => { const urlVal = urlInput.value.trim(); if (!urlVal && !selectedFile) { setEnhancerStatus('Sediakan URL gambar atau unggah berkas.', 'error'); return; } enhanceBtn.disabled = true; enhanceBtn.innerHTML = '<span class="loader-spinner"></span> Render AI...'; setEnhancerStatus('Menyiapkan AI Engine...', ''); try { let sourceImg = null; let origBlob = null; if (selectedFile) { origBlob = selectedFile; sourceImg = await loadImageFromFile(selectedFile); } else { origBlob = await fetchUrlBlob(urlVal); sourceImg = await loadImageFromBlob(origBlob); } originalBlobUrl = URL.createObjectURL(origBlob); splitImgBefore.src = originalBlobUrl; let enhancedBlob = null; let methodUsed = ''; const apiList = [ 'https://api-nanzz.my.id/docs/api/tools/image/enhancer.php?url=', 'https://api-nanzz.my.id/api/tools/image/enhancer?url=' ]; let targetFetchUrl = urlVal || originalBlobUrl; for (const api of apiList) { try { const resp = await fetch(api + encodeURIComponent(targetFetchUrl), { headers: { 'Accept': 'image/*' } }); if (resp.ok) { const b = await resp.blob(); if (b && b.size > 400 && b.type.startsWith('image/')) { enhancedBlob = b; methodUsed = 'Cloud Engine'; break; } } } catch(e) {} } if (!enhancedBlob) { setEnhancerStatus('Memproses Local Matrix...', ''); const factorVal = parseInt(strengthRange.value, 10); enhancedBlob = await runLocalEnhancer(sourceImg, factorVal, selectedMode); methodUsed = 'Local Node'; } enhancedBlobUrl = URL.createObjectURL(enhancedBlob); splitImgAfter.src = enhancedBlobUrl; comparisonSplitSection.classList.remove('hidden'); downloadFooterActions.classList.remove('hidden'); setEnhancerStatus(`Sukses dirender oleh ${methodUsed}.`, 'success'); } catch (err) { setEnhancerStatus('Gagal: ' + err.message, 'error'); } finally { enhanceBtn.disabled = false; enhanceBtn.innerHTML = '<i class="fas fa-microchip"></i> Render AI'; } }); function fetchUrlBlob(url) { return new Promise(async (resolve, reject) => { try { const res = await fetch(url); if (!res.ok) throw new Error('Akses URL ditolak.'); const blob = await res.blob(); resolve(blob); } catch (e) { reject(new Error('Gagal mengambil gambar. Terdapat batasan CORS.')); } }); } function loadImageFromFile(file) { return new Promise((resolve, reject) => { const reader = new FileReader(); reader.onload = e => { const img = new Image(); img.onload = () => resolve(img); img.onerror = reject; img.src = e.target.result; }; reader.onerror = reject; reader.readAsDataURL(file); }); } function loadImageFromBlob(blob) { return new Promise((resolve, reject) => { const url = URL.createObjectURL(blob); const img = new Image(); img.onload = () => resolve(img); img.onerror = reject; img.src = url; }); } function runLocalEnhancer(img, strengthVal, mode) { return new Promise((resolve, reject) => { try { const sw = img.naturalWidth || img.width; const sh = img.naturalHeight || img.height; let multiplier = 1.6; if (mode === '2x') multiplier = 2.0; if (mode === 'hdr') multiplier = 1.75; const limitMax = 3840; if ((sw * multiplier) > limitMax || (sh * multiplier) > limitMax) { multiplier = Math.min(limitMax / sw, limitMax / sh); } const w = Math.round(sw * multiplier); const h = Math.round(sh * multiplier); const canvas = document.createElement('canvas'); canvas.width = w; canvas.height = h; const ctx = canvas.getContext('2d', { willReadFrequently: true }); ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high'; const intensity = strengthVal / 100; let contrast = 1.06 + (intensity * 0.12); let saturate = 1.05 + (intensity * 0.15); let brightness = 1.01 + (intensity * 0.03); if (mode === 'hdr') { contrast += 0.08; saturate += 0.12; } ctx.filter = `contrast(${contrast}) saturate(${saturate}) brightness(${brightness})`; ctx.drawImage(img, 0, 0, w, h); ctx.filter = 'none'; canvas.toBlob((blob) => { if (blob) resolve(blob); else reject(new Error('Gagal merender output.')); }, 'image/png', 0.98); } catch (err) { reject(err); } }); } downloadBtn.addEventListener('click', () => { if (enhancedBlobUrl) { const a = document.createElement('a'); a.href = enhancedBlobUrl; a.download = `AM_Cloud_Enhanced_${Date.now()}.png`; document.body.appendChild(a); a.click(); a.remove(); } }); copyUrlBtn.addEventListener('click', () => { if (enhancedBlobUrl) { navigator.clipboard.writeText(enhancedBlobUrl).then(() => { setEnhancerStatus('URL disalin.', 'success'); }).catch(() => { setEnhancerStatus('Gagal menyalin.', 'error'); }); } }); }
+    
+    const loginUser = document.getElementById('loginUser'); const loginPwd = document.getElementById('loginPwd');
+    const loginBtn = document.getElementById('loginBtn'); const regUser = document.getElementById('regUser');
+    const regWa = document.getElementById('regWa'); const regPwd = document.getElementById('regPwd');
+    const regCaptcha = document.getElementById('regCaptcha'); const regBtn = document.getElementById('regBtn');
+    const logoutBtn = document.getElementById('logoutBtn'); const emailInput = document.getElementById('emailInput');
+    const magicInput = document.getElementById('magicInput'); const sendBtn = document.getElementById('sendBtn');
+    const activateBtn = document.getElementById('activateBtn');
+
+    if(loginBtn) { loginBtn.addEventListener('click', async () => { const u = loginUser.value.trim(); const p = loginPwd.value.trim(); if(!u || !p) return showMsg('loginErrorMsg', 'Harap isi informasi login.'); const originalText = loginBtn.textContent; loginBtn.innerHTML = '<span class="loader-spinner"></span>'; loginBtn.disabled = true; const { data, error } = await supabaseClient.from('users').select('*').eq('username', u).single(); loginBtn.textContent = originalText; loginBtn.disabled = false; if(error || !data || data.password !== p) return showMsg('loginErrorMsg', 'Otorisasi gagal: Username atau sandi salah.'); if (parseBool(data.is_banned)) return showMsg('loginErrorMsg', 'Akses ditolak: Akun Anda disuspend.'); localStorage.setItem(SESSION_KEY, u); localStorage.setItem(CACHE_KEY, JSON.stringify(data)); window.loadAppView(data); }); }
+    if(regBtn) { regBtn.addEventListener('click', async () => { const u = regUser.value.trim(); const w = regWa.value.trim(); const p = regPwd.value.trim(); const cInput = parseInt(regCaptcha.value.trim()); if (!u || !w || !p || isNaN(cInput)) return showMsg('regMsg', 'Seluruh bidang registrasi harus diisi.'); const cleanWa = w.replace(/[^0-9]/g, ''); if (!/^(08|628)\d{8,13}$/.test(cleanWa)) return showMsg('regMsg', 'Format nomor kontak salah.'); if (cInput !== currentCaptchaAnswer) return showMsg('regMsg', 'Sistem mendeteksi kegagalan verifikasi robot.'); const originalBtnText = regBtn.innerHTML; regBtn.innerHTML = '<span class="loader-spinner"></span> Mendaftarkan...'; regBtn.disabled = true; try { const userIp = await getIPAddress(); if(userIp && userIp !== 'unknown-ip') { const { data: ipCheck, error: ipErr } = await supabaseClient.from('users').select('id').eq('ip_address', userIp); if (!ipErr && ipCheck && ipCheck.length >= 2) throw new Error('Limit pendaftaran pada jaringan IP ini terlampaui.'); } const hardwareFingerprint = await generateAdvancedFingerprint(); const { data: fpCheck, error: fpErr } = await supabaseClient.from('users').select('id').eq('device_id', hardwareFingerprint); if (!fpErr && fpCheck && fpCheck.length >= 1) throw new Error('Identitas hardware Anda telah dikaitkan dengan entitas akun lain.'); const { data: existingUsername } = await supabaseClient.from('users').select('username').eq('username', u); if(existingUsername && existingUsername.length > 0) throw new Error('Username telah digunakan node lain.'); const { data: existingWa } = await supabaseClient.from('users').select('wa').eq('wa', cleanWa); if(existingWa && existingWa.length > 0) throw new Error('Nomor kontak telah terdaftar dalam sistem.'); const newUserData = { username: u, password: p, wa: cleanWa, role: 'Member', id_code: 'MSH-' + Math.floor(1000 + Math.random() * 9000), limit_count: 3, is_permanent: 'false', is_banned: 'false', device_id: hardwareFingerprint, ip_address: userIp, avatar_url: null, vip_since: null, username_changed: false, created_at: new Date().toISOString() }; const { error } = await supabaseClient.from('users').insert([newUserData]); if(error) throw new Error('Gangguan Basis Data: ' + error.message); localStorage.setItem(SESSION_KEY, u); localStorage.setItem(CACHE_KEY, JSON.stringify(newUserData)); window.loadAppView(newUserData); fetchGlobalStats(); } catch (err) { showMsg('regMsg', err.message); } finally { regBtn.innerHTML = originalBtnText; regBtn.disabled = false; } }); }
+    if(logoutBtn) { logoutBtn.addEventListener('click', () => { customConfirm("Anda yakin ingin mengakhiri sesi ini (Logout)?", () => { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(CACHE_KEY); closeProfileSheet(); switchView('loginView'); }); }); }
+    if(sendBtn) { sendBtn.addEventListener('click', async () => { const email = emailInput.value.trim(); if(!email || !email.includes('@')) { showMsg('appErrorMsg', 'Masukkan format alamat email dengan benar.'); return; } const oldText = sendBtn.textContent; sendBtn.innerHTML = '<span class="loader-spinner"></span>'; sendBtn.disabled = true; try { const url = `${API_BASE}/api/am?action=send&apikey=${API_KEY}&email=${encodeURIComponent(email)}`; const res = await fetch(url); const data = await res.json(); if (data.status) { cachedEmail = email; sendBtn.innerHTML = '<i class="fas fa-check"></i>'; magicInput.focus(); showMsg('appErrorMsg', 'Magic link terkirim. Silakan periksa Kotak Masuk Anda.', 'success'); setTimeout(() => { sendBtn.textContent = oldText; sendBtn.disabled = false; }, 2000); } else { showMsg('appErrorMsg', `Gagal: ${data.error || data.message}`); sendBtn.textContent = oldText; sendBtn.disabled = false; } } catch (err) { showMsg('appErrorMsg', `Error: ${err.message}`); sendBtn.textContent = oldText; sendBtn.disabled = false; } }); }
+    if(activateBtn) { activateBtn.addEventListener('click', async () => { const email = emailInput.value.trim(); const magic = magicInput.value.trim(); if (!email || !magic) { showMsg('appErrorMsg', 'Pastikan Email dan Tautan Magic terisi.'); return; } const emailToUse = cachedEmail || email; document.getElementById('btnDefault').classList.add('hidden'); document.getElementById('loaderContainer').classList.remove('hidden'); activateBtn.disabled = true; try { const url = `${API_BASE}/api/am?action=verif&apikey=${API_KEY}&email=${encodeURIComponent(emailToUse)}&url=${encodeURIComponent(magic)}`; const res = await fetch(url); const data = await res.json(); document.getElementById('loaderContainer').classList.add('hidden'); if (data.status) { document.getElementById('btnSuccess').classList.remove('hidden'); showMsg('appErrorMsg', 'Berhasil! Lisensi terverifikasi.', 'success'); cachedEmail = ''; if(currentUserData && !parseBool(currentUserData.is_permanent) && currentUserData.role !== 'Owner') { let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 1); await supabaseClient.from('users').update({ limit_count: newLimit }).eq('username', currentUserData.username); currentUserData.limit_count = newLimit; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData); } } else { activateBtn.disabled = false; document.getElementById('btnDefault').classList.remove('hidden'); showMsg('appErrorMsg', `Otorisasi Ditolak: ${data.error || data.message}`); } } catch (err) { document.getElementById('loaderContainer').classList.add('hidden'); activateBtn.disabled = false; document.getElementById('btnDefault').classList.remove('hidden'); showMsg('appErrorMsg', `Kesalahan API Server: ${err.message}`); } }); }
+    
+    window.switchTab = function(tabName) { document.getElementById('sectionActivator').classList.add('hidden'); document.getElementById('sectionEnhancer').classList.add('hidden'); document.getElementById('ownerPanel').classList.add('hidden'); document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active')); if(tabName === 'activator') { document.getElementById('sectionActivator').classList.remove('hidden'); document.getElementById('btnTabActivator').classList.add('active'); } else if(tabName === 'enhancer') { document.getElementById('sectionEnhancer').classList.remove('hidden'); document.getElementById('btnTabEnhancer').classList.add('active'); } else if(tabName === 'admin') { document.getElementById('ownerPanel').classList.remove('hidden'); const adminBtn = document.getElementById('toggleOwnerDashBtn'); if(adminBtn) adminBtn.classList.add('active'); if(typeof renderMemberList === 'function') renderMemberList(); } };
+    window.openProfileSheet = function() { document.getElementById('profileSheet').classList.add('show'); };
+    window.closeProfileSheet = function() { document.getElementById('profileSheet').classList.remove('show'); };
+})();
 </script>
-
 </body>
 </html>
