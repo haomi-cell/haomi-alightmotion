@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -53,6 +54,24 @@
     display: flex; flex-direction: column; align-items: center; 
     overflow-x: hidden;
   }
+
+  /* ================= PRELOADER ================= */
+  #initialLoader {
+    position: fixed; inset: 0; z-index: 9999; 
+    display: flex; align-items: center; justify-content: center; 
+    background: var(--bg-base); flex-direction: column; gap: 16px; 
+    transition: opacity 0.5s ease;
+  }
+  
+  .loader-spinner { 
+    display: inline-block; width: 16px; height: 16px; 
+    border: 2px solid rgba(0,0,0,0.2); border-top-color: currentColor; 
+    border-radius: 50%; animation: spin 0.8s linear infinite; 
+  }
+  #initialLoader .loader-spinner {
+    width: 46px; height: 46px; border-width: 4px; border-top-color: var(--accent-primary);
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
 
   /* ================= ENHANCED DYNAMIC BLOBS & LIGHTING ================= */
   .bg-jelly {
@@ -359,15 +378,18 @@
   .mb-3 { margin-bottom: 16px; }
   .flex-row { display: flex; gap: 10px; }
   
-  .loader-spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(0,0,0,0.2); border-top-color: currentColor; border-radius: 50%; animation: spin 0.8s linear infinite; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  
   .mode-option-item { transition: all 0.4s var(--spring-easing); }
   .mode-option-item:hover { transform: translateX(10px); background: rgba(255,255,255,0.06) !important; }
   .mode-option-item:active { transform: scale(0.98); }
 </style>
 </head>
 <body>
+
+<!-- Preloader Screen -->
+<div id="initialLoader">
+  <div class="loader-spinner"></div>
+  <div style="font-size: 15px; font-weight: 700; color: var(--text-pure); font-family: var(--font-data); letter-spacing: 1px;">MEMUAT NODE...</div>
+</div>
 
 <!-- Jelly Theme Background -->
 <div class="bg-jelly">
@@ -832,23 +854,108 @@
     let cachedEmail = '';
     let activeBroadcastId = null;
 
-    window.onload = () => {
+    // ============== PERBAIKAN SCOPE JAVASCRIPT ==============
+    // Dipindahkan ke window.loadAppView (Lingkup Global) agar
+    // window.onload bisa memanggil fungsi ini tanpa terjadi blank
+    window.loadAppView = function(user) {
+        try {
+            currentUserData = user;
+            
+            massUpdateText('.disp-username', user.username || 'User');
+            massUpdateText('.disp-userid', user.id_code || 'MSH-01');
+            massUpdateText('.disp-userwa', user.wa || '-');
+            massUpdateText('.disp-userip', user.ip_address || 'Tidak Diketahui');
+            
+            updateAvatarUI(user.avatar_url, user.username);
+            updateEditProfileUIStatus(user);
+
+            const isVip = parseBool(user.is_permanent);
+            const promoBanner = document.getElementById('promoBannerContainer');
+            const ownerDashBtn = document.getElementById('toggleOwnerDashBtn');
+            const ownerPanel = document.getElementById('ownerPanel');
+
+            const roleBadges = document.querySelectorAll('.disp-userrole');
+
+            if (user.role === 'Owner') {
+                roleBadges.forEach(rb => { rb.className = 'role-badge vip disp-userrole'; rb.textContent = 'OWNER'; rb.style.background = '#fff'; rb.style.color = '#000'; });
+                if(ownerDashBtn) ownerDashBtn.classList.remove('hidden'); 
+                if(promoBanner) promoBanner.classList.add('hidden');
+            } else {
+                if(ownerDashBtn) ownerDashBtn.classList.add('hidden'); 
+                if(ownerPanel) ownerPanel.classList.add('hidden');
+                
+                if (isVip) {
+                    roleBadges.forEach(rb => { rb.className = 'role-badge vip disp-userrole'; rb.textContent = 'VIP PREMIUM'; rb.style.background = ''; rb.style.color = '';});
+                    if(promoBanner) promoBanner.classList.add('hidden');
+                } else {
+                    roleBadges.forEach(rb => { rb.className = 'role-badge disp-userrole'; rb.textContent = 'MEMBER NODE'; rb.style.background = ''; rb.style.color = '';});
+                    if(promoBanner) promoBanner.classList.remove('hidden');
+                }
+            }
+
+            const limitBars = document.querySelectorAll('.disp-limit-bar');
+            if (user.role === 'Owner' || isVip) {
+                massUpdateText('.disp-limit-label', "Status Lisensi");
+                massUpdateText('.disp-limit-value', "UNLIMITED ∞");
+                document.querySelectorAll('.disp-limit-value').forEach(el => el.style.color = "var(--accent-vip)");
+                limitBars.forEach(bar => bar.classList.add('vip'));
+            } else {
+                const currentLimit = user.limit_count ?? 3;
+                massUpdateText('.disp-limit-label', "Batas API Mingguan");
+                massUpdateText('.disp-limit-value', `${currentLimit} dari 3`);
+                document.querySelectorAll('.disp-limit-value').forEach(el => el.style.color = "var(--text-pure)");
+                limitBars.forEach(bar => { bar.classList.remove('vip'); bar.style.width = ((currentLimit / 3) * 100) + "%"; });
+            }
+
+            switchView('appView');
+            
+            // Tab default
+            if(!document.querySelector('.nav-btn.active')) {
+                switchTab('activator');
+            }
+        } catch (e) {
+            console.error("Kesalahan saat menampilkan interface:", e);
+        }
+    };
+
+
+    window.onload = async () => {
+        const initialLoader = document.getElementById('initialLoader');
         const savedUser = localStorage.getItem(SESSION_KEY);
+        
         if(!savedUser) {
+            if(initialLoader) {
+                initialLoader.style.opacity = '0';
+                setTimeout(() => initialLoader.remove(), 500);
+            }
             document.getElementById('warningModal').classList.add('show');
         } else {
-            // Terapkan data cache jika ada agar UI memuat secara instan
-            const cachedData = localStorage.getItem(CACHE_KEY);
-            if (cachedData) {
-                try {
+            let hasCache = false;
+            try {
+                const cachedData = localStorage.getItem(CACHE_KEY);
+                if (cachedData) {
                     const parsed = JSON.parse(cachedData);
-                    currentUserData = parsed;
-                    loadAppView(parsed);
-                } catch(e) {}
+                    if (parsed && parsed.username) {
+                        currentUserData = parsed;
+                        window.loadAppView(parsed);
+                        hasCache = true;
+                        if(initialLoader) {
+                            initialLoader.style.opacity = '0';
+                            setTimeout(() => initialLoader.remove(), 500);
+                        }
+                    }
+                }
+            } catch(e) { console.error("Cache parsing bermasalah", e); }
+            
+            // Pengambilan data di background/foreground
+            await fetchUserSession(savedUser);
+            
+            if(initialLoader && document.body.contains(initialLoader)) {
+                initialLoader.style.opacity = '0';
+                setTimeout(() => initialLoader.remove(), 500);
             }
-            // Fetch di background untuk pembaruan kuota / status terbaru
-            fetchUserSession(savedUser);
         }
+        
         startClock();
         fetchGlobalStats(); 
         initRealtimeBroadcastListener();
@@ -951,6 +1058,8 @@
         const passInput = document.getElementById('editPasswordInput');
         const saveBtn = document.getElementById('saveProfileChangesBtn');
         
+        if(!userInput || !passInput || !saveBtn) return;
+
         if (parseBool(user.username_changed)) {
             userInput.disabled = true; passInput.disabled = true; saveBtn.disabled = true;
             saveBtn.innerHTML = '<i class="fas fa-lock"></i> Terkunci (Sudah Diubah)';
@@ -958,7 +1067,7 @@
         } else {
             userInput.disabled = false; passInput.disabled = false; saveBtn.disabled = false;
             saveBtn.innerHTML = 'Simpan Permanen';
-            userInput.value = user.username; passInput.value = user.password;
+            userInput.value = user.username || ''; passInput.value = user.password || '';
         }
     }
 
@@ -991,7 +1100,7 @@
             currentUserData.username = newU; currentUserData.password = newP; currentUserData.username_changed = true;
             localStorage.setItem(SESSION_KEY, newU);
             localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData));
-            loadAppView(currentUserData);
+            window.loadAppView(currentUserData);
             showMsg('editProfileMsg', 'Kredensial berhasil diperbarui secara permanen!', 'success');
         }
     });
@@ -1035,7 +1144,7 @@
         else { customAlert("Broadcast berhasil dikirim ke seluruh member!"); document.getElementById('broadcastInput').value = ''; }
     };
 
-    // FUNGSI INI TELAH DIPERBARUI AGAR TIDAK LOGOUT SAAT GAGAL KONEKSI
+    // Fungsi Fetch ke Database yang aman dari Black Screen
     async function fetchUserSession(username) {
         try {
             const { data, error } = await supabaseClient.from('users').select('*').eq('username', username).single();
@@ -1044,26 +1153,23 @@
                     localStorage.removeItem(SESSION_KEY);
                     localStorage.removeItem(CACHE_KEY);
                     switchView('loginView');
-                    customAlert("Akun Anda telah di-suspend oleh Admin.", true); return;
+                    customAlert("Akun Anda telah di-suspend oleh Admin.", true); 
+                    return;
                 }
                 localStorage.setItem(CACHE_KEY, JSON.stringify(data));
                 currentUserData = data; 
-                loadAppView(data);
+                window.loadAppView(data);
             } else if (error && error.code === 'PGRST116') {
-                // User dihapus dari database
+                // User telah dihapus di DB
                 localStorage.removeItem(SESSION_KEY);
                 localStorage.removeItem(CACHE_KEY);
                 switchView('loginView');
             } else if (error) {
-                console.error("Fetch DB error:", error);
-                if (!currentUserData) { // Jika tidak ada cache
-                    localStorage.removeItem(SESSION_KEY);
-                    switchView('loginView');
-                }
+                throw error; // Lempar ke blok catch untuk ditangani
             }
         } catch (err) {
-            console.error("Network error:", err);
-            // Jangan logout jika terjadi error koneksi jaringan (hanya gunakan cache)
+            console.error("Database / Network error:", err);
+            // Jika sama sekali tidak ada Cache (gagal total load data), arahkan ke Login
             if (!currentUserData) {
                 localStorage.removeItem(SESSION_KEY);
                 switchView('loginView');
@@ -1072,8 +1178,14 @@
     }
 
     window.switchView = function(viewId) {
-        ['loginView', 'registerView', 'appView'].forEach(v => { document.getElementById(v).classList.add('hidden'); });
-        document.getElementById(viewId).classList.remove('hidden');
+        ['loginView', 'registerView', 'appView'].forEach(v => { 
+            const el = document.getElementById(v);
+            if(el) el.classList.add('hidden'); 
+        });
+        
+        const targetView = document.getElementById(viewId);
+        if(targetView) targetView.classList.remove('hidden');
+        
         if(viewId === 'registerView') { generateCaptcha(); document.getElementById('regCaptcha').value = ''; }
         clearFormMessages();
     };
@@ -1084,9 +1196,11 @@
 
     function showMsg(elId, text, type = 'error') {
         const el = document.getElementById(elId);
-        el.innerHTML = text; el.className = 'message-box show';
-        if (type === 'error') el.classList.add('message-error');
-        if (type === 'success') el.classList.add('message-success');
+        if(el) {
+            el.innerHTML = text; el.className = 'message-box show';
+            if (type === 'error') el.classList.add('message-error');
+            if (type === 'success') el.classList.add('message-success');
+        }
     }
 
     window.closeWarningModal = function() {
@@ -1192,7 +1306,7 @@
             if(currentUserData && currentUserData.username === username) { 
                 currentUserData.limit_count = newLimit; 
                 localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData));
-                loadAppView(currentUserData); 
+                window.loadAppView(currentUserData); 
             }
         }
     };
@@ -1209,7 +1323,7 @@
             if(currentUserData && currentUserData.username === username) {
                 currentUserData.is_permanent = newStatus; currentUserData.vip_since = updatePayload.vip_since;
                 localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData));
-                loadAppView(currentUserData);
+                window.loadAppView(currentUserData);
             }
         }
     };
@@ -1257,6 +1371,8 @@
 
         let selectedFile = null; let selectedMode = '2x'; let tempSelectedMode = '2x';
         let originalBlobUrl = null; let enhancedBlobUrl = null;
+
+        if(!strengthRange) return;
 
         strengthRange.addEventListener('input', () => {
           const val = parseInt(strengthRange.value, 10);
@@ -1412,67 +1528,73 @@
         const magicInput = document.getElementById('magicInput'); const sendBtn = document.getElementById('sendBtn');
         const activateBtn = document.getElementById('activateBtn');
 
-        loginBtn.addEventListener('click', async () => {
-            const u = loginUser.value.trim(); const p = loginPwd.value.trim();
-            if(!u || !p) return showMsg('loginErrorMsg', 'Harap isi informasi login dengan lengkap.');
+        if(loginBtn) {
+            loginBtn.addEventListener('click', async () => {
+                const u = loginUser.value.trim(); const p = loginPwd.value.trim();
+                if(!u || !p) return showMsg('loginErrorMsg', 'Harap isi informasi login dengan lengkap.');
 
-            const originalText = loginBtn.textContent; loginBtn.innerHTML = '<span class="loader-spinner" style="border-top-color:var(--bg-base);"></span>'; loginBtn.disabled = true;
+                const originalText = loginBtn.textContent; loginBtn.innerHTML = '<span class="loader-spinner" style="border-top-color:var(--bg-base);"></span>'; loginBtn.disabled = true;
 
-            const { data, error } = await supabaseClient.from('users').select('*').eq('username', u).single();
-            loginBtn.textContent = originalText; loginBtn.disabled = false;
+                const { data, error } = await supabaseClient.from('users').select('*').eq('username', u).single();
+                loginBtn.textContent = originalText; loginBtn.disabled = false;
 
-            if(error || !data || data.password !== p) return showMsg('loginErrorMsg', 'Otorisasi gagal: Username atau sandi salah.');
-            if (parseBool(data.is_banned)) return showMsg('loginErrorMsg', 'Akses ditolak: Akun Anda disuspend sistem.');
+                if(error || !data || data.password !== p) return showMsg('loginErrorMsg', 'Otorisasi gagal: Username atau sandi salah.');
+                if (parseBool(data.is_banned)) return showMsg('loginErrorMsg', 'Akses ditolak: Akun Anda disuspend sistem.');
 
-            // MENYIMPAN CACHE SAAT BERHASIL LOGIN
-            localStorage.setItem(SESSION_KEY, u); 
-            localStorage.setItem(CACHE_KEY, JSON.stringify(data));
-            loadAppView(data);
-        });
-
-        regBtn.addEventListener('click', async () => {
-            const u = regUser.value.trim(); const w = regWa.value.trim(); const p = regPwd.value.trim(); const cInput = parseInt(regCaptcha.value.trim());
-
-            if (!u || !w || !p || isNaN(cInput)) return showMsg('regMsg', 'Seluruh bidang registrasi harus diisi.');
-            const cleanWa = w.replace(/[^0-9]/g, ''); if (!/^(08|628)\d{8,13}$/.test(cleanWa)) return showMsg('regMsg', 'Format nomor kontak salah.');
-            if (cInput !== currentCaptchaAnswer) return showMsg('regMsg', 'Sistem mendeteksi kegagalan verifikasi robot.');
-
-            const originalBtnText = regBtn.innerHTML; regBtn.innerHTML = '<span class="loader-spinner" style="border-top-color:var(--bg-base);"></span> Mendaftarkan...'; regBtn.disabled = true;
-
-            try {
-                const userIp = await getIPAddress();
-                if(userIp && userIp !== 'unknown-ip') { const { data: ipCheck, error: ipErr } = await supabaseClient.from('users').select('id').eq('ip_address', userIp); if (!ipErr && ipCheck && ipCheck.length >= 2) throw new Error('Limit pendaftaran pada jaringan IP ini terlampaui.'); }
-                
-                const hardwareFingerprint = await generateAdvancedFingerprint();
-                const { data: fpCheck, error: fpErr } = await supabaseClient.from('users').select('id').eq('device_id', hardwareFingerprint);
-                if (!fpErr && fpCheck && fpCheck.length >= 1) throw new Error('Identitas hardware Anda telah dikaitkan dengan entitas akun lain.');
-
-                const { data: existingUsername } = await supabaseClient.from('users').select('username').eq('username', u);
-                if(existingUsername && existingUsername.length > 0) throw new Error('Username telah digunakan node lain.');
-
-                const { data: existingWa } = await supabaseClient.from('users').select('wa').eq('wa', cleanWa);
-                if(existingWa && existingWa.length > 0) throw new Error('Nomor kontak telah terdaftar dalam sistem.');
-
-                const newUserData = { username: u, password: p, wa: cleanWa, role: 'Member', id_code: 'MSH-' + Math.floor(1000 + Math.random() * 9000), limit_count: 3, is_permanent: 'false', is_banned: 'false', device_id: hardwareFingerprint, ip_address: userIp, avatar_url: null, vip_since: null, username_changed: false, created_at: new Date().toISOString() };
-
-                const { error } = await supabaseClient.from('users').insert([newUserData]);
-                if(error) throw new Error('Gangguan Basis Data: ' + error.message);
-
+                // MENYIMPAN CACHE SAAT BERHASIL LOGIN
                 localStorage.setItem(SESSION_KEY, u); 
-                localStorage.setItem(CACHE_KEY, JSON.stringify(newUserData));
-                loadAppView(newUserData);
-                fetchGlobalStats();
-            } catch (err) { showMsg('regMsg', err.message); } 
-            finally { regBtn.innerHTML = originalBtnText; regBtn.disabled = false; }
-        });
-
-        logoutBtn.addEventListener('click', () => { 
-            customConfirm("Anda yakin ingin mengakhiri sesi ini (Logout)?", () => {
-                localStorage.removeItem(SESSION_KEY); 
-                localStorage.removeItem(CACHE_KEY); // Hapus Cache saat dilogout
-                closeProfileSheet(); switchView('loginView'); 
+                localStorage.setItem(CACHE_KEY, JSON.stringify(data));
+                window.loadAppView(data);
             });
-        });
+        }
+
+        if(regBtn) {
+            regBtn.addEventListener('click', async () => {
+                const u = regUser.value.trim(); const w = regWa.value.trim(); const p = regPwd.value.trim(); const cInput = parseInt(regCaptcha.value.trim());
+
+                if (!u || !w || !p || isNaN(cInput)) return showMsg('regMsg', 'Seluruh bidang registrasi harus diisi.');
+                const cleanWa = w.replace(/[^0-9]/g, ''); if (!/^(08|628)\d{8,13}$/.test(cleanWa)) return showMsg('regMsg', 'Format nomor kontak salah.');
+                if (cInput !== currentCaptchaAnswer) return showMsg('regMsg', 'Sistem mendeteksi kegagalan verifikasi robot.');
+
+                const originalBtnText = regBtn.innerHTML; regBtn.innerHTML = '<span class="loader-spinner" style="border-top-color:var(--bg-base);"></span> Mendaftarkan...'; regBtn.disabled = true;
+
+                try {
+                    const userIp = await getIPAddress();
+                    if(userIp && userIp !== 'unknown-ip') { const { data: ipCheck, error: ipErr } = await supabaseClient.from('users').select('id').eq('ip_address', userIp); if (!ipErr && ipCheck && ipCheck.length >= 2) throw new Error('Limit pendaftaran pada jaringan IP ini terlampaui.'); }
+                    
+                    const hardwareFingerprint = await generateAdvancedFingerprint();
+                    const { data: fpCheck, error: fpErr } = await supabaseClient.from('users').select('id').eq('device_id', hardwareFingerprint);
+                    if (!fpErr && fpCheck && fpCheck.length >= 1) throw new Error('Identitas hardware Anda telah dikaitkan dengan entitas akun lain.');
+
+                    const { data: existingUsername } = await supabaseClient.from('users').select('username').eq('username', u);
+                    if(existingUsername && existingUsername.length > 0) throw new Error('Username telah digunakan node lain.');
+
+                    const { data: existingWa } = await supabaseClient.from('users').select('wa').eq('wa', cleanWa);
+                    if(existingWa && existingWa.length > 0) throw new Error('Nomor kontak telah terdaftar dalam sistem.');
+
+                    const newUserData = { username: u, password: p, wa: cleanWa, role: 'Member', id_code: 'MSH-' + Math.floor(1000 + Math.random() * 9000), limit_count: 3, is_permanent: 'false', is_banned: 'false', device_id: hardwareFingerprint, ip_address: userIp, avatar_url: null, vip_since: null, username_changed: false, created_at: new Date().toISOString() };
+
+                    const { error } = await supabaseClient.from('users').insert([newUserData]);
+                    if(error) throw new Error('Gangguan Basis Data: ' + error.message);
+
+                    localStorage.setItem(SESSION_KEY, u); 
+                    localStorage.setItem(CACHE_KEY, JSON.stringify(newUserData));
+                    window.loadAppView(newUserData);
+                    fetchGlobalStats();
+                } catch (err) { showMsg('regMsg', err.message); } 
+                finally { regBtn.innerHTML = originalBtnText; regBtn.disabled = false; }
+            });
+        }
+
+        if(logoutBtn) {
+            logoutBtn.addEventListener('click', () => { 
+                customConfirm("Anda yakin ingin mengakhiri sesi ini (Logout)?", () => {
+                    localStorage.removeItem(SESSION_KEY); 
+                    localStorage.removeItem(CACHE_KEY); 
+                    closeProfileSheet(); switchView('loginView'); 
+                });
+            });
+        }
 
         if(sendBtn) {
             sendBtn.addEventListener('click', async () => {
@@ -1511,7 +1633,7 @@
                             await supabaseClient.from('users').update({ limit_count: newLimit }).eq('username', currentUserData.username);
                             currentUserData.limit_count = newLimit; 
                             localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData));
-                            loadAppView(currentUserData);
+                            window.loadAppView(currentUserData);
                         }
                     } else {
                         activateBtn.disabled = false; document.getElementById('btnDefault').classList.remove('hidden');
@@ -1522,55 +1644,6 @@
                     showMsg('appErrorMsg', `Kesalahan API Server: ${err.message}`);
                 }
             });
-        }
-
-        function loadAppView(user) {
-            currentUserData = user;
-            
-            massUpdateText('.disp-username', user.username);
-            massUpdateText('.disp-userid', user.id_code || 'MSH-01');
-            massUpdateText('.disp-userwa', user.wa || '-');
-            massUpdateText('.disp-userip', user.ip_address || 'Tidak Diketahui');
-            
-            updateAvatarUI(user.avatar_url, user.username);
-            updateEditProfileUIStatus(user);
-
-            const isVip = parseBool(user.is_permanent);
-            const promoBanner = document.getElementById('promoBannerContainer');
-            const ownerDashBtn = document.getElementById('toggleOwnerDashBtn');
-            const ownerPanel = document.getElementById('ownerPanel');
-
-            const roleBadges = document.querySelectorAll('.disp-userrole');
-
-            if (user.role === 'Owner') {
-                roleBadges.forEach(rb => { rb.className = 'role-badge vip disp-userrole'; rb.textContent = 'OWNER'; rb.style.background = '#fff'; rb.style.color = '#000'; });
-                ownerDashBtn.classList.remove('hidden'); if(promoBanner) promoBanner.classList.add('hidden');
-            } else {
-                ownerDashBtn.classList.add('hidden'); ownerPanel.classList.add('hidden');
-                if (isVip) {
-                    roleBadges.forEach(rb => { rb.className = 'role-badge vip disp-userrole'; rb.textContent = 'VIP PREMIUM'; rb.style.background = ''; rb.style.color = '';});
-                    if(promoBanner) promoBanner.classList.add('hidden');
-                } else {
-                    roleBadges.forEach(rb => { rb.className = 'role-badge disp-userrole'; rb.textContent = 'MEMBER NODE'; rb.style.background = ''; rb.style.color = '';});
-                    if(promoBanner) promoBanner.classList.remove('hidden');
-                }
-            }
-
-            const limitBars = document.querySelectorAll('.disp-limit-bar');
-            if (user.role === 'Owner' || isVip) {
-                massUpdateText('.disp-limit-label', "Status Lisensi");
-                massUpdateText('.disp-limit-value', "UNLIMITED ∞");
-                document.querySelectorAll('.disp-limit-value').forEach(el => el.style.color = "var(--accent-vip)");
-                limitBars.forEach(bar => bar.classList.add('vip'));
-            } else {
-                const currentLimit = user.limit_count ?? 3;
-                massUpdateText('.disp-limit-label', "Batas API Mingguan");
-                massUpdateText('.disp-limit-value', `${currentLimit} dari 3`);
-                document.querySelectorAll('.disp-limit-value').forEach(el => el.style.color = "var(--text-pure)");
-                limitBars.forEach(bar => { bar.classList.remove('vip'); bar.style.width = ((currentLimit / 3) * 100) + "%"; });
-            }
-
-            switchView('appView');
         }
     })();
 
