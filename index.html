@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -824,7 +825,9 @@
 
     const OWNER_WA = "+6282231669053";
     const SESSION_KEY = 'mshaomi_active_session_supabase';
+    const CACHE_KEY = 'mshaomi_cached_user_data';
     const BROADCAST_SEEN_KEY = 'mshaomi_last_seen_broadcast_id';
+    
     let currentCaptchaAnswer = 0;
     let currentUserData = null;
     let cachedEmail = '';
@@ -835,6 +838,16 @@
         if(!savedUser) {
             document.getElementById('warningModal').classList.add('show');
         } else {
+            // Terapkan data cache jika ada agar UI memuat secara instan
+            const cachedData = localStorage.getItem(CACHE_KEY);
+            if (cachedData) {
+                try {
+                    const parsed = JSON.parse(cachedData);
+                    currentUserData = parsed;
+                    loadAppView(parsed);
+                } catch(e) {}
+            }
+            // Fetch di background untuk pembaruan kuota / status terbaru
             fetchUserSession(savedUser);
         }
         startClock();
@@ -911,6 +924,7 @@
                 customAlert("Gagal memperbarui foto profil: " + error.message, true);
             } else {
                 currentUserData.avatar_url = base64Image;
+                localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData));
                 updateAvatarUI(base64Image, currentUserData.username);
                 customAlert("Foto profil berhasil diperbarui!");
             }
@@ -977,6 +991,7 @@
             btn.innerHTML = '<i class="fas fa-check"></i> Berhasil Tersimpan';
             currentUserData.username = newU; currentUserData.password = newP; currentUserData.username_changed = true;
             localStorage.setItem(SESSION_KEY, newU);
+            localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData));
             loadAppView(currentUserData);
             showMsg('editProfileMsg', 'Kredensial berhasil diperbarui secara permanen!', 'success');
         }
@@ -1021,20 +1036,39 @@
         else { customAlert("Broadcast berhasil dikirim ke seluruh member!"); document.getElementById('broadcastInput').value = ''; }
     };
 
+    // FUNGSI INI TELAH DIPERBARUI AGAR TIDAK LOGOUT SAAT GAGAL KONEKSI
     async function fetchUserSession(username) {
         try {
             const { data, error } = await supabaseClient.from('users').select('*').eq('username', username).single();
             if (data && !error) {
                 if (parseBool(data.is_banned)) {
-                    localStorage.removeItem(SESSION_KEY); switchView('loginView');
+                    localStorage.removeItem(SESSION_KEY);
+                    localStorage.removeItem(CACHE_KEY);
+                    switchView('loginView');
                     customAlert("Akun Anda telah di-suspend oleh Admin.", true); return;
                 }
-                currentUserData = data; loadAppView(data);
-            } else {
-                localStorage.removeItem(SESSION_KEY); switchView('loginView');
+                localStorage.setItem(CACHE_KEY, JSON.stringify(data));
+                currentUserData = data; 
+                loadAppView(data);
+            } else if (error && error.code === 'PGRST116') {
+                // User dihapus dari database
+                localStorage.removeItem(SESSION_KEY);
+                localStorage.removeItem(CACHE_KEY);
+                switchView('loginView');
+            } else if (error) {
+                console.error("Fetch DB error:", error);
+                if (!currentUserData) { // Jika tidak ada cache
+                    localStorage.removeItem(SESSION_KEY);
+                    switchView('loginView');
+                }
             }
         } catch (err) {
-            localStorage.removeItem(SESSION_KEY); switchView('loginView');
+            console.error("Network error:", err);
+            // Jangan logout jika terjadi error koneksi jaringan (hanya gunakan cache)
+            if (!currentUserData) {
+                localStorage.removeItem(SESSION_KEY);
+                switchView('loginView');
+            }
         }
     }
 
@@ -1156,7 +1190,11 @@
         else {
             renderMemberList();
             customAlert("Limit diperbarui!");
-            if(currentUserData && currentUserData.username === username) { currentUserData.limit_count = newLimit; loadAppView(currentUserData); }
+            if(currentUserData && currentUserData.username === username) { 
+                currentUserData.limit_count = newLimit; 
+                localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData));
+                loadAppView(currentUserData); 
+            }
         }
     };
 
@@ -1171,6 +1209,7 @@
             customAlert("Status VIP berhasil diubah.");
             if(currentUserData && currentUserData.username === username) {
                 currentUserData.is_permanent = newStatus; currentUserData.vip_since = updatePayload.vip_since;
+                localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData));
                 loadAppView(currentUserData);
             }
         }
@@ -1386,7 +1425,10 @@
             if(error || !data || data.password !== p) return showMsg('loginErrorMsg', 'Otorisasi gagal: Username atau sandi salah.');
             if (parseBool(data.is_banned)) return showMsg('loginErrorMsg', 'Akses ditolak: Akun Anda disuspend sistem.');
 
-            localStorage.setItem(SESSION_KEY, u); loadAppView(data);
+            // MENYIMPAN CACHE SAAT BERHASIL LOGIN
+            localStorage.setItem(SESSION_KEY, u); 
+            localStorage.setItem(CACHE_KEY, JSON.stringify(data));
+            loadAppView(data);
         });
 
         regBtn.addEventListener('click', async () => {
@@ -1417,7 +1459,9 @@
                 const { error } = await supabaseClient.from('users').insert([newUserData]);
                 if(error) throw new Error('Gangguan Basis Data: ' + error.message);
 
-                localStorage.setItem(SESSION_KEY, u); loadAppView(newUserData);
+                localStorage.setItem(SESSION_KEY, u); 
+                localStorage.setItem(CACHE_KEY, JSON.stringify(newUserData));
+                loadAppView(newUserData);
                 fetchGlobalStats();
             } catch (err) { showMsg('regMsg', err.message); } 
             finally { regBtn.innerHTML = originalBtnText; regBtn.disabled = false; }
@@ -1425,7 +1469,9 @@
 
         logoutBtn.addEventListener('click', () => { 
             customConfirm("Anda yakin ingin mengakhiri sesi ini (Logout)?", () => {
-                localStorage.removeItem(SESSION_KEY); closeProfileSheet(); switchView('loginView'); 
+                localStorage.removeItem(SESSION_KEY); 
+                localStorage.removeItem(CACHE_KEY); // Hapus Cache saat dilogout
+                closeProfileSheet(); switchView('loginView'); 
             });
         });
 
@@ -1464,7 +1510,9 @@
                         if(currentUserData && !parseBool(currentUserData.is_permanent) && currentUserData.role !== 'Owner') {
                             let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 1);
                             await supabaseClient.from('users').update({ limit_count: newLimit }).eq('username', currentUserData.username);
-                            currentUserData.limit_count = newLimit; loadAppView(currentUserData);
+                            currentUserData.limit_count = newLimit; 
+                            localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData));
+                            loadAppView(currentUserData);
                         }
                     } else {
                         activateBtn.disabled = false; document.getElementById('btnDefault').classList.remove('hidden');
