@@ -1,15 +1,38 @@
-{
-  "version": 2,
-  "env": {
-    "ISAAW_API_KEY": "e329d3cb861969fe599ef5fe",
-    "ISAAW_ACCESS_TOKEN": "aks-1d3bd53f4d857a690a77471d",
-    "ISAAW_API_BASE": "https://ndxhs.my.id/service",
-    "ISAAW_API_BASE_ROOT": "https://ndxhs.my.id"
-  },
-  "rewrites": [
-    { "source": "/api/send", "destination": "/api/send" },
-    { "source": "/api/verify", "destination": "/api/verify" },
-    { "source": "/api/bulk", "destination": "/api/bulk" },
-    { "source": "/api/inbox", "destination": "/api/inbox" }
-  ]
+// --- CONTOH PENAMBAHAN HANDLER LOGIN & REGISTER DI BACKEND ---
+if (action === 'login') {
+    const { username, password } = payload;
+    // Cek ke Database Supabase / JSON Anda
+    // Contoh hardcode data owner atau query database:
+    if (username === "HAOMI" && password === "HAOMI_XML") {
+        return res.json({
+            status: true,
+            data: {
+                username: "HAOMI",
+                role: "Owner",
+                limit_count: 999,
+                is_permanent: true,
+                id_code: "MSH-OWNER",
+                wa: "082231669053"
+            }
+        });
+    }
+    
+    // Lakukan query pencarian user di database Supabase Anda di sini...
+    return res.json({ status: false, error: "Username atau Password salah" });
+}
+
+if (action === 'register') {
+    const { username, password, wa, ip_address, device_id } = payload;
+    // Simpan data user baru ke database Supabase Anda di sini...
+    return res.json({
+        status: true,
+        data: {
+            username: username,
+            role: "Member",
+            limit_count: 3,
+            is_permanent: false,
+            id_code: "MSH-" + Math.floor(Math.random() * 900 + 100),
+            wa: wa
+        }
+    });
 }
