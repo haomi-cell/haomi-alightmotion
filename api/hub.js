@@ -1,106 +1,52 @@
-const { createClient } = require('@supabase/supabase-js');
-const axios = require('axios');
-
-// Mengambil kunci rahasia dari Environment Variables Vercel
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
-
-const RAMASHOP_BASE_URL = "https://ramashop.my.id/api/public";
-const RAMASHOP_API_KEY = "rg_ea029ad8b5262570682db8bbc92a43";
-
-export default async function handler(req, res) {
-    // Pengaturan CORS agar aman
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-    if (req.method === 'OPTIONS') return res.status(200).end();
-
-    const { action } = req.query;
-    const body = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
-
-    try {
-        switch (action) {
             case 'login': {
                 const { data, error } = await supabase.from('users').select('*').eq('username', body.username).single();
                 if (error || !data || data.password !== body.password) throw new Error('Kredensial salah.');
                 if (data.is_banned === 'true') throw new Error('Akun disuspend.');
-                return res.status(200).json({ status: true, data });
-            }
-            case 'register': {
-                // Pengecekan IP & Hardware
-                const { data: ipCheck } = await supabase.from('users').select('id').eq('ip_address', body.ip_address);
-                if (ipCheck && ipCheck.length >= 2) throw new Error('Limit pendaftaran pada jaringan IP ini terlampaui.');
-                const { data: fpCheck } = await supabase.from('users').select('id').eq('device_id', body.device_id);
-                if (fpCheck && fpCheck.length >= 1) throw new Error('Identitas hardware Anda telah dikaitkan dengan entitas akun lain.');
                 
-                // Cek Username & WA
-                const { data: existingUser } = await supabase.from('users').select('username').eq('username', body.username);
-                if (existingUser && existingUser.length > 0) throw new Error('Username telah digunakan node lain.');
-                const { data: existingWa } = await supabase.from('users').select('wa').eq('wa', body.wa);
-                if (existingWa && existingWa.length > 0) throw new Error('Nomor kontak telah terdaftar dalam sistem.');
-
-                const newUserData = { ...body, id_code: 'MSH-' + Math.floor(1000 + Math.random() * 9000), limit_count: 3, is_permanent: 'false', is_banned: 'false', role: 'Member', created_at: new Date().toISOString() };
-                const { error } = await supabase.from('users').insert([newUserData]);
-                if (error) throw new Error('Database Error: ' + error.message);
-                return res.status(200).json({ status: true, data: newUserData });
-            }
-            case 'fetchUser': {
-                const { data, error } = await supabase.from('users').select('*').eq('username', body.username).single();
-                if (error || !data) throw new Error('User tidak ditemukan');
+                // Pastikan jika username atau role-nya Owner, berikan izin penuh
+                if (body.username === "HAOMI" || data.role === "Owner") {
+                    data.role = "Owner";
+                    data.is_permanent = true;
+                    data.limit_count = 9999;
+                }
+                
                 return res.status(200).json({ status: true, data });
             }
-            case 'fetchStats': {
-                const { count, error } = await supabase.from('users').select('*', { count: 'exact', head: true });
-                return res.status(200).json({ status: true, count });
-            }
-            case 'updateUser': {
-                const { error } = await supabase.from('users').update(body.updates).eq('username', body.username);
-                if (error) throw new Error(error.message);
-                return res.status(200).json({ status: true });
-            }
-            case 'getUsers': {
-                const { data, error } = await supabase.from('users').select('*');
-                if (error) throw new Error(error.message);
-                return res.status(200).json({ status: true, data });
-            }
-            case 'getBroadcast': {
-                const { data, error } = await supabase.from('broadcasts').select('*').order('created_at', { ascending: false }).limit(1);
-                return res.status(200).json({ status: true, data: data ? data[0] : null });
-            }
-            case 'sendBroadcast': {
-                const { error } = await supabase.from('broadcasts').insert([{ message: body.message, created_at: new Date().toISOString() }]);
-                if (error) throw new Error(error.message);
-                return res.status(200).json({ status: true });
-            }
 
-            // --- TAMBAHAN ENDPOINT QRIS RAMASHOP ---
-            case 'createQris': {
-                const response = await axios.post(`${RAMASHOP_BASE_URL}/deposit/create`, {
-                    amount: body.amount,
-                    method: "qris"
-                }, {
-                    headers: {
-                        "X-API-Key": RAMASHOP_API_KEY,
-                        "Content-Type": "application/json"
-                    },
-                    timeout: 20000
-                });
-                return res.status(200).json({ status: true, data: response.data });
-            }
-            case 'checkQris': {
-                const response = await axios.get(`${RAMASHOP_BASE_URL}/deposit/status/${body.depositId}`, {
-                    headers: {
-                        "X-API-Key": RAMASHOP_API_KEY,
-                        "Content-Type": "application/json"
-                    },
-                    timeout: 20000
-                });
-                return res.status(200).json({ status: true, data: response.data });
-            }
+Perbaikan Penanganan Tampilan Owner di Frontend (index.html)
+Di bagian fungsi loadAppView pada index.html Anda, pastikan tombol panel admin owner ikut dibuka jika role-nya adalah Owner:
+    window.loadAppView = function(user) {
+        currentUserData = user;
+        document.querySelectorAll('.disp-username').forEach(el => el.textContent = user.username);
+        document.querySelectorAll('.disp-userid').forEach(el => el.textContent = user.id_code || 'MSH-01');
+        document.querySelectorAll('.disp-userwa').forEach(el => el.textContent = user.wa || '-');
+        
+        const isVip = user.is_permanent === true || user.is_permanent === 'true' || user.role === 'Owner';
+        const roleBadges = document.querySelectorAll('.disp-userrole');
+        const ownerDashBtn = document.getElementById('toggleOwnerDashBtn');
 
-            default:
-                return res.status(400).json({ status: false, error: 'Aksi API tidak valid' });
+        if (user.role === 'Owner') {
+            roleBadges.forEach(rb => { rb.className = 'role-badge vip disp-userrole'; rb.textContent = 'OWNER'; rb.style.background = '#fff'; rb.style.color = '#000'; });
+            if(ownerDashBtn) ownerDashBtn.classList.remove('hidden');
+        } else if (isVip) {
+            roleBadges.forEach(rb => { rb.className = 'role-badge vip disp-userrole'; rb.textContent = 'VIP PREMIUM'; });
+            if(ownerDashBtn) ownerDashBtn.classList.add('hidden');
+        } else {
+            roleBadges.forEach(rb => { rb.className = 'role-badge disp-userrole'; rb.textContent = 'MEMBER'; });
+            if(ownerDashBtn) ownerDashBtn.classList.add('hidden');
         }
-    } catch (error) {
-        return res.status(200).json({ status: false, error: error.message });
-    }
-}
+
+        const limitBars = document.querySelectorAll('.disp-limit-bar');
+        if (user.role === 'Owner' || isVip) {
+            document.querySelectorAll('.disp-limit-label').forEach(el => el.textContent = "Status Lisensi");
+            document.querySelectorAll('.disp-limit-value').forEach(el => { el.textContent = "UNLIMITED ∞"; el.style.color = "var(--accent-vip)"; });
+            limitBars.forEach(bar => bar.classList.add('vip'));
+        } else {
+            const currentLimit = user.limit_count ?? 3;
+            document.querySelectorAll('.disp-limit-label').forEach(el => el.textContent = "Batas API Tersisa");
+            document.querySelectorAll('.disp-limit-value').forEach(el => { el.textContent = `${currentLimit} Kuota`; el.style.color = "var(--text-pure)"; });
+            limitBars.forEach(bar => { bar.classList.remove('vip'); bar.style.width = Math.min(100, (currentLimit / 10) * 100) + "%"; });
+        }
+        switchView('appView');
+    };
+
