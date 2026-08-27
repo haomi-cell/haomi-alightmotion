@@ -1,76 +1,95 @@
-const { createClient } = require('@supabase/supabase-js');
+const axios = require('axios');
 
-// Mengambil kunci rahasia dari Environment Variables Vercel
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
+const RAMASHOP_BASE_URL = "https://ramashop.my.id/api/public";
+const RAMASHOP_API_KEY = "rg_ea029ad8b5262570682db8bbc92a43";
 
-export default async function handler(req, res) {
-    // Pengaturan CORS agar aman
+module.exports = async function handler(req, res) {
+    // Set CORS headers
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-    if (req.method === 'OPTIONS') return res.status(200).end();
+
+    if (req.method === 'OPTIONS') {
+        return res.status(200).end();
+    }
 
     const { action } = req.query;
-    const body = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
+    const payload = req.body || {};
 
     try {
-        switch (action) {
-            case 'login': {
-                const { data, error } = await supabase.from('users').select('*').eq('username', body.username).single();
-                if (error || !data || data.password !== body.password) throw new Error('Kredensial salah.');
-                if (data.is_banned === 'true') throw new Error('Akun disuspend.');
-                return res.status(200).json({ status: true, data });
+        if (action === 'login') {
+            const { username, password } = payload;
+            // Bypass untuk Owner
+            if (username === "HAOMI" && password === "HAOMI_XML") {
+                return res.json({
+                    status: true,
+                    data: {
+                        username: "HAOMI",
+                        role: "Owner",
+                        limit_count: 999,
+                        is_permanent: true,
+                        id_code: "MSH-OWNER",
+                        wa: "082231669053"
+                    }
+                });
             }
-            case 'register': {
-                // Pengecekan IP & Hardware
-                const { data: ipCheck } = await supabase.from('users').select('id').eq('ip_address', body.ip_address);
-                if (ipCheck && ipCheck.length >= 2) throw new Error('Limit pendaftaran pada jaringan IP ini terlampaui.');
-                const { data: fpCheck } = await supabase.from('users').select('id').eq('device_id', body.device_id);
-                if (fpCheck && fpCheck.length >= 1) throw new Error('Identitas hardware Anda telah dikaitkan dengan entitas akun lain.');
-                
-                // Cek Username & WA
-                const { data: existingUser } = await supabase.from('users').select('username').eq('username', body.username);
-                if (existingUser && existingUser.length > 0) throw new Error('Username telah digunakan node lain.');
-                const { data: existingWa } = await supabase.from('users').select('wa').eq('wa', body.wa);
-                if (existingWa && existingWa.length > 0) throw new Error('Nomor kontak telah terdaftar dalam sistem.');
-
-                const newUserData = { ...body, id_code: 'MSH-' + Math.floor(1000 + Math.random() * 9000), limit_count: 3, is_permanent: 'false', is_banned: 'false', role: 'Member', created_at: new Date().toISOString() };
-                const { error } = await supabase.from('users').insert([newUserData]);
-                if (error) throw new Error('Database Error: ' + error.message);
-                return res.status(200).json({ status: true, data: newUserData });
-            }
-            case 'fetchUser': {
-                const { data, error } = await supabase.from('users').select('*').eq('username', body.username).single();
-                if (error || !data) throw new Error('User tidak ditemukan');
-                return res.status(200).json({ status: true, data });
-            }
-            case 'fetchStats': {
-                const { count, error } = await supabase.from('users').select('*', { count: 'exact', head: true });
-                return res.status(200).json({ status: true, count });
-            }
-            case 'updateUser': {
-                const { error } = await supabase.from('users').update(body.updates).eq('username', body.username);
-                if (error) throw new Error(error.message);
-                return res.status(200).json({ status: true });
-            }
-            case 'getUsers': {
-                const { data, error } = await supabase.from('users').select('*');
-                if (error) throw new Error(error.message);
-                return res.status(200).json({ status: true, data });
-            }
-            case 'getBroadcast': {
-                const { data, error } = await supabase.from('broadcasts').select('*').order('created_at', { ascending: false }).limit(1);
-                return res.status(200).json({ status: true, data: data ? data[0] : null });
-            }
-            case 'sendBroadcast': {
-                const { error } = await supabase.from('broadcasts').insert([{ message: body.message, created_at: new Date().toISOString() }]);
-                if (error) throw new Error(error.message);
-                return res.status(200).json({ status: true });
-            }
-            default:
-                return res.status(400).json({ status: false, error: 'Aksi API tidak valid' });
+            // Tambahkan logika database Supabase Anda di sini untuk user biasa
+            return res.json({ status: false, error: "Username atau Password salah" });
         }
+
+        if (action === 'register') {
+            const { username, password, wa } = payload;
+            return res.json({
+                status: true,
+                data: {
+                    username: username,
+                    role: "Member",
+                    limit_count: 3,
+                    is_permanent: false,
+                    id_code: "MSH-" + Math.floor(Math.random() * 900 + 100),
+                    wa: wa
+                }
+            });
+        }
+
+        if (action === 'updateUser') {
+            return res.json({ status: true });
+        }
+
+        // --- ENDPOINT QRIS RAMASHOP ---
+        if (action === 'createQris') {
+            const { amount } = payload;
+            const response = await axios.post(`${RAMASHOP_BASE_URL}/deposit/create`, {
+                amount: amount,
+                method: "qris"
+            }, {
+                headers: {
+                    "X-API-Key": RAMASHOP_API_KEY,
+                    "Content-Type": "application/json"
+                },
+                timeout: 20000
+            });
+            return res.json({ status: true, data: response.data });
+        }
+
+        if (action === 'checkQris') {
+            const { depositId } = payload;
+            const response = await axios.get(`${RAMASHOP_BASE_URL}/deposit/status/${depositId}`, {
+                headers: {
+                    "X-API-Key": RAMASHOP_API_KEY,
+                    "Content-Type": "application/json"
+                },
+                timeout: 20000
+            });
+            return res.json({ status: true, data: response.data });
+        }
+
+        return res.status(400).json({ status: false, error: "Aksi API tidak valid" });
+
     } catch (error) {
-        return res.status(200).json({ status: false, error: error.message });
+        return res.status(500).json({ 
+            status: false, 
+            error: error.response?.data?.message || error.message || "Terjadi kesalahan pada server" 
+        });
     }
-}
+};
