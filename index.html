@@ -4,518 +4,526 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Alight Motion — Executive Hub</title>
+<title>AM — Premium Glass Hub</title>
 
-<!-- Fonts: Playfair (Elegan) & Montserrat (Modern Data) -->
+<!-- Fonts: Outfit for sleek modern look, JetBrains Mono for data -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,800;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
   :root {
-    --bg-deep: #030303; 
-    --bg-surface: #0a0a0a;
-    --bg-overlay: rgba(10, 10, 10, 0.85);
+    --bg-base: #050508;
+    --glass-bg: rgba(20, 20, 28, 0.4);
+    --glass-border: rgba(255, 255, 255, 0.06);
+    --glass-border-focus: rgba(255, 255, 255, 0.15);
     
-    --line-thin: rgba(255, 255, 255, 0.08);
-    --line-strong: rgba(255, 255, 255, 0.2);
+    --text-pure: #ffffff;
+    --text-dim: #94a3b8;
+    --text-muted: #475569;
     
-    --text-main: #f4f4f5;
-    --text-sub: #8b8b93;
+    --accent-cyan: #00f2fe;
+    --accent-blue: #4facfe;
+    --accent-gold: #f59e0b;
+    --accent-gold-light: #fcd34d;
+    --accent-red: #ef4444;
     
-    --accent-gold: #d4af37;
-    --accent-cyan: #00e5ff;
-    --accent-red: #ff3366;
+    --font-ui: 'Outfit', sans-serif;
+    --font-data: 'JetBrains Mono', monospace;
     
-    --font-heading: 'Playfair Display', serif;
-    --font-body: 'Montserrat', sans-serif;
-    
-    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --easing: cubic-bezier(0.25, 1, 0.5, 1);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   
   body { 
-    background-color: var(--bg-deep); 
-    font-family: var(--font-body); 
-    color: var(--text-main); 
+    background-color: var(--bg-base); 
+    font-family: var(--font-ui); 
+    color: var(--text-pure); 
     min-height: 100vh; 
     overflow-x: hidden; 
-    line-height: 1.6; 
-  }
-  
-  /* Background Ambient glow (Sangat halus, tidak memberatkan) */
-  body::before {
-    content: ''; position: fixed; top: -20vh; right: -20vw; width: 60vw; height: 60vh;
-    background: radial-gradient(circle, rgba(212, 175, 55, 0.03) 0%, transparent 60%);
-    z-index: -1; pointer-events: none;
+    background-image: 
+      radial-gradient(circle at 15% 50%, rgba(0, 242, 254, 0.03) 0%, transparent 50%),
+      radial-gradient(circle at 85% 30%, rgba(79, 172, 254, 0.03) 0%, transparent 50%);
   }
 
   /* LOADER */
-  #initialLoader { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; background: var(--bg-deep); flex-direction: column; gap: 20px; transition: opacity 0.5s ease; }
-  .loader-spinner { width: 30px; height: 30px; border: 1px solid var(--line-strong); border-top-color: var(--accent-gold); border-radius: 50%; animation: spin 1s linear infinite; }
+  #initialLoader { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; background: var(--bg-base); flex-direction: column; gap: 16px; transition: opacity 0.4s ease; }
+  .loader-spinner { width: 36px; height: 36px; border: 2px solid var(--glass-border); border-top-color: var(--accent-cyan); border-radius: 50%; animation: spin 0.8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
-
   .hidden { display: none !important; }
 
-  /* CORE LAYOUT: Cardless & Editorial */
-  .view-container { 
-    width: 100%; max-width: 500px; margin: 0 auto; padding: 40px 24px 100px; 
-    animation: fadeUp 0.6s var(--ease-out) forwards;
+  /* CORE LAYOUT */
+  .container { width: 100%; max-width: 480px; margin: 0 auto; padding: 24px 20px 100px; animation: fadeUp 0.6s var(--easing) forwards; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); filter: blur(4px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
+
+  /* PREMIUM GLASS CARDS */
+  .glass-card { 
+    background: var(--glass-bg); 
+    backdrop-filter: blur(24px); 
+    -webkit-backdrop-filter: blur(24px); 
+    border: 1px solid var(--glass-border); 
+    border-radius: 24px; 
+    padding: 20px; 
+    box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+    transition: transform 0.3s var(--easing), border-color 0.3s ease;
   }
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+  .glass-card-hover:hover { border-color: var(--glass-border-focus); transform: translateY(-2px); cursor: pointer; }
 
   /* TYPOGRAPHY */
-  .head-title { font-family: var(--font-heading); font-size: 32px; font-weight: 800; line-height: 1.2; margin-bottom: 8px; color: var(--text-main); }
-  .head-subtitle { font-size: 12px; font-weight: 400; color: var(--text-sub); letter-spacing: 0.5px; margin-bottom: 30px; text-transform: uppercase;}
-  
-  .section-label { font-size: 10px; font-weight: 600; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1.5px; border-bottom: 1px solid var(--line-thin); padding-bottom: 8px; margin-bottom: 20px; display: flex; justify-content: space-between;}
+  .title-lg { font-size: 28px; font-weight: 700; line-height: 1.2; margin-bottom: 6px; }
+  .title-md { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
+  .text-sub { font-size: 12px; color: var(--text-dim); }
 
-  /* FORMS (Underline style, NO BOXES) */
-  .form-group { margin-bottom: 30px; position: relative; }
-  .form-group label { display: block; font-size: 10px; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  /* INPUTS */
+  .form-group { margin-bottom: 20px; }
+  .form-group label { display: block; font-size: 11px; font-weight: 500; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
   .input-wrapper { position: relative; display: flex; align-items: center; }
-  .glass-input { width: 100%; background: transparent; border: none; border-bottom: 1px solid var(--line-strong); color: var(--text-main); font-family: var(--font-body); font-size: 15px; padding: 10px 0; outline: none; transition: border-color 0.3s; }
-  .glass-input:focus { border-bottom-color: var(--accent-gold); }
-  .glass-input::placeholder { color: rgba(255,255,255,0.15); }
-  .pwd-toggle { position: absolute; right: 0; background: none; border: none; color: var(--text-sub); font-size: 16px; cursor: pointer; }
+  .glass-input { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 16px; color: var(--text-pure); font-family: var(--font-ui); font-size: 14px; padding: 14px 16px; outline: none; transition: all 0.3s ease; }
+  .glass-input:focus { border-color: var(--accent-blue); background: rgba(0,0,0,0.5); box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1); }
+  .pwd-toggle { position: absolute; right: 16px; background: none; border: none; color: var(--text-dim); font-size: 16px; cursor: pointer; }
 
-  /* BUTTONS (Sleek Pills) */
-  .btn-primary, .btn-outline { font-family: var(--font-body); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; padding: 16px 24px; border-radius: 100px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; transition: all 0.3s var(--ease-out); border: none; }
-  .btn-primary { background: var(--text-main); color: var(--bg-deep); }
-  .btn-primary:hover { background: var(--accent-gold); color: #000; transform: translateY(-2px); }
-  .btn-outline { background: transparent; border: 1px solid var(--line-strong); color: var(--text-main); }
-  .btn-outline:hover { border-color: var(--text-main); }
+  /* BUTTONS */
+  .btn { width: 100%; padding: 14px 20px; border-radius: 16px; font-family: var(--font-ui); font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; transition: all 0.3s var(--easing); border: none; }
+  .btn-primary { background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue)); color: #000; box-shadow: 0 8px 20px rgba(0, 242, 254, 0.2); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 25px rgba(0, 242, 254, 0.3); }
+  .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+  .btn-outline { background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); color: var(--text-pure); }
+  .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: var(--glass-border-focus); }
 
-  /* ALERTS / MESSAGES (Minimal Text, No Box) */
-  .message-box { font-size: 12px; font-weight: 500; display: none; align-items: center; gap: 8px; margin-bottom: 24px; padding-left: 12px; border-left: 2px solid transparent; }
-  .message-box.show { display: flex; }
-  .message-error { border-left-color: var(--accent-red); color: var(--accent-red); }
-  .message-success { border-left-color: var(--accent-cyan); color: var(--accent-cyan); }
-
-  /* HEADER (DASHBOARD) */
-  .dash-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; }
-  .greeting-area h1 { font-family: var(--font-heading); font-size: 28px; line-height: 1.1; font-weight: 600; }
-  .greeting-area p { font-size: 11px; color: var(--accent-gold); letter-spacing: 1px; text-transform: uppercase; margin-top: 4px;}
-  .avatar-trigger { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line-strong); display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 18px; cursor: pointer; overflow: hidden; transition: 0.3s;}
-  .avatar-trigger img { width: 100%; height: 100%; object-fit: cover; }
-  .avatar-trigger:hover { border-color: var(--accent-gold); }
-
-  /* MEGA STATS (Replacing standard cards) */
-  .mega-stat { margin-bottom: 40px; }
-  .mega-stat-value { font-family: var(--font-heading); font-size: 64px; font-weight: 400; line-height: 1; color: var(--text-main); letter-spacing: -2px;}
-  .mega-stat-track { width: 100%; height: 2px; background: var(--line-thin); margin-top: 16px; position: relative; overflow: hidden;}
-  .mega-stat-fill { position: absolute; left: 0; top: 0; height: 100%; background: var(--accent-cyan); transition: width 1s var(--ease-out); }
-  .mega-stat-fill.vip { background: var(--accent-gold); width: 100% !important; }
-
-  /* LIST ITEMS (For Leaderboard & Admin) */
-  .list-item { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--line-thin); }
-  .list-main { font-size: 14px; font-weight: 500; }
-  .list-sub { font-size: 11px; color: var(--text-sub); font-family: monospace; }
-  .list-val { font-family: var(--font-heading); font-size: 18px; font-weight: 600; color: var(--accent-gold); }
-
-  /* ADMIN ACTIONS IN LIST */
-  .admin-actions { display: flex; gap: 12px; margin-top: 10px; }
-  .admin-act-btn { background: none; border: none; color: var(--text-sub); font-size: 10px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: 0.2s;}
-  .admin-act-btn:hover { color: var(--text-main); }
-  .admin-act-btn.warn:hover { color: var(--accent-red); }
-  
-  /* UPLOAD ZONE (Text-based, minimalist) */
-  .upload-area { padding: 30px 0; border-bottom: 1px solid var(--line-strong); text-align: left; cursor: pointer; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center;}
-  .upload-area:hover .up-icon { color: var(--accent-gold); }
-  .up-title { font-size: 16px; font-weight: 500; }
-  .up-sub { font-size: 11px; color: var(--text-sub); margin-top: 4px; }
-  .up-icon { font-size: 24px; color: var(--text-main); transition: 0.3s; }
-
-  /* BOTTOM NAVIGATION (Fixed) */
-  .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 70px; background: rgba(3, 3, 3, 0.9); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-top: 1px solid var(--line-thin); display: flex; justify-content: space-around; align-items: center; z-index: 100; padding-bottom: max(0px, env(safe-area-inset-bottom)); }
-  .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-sub); text-decoration: none; font-size: 9px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; cursor: pointer; transition: 0.3s; width: 33%; }
-  .nav-item i { font-size: 18px; margin-bottom: 2px; }
-  .nav-item.active { color: var(--accent-gold); }
-
-  /* MODALS & OVERLAYS (Sleek Glass Panels) */
-  .overlay-backdrop { position: fixed; inset: 0; background: var(--bg-overlay); backdrop-filter: blur(8px); z-index: 999; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.4s var(--ease-out); }
-  .overlay-backdrop.show { opacity: 1; pointer-events: auto; }
-  
-  /* Center Panel */
-  .panel-center { background: var(--bg-surface); width: 90%; max-width: 400px; padding: 40px 30px; border: 1px solid var(--line-thin); transform: translateY(20px); transition: 0.4s var(--ease-out); }
-  .overlay-backdrop.show .panel-center { transform: translateY(0); }
-  
-  /* Side Panel (Profile) */
-  .panel-side { position: absolute; top: 0; right: 0; width: 85%; max-width: 400px; height: 100%; background: var(--bg-deep); border-left: 1px solid var(--line-thin); padding: 40px 24px; overflow-y: auto; transform: translateX(100%); transition: transform 0.5s var(--ease-out); }
-  .overlay-backdrop.show .panel-side { transform: translateX(0); }
-
-  /* Bottom Panel (Mode Select) */
-  .panel-bottom { position: absolute; bottom: 0; width: 100%; max-width: 500px; background: var(--bg-surface); border-top: 1px solid var(--line-thin); padding: 40px 24px; transform: translateY(100%); transition: transform 0.4s var(--ease-out); }
-  .overlay-backdrop.show .panel-bottom { transform: translateY(0); }
-
-  .btn-close-panel { position: absolute; top: 20px; right: 20px; background: none; border: none; color: var(--text-sub); font-size: 20px; cursor: pointer; transition: 0.2s;}
-  .btn-close-panel:hover { color: var(--text-main); }
-
-  /* LIMIT SELECTION (Text based layout) */
-  .limit-option { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-bottom: 1px solid var(--line-thin); cursor: pointer; transition: 0.2s; }
-  .limit-option:hover { border-bottom-color: var(--accent-gold); }
-  .limit-option .amt { font-family: var(--font-heading); font-size: 24px; }
-  .limit-option .prc { font-size: 12px; color: var(--text-sub); letter-spacing: 1px;}
-
-  /* SELECTION MODE (Enhancer) */
-  .mode-row { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--line-thin); cursor: pointer; }
-  .mode-row.selected { color: var(--accent-cyan); border-bottom-color: var(--accent-cyan); }
-  .mode-row i { font-size: 18px; }
+  /* ALERTS */
+  .message-box { padding: 12px 16px; border-radius: 12px; font-size: 12px; font-weight: 500; display: none; align-items: center; gap: 8px; margin-bottom: 20px; }
+  .message-box.show { display: flex; animation: pop 0.3s var(--easing); }
+  @keyframes pop { 0% { transform: scale(0.95); opacity: 0;} 100% { transform: scale(1); opacity: 1;} }
+  .message-error { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); color: #fca5a5; }
+  .message-success { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); color: #6ee7b7; }
 
   /* TOAST */
-  #globalToast { position: fixed; top: 20px; left: 50%; transform: translate(-50%, -20px); opacity: 0; background: var(--text-main); color: #000; padding: 12px 24px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; border-radius: 100px; z-index: 9999; transition: all 0.4s var(--ease-out); pointer-events: none; display: flex; align-items: center; gap: 8px;}
-  #globalToast.show { transform: translate(-50%, 0); opacity: 1; pointer-events: auto; }
+  #globalToast { position: fixed; top: -50px; left: 50%; transform: translateX(-50%); opacity: 0; background: rgba(255,255,255,0.95); color: #000; padding: 12px 24px; border-radius: 100px; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 8px; z-index: 9999; transition: all 0.4s var(--easing); box-shadow: 0 10px 30px rgba(0,0,0,0.5); pointer-events: none;}
+  #globalToast.show { top: 30px; opacity: 1; pointer-events: auto; }
+
+  /* TOP HEADER */
+  .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+  .logo { font-size: 20px; font-weight: 800; display: flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
+
+  /* 1. MINIMAL PROFILE WIDGET */
+  .profile-widget { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; margin-bottom: 12px; background: rgba(20,20,28,0.2); border-radius: 100px; border: 1px solid var(--glass-border); cursor: pointer; transition: 0.3s; }
+  .profile-widget:hover { background: rgba(20,20,28,0.5); border-color: var(--glass-border-focus); }
+  .pw-left { display: flex; align-items: center; gap: 12px; }
+  .pw-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--accent-blue); display: flex; align-items: center; justify-content: center; font-weight: 700; color: #000; font-size: 14px; overflow: hidden; }
+  .pw-avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .pw-info h4 { font-size: 14px; font-weight: 600; }
+  .pw-info p { font-size: 10px; color: var(--text-dim); }
+
+  /* 2. VIP PROMO BANNER */
+  .vip-promo { background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.02)); border: 1px solid rgba(245, 158, 11, 0.3); padding: 16px 20px; border-radius: 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; cursor: pointer; transition: 0.3s; }
+  .vip-promo:hover { box-shadow: 0 0 20px rgba(245, 158, 11, 0.15); border-color: rgba(245, 158, 11, 0.5); transform: translateY(-2px); }
+  .vip-promo i { font-size: 20px; color: var(--accent-gold); }
+
+  /* 3. TOP UP ACTION */
+  .topup-card { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; margin-bottom: 30px; }
+  .btn-topup { background: rgba(255,255,255,0.1); border: 1px solid var(--glass-border); padding: 8px 16px; border-radius: 12px; color: var(--text-pure); font-size: 12px; font-weight: 600; cursor: pointer; transition: 0.3s; }
+  .btn-topup:hover { background: var(--text-pure); color: #000; }
+
+  /* BIG LIMIT NUMBER (No Bar) */
+  .limit-display-area { text-align: center; margin-bottom: 30px; padding: 30px 0; background: radial-gradient(circle, rgba(0, 242, 254, 0.05) 0%, transparent 70%); border-radius: 24px; border: 1px solid var(--glass-border); }
+  .big-limit-num { font-size: 64px; font-weight: 800; font-family: var(--font-data); line-height: 1; margin-bottom: 8px; background: linear-gradient(135deg, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5)); }
+  .big-limit-num.vip { color: var(--accent-gold); background: none; -webkit-text-fill-color: var(--accent-gold); filter: drop-shadow(0 0 15px rgba(245, 158, 11, 0.3)); }
+  .limit-label { font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; font-weight: 500; }
+
+  /* BOTTOM NAVIGATION (Elegant Glass) */
+  .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 75px; background: rgba(10, 10, 15, 0.6); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-top: 1px solid var(--glass-border); display: flex; justify-content: space-around; align-items: center; z-index: 100; padding-bottom: max(0px, env(safe-area-inset-bottom)); box-shadow: 0 -10px 30px rgba(0,0,0,0.5); }
+  .nav-item { display: flex; flex-direction: column; align-items: center; gap: 6px; color: var(--text-dim); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; transition: all 0.3s; width: 33%; position: relative; }
+  .nav-item i { font-size: 20px; transition: transform 0.3s var(--easing); }
+  
+  /* Active State (Gradients & Indicator) */
+  .nav-item.active { color: var(--text-pure); }
+  .nav-item.active i { background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; transform: translateY(-4px); }
+  .nav-item::after { content: ''; position: absolute; bottom: -10px; width: 4px; height: 4px; border-radius: 50%; background: var(--accent-cyan); opacity: 0; transition: 0.3s; }
+  .nav-item.active::after { opacity: 1; transform: translateY(-10px); }
+
+  /* GLASS MODALS & PANELS */
+  .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); z-index: 999; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.4s var(--easing); padding: 20px; }
+  .overlay.show { opacity: 1; pointer-events: auto; }
+  
+  .modal-glass { background: var(--glass-bg); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border: 1px solid var(--glass-border); border-radius: 32px; padding: 32px 24px; width: 100%; max-width: 400px; box-shadow: 0 30px 60px rgba(0,0,0,0.6); transform: scale(0.95) translateY(20px); transition: all 0.4s var(--easing); position: relative; max-height: 85vh; overflow-y: auto;}
+  .overlay.show .modal-glass { transform: scale(1) translateY(0); }
+  .btn-close { position: absolute; top: 20px; right: 20px; width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); color: var(--text-dim); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; }
+  .btn-close:hover { background: var(--text-pure); color: #000; }
+
+  /* SIDE PROFILE MODAL */
+  .side-panel { position: absolute; top: 0; right: 0; width: 85%; max-width: 380px; height: 100%; background: rgba(10,10,15,0.85); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border-left: 1px solid var(--glass-border); padding: 40px 24px; transform: translateX(100%); transition: transform 0.5s var(--easing); overflow-y: auto; }
+  .overlay.show .side-panel { transform: translateX(0); }
+  
+  /* BOTTOM SHEET */
+  .bottom-sheet { position: absolute; bottom: 0; width: 100%; max-width: 500px; background: rgba(15,15,22,0.9); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border-top: 1px solid var(--glass-border); border-radius: 32px 32px 0 0; padding: 32px 24px; transform: translateY(100%); transition: transform 0.5s var(--easing); }
+  .overlay.show .bottom-sheet { transform: translateY(0); }
+
+  /* LIMIT GRID (Add Limit) */
+  .limit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+  .limit-box { background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 16px; padding: 16px; text-align: center; cursor: pointer; transition: 0.3s; }
+  .limit-box:hover { background: rgba(0, 242, 254, 0.05); border-color: var(--accent-cyan); transform: translateY(-2px); }
+  .limit-box .lmt { font-size: 20px; font-weight: 700; font-family: var(--font-data); color: var(--text-pure); margin-bottom: 4px; display: block; }
+  .limit-box .prc { font-size: 11px; color: var(--text-dim); }
+
+  /* ADMIN / LISTS */
+  .data-list { display: flex; flex-direction: column; gap: 12px; }
+  .data-item { background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); border-radius: 16px; padding: 16px; transition: 0.3s; }
+  .data-item:hover { background: rgba(255,255,255,0.03); }
+
+  /* CUSTOM SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
 </style>
 </head>
 <body>
 
 <div id="initialLoader">
   <div class="loader-spinner"></div>
-  <div style="font-size: 10px; letter-spacing: 2px; color: var(--text-sub);">INITIALIZING SYSTEM</div>
 </div>
 
-<div id="globalToast"><i class="fas fa-info-circle"></i> <span id="toastMsg">Notification</span></div>
+<div id="globalToast"><i class="fas fa-info-circle"></i> <span id="toastMsg">Notifikasi</span></div>
 
-<!-- MODAL: ADD LIMIT -->
-<div id="limitModal" class="overlay-backdrop">
-  <div class="panel-center">
-    <button class="btn-close-panel" onclick="closeLimitModal()"><i class="fas fa-times"></i></button>
-    <div class="head-title" style="font-size: 24px;">Acquire Limit</div>
-    <div class="head-subtitle">Otomatisasi via QRIS</div>
+<!-- MODAL: PILIH LIMIT & QRIS -->
+<div id="limitModal" class="overlay">
+  <div class="modal-glass">
+    <button class="btn-close" onclick="closeLimitModal()"><i class="fas fa-times"></i></button>
+    <div class="title-md">Akuisisi Kuota API</div>
+    <div class="text-sub">Proses otomatisasi via QRIS dinamis.</div>
     
-    <div id="selectLimitView" style="max-height: 50vh; overflow-y: auto;">
-      <div id="limitPackageGrid"></div>
+    <div id="selectLimitView">
+      <div class="limit-grid" id="limitPackageGrid"></div>
     </div>
 
-    <div id="qrisPaymentView" class="hidden">
-      <div style="background: #fff; padding: 16px; margin: 0 auto 24px; width: fit-content;">
-        <img id="qrisImageResult" src="" alt="QRIS" style="width: 200px; height: 200px; object-fit: contain; display: block;">
+    <div id="qrisPaymentView" class="hidden" style="text-align: center; margin-top: 20px;">
+      <div style="background: #fff; padding: 16px; border-radius: 20px; display: inline-block; margin-bottom: 20px;">
+        <img id="qrisImageResult" src="" alt="QRIS" style="width: 200px; height: 200px; object-fit: contain;">
       </div>
-      <div id="qrisPackageTitle" style="font-family: var(--font-heading); font-size: 20px; margin-bottom: 8px;"></div>
-      <div style="font-size: 10px; color: var(--text-sub); letter-spacing: 1px; margin-bottom: 30px;">ID: <span id="qrisDepositIdSpan"></span></div>
+      <div id="qrisPackageTitle" style="font-size: 18px; font-weight: 700; margin-bottom: 8px;"></div>
+      <div style="font-size: 11px; color: var(--text-dim); margin-bottom: 24px; font-family: var(--font-data);">ID: <span id="qrisDepositIdSpan"></span></div>
       
-      <button class="btn-primary" onclick="checkQrisPaymentStatus()" style="margin-bottom: 12px;">Verifikasi Pembayaran</button>
-      <button class="btn-outline" onclick="backToLimitSelect()">Batal</button>
+      <button class="btn btn-primary" onclick="checkQrisPaymentStatus()" style="margin-bottom: 12px;">Verifikasi Pembayaran</button>
+      <button class="btn btn-outline" onclick="backToLimitSelect()">Batal</button>
     </div>
   </div>
 </div>
 
-<!-- MODAL: CONFIRM -->
-<div id="customConfirmModal" class="overlay-backdrop">
-  <div class="panel-center">
-    <div style="color: var(--accent-red); font-size: 32px; margin-bottom: 20px;"><i class="fas fa-exclamation-triangle"></i></div>
-    <div class="head-title" style="font-size: 24px;">Konfirmasi</div>
-    <div id="confirmText" style="font-size: 13px; color: var(--text-sub); margin-bottom: 30px;">Tindakan ini tidak dapat dibatalkan. Lanjutkan?</div>
-    <button id="btnConfirmOk" class="btn-primary" style="margin-bottom: 12px; background: var(--accent-red); color: #fff;">Eksekusi</button>
-    <button id="btnConfirmCancel" class="btn-outline">Abaikan</button>
+<!-- MODAL: CONFIRM & WARNING -->
+<div id="customConfirmModal" class="overlay">
+  <div class="modal-glass" style="text-align: center;">
+    <i class="fas fa-exclamation-triangle" style="font-size: 42px; color: var(--accent-red); margin-bottom: 16px;"></i>
+    <div class="title-md">Konfirmasi Eksekusi</div>
+    <div id="confirmText" class="text-sub" style="margin-bottom: 24px;">Tindakan ini tidak dapat dibatalkan.</div>
+    <button id="btnConfirmOk" class="btn btn-primary" style="background: var(--accent-red); box-shadow: 0 8px 20px rgba(239, 68, 68, 0.2); margin-bottom: 12px; color:#fff;">Lanjutkan</button>
+    <button id="btnConfirmCancel" class="btn btn-outline">Batalkan</button>
   </div>
 </div>
 
-<!-- MODAL: WARNING -->
-<div id="warningModal" class="overlay-backdrop">
-  <div class="panel-center">
-    <div style="color: var(--accent-cyan); font-size: 32px; margin-bottom: 20px;"><i class="fas fa-shield-alt"></i></div>
-    <div class="head-title" style="font-size: 24px;">Keamanan Sistem</div>
-    <div style="font-size: 13px; color: var(--text-sub); margin-bottom: 30px;">Integritas kode dilindungi secara ketat. Manipulasi inspeksi elemen akan memicu pemblokiran akun permanen.</div>
-    <button class="btn-primary" onclick="closeWarningModal()">Mengerti</button>
-  </div>
-</div>
-
-<!-- MODAL: BROADCAST -->
-<div id="broadcastModal" class="overlay-backdrop">
-  <div class="panel-center">
-    <div class="head-title" style="font-size: 24px; color: var(--accent-gold);">Transmisi Pusat</div>
-    <div id="broadcastContentText" style="font-size: 14px; font-family: var(--font-heading); font-style: italic; border-left: 1px solid var(--accent-gold); padding-left: 16px; margin: 24px 0 32px; color: var(--text-main);">...</div>
-    <button class="btn-outline" onclick="closeBroadcastModal()">Tandai Selesai</button>
+<div id="warningModal" class="overlay">
+  <div class="modal-glass" style="text-align: center;">
+    <i class="fas fa-shield-alt" style="font-size: 42px; color: var(--accent-cyan); margin-bottom: 16px;"></i>
+    <div class="title-md">Integritas Sistem</div>
+    <div class="text-sub" style="margin-bottom: 24px; line-height: 1.5;">Manipulasi *Network* atau *Inspect Element* akan memicu protokol keamanan dan menyebabkan blokir permanen.</div>
+    <button class="btn btn-primary" onclick="closeWarningModal()">Saya Mengerti</button>
   </div>
 </div>
 
 <!-- VIEW: LOGIN -->
-<div id="loginView" class="view-container hidden" style="display: flex; flex-direction: column; justify-content: center; min-height: 100vh;">
-  <div class="head-title">Otorisasi Sistem</div>
-  <div class="head-subtitle">Autentikasi Kredensial Pengguna</div>
-  
-  <div id="loginErrorMsg" class="message-box message-error" role="alert"></div>
-  
-  <div class="form-group">
-    <label>Identifikasi (Username)</label>
-    <input type="text" id="loginUser" class="glass-input" autocomplete="off" />
-  </div>
-  <div class="form-group" style="margin-bottom: 40px;">
-    <label>Kode Sandi</label>
-    <div class="input-wrapper">
-      <input type="password" id="loginPwd" class="glass-input" autocomplete="off" />
-      <button type="button" class="pwd-toggle" onclick="togglePwd('loginPwd', this)"><i class="far fa-eye"></i></button>
+<div id="loginView" class="container hidden" style="display: flex; flex-direction: column; justify-content: center; min-height: 100vh;">
+  <div class="glass-card">
+    <div style="text-align: center; margin-bottom: 30px;">
+      <i class="fas fa-fingerprint" style="font-size: 48px; color: var(--accent-cyan); margin-bottom: 16px;"></i>
+      <div class="title-lg">Otorisasi</div>
+      <div class="text-sub">Masuk ke jaringan pusat.</div>
     </div>
-  </div>
-  
-  <button id="loginBtn" class="btn-primary">Akses Terminal</button>
-  
-  <div style="display: flex; justify-content: space-between; margin-top: 30px; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">
-    <span style="cursor:pointer; color: var(--text-sub);" onclick="handleForgotClick()">Pemulihan Sandi</span>
-    <span style="cursor:pointer; color: var(--text-main);" onclick="switchView('registerView')">Registrasi Baru</span>
+    
+    <div id="loginErrorMsg" class="message-box message-error"></div>
+    
+    <div class="form-group">
+      <label>ID Pengguna</label>
+      <input type="text" id="loginUser" class="glass-input" autocomplete="off" />
+    </div>
+    <div class="form-group" style="margin-bottom: 30px;">
+      <label>Kata Sandi</label>
+      <div class="input-wrapper">
+        <input type="password" id="loginPwd" class="glass-input" autocomplete="off" />
+        <button type="button" class="pwd-toggle" onclick="togglePwd('loginPwd', this)"><i class="far fa-eye"></i></button>
+      </div>
+    </div>
+    
+    <button id="loginBtn" class="btn btn-primary">Akses Sistem</button>
+    
+    <div style="display: flex; justify-content: space-between; margin-top: 24px; font-size: 11px; font-weight: 600;">
+      <span style="cursor:pointer; color: var(--text-dim);" onclick="handleForgotClick()">Lupa Sandi?</span>
+      <span style="cursor:pointer; color: var(--accent-cyan);" onclick="switchView('registerView')">Daftar Kredensial Baru</span>
+    </div>
   </div>
 </div>
 
 <!-- VIEW: REGISTER -->
-<div id="registerView" class="view-container hidden" style="display: flex; flex-direction: column; justify-content: center; min-height: 100vh;">
-  <div class="head-title">Registrasi Node</div>
-  <div class="head-subtitle">Pendaftaran Entitas Baru</div>
-  
-  <div id="regMsg" class="message-box" role="alert"></div>
-  
-  <div class="form-group">
-    <label>Username (Tanpa Spasi)</label>
-    <input type="text" id="regUser" class="glass-input" autocomplete="off" />
-  </div>
-  <div class="form-group">
-    <label>Kontak Transmisi (WhatsApp)</label>
-    <input type="text" id="regWa" class="glass-input" placeholder="08..." autocomplete="off" />
-  </div>
-  <div class="form-group">
-    <label>Kata Sandi Keamanan</label>
-    <div class="input-wrapper">
-      <input type="password" id="regPwd" class="glass-input" autocomplete="off" />
-      <button type="button" class="pwd-toggle" onclick="togglePwd('regPwd', this)"><i class="far fa-eye"></i></button>
+<div id="registerView" class="container hidden" style="display: flex; flex-direction: column; justify-content: center; min-height: 100vh;">
+  <div class="glass-card">
+    <div style="text-align: center; margin-bottom: 24px;">
+      <div class="title-lg">Registrasi</div>
+      <div class="text-sub">Bentuk entitas node baru.</div>
     </div>
-  </div>
-  <div class="form-group" style="margin-bottom: 40px;">
-    <label id="captchaLabel" for="regCaptcha">Protokol Anti-Bot</label>
-    <input type="text" id="regCaptcha" class="glass-input" placeholder="Jawab matematika di label" autocomplete="off" />
-  </div>
-  
-  <button id="regBtn" class="btn-primary">Inisialisasi Pendaftaran</button>
-  
-  <div style="margin-top: 30px; text-align: center; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; cursor:pointer; color: var(--text-sub);" onclick="switchView('loginView')">
-    Memiliki Kredensial? <span style="color:var(--text-main); border-bottom: 1px solid var(--text-main); padding-bottom: 2px;">Otorisasi Disini</span>
+    
+    <div id="regMsg" class="message-box"></div>
+    
+    <div class="form-group"><label>Username (Tanpa Spasi)</label><input type="text" id="regUser" class="glass-input" /></div>
+    <div class="form-group"><label>Nomor WhatsApp (08...)</label><input type="text" id="regWa" class="glass-input" /></div>
+    <div class="form-group">
+      <label>Sandi Keamanan</label>
+      <div class="input-wrapper">
+        <input type="password" id="regPwd" class="glass-input" />
+        <button type="button" class="pwd-toggle" onclick="togglePwd('regPwd', this)"><i class="far fa-eye"></i></button>
+      </div>
+    </div>
+    <div class="form-group" style="margin-bottom: 30px;">
+      <label id="captchaLabel">Verifikasi</label>
+      <input type="text" id="regCaptcha" class="glass-input" placeholder="Jawaban matematika" />
+    </div>
+    
+    <button id="regBtn" class="btn btn-primary">Daftarkan Perangkat</button>
+    <div style="margin-top: 24px; text-align: center; font-size: 11px; font-weight: 600; cursor:pointer; color: var(--text-dim);" onclick="switchView('loginView')">
+      Memiliki akses? <span style="color:var(--text-pure);">Masuk Disini</span>
+    </div>
   </div>
 </div>
 
 <!-- VIEW: MAIN DASHBOARD -->
-<div id="appView" class="view-container hidden">
+<div id="appView" class="container hidden">
   
-  <!-- Sleek Header -->
-  <div class="dash-header">
-    <div class="greeting-area">
-      <div style="font-size: 10px; color: var(--text-sub); letter-spacing: 2px;">WELCOME BACK</div>
-      <h1><span class="disp-username">User</span>.</h1>
-      <p class="disp-userrole">MEMBER</p>
-    </div>
-    <div class="avatar-trigger" onclick="openProfileSheet()">
-      <span class="disp-avatar-text" style="font-family: var(--font-heading);">?</span>
-    </div>
+  <div class="top-header">
+    <div class="logo"><i class="fas fa-layer-group" style="color: var(--accent-cyan);"></i> AM Hub</div>
+    <div style="font-family: var(--font-data); font-size: 11px; color: var(--text-dim);"><i class="far fa-clock"></i> <span id="realtimeClock">00:00 WIB</span></div>
   </div>
 
-  <div class="section-label">Informasi Lingkungan <span id="realtimeClock" style="font-family: monospace;">00:00</span></div>
-  
-  <div id="promoBannerContainer" style="margin-bottom: 40px; cursor: pointer; border-left: 2px solid var(--accent-gold); padding-left: 16px;" onclick="handleVipPromoClick()">
-     <div style="font-size: 14px; font-weight: 500; color: var(--accent-gold); margin-bottom: 4px;">Tingkatkan ke Premium</div>
-     <div style="font-size: 11px; color: var(--text-sub);">Hapus batasan kuota. Dapatkan akses tak terbatas. &#8594;</div>
-  </div>
-
-  <!-- SECTION: ACTIVATOR (DEFAULT) -->
-  <div id="sectionActivator">
-    <div class="mega-stat">
-       <div style="font-size: 10px; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;" class="disp-limit-label">Sisa Kuota API</div>
-       <div class="mega-stat-value disp-limit-value">0</div>
-       <div class="mega-stat-track"><div class="mega-stat-fill disp-limit-bar" style="width: 0%;"></div></div>
-       
-       <div style="text-align: right; margin-top: 12px;">
-         <span style="font-size: 10px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; cursor: pointer; color: var(--accent-cyan);" onclick="openLimitModal()">+ Akuisisi Limit</span>
-       </div>
-    </div>
-    
-    <div class="section-label">Prosedur Aktivasi</div>
-    <ol style="padding-left: 16px; font-size: 12px; color: var(--text-sub); margin-bottom: 30px;">
-      <li style="margin-bottom: 8px;">Input email & kirim instruksi.</li>
-      <li style="margin-bottom: 8px;">Salin URL pemicu dari kotak masuk email.</li>
-      <li>Verifikasi URL di sistem ini.</li>
-    </ol>
-
-    <div id="appErrorMsg" class="message-box message-error" role="alert"></div>
-    
-    <div class="form-group">
-      <label>Email Destinasi</label>
-      <div style="display: flex; gap: 16px; align-items: flex-end;">
-        <input type="email" id="emailInput" class="glass-input" placeholder="Alamat Terdaftar" autocomplete="email" />
-        <button id="sendBtn" style="background:none; border:none; color:var(--text-main); font-size: 10px; font-weight:600; text-transform:uppercase; letter-spacing:1px; cursor:pointer; padding-bottom: 10px; border-bottom: 1px solid var(--text-main);">Kirim</button>
+  <!-- 1. MINIMAL PROFILE (Hanya muncul sekilas info, diklik buka modal lengkap) -->
+  <div class="profile-widget" onclick="openProfileSheet()">
+    <div class="pw-left">
+      <div class="pw-avatar"><span class="disp-avatar-text">?</span></div>
+      <div class="pw-info">
+        <h4 class="disp-username">User</h4>
+        <p class="disp-userrole">Member</p>
       </div>
     </div>
+    <i class="fas fa-ellipsis-v" style="color: var(--text-dim); padding-right: 8px;"></i>
+  </div>
+
+  <!-- 2. VIP PROMO BANNER (Lebih premium, gradient emas) -->
+  <div id="promoBannerContainer" class="vip-promo" onclick="handleVipPromoClick()">
+     <div>
+       <div style="font-size: 14px; font-weight: 700; color: var(--accent-gold-light); margin-bottom: 2px;">Upgrade Premium VIP</div>
+       <div style="font-size: 11px; color: rgba(255,255,255,0.7);">Hapus batas. Akses server selamanya.</div>
+     </div>
+     <i class="fas fa-crown"></i>
+  </div>
+
+  <!-- 3. TOP UP ACTION CARD -->
+  <div class="glass-card topup-card glass-card-hover" onclick="openLimitModal()">
+     <div>
+        <div style="font-size: 14px; font-weight: 600; margin-bottom: 2px;"><i class="fas fa-bolt" style="color: var(--accent-cyan); margin-right: 4px;"></i> Isi Ulang Kuota</div>
+        <div style="font-size: 11px; color: var(--text-dim);">Tambah API Limit via QRIS.</div>
+     </div>
+     <div class="btn-topup">Top Up</div>
+  </div>
+
+  <!-- SECTION: ACTIVATOR -->
+  <div id="sectionActivator">
     
-    <div class="form-group" style="margin-bottom: 40px;">
-      <label>URL Verifikator</label>
-      <input type="url" id="magicInput" class="glass-input" placeholder="Tempel URL disini" autocomplete="off" />
+    <!-- BIG LIMIT NUMBER -->
+    <div class="limit-display-area">
+       <div class="big-limit-num disp-limit-value">0</div>
+       <div class="limit-label disp-limit-label">Sisa Kuota Mingguan</div>
     </div>
-    
-    <button id="activateBtn" class="btn-primary">
-      <span id="btnDefault">Eksekusi Aktivasi</span>
-      <div id="loaderContainer" class="hidden" style="display: flex; align-items:center; gap:8px;"><div class="loader-spinner" style="width:14px;height:14px;border-top-color:#000; border-right-color:#000;"></div> Memproses</div>
-      <span id="btnSuccess" class="hidden">Otorisasi Berhasil</span>
-    </button>
+
+    <div class="glass-card">
+      <div class="title-md">Aktivasi Lisensi</div>
+      <div class="text-sub" style="margin-bottom: 20px;">Hubungkan perangkat ke infrastruktur pusat.</div>
+      
+      <div style="background: rgba(0,0,0,0.2); border-radius: 12px; padding: 12px; margin-bottom: 24px; border: 1px solid var(--glass-border);">
+         <ol style="padding-left: 16px; font-size: 11px; color: var(--text-dim); margin:0; line-height: 1.6;">
+            <li>Ketik <b>Email</b> AM Anda & Eksekusi Kirim.</li>
+            <li>Buka email masuk, tahan tombol & <b>Salin URL</b>.</li>
+            <li>Tempelkan Magic Link di form & Verifikasi.</li>
+         </ol>
+      </div>
+      
+      <div id="appErrorMsg" class="message-box message-error"></div>
+      
+      <div class="form-group">
+          <label>Email Terdaftar</label>
+          <div style="display: flex; gap: 12px;">
+              <input type="email" id="emailInput" class="glass-input" placeholder="contoh@email.com" autocomplete="email" />
+              <button id="sendBtn" class="btn-outline" style="width: auto; padding: 0 20px; border-radius: 16px; font-size: 12px;">Kirim</button>
+          </div>
+      </div>
+      <div class="form-group" style="margin-bottom: 24px;">
+          <label>URL Verifikasi (Magic Link)</label>
+          <input type="url" id="magicInput" class="glass-input" placeholder="Tempel URL disini" autocomplete="off" />
+      </div>
+      
+      <button id="activateBtn" class="btn btn-primary">
+          <span id="btnDefault">Jalankan Verifikasi</span>
+          <div id="loaderContainer" class="hidden" style="display:flex; align-items:center; gap:8px;"><div class="loader-spinner" style="width:16px;height:16px; border-width:2px; border-top-color:#000;"></div> Memproses</div>
+      </button>
+    </div>
   </div>
 
   <!-- SECTION: ENHANCER -->
   <div id="sectionEnhancer" class="hidden">
-    <div class="mega-stat" style="margin-bottom: 20px;">
-      <div class="mega-stat-value" style="font-size: 42px;">Neural Engine</div>
-      <div style="font-size: 11px; color: var(--text-sub); margin-top: 8px;">Rekonstruksi & optimalisasi piksel.</div>
-    </div>
-
-    <div class="section-label">Parameter Input</div>
-    
-    <div class="form-group">
-      <label>Sematkan URL (Opsional)</label>
-      <input type="url" id="imageUrl" class="glass-input" placeholder="https://..." />
-    </div>
-
-    <div class="upload-area" id="dropZone">
-      <div>
-        <div class="up-title">Arsip Lokal</div>
-        <div class="up-sub">JPG, PNG, WEBP (Max 25MB)</div>
-        <div id="fileNameDisplay" style="font-size: 11px; color: var(--accent-cyan); font-family: monospace; margin-top: 4px; font-weight: 600;"></div>
+    <div class="glass-card">
+      <div class="title-md">AI Engine</div>
+      <div class="text-sub" style="margin-bottom: 24px;">Rekonstruksi & restorasi resolusi citra.</div>
+      
+      <div class="form-group">
+        <label>URL Gambar (Opsional)</label>
+        <input type="url" id="imageUrl" class="glass-input" placeholder="https://..." />
       </div>
-      <i class="fas fa-arrow-right up-icon"></i>
-      <input type="file" id="fileInput" accept="image/*" style="display: none;">
-    </div>
 
-    <div class="form-group">
-      <label style="display:flex; justify-content:space-between;"><span>Kerapatan Pemrosesan</span> <span id="strengthIndicator" style="color:var(--text-main);">Normal</span></label>
-      <input type="range" id="strengthRange" min="10" max="100" value="60" style="width: 100%; height: 1px; appearance: none; background: var(--line-strong); outline: none; margin-top: 10px; cursor: pointer;">
-    </div>
-
-    <div class="form-group" style="margin-bottom: 40px; cursor: pointer;" onclick="document.getElementById('modeModalOverlay').classList.add('show')">
-      <label>Model Rekonstruksi</label>
-      <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--line-strong); padding: 10px 0;">
-        <span id="currentModeLabel" style="font-size: 15px;">Super Resolution 2x</span>
-        <i class="fas fa-sliders-h" style="color: var(--text-sub);"></i>
+      <div id="dropZone" style="border: 1px dashed var(--glass-border-focus); border-radius: 16px; padding: 30px 20px; text-align: center; background: rgba(0,0,0,0.2); cursor: pointer; margin-bottom: 24px; transition: 0.3s;">
+        <i class="fas fa-cloud-upload-alt" style="font-size: 24px; color: var(--text-dim); margin-bottom: 12px;"></i>
+        <div style="font-size: 13px; font-weight: 500; margin-bottom: 4px;">Pilih Arsip Lokal</div>
+        <div style="font-size: 11px; color: var(--text-muted);">Maksimum 25MB (JPG/PNG/WEBP)</div>
+        <div id="fileNameDisplay" style="margin-top: 8px; font-size: 11px; font-family: var(--font-data); color: var(--accent-cyan); font-weight: 600;"></div>
+        <input type="file" id="fileInput" accept="image/*" style="display: none;">
       </div>
-    </div>
+      
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px;">
+        <div style="background: rgba(0,0,0,0.2); border-radius: 16px; padding: 12px; border: 1px solid var(--glass-border);">
+          <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--text-dim); text-transform:uppercase; margin-bottom:8px;"><span>Intensitas</span> <span id="strengthIndicator" style="color:var(--text-pure);">Normal</span></div>
+          <input type="range" id="strengthRange" min="10" max="100" value="60" style="width: 100%; height:2px; appearance:none; background:rgba(255,255,255,0.1); outline:none; cursor: pointer;">
+        </div>
+        <div onclick="document.getElementById('modeModalOverlay').classList.add('show')" style="background: rgba(0,0,0,0.2); border-radius: 16px; padding: 12px; border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: space-between; cursor: pointer;">
+          <div>
+            <div style="font-size:10px; color:var(--text-dim); text-transform:uppercase; margin-bottom:4px;">Model Rendering</div>
+            <div id="currentModeLabel" style="font-size:12px; font-weight:600;">Super Res 2x</div>
+          </div>
+          <i class="fas fa-sliders-h" style="color:var(--text-dim); font-size:12px;"></i>
+        </div>
+      </div>
+      
+      <div style="display: flex; gap: 12px; margin-bottom: 20px;">
+        <button class="btn btn-primary" id="enhanceBtn" style="flex: 1;"><i class="fas fa-microchip"></i> Render AI</button>
+        <button class="btn btn-outline" id="resetBtn" style="width: auto; padding: 0 20px;"><i class="fas fa-rotate-left"></i></button>
+      </div>
+      
+      <div id="statusMessage" class="message-box"></div>
 
-    <div style="display: flex; gap: 16px; margin-bottom: 20px;">
-      <button class="btn-primary" id="enhanceBtn" style="flex: 1;">Render</button>
-      <button class="btn-outline" id="resetBtn" style="width: auto;"><i class="fas fa-undo"></i></button>
-    </div>
-    
-    <div id="statusMessage" class="message-box"></div>
-
-    <div class="hidden" id="comparisonSplitSection" style="margin-top: 40px;">
-       <div class="section-label">Hasil Perbandingan</div>
-       <div style="display: flex; gap: 16px;">
-         <div style="flex: 1;">
-           <div style="font-size: 10px; color: var(--text-sub); margin-bottom: 8px; text-transform: uppercase;">Original</div>
-           <img id="splitImgBefore" style="width: 100%; height: 160px; object-fit: cover; border: 1px solid var(--line-thin);">
-         </div>
-         <div style="flex: 1;">
-           <div style="font-size: 10px; color: var(--accent-cyan); margin-bottom: 8px; text-transform: uppercase;">Enhanced</div>
-           <img id="splitImgAfter" style="width: 100%; height: 160px; object-fit: cover; border: 1px solid var(--line-thin);">
-         </div>
-       </div>
-    </div>
-
-    <div class="hidden" id="downloadFooterActions" style="display: flex; gap: 16px; margin-top: 24px;">
-      <button class="btn-outline" id="downloadBtn" style="flex: 1; border-color: var(--text-main);">Simpan File</button>
-      <button class="btn-outline" id="copyUrlBtn" style="width: auto; border: none; border-bottom: 1px solid var(--text-main); border-radius: 0; padding: 0 10px;">Salin URL</button>
+      <div class="hidden" id="comparisonSplitSection" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 24px 0;">
+        <div style="border-radius: 12px; overflow: hidden; position: relative; height: 140px; border: 1px solid var(--glass-border);">
+          <div style="position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.8); padding: 4px 8px; border-radius: 8px; font-size: 9px; font-family: var(--font-data); font-weight: 600; color:var(--text-pure);">ASLI</div>
+          <img id="splitImgBefore" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+        <div style="border-radius: 12px; overflow: hidden; position: relative; height: 140px; border: 1px solid var(--glass-border);">
+          <div style="position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.8); padding: 4px 8px; border-radius: 8px; font-size: 9px; font-family: var(--font-data); font-weight: 600; color:var(--accent-cyan);">HASIL</div>
+          <img id="splitImgAfter" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+      </div>
+      
+      <div class="hidden" id="downloadFooterActions" style="display: flex; gap: 12px;">
+        <button class="btn btn-outline" id="downloadBtn" style="flex: 1;"><i class="fas fa-download"></i> Simpan File</button>
+        <button class="btn btn-outline" id="copyUrlBtn" style="flex: 1;"><i class="fas fa-link"></i> Salin URL</button>
+      </div>
     </div>
   </div>
 
-  <!-- SECTION: ADMIN PANEL -->
+  <!-- SECTION: ADMIN -->
   <div id="ownerPanel" class="hidden">
-    <div class="mega-stat" style="margin-bottom: 30px;">
-      <div class="mega-stat-value" style="font-size: 42px;">Admin</div>
-      <div style="font-size: 11px; color: var(--text-sub); margin-top: 8px;">Manajemen Data Global (<span id="globalTotalUsers">0</span> Entitas)</div>
+    <div class="glass-card">
+      <div class="title-md">Direktori Database</div>
+      <div class="text-sub" style="margin-bottom: 24px;">Manajemen entitas (<span id="globalTotalUsers">0</span> akun terdaftar).</div>
+      
+      <div style="background: rgba(0,0,0,0.2); border-radius: 16px; padding: 16px; margin-bottom: 24px; border: 1px solid var(--glass-border);">
+        <label style="font-size: 11px; font-weight: 500; color: var(--text-dim); text-transform: uppercase; margin-bottom: 8px; display:block;"><i class="fas fa-bullhorn"></i> Transmisi Global</label>
+        <textarea id="broadcastInput" class="glass-input" placeholder="Ketik pesan..." style="min-height: 60px; resize: none; margin-bottom: 12px; padding: 12px;"></textarea>
+        <button class="btn btn-outline" onclick="sendBroadcastMsg()" style="padding: 10px; font-size: 12px;">Sebarkan Transmisi</button>
+      </div>
+      
+      <div class="form-group"><input type="text" id="memberSearchInput" class="glass-input" placeholder="Cari ID atau Nama..." oninput="renderMemberList()" /></div>
+      <div id="memberList" class="data-list"></div>
     </div>
-
-    <div class="section-label">Distribusi Pesan Global</div>
-    <div class="form-group">
-      <input type="text" id="broadcastInput" class="glass-input" placeholder="Ketikan transmisi..." />
-      <button onclick="sendBroadcastMsg()" style="background:none; border:none; color:var(--text-main); font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:1px; cursor:pointer; padding-top:16px; display:block; width:100%; text-align:right;">Siarkan</button>
-    </div>
-
-    <div class="section-label" style="margin-top: 40px;">Direktori Pengguna</div>
-    <div class="form-group">
-      <input type="text" id="memberSearchInput" class="glass-input" placeholder="Pencarian ID / Nama..." oninput="renderMemberList()" />
-    </div>
-    
-    <div id="memberList"></div>
   </div>
 
-  <!-- Top Leaderboard List (Always visible in bottom of activator, but handled in JS layout) -->
-  <div id="leaderboardSection" style="margin-top: 60px;">
-    <div class="section-label">Top Kontributor Kuota</div>
-    <div id="leaderboardListContainer"></div>
+  <!-- LEADERBOARD WIDGET (Di bawah menu tab activator) -->
+  <div id="leaderboardSection" style="margin-top: 24px;">
+    <div style="font-size: 12px; font-weight: 600; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; display:flex; align-items:center; gap:8px;"><i class="fas fa-trophy" style="color:var(--accent-gold);"></i> Top Kontributor Limit</div>
+    <div id="leaderboardListContainer" class="data-list"></div>
   </div>
+</div>
 
-</div> <!-- End App View -->
-
-<!-- BOTTOM NAVIGATION -->
+<!-- BOTTOM NAVIGATION (Glass & Gradient) -->
 <nav class="bottom-nav hidden" id="mainBottomNav">
-  <a class="nav-item active" id="btnTabActivator" onclick="switchTab('activator')">
-    <i class="fas fa-layer-group"></i> <span>License</span>
-  </a>
-  <a class="nav-item" id="btnTabEnhancer" onclick="switchTab('enhancer')">
-    <i class="fas fa-wand-magic-sparkles"></i> <span>Neural</span>
-  </a>
-  <a class="nav-item hidden" id="toggleOwnerDashBtn" onclick="switchTab('admin')">
-    <i class="fas fa-database"></i> <span>Database</span>
-  </a>
+  <div class="nav-item active" id="btnTabActivator" onclick="switchTab('activator')">
+    <i class="fas fa-shield-alt"></i><span>Lisensi</span>
+  </div>
+  <div class="nav-item" id="btnTabEnhancer" onclick="switchTab('enhancer')">
+    <i class="fas fa-magic"></i><span>Neural AI</span>
+  </div>
+  <div class="nav-item hidden" id="toggleOwnerDashBtn" onclick="switchTab('admin')">
+    <i class="fas fa-server"></i><span>Database</span>
+  </div>
 </nav>
 
-<!-- PROFILE DRAWER (SIDE PANEL) -->
-<div id="profileSheet" class="overlay-backdrop" style="justify-content: flex-end;">
-  <div class="panel-side">
-    <button class="btn-close-panel" onclick="closeProfileSheet()" style="left: 20px; right: auto;"><i class="fas fa-arrow-right"></i></button>
+<!-- PROFILE SIDE PANEL -->
+<div id="profileSheet" class="overlay" style="justify-content: flex-end; padding: 0;">
+  <div class="side-panel">
+    <button class="btn-close" onclick="closeProfileSheet()" style="position: absolute; top: 20px; left: 20px; right: auto; background: none; border: none; font-size:20px; color:var(--text-pure);"><i class="fas fa-arrow-right"></i></button>
     
-    <div style="margin-top: 60px; margin-bottom: 40px;">
-      <div class="avatar-trigger" style="width: 80px; height: 80px; font-size: 32px; border-color: var(--text-main); margin-bottom: 20px;" onclick="document.getElementById('avatarFileInput').click()">
+    <div style="text-align: center; margin: 40px 0 30px;">
+      <div class="pw-avatar" style="width: 80px; height: 80px; margin: 0 auto 16px; font-size: 32px; border: 2px solid var(--glass-border); cursor:pointer;" onclick="document.getElementById('avatarFileInput').click()">
         <span class="disp-avatar-text">?</span>
       </div>
       <input type="file" id="avatarFileInput" accept="image/*" style="display: none;" onchange="handleAvatarUpload(event)">
-      
-      <div class="head-title disp-username" style="font-size: 24px;">Username</div>
-      <div class="disp-userrole" style="font-size: 10px; color: var(--accent-gold); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600;">Role</div>
+      <div class="title-md disp-username" style="font-size: 22px;">Username</div>
+      <div class="disp-userrole" style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-gold);">Role</div>
     </div>
 
-    <div class="section-label">Identitas Sistem</div>
-    <div class="list-item"><span class="list-main">ID Kode</span><span class="list-sub disp-userid">MSH-00</span></div>
-    <div class="list-item"><span class="list-main">Telepon</span><span class="list-sub disp-userwa">08...</span></div>
-    <div class="list-item" style="margin-bottom: 40px;"><span class="list-main">IP Login</span><span class="list-sub disp-userip">...</span></div>
+    <div style="background: rgba(0,0,0,0.2); border-radius: 16px; border: 1px solid var(--glass-border); padding: 16px; margin-bottom: 24px;">
+       <div style="font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; font-weight:600;">Data Sistem</div>
+       <div style="display:flex; justify-content:space-between; margin-bottom: 10px;"><span style="font-size:12px;">ID Entitas</span><span class="disp-userid" style="font-family:var(--font-data); font-size:12px; color:var(--text-dim);">MSH-00</span></div>
+       <div style="display:flex; justify-content:space-between; margin-bottom: 10px;"><span style="font-size:12px;">Telepon</span><span class="disp-userwa" style="font-family:var(--font-data); font-size:12px; color:var(--text-dim);">08...</span></div>
+       <div style="display:flex; justify-content:space-between;"><span style="font-size:12px;">IP Login</span><span class="disp-userip" style="font-family:var(--font-data); font-size:12px; color:var(--text-dim);">...</span></div>
+    </div>
 
-    <div class="section-label">Kredensial Keamanan</div>
-    <div id="editProfileMsg" class="message-box"></div>
-    <div class="form-group"><label>Ubah Username (1x)</label><input type="text" id="editUsernameInput" class="glass-input"></div>
-    <div class="form-group"><label>Ubah Sandi</label><input type="password" id="editPasswordInput" class="glass-input"></div>
-    
-    <button id="saveProfileChangesBtn" class="btn-outline" style="margin-bottom: 40px;">Perbarui Data</button>
-    
-    <div class="section-label" style="border-color: var(--accent-red); color: var(--accent-red);">Sesi Selesai</div>
-    <button id="logoutBtn" style="background:none; border:none; color:var(--text-main); font-size: 14px; font-family: var(--font-heading); font-weight: 600; cursor:pointer; text-align: left; display: flex; align-items:center; gap:10px;"><i class="fas fa-sign-out-alt"></i> Keluar Sistem</button>
+    <div style="background: rgba(0,0,0,0.2); border-radius: 16px; border: 1px solid var(--glass-border); padding: 16px; margin-bottom: 30px;">
+      <div style="font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; font-weight:600;">Manajemen Kredensial</div>
+      <div id="editProfileMsg" class="message-box"></div>
+      <div class="form-group"><input type="text" id="editUsernameInput" class="glass-input" placeholder="Ganti Username (1x)"></div>
+      <div class="form-group mb-0"><input type="password" id="editPasswordInput" class="glass-input" placeholder="Ganti Sandi"></div>
+      <button id="saveProfileChangesBtn" class="btn btn-outline" style="margin-top: 16px;">Simpan Permanen</button>
+    </div>
+
+    <button id="logoutBtn" class="btn" style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #fca5a5;"><i class="fas fa-sign-out-alt"></i> Akhiri Sesi (Logout)</button>
   </div>
 </div>
 
 <!-- BOTTOM SHEET: MODE AI -->
-<div class="overlay-backdrop" id="modeModalOverlay" style="align-items: flex-end;">
-  <div class="panel-bottom" id="modeModalSheet">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-      <div class="head-title" style="font-size: 20px; margin: 0;">Pilih Model</div>
-      <i class="fas fa-times" id="closeModeModal" style="cursor: pointer; color: var(--text-sub); font-size: 18px;"></i>
+<div class="overlay" id="modeModalOverlay" style="align-items: flex-end; padding: 0;">
+  <div class="bottom-sheet" id="modeModalSheet">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+      <div class="title-md" style="margin: 0;">Pilih Model AI</div>
+      <i class="fas fa-times" id="closeModeModal" style="cursor: pointer; color: var(--text-dim); font-size: 20px;"></i>
     </div>
     
-    <div class="mode-row mode-option-item selected" data-mode="2x">
-      <div><div style="font-weight: 600; font-size: 15px;">Super Resolution 2x</div><div style="font-size: 11px; color: var(--text-sub);">Ekspansi piksel matriks ganda.</div></div>
-      <i class="fas fa-expand"></i>
+    <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px;">
+      <div class="glass-card glass-card-hover mode-option-item selected" data-mode="2x" style="display:flex; align-items:center; gap:16px; padding: 16px; border-color: var(--accent-cyan); background: rgba(0, 242, 254, 0.05);">
+        <i class="fas fa-expand" style="font-size: 20px; color: var(--text-pure);"></i>
+        <div><div style="font-weight: 600; font-size: 14px;">Super Resolution 2x</div><div style="font-size: 11px; color: var(--text-dim);">Gandakan ukuran & ketajaman.</div></div>
+      </div>
+      <div class="glass-card glass-card-hover mode-option-item" data-mode="1x" style="display:flex; align-items:center; gap:16px; padding: 16px;">
+        <i class="fas fa-magic" style="font-size: 20px; color: var(--text-dim);"></i>
+        <div><div style="font-weight: 600; font-size: 14px;">Clean & Sharpen</div><div style="font-size: 11px; color: var(--text-dim);">Pembersihan noise murni (1x).</div></div>
+      </div>
+      <div class="glass-card glass-card-hover mode-option-item" data-mode="hdr" style="display:flex; align-items:center; gap:16px; padding: 16px;">
+        <i class="fas fa-sun" style="font-size: 20px; color: var(--text-dim);"></i>
+        <div><div style="font-weight: 600; font-size: 14px;">Dynamic HDR</div><div style="font-size: 11px; color: var(--text-dim);">Koreksi kontras dan warna ekstrim.</div></div>
+      </div>
     </div>
-    <div class="mode-row mode-option-item" data-mode="1x">
-      <div><div style="font-weight: 600; font-size: 15px;">Clean & Sharpen</div><div style="font-size: 11px; color: var(--text-sub);">Pembersihan noise spasial.</div></div>
-      <i class="fas fa-magic"></i>
-    </div>
-    <div class="mode-row mode-option-item" data-mode="hdr">
-      <div><div style="font-weight: 600; font-size: 15px;">Dynamic HDR</div><div style="font-size: 11px; color: var(--text-sub);">Optimalisasi gradasi dan bayangan.</div></div>
-      <i class="fas fa-sun"></i>
-    </div>
-
-    <button class="btn-primary" id="applyModeBtn" style="margin-top: 30px;">Terapkan Model</button>
+    <button class="btn btn-primary" id="applyModeBtn">Konfirmasi Pilihan</button>
   </div>
 </div>
 
@@ -525,9 +533,7 @@
     document.onkeydown = function(e) { if(e.keyCode==123 || (e.ctrlKey&&e.shiftKey&&(e.keyCode==73||e.keyCode==74||e.keyCode==67)) || (e.ctrlKey&&e.keyCode==85)) return false; };
 
     const _0x1a2b = ["\x68\x74\x74\x70\x73\x3a\x2f\x2f\x72\x65\x73\x74\x61\x70\x69\x64\x68\x61\x6e\x2e\x76\x65\x72\x63\x65\x6c\x2e\x61\x70\x70", "\x64\x72\x61\x76\x6e\x64\x65\x73\x61\x6d\x75\x65\x6c", "\x2b\x36\x32\x38\x32\x32\x33\x31\x36\x36\x39\x30\x35\x33", "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x61\x63\x74\x69\x76\x65\x5f\x73\x65\x73\x73\x69\x6f\x6e\x5f\x73\x75\x70\x61\x62\x61\x73\x65", "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x63\x61\x63\x68\x65\x64\x5f\x75\x73\x65\x72\x5f\x64\x61\x74\x61", "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x6c\x61\x73\x74\x5f\x73\x65\x65\x6e\x5f\x62\x72\x6f\x61\x64\x63\x61\x73\x74\x5f\x69\x64"];
-    const API_BASE = _0x1a2b[0]; const API_KEY = _0x1a2b[1];
-    const OWNER_WA = _0x1a2b[2]; const SESSION_KEY = _0x1a2b[3];
-    const CACHE_KEY = _0x1a2b[4]; const BROADCAST_SEEN_KEY = _0x1a2b[5];
+    const API_BASE = _0x1a2b[0]; const API_KEY = _0x1a2b[1]; const OWNER_WA = _0x1a2b[2]; const SESSION_KEY = _0x1a2b[3]; const CACHE_KEY = _0x1a2b[4]; const BROADCAST_SEEN_KEY = _0x1a2b[5];
 
     async function apiCall(action, payload = {}) {
         try {
@@ -538,9 +544,8 @@
 
     window.customAlert = function(msg, isError = false) {
         const toast = document.getElementById('globalToast'); document.getElementById('toastMsg').textContent = msg;
-        toast.style.color = isError ? 'var(--accent-red)' : '#000';
-        toast.style.background = isError ? 'rgba(255,51,102,0.1)' : 'var(--text-main)';
-        toast.style.border = isError ? '1px solid var(--accent-red)' : 'none';
+        toast.style.background = isError ? '#fee2e2' : 'rgba(255,255,255,0.95)';
+        toast.style.color = isError ? '#991b1b' : '#000';
         toast.querySelector('i').className = isError ? 'fas fa-exclamation-triangle' : 'fas fa-check-circle';
         toast.classList.add('show'); setTimeout(() => { toast.classList.remove('show'); }, 3000);
     };
@@ -552,12 +557,12 @@
         document.getElementById('btnConfirmOk').onclick = () => { modal.classList.remove('show'); callback(); };
     };
 
-    async function getIPAddress() { try { const res = await fetch('https://api.ipify.org?format=json'); const data = await res.json(); return data.ip; } catch (e) { return 'unknown-ip'; } }
+    async function getIPAddress() { try { const res = await fetch('https://api.ipify.org?format=json'); const data = await res.json(); return data.ip; } catch (e) { return 'Unknown'; } }
     async function generateAdvancedFingerprint() { return new Promise((resolve) => { try { const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d'); ctx.textBaseline = "top"; ctx.font = "14px 'Arial'"; ctx.fillStyle = "#f60"; ctx.fillRect(125, 1, 62, 20); ctx.fillStyle = "#069"; ctx.fillText("AlightMotionSupabase", 2, 15); const canvasData = canvas.toDataURL(); resolve('FP-' + Math.abs(canvasData.length).toString(36)); } catch (e) { resolve('FP-' + Math.random().toString(36).substring(2)); } }); }
 
     let currentCaptchaAnswer = 0; let currentUserData = null; let cachedEmail = ''; let activeDepositId = null; let selectedAddLimitCount = 0; let activeBroadcastId = null;
 
-    // Paket limit disesuaikan, 1 limit 10 perak tetap tidak ada.
+    // Paket limit sudah fix tanpa 1 limit 10 perak
     const limitPackages = [
         { limit: 4, price: 1200, label: "4" },
         { limit: 10, price: 3500, label: "10" },
@@ -570,12 +575,10 @@
 
     function renderLimitPackages() {
         const grid = document.getElementById('limitPackageGrid');
-        if(!grid) return;
-        grid.innerHTML = '';
+        if(!grid) return; grid.innerHTML = '';
         limitPackages.forEach(pkg => {
-            const btn = document.createElement('div');
-            btn.className = 'limit-option';
-            btn.innerHTML = `<span class="amt">${pkg.label} Kuota</span><span class="prc">Rp ${pkg.price.toLocaleString('id-ID')}</span>`;
+            const btn = document.createElement('div'); btn.className = 'limit-box';
+            btn.innerHTML = `<span class="lmt">${pkg.label}</span><span class="prc">Rp ${pkg.price.toLocaleString('id-ID')}</span>`;
             btn.onclick = () => createQrisForLimit(pkg.limit, pkg.price, pkg.label);
             grid.appendChild(btn);
         });
@@ -594,69 +597,51 @@
     };
 
     async function createQrisForLimit(limitCount, price, labelName) {
-        selectedAddLimitCount = limitCount;
-        customAlert("Membuat sesi pembayaran...");
-        
+        selectedAddLimitCount = limitCount; customAlert("Membuat sesi QRIS...");
         const res = await apiCall('createQris', { amount: price, limitAmount: limitCount, username: currentUserData.username });
-        if (!res.status) return customAlert("Gagal inisiasi sistem.", true);
-
-        const data = res.data;
-        activeDepositId = data.data?.depositId || data.depositId || data.id;
+        if (!res.status) return customAlert("Gagal inisialisasi QRIS.", true);
+        const data = res.data; activeDepositId = data.data?.depositId || data.depositId || data.id;
         const qrisUrl = data.data?.qrImage || data.data?.qrisUrl || data.data?.qris_url || data.qr_string;
-
         if (qrisUrl) {
             document.getElementById('qrisImageResult').src = qrisUrl;
-            document.getElementById('qrisPackageTitle').textContent = `Paket ${labelName} LMT`;
+            document.getElementById('qrisPackageTitle').textContent = `Paket ${labelName} Limit`;
             document.getElementById('qrisDepositIdSpan').textContent = activeDepositId;
             document.getElementById('selectLimitView').classList.add('hidden');
             document.getElementById('qrisPaymentView').classList.remove('hidden');
-        } else {
-            customAlert("Gagal memuat visual QRIS.", true);
-        }
+        } else { customAlert("Gagal memuat visual QRIS.", true); }
     }
 
     window.checkQrisPaymentStatus = async function() {
-        if (!activeDepositId) return;
-        customAlert("Sinkronisasi status...");
-
+        if (!activeDepositId) return; customAlert("Memeriksa status...");
         const res = await apiCall('checkQris', { depositId: activeDepositId });
         if (!res.status) return customAlert("Kegagalan jaringan.", true);
-
-        const statusData = res.data;
-        const status = statusData.data?.status || statusData.status;
+        const statusData = res.data; const status = statusData.data?.status || statusData.status;
         const isPaid = (status === "success" || status === "paid" || status === "completed" || status === true);
-
         if (isPaid) {
-            const currentLimit = currentUserData.limit_count ?? 3;
-            const newLimitTotal = currentLimit + selectedAddLimitCount;
+            const currentLimit = currentUserData.limit_count ?? 3; const newLimitTotal = currentLimit + selectedAddLimitCount;
             const updateRes = await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimitTotal } });
-
             if (updateRes.status) {
-                currentUserData.limit_count = newLimitTotal;
-                localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData));
-                window.loadAppView(currentUserData);
-                closeLimitModal();
-                customAlert("Transaksi Selesai. Kuota bertambah.");
-            } else { customAlert("Transaksi sukses, pembaruan database gagal.", true); }
-        } else { customAlert("Status belum terbayar.", true); }
+                currentUserData.limit_count = newLimitTotal; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData));
+                window.loadAppView(currentUserData); closeLimitModal(); customAlert("Transaksi Selesai. Kuota bertambah.");
+            } else { customAlert("Berhasil dibayar, pembaruan database gagal.", true); }
+        } else { customAlert("Pembayaran belum terdeteksi.", true); }
     };
 
     async function fetchLeaderboard() {
-        const container = document.getElementById('leaderboardListContainer');
-        if(!container) return;
+        const container = document.getElementById('leaderboardListContainer'); if(!container) return;
         const res = await apiCall('getUsers');
-        if(!res.status || !res.data) { container.innerHTML = `<div style="font-size:12px; color:var(--text-sub);">Gagal memuat arsip.</div>`; return; }
+        if(!res.status || !res.data) { container.innerHTML = `<div style="font-size:11px; color:var(--text-dim); text-align:center;">Gagal memuat data.</div>`; return; }
         const users = res.data;
         const regularUsers = users.filter(u => u.role !== 'Owner' && !parseBool(u.is_permanent));
         regularUsers.sort((a, b) => (b.limit_count || 0) - (a.limit_count || 0));
         const topUsers = regularUsers.slice(0, 5);
         
         container.innerHTML = '';
-        if (topUsers.length === 0) { container.innerHTML = `<div style="font-size:12px; color:var(--text-sub);">Arsip kosong.</div>`; return; }
+        if (topUsers.length === 0) { container.innerHTML = `<div style="font-size:11px; color:var(--text-dim); text-align:center;">Belum ada data.</div>`; return; }
         topUsers.forEach((u, index) => {
-            const item = document.createElement('div');
-            item.className = 'list-item';
-            item.innerHTML = `<span class="list-main">#${index + 1} @${u.username}</span><span class="list-val">${u.limit_count ?? 3}</span>`;
+            const item = document.createElement('div'); item.className = 'data-item';
+            item.style.display = 'flex'; item.style.justifyContent = 'space-between'; item.style.alignItems = 'center';
+            item.innerHTML = `<span style="font-size:13px; font-weight:600;"><span style="color:${index===0?'var(--accent-gold)':'var(--text-dim)'}; margin-right:8px;">#${index+1}</span> @${u.username}</span><span style="font-family:var(--font-data); font-size:14px; font-weight:700; color:var(--accent-cyan);">${u.limit_count ?? 3} Lmt</span>`;
             container.appendChild(item);
         });
     }
@@ -679,32 +664,30 @@
             const roleBadges = document.querySelectorAll('.disp-userrole');
 
             if (user.role === 'Owner') {
-                roleBadges.forEach(rb => { rb.textContent = 'ADMINISTRATION'; rb.style.color = 'var(--text-main)'; });
+                roleBadges.forEach(rb => { rb.textContent = 'SYSTEM ADMIN'; rb.style.color = '#fff'; });
                 if(ownerDashBtn) ownerDashBtn.classList.remove('hidden'); 
                 if(promoBanner) promoBanner.classList.add('hidden');
             } else {
                 if(ownerDashBtn) ownerDashBtn.classList.add('hidden'); 
                 if (isVip) { 
-                    roleBadges.forEach(rb => { rb.textContent = 'PREMIUM MEMBER'; rb.style.color = 'var(--accent-gold)'; }); 
+                    roleBadges.forEach(rb => { rb.textContent = 'VIP PREMIUM'; rb.style.color = 'var(--accent-gold-light)'; }); 
                     if(promoBanner) promoBanner.classList.add('hidden'); 
                 } else { 
-                    roleBadges.forEach(rb => { rb.textContent = 'STANDARD NODE'; rb.style.color = 'var(--text-sub)';}); 
+                    roleBadges.forEach(rb => { rb.textContent = 'MEMBER NODE'; rb.style.color = 'var(--text-dim)';}); 
                     if(promoBanner) promoBanner.classList.remove('hidden'); 
                 }
             }
-            const limitBars = document.querySelectorAll('.disp-limit-bar');
+            
+            const numDisplays = document.querySelectorAll('.big-limit-num');
             if (user.role === 'Owner' || isVip) {
                 massUpdateText('.disp-limit-label', "Status Lisensi"); 
-                massUpdateText('.disp-limit-value', "∞");
-                document.querySelectorAll('.disp-limit-value').forEach(el => el.style.color = "var(--accent-gold)");
-                limitBars.forEach(bar => bar.classList.add('vip'));
+                numDisplays.forEach(el => { el.textContent = "∞"; el.classList.add('vip'); });
             } else {
                 const currentLimit = user.limit_count ?? 3; 
-                massUpdateText('.disp-limit-label', "Sisa Kuota API"); 
-                massUpdateText('.disp-limit-value', currentLimit);
-                document.querySelectorAll('.disp-limit-value').forEach(el => el.style.color = "var(--text-main)");
-                limitBars.forEach(bar => { bar.classList.remove('vip'); bar.style.width = Math.min(100, (currentLimit / 3) * 100) + "%"; });
+                massUpdateText('.disp-limit-label', "Sisa Kuota Mingguan"); 
+                numDisplays.forEach(el => { el.textContent = currentLimit; el.classList.remove('vip'); });
             }
+            
             switchView('appView'); 
             document.getElementById('mainBottomNav').classList.remove('hidden');
             if(!document.querySelector('.nav-item.active')) { switchTab('activator'); }
@@ -725,16 +708,16 @@
         startClock(); fetchGlobalStats(); initRealtimeBroadcastListener(); initImageEnhancerEngine();
     };
 
-    function startClock() { const clockEl = document.getElementById('realtimeClock'); if(!clockEl) return; setInterval(() => { const now = new Date(); clockEl.textContent = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB'; }, 1000); }
+    function startClock() { const clockEl = document.getElementById('realtimeClock'); if(!clockEl) return; setInterval(() => { const now = new Date(); clockEl.textContent = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }); }, 1000); }
     async function fetchGlobalStats() { const res = apiCall ? await apiCall('fetchStats') : {status:false}; if (res.status) { const el = document.getElementById('globalTotalUsers'); if(el) el.textContent = res.count; } }
     function generateCaptcha() { 
         const num1 = Math.floor(Math.random() * 10) + 1; const num2 = Math.floor(Math.random() * 10) + 1; currentCaptchaAnswer = num1 + num2; 
         const label = document.getElementById('captchaLabel'); 
-        if(label) label.innerHTML = `Hitung <span style="font-family:var(--font-heading); color:var(--text-main); font-size:16px;">${num1} + ${num2}</span>`; 
+        if(label) label.innerHTML = `Hitung <span style="font-family:var(--font-data); background:rgba(0,0,0,0.3); padding:2px 8px; border-radius:6px; font-weight:700; margin-left:6px; border: 1px solid var(--glass-border);">${num1} + ${num2}</span>`; 
     }
     function parseBool(val) { return val === true || val === 'true' || val === '1' || val === 't' || val === 'TRUE' || val === 'YES'; }
     window.handleVipPromoClick = function() { 
-        const txt = currentUserData ? `Halo Admin, saya ingin upgrade Premium.\nID: @${currentUserData.username} | ${currentUserData.id_code || 'MSH-01'}` : "Upgrade Premium"; 
+        const txt = currentUserData ? `Halo Admin, saya ingin upgrade VIP Premium.\nUsername: @${currentUserData.username}\nID: ${currentUserData.id_code || 'MSH-01'}` : "Upgrade Premium"; 
         window.open(`https://wa.me/`+OWNER_WA.replace('+','')+`?text=` + encodeURIComponent(txt), '_blank'); 
     };
     window.handleAvatarUpload = async function(event) { 
@@ -742,12 +725,12 @@
         reader.onload = async function(e) { 
             const base64Image = e.target.result; if (!currentUserData) return; 
             const res = await apiCall('updateUser', { username: currentUserData.username, updates: { avatar_url: base64Image } }); 
-            if (res.status) { currentUserData.avatar_url = base64Image; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); updateAvatarUI(base64Image, currentUserData.username); customAlert("Foto profil tersimpan."); } 
+            if (res.status) { currentUserData.avatar_url = base64Image; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); updateAvatarUI(base64Image, currentUserData.username); customAlert("Foto profil diperbarui."); } 
         }; 
         reader.readAsDataURL(file); 
     };
     function updateAvatarUI(avatarUrl, username) { 
-        const avatarContainers = document.querySelectorAll('.avatar-trigger'); 
+        const avatarContainers = document.querySelectorAll('.pw-avatar'); 
         avatarContainers.forEach(container => { 
             if (avatarUrl && avatarUrl.startsWith('data:image')) { container.innerHTML = `<img src="${avatarUrl}" alt="Avatar">`; } 
             else { container.innerHTML = `<span class="disp-avatar-text">${username ? username.charAt(0).toUpperCase() : 'U'}</span>`; } 
@@ -758,7 +741,7 @@
         const userInput = document.getElementById('editUsernameInput'); const passInput = document.getElementById('editPasswordInput'); const saveBtn = document.getElementById('saveProfileChangesBtn'); 
         if(!userInput || !passInput || !saveBtn) return; 
         if (parseBool(user.username_changed)) { userInput.disabled = true; passInput.disabled = true; saveBtn.disabled = true; saveBtn.innerHTML = 'Data Terkunci'; userInput.style.opacity = '0.4'; passInput.style.opacity = '0.4'; } 
-        else { userInput.disabled = false; passInput.disabled = false; saveBtn.disabled = false; saveBtn.innerHTML = 'Perbarui Data'; userInput.value = user.username || ''; passInput.value = user.password || ''; } 
+        else { userInput.disabled = false; passInput.disabled = false; saveBtn.disabled = false; saveBtn.innerHTML = 'Simpan Permanen'; userInput.value = user.username || ''; passInput.value = user.password || ''; } 
     }
     document.getElementById('saveProfileChangesBtn').addEventListener('click', async () => { 
         const newU = document.getElementById('editUsernameInput').value.trim(); const newP = document.getElementById('editPasswordInput').value.trim(); 
@@ -778,7 +761,7 @@
         checkBroadcast(); setInterval(checkBroadcast, 15000);
     }
     window.closeBroadcastModal = function() { if (activeBroadcastId) localStorage.setItem(BROADCAST_SEEN_KEY, String(activeBroadcastId)); document.getElementById('broadcastModal').classList.remove('show'); };
-    window.sendBroadcastMsg = async function() { const text = document.getElementById('broadcastInput').value.trim(); if(!text) return customAlert("Input kosong.", true); const res = await apiCall('sendBroadcast', { message: text }); if (res.status) { customAlert("Transmisi tersebar."); document.getElementById('broadcastInput').value = ''; } };
+    window.sendBroadcastMsg = async function() { const text = document.getElementById('broadcastInput').value.trim(); if(!text) return customAlert("Input kosong.", true); const res = await apiCall('sendBroadcast', { message: text }); if (res.status) { customAlert("Transmisi global disebar."); document.getElementById('broadcastInput').value = ''; } };
     
     async function fetchUserSession(username) { 
         try { 
@@ -800,7 +783,7 @@
     function clearFormMessages() { document.querySelectorAll('.message-box').forEach(el => { el.classList.remove('show', 'message-success', 'message-error'); el.innerHTML = ''; }); }
     function showMsg(elId, text, type = 'error') { const el = document.getElementById(elId); if(el) { el.innerHTML = text; el.className = 'message-box show'; if (type === 'error') el.classList.add('message-error'); if (type === 'success') el.classList.add('message-success'); } }
     window.closeWarningModal = function() { document.getElementById('warningModal').classList.remove('show'); if(!localStorage.getItem(SESSION_KEY)) document.getElementById('loginView').classList.remove('hidden'); };
-    window.handleForgotClick = function() { window.open(`https://wa.me/${OWNER_WA.replace('+', '')}?text=` + encodeURIComponent("Pemulihan kredensial."), '_blank'); };
+    window.handleForgotClick = function() { window.open(`https://wa.me/${OWNER_WA.replace('+', '')}?text=` + encodeURIComponent("Halo Admin, tolong bantu pemulihan sandi."), '_blank'); };
     
     window.renderMemberList = async function() { 
         const res = await apiCall('getUsers'); const memberList = document.getElementById('memberList'); const searchInput = document.getElementById('memberSearchInput'); 
@@ -818,23 +801,23 @@
             const isVipUser = parseBool(m.is_permanent); const isBannedUser = parseBool(m.is_banned); 
             let roleStr = 'Member'; if (m.role === 'Owner') roleStr = 'Admin'; else if (isVipUser) roleStr = 'Premium';
             
-            const el = document.createElement('div'); el.style.borderBottom = "1px solid var(--line-thin)"; el.style.padding = "20px 0";
+            const el = document.createElement('div'); el.className = 'data-item';
             el.innerHTML = `
-                <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-                  <span class="list-main">@${m.username} ${isBannedUser ? '<span style="color:var(--accent-red); font-size:10px;">(SUSPEND)</span>' : ''}</span>
-                  <span class="list-val" style="font-size:14px; font-family:var(--font-body);">${m.id_code || 'MSH-00'}</span>
+                <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+                  <span style="font-weight:600; font-size:14px;">@${m.username} ${isBannedUser ? '<span style="color:var(--accent-red); font-size:10px;">(SUSPEND)</span>' : ''}</span>
+                  <span style="font-size:12px; font-family:var(--font-data); color:var(--text-dim);">${m.id_code || 'MSH-00'}</span>
                 </div>
-                <div style="font-size:11px; color:var(--text-sub); margin-bottom:10px; display:flex; gap:16px;">
+                <div style="font-size:11px; color:var(--text-dim); margin-bottom:12px; display:flex; gap:16px;">
                   <span>ROLE: ${roleStr}</span> <span>PWD: ${m.password}</span> <span>WA: ${m.wa||'-'}</span>
                 </div>
-                <div style="display:flex; align-items:center; gap:8px; margin-bottom:16px;">
-                  <span style="font-size:10px; color:var(--text-sub);">LIMIT:</span>
-                  <input type="number" id="inputLimit_${m.username}" value="${m.limit_count ?? 3}" class="glass-input" style="padding:4px; font-size:12px; width:60px; text-align:center; border-bottom:1px solid var(--text-sub);" />
-                  <button onclick="setCustomLimit('${m.username}')" style="background:none; border:none; color:var(--accent-cyan); font-size:10px; font-weight:600; cursor:pointer; text-transform:uppercase;">Update</button>
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:16px; background:rgba(0,0,0,0.3); padding:8px; border-radius:8px;">
+                  <span style="font-size:10px; color:var(--text-dim);">LIMIT API:</span>
+                  <input type="number" id="inputLimit_${m.username}" value="${m.limit_count ?? 3}" class="glass-input" style="padding:4px 8px; font-size:12px; width:70px; text-align:center;" />
+                  <button class="btn btn-outline" style="padding:6px 12px; width:auto; font-size:11px;" onclick="setCustomLimit('${m.username}')">Update</button>
                 </div>
-                <div class="admin-actions">
-                  <button class="admin-act-btn" onclick="toggleVipStatus('${m.username}', ${isVipUser})">${isVipUser ? '- Cabut Premium' : '+ Jadikan Premium'}</button>
-                  <button class="admin-act-btn warn" onclick="toggleSuspendStatus('${m.username}', ${isBannedUser})">${isBannedUser ? 'Lepas Suspend' : 'Suspend'}</button>
+                <div style="display:flex; gap:8px;">
+                  <button class="btn btn-outline" style="padding:8px; font-size:10px; flex:1;" onclick="toggleVipStatus('${m.username}', ${isVipUser})">${isVipUser ? '- Premium' : '+ Premium'}</button>
+                  <button class="btn btn-outline" style="padding:8px; font-size:10px; flex:1; color:${isBannedUser ? 'var(--accent-cyan)' : 'var(--accent-red)'}; border-color:${isBannedUser ? 'var(--accent-cyan)' : 'var(--accent-red)'};" onclick="toggleSuspendStatus('${m.username}', ${isBannedUser})">${isBannedUser ? 'Lepas Suspend' : 'Suspend'}</button>
                 </div>
             `; 
             memberList.appendChild(el); 
@@ -843,13 +826,13 @@
 
     window.setCustomLimit = async function(username) {
         const inputVal = document.getElementById(`inputLimit_${username}`).value; const newLimit = parseInt(inputVal, 10);
-        if(isNaN(newLimit)) return customAlert("Input tidak valid.", true);
+        if(isNaN(newLimit)) return customAlert("Input limit tidak valid.", true);
         const res = await apiCall('updateUser', { username: username, updates: { limit_count: newLimit } });
-        if (res.status) { renderMemberList(); customAlert("Limit direvisi."); if(currentUserData && currentUserData.username === username) { currentUserData.limit_count = newLimit; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData); } } else { customAlert("Gagal revisi.", true); }
+        if (res.status) { renderMemberList(); customAlert("Limit berhasil direvisi."); if(currentUserData && currentUserData.username === username) { currentUserData.limit_count = newLimit; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData); } } else { customAlert("Gagal menyimpan revisi.", true); }
     };
 
-    window.toggleVipStatus = async function(username, currentVipStatus) { const newStatus = !currentVipStatus ? 'true' : 'false'; const res = await apiCall('updateUser', { username, updates: { is_permanent: newStatus } }); if (res.status) { renderMemberList(); customAlert("Otorisasi diubah."); if(currentUserData && currentUserData.username === username) { currentUserData.is_permanent = newStatus; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData); } } };
-    window.toggleSuspendStatus = async function(username, currentBannedStatus) { customConfirm(currentBannedStatus ? `Cabut blokir ${username}?` : `Blokir ${username}?`, async () => { const newStatus = currentBannedStatus ? 'false' : 'true'; const res = await apiCall('updateUser', { username, updates: { is_banned: newStatus } }); if (res.status) { customAlert("Status disesuaikan."); renderMemberList(); } }); };
+    window.toggleVipStatus = async function(username, currentVipStatus) { const newStatus = !currentVipStatus ? 'true' : 'false'; const res = await apiCall('updateUser', { username, updates: { is_permanent: newStatus } }); if (res.status) { renderMemberList(); customAlert("Status Premium diubah."); if(currentUserData && currentUserData.username === username) { currentUserData.is_permanent = newStatus; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData); } } };
+    window.toggleSuspendStatus = async function(username, currentBannedStatus) { customConfirm(currentBannedStatus ? `Buka blokir ${username}?` : `Blokir ${username}?`, async () => { const newStatus = currentBannedStatus ? 'false' : 'true'; const res = await apiCall('updateUser', { username, updates: { is_banned: newStatus } }); if (res.status) { customAlert("Status blokir disesuaikan."); renderMemberList(); } }); };
     
     window.togglePwd = function(inputId, btnEl) { const input = document.getElementById(inputId); const icon = btnEl.querySelector('i'); if (!input) return; if (input.type === 'password') { input.type = 'text'; icon.className = 'fas fa-eye-slash'; } else { input.type = 'password'; icon.className = 'far fa-eye'; } };
 
@@ -858,16 +841,16 @@
         
         document.getElementById('closeModeModal').addEventListener('click', () => modeModalOverlay.classList.remove('show'));
         if(!strengthRange) return; 
-        strengthRange.addEventListener('input', () => { const val = parseInt(strengthRange.value, 10); strengthIndicator.textContent = val <= 30 ? 'Low' : (val > 70 ? 'High' : 'Normal'); }); 
-        modeItems.forEach(item => { item.addEventListener('click', () => { modeItems.forEach(i => i.classList.remove('selected')); item.classList.add('selected'); tempSelectedMode = item.getAttribute('data-mode'); }); }); 
-        applyModeBtn.addEventListener('click', () => { selectedMode = tempSelectedMode; currentModeLabel.textContent = selectedMode === '2x' ? 'Super Resolution 2x' : (selectedMode === '1x' ? 'Clean & Sharpen' : 'Dynamic HDR'); modeModalOverlay.classList.remove('show'); }); 
+        strengthRange.addEventListener('input', () => { const val = parseInt(strengthRange.value, 10); strengthIndicator.textContent = val <= 30 ? 'Lembut' : (val > 70 ? 'Maksimal' : 'Normal'); }); 
+        modeItems.forEach(item => { item.addEventListener('click', () => { modeItems.forEach(i => { i.classList.remove('selected'); i.style.borderColor = 'transparent'; i.style.background = 'transparent'; }); item.classList.add('selected'); item.style.borderColor = 'var(--accent-cyan)'; item.style.background = 'rgba(0, 242, 254, 0.05)'; tempSelectedMode = item.getAttribute('data-mode'); }); }); 
+        applyModeBtn.addEventListener('click', () => { selectedMode = tempSelectedMode; currentModeLabel.textContent = selectedMode === '2x' ? 'Super Res 2x' : (selectedMode === '1x' ? 'Clean & Sharpen' : 'Dynamic HDR'); modeModalOverlay.classList.remove('show'); }); 
         dropZone.addEventListener('click', () => fileInput.click()); 
         fileInput.addEventListener('change', (e) => { if (e.target.files && e.target.files[0]) { selectedFile = e.target.files[0]; fileNameDisplay.textContent = selectedFile.name; } });
         
         enhanceBtn.addEventListener('click', async () => {
             const urlVal = urlInput.value.trim(); 
-            if (!urlVal && !selectedFile) return showMsg('statusMessage', 'Sematkan URL atau arsip.', 'error');
-            enhanceBtn.disabled = true; enhanceBtn.innerHTML = 'Memproses...';
+            if (!urlVal && !selectedFile) return showMsg('statusMessage', 'Sematkan URL atau pilih arsip.', 'error');
+            enhanceBtn.disabled = true; enhanceBtn.innerHTML = '<div class="loader-spinner" style="width:14px;height:14px; border-width:2px; border-top-color:#000;"></div> Memproses...';
             try {
                 let img = selectedFile ? await loadImageFromFile(selectedFile) : await loadImageFromBlob(await fetchUrlBlob(urlVal));
                 originalBlobUrl = URL.createObjectURL(selectedFile || await fetchUrlBlob(urlVal));
@@ -877,16 +860,16 @@
                 splitImgAfter.src = enhancedBlobUrl;
                 comparisonSplitSection.classList.remove('hidden');
                 downloadFooterActions.classList.remove('hidden');
-                showMsg('statusMessage', 'Rekonstruksi selesai.', 'success');
-            } catch(e) { showMsg('statusMessage', 'Kegagalan modul.', 'error'); } 
-            finally { enhanceBtn.disabled = false; enhanceBtn.innerHTML = 'Render'; }
+                showMsg('statusMessage', 'Proses Render AI berhasil diselesaikan.', 'success');
+            } catch(e) { showMsg('statusMessage', 'Kegagalan modul pemrosesan.', 'error'); } 
+            finally { enhanceBtn.disabled = false; enhanceBtn.innerHTML = '<i class="fas fa-microchip"></i> Render AI'; }
         });
         function fetchUrlBlob(url) { return fetch(url).then(r => r.blob()); }
         function loadImageFromFile(file) { return new Promise(res => { const r = new FileReader(); r.onload = e => { const i = new Image(); i.onload = () => res(i); i.src = e.target.result; }; r.readAsDataURL(file); }); }
         function loadImageFromBlob(blob) { return new Promise(res => { const i = new Image(); i.onload = () => res(i); i.src = URL.createObjectURL(blob); }); }
         function runLocalEnhancer(img, strength, mode) { return new Promise(res => { const c = document.createElement('canvas'); const w = img.width * 1.5; const h = img.height * 1.5; c.width = w; c.height = h; const ctx = c.getContext('2d'); ctx.drawImage(img, 0, 0, w, h); c.toBlob(blob => res(blob), 'image/png', 0.95); }); }
         downloadBtn.addEventListener('click', () => { if (enhancedBlobUrl) { const a = document.createElement('a'); a.href = enhancedBlobUrl; a.download = 'enhanced.png'; a.click(); } });
-        copyUrlBtn.addEventListener('click', () => { if (enhancedBlobUrl) { navigator.clipboard.writeText(enhancedBlobUrl); customAlert("Tautan tercopy."); } });
+        copyUrlBtn.addEventListener('click', () => { if (enhancedBlobUrl) { navigator.clipboard.writeText(enhancedBlobUrl); customAlert("URL Gambar disalin ke clipboard."); } });
     }
 
     const loginBtn = document.getElementById('loginBtn'); const regBtn = document.getElementById('regBtn'); const logoutBtn = document.getElementById('logoutBtn'); const sendBtn = document.getElementById('sendBtn'); const activateBtn = document.getElementById('activateBtn');
@@ -894,10 +877,10 @@
     if(loginBtn) { 
         loginBtn.addEventListener('click', async () => { 
             const u = document.getElementById('loginUser').value.trim(); const p = document.getElementById('loginPwd').value.trim(); 
-            if(!u || !p) return showMsg('loginErrorMsg', 'Data tidak lengkap.'); 
-            loginBtn.innerHTML = 'Memverifikasi...'; loginBtn.disabled = true; 
+            if(!u || !p) return showMsg('loginErrorMsg', 'Mohon lengkapi formulir otorisasi.'); 
+            loginBtn.innerHTML = '<div class="loader-spinner" style="width:14px;height:14px; border-width:2px; border-top-color:#000;"></div> Verifikasi...'; loginBtn.disabled = true; 
             const res = await apiCall('login', { username: u, password: p }); 
-            loginBtn.textContent = 'Akses Terminal'; loginBtn.disabled = false; 
+            loginBtn.textContent = 'Akses Sistem'; loginBtn.disabled = false; 
             if(!res.status) return showMsg('loginErrorMsg', `Penolakan: ${res.error}`); 
             localStorage.setItem(SESSION_KEY, u); localStorage.setItem(CACHE_KEY, JSON.stringify(res.data)); window.loadAppView(res.data); 
         }); 
@@ -906,31 +889,31 @@
     if(regBtn) { 
         regBtn.addEventListener('click', async () => { 
             const u = document.getElementById('regUser').value.trim(); const w = document.getElementById('regWa').value.trim(); const p = document.getElementById('regPwd').value.trim(); const cInput = parseInt(document.getElementById('regCaptcha').value.trim()); 
-            if (!u || !w || !p || isNaN(cInput)) return showMsg('regMsg', 'Data tidak lengkap.'); 
-            if (cInput !== currentCaptchaAnswer) return showMsg('regMsg', 'Verifikasi bot gagal.'); 
-            regBtn.innerHTML = 'Mendaftarkan...'; regBtn.disabled = true; 
+            if (!u || !w || !p || isNaN(cInput)) return showMsg('regMsg', 'Pastikan semua kolom terisi dengan benar.'); 
+            if (cInput !== currentCaptchaAnswer) return showMsg('regMsg', 'Verifikasi anti-bot gagal. Coba lagi.'); 
+            regBtn.innerHTML = '<div class="loader-spinner" style="width:14px;height:14px; border-width:2px; border-top-color:#000;"></div> Pendaftaran...'; regBtn.disabled = true; 
             try { 
                 const userIp = await getIPAddress(); const fp = await generateAdvancedFingerprint(); 
                 const res = await apiCall('register', { username: u, password: p, wa: w, ip_address: userIp, device_id: fp }); 
                 if(!res.status) throw new Error(res.error); 
                 localStorage.setItem(SESSION_KEY, u); localStorage.setItem(CACHE_KEY, JSON.stringify(res.data)); window.loadAppView(res.data); 
-            } catch (err) { showMsg('regMsg', err.message); } finally { regBtn.textContent = 'Inisialisasi Pendaftaran'; regBtn.disabled = false; } 
+            } catch (err) { showMsg('regMsg', err.message); } finally { regBtn.textContent = 'Daftarkan Perangkat'; regBtn.disabled = false; } 
         }); 
     }
 
-    if(logoutBtn) { logoutBtn.addEventListener('click', () => { customConfirm("Akhiri sesi saat ini?", () => { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(CACHE_KEY); closeProfileSheet(); switchView('loginView'); }); }); }
+    if(logoutBtn) { logoutBtn.addEventListener('click', () => { customConfirm("Konfirmasi pengakhiran sesi saat ini?", () => { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(CACHE_KEY); closeProfileSheet(); switchView('loginView'); }); }); }
     
     if(sendBtn) {
         sendBtn.addEventListener('click', async () => {
             const email = document.getElementById('emailInput').value.trim();
-            if(!email) return showMsg('appErrorMsg', 'Email kosong.');
-            sendBtn.innerHTML = 'Wait'; sendBtn.disabled = true;
+            if(!email) return showMsg('appErrorMsg', 'Harap masukkan alamat email.');
+            sendBtn.innerHTML = '...'; sendBtn.disabled = true;
             try {
                 const res = await fetch(`${API_BASE}/api/am?action=send&apikey=${API_KEY}&email=${encodeURIComponent(email)}`);
                 const data = await res.json();
-                if(data.status) { cachedEmail = email; showMsg('appErrorMsg', 'Transmisi terkirim.', 'success'); }
-                else { showMsg('appErrorMsg', data.error || 'Kegagalan transmisi.'); }
-            } catch(e) { showMsg('appErrorMsg', 'Terputus dari host.'); }
+                if(data.status) { cachedEmail = email; showMsg('appErrorMsg', 'URL Verifikasi berhasil dikirim.', 'success'); }
+                else { showMsg('appErrorMsg', data.error || 'Kegagalan transmisi email.'); }
+            } catch(e) { showMsg('appErrorMsg', 'Gagal menyambung ke server utama.'); }
             finally { sendBtn.textContent = 'Kirim'; sendBtn.disabled = false; }
         });
     }
@@ -939,21 +922,21 @@
         activateBtn.addEventListener('click', async () => {
             const email = document.getElementById('emailInput').value.trim();
             const magic = document.getElementById('magicInput').value.trim();
-            if(!email || !magic) return showMsg('appErrorMsg', 'Data kosong.');
+            if(!email || !magic) return showMsg('appErrorMsg', 'Pastikan email dan link verifikasi sudah terisi.');
             activateBtn.disabled = true;
             document.getElementById('btnDefault').classList.add('hidden'); document.getElementById('loaderContainer').classList.remove('hidden');
             try {
                 const res = await fetch(`${API_BASE}/api/am?action=verif&apikey=${API_KEY}&email=${encodeURIComponent(cachedEmail || email)}&url=${encodeURIComponent(magic)}`);
                 const data = await res.json();
                 if(data.status) {
-                    showMsg('appErrorMsg', 'Lisensi diverifikasi.', 'success');
+                    showMsg('appErrorMsg', 'Lisensi AM terverifikasi dan aktif.', 'success');
                     if(currentUserData && !parseBool(currentUserData.is_permanent) && currentUserData.role !== 'Owner') {
                         let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 1);
                         await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
                         currentUserData.limit_count = newLimit; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData);
                     }
-                } else { showMsg('appErrorMsg', data.error || 'Penolakan.'); }
-            } catch(e) { showMsg('appErrorMsg', 'Kesalahan proses.'); }
+                } else { showMsg('appErrorMsg', data.error || 'Autentikasi ditolak oleh server.'); }
+            } catch(e) { showMsg('appErrorMsg', 'Terjadi kesalahan sistem internal.'); }
             finally { activateBtn.disabled = false; document.getElementById('btnDefault').classList.remove('hidden'); document.getElementById('loaderContainer').classList.add('hidden'); }
         });
     }
