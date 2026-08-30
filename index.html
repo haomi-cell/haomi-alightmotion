@@ -1,567 +1,5 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>AM Executive — Premium Access</title>
-
-<!-- Fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-<style>
-  :root {
-    /* Luxury Palette */
-    --bg-base: #030303;
-    --surface-dark: #0a0a0a;
-    --surface-light: #141414;
-    
-    --gold-primary: #D4AF37;
-    --gold-light: #F3E5AB;
-    --gold-dark: #997A15;
-    
-    --text-pure: #ffffff;
-    --text-dim: #a0a0a0;
-    --text-muted: #666666;
-    
-    --border-thin: rgba(212, 175, 55, 0.2);
-    --border-focus: rgba(212, 175, 55, 0.6);
-    
-    --danger: #8a1c1c;
-    --danger-light: #ff6b6b;
-    --success: #1a5e39;
-    
-    --font-heading: 'Playfair Display', serif;
-    --font-body: 'Montserrat', sans-serif;
-    
-    --easing: cubic-bezier(0.25, 1, 0.5, 1);
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  
-  body { 
-    background-color: var(--bg-base); 
-    font-family: var(--font-body); 
-    color: var(--text-pure); 
-    min-height: 100vh; 
-    overflow-x: hidden; 
-    position: relative;
-    background-image: radial-gradient(circle at 50% 0%, #1a1813 0%, #030303 60%);
-  }
-
-  /* --- ELEGANT BACKGROUND TEXTURE --- */
-  body::before {
-    content: ''; position: fixed; inset: 0; z-index: -2; pointer-events: none;
-    background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)" opacity="0.03"/></svg>');
-  }
-
-  #initialLoader { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; background: var(--bg-base); flex-direction: column; gap: 20px; transition: opacity 0.8s ease; }
-  .loader-spinner { width: 45px; height: 45px; border: 1px solid rgba(212, 175, 55, 0.2); border-top-color: var(--gold-primary); border-radius: 50%; animation: spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .hidden { display: none !important; }
-
-  /* Adjust bottom padding for floating nav */
-  .container { width: 100%; max-width: 480px; margin: 0 auto; padding: 24px 20px 140px; animation: fadeUp 0.8s var(--easing) forwards; }
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-
-  /* --- LUXURY CARD --- */
-  .glass-card { 
-    background: var(--surface-dark); 
-    border: 1px solid #1f1f1f; 
-    border-radius: 8px; 
-    padding: 30px 24px; 
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.02);
-    transition: all 0.4s var(--easing);
-    position: relative;
-    overflow: hidden;
-  }
-  .glass-card::before {
-    content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
-    background: linear-gradient(90deg, transparent, var(--gold-dark), transparent);
-    opacity: 0.3;
-  }
-  .glass-card-hover:hover { 
-    border-color: var(--border-focus); 
-    transform: translateY(-2px); 
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(212, 175, 55, 0.1);
-    cursor: pointer; 
-  }
-  .glass-card-hover:hover::before { opacity: 1; }
-
-  /* TYPOGRAPHY */
-  .title-lg { font-family: var(--font-heading); font-size: 28px; font-weight: 700; color: var(--gold-light); line-height: 1.2; margin-bottom: 8px; letter-spacing: 0.5px; }
-  .title-md { font-family: var(--font-heading); font-size: 18px; font-weight: 600; color: var(--gold-primary); margin-bottom: 6px; }
-  .text-sub { font-size: 13px; color: var(--text-dim); line-height: 1.6; font-weight: 300; }
-
-  /* FORMS & INPUTS */
-  .form-group { margin-bottom: 24px; }
-  .form-group label { display: block; font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
-  .input-wrapper { position: relative; display: flex; align-items: center; }
-  .glass-input { 
-    width: 100%; 
-    background: var(--surface-light); 
-    border: 1px solid #222; 
-    border-radius: 4px; 
-    color: var(--text-pure); 
-    font-family: var(--font-body); 
-    font-size: 14px; 
-    padding: 16px 18px; 
-    outline: none; 
-    transition: all 0.3s ease; 
-  }
-  .glass-input:focus { border-color: var(--gold-primary); background: #1a1a1a; box-shadow: 0 0 15px rgba(212, 175, 55, 0.05); }
-  .pwd-toggle { position: absolute; right: 18px; background: none; border: none; color: var(--text-muted); font-size: 16px; cursor: pointer; transition: color 0.3s; }
-  .pwd-toggle:hover { color: var(--gold-primary); }
-
-  /* BUTTONS */
-  .btn { 
-    width: 100%; padding: 18px 20px; border-radius: 4px; font-family: var(--font-body); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; transition: all 0.3s var(--easing); border: none; 
-  }
-  .btn-primary { 
-    background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark)); 
-    color: #000; 
-    box-shadow: 0 10px 20px rgba(212, 175, 55, 0.15); 
-  }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 15px 25px rgba(212, 175, 55, 0.25); filter: brightness(1.1); }
-  .btn-primary:active { transform: translateY(0); }
-  .btn-primary:disabled { background: #333; color: #666; cursor: not-allowed; transform: none; box-shadow: none; }
-  
-  .btn-outline { background: transparent; border: 1px solid var(--gold-dark); color: var(--gold-primary); }
-  .btn-outline:hover { background: rgba(212, 175, 55, 0.05); border-color: var(--gold-primary); color: var(--gold-light); }
-
-  /* MESSAGE BOXES */
-  .message-box { padding: 16px; border-radius: 4px; font-size: 12px; font-weight: 500; display: none; align-items: flex-start; gap: 12px; margin-bottom: 24px; line-height: 1.6; border-left: 3px solid transparent; }
-  .message-box i { font-size: 16px; margin-top: 2px; }
-  .message-box.show { display: flex; animation: slideIn 0.4s var(--easing); }
-  @keyframes slideIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
-  .message-error { background: #140b0b; border-color: var(--danger); color: var(--danger-light); }
-  .message-success { background: #0b140e; border-color: var(--success); color: #87d3a4; }
-
-  /* GLOBAL TOAST */
-  #globalToast { position: fixed; top: -60px; left: 50%; transform: translateX(-50%); opacity: 0; background: #0a0a0a; border: 1px solid var(--gold-dark); color: #fff; padding: 16px 24px; border-radius: 4px; font-size: 12px; font-weight: 500; display: flex; align-items: center; gap: 12px; z-index: 9999; transition: all 0.5s var(--easing); box-shadow: 0 20px 40px rgba(0,0,0,0.8); pointer-events: none; letter-spacing: 0.5px;}
-  #globalToast.show { top: 30px; opacity: 1; pointer-events: auto; }
-
-  /* TOP HEADER */
-  .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-  .logo-wrapper { display: flex; align-items: center; gap: 12px; font-family: var(--font-heading); font-weight: 700; font-size: 20px; letter-spacing: 1px; color: var(--text-pure); }
-  .logo-icon { width: 36px; height: 36px; border-radius: 4px; background: linear-gradient(135deg, var(--gold-light), var(--gold-dark)); display: flex; align-items: center; justify-content: center; color: #000; font-size: 16px; box-shadow: 0 4px 15px rgba(212,175,55,0.2); }
-  
-  .global-stats-badge { background: var(--surface-dark); border: 1px solid #222; padding: 10px 18px; border-radius: 4px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; margin-bottom: 24px; width: fit-content; }
-  .live-dot { width: 6px; height: 6px; background: var(--gold-primary); border-radius: 50%; box-shadow: 0 0 8px var(--gold-primary); animation: pulse 2s infinite; }
-  @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
-
-  /* BLACK CARD PROFILE WIDGET */
-  .profile-widget { background: linear-gradient(145deg, #181818, #050505); display: flex; justify-content: space-between; align-items: center; padding: 24px; margin-bottom: 24px; border: 1px solid #333; cursor: pointer; border-radius: 8px; box-shadow: 0 15px 30px rgba(0,0,0,0.6); position: relative; overflow: hidden; }
-  .profile-widget::after { content: 'MEMBER'; position: absolute; right: -10px; bottom: -10px; font-family: var(--font-heading); font-size: 48px; color: rgba(255,255,255,0.02); font-weight: 800; pointer-events: none; }
-  .pw-left { display: flex; align-items: center; gap: 18px; position: relative; z-index: 2; }
-  .pw-avatar { width: 50px; height: 50px; border-radius: 4px; background: #222; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-weight: 700; color: var(--gold-primary); font-size: 20px; overflow: hidden; border: 1px solid var(--gold-dark); }
-  .pw-avatar img { width: 100%; height: 100%; object-fit: cover; }
-  .pw-info h4 { font-family: var(--font-heading); font-size: 18px; font-weight: 700; margin-bottom: 4px; color: var(--gold-light); }
-  .pw-info p { font-size: 9px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; font-weight: 600; }
-
-  /* VIP PROMO BANNER */
-  .vip-promo { background: linear-gradient(135deg, #1a160c, #0a0804); border: 1px solid var(--gold-dark); padding: 20px 24px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; cursor: pointer; transition: all 0.3s var(--easing); }
-  .vip-promo:hover { box-shadow: 0 10px 25px rgba(212, 175, 55, 0.1); background: linear-gradient(135deg, #241e11, #0a0804); }
-  .vip-promo i { font-size: 24px; color: var(--gold-primary); }
-
-  /* TOP UP CARD */
-  .topup-card { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; margin-bottom: 24px; background: #0a0a0a; border: 1px solid #222; }
-  .btn-topup { background: transparent; color: var(--gold-primary); border: 1px solid var(--gold-primary); padding: 8px 16px; border-radius: 4px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: 0.3s; }
-  .btn-topup:hover { background: var(--gold-primary); color: #000; }
-
-  /* --- BIG LIMIT DISPLAY --- */
-  .limit-display-area { text-align: center; margin-bottom: 30px; padding: 40px 20px; background: #0a0a0a; border-radius: 8px; border: 1px solid #1f1f1f; position: relative; }
-  
-  .limit-info-box { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; line-height: 1.6; margin-bottom: 24px; display: inline-block; padding-bottom: 16px; border-bottom: 1px solid #222; }
-  
-  .big-limit-num { font-family: var(--font-heading); font-size: 72px; font-weight: 400; line-height: 1; margin-bottom: 12px; color: var(--gold-light); }
-  .big-limit-num.vip { color: var(--gold-primary); text-shadow: 0 5px 20px rgba(212, 175, 55, 0.2); }
-  .limit-label { font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 3px; font-weight: 500; }
-
-  /* LEADERBOARD BUTTON */
-  .leaderboard-toggle-btn { width: 100%; background: #111; border: 1px solid #222; border-radius: 4px; padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; color: var(--text-pure); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; cursor: pointer; transition: 0.3s; margin-bottom: 16px; }
-  .leaderboard-toggle-btn:hover { border-color: var(--gold-dark); color: var(--gold-primary); }
-
-  /* --- MINIMALIST BOTTOM NAV --- */
-  .bottom-nav { 
-    position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); 
-    width: calc(100% - 40px); max-width: 400px; height: 70px; 
-    background: #0a0a0a; 
-    border: 1px solid #333; 
-    border-radius: 40px; 
-    display: flex; justify-content: space-around; align-items: center; z-index: 100; 
-    box-shadow: 0 20px 40px rgba(0,0,0,0.9); 
-  }
-  .nav-item { display: flex; flex-direction: column; align-items: center; gap: 6px; color: var(--text-muted); font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.4s ease; width: 33%; }
-  .nav-item i { font-size: 18px; transition: 0.4s ease; }
-  .nav-item.active { color: var(--gold-primary); }
-  .nav-item.active i { transform: translateY(-3px); }
-
-  /* --- OVERLAYS & MODALS --- */
-  .overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); z-index: 999; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.4s var(--easing); padding: 20px; }
-  .overlay.show { opacity: 1; pointer-events: auto; }
-  
-  .modal-glass { background: #0a0a0a; border: 1px solid var(--gold-dark); border-radius: 4px; padding: 40px 30px; width: 100%; max-width: 400px; box-shadow: 0 30px 60px rgba(0,0,0,0.9); transform: translateY(20px); transition: all 0.5s ease; position: relative; max-height: 85vh; overflow-y: auto; }
-  .overlay.show .modal-glass { transform: translateY(0); }
-  
-  .btn-close { position: absolute; top: 20px; right: 20px; width: 32px; height: 32px; border-radius: 50%; background: transparent; border: 1px solid #333; color: var(--text-muted); display: flex; align-items: center; justify-content: center; font-size: 12px; cursor: pointer; transition: 0.3s; }
-  .btn-close:hover { color: var(--gold-primary); border-color: var(--gold-primary); transform: rotate(90deg); }
-
-  /* SIDE PANEL */
-  .side-panel { position: absolute; top: 0; right: 0; width: 85%; max-width: 400px; height: 100%; background: #080808; border-left: 1px solid #222; padding: 40px 24px; transform: translateX(100%); transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); overflow-y: auto; box-shadow: -20px 0 50px rgba(0,0,0,0.8); }
-  .overlay.show .side-panel { transform: translateX(0); }
-  
-  .bottom-sheet { position: absolute; bottom: 0; width: 100%; max-width: 500px; background: #0a0a0a; border-top: 1px solid var(--gold-dark); border-radius: 12px 12px 0 0; padding: 32px 24px 40px; transform: translateY(100%); transition: transform 0.6s ease; max-height: 85vh; overflow-y: auto; }
-  .overlay.show .bottom-sheet { transform: translateY(0); }
-
-  /* GRIDS & LISTS */
-  .limit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px; }
-  .limit-box { background: #111; border: 1px solid #222; border-radius: 4px; padding: 20px 12px; text-align: center; cursor: pointer; transition: all 0.3s ease; }
-  .limit-box:hover { border-color: var(--gold-primary); background: #1a1a1a; transform: translateY(-3px); }
-  .limit-box .lmt { font-family: var(--font-heading); font-size: 24px; font-weight: 700; color: var(--gold-light); margin-bottom: 8px; display: block; }
-  .limit-box .prc { font-size: 11px; color: var(--text-dim); font-weight: 500; letter-spacing: 1px; }
-
-  .data-list { display: flex; flex-direction: column; gap: 16px; }
-  .data-item { background: #111; border: 1px solid #222; border-radius: 4px; padding: 20px; transition: 0.3s; }
-  .data-item:hover { border-color: #444; }
-
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: #333; border-radius: 0; }
-  ::-webkit-scrollbar-thumb:hover { background: var(--gold-dark); }
-</style>
-</head>
-<body>
-
-<div id="initialLoader">
-  <div class="loader-spinner"></div>
-  <div style="font-size: 10px; font-weight: 600; color: var(--gold-dark); text-transform: uppercase; letter-spacing: 3px;">INITIALIZING SYSTEM</div>
-</div>
-
-<div id="globalToast"><i class="fas fa-info-circle"></i> <span id="toastMsg">Sistem Informasi</span></div>
-
-<!-- MODAL: TOP UP & QRIS -->
-<div id="limitModal" class="overlay">
-  <div class="modal-glass">
-    <button class="btn-close" onclick="closeLimitModal()"><i class="fas fa-times"></i></button>
-    <div class="title-lg" style="font-size: 24px;">Acquire Limits</div>
-    <div class="text-sub">Pilih kuota eksklusif dan selesaikan pembayaran.</div>
-    
-    <div id="selectLimitView">
-      <div class="limit-grid" id="limitPackageGrid"></div>
-    </div>
-
-    <div id="qrisPaymentView" class="hidden" style="text-align: center; margin-top: 30px;">
-      <div style="background: #fff; padding: 16px; border-radius: 4px; display: inline-block; margin-bottom: 24px; border: 2px solid var(--gold-primary);">
-        <img id="qrisImageResult" src="" alt="QRIS" style="width: 200px; height: 200px; object-fit: contain;">
-      </div>
-      <div id="qrisPackageTitle" style="font-family: var(--font-heading); font-size: 20px; font-weight: 700; margin-bottom: 8px; color: var(--gold-light);"></div>
-      <div style="font-size: 11px; color: var(--text-dim); margin-bottom: 30px; letter-spacing: 1px; text-transform: uppercase;">Transaction ID: <span id="qrisDepositIdSpan" style="color:var(--text-pure)"></span></div>
-      
-      <button class="btn btn-primary" onclick="checkQrisPaymentStatus()" style="margin-bottom: 16px;">Verifikasi Pembayaran</button>
-      <button class="btn btn-outline" onclick="backToLimitSelect()">Kembali</button>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL: CONFIRM -->
-<div id="customConfirmModal" class="overlay">
-  <div class="modal-glass" style="text-align: center; padding: 40px;">
-    <i class="fas fa-exclamation-triangle" style="font-size: 40px; color: var(--gold-primary); margin-bottom: 24px;"></i>
-    <div class="title-lg" style="font-size: 24px;">Konfirmasi Tindakan</div>
-    <div id="confirmText" class="text-sub" style="margin-bottom: 32px;">Tindakan ini bersifat final. Apakah Anda yakin ingin melanjutkannya?</div>
-    <button id="btnConfirmOk" class="btn btn-primary" style="margin-bottom: 16px;">Ya, Lanjutkan</button>
-    <button id="btnConfirmCancel" class="btn btn-outline">Batal</button>
-  </div>
-</div>
-
-<!-- MODAL: WARNING KEAMANAN DETAIL -->
-<div id="warningModal" class="overlay">
-  <div class="modal-glass" style="border-color: var(--gold-dark);">
-    <div style="text-align: center; margin-bottom: 24px;">
-      <i class="fas fa-shield-alt" style="font-size: 40px; color: var(--gold-primary); margin-bottom: 20px;"></i>
-      <div class="title-lg" style="font-size: 22px;">PROTOKOL KEAMANAN</div>
-    </div>
-    <div style="background: #111; border: 1px solid #333; border-radius: 4px; padding: 20px; margin-bottom: 30px; font-size: 12px; line-height: 1.7; color: var(--text-dim); text-align: justify;">
-      <b>PENGUMUMAN EKSKLUSIF:</b> Server kami dilengkapi enkripsi tingkat korporat. Aktivitas mencurigakan seperti eksploitasi jaringan atau inspeksi elemen akan terekam secara otomatis. Akun yang melanggar akan <b>dibekukan permanen</b> untuk menjaga integritas komunitas elit kami.
-    </div>
-    <button class="btn btn-primary" onclick="closeWarningModal()">Saya Mengerti</button>
-  </div>
-</div>
-
-<!-- MODAL: BROADCAST -->
-<div id="broadcastModal" class="overlay">
-  <div class="modal-glass">
-    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px;">
-      <div style="width: 44px; height: 44px; border-radius: 4px; background: #111; display: flex; align-items: center; justify-content: center; border: 1px solid var(--gold-dark);">
-        <i class="fas fa-envelope-open-text" style="font-size: 18px; color: var(--gold-primary);"></i>
-      </div>
-      <div class="title-lg" style="margin: 0; font-size: 20px;">Pesan Eksekutif</div>
-    </div>
-    <div id="broadcastContentText" style="background: #0f0f0f; border-left: 2px solid var(--gold-primary); padding: 20px; font-size: 13px; line-height: 1.8; color: var(--text-pure); margin-bottom: 30px;">Memuat transmisi...</div>
-    <button class="btn btn-outline" onclick="closeBroadcastModal()">Tandai Telah Dibaca</button>
-  </div>
-</div>
-
-<!-- VIEW: LOGIN -->
-<div id="loginView" class="container hidden" style="display: flex; flex-direction: column; justify-content: center; min-height: 100vh;">
-  <div class="glass-card" style="padding: 40px 30px;">
-    <div style="text-align: center; margin-bottom: 40px;">
-      <div style="width: 60px; height: 60px; border-radius: 4px; background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark)); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(212,175,55,0.2);">
-        <i class="fas fa-key" style="font-size: 24px; color: #000;"></i>
-      </div>
-      <div class="title-lg">Otorisasi Akses</div>
-      <div class="text-sub">Masuk untuk mengakses layanan eksklusif.</div>
-    </div>
-    
-    <div id="loginErrorMsg" class="message-box message-error"></div>
-    
-    <div class="form-group"><label>Identitas (Username)</label><input type="text" id="loginUser" class="glass-input" autocomplete="off" /></div>
-    <div class="form-group" style="margin-bottom: 40px;">
-      <label>Kata Sandi</label>
-      <div class="input-wrapper">
-        <input type="password" id="loginPwd" class="glass-input" autocomplete="off" />
-        <button type="button" class="pwd-toggle" onclick="togglePwd('loginPwd', this)"><i class="far fa-eye"></i></button>
-      </div>
-    </div>
-    
-    <button id="loginBtn" class="btn btn-primary">Otorisasi Masuk</button>
-    
-    <div style="display: flex; justify-content: space-between; margin-top: 30px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">
-      <span style="cursor:pointer; color: var(--text-muted); transition: 0.3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--text-muted)'" onclick="handleForgotClick()">Lupa Sandi?</span>
-      <span style="cursor:pointer; color: var(--gold-primary); transition: 0.3s;" onmouseover="this.style.color='var(--gold-light)'" onmouseout="this.style.color='var(--gold-primary)'" onclick="switchView('registerView')">Registrasi Akun</span>
-    </div>
-  </div>
-</div>
-
-<!-- VIEW: REGISTER -->
-<div id="registerView" class="container hidden" style="display: flex; flex-direction: column; justify-content: center; min-height: 100vh;">
-  <div class="glass-card" style="padding: 40px 30px;">
-    <div style="text-align: center; margin-bottom: 30px;">
-      <div class="title-lg" style="font-size: 26px;">Registrasi Klien</div>
-      <div class="text-sub">Daftarkan identitas Anda ke jaringan elit.</div>
-    </div>
-    
-    <div id="regMsg" class="message-box"></div>
-    
-    <div class="form-group"><label>Username (Tanpa Spasi)</label><input type="text" id="regUser" class="glass-input" /></div>
-    <div class="form-group"><label>Nomor WhatsApp</label><input type="text" id="regWa" class="glass-input" placeholder="08..." /></div>
-    <div class="form-group">
-      <label>Kata Sandi Privat</label>
-      <div class="input-wrapper">
-        <input type="password" id="regPwd" class="glass-input" />
-        <button type="button" class="pwd-toggle" onclick="togglePwd('regPwd', this)"><i class="far fa-eye"></i></button>
-      </div>
-    </div>
-    <div class="form-group" style="margin-bottom: 35px;">
-      <label id="captchaLabel">Protokol Anti-Bot</label>
-      <input type="text" id="regCaptcha" class="glass-input" placeholder="Hasil perhitungan" />
-    </div>
-    
-    <button id="regBtn" class="btn btn-primary">Daftarkan Identitas</button>
-    <div style="margin-top: 30px; text-align: center; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; cursor:pointer; color: var(--text-muted);" onclick="switchView('loginView')">
-      Telah terdaftar? <span style="color:var(--gold-primary);">Masuk Disini</span>
-    </div>
-  </div>
-</div>
-
-<!-- VIEW: MAIN DASHBOARD -->
-<div id="appView" class="container hidden">
-  
-  <div class="top-header">
-    <div class="logo-wrapper">
-      <div class="logo-icon"><i class="fas fa-crown"></i></div>
-      <span style="background: linear-gradient(135deg, var(--gold-light), var(--gold-dark)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">AM Executive</span>
-    </div>
-    <div style="font-size: 10px; color: var(--gold-primary); font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; border: 1px solid #333; padding: 8px 12px; border-radius: 4px; background: #0a0a0a;"><span id="realtimeClock">00:00 WIB</span></div>
-  </div>
-
-  <!-- TOTAL PENGGUNA ONLINE -->
-  <div class="global-stats-badge">
-    <div class="live-dot"></div>
-    <span>Jaringan Klien: <strong id="globalTotalUsers" style="color:var(--gold-light); font-weight: 700;">0</strong></span>
-  </div>
-
-  <!-- PREMIUM PROFILE WIDGET -->
-  <div class="profile-widget" onclick="openProfileSheet()">
-    <div class="pw-left">
-      <div class="pw-avatar"><span class="disp-avatar-text">?</span></div>
-      <div class="pw-info">
-        <h4 class="disp-username">User</h4>
-        <p class="disp-userrole">Member</p>
-      </div>
-    </div>
-    <div style="width: 36px; height: 36px; border-radius: 50%; background: #0a0a0a; display: flex; align-items: center; justify-content: center; border: 1px solid #333;">
-      <i class="fas fa-arrow-right" style="color: var(--gold-dark); font-size: 12px;"></i>
-    </div>
-  </div>
-
-  <!-- TOP UP ACTION CARD -->
-  <div id="topupCardContainer" class="topup-card hidden" onclick="openLimitModal()">
-     <div>
-        <div style="font-family: var(--font-heading); font-size: 18px; font-weight: 700; margin-bottom: 6px; color: var(--gold-light);">Acquire Limit</div>
-        <div style="font-size: 11px; color: var(--text-dim); line-height: 1.5;">Isi ulang kuota eksklusif Anda via QRIS.</div>
-     </div>
-     <button class="btn-topup">Isi Ulang</button>
-  </div>
-
-  <!-- VIP PROMO BANNER -->
-  <div id="promoBannerContainer" class="vip-promo hidden" onclick="handleVipPromoClick()">
-     <div>
-       <div style="font-family: var(--font-heading); font-size: 18px; font-weight: 700; color: var(--gold-light); margin-bottom: 6px;">Upgrade Status VIP</div>
-       <div style="font-size: 11px; color: var(--text-muted); line-height: 1.5;">Akses tanpa batas, previlege elit selamanya.</div>
-     </div>
-     <i class="fas fa-gem"></i>
-  </div>
-
-  <!-- LEADERBOARD ACCORDION BUTTON & LIST -->
-  <div style="margin-bottom: 30px;">
-    <button class="leaderboard-toggle-btn" onclick="toggleLeaderboard()">
-      <span style="display:flex; align-items:center; gap:12px;"><i class="fas fa-trophy" style="color:var(--gold-primary); font-size: 16px;"></i> Peringkat Prestise</span>
-      <i class="fas fa-chevron-down" id="leaderboardChevron" style="transition: 0.4s ease;"></i>
-    </button>
-    <div id="leaderboardCollapsible" class="hidden" style="margin-top: 16px;">
-      <div id="leaderboardListContainer" class="data-list"></div>
-    </div>
-  </div>
-
-  <!-- SECTION: ACTIVATOR -->
-  <div id="sectionActivator">
-    
-    <!-- BIG LIMIT NUMBER -->
-    <div class="limit-display-area">
-       <div class="limit-info-box">
-         Sisa kuota layanan akan direset mingguan. Alokasi ditangani otomatis.
-       </div>
-       <div class="big-limit-num disp-limit-value">0</div>
-       <div class="limit-label disp-limit-label">Sisa Kuota Akses</div>
-    </div>
-
-    <div class="glass-card">
-      <div class="title-lg" style="font-size: 24px;">Aktivasi Lisensi</div>
-      <div class="text-sub" style="margin-bottom: 24px;">Otentikasi perangkat dengan server utama.</div>
-      
-      <div style="background: #111; border: 1px solid #222; border-radius: 4px; padding: 18px; margin-bottom: 24px;">
-         <ol style="padding-left: 18px; font-size: 11px; color: var(--text-dim); margin:0; line-height: 1.8;">
-            <li style="margin-bottom: 8px;">Ketik alamat email Anda, lalu tekan Kirim.</li>
-            <li style="margin-bottom: 8px;">Periksa kotak masuk email, salin URL dari Magic Link.</li>
-            <li>Tempel URL tersebut pada kolom dan eksekusi Verifikasi.</li>
-         </ol>
-      </div>
-      
-      <div id="appErrorMsg" class="message-box message-error">
-        <i class="fas fa-exclamation-circle"></i> <span id="appErrorText"></span>
-      </div>
-      
-      <div class="form-group">
-          <label>Email Terdaftar</label>
-          <div style="display: flex; gap: 12px;">
-              <input type="email" id="emailInput" class="glass-input" placeholder="contoh@email.com" autocomplete="email" />
-              <button id="sendBtn" class="btn btn-outline" style="width: auto; padding: 0 20px; font-size: 11px;">Kirim</button>
-          </div>
-      </div>
-      <div class="form-group" style="margin-bottom: 30px;">
-          <label>URL Magic Link</label>
-          <input type="url" id="magicInput" class="glass-input" placeholder="Tempel URL di sini" autocomplete="off" />
-      </div>
-      
-      <button id="activateBtn" class="btn btn-primary">
-          <span id="btnDefault">Verifikasi Lisensi</span>
-          <div id="loaderContainer" class="hidden" style="display:flex; align-items:center; gap:10px;"><div class="loader-spinner" style="width:16px;height:16px; border-width:2px; border-top-color:#000;"></div> Memproses...</div>
-      </button>
-    </div>
-  </div>
-
-  <!-- SECTION: ENHANCER -->
-  <div id="sectionEnhancer" class="hidden">
-    <div class="glass-card">
-      <div class="title-lg" style="font-size: 24px;">Neural AI Studio</div>
-      <div class="text-sub" style="margin-bottom: 30px;">Pemulihan resolusi citra dengan komputasi kecerdasan buatan tingkat lanjut.</div>
-      
-      <div class="form-group">
-        <label>URL Sumber (Opsional)</label>
-        <input type="url" id="imageUrl" class="glass-input" placeholder="https://..." />
-      </div>
-
-      <div id="dropZone" style="border: 1px dashed #444; border-radius: 4px; padding: 40px 20px; text-align: center; background: #0f0f0f; cursor: pointer; margin-bottom: 24px; transition: 0.3s;">
-        <i class="fas fa-upload" style="font-size: 28px; color: var(--gold-dark); margin-bottom: 16px;"></i>
-        <div style="font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--gold-light);">Unggah Arsip Lokal</div>
-        <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">JPG, PNG, WEBP — Max 25MB</div>
-        <div id="fileNameDisplay" style="margin-top: 16px; font-size: 11px; color: var(--gold-primary); font-weight: 600;"></div>
-        <input type="file" id="fileInput" accept="image/*" style="display: none;">
-      </div>
-      
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 30px;">
-        <div style="background: #111; border-radius: 4px; padding: 16px; border: 1px solid #222;">
-          <div style="display:flex; justify-content:space-between; font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing: 1px; margin-bottom:16px;"><span>Intensitas</span> <span id="strengthIndicator" style="color:var(--gold-primary); font-weight: 600;">Normal</span></div>
-          <input type="range" id="strengthRange" min="10" max="100" value="60" style="width: 100%; height:2px; appearance:none; background:#333; outline:none; cursor: pointer;">
-        </div>
-        <div onclick="document.getElementById('modeModalOverlay').classList.add('show')" style="background: #111; border-radius: 4px; padding: 16px; border: 1px solid #222; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: 0.3s;" onmouseover="this.style.borderColor='var(--gold-dark)'" onmouseout="this.style.borderColor='#222'">
-          <div>
-            <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing: 1px; margin-bottom:8px;">Model AI</div>
-            <div id="currentModeLabel" style="font-size:12px; font-weight:600; color: var(--gold-light);">Super Res 2x</div>
-          </div>
-          <div style="width: 28px; height: 28px; border-radius: 4px; background: #0a0a0a; border: 1px solid #333; display: flex; align-items: center; justify-content: center;">
-             <i class="fas fa-sliders-h" style="color:var(--gold-dark); font-size:11px;"></i>
-          </div>
-        </div>
-      </div>
-      
-      <div style="display: flex; gap: 12px; margin-bottom: 24px;">
-        <button class="btn btn-primary" id="enhanceBtn" style="flex: 1;"><i class="fas fa-microchip"></i> Eksekusi Render</button>
-        <button class="btn btn-outline" id="resetBtn" style="width: auto; padding: 0 20px;"><i class="fas fa-redo"></i></button>
-      </div>
-      
-      <div id="statusMessage" class="message-box">
-        <i class="fas fa-info-circle"></i> <span id="statusMessageText"></span>
-      </div>
-
-      <div class="hidden" id="comparisonSplitSection" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 30px 0;">
-        <div style="border-radius: 4px; overflow: hidden; position: relative; height: 180px; border: 1px solid #333;">
-          <div style="position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.8); padding: 4px 10px; border-radius: 2px; font-size: 9px; font-weight: 600; letter-spacing: 1px; color:#fff; border: 1px solid #444;">ASLI</div>
-          <img id="splitImgBefore" style="width: 100%; height: 100%; object-fit: cover;">
-        </div>
-        <div style="border-radius: 4px; overflow: hidden; position: relative; height: 180px; border: 1px solid var(--gold-primary);">
-          <div style="position: absolute; top: 8px; left: 8px; background: var(--gold-primary); padding: 4px 10px; border-radius: 2px; font-size: 9px; font-weight: 700; letter-spacing: 1px; color:#000;">HASIL AI</div>
-          <img id="splitImgAfter" style="width: 100%; height: 100%; object-fit: cover;">
-        </div>
-      </div>
-      
-      <div class="hidden" id="downloadFooterActions" style="display: flex; gap: 12px;">
-        <button class="btn btn-outline" id="downloadBtn" style="flex: 1;"><i class="fas fa-download"></i> Simpan File</button>
-        <button class="btn btn-outline" id="copyUrlBtn" style="flex: 1;"><i class="fas fa-link"></i> Salin URL</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- SECTION: OWNER PANEL -->
-  <div id="ownerPanel" class="hidden">
-    <div class="glass-card">
-      <div class="title-lg" style="font-size: 24px;">Database Eksekutif</div>
-      <div class="text-sub" style="margin-bottom: 30px;">Kontrol akses penuh manajemen klien dan infrastruktur.</div>
-      
-      <div style="background: #111; border-radius: 4px; padding: 20px; margin-bottom: 30px; border: 1px solid #222;">
-        <label style="font-size: 10px; font-weight: 700; color: var(--gold-primary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; display:flex; align-items: center; gap: 8px;"><i class="fas fa-broadcast-tower"></i> Transmisi Global</label>
-        <textarea id="broadcastInput" class="glass-input" placeholder="Tulis instruksi pengumuman untuk didistribusikan..." style="min-height: 90px; resize: none; margin-bottom: 16px;"></textarea>
-        <button class="btn btn-primary" onclick="sendBroadcastMsg()"><i class="fas fa-paper-plane"></i> Sebarkan Transmisi</button>
-      </div>
-      
-      <div class="form-group"><input type="text" id="memberSearchInput" class="glass-input" placeholder="Cari Identitas (Username / ID)..." oninput="renderMemberList()" /></div>
-      <div id="memberList" class="data-list"></div>
-    </div>
-  </div>
-</div>
-
-<!-- FLOATING BOTTOM NAVIGATION -->
-<nav class="bottom-nav hidden" id="mainBottomNav">
-  <div class="nav-item active" id="btnTabActivator" onclick="switchTab('activator')">
-    <i class="fas fa-key"></i><span>Lisensi</span>
-  </div>
-  <div class="nav-item" id="btnTabEnhancer" onclick="switchTab('enhancer')">
-    <i class="fas fa-layer-group"></i><span>Studio</span>
-  </div>
+```html
+<!-- ... existing code ... -->
   <div class="nav-item hidden" id="toggleOwnerDashBtn" onclick="switchTab('admin')">
     <i class="fas fa-server"></i><span>Sistem</span>
   </div>
@@ -672,14 +110,8 @@
     let currentCaptchaAnswer = 0; let currentUserData = null; let cachedEmail = ''; let activeDepositId = null; let selectedAddLimitCount = 0; let activeBroadcastId = null;
 
     const limitPackages = [
-        { limit: 4, price: 1200, label: "4" },
-        { limit: 10, price: 3500, label: "10" },
-        { limit: 18, price: 4700, label: "18" },
-        { limit: 20, price: 5000, label: "20" },
-        { limit: 35, price: 6700, label: "35" },
-        { limit: 40, price: 7200, label: "40" },
-        { limit: 50, price: 8000, label: "50" },
-        { limit: 100, price: 18800, label: "100" }
+        { limit: 4, price: 1200, label: "4" }, { limit: 10, price: 3500, label: "10" }, { limit: 18, price: 4700, label: "18" }, { limit: 20, price: 5000, label: "20" },
+        { limit: 35, price: 6700, label: "35" }, { limit: 40, price: 7200, label: "40" }, { limit: 50, price: 8000, label: "50" }, { limit: 100, price: 18800, label: "100" }
     ];
 
     function renderLimitPackages() {
@@ -751,7 +183,9 @@
 
     async function fetchLeaderboard() {
         const container = document.getElementById('leaderboardListContainer'); if(!container) return;
-        container.innerHTML = `<div style="text-align:center; padding: 20px;"><div class="loader-spinner" style="margin: 0 auto; width: 24px; height: 24px;"></div></div>`;
+        
+        container.innerHTML = `<div class="skeleton skel-item"></div><div class="skeleton skel-item"></div><div class="skeleton skel-item"></div>`;
+        
         const res = await apiCall('getUsers');
         if(!res.status || !res.data) { container.innerHTML = `<div style="font-size:11px; color:var(--text-dim); text-align:center; padding: 16px;">Gagal memuat data peringkat.</div>`; return; }
         const users = res.data;
@@ -848,7 +282,7 @@
     };
 
     function startClock() { const clockEl = document.getElementById('realtimeClock'); if(!clockEl) return; setInterval(() => { const now = new Date(); clockEl.textContent = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB'; }, 1000); }
-    async function fetchGlobalStats() { const res = apiCall ? await apiCall('fetchStats') : {status:false}; if (res.status) { const el = document.getElementById('globalTotalUsers'); if(el) el.textContent = res.count; } }
+    async function fetchGlobalStats() { const res = typeof apiCall === 'function' ? await apiCall('fetchStats') : {status:false}; if (res.status) { const el = document.getElementById('globalTotalUsers'); if(el) el.textContent = res.count; } }
     function generateCaptcha() { 
         const num1 = Math.floor(Math.random() * 10) + 1; const num2 = Math.floor(Math.random() * 10) + 1; currentCaptchaAnswer = num1 + num2; 
         const label = document.getElementById('captchaLabel'); 
@@ -932,10 +366,20 @@
     }
     window.closeWarningModal = function() { document.getElementById('warningModal').classList.remove('show'); if(!localStorage.getItem(SESSION_KEY)) document.getElementById('loginView').classList.remove('hidden'); };
     window.handleForgotClick = function() { window.open(`https://wa.me/${OWNER_WA.replace('+', '')}?text=` + encodeURIComponent("Salam hormat, saya membutuhkan bantuan pemulihan akses (lupa sandi)."), '_blank'); };
-    
+
     window.renderMemberList = async function() { 
-        const res = await apiCall('getUsers'); const memberList = document.getElementById('memberList'); const searchInput = document.getElementById('memberSearchInput'); 
-        if(!memberList || !res.status) return; const users = res.data; const searchQuery = searchInput ? searchInput.value.toLowerCase().trim() : ''; 
+        const memberList = document.getElementById('memberList');
+        const searchInput = document.getElementById('memberSearchInput');
+        const isSearching = searchInput && searchInput.value.trim() !== '';
+        
+        // Inject Skeleton loading
+        if(memberList && !isSearching) {
+            memberList.innerHTML = `<div class="skeleton skel-item" style="height: 140px;"></div><div class="skeleton skel-item" style="height: 140px;"></div>`;
+        }
+        
+        const res = await apiCall('getUsers'); 
+        if(!memberList || !res.status) { if(memberList) memberList.innerHTML = ''; return; }
+        const users = res.data; const searchQuery = searchInput ? searchInput.value.toLowerCase().trim() : ''; 
         const filteredUsers = users.filter(m => (m.username || '').toLowerCase().includes(searchQuery) || (m.id_code || '').toLowerCase().includes(searchQuery)); 
         
         filteredUsers.sort((a, b) => { 
@@ -1091,18 +535,32 @@
     }
 
     window.switchTab = function(tabName) { 
-        document.getElementById('sectionActivator').classList.add('hidden'); 
-        document.getElementById('sectionEnhancer').classList.add('hidden'); 
-        document.getElementById('ownerPanel').classList.add('hidden'); 
+        const secActivator = document.getElementById('sectionActivator');
+        const secEnhancer = document.getElementById('sectionEnhancer');
+        const secOwner = document.getElementById('ownerPanel');
+        
+        // Sembunyikan dan hapus class animasi
+        [secActivator, secEnhancer, secOwner].forEach(el => { 
+            if (el) {
+                el.classList.add('hidden'); 
+                el.classList.remove('tab-content-anim'); 
+            }
+        }); 
         document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active')); 
         
-        if(tabName === 'activator') { document.getElementById('sectionActivator').classList.remove('hidden'); document.getElementById('btnTabActivator').classList.add('active'); } 
-        else if(tabName === 'enhancer') { document.getElementById('sectionEnhancer').classList.remove('hidden'); document.getElementById('btnTabEnhancer').classList.add('active'); } 
-        else if(tabName === 'admin') { document.getElementById('ownerPanel').classList.remove('hidden'); document.getElementById('toggleOwnerDashBtn').classList.add('active'); renderMemberList(); } 
+        let activeSection = null;
+        if(tabName === 'activator') { activeSection = secActivator; document.getElementById('btnTabActivator').classList.add('active'); } 
+        else if(tabName === 'enhancer') { activeSection = secEnhancer; document.getElementById('btnTabEnhancer').classList.add('active'); } 
+        else if(tabName === 'admin') { activeSection = secOwner; document.getElementById('toggleOwnerDashBtn').classList.add('active'); renderMemberList(); } 
+        
+        // Tampilkan dan jalankan kembali animasi
+        if(activeSection) {
+            activeSection.classList.remove('hidden');
+            void activeSection.offsetWidth; // Trigger reflow / render ulang
+            activeSection.classList.add('tab-content-anim');
+        }
     };
     window.openProfileSheet = function() { document.getElementById('profileSheet').classList.add('show'); };
     window.closeProfileSheet = function() { document.getElementById('profileSheet').classList.remove('show'); };
 })();
 </script>
-</body>
-</html>
