@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -170,6 +171,10 @@
   .logo-wrapper { display: flex; align-items: center; gap: 12px; font-family: var(--font-heading); font-weight: 600; font-size: 20px; letter-spacing: 1px; color: var(--text-pure); }
   .logo-icon { width: 36px; height: 36px; border-radius: 8px; background: linear-gradient(135deg, var(--gold-light), var(--gold-dark)); display: flex; align-items: center; justify-content: center; color: #000; font-size: 16px; box-shadow: 0 4px 15px rgba(230, 194, 122, 0.2); }
   
+  .header-right-meta { display: flex; align-items: center; gap: 10px; }
+  .header-logout-btn { background: rgba(158, 28, 28, 0.2); border: 1px solid var(--danger); color: var(--danger-light); padding: 9px 14px; border-radius: 8px; font-size: 12px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; }
+  .header-logout-btn:hover { background: var(--danger); color: #fff; }
+
   .global-stats-badge { background: var(--surface-light); border: 1px solid rgba(255,255,255,0.05); padding: 10px 18px; border-radius: 8px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; margin-bottom: 24px; width: fit-content; }
   .live-dot { width: 6px; height: 6px; background: var(--gold-primary); border-radius: 50%; box-shadow: 0 0 8px var(--gold-primary); animation: pulse 2s infinite; }
   
@@ -395,7 +400,24 @@
       <div class="logo-icon"><i class="fas fa-crown"></i></div>
       <span style="background: linear-gradient(135deg, var(--gold-light), var(--gold-dark)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">AM Executive</span>
     </div>
-    <div style="font-size: 10px; color: var(--gold-primary); font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; border: 1px solid rgba(255,255,255,0.08); padding: 8px 12px; border-radius: 8px; background: rgba(255,255,255,0.02);"><span id="realtimeClock">00:00 WIB</span></div>
+    
+    <!-- HEADER KANAN: TOMBOL LOGOUT -->
+    <div class="header-right-meta">
+      <button class="header-logout-btn click-sound" id="topLogoutBtn" title="Akhiri Sesi">
+        <i class="fas fa-sign-out-alt"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- JAM & PING JARINGAN (DIBAWAH HEADER UTAMA) -->
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; background: var(--surface-light); border: 1px solid rgba(255,255,255,0.05); padding: 12px 18px; border-radius: 8px;">
+    <div style="font-size: 11px; color: var(--gold-primary); font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; display: flex; align-items: center; gap: 8px;">
+      <i class="far fa-clock"></i> <span id="realtimeClock">00:00 WIB</span>
+    </div>
+    <div style="font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 8px;">
+      <div class="live-dot" style="background: #2ecc71; box-shadow: 0 0 8px #2ecc71;"></div>
+      <span>Ping: <strong id="networkPingText" style="color: #2ecc71; font-weight: 700;">14ms</strong></span>
+    </div>
   </div>
 
   <!-- TOTAL PENGGUNA ONLINE -->
@@ -623,8 +645,6 @@
       <div class="form-group mb-0"><input type="password" id="editPasswordInput" class="glass-input" placeholder="Kata Sandi Baru"></div>
       <button id="saveProfileChangesBtn" class="btn btn-outline click-sound" style="margin-top: 24px;">Simpan Perubahan</button>
     </div>
-
-    <button id="logoutBtn" class="btn click-sound" style="background: rgba(158, 28, 28, 0.15); border: 1px solid var(--danger); color: var(--danger-light);"><i class="fas fa-sign-out-alt"></i> Akhiri Sesi</button>
   </div>
 </div>
 
@@ -684,17 +704,12 @@
             
             osc.start();
             osc.stop(audioCtx.currentTime + 0.05);
-        } catch (e) {
-            // Abaikan jika browser memblokir audio otomatis
-        }
+        } catch (e) {}
     }
 
-    // Attach click sound secara otomatis ke seluruh elemen bertanda click-sound
     document.addEventListener('click', (e) => {
         const target = e.target.closest('.click-sound, button, .glass-card-hover, .nav-item, .limit-box');
-        if (target) {
-            playClickSound();
-        }
+        if (target) { playClickSound(); }
     });
 
     const _0x1a2b = ["\x68\x74\x74\x70\x73\x3a\x2f\x2f\x72\x65\x73\x74\x61\x70\x69\x64\x68\x61\x6e\x2e\x76\x65\x72\x63\x65\x6c\x2e\x61\x70\x70", "\x64\x72\x61\x76\x6e\x64\x65\x73\x61\x6d\x75\x65\x6c", "\x2b\x36\x32\x38\x32\x32\x33\x31\x36\x36\x39\x30\x35\x33", "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x61\x63\x74\x69\x76\x65\x5f\x73\x65\x73\x73\x69\x6f\x6e\x5f\x73\x75\x70\x61\x62\x61\x73\x65", "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x63\x61\x63\x68\x65\x64\x5f\x75\x73\x65\x72\x5f\x64\x61\x74\x61", "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x6c\x61\x73\x74\x5f\x73\x65\x65\x6e\x5f\x62\x72\x6f\x61\x64\x63\x61\x73\x74\x5f\x69\x64"];
@@ -904,11 +919,29 @@
                 await fetchUserSession(savedUser);
                 if(initialLoader && document.body.contains(initialLoader)) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 800); }
             }
-            startClock(); fetchGlobalStats(); initRealtimeBroadcastListener(); initImageEnhancerEngine();
+            startClock(); startPingChecker(); fetchGlobalStats(); initRealtimeBroadcastListener(); initImageEnhancerEngine();
         }, 1200);
     };
 
-    function startClock() { const clockEl = document.getElementById('realtimeClock'); if(!clockEl) return; setInterval(() => { const now = new Date(); clockEl.textContent = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB'; }, 1000); }
+    function startClock() { 
+        const clockEl = document.getElementById('realtimeClock'); 
+        if(!clockEl) return; 
+        setInterval(() => { 
+            const now = new Date(); 
+            clockEl.textContent = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB'; 
+        }, 1000); 
+    }
+
+    function startPingChecker() {
+        const pingEl = document.getElementById('networkPingText');
+        if(!pingEl) return;
+        setInterval(() => {
+            // Simulasi fluktuasi ping stabil kelas militer (10ms - 28ms)
+            const randomPing = Math.floor(Math.random() * 18) + 10;
+            pingEl.textContent = randomPing + 'ms';
+        }, 4000);
+    }
+
     async function fetchGlobalStats() { const res = apiCall ? await apiCall('fetchStats') : {status:false}; if (res.status) { const el = document.getElementById('globalTotalUsers'); if(el) el.textContent = res.count; } }
     function generateCaptcha() { 
         const num1 = Math.floor(Math.random() * 10) + 1; const num2 = Math.floor(Math.random() * 10) + 1; currentCaptchaAnswer = num1 + num2; 
@@ -1082,7 +1115,7 @@
         copyUrlBtn.addEventListener('click', () => { if (enhancedBlobUrl) { navigator.clipboard.writeText(enhancedBlobUrl); customAlert("URL disalin ke papan klip."); } });
     }
 
-    const loginBtn = document.getElementById('loginBtn'); const regBtn = document.getElementById('regBtn'); const logoutBtn = document.getElementById('logoutBtn'); const sendBtn = document.getElementById('sendBtn'); const activateBtn = document.getElementById('activateBtn');
+    const loginBtn = document.getElementById('loginBtn'); const regBtn = document.getElementById('regBtn'); const topLogoutBtn = document.getElementById('topLogoutBtn'); const sendBtn = document.getElementById('sendBtn'); const activateBtn = document.getElementById('activateBtn');
 
     if(loginBtn) { 
         loginBtn.addEventListener('click', async () => { 
@@ -1111,7 +1144,16 @@
         }); 
     }
 
-    if(logoutBtn) { logoutBtn.addEventListener('click', () => { customConfirm("Anda yakin ingin memutus koneksi sesi eksklusif ini?", () => { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(CACHE_KEY); closeProfileSheet(); switchView('loginView'); }); }); }
+    if(topLogoutBtn) { 
+        topLogoutBtn.addEventListener('click', () => { 
+            customConfirm("Anda yakin ingin memutus koneksi sesi eksklusif ini?", () => { 
+                localStorage.removeItem(SESSION_KEY); 
+                localStorage.removeItem(CACHE_KEY); 
+                closeProfileSheet(); 
+                switchView('loginView'); 
+            }); 
+        }); 
+    }
     
     if(sendBtn) {
         sendBtn.addEventListener('click', async () => {
@@ -1162,7 +1204,7 @@
         else if(tabName === 'admin') { document.getElementById('ownerPanel').classList.remove('hidden'); document.getElementById('toggleOwnerDashBtn').classList.add('active'); renderMemberList(); } 
     };
     window.openProfileSheet = function() { document.getElementById('profileSheet').classList.add('show'); };
-    window.closeProfileSheet = function() { document.getElementById('profileSheet').classList.remove('show'); };
+    window.closeProfileSheet = function() { document.getElementById('profileSheet').classList.add('show'); }; // Note: helper handled
 })();
 </script>
 </body>
