@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -13,21 +14,21 @@
 
 <style>
   :root {
-    /* Luxury Palette */
-    --bg-base: #030303;
-    --surface-dark: #0a0a0a;
-    --surface-light: #141414;
+    /* Refined Luxury Palette - Champagne Gold & Obsidian */
+    --bg-base: #050507;
+    --surface-dark: rgba(18, 18, 20, 0.7);
+    --surface-light: rgba(28, 28, 30, 0.6);
     
-    --gold-primary: #D4AF37;
-    --gold-light: #F3E5AB;
-    --gold-dark: #997A15;
+    --gold-primary: #E6C27A;
+    --gold-light: #F9E5B5;
+    --gold-dark: #A67C00;
     
     --text-pure: #ffffff;
-    --text-dim: #a0a0a0;
-    --text-muted: #666666;
+    --text-dim: #b3b3b3;
+    --text-muted: #737373;
     
-    --border-thin: rgba(212, 175, 55, 0.2);
-    --border-focus: rgba(212, 175, 55, 0.6);
+    --border-thin: rgba(230, 194, 122, 0.15);
+    --border-focus: rgba(230, 194, 122, 0.5);
     
     --danger: #8a1c1c;
     --danger-light: #ff6b6b;
@@ -48,17 +49,12 @@
     min-height: 100vh; 
     overflow-x: hidden; 
     position: relative;
-    background-image: radial-gradient(circle at 50% 0%, #1a1813 0%, #030303 60%);
-  }
-
-  /* --- ELEGANT BACKGROUND TEXTURE --- */
-  body::before {
-    content: ''; position: fixed; inset: 0; z-index: -2; pointer-events: none;
-    background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)" opacity="0.03"/></svg>');
+    /* Lighter but elegant radial glow */
+    background-image: radial-gradient(circle at 50% -10%, rgba(166, 124, 0, 0.12) 0%, rgba(5,5,7,1) 50%);
   }
 
   #initialLoader { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; background: var(--bg-base); flex-direction: column; gap: 20px; transition: opacity 0.8s ease; }
-  .loader-spinner { width: 45px; height: 45px; border: 1px solid rgba(212, 175, 55, 0.2); border-top-color: var(--gold-primary); border-radius: 50%; animation: spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite; }
+  .loader-spinner { width: 40px; height: 40px; border: 2px solid rgba(230, 194, 122, 0.1); border-top-color: var(--gold-primary); border-radius: 50%; animation: spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
   .hidden { display: none !important; }
 
@@ -66,32 +62,32 @@
   .container { width: 100%; max-width: 480px; margin: 0 auto; padding: 24px 20px 140px; animation: fadeUp 0.8s var(--easing) forwards; }
   @keyframes fadeUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-  /* --- LUXURY CARD --- */
+  /* --- PREMIUM GLASS CARD --- */
   .glass-card { 
     background: var(--surface-dark); 
-    border: 1px solid #1f1f1f; 
-    border-radius: 8px; 
-    padding: 30px 24px; 
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border-thin); 
+    border-radius: 12px; 
+    padding: 35px 28px; 
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
     transition: all 0.4s var(--easing);
     position: relative;
     overflow: hidden;
   }
   .glass-card::before {
-    content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
-    background: linear-gradient(90deg, transparent, var(--gold-dark), transparent);
-    opacity: 0.3;
+    content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(230, 194, 122, 0.4), transparent);
   }
   .glass-card-hover:hover { 
     border-color: var(--border-focus); 
-    transform: translateY(-2px); 
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(212, 175, 55, 0.1);
+    transform: translateY(-3px); 
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
     cursor: pointer; 
   }
-  .glass-card-hover:hover::before { opacity: 1; }
 
   /* TYPOGRAPHY */
-  .title-lg { font-family: var(--font-heading); font-size: 28px; font-weight: 700; color: var(--gold-light); line-height: 1.2; margin-bottom: 8px; letter-spacing: 0.5px; }
+  .title-lg { font-family: var(--font-heading); font-size: 28px; font-weight: 600; color: var(--gold-light); line-height: 1.3; margin-bottom: 8px; letter-spacing: 0.5px; }
   .title-md { font-family: var(--font-heading); font-size: 18px; font-weight: 600; color: var(--gold-primary); margin-bottom: 6px; }
   .text-sub { font-size: 13px; color: var(--text-dim); line-height: 1.6; font-weight: 300; }
 
@@ -102,8 +98,8 @@
   .glass-input { 
     width: 100%; 
     background: var(--surface-light); 
-    border: 1px solid #222; 
-    border-radius: 4px; 
+    border: 1px solid rgba(255, 255, 255, 0.08); 
+    border-radius: 8px; 
     color: var(--text-pure); 
     font-family: var(--font-body); 
     font-size: 14px; 
@@ -111,88 +107,91 @@
     outline: none; 
     transition: all 0.3s ease; 
   }
-  .glass-input:focus { border-color: var(--gold-primary); background: #1a1a1a; box-shadow: 0 0 15px rgba(212, 175, 55, 0.05); }
+  .glass-input:focus { border-color: var(--gold-primary); background: rgba(30, 30, 30, 0.8); box-shadow: 0 0 15px rgba(230, 194, 122, 0.1); }
   .pwd-toggle { position: absolute; right: 18px; background: none; border: none; color: var(--text-muted); font-size: 16px; cursor: pointer; transition: color 0.3s; }
   .pwd-toggle:hover { color: var(--gold-primary); }
 
   /* BUTTONS */
   .btn { 
-    width: 100%; padding: 18px 20px; border-radius: 4px; font-family: var(--font-body); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; transition: all 0.3s var(--easing); border: none; 
+    width: 100%; padding: 16px 20px; border-radius: 8px; font-family: var(--font-body); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; transition: all 0.3s var(--easing); border: none; 
   }
   .btn-primary { 
-    background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark)); 
-    color: #000; 
-    box-shadow: 0 10px 20px rgba(212, 175, 55, 0.15); 
+    background: linear-gradient(135deg, var(--gold-primary), #C59B46); 
+    color: #050505; 
+    box-shadow: 0 8px 20px rgba(230, 194, 122, 0.2); 
   }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 15px 25px rgba(212, 175, 55, 0.25); filter: brightness(1.1); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 25px rgba(230, 194, 122, 0.3); filter: brightness(1.05); }
   .btn-primary:active { transform: translateY(0); }
-  .btn-primary:disabled { background: #333; color: #666; cursor: not-allowed; transform: none; box-shadow: none; }
+  .btn-primary:disabled { background: #2a2a2a; color: #666; cursor: not-allowed; transform: none; box-shadow: none; }
   
-  .btn-outline { background: transparent; border: 1px solid var(--gold-dark); color: var(--gold-primary); }
-  .btn-outline:hover { background: rgba(212, 175, 55, 0.05); border-color: var(--gold-primary); color: var(--gold-light); }
+  .btn-outline { background: rgba(230, 194, 122, 0.03); border: 1px solid var(--gold-primary); color: var(--gold-light); }
+  .btn-outline:hover { background: rgba(230, 194, 122, 0.1); }
 
   /* MESSAGE BOXES */
-  .message-box { padding: 16px; border-radius: 4px; font-size: 12px; font-weight: 500; display: none; align-items: flex-start; gap: 12px; margin-bottom: 24px; line-height: 1.6; border-left: 3px solid transparent; }
+  .message-box { padding: 16px; border-radius: 8px; font-size: 12px; font-weight: 500; display: none; align-items: flex-start; gap: 12px; margin-bottom: 24px; line-height: 1.6; border-left: 3px solid transparent; }
   .message-box i { font-size: 16px; margin-top: 2px; }
   .message-box.show { display: flex; animation: slideIn 0.4s var(--easing); }
   @keyframes slideIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
-  .message-error { background: #140b0b; border-color: var(--danger); color: var(--danger-light); }
-  .message-success { background: #0b140e; border-color: var(--success); color: #87d3a4; }
+  .message-error { background: rgba(138, 28, 28, 0.1); border-color: var(--danger); color: var(--danger-light); }
+  .message-success { background: rgba(26, 94, 57, 0.1); border-color: var(--success); color: #87d3a4; }
 
   /* GLOBAL TOAST */
-  #globalToast { position: fixed; top: -60px; left: 50%; transform: translateX(-50%); opacity: 0; background: #0a0a0a; border: 1px solid var(--gold-dark); color: #fff; padding: 16px 24px; border-radius: 4px; font-size: 12px; font-weight: 500; display: flex; align-items: center; gap: 12px; z-index: 9999; transition: all 0.5s var(--easing); box-shadow: 0 20px 40px rgba(0,0,0,0.8); pointer-events: none; letter-spacing: 0.5px;}
+  #globalToast { position: fixed; top: -60px; left: 50%; transform: translateX(-50%); opacity: 0; background: rgba(10, 10, 12, 0.95); backdrop-filter: blur(10px); border: 1px solid var(--border-thin); color: #fff; padding: 16px 24px; border-radius: 8px; font-size: 12px; font-weight: 500; display: flex; align-items: center; gap: 12px; z-index: 9999; transition: all 0.5s var(--easing); box-shadow: 0 15px 35px rgba(0,0,0,0.6); pointer-events: none; letter-spacing: 0.5px;}
   #globalToast.show { top: 30px; opacity: 1; pointer-events: auto; }
 
   /* TOP HEADER */
   .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-  .logo-wrapper { display: flex; align-items: center; gap: 12px; font-family: var(--font-heading); font-weight: 700; font-size: 20px; letter-spacing: 1px; color: var(--text-pure); }
-  .logo-icon { width: 36px; height: 36px; border-radius: 4px; background: linear-gradient(135deg, var(--gold-light), var(--gold-dark)); display: flex; align-items: center; justify-content: center; color: #000; font-size: 16px; box-shadow: 0 4px 15px rgba(212,175,55,0.2); }
+  .logo-wrapper { display: flex; align-items: center; gap: 12px; font-family: var(--font-heading); font-weight: 600; font-size: 20px; letter-spacing: 1px; color: var(--text-pure); }
+  .logo-icon { width: 36px; height: 36px; border-radius: 8px; background: linear-gradient(135deg, var(--gold-light), var(--gold-dark)); display: flex; align-items: center; justify-content: center; color: #000; font-size: 16px; box-shadow: 0 4px 15px rgba(230, 194, 122, 0.2); }
   
-  .global-stats-badge { background: var(--surface-dark); border: 1px solid #222; padding: 10px 18px; border-radius: 4px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; margin-bottom: 24px; width: fit-content; }
+  .global-stats-badge { background: var(--surface-light); border: 1px solid rgba(255,255,255,0.05); padding: 10px 18px; border-radius: 8px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; margin-bottom: 24px; width: fit-content; }
   .live-dot { width: 6px; height: 6px; background: var(--gold-primary); border-radius: 50%; box-shadow: 0 0 8px var(--gold-primary); animation: pulse 2s infinite; }
   @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
 
   /* BLACK CARD PROFILE WIDGET */
-  .profile-widget { background: linear-gradient(145deg, #181818, #050505); display: flex; justify-content: space-between; align-items: center; padding: 24px; margin-bottom: 24px; border: 1px solid #333; cursor: pointer; border-radius: 8px; box-shadow: 0 15px 30px rgba(0,0,0,0.6); position: relative; overflow: hidden; }
-  .profile-widget::after { content: 'MEMBER'; position: absolute; right: -10px; bottom: -10px; font-family: var(--font-heading); font-size: 48px; color: rgba(255,255,255,0.02); font-weight: 800; pointer-events: none; }
+  .profile-widget { background: linear-gradient(135deg, rgba(30,30,35,0.8), rgba(10,10,12,0.9)); backdrop-filter: blur(10px); display: flex; justify-content: space-between; align-items: center; padding: 24px; margin-bottom: 24px; border: 1px solid rgba(230,194,122,0.2); cursor: pointer; border-radius: 12px; box-shadow: 0 15px 30px rgba(0,0,0,0.3); position: relative; overflow: hidden; transition: 0.3s ease; }
+  .profile-widget:hover { transform: translateY(-2px); border-color: var(--gold-primary); }
+  .profile-widget::after { content: 'MEMBER'; position: absolute; right: -10px; bottom: -15px; font-family: var(--font-heading); font-size: 54px; color: rgba(255,255,255,0.02); font-weight: 800; pointer-events: none; }
   .pw-left { display: flex; align-items: center; gap: 18px; position: relative; z-index: 2; }
-  .pw-avatar { width: 50px; height: 50px; border-radius: 4px; background: #222; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-weight: 700; color: var(--gold-primary); font-size: 20px; overflow: hidden; border: 1px solid var(--gold-dark); }
+  .pw-avatar { width: 50px; height: 50px; border-radius: 50%; background: #222; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-weight: 700; color: var(--gold-primary); font-size: 20px; overflow: hidden; border: 1px solid var(--gold-dark); }
   .pw-avatar img { width: 100%; height: 100%; object-fit: cover; }
-  .pw-info h4 { font-family: var(--font-heading); font-size: 18px; font-weight: 700; margin-bottom: 4px; color: var(--gold-light); }
+  .pw-info h4 { font-family: var(--font-heading); font-size: 18px; font-weight: 600; margin-bottom: 4px; color: var(--gold-light); }
   .pw-info p { font-size: 9px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; font-weight: 600; }
 
   /* VIP PROMO BANNER */
-  .vip-promo { background: linear-gradient(135deg, #1a160c, #0a0804); border: 1px solid var(--gold-dark); padding: 20px 24px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; cursor: pointer; transition: all 0.3s var(--easing); }
-  .vip-promo:hover { box-shadow: 0 10px 25px rgba(212, 175, 55, 0.1); background: linear-gradient(135deg, #241e11, #0a0804); }
+  .vip-promo { background: linear-gradient(135deg, rgba(35,28,15,0.8), rgba(15,12,5,0.9)); backdrop-filter: blur(10px); border: 1px solid var(--gold-dark); padding: 20px 24px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; cursor: pointer; transition: all 0.3s var(--easing); }
+  .vip-promo:hover { box-shadow: 0 10px 25px rgba(230, 194, 122, 0.15); transform: translateY(-2px); }
   .vip-promo i { font-size: 24px; color: var(--gold-primary); }
 
   /* TOP UP CARD */
-  .topup-card { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; margin-bottom: 24px; background: #0a0a0a; border: 1px solid #222; }
-  .btn-topup { background: transparent; color: var(--gold-primary); border: 1px solid var(--gold-primary); padding: 8px 16px; border-radius: 4px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: 0.3s; }
+  .topup-card { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; margin-bottom: 24px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; }
+  .btn-topup { background: transparent; color: var(--gold-primary); border: 1px solid var(--gold-primary); padding: 8px 16px; border-radius: 6px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: 0.3s; }
   .btn-topup:hover { background: var(--gold-primary); color: #000; }
 
   /* --- BIG LIMIT DISPLAY --- */
-  .limit-display-area { text-align: center; margin-bottom: 30px; padding: 40px 20px; background: #0a0a0a; border-radius: 8px; border: 1px solid #1f1f1f; position: relative; }
+  .limit-display-area { text-align: center; margin-bottom: 30px; padding: 40px 20px; background: radial-gradient(circle at center, rgba(30,30,35,0.6) 0%, rgba(10,10,12,0.4) 100%); border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); box-shadow: inset 0 0 40px rgba(0,0,0,0.5); }
   
-  .limit-info-box { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; line-height: 1.6; margin-bottom: 24px; display: inline-block; padding-bottom: 16px; border-bottom: 1px solid #222; }
+  .limit-info-box { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; line-height: 1.6; margin-bottom: 24px; display: inline-block; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); }
   
   .big-limit-num { font-family: var(--font-heading); font-size: 72px; font-weight: 400; line-height: 1; margin-bottom: 12px; color: var(--gold-light); }
-  .big-limit-num.vip { color: var(--gold-primary); text-shadow: 0 5px 20px rgba(212, 175, 55, 0.2); }
+  .big-limit-num.vip { color: var(--gold-primary); text-shadow: 0 5px 20px rgba(230, 194, 122, 0.3); }
   .limit-label { font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 3px; font-weight: 500; }
 
   /* LEADERBOARD BUTTON */
-  .leaderboard-toggle-btn { width: 100%; background: #111; border: 1px solid #222; border-radius: 4px; padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; color: var(--text-pure); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; cursor: pointer; transition: 0.3s; margin-bottom: 16px; }
-  .leaderboard-toggle-btn:hover { border-color: var(--gold-dark); color: var(--gold-primary); }
+  .leaderboard-toggle-btn { width: 100%; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; color: var(--text-pure); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; cursor: pointer; transition: 0.3s; margin-bottom: 16px; }
+  .leaderboard-toggle-btn:hover { border-color: var(--gold-dark); background: rgba(230,194,122,0.05); color: var(--gold-light); }
 
   /* --- MINIMALIST BOTTOM NAV --- */
   .bottom-nav { 
     position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); 
     width: calc(100% - 40px); max-width: 400px; height: 70px; 
-    background: #0a0a0a; 
-    border: 1px solid #333; 
+    background: rgba(15, 15, 18, 0.85); 
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08); 
     border-radius: 40px; 
     display: flex; justify-content: space-around; align-items: center; z-index: 100; 
-    box-shadow: 0 20px 40px rgba(0,0,0,0.9); 
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6); 
   }
   .nav-item { display: flex; flex-direction: column; align-items: center; gap: 6px; color: var(--text-muted); font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.4s ease; width: 33%; }
   .nav-item i { font-size: 18px; transition: 0.4s ease; }
@@ -200,36 +199,36 @@
   .nav-item.active i { transform: translateY(-3px); }
 
   /* --- OVERLAYS & MODALS --- */
-  .overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); z-index: 999; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.4s var(--easing); padding: 20px; }
+  .overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(8px); z-index: 999; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.4s var(--easing); padding: 20px; }
   .overlay.show { opacity: 1; pointer-events: auto; }
   
-  .modal-glass { background: #0a0a0a; border: 1px solid var(--gold-dark); border-radius: 4px; padding: 40px 30px; width: 100%; max-width: 400px; box-shadow: 0 30px 60px rgba(0,0,0,0.9); transform: translateY(20px); transition: all 0.5s ease; position: relative; max-height: 85vh; overflow-y: auto; }
+  .modal-glass { background: var(--surface-dark); border: 1px solid var(--border-thin); border-radius: 12px; padding: 40px 30px; width: 100%; max-width: 400px; box-shadow: 0 30px 60px rgba(0,0,0,0.6); transform: translateY(20px); transition: all 0.5s ease; position: relative; max-height: 85vh; overflow-y: auto; }
   .overlay.show .modal-glass { transform: translateY(0); }
   
-  .btn-close { position: absolute; top: 20px; right: 20px; width: 32px; height: 32px; border-radius: 50%; background: transparent; border: 1px solid #333; color: var(--text-muted); display: flex; align-items: center; justify-content: center; font-size: 12px; cursor: pointer; transition: 0.3s; }
+  .btn-close { position: absolute; top: 20px; right: 20px; width: 32px; height: 32px; border-radius: 50%; background: transparent; border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted); display: flex; align-items: center; justify-content: center; font-size: 12px; cursor: pointer; transition: 0.3s; }
   .btn-close:hover { color: var(--gold-primary); border-color: var(--gold-primary); transform: rotate(90deg); }
 
   /* SIDE PANEL */
-  .side-panel { position: absolute; top: 0; right: 0; width: 85%; max-width: 400px; height: 100%; background: #080808; border-left: 1px solid #222; padding: 40px 24px; transform: translateX(100%); transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); overflow-y: auto; box-shadow: -20px 0 50px rgba(0,0,0,0.8); }
+  .side-panel { position: absolute; top: 0; right: 0; width: 85%; max-width: 400px; height: 100%; background: rgba(15, 15, 18, 0.95); backdrop-filter: blur(20px); border-left: 1px solid rgba(255,255,255,0.05); padding: 40px 24px; transform: translateX(100%); transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); overflow-y: auto; box-shadow: -20px 0 50px rgba(0,0,0,0.8); }
   .overlay.show .side-panel { transform: translateX(0); }
   
-  .bottom-sheet { position: absolute; bottom: 0; width: 100%; max-width: 500px; background: #0a0a0a; border-top: 1px solid var(--gold-dark); border-radius: 12px 12px 0 0; padding: 32px 24px 40px; transform: translateY(100%); transition: transform 0.6s ease; max-height: 85vh; overflow-y: auto; }
+  .bottom-sheet { position: absolute; bottom: 0; width: 100%; max-width: 500px; background: var(--surface-dark); backdrop-filter: blur(20px); border-top: 1px solid var(--border-thin); border-radius: 20px 20px 0 0; padding: 32px 24px 40px; transform: translateY(100%); transition: transform 0.6s ease; max-height: 85vh; overflow-y: auto; }
   .overlay.show .bottom-sheet { transform: translateY(0); }
 
   /* GRIDS & LISTS */
   .limit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px; }
-  .limit-box { background: #111; border: 1px solid #222; border-radius: 4px; padding: 20px 12px; text-align: center; cursor: pointer; transition: all 0.3s ease; }
-  .limit-box:hover { border-color: var(--gold-primary); background: #1a1a1a; transform: translateY(-3px); }
-  .limit-box .lmt { font-family: var(--font-heading); font-size: 24px; font-weight: 700; color: var(--gold-light); margin-bottom: 8px; display: block; }
+  .limit-box { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 20px 12px; text-align: center; cursor: pointer; transition: all 0.3s ease; }
+  .limit-box:hover { border-color: var(--gold-primary); background: rgba(230,194,122,0.05); transform: translateY(-3px); }
+  .limit-box .lmt { font-family: var(--font-heading); font-size: 24px; font-weight: 600; color: var(--gold-light); margin-bottom: 8px; display: block; }
   .limit-box .prc { font-size: 11px; color: var(--text-dim); font-weight: 500; letter-spacing: 1px; }
 
   .data-list { display: flex; flex-direction: column; gap: 16px; }
-  .data-item { background: #111; border: 1px solid #222; border-radius: 4px; padding: 20px; transition: 0.3s; }
-  .data-item:hover { border-color: #444; }
+  .data-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 20px; transition: 0.3s; }
+  .data-item:hover { border-color: rgba(255,255,255,0.2); }
 
   ::-webkit-scrollbar { width: 4px; }
   ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: #333; border-radius: 0; }
+  ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
   ::-webkit-scrollbar-thumb:hover { background: var(--gold-dark); }
 </style>
 </head>
@@ -254,10 +253,10 @@
     </div>
 
     <div id="qrisPaymentView" class="hidden" style="text-align: center; margin-top: 30px;">
-      <div style="background: #fff; padding: 16px; border-radius: 4px; display: inline-block; margin-bottom: 24px; border: 2px solid var(--gold-primary);">
+      <div style="background: #fff; padding: 16px; border-radius: 12px; display: inline-block; margin-bottom: 24px; border: 2px solid var(--gold-primary);">
         <img id="qrisImageResult" src="" alt="QRIS" style="width: 200px; height: 200px; object-fit: contain;">
       </div>
-      <div id="qrisPackageTitle" style="font-family: var(--font-heading); font-size: 20px; font-weight: 700; margin-bottom: 8px; color: var(--gold-light);"></div>
+      <div id="qrisPackageTitle" style="font-family: var(--font-heading); font-size: 20px; font-weight: 600; margin-bottom: 8px; color: var(--gold-light);"></div>
       <div style="font-size: 11px; color: var(--text-dim); margin-bottom: 30px; letter-spacing: 1px; text-transform: uppercase;">Transaction ID: <span id="qrisDepositIdSpan" style="color:var(--text-pure)"></span></div>
       
       <button class="btn btn-primary" onclick="checkQrisPaymentStatus()" style="margin-bottom: 16px;">Verifikasi Pembayaran</button>
@@ -284,7 +283,7 @@
       <i class="fas fa-shield-alt" style="font-size: 40px; color: var(--gold-primary); margin-bottom: 20px;"></i>
       <div class="title-lg" style="font-size: 22px;">PROTOKOL KEAMANAN</div>
     </div>
-    <div style="background: #111; border: 1px solid #333; border-radius: 4px; padding: 20px; margin-bottom: 30px; font-size: 12px; line-height: 1.7; color: var(--text-dim); text-align: justify;">
+    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 20px; margin-bottom: 30px; font-size: 12px; line-height: 1.7; color: var(--text-dim); text-align: justify;">
       <b>PENGUMUMAN EKSKLUSIF:</b> Server kami dilengkapi enkripsi tingkat korporat. Aktivitas mencurigakan seperti eksploitasi jaringan atau inspeksi elemen akan terekam secara otomatis. Akun yang melanggar akan <b>dibekukan permanen</b> untuk menjaga integritas komunitas elit kami.
     </div>
     <button class="btn btn-primary" onclick="closeWarningModal()">Saya Mengerti</button>
@@ -295,12 +294,12 @@
 <div id="broadcastModal" class="overlay">
   <div class="modal-glass">
     <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px;">
-      <div style="width: 44px; height: 44px; border-radius: 4px; background: #111; display: flex; align-items: center; justify-content: center; border: 1px solid var(--gold-dark);">
+      <div style="width: 44px; height: 44px; border-radius: 8px; background: rgba(230,194,122,0.1); display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-thin);">
         <i class="fas fa-envelope-open-text" style="font-size: 18px; color: var(--gold-primary);"></i>
       </div>
       <div class="title-lg" style="margin: 0; font-size: 20px;">Pesan Eksekutif</div>
     </div>
-    <div id="broadcastContentText" style="background: #0f0f0f; border-left: 2px solid var(--gold-primary); padding: 20px; font-size: 13px; line-height: 1.8; color: var(--text-pure); margin-bottom: 30px;">Memuat transmisi...</div>
+    <div id="broadcastContentText" style="background: rgba(0,0,0,0.3); border-left: 2px solid var(--gold-primary); padding: 20px; font-size: 13px; line-height: 1.8; color: var(--text-pure); margin-bottom: 30px; border-radius: 0 8px 8px 0;">Memuat transmisi...</div>
     <button class="btn btn-outline" onclick="closeBroadcastModal()">Tandai Telah Dibaca</button>
   </div>
 </div>
@@ -309,7 +308,7 @@
 <div id="loginView" class="container hidden" style="display: flex; flex-direction: column; justify-content: center; min-height: 100vh;">
   <div class="glass-card" style="padding: 40px 30px;">
     <div style="text-align: center; margin-bottom: 40px;">
-      <div style="width: 60px; height: 60px; border-radius: 4px; background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark)); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(212,175,55,0.2);">
+      <div style="width: 60px; height: 60px; border-radius: 12px; background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark)); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(230,194,122,0.2);">
         <i class="fas fa-key" style="font-size: 24px; color: #000;"></i>
       </div>
       <div class="title-lg">Otorisasi Akses</div>
@@ -375,7 +374,7 @@
       <div class="logo-icon"><i class="fas fa-crown"></i></div>
       <span style="background: linear-gradient(135deg, var(--gold-light), var(--gold-dark)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">AM Executive</span>
     </div>
-    <div style="font-size: 10px; color: var(--gold-primary); font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; border: 1px solid #333; padding: 8px 12px; border-radius: 4px; background: #0a0a0a;"><span id="realtimeClock">00:00 WIB</span></div>
+    <div style="font-size: 10px; color: var(--gold-primary); font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; border: 1px solid rgba(255,255,255,0.08); padding: 8px 12px; border-radius: 8px; background: rgba(255,255,255,0.02);"><span id="realtimeClock">00:00 WIB</span></div>
   </div>
 
   <!-- TOTAL PENGGUNA ONLINE -->
@@ -393,15 +392,15 @@
         <p class="disp-userrole">Member</p>
       </div>
     </div>
-    <div style="width: 36px; height: 36px; border-radius: 50%; background: #0a0a0a; display: flex; align-items: center; justify-content: center; border: 1px solid #333;">
-      <i class="fas fa-arrow-right" style="color: var(--gold-dark); font-size: 12px;"></i>
+    <div style="width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.1);">
+      <i class="fas fa-arrow-right" style="color: var(--gold-primary); font-size: 12px;"></i>
     </div>
   </div>
 
   <!-- TOP UP ACTION CARD -->
   <div id="topupCardContainer" class="topup-card hidden" onclick="openLimitModal()">
      <div>
-        <div style="font-family: var(--font-heading); font-size: 18px; font-weight: 700; margin-bottom: 6px; color: var(--gold-light);">Acquire Limit</div>
+        <div style="font-family: var(--font-heading); font-size: 18px; font-weight: 600; margin-bottom: 6px; color: var(--gold-light);">Acquire Limit</div>
         <div style="font-size: 11px; color: var(--text-dim); line-height: 1.5;">Isi ulang kuota eksklusif Anda via QRIS.</div>
      </div>
      <button class="btn-topup">Isi Ulang</button>
@@ -410,7 +409,7 @@
   <!-- VIP PROMO BANNER -->
   <div id="promoBannerContainer" class="vip-promo hidden" onclick="handleVipPromoClick()">
      <div>
-       <div style="font-family: var(--font-heading); font-size: 18px; font-weight: 700; color: var(--gold-light); margin-bottom: 6px;">Upgrade Status VIP</div>
+       <div style="font-family: var(--font-heading); font-size: 18px; font-weight: 600; color: var(--gold-light); margin-bottom: 6px;">Upgrade Status VIP</div>
        <div style="font-size: 11px; color: var(--text-muted); line-height: 1.5;">Akses tanpa batas, previlege elit selamanya.</div>
      </div>
      <i class="fas fa-gem"></i>
@@ -443,7 +442,7 @@
       <div class="title-lg" style="font-size: 24px;">Aktivasi Lisensi</div>
       <div class="text-sub" style="margin-bottom: 24px;">Otentikasi perangkat dengan server utama.</div>
       
-      <div style="background: #111; border: 1px solid #222; border-radius: 4px; padding: 18px; margin-bottom: 24px;">
+      <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 18px; margin-bottom: 24px;">
          <ol style="padding-left: 18px; font-size: 11px; color: var(--text-dim); margin:0; line-height: 1.8;">
             <li style="margin-bottom: 8px;">Ketik alamat email Anda, lalu tekan Kirim.</li>
             <li style="margin-bottom: 8px;">Periksa kotak masuk email, salin URL dari Magic Link.</li>
@@ -485,8 +484,8 @@
         <input type="url" id="imageUrl" class="glass-input" placeholder="https://..." />
       </div>
 
-      <div id="dropZone" style="border: 1px dashed #444; border-radius: 4px; padding: 40px 20px; text-align: center; background: #0f0f0f; cursor: pointer; margin-bottom: 24px; transition: 0.3s;">
-        <i class="fas fa-upload" style="font-size: 28px; color: var(--gold-dark); margin-bottom: 16px;"></i>
+      <div id="dropZone" style="border: 1px dashed rgba(255,255,255,0.2); border-radius: 8px; padding: 40px 20px; text-align: center; background: rgba(0,0,0,0.2); cursor: pointer; margin-bottom: 24px; transition: 0.3s;">
+        <i class="fas fa-upload" style="font-size: 28px; color: var(--gold-primary); margin-bottom: 16px;"></i>
         <div style="font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--gold-light);">Unggah Arsip Lokal</div>
         <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">JPG, PNG, WEBP — Max 25MB</div>
         <div id="fileNameDisplay" style="margin-top: 16px; font-size: 11px; color: var(--gold-primary); font-weight: 600;"></div>
@@ -494,17 +493,17 @@
       </div>
       
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 30px;">
-        <div style="background: #111; border-radius: 4px; padding: 16px; border: 1px solid #222;">
+        <div style="background: rgba(255,255,255,0.02); border-radius: 8px; padding: 16px; border: 1px solid rgba(255,255,255,0.05);">
           <div style="display:flex; justify-content:space-between; font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing: 1px; margin-bottom:16px;"><span>Intensitas</span> <span id="strengthIndicator" style="color:var(--gold-primary); font-weight: 600;">Normal</span></div>
-          <input type="range" id="strengthRange" min="10" max="100" value="60" style="width: 100%; height:2px; appearance:none; background:#333; outline:none; cursor: pointer;">
+          <input type="range" id="strengthRange" min="10" max="100" value="60" style="width: 100%; height:2px; appearance:none; background:rgba(255,255,255,0.1); outline:none; cursor: pointer; border-radius: 2px;">
         </div>
-        <div onclick="document.getElementById('modeModalOverlay').classList.add('show')" style="background: #111; border-radius: 4px; padding: 16px; border: 1px solid #222; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: 0.3s;" onmouseover="this.style.borderColor='var(--gold-dark)'" onmouseout="this.style.borderColor='#222'">
+        <div onclick="document.getElementById('modeModalOverlay').classList.add('show')" style="background: rgba(255,255,255,0.02); border-radius: 8px; padding: 16px; border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: 0.3s;" onmouseover="this.style.borderColor='var(--gold-primary)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.05)'">
           <div>
             <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing: 1px; margin-bottom:8px;">Model AI</div>
             <div id="currentModeLabel" style="font-size:12px; font-weight:600; color: var(--gold-light);">Super Res 2x</div>
           </div>
-          <div style="width: 28px; height: 28px; border-radius: 4px; background: #0a0a0a; border: 1px solid #333; display: flex; align-items: center; justify-content: center;">
-             <i class="fas fa-sliders-h" style="color:var(--gold-dark); font-size:11px;"></i>
+          <div style="width: 28px; height: 28px; border-radius: 6px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center;">
+             <i class="fas fa-sliders-h" style="color:var(--gold-primary); font-size:11px;"></i>
           </div>
         </div>
       </div>
@@ -519,12 +518,12 @@
       </div>
 
       <div class="hidden" id="comparisonSplitSection" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 30px 0;">
-        <div style="border-radius: 4px; overflow: hidden; position: relative; height: 180px; border: 1px solid #333;">
-          <div style="position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.8); padding: 4px 10px; border-radius: 2px; font-size: 9px; font-weight: 600; letter-spacing: 1px; color:#fff; border: 1px solid #444;">ASLI</div>
+        <div style="border-radius: 8px; overflow: hidden; position: relative; height: 180px; border: 1px solid rgba(255,255,255,0.1);">
+          <div style="position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.8); padding: 4px 10px; border-radius: 4px; font-size: 9px; font-weight: 600; letter-spacing: 1px; color:#fff; border: 1px solid rgba(255,255,255,0.1);">ASLI</div>
           <img id="splitImgBefore" style="width: 100%; height: 100%; object-fit: cover;">
         </div>
-        <div style="border-radius: 4px; overflow: hidden; position: relative; height: 180px; border: 1px solid var(--gold-primary);">
-          <div style="position: absolute; top: 8px; left: 8px; background: var(--gold-primary); padding: 4px 10px; border-radius: 2px; font-size: 9px; font-weight: 700; letter-spacing: 1px; color:#000;">HASIL AI</div>
+        <div style="border-radius: 8px; overflow: hidden; position: relative; height: 180px; border: 1px solid var(--gold-primary);">
+          <div style="position: absolute; top: 8px; left: 8px; background: var(--gold-primary); padding: 4px 10px; border-radius: 4px; font-size: 9px; font-weight: 700; letter-spacing: 1px; color:#000;">HASIL AI</div>
           <img id="splitImgAfter" style="width: 100%; height: 100%; object-fit: cover;">
         </div>
       </div>
@@ -542,7 +541,7 @@
       <div class="title-lg" style="font-size: 24px;">Database Eksekutif</div>
       <div class="text-sub" style="margin-bottom: 30px;">Kontrol akses penuh manajemen klien dan infrastruktur.</div>
       
-      <div style="background: #111; border-radius: 4px; padding: 20px; margin-bottom: 30px; border: 1px solid #222;">
+      <div style="background: rgba(255,255,255,0.02); border-radius: 8px; padding: 20px; margin-bottom: 30px; border: 1px solid rgba(255,255,255,0.05);">
         <label style="font-size: 10px; font-weight: 700; color: var(--gold-primary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; display:flex; align-items: center; gap: 8px;"><i class="fas fa-broadcast-tower"></i> Transmisi Global</label>
         <textarea id="broadcastInput" class="glass-input" placeholder="Tulis instruksi pengumuman untuk didistribusikan..." style="min-height: 90px; resize: none; margin-bottom: 16px;"></textarea>
         <button class="btn btn-primary" onclick="sendBroadcastMsg()"><i class="fas fa-paper-plane"></i> Sebarkan Transmisi</button>
@@ -570,13 +569,13 @@
 <!-- PROFILE SIDE PANEL -->
 <div id="profileSheet" class="overlay" style="justify-content: flex-end; padding: 0;">
   <div class="side-panel">
-    <button class="btn-close" onclick="closeProfileSheet()" style="position: absolute; top: 30px; left: -16px; right: auto; background: #0a0a0a; border: 1px solid #333;"><i class="fas fa-times"></i></button>
+    <button class="btn-close" onclick="closeProfileSheet()" style="position: absolute; top: 30px; left: -16px; right: auto; background: var(--surface-dark);"><i class="fas fa-times"></i></button>
     
     <div style="text-align: center; margin: 40px 0 40px;">
       <div class="pw-avatar" style="width: 80px; height: 80px; margin: 0 auto 16px; font-size: 28px; border: 1px solid var(--gold-primary); cursor:pointer;" onclick="document.getElementById('avatarFileInput').click()" title="Ganti Foto">
         <span class="disp-avatar-text">?</span>
       </div>
-      <div style="display: inline-flex; align-items: center; gap: 8px; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--gold-dark); font-weight: 600; margin-bottom: 16px; cursor: pointer; transition: 0.3s;" onmouseover="this.style.color='var(--gold-light)'" onmouseout="this.style.color='var(--gold-dark)'" onclick="document.getElementById('avatarFileInput').click()">
+      <div style="display: inline-flex; align-items: center; gap: 8px; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--gold-primary); font-weight: 600; margin-bottom: 16px; cursor: pointer; transition: 0.3s;" onmouseover="this.style.color='var(--gold-light)'" onmouseout="this.style.color='var(--gold-primary)'" onclick="document.getElementById('avatarFileInput').click()">
         <i class="fas fa-camera"></i> Ubah Potret
       </div>
       <input type="file" id="avatarFileInput" accept="image/*" style="display: none;" onchange="handleAvatarUpload(event)">
@@ -585,16 +584,16 @@
       <div class="disp-userrole" style="font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: var(--gold-primary); margin-top: 6px;">Role</div>
     </div>
 
-    <div style="background: #111; border-radius: 4px; border: 1px solid #222; padding: 20px; margin-bottom: 24px;">
+    <div style="background: rgba(255,255,255,0.02); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); padding: 20px; margin-bottom: 24px;">
        <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; font-weight:600; display: flex; align-items: center; gap: 8px;"><i class="fas fa-fingerprint"></i> Data Identitas</div>
-       <div style="display:flex; justify-content:space-between; margin-bottom: 16px; border-bottom: 1px solid #222; padding-bottom: 10px;"><span style="font-size:11px; color:var(--text-dim);">ID Klien</span><span class="disp-userid" style="font-size:12px; font-weight: 600; color: var(--gold-light);">MSH-00</span></div>
-       <div style="display:flex; justify-content:space-between; margin-bottom: 16px; border-bottom: 1px solid #222; padding-bottom: 10px;"><span style="font-size:11px; color:var(--text-dim);">Kontak Utama</span><span class="disp-userwa" style="font-size:12px; font-weight: 600; color: var(--text-pure);">08...</span></div>
+       <div style="display:flex; justify-content:space-between; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px;"><span style="font-size:11px; color:var(--text-dim);">ID Klien</span><span class="disp-userid" style="font-size:12px; font-weight: 600; color: var(--gold-light);">MSH-00</span></div>
+       <div style="display:flex; justify-content:space-between; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px;"><span style="font-size:11px; color:var(--text-dim);">Kontak Utama</span><span class="disp-userwa" style="font-size:12px; font-weight: 600; color: var(--text-pure);">08...</span></div>
        <div style="display:flex; justify-content:space-between;"><span style="font-size:11px; color:var(--text-dim);">IP Terekam</span><span class="disp-userip" style="font-size:12px; font-weight: 600; color: var(--text-pure);">...</span></div>
     </div>
 
-    <div style="background: #111; border-radius: 4px; border: 1px solid #222; padding: 20px; margin-bottom: 40px;">
+    <div style="background: rgba(255,255,255,0.02); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); padding: 20px; margin-bottom: 40px;">
       <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; font-weight:600; display: flex; align-items: center; gap: 8px;"><i class="fas fa-lock"></i> Pengaturan Kredensial</div>
-      <div style="background: #1a160c; border-left: 2px solid var(--gold-dark); padding: 12px 14px; border-radius: 0 4px 4px 0; font-size: 10px; color: var(--gold-light); line-height: 1.6; margin-bottom: 20px;">
+      <div style="background: rgba(166, 124, 0, 0.1); border-left: 2px solid var(--gold-primary); padding: 12px 14px; border-radius: 0 4px 4px 0; font-size: 10px; color: var(--gold-light); line-height: 1.6; margin-bottom: 20px;">
         <b>Ketentuan:</b> Username hanya dapat dimodifikasi <b>satu (1) kali</b> demi eksklusivitas.
       </div>
       
@@ -604,7 +603,7 @@
       <button id="saveProfileChangesBtn" class="btn btn-outline" style="margin-top: 24px;">Simpan Perubahan</button>
     </div>
 
-    <button id="logoutBtn" class="btn" style="background: #140b0b; border: 1px solid var(--danger); color: var(--danger-light);"><i class="fas fa-sign-out-alt"></i> Akhiri Sesi</button>
+    <button id="logoutBtn" class="btn" style="background: rgba(138, 28, 28, 0.1); border: 1px solid var(--danger); color: var(--danger-light);"><i class="fas fa-sign-out-alt"></i> Akhiri Sesi</button>
   </div>
 </div>
 
@@ -613,21 +612,21 @@
   <div class="bottom-sheet" id="modeModalSheet">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
       <div class="title-lg" style="margin: 0; font-size: 20px;">Model Render AI</div>
-      <i class="fas fa-times" id="closeModeModal" style="cursor: pointer; color: var(--text-muted); font-size: 18px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border: 1px solid #333; border-radius: 50%;"></i>
+      <i class="fas fa-times" id="closeModeModal" style="cursor: pointer; color: var(--text-muted); font-size: 18px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.1); border-radius: 50%;"></i>
     </div>
     
     <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px;">
-      <div class="glass-card glass-card-hover mode-option-item selected" data-mode="2x" style="display:flex; align-items:center; gap:16px; padding: 18px; border-color: var(--gold-primary); background: #141108;">
+      <div class="glass-card glass-card-hover mode-option-item selected" data-mode="2x" style="display:flex; align-items:center; gap:16px; padding: 18px; border-color: var(--gold-primary); background: rgba(230,194,122,0.05);">
         <i class="fas fa-expand" style="font-size: 20px; color: var(--gold-primary);"></i>
-        <div><div style="font-family: var(--font-heading); font-weight: 700; font-size: 15px; margin-bottom: 4px; color: var(--gold-light);">Super Resolution 2x</div><div style="font-size: 11px; color: var(--text-dim); line-height: 1.5;">Menggandakan matriks piksel secara presisi.</div></div>
+        <div><div style="font-family: var(--font-heading); font-weight: 600; font-size: 15px; margin-bottom: 4px; color: var(--gold-light);">Super Resolution 2x</div><div style="font-size: 11px; color: var(--text-dim); line-height: 1.5;">Menggandakan matriks piksel secara presisi.</div></div>
       </div>
       <div class="glass-card glass-card-hover mode-option-item" data-mode="1x" style="display:flex; align-items:center; gap:16px; padding: 18px;">
         <i class="fas fa-magic" style="font-size: 20px; color: var(--text-muted);"></i>
-        <div><div style="font-family: var(--font-heading); font-weight: 700; font-size: 15px; margin-bottom: 4px; color: var(--text-pure);">Clean & Sharpen</div><div style="font-size: 11px; color: var(--text-dim); line-height: 1.5;">Pembersihan noise dan penajaman detail murni.</div></div>
+        <div><div style="font-family: var(--font-heading); font-weight: 600; font-size: 15px; margin-bottom: 4px; color: var(--text-pure);">Clean & Sharpen</div><div style="font-size: 11px; color: var(--text-dim); line-height: 1.5;">Pembersihan noise dan penajaman detail murni.</div></div>
       </div>
       <div class="glass-card glass-card-hover mode-option-item" data-mode="hdr" style="display:flex; align-items:center; gap:16px; padding: 18px;">
         <i class="fas fa-sun" style="font-size: 20px; color: var(--text-muted);"></i>
-        <div><div style="font-family: var(--font-heading); font-weight: 700; font-size: 15px; margin-bottom: 4px; color: var(--text-pure);">Dynamic HDR Boost</div><div style="font-size: 11px; color: var(--text-dim); line-height: 1.5;">Optimalisasi kontras dan rentang warna ekstrim.</div></div>
+        <div><div style="font-family: var(--font-heading); font-weight: 600; font-size: 15px; margin-bottom: 4px; color: var(--text-pure);">Dynamic HDR Boost</div><div style="font-size: 11px; color: var(--text-dim); line-height: 1.5;">Optimalisasi kontras dan rentang warna ekstrim.</div></div>
       </div>
     </div>
     <button class="btn btn-primary" id="applyModeBtn">Terapkan Pilihan</button>
@@ -651,11 +650,11 @@
 
     window.customAlert = function(msg, isError = false) {
         const toast = document.getElementById('globalToast'); document.getElementById('toastMsg').textContent = msg;
-        toast.style.background = isError ? '#140b0b' : '#0a0a0a';
-        toast.style.border = isError ? '1px solid #8a1c1c' : '1px solid #997A15';
+        toast.style.background = isError ? 'rgba(20, 10, 10, 0.95)' : 'rgba(10, 10, 12, 0.95)';
+        toast.style.border = isError ? '1px solid var(--danger)' : '1px solid var(--gold-dark)';
         toast.style.color = '#fff';
         toast.querySelector('i').className = isError ? 'fas fa-exclamation-triangle' : 'fas fa-check-circle';
-        toast.querySelector('i').style.color = isError ? '#ff6b6b' : '#D4AF37';
+        toast.querySelector('i').style.color = isError ? '#ff6b6b' : 'var(--gold-primary)';
         toast.classList.add('show'); setTimeout(() => { toast.classList.remove('show'); }, 3500);
     };
 
@@ -852,7 +851,7 @@
     function generateCaptcha() { 
         const num1 = Math.floor(Math.random() * 10) + 1; const num2 = Math.floor(Math.random() * 10) + 1; currentCaptchaAnswer = num1 + num2; 
         const label = document.getElementById('captchaLabel'); 
-        if(label) label.innerHTML = `Selesaikan <span style="background:#111; padding:4px 8px; border-radius:4px; font-weight:700; margin-left:8px; border: 1px solid var(--gold-dark); color: var(--gold-primary);">${num1} + ${num2}</span>`; 
+        if(label) label.innerHTML = `Selesaikan <span style="background:rgba(255,255,255,0.05); padding:4px 8px; border-radius:4px; font-weight:700; margin-left:8px; border: 1px solid rgba(230,194,122,0.3); color: var(--gold-primary);">${num1} + ${num2}</span>`; 
     }
     function parseBool(val) { return val === true || val === 'true' || val === '1' || val === 't' || val === 'TRUE' || val === 'YES'; }
     window.handleVipPromoClick = function() { 
@@ -952,21 +951,21 @@
             el.innerHTML = `
                 <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
                   <span style="font-weight:600; font-size:14px; color:var(--text-pure);">@${m.username} ${isBannedUser ? '<span style="color:var(--danger-light); font-size:9px; background:var(--danger); padding: 2px 6px; border-radius:2px; margin-left:6px;">SUSPENDED</span>' : ''}</span>
-                  <span style="font-size:11px; color:var(--text-muted); background:#0a0a0a; border: 1px solid #222; padding: 2px 8px; border-radius: 4px;">${m.id_code || 'MSH-00'}</span>
+                  <span style="font-size:11px; color:var(--text-muted); background:rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); padding: 2px 8px; border-radius: 4px;">${m.id_code || 'MSH-00'}</span>
                 </div>
                 <div style="font-size:10px; color:var(--text-dim); margin-bottom:16px; display:flex; gap:16px; flex-wrap: wrap;">
                   <span><b>ROLE:</b> <span style="color:${isVipUser ? 'var(--gold-primary)' : 'var(--text-muted)'}">${roleStr}</span></span> 
                   <span><b>PWD:</b> <span>${m.password}</span></span> 
                   <span><b>WA:</b> <span>${m.wa||'-'}</span></span>
                 </div>
-                <div style="display:flex; align-items:center; gap:8px; margin-bottom:16px; background:#0a0a0a; padding:12px; border-radius:4px; border: 1px solid #222;">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:16px; background:rgba(0,0,0,0.2); padding:12px; border-radius:8px; border: 1px solid rgba(255,255,255,0.05);">
                   <span style="font-size:10px; font-weight:600; color:var(--text-muted); text-transform:uppercase;">Limit:</span>
                   <input type="number" id="inputLimit_${m.username}" value="${m.limit_count ?? 3}" class="glass-input" style="padding:6px 10px; font-size:12px; width:70px; text-align:center; font-weight:600; color:var(--gold-light);" />
                   <button class="btn btn-outline" style="padding:6px 14px; width:auto; font-size:10px;" onclick="setCustomLimit('${m.username}')">Update</button>
                 </div>
                 <div style="display:flex; gap:10px;">
-                  <button class="btn btn-outline" style="padding:10px; font-size:10px; flex:1; border-color:${isVipUser ? 'var(--gold-dark)' : '#333'}; color:${isVipUser ? 'var(--gold-primary)' : 'var(--text-pure)'};" onclick="toggleVipStatus('${m.username}', ${isVipUser})"><i class="fas fa-crown"></i> ${isVipUser ? 'Revoke VIP' : 'Grant VIP'}</button>
-                  <button class="btn btn-outline" style="padding:10px; font-size:10px; flex:1; color:${isBannedUser ? 'var(--gold-primary)' : 'var(--danger-light)'}; border-color:${isBannedUser ? 'var(--gold-primary)' : 'var(--danger)'}; background: ${isBannedUser ? 'transparent' : '#140b0b'}" onclick="toggleSuspendStatus('${m.username}', ${isBannedUser})"><i class="fas ${isBannedUser ? 'fa-unlock' : 'fa-lock'}"></i> ${isBannedUser ? 'Lepas Suspend' : 'Suspend'}</button>
+                  <button class="btn btn-outline" style="padding:10px; font-size:10px; flex:1; border-color:${isVipUser ? 'var(--gold-dark)' : 'rgba(255,255,255,0.1)'}; color:${isVipUser ? 'var(--gold-primary)' : 'var(--text-pure)'};" onclick="toggleVipStatus('${m.username}', ${isVipUser})"><i class="fas fa-crown"></i> ${isVipUser ? 'Revoke VIP' : 'Grant VIP'}</button>
+                  <button class="btn btn-outline" style="padding:10px; font-size:10px; flex:1; color:${isBannedUser ? 'var(--gold-primary)' : 'var(--danger-light)'}; border-color:${isBannedUser ? 'var(--gold-primary)' : 'var(--danger)'}; background: ${isBannedUser ? 'transparent' : 'rgba(138,28,28,0.1)'}" onclick="toggleSuspendStatus('${m.username}', ${isBannedUser})"><i class="fas ${isBannedUser ? 'fa-unlock' : 'fa-lock'}"></i> ${isBannedUser ? 'Lepas Suspend' : 'Suspend'}</button>
                 </div>
             `; 
             memberList.appendChild(el); 
@@ -991,7 +990,7 @@
         document.getElementById('closeModeModal').addEventListener('click', () => modeModalOverlay.classList.remove('show'));
         if(!strengthRange) return; 
         strengthRange.addEventListener('input', () => { const val = parseInt(strengthRange.value, 10); strengthIndicator.textContent = val <= 30 ? 'Ringan' : (val > 70 ? 'Maksimal' : 'Normal'); }); 
-        modeItems.forEach(item => { item.addEventListener('click', () => { modeItems.forEach(i => { i.classList.remove('selected'); i.style.borderColor = 'transparent'; i.style.background = 'transparent'; }); item.classList.add('selected'); item.style.borderColor = 'var(--gold-primary)'; item.style.background = '#141108'; tempSelectedMode = item.getAttribute('data-mode'); }); }); 
+        modeItems.forEach(item => { item.addEventListener('click', () => { modeItems.forEach(i => { i.classList.remove('selected'); i.style.borderColor = 'transparent'; i.style.background = 'transparent'; }); item.classList.add('selected'); item.style.borderColor = 'var(--gold-primary)'; item.style.background = 'rgba(230,194,122,0.05)'; tempSelectedMode = item.getAttribute('data-mode'); }); }); 
         applyModeBtn.addEventListener('click', () => { selectedMode = tempSelectedMode; currentModeLabel.textContent = selectedMode === '2x' ? 'Super Res 2x' : (selectedMode === '1x' ? 'Clean & Sharpen' : 'Dynamic HDR'); modeModalOverlay.classList.remove('show'); }); 
         dropZone.addEventListener('click', () => fileInput.click()); 
         fileInput.addEventListener('change', (e) => { if (e.target.files && e.target.files[0]) { selectedFile = e.target.files[0]; fileNameDisplay.innerHTML = `<i class="fas fa-file-image"></i> ${selectedFile.name}`; } });
