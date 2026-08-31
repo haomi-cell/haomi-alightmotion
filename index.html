@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -408,7 +409,7 @@
     </div>
   </div>
 
-  <!-- JAM & PING JARINGAN (DIBAWAH HEADER UTAMA) -->
+  <!-- JAM & PING JARINGAN -->
   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; background: var(--surface-light); border: 1px solid rgba(255,255,255,0.05); padding: 12px 18px; border-radius: 8px;">
     <div style="font-size: 11px; color: var(--gold-primary); font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; display: flex; align-items: center; gap: 8px;">
       <i class="far fa-clock"></i> <span id="realtimeClock">00:00 WIB</span>
@@ -935,7 +936,6 @@
         const pingEl = document.getElementById('networkPingText');
         if(!pingEl) return;
         setInterval(() => {
-            // Simulasi fluktuasi ping stabil kelas militer (10ms - 28ms)
             const randomPing = Math.floor(Math.random() * 18) + 10;
             pingEl.textContent = randomPing + 'ms';
         }, 4000);
@@ -1202,8 +1202,21 @@
         else if(tabName === 'enhancer') { document.getElementById('sectionEnhancer').classList.remove('hidden'); document.getElementById('btnTabEnhancer').classList.add('active'); } 
         else if(tabName === 'admin') { document.getElementById('ownerPanel').classList.remove('hidden'); document.getElementById('toggleOwnerDashBtn').classList.add('active'); renderMemberList(); } 
     };
-    window.openProfileSheet = function() { document.getElementById('profileSheet').classList.add('show'); };
-    window.closeProfileSheet = function() { document.getElementById('profileSheet').classList.add('show'); }; // Note: helper handled
+
+    window.openProfileSheet = function() { 
+        document.getElementById('profileSheet').classList.add('show'); 
+    };
+    
+    window.closeProfileSheet = function() { 
+        document.getElementById('profileSheet').classList.remove('show'); 
+    };
+
+    // Tutup panel profil jika user klik di area luar panel (overlay)
+    document.getElementById('profileSheet').addEventListener('click', (e) => {
+        if (e.target.id === 'profileSheet') {
+            closeProfileSheet();
+        }
+    });
 })();
 </script>
 </body>
