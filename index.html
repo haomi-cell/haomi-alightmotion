@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -29,8 +30,8 @@
     --border-thin: rgba(230, 194, 122, 0.15);
     --border-focus: rgba(230, 194, 122, 0.5);
     
-    --danger: #8a1c1c;
-    --danger-light: #ff6b6b;
+    --danger: #9e1c1c;
+    --danger-light: #ff4d4d;
     --success: #1a5e39;
     
     --font-heading: 'Playfair Display', serif;
@@ -48,13 +49,40 @@
     min-height: 100vh; 
     overflow-x: hidden; 
     position: relative;
-    /* Lighter but elegant radial glow */
     background-image: radial-gradient(circle at 50% -10%, rgba(166, 124, 0, 0.12) 0%, rgba(5,5,7,1) 50%);
   }
 
-  #initialLoader { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; background: var(--bg-base); flex-direction: column; gap: 20px; transition: opacity 0.8s ease; }
+  /* --- LUXURY ANIMATED LOADER --- */
+  #initialLoader { 
+    position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; 
+    background: var(--bg-base); flex-direction: column; transition: opacity 0.8s ease; 
+  }
+  .luxury-loader { position: relative; width: 90px; height: 90px; }
+  .luxury-loader::before, .luxury-loader::after {
+    content: ''; position: absolute; inset: 0; border-radius: 50%;
+    border: 2px solid transparent; border-top-color: var(--gold-primary);
+    animation: spin-luxury 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+  }
+  .luxury-loader::after {
+    inset: 12px; border-top-color: transparent; border-bottom-color: var(--gold-light);
+    animation-direction: reverse; animation-duration: 2s;
+  }
+  .loader-logo {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    color: var(--gold-primary); font-size: 28px;
+    animation: pulse-glow 2s infinite;
+  }
+  .loader-text {
+    margin-top: 35px; font-size: 10px; font-weight: 700; color: var(--gold-dark);
+    text-transform: uppercase; letter-spacing: 5px; animation: blink-text 1.5s infinite;
+  }
+  @keyframes spin-luxury { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+  @keyframes pulse-glow { 0%, 100% { text-shadow: 0 0 10px rgba(230,194,122,0.2); transform: translate(-50%, -50%) scale(1); } 50% { text-shadow: 0 0 25px rgba(230,194,122,0.8); transform: translate(-50%, -50%) scale(1.1); } }
+  @keyframes blink-text { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
   .loader-spinner { width: 40px; height: 40px; border: 2px solid rgba(230, 194, 122, 0.1); border-top-color: var(--gold-primary); border-radius: 50%; animation: spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
+  
   .hidden { display: none !important; }
 
   /* Adjust bottom padding for floating nav */
@@ -131,7 +159,7 @@
   .message-box i { font-size: 16px; margin-top: 2px; }
   .message-box.show { display: flex; animation: slideIn 0.4s var(--easing); }
   @keyframes slideIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
-  .message-error { background: rgba(138, 28, 28, 0.1); border-color: var(--danger); color: var(--danger-light); }
+  .message-error { background: rgba(158, 28, 28, 0.15); border-color: var(--danger); color: var(--danger-light); }
   .message-success { background: rgba(26, 94, 57, 0.1); border-color: var(--success); color: #87d3a4; }
 
   /* GLOBAL TOAST */
@@ -145,8 +173,7 @@
   
   .global-stats-badge { background: var(--surface-light); border: 1px solid rgba(255,255,255,0.05); padding: 10px 18px; border-radius: 8px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; margin-bottom: 24px; width: fit-content; }
   .live-dot { width: 6px; height: 6px; background: var(--gold-primary); border-radius: 50%; box-shadow: 0 0 8px var(--gold-primary); animation: pulse 2s infinite; }
-  @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
-
+  
   /* BLACK CARD PROFILE WIDGET */
   .profile-widget { background: linear-gradient(135deg, rgba(30,30,35,0.8), rgba(10,10,12,0.9)); backdrop-filter: blur(10px); display: flex; justify-content: space-between; align-items: center; padding: 24px; margin-bottom: 24px; border: 1px solid rgba(230,194,122,0.2); cursor: pointer; border-radius: 12px; box-shadow: 0 15px 30px rgba(0,0,0,0.3); position: relative; overflow: hidden; transition: 0.3s ease; }
   .profile-widget:hover { transform: translateY(-2px); border-color: var(--gold-primary); }
@@ -169,9 +196,7 @@
 
   /* --- BIG LIMIT DISPLAY --- */
   .limit-display-area { text-align: center; margin-bottom: 30px; padding: 40px 20px; background: radial-gradient(circle at center, rgba(30,30,35,0.6) 0%, rgba(10,10,12,0.4) 100%); border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); box-shadow: inset 0 0 40px rgba(0,0,0,0.5); }
-  
   .limit-info-box { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; line-height: 1.6; margin-bottom: 24px; display: inline-block; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-  
   .big-limit-num { font-family: var(--font-heading); font-size: 72px; font-weight: 400; line-height: 1; margin-bottom: 12px; color: var(--gold-light); }
   .big-limit-num.vip { color: var(--gold-primary); text-shadow: 0 5px 20px rgba(230, 194, 122, 0.3); }
   .limit-label { font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 3px; font-weight: 500; }
@@ -184,13 +209,9 @@
   .bottom-nav { 
     position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); 
     width: calc(100% - 40px); max-width: 400px; height: 70px; 
-    background: rgba(15, 15, 18, 0.85); 
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.08); 
-    border-radius: 40px; 
-    display: flex; justify-content: space-around; align-items: center; z-index: 100; 
-    box-shadow: 0 20px 40px rgba(0,0,0,0.6); 
+    background: rgba(15, 15, 18, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 40px; 
+    display: flex; justify-content: space-around; align-items: center; z-index: 100; box-shadow: 0 20px 40px rgba(0,0,0,0.6); 
   }
   .nav-item { display: flex; flex-direction: column; align-items: center; gap: 6px; color: var(--text-muted); font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.4s ease; width: 33%; }
   .nav-item i { font-size: 18px; transition: 0.4s ease; }
@@ -233,9 +254,12 @@
 </head>
 <body>
 
+<!-- LUXURY LOADER -->
 <div id="initialLoader">
-  <div class="loader-spinner"></div>
-  <div style="font-size: 10px; font-weight: 600; color: var(--gold-dark); text-transform: uppercase; letter-spacing: 3px;">INITIALIZING SYSTEM</div>
+  <div class="luxury-loader">
+    <i class="fas fa-crown loader-logo"></i>
+  </div>
+  <div class="loader-text">Memuat Sistem Bangsat...</div>
 </div>
 
 <div id="globalToast"><i class="fas fa-info-circle"></i> <span id="toastMsg">Sistem Informasi</span></div>
@@ -275,17 +299,17 @@
   </div>
 </div>
 
-<!-- MODAL: WARNING KEAMANAN DETAIL -->
+<!-- MODAL: WARNING KEAMANAN TOXIC -->
 <div id="warningModal" class="overlay">
-  <div class="modal-glass" style="border-color: var(--gold-dark);">
+  <div class="modal-glass" style="border-color: var(--danger); box-shadow: 0 30px 60px rgba(158, 28, 28, 0.4);">
     <div style="text-align: center; margin-bottom: 24px;">
-      <i class="fas fa-shield-alt" style="font-size: 40px; color: var(--gold-primary); margin-bottom: 20px;"></i>
-      <div class="title-lg" style="font-size: 22px;">PROTOKOL KEAMANAN</div>
+      <i class="fas fa-skull-crossbones" style="font-size: 40px; color: var(--danger-light); margin-bottom: 20px;"></i>
+      <div class="title-lg" style="font-size: 22px; color: var(--danger-light);">PERINGATAN KERAS!</div>
     </div>
-    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 20px; margin-bottom: 30px; font-size: 12px; line-height: 1.7; color: var(--text-dim); text-align: justify;">
-      <b>PENGUMUMAN EKSKLUSIF:</b> Server kami dilengkapi enkripsi tingkat korporat. Aktivitas mencurigakan seperti eksploitasi jaringan atau inspeksi elemen akan terekam secara otomatis. Akun yang melanggar akan <b>dibekukan permanen</b> untuk menjaga integritas komunitas elit kami.
+    <div style="background: rgba(158, 28, 28, 0.15); border: 1px solid var(--danger); border-radius: 8px; padding: 20px; margin-bottom: 30px; font-size: 12px; line-height: 1.7; color: #fff; text-align: justify;">
+      <b>DENGERIN BAIK-BAIK, ANJING!</b> Server ini dijaga ketat. Kalau lu coba-coba macem-macem, eksploitasi, nyepam, atau sok ngide inspect elemen buat nge-hack web ini, IP dan Device ID lu bakal langsung gua catat dan akun lu <b>GUA BANNED PERMANEN, BANGSAT!</b> Jangan main-main sama sistem ini, tolol!
     </div>
-    <button class="btn btn-primary" onclick="closeWarningModal()">Saya Mengerti</button>
+    <button class="btn btn-primary" style="background: var(--danger); color: #fff; box-shadow: 0 8px 20px rgba(158, 28, 28, 0.3);" onclick="closeWarningModal()">BACOT, GUA NGERTI!</button>
   </div>
 </div>
 
@@ -602,7 +626,7 @@
       <button id="saveProfileChangesBtn" class="btn btn-outline" style="margin-top: 24px;">Simpan Perubahan</button>
     </div>
 
-    <button id="logoutBtn" class="btn" style="background: rgba(138, 28, 28, 0.1); border: 1px solid var(--danger); color: var(--danger-light);"><i class="fas fa-sign-out-alt"></i> Akhiri Sesi</button>
+    <button id="logoutBtn" class="btn" style="background: rgba(158, 28, 28, 0.15); border: 1px solid var(--danger); color: var(--danger-light);"><i class="fas fa-sign-out-alt"></i> Akhiri Sesi</button>
   </div>
 </div>
 
@@ -832,17 +856,21 @@
         } catch (e) { console.error(e); }
     };
 
-    window.onload = async () => {
-        const initialLoader = document.getElementById('initialLoader'); const savedUser = localStorage.getItem(SESSION_KEY);
-        if(!savedUser) { 
-            if(initialLoader) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 800); } 
-            document.getElementById('warningModal').classList.add('show'); 
-        } else {
-            try { const cachedData = localStorage.getItem(CACHE_KEY); if (cachedData) { const parsed = JSON.parse(cachedData); if (parsed && parsed.username) { currentUserData = parsed; window.loadAppView(parsed); if(initialLoader) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 800); } } } } catch(e) {}
-            await fetchUserSession(savedUser);
-            if(initialLoader && document.body.contains(initialLoader)) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 800); }
-        }
-        startClock(); fetchGlobalStats(); initRealtimeBroadcastListener(); initImageEnhancerEngine();
+    window.onload = () => {
+        // Kasih jeda loading animasi sultan selama 1.2 detik
+        setTimeout(async () => {
+            const initialLoader = document.getElementById('initialLoader'); 
+            const savedUser = localStorage.getItem(SESSION_KEY);
+            if(!savedUser) { 
+                if(initialLoader) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 800); } 
+                document.getElementById('warningModal').classList.add('show'); 
+            } else {
+                try { const cachedData = localStorage.getItem(CACHE_KEY); if (cachedData) { const parsed = JSON.parse(cachedData); if (parsed && parsed.username) { currentUserData = parsed; window.loadAppView(parsed); if(initialLoader) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 800); } } } } catch(e) {}
+                await fetchUserSession(savedUser);
+                if(initialLoader && document.body.contains(initialLoader)) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 800); }
+            }
+            startClock(); fetchGlobalStats(); initRealtimeBroadcastListener(); initImageEnhancerEngine();
+        }, 1200);
     };
 
     function startClock() { const clockEl = document.getElementById('realtimeClock'); if(!clockEl) return; setInterval(() => { const now = new Date(); clockEl.textContent = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB'; }, 1000); }
@@ -964,7 +992,7 @@
                 </div>
                 <div style="display:flex; gap:10px;">
                   <button class="btn btn-outline" style="padding:10px; font-size:10px; flex:1; border-color:${isVipUser ? 'var(--gold-dark)' : 'rgba(255,255,255,0.1)'}; color:${isVipUser ? 'var(--gold-primary)' : 'var(--text-pure)'};" onclick="toggleVipStatus('${m.username}', ${isVipUser})"><i class="fas fa-crown"></i> ${isVipUser ? 'Revoke VIP' : 'Grant VIP'}</button>
-                  <button class="btn btn-outline" style="padding:10px; font-size:10px; flex:1; color:${isBannedUser ? 'var(--gold-primary)' : 'var(--danger-light)'}; border-color:${isBannedUser ? 'var(--gold-primary)' : 'var(--danger)'}; background: ${isBannedUser ? 'transparent' : 'rgba(138,28,28,0.1)'}" onclick="toggleSuspendStatus('${m.username}', ${isBannedUser})"><i class="fas ${isBannedUser ? 'fa-unlock' : 'fa-lock'}"></i> ${isBannedUser ? 'Lepas Suspend' : 'Suspend'}</button>
+                  <button class="btn btn-outline" style="padding:10px; font-size:10px; flex:1; color:${isBannedUser ? 'var(--gold-primary)' : 'var(--danger-light)'}; border-color:${isBannedUser ? 'var(--gold-primary)' : 'var(--danger)'}; background: ${isBannedUser ? 'transparent' : 'rgba(158,28,28,0.15)'}" onclick="toggleSuspendStatus('${m.username}', ${isBannedUser})"><i class="fas ${isBannedUser ? 'fa-unlock' : 'fa-lock'}"></i> ${isBannedUser ? 'Lepas Suspend' : 'Suspend'}</button>
                 </div>
             `; 
             memberList.appendChild(el); 
