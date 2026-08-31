@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -516,7 +517,7 @@
       <div class="title-lg" style="font-size: 24px;">Aktivasi Lisensi</div>
       <div class="text-sub" style="margin-bottom: 24px;">Otentikasi perangkat dengan server utama.</div>
       
-      <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; padding: 18px; margin-bottom: 24px;">
+      <div style="background: rgba(255,255,255,0.02); border-radius: 10px; padding: 18px; margin-bottom: 24px;">
          <ol style="padding-left: 18px; font-size: 11px; color: var(--text-dim); margin:0; line-height: 1.8;">
             <li style="margin-bottom: 8px;">Ketik alamat email Anda, lalu tekan Kirim.</li>
             <li style="margin-bottom: 8px;">Periksa kotak masuk email, salin URL dari Magic Link.</li>
@@ -1134,7 +1135,10 @@
                 let img = selectedFile ? await loadImageFromFile(selectedFile) : await loadImageFromBlob(await fetchUrlBlob(urlVal));
                 originalBlobUrl = URL.createObjectURL(selectedFile || await fetchUrlBlob(urlVal));
                 splitImgBefore.src = originalBlobUrl;
+                
+                // Eksekusi Mesin Lokal AI
                 let enhancedBlob = await runLocalEnhancer(img, parseInt(strengthRange.value), selectedMode);
+                
                 enhancedBlobUrl = URL.createObjectURL(enhancedBlob);
                 splitImgAfter.src = enhancedBlobUrl;
                 comparisonSplitSection.classList.remove('hidden');
@@ -1143,11 +1147,95 @@
             } catch(e) { showMsg('statusMessage', 'Mesin gagal memproses citra yang diberikan.', 'error'); } 
             finally { enhanceBtn.disabled = false; enhanceBtn.innerHTML = '<i class="fas fa-microchip"></i> Eksekusi Render'; }
         });
+        
         function fetchUrlBlob(url) { return fetch(url).then(r => r.blob()); }
         function loadImageFromFile(file) { return new Promise(res => { const r = new FileReader(); r.onload = e => { const i = new Image(); i.onload = () => res(i); i.src = e.target.result; }; r.readAsDataURL(file); }); }
         function loadImageFromBlob(blob) { return new Promise(res => { const i = new Image(); i.onload = () => res(i); i.src = URL.createObjectURL(blob); }); }
-        function runLocalEnhancer(img, strength, mode) { return new Promise(res => { const c = document.createElement('canvas'); const w = img.width * 1.5; const h = img.height * 1.5; c.width = w; c.height = h; const ctx = c.getContext('2d'); ctx.drawImage(img, 0, 0, w, h); c.toBlob(blob => res(blob), 'image/png', 0.95); }); }
-        downloadBtn.addEventListener('click', () => { if (enhancedBlobUrl) { const a = document.createElement('a'); a.href = enhancedBlobUrl; a.download = 'AM_Exclusive_Output.png'; a.click(); } });
+        
+        // --- MESIN KOMPUTASI CITRA TINGKAT LANJUT (CANVAS 2D) ---
+        function runLocalEnhancer(img, strength, mode) {
+            return new Promise(res => {
+                const c = document.createElement('canvas');
+                const ctx = c.getContext('2d');
+                let scale = (mode === '2x') ? 2 : 1;
+                c.width = img.width * scale;
+                c.height = img.height * scale;
+
+                // Teknik upscaling presisi tinggi bawaan browser
+                ctx.imageSmoothingEnabled = true;
+                ctx.imageSmoothingQuality = 'high';
+                ctx.drawImage(img, 0, 0, c.width, c.height);
+
+                const w = c.width, h = c.height;
+                const imageData = ctx.getImageData(0, 0, w, h);
+                const data = imageData.data;
+                const factor = strength / 100; // Normalisasi 0.1 - 1.0
+
+                if (mode === 'hdr') {
+                    // Logika Dynamic HDR: Kontras dan Saturasi level piksel
+                    const contrast = 1.0 + (1.2 * factor); 
+                    const intercept = 128 * (1 - contrast);
+                    for (let i = 0; i < data.length; i += 4) {
+                        data[i] = data[i] * contrast + intercept;
+                        data[i+1] = data[i+1] * contrast + intercept;
+                        data[i+2] = data[i+2] * contrast + intercept;
+
+                        const r = data[i], g = data[i+1], b = data[i+2];
+                        const gray = 0.2989 * r + 0.5870 * g + 0.1140 * b;
+                        data[i] = gray + (r - gray) * (1 + factor);
+                        data[i+1] = gray + (g - gray) * (1 + factor);
+                        data[i+2] = gray + (b - gray) * (1 + factor);
+                    }
+                    ctx.putImageData(imageData, 0, 0);
+                } else if (mode === '1x' || mode === '2x') {
+                    // Logika Sharpening menggunakan Konvolusi Kernel 3x3
+                    const mix = mode === '2x' ? factor * 0.4 : factor * 0.8; 
+                    const sharpData = ctx.createImageData(w, h);
+                    const sData = sharpData.data;
+
+                    const kernel = [
+                        0, -1, 0,
+                       -1,  5, -1,
+                        0, -1, 0
+                    ];
+
+                    for (let y = 1; y < h - 1; y++) {
+                        for (let x = 1; x < w - 1; x++) {
+                            let r = 0, g = 0, b = 0;
+                            for (let cy = -1; cy <= 1; cy++) {
+                                for (let cx = -1; cx <= 1; cx++) {
+                                    const offset = ((y + cy) * w + (x + cx)) * 4;
+                                    const k = kernel[(cy + 1) * 3 + (cx + 1)];
+                                    r += data[offset] * k;
+                                    g += data[offset + 1] * k;
+                                    b += data[offset + 2] * k;
+                                }
+                            }
+                            const px = (y * w + x) * 4;
+                            sData[px] = (r * mix) + (data[px] * (1 - mix));
+                            sData[px+1] = (g * mix) + (data[px+1] * (1 - mix));
+                            sData[px+2] = (b * mix) + (data[px+2] * (1 - mix));
+                            sData[px+3] = data[px+3]; // Alpha Channel
+                        }
+                    }
+                    
+                    // Salin ulang bingkai ujung (Edges) agar tidak hitam
+                    for (let y = 0; y < h; y++) {
+                        for (let x = 0; x < w; x++) {
+                            if (x === 0 || x === w - 1 || y === 0 || y === h - 1) {
+                                const px = (y * w + x) * 4;
+                                sData[px] = data[px]; sData[px+1] = data[px+1]; 
+                                sData[px+2] = data[px+2]; sData[px+3] = data[px+3];
+                            }
+                        }
+                    }
+                    ctx.putImageData(sharpData, 0, 0);
+                }
+                c.toBlob(blob => res(blob), 'image/jpeg', 0.95);
+            });
+        }
+        
+        downloadBtn.addEventListener('click', () => { if (enhancedBlobUrl) { const a = document.createElement('a'); a.href = enhancedBlobUrl; a.download = 'AM_Exclusive_Output.jpg'; a.click(); } });
         copyUrlBtn.addEventListener('click', () => { if (enhancedBlobUrl) { navigator.clipboard.writeText(enhancedBlobUrl); customAlert("URL disalin ke papan klip."); } });
     }
 
