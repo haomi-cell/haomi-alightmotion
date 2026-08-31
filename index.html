@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -16,26 +17,19 @@
     --bg-base: #050507;
     --surface-dark: rgba(18, 18, 20, 0.75);
     --surface-light: rgba(28, 28, 30, 0.65);
-    
     --gold-primary: #E6C27A;
     --gold-light: #F9E5B5;
     --gold-dark: #A67C00;
-    
     --text-pure: #ffffff;
     --text-dim: #b3b3b3;
     --text-muted: #737373;
-    
     --border-thin: rgba(230, 194, 122, 0.15);
     --border-focus: rgba(230, 194, 122, 0.6);
-    
     --danger: #9e1c1c;
     --danger-light: #ff4d4d;
     --success: #1a5e39;
-    
     --font-heading: 'Playfair Display', serif;
     --font-body: 'Montserrat', sans-serif;
-    
-    /* Super Smooth Fluid Spring Easing */
     --smooth-ease: cubic-bezier(0.16, 1, 0.3, 1);
   }
 
@@ -143,7 +137,7 @@
   .pwd-toggle { position: absolute; right: 18px; background: none; border: none; color: var(--text-muted); font-size: 16px; cursor: pointer; transition: color 0.3s; }
   .pwd-toggle:hover { color: var(--gold-primary); }
 
-  /* BUTTONS WITH SPRING MICRO-INTERACTION */
+  /* BUTTONS */
   .btn { 
     width: 100%; padding: 16px 20px; border-radius: 10px; font-family: var(--font-body); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; transition: all 0.35s var(--smooth-ease); border: none; 
   }
@@ -155,7 +149,6 @@
   }
   .btn-primary:hover { transform: translateY(-3px) scale(1.01); box-shadow: 0 14px 30px rgba(230, 194, 122, 0.35); filter: brightness(1.08); }
   .btn-primary:disabled { background: #2a2a2a; color: #666; cursor: not-allowed; transform: none; box-shadow: none; }
-  
   .btn-outline { background: rgba(230, 194, 122, 0.03); border: 1px solid var(--gold-primary); color: var(--gold-light); }
   .btn-outline:hover { background: rgba(230, 194, 122, 0.12); transform: translateY(-2px); }
 
@@ -171,16 +164,20 @@
   #globalToast { position: fixed; top: -80px; left: 50%; transform: translateX(-50%); opacity: 0; background: rgba(10, 10, 12, 0.95); backdrop-filter: blur(12px); border: 1px solid var(--border-thin); color: #fff; padding: 16px 26px; border-radius: 12px; font-size: 12px; font-weight: 500; display: flex; align-items: center; gap: 12px; z-index: 9999; transition: all 0.5s var(--smooth-ease); box-shadow: 0 20px 40px rgba(0,0,0,0.7); pointer-events: none; letter-spacing: 0.5px;}
   #globalToast.show { top: 30px; opacity: 1; pointer-events: auto; }
 
+  /* --- LIVE TICKER --- */
+  .live-ticker {
+    background: rgba(230, 194, 122, 0.05); border: 1px solid var(--border-thin); border-radius: 8px; padding: 10px 16px; margin-bottom: 24px; font-size: 10px; color: var(--gold-light); font-weight: 600; letter-spacing: 1px; text-transform: uppercase; display: flex; align-items: center; gap: 12px; overflow: hidden;
+  }
+  .ticker-text-wrapper { flex: 1; overflow: hidden; white-space: nowrap; position: relative; }
+  #tickerText { display: inline-block; transition: opacity 0.5s var(--smooth-ease), transform 0.5s var(--smooth-ease); }
+
   /* TOP HEADER */
-  .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+  .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
   .logo-wrapper { display: flex; align-items: center; gap: 12px; font-family: var(--font-heading); font-weight: 600; font-size: 20px; letter-spacing: 1px; color: var(--text-pure); }
   .logo-icon { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, var(--gold-light), var(--gold-dark)); display: flex; align-items: center; justify-content: center; color: #000; font-size: 16px; box-shadow: 0 4px 15px rgba(230, 194, 122, 0.25); }
-  
-  .header-right-meta { display: flex; align-items: center; gap: 10px; }
   .header-logout-btn { background: rgba(158, 28, 28, 0.2); border: 1px solid var(--danger); color: var(--danger-light); width: 38px; height: 38px; border-radius: 10px; font-size: 12px; cursor: pointer; transition: all 0.35s var(--smooth-ease); display: flex; align-items: center; justify-content: center; }
   .header-logout-btn:hover { background: var(--danger); color: #fff; transform: translateY(-2px); }
 
-  .global-stats-badge { background: var(--surface-light); border: 1px solid rgba(255,255,255,0.05); padding: 10px 18px; border-radius: 10px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; margin-bottom: 24px; width: fit-content; }
   .live-dot { width: 6px; height: 6px; background: var(--gold-primary); border-radius: 50%; box-shadow: 0 0 8px var(--gold-primary); animation: pulse 2s infinite; }
   
   /* BLACK CARD PROFILE WIDGET */
@@ -188,33 +185,18 @@
   .profile-widget:hover { transform: translateY(-3px) scale(1.01); border-color: var(--gold-primary); box-shadow: 0 22px 45px rgba(0,0,0,0.55); }
   .pw-left { display: flex; align-items: center; gap: 18px; position: relative; z-index: 2; }
   .pw-avatar { width: 52px; height: 52px; border-radius: 50%; background: #222; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-weight: 700; color: var(--gold-primary); font-size: 20px; overflow: hidden; border: 1px solid var(--gold-dark); transition: transform 0.3s; }
-  .profile-widget:hover .pw-avatar { transform: scale(1.05); }
-  .pw-avatar img { width: 100%; height: 100%; object-fit: cover; }
   .pw-info h4 { font-family: var(--font-heading); font-size: 18px; font-weight: 600; margin-bottom: 4px; color: var(--gold-light); }
   .pw-info p { font-size: 9px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; font-weight: 600; }
 
   /* VIP PROMO BANNER */
   .vip-promo { background: linear-gradient(135deg, rgba(35,28,15,0.85), rgba(15,12,5,0.95)); backdrop-filter: blur(12px); border: 1px solid var(--gold-dark); padding: 20px 24px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; cursor: pointer; transition: all 0.4s var(--smooth-ease); }
   .vip-promo:hover { box-shadow: 0 15px 30px rgba(230, 194, 122, 0.2); transform: translateY(-3px) scale(1.01); }
-  .vip-promo i { font-size: 24px; color: var(--gold-primary); transition: transform 0.4s; }
-  .vip-promo:hover i { transform: scale(1.2) rotate(10deg); }
-
-  /* TOP UP CARD */
-  .topup-card { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; margin-bottom: 24px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; transition: all 0.35s var(--smooth-ease); }
-  .topup-card:hover { border-color: rgba(230,194,122,0.4); transform: translateY(-2px); }
-  .btn-topup { background: transparent; color: var(--gold-primary); border: 1px solid var(--gold-primary); padding: 8px 16px; border-radius: 8px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.3s; }
-  .btn-topup:hover { background: var(--gold-primary); color: #000; transform: scale(1.05); }
 
   /* --- BIG LIMIT DISPLAY --- */
   .limit-display-area { text-align: center; margin-bottom: 30px; padding: 40px 20px; background: radial-gradient(circle at center, rgba(30,30,35,0.7) 0%, rgba(10,10,12,0.5) 100%); border-radius: 18px; border: 1px solid rgba(255,255,255,0.06); box-shadow: inset 0 0 50px rgba(0,0,0,0.6); }
   .limit-info-box { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; line-height: 1.6; margin-bottom: 24px; display: inline-block; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-  .big-limit-num { font-family: var(--font-heading); font-size: 72px; font-weight: 400; line-height: 1; margin-bottom: 12px; color: var(--gold-light); transition: transform 0.4s var(--smooth-ease); }
-  .big-limit-num.vip { color: var(--gold-primary); text-shadow: 0 5px 25px rgba(230, 194, 122, 0.35); }
+  .big-limit-num { font-family: var(--font-heading); font-size: 72px; font-weight: 400; line-height: 1; margin-bottom: 12px; color: var(--gold-light); }
   .limit-label { font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 3px; font-weight: 500; }
-
-  /* LEADERBOARD BUTTON */
-  .leaderboard-toggle-btn { width: 100%; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; color: var(--text-pure); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; cursor: pointer; transition: all 0.35s var(--smooth-ease); margin-bottom: 16px; }
-  .leaderboard-toggle-btn:hover { border-color: var(--gold-dark); background: rgba(230,194,122,0.06); color: var(--gold-light); transform: translateY(-2px); }
 
   /* --- MINIMALIST BOTTOM NAV --- */
   .bottom-nav { 
@@ -230,7 +212,7 @@
   .nav-item.active i { transform: translateY(-4px) scale(1.15); }
   .nav-item:hover { color: var(--text-pure); }
 
-  /* --- OVERLAYS & MODALS WITH FLUID FADE & SLIDE --- */
+  /* --- OVERLAYS & MODALS --- */
   .overlay { 
     position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(10px); 
     z-index: 999; display: flex; align-items: center; justify-content: center; 
@@ -269,21 +251,18 @@
   }
   .overlay.show .bottom-sheet { transform: translateY(0); }
 
-  /* GRIDS & LISTS */
-  .limit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px; }
-  .limit-box { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 20px 12px; text-align: center; cursor: pointer; transition: all 0.35s var(--smooth-ease); }
-  .limit-box:hover { border-color: var(--gold-primary); background: rgba(230,194,122,0.06); transform: translateY(-3px) scale(1.02); }
-  .limit-box .lmt { font-family: var(--font-heading); font-size: 24px; font-weight: 600; color: var(--gold-light); margin-bottom: 8px; display: block; }
-  .limit-box .prc { font-size: 11px; color: var(--text-dim); font-weight: 500; letter-spacing: 1px; }
-
-  .data-list { display: flex; flex-direction: column; gap: 16px; }
-  .data-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 20px; transition: all 0.35s var(--smooth-ease); }
-  .data-item:hover { border-color: rgba(255,255,255,0.25); transform: translateY(-2px); }
-
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
-  ::-webkit-scrollbar-thumb:hover { background: var(--gold-dark); }
+  /* --- ANIMASI SCAN BIOMETRIK --- */
+  .biometric-scanner {
+    width: 100px; height: 100px; border-radius: 50%; border: 2px solid rgba(230,194,122,0.2);
+    margin: 0 auto 20px; position: relative; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; overflow: hidden; transition: all 0.3s;
+  }
+  .biometric-scanner.scanning { border-color: var(--gold-primary); box-shadow: 0 0 30px rgba(230,194,122,0.3); }
+  .biometric-scanner i { font-size: 40px; color: var(--text-muted); transition: color 0.3s; }
+  .biometric-scanner.scanning i { color: var(--gold-primary); }
+  .scan-line { position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: var(--gold-primary); box-shadow: 0 0 15px var(--gold-primary); opacity: 0; }
+  .biometric-scanner.scanning .scan-line { opacity: 1; animation: scan-laser 1.5s linear infinite; }
+  @keyframes scan-laser { 0% { top: -10%; } 50% { top: 110%; } 100% { top: -10%; } }
 </style>
 </head>
 <body>
@@ -298,41 +277,6 @@
 
 <div id="globalToast"><i class="fas fa-info-circle"></i> <span id="toastMsg">Sistem Informasi</span></div>
 
-<!-- MODAL: TOP UP & QRIS -->
-<div id="limitModal" class="overlay">
-  <div class="modal-glass">
-    <button class="btn-close" onclick="closeLimitModal()"><i class="fas fa-times"></i></button>
-    <div class="title-lg" style="font-size: 24px;">Acquire Limits</div>
-    <div class="text-sub">Pilih kuota eksklusif dan selesaikan pembayaran.</div>
-    
-    <div id="selectLimitView">
-      <div class="limit-grid" id="limitPackageGrid"></div>
-    </div>
-
-    <div id="qrisPaymentView" class="hidden" style="text-align: center; margin-top: 30px;">
-      <div style="background: #fff; padding: 16px; border-radius: 12px; display: inline-block; margin-bottom: 24px; border: 2px solid var(--gold-primary);">
-        <img id="qrisImageResult" src="" alt="QRIS" style="width: 200px; height: 200px; object-fit: contain;">
-      </div>
-      <div id="qrisPackageTitle" style="font-family: var(--font-heading); font-size: 20px; font-weight: 600; margin-bottom: 8px; color: var(--gold-light);"></div>
-      <div style="font-size: 11px; color: var(--text-dim); margin-bottom: 30px; letter-spacing: 1px; text-transform: uppercase;">Transaction ID: <span id="qrisDepositIdSpan" style="color:var(--text-pure)"></span></div>
-      
-      <button class="btn btn-primary click-sound" onclick="checkQrisPaymentStatus()" style="margin-bottom: 16px;">Verifikasi Pembayaran</button>
-      <button class="btn btn-outline click-sound" onclick="backToLimitSelect()">Kembali</button>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL: CONFIRM -->
-<div id="customConfirmModal" class="overlay">
-  <div class="modal-glass" style="text-align: center; padding: 40px;">
-    <i class="fas fa-exclamation-triangle" style="font-size: 40px; color: var(--gold-primary); margin-bottom: 24px;"></i>
-    <div class="title-lg" style="font-size: 24px;">Konfirmasi Tindakan</div>
-    <div id="confirmText" class="text-sub" style="margin-bottom: 32px;">Tindakan ini bersifat final. Apakah Anda yakin ingin melanjutkannya?</div>
-    <button id="btnConfirmOk" class="btn btn-primary click-sound" style="margin-bottom: 16px;">Ya, Lanjutkan</button>
-    <button id="btnConfirmCancel" class="btn btn-outline click-sound">Batal</button>
-  </div>
-</div>
-
 <!-- MODAL: WARNING KEAMANAN TOXIC -->
 <div id="warningModal" class="overlay">
   <div class="modal-glass" style="border-color: var(--danger); box-shadow: 0 35px 70px rgba(158, 28, 28, 0.45);">
@@ -341,23 +285,36 @@
       <div class="title-lg" style="font-size: 22px; color: var(--danger-light);">PERINGATAN KERAS!</div>
     </div>
     <div style="background: rgba(158, 28, 28, 0.15); border: 1px solid var(--danger); border-radius: 10px; padding: 20px; margin-bottom: 30px; font-size: 12px; line-height: 1.7; color: #fff; text-align: justify;">
-      <b>DENGERIN BAIK-BAIK, ANJING!</b> Server ini dijaga ketat. Kalau lu coba-coba macem-macem, eksploitasi, nyepam, atau sok ngide inspect elemen buat nge-hack web ini, IP dan Device ID lu bakal langsung gua catat dan akun lu <b>GUA BANNED PERMANEN, BANGSAT!</b> Jangan main-main sama sistem ini, tolol!
+      <b>DENGERIN BAIK-BAIK!</b> Server ini dijaga ketat. Kalau coba-coba macem-macem, eksploitasi, nyepam, atau sok ngide inspect elemen buat nge-hack web ini, IP dan Device ID bakal langsung dicatat dan akun <b>BANNED PERMANEN!</b> Jangan main-main sama sistem ini!
     </div>
-    <button class="btn btn-primary click-sound" style="background: var(--danger); color: #fff; box-shadow: 0 8px 20px rgba(158, 28, 28, 0.3);" onclick="closeWarningModal()">BACOT, GUA NGERTI!</button>
+    <button class="btn btn-primary click-sound" style="background: var(--danger); color: #fff; box-shadow: 0 8px 20px rgba(158, 28, 28, 0.3);" onclick="closeWarningModal()">SAYA MENGERTI</button>
   </div>
 </div>
 
-<!-- MODAL: BROADCAST -->
-<div id="broadcastModal" class="overlay">
-  <div class="modal-glass">
-    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px;">
-      <div style="width: 44px; height: 44px; border-radius: 10px; background: rgba(230,194,122,0.1); display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-thin);">
-        <i class="fas fa-envelope-open-text" style="font-size: 18px; color: var(--gold-primary);"></i>
-      </div>
-      <div class="title-lg" style="margin: 0; font-size: 20px;">Pesan Eksekutif</div>
+<!-- MODAL: BIOMETRIK SIMULASI -->
+<div id="biometricModal" class="overlay">
+  <div class="modal-glass" style="text-align: center;">
+    <button class="btn-close" onclick="closeBiometricModal()"><i class="fas fa-times"></i></button>
+    <div class="title-lg" style="font-size: 22px; margin-bottom: 30px;">Otorisasi Biometrik</div>
+    <div class="text-sub" style="margin-bottom: 24px;">Tekan dan tahan ikon sidik jari di bawah ini selama 2 detik untuk memverifikasi identitas Anda.</div>
+    
+    <div class="biometric-scanner" id="fingerprintScanner">
+       <i class="fas fa-fingerprint"></i>
+       <div class="scan-line"></div>
     </div>
-    <div id="broadcastContentText" style="background: rgba(0,0,0,0.3); border-left: 2px solid var(--gold-primary); padding: 20px; font-size: 13px; line-height: 1.8; color: var(--text-pure); margin-bottom: 30px; border-radius: 0 10px 10px 0;">Memuat transmisi...</div>
-    <button class="btn btn-outline click-sound" onclick="closeBroadcastModal()">Tandai Telah Dibaca</button>
+    <div id="bioStatusText" style="font-size: 11px; color: var(--gold-primary); font-weight: 600; text-transform: uppercase; letter-spacing: 2px;">Menunggu input sidik jari...</div>
+  </div>
+</div>
+
+<!-- MODAL: QR CODE DISPLAY -->
+<div id="qrModal" class="overlay">
+  <div class="modal-glass" style="text-align: center;">
+    <button class="btn-close" onclick="document.getElementById('qrModal').classList.remove('show')"><i class="fas fa-times"></i></button>
+    <div class="title-lg" style="font-size: 22px; margin-bottom: 10px;">Enkripsi Data QR</div>
+    <div class="text-sub" style="margin-bottom: 30px;">Pindai untuk mengakses berkas hasil render AI.</div>
+    <div style="background: var(--bg-base); padding: 20px; border-radius: 12px; display: inline-block; border: 2px solid var(--gold-primary); box-shadow: 0 10px 30px rgba(230,194,122,0.2);">
+      <img id="qrImageDisplay" src="" alt="QR Code" style="width: 200px; height: 200px; object-fit: contain;">
+    </div>
   </div>
 </div>
 
@@ -375,7 +332,7 @@
     <div id="loginErrorMsg" class="message-box message-error"></div>
     
     <div class="form-group"><label>Identitas (Username)</label><input type="text" id="loginUser" class="glass-input" autocomplete="off" /></div>
-    <div class="form-group" style="margin-bottom: 40px;">
+    <div class="form-group" style="margin-bottom: 30px;">
       <label>Kata Sandi</label>
       <div class="input-wrapper">
         <input type="password" id="loginPwd" class="glass-input" autocomplete="off" />
@@ -384,10 +341,11 @@
     </div>
     
     <button id="loginBtn" class="btn btn-primary click-sound">Otorisasi Masuk</button>
+    <button id="bioLoginBtn" class="btn btn-outline click-sound" style="margin-top: 12px; background: transparent; border: 1px dashed rgba(230,194,122,0.4); color: var(--gold-primary);"><i class="fas fa-fingerprint"></i> Autentikasi Biometrik</button>
     
     <div style="display: flex; justify-content: space-between; margin-top: 30px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">
-      <span style="cursor:pointer; color: var(--text-muted); transition: 0.3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--text-muted)'" onclick="handleForgotClick()">Lupa Sandi?</span>
-      <span style="cursor:pointer; color: var(--gold-primary); transition: 0.3s;" onmouseover="this.style.color='var(--gold-light)'" onmouseout="this.style.color='var(--gold-primary)'" onclick="switchView('registerView')">Registrasi Akun</span>
+      <span style="cursor:pointer; color: var(--text-muted); transition: 0.3s;" onclick="customAlert('Fitur pemulihan sedang dimatikan untuk keamanan.')">Lupa Sandi?</span>
+      <span style="cursor:pointer; color: var(--gold-primary); transition: 0.3s;" onclick="switchView('registerView')">Registrasi Akun</span>
     </div>
   </div>
 </div>
@@ -399,23 +357,9 @@
       <div class="title-lg" style="font-size: 26px;">Registrasi Klien</div>
       <div class="text-sub">Daftarkan identitas Anda ke jaringan elit.</div>
     </div>
-    
     <div id="regMsg" class="message-box"></div>
-    
     <div class="form-group"><label>Username (Tanpa Spasi)</label><input type="text" id="regUser" class="glass-input" /></div>
-    <div class="form-group"><label>Nomor WhatsApp</label><input type="text" id="regWa" class="glass-input" placeholder="08..." /></div>
-    <div class="form-group">
-      <label>Kata Sandi Privat</label>
-      <div class="input-wrapper">
-        <input type="password" id="regPwd" class="glass-input" />
-        <button type="button" class="pwd-toggle" onclick="togglePwd('regPwd', this)"><i class="far fa-eye"></i></button>
-      </div>
-    </div>
-    <div class="form-group" style="margin-bottom: 35px;">
-      <label id="captchaLabel">Protokol Anti-Bot</label>
-      <input type="text" id="regCaptcha" class="glass-input" placeholder="Hasil perhitungan" />
-    </div>
-    
+    <div class="form-group"><label>Kata Sandi Privat</label><input type="password" id="regPwd" class="glass-input" /></div>
     <button id="regBtn" class="btn btn-primary click-sound">Daftarkan Identitas</button>
     <div style="margin-top: 30px; text-align: center; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; cursor:pointer; color: var(--text-muted);" onclick="switchView('loginView')">
       Telah terdaftar? <span style="color:var(--gold-primary);">Masuk Disini</span>
@@ -431,33 +375,16 @@
       <div class="logo-icon"><i class="fas fa-crown"></i></div>
       <span style="background: linear-gradient(135deg, var(--gold-light), var(--gold-dark)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">AM Executive</span>
     </div>
-    
-    <!-- HEADER KANAN: TOMBOL LOGOUT -->
     <div class="header-right-meta">
-      <button class="header-logout-btn click-sound" id="topLogoutBtn" title="Akhiri Sesi">
-        <i class="fas fa-sign-out-alt"></i>
-      </button>
+      <button class="header-logout-btn click-sound" id="topLogoutBtn" title="Akhiri Sesi"><i class="fas fa-sign-out-alt"></i></button>
     </div>
   </div>
 
-  <!-- JAM & PING JARINGAN -->
-  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; background: var(--surface-light); border: 1px solid rgba(255,255,255,0.05); padding: 12px 18px; border-radius: 10px;">
-    <div style="font-size: 11px; color: var(--gold-primary); font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; display: flex; align-items: center; gap: 8px;">
-      <i class="far fa-clock"></i> <span id="realtimeClock">00:00 WIB</span>
-    </div>
-    <div style="font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 8px;">
-      <div class="live-dot" style="background: #2ecc71; box-shadow: 0 0 8px #2ecc71;"></div>
-      <span>Ping: <strong id="networkPingText" style="color: #2ecc71; font-weight: 700;">14ms</strong></span>
-    </div>
+  <div class="live-ticker">
+    <i class="fas fa-satellite-dish" style="color: var(--danger-light); animation: blink-text 1.5s infinite;"></i>
+    <div class="ticker-text-wrapper"><span id="tickerText">Menghubungkan ke node jaringan terenkripsi...</span></div>
   </div>
 
-  <!-- TOTAL PENGGUNA ONLINE -->
-  <div class="global-stats-badge">
-    <div class="live-dot"></div>
-    <span>Jaringan Klien: <strong id="globalTotalUsers" style="color:var(--gold-light); font-weight: 700;">0</strong></span>
-  </div>
-
-  <!-- PREMIUM PROFILE WIDGET -->
   <div class="profile-widget click-sound" onclick="openProfileSheet()">
     <div class="pw-left">
       <div class="pw-avatar"><span class="disp-avatar-text">?</span></div>
@@ -471,17 +398,7 @@
     </div>
   </div>
 
-  <!-- TOP UP ACTION CARD -->
-  <div id="topupCardContainer" class="topup-card hidden click-sound" onclick="openLimitModal()">
-     <div>
-        <div style="font-family: var(--font-heading); font-size: 18px; font-weight: 600; margin-bottom: 6px; color: var(--gold-light);">Acquire Limit</div>
-        <div style="font-size: 11px; color: var(--text-dim); line-height: 1.5;">Isi ulang kuota eksklusif Anda via QRIS.</div>
-     </div>
-     <button class="btn-topup">Isi Ulang</button>
-  </div>
-
-  <!-- VIP PROMO BANNER -->
-  <div id="promoBannerContainer" class="vip-promo hidden click-sound" onclick="handleVipPromoClick()">
+  <div id="promoBannerContainer" class="vip-promo click-sound" onclick="customAlert('Fitur VIP sedang dioptimasi.')">
      <div>
        <div style="font-family: var(--font-heading); font-size: 18px; font-weight: 600; color: var(--gold-light); margin-bottom: 6px;">Upgrade Status VIP</div>
        <div style="font-size: 11px; color: var(--text-muted); line-height: 1.5;">Akses tanpa batas, previlege elit selamanya.</div>
@@ -489,154 +406,53 @@
      <i class="fas fa-gem"></i>
   </div>
 
-  <!-- LEADERBOARD ACCORDION BUTTON & LIST -->
-  <div style="margin-bottom: 30px;">
-    <button class="leaderboard-toggle-btn click-sound" onclick="toggleLeaderboard()">
-      <span style="display:flex; align-items:center; gap:12px;"><i class="fas fa-trophy" style="color:var(--gold-primary); font-size: 16px;"></i> Peringkat Prestise</span>
-      <i class="fas fa-chevron-down" id="leaderboardChevron" style="transition: transform 0.4s var(--smooth-ease);"></i>
-    </button>
-    <div id="leaderboardCollapsible" class="hidden" style="margin-top: 16px;">
-      <div id="leaderboardListContainer" class="data-list"></div>
-    </div>
-  </div>
-
   <!-- SECTION: ACTIVATOR -->
   <div id="sectionActivator">
-    
-    <!-- BIG LIMIT NUMBER -->
     <div class="limit-display-area">
-       <div class="limit-info-box">
-         Sisa kuota layanan akan direset mingguan. Alokasi ditangani otomatis.
-       </div>
-       <div class="big-limit-num disp-limit-value">0</div>
+       <div class="limit-info-box">Sisa kuota layanan akan direset mingguan.</div>
+       <div class="big-limit-num disp-limit-value">3</div>
        <div class="limit-label disp-limit-label">Sisa Kuota Akses</div>
     </div>
 
     <div class="glass-card">
-      <div class="title-lg" style="font-size: 24px;">Aktivasi Lisensi</div>
-      <div class="text-sub" style="margin-bottom: 24px;">Otentikasi perangkat dengan server utama.</div>
-      
-      <div style="background: rgba(255,255,255,0.02); border-radius: 10px; padding: 18px; margin-bottom: 24px;">
-         <ol style="padding-left: 18px; font-size: 11px; color: var(--text-dim); margin:0; line-height: 1.8;">
-            <li style="margin-bottom: 8px;">Ketik alamat email Anda, lalu tekan Kirim.</li>
-            <li style="margin-bottom: 8px;">Periksa kotak masuk email, salin URL dari Magic Link.</li>
-            <li>Tempel URL tersebut pada kolom dan eksekusi Verifikasi.</li>
-         </ol>
-      </div>
-      
-      <div id="appErrorMsg" class="message-box message-error">
-        <i class="fas fa-exclamation-circle"></i> <span id="appErrorText"></span>
-      </div>
-      
-      <div class="form-group">
-          <label>Email Terdaftar</label>
-          <div style="display: flex; gap: 12px;">
-              <input type="email" id="emailInput" class="glass-input" placeholder="contoh@email.com" autocomplete="email" />
-              <button id="sendBtn" class="btn btn-outline click-sound" style="width: auto; padding: 0 20px; font-size: 11px;">Kirim</button>
-          </div>
-      </div>
-      <div class="form-group" style="margin-bottom: 30px;">
-          <label>URL Magic Link</label>
-          <input type="url" id="magicInput" class="glass-input" placeholder="Tempel URL di sini" autocomplete="off" />
-      </div>
-      
-      <button id="activateBtn" class="btn btn-primary click-sound">
-          <span id="btnDefault">Verifikasi Lisensi</span>
-          <div id="loaderContainer" class="hidden" style="display:flex; align-items:center; gap:10px;"><div class="loader-spinner" style="width:16px;height:16px; border-width:2px; border-top-color:#000;"></div> Memproses...</div>
-      </button>
-    </div>
-  </div>
-
-  <!-- SECTION: ENHANCER -->
-  <div id="sectionEnhancer" class="hidden">
-    <div class="glass-card">
       <div class="title-lg" style="font-size: 24px;">Neural AI Studio</div>
       <div class="text-sub" style="margin-bottom: 30px;">Pemulihan resolusi citra dengan komputasi kecerdasan buatan tingkat lanjut.</div>
       
-      <div class="form-group">
-        <label>URL Sumber (Opsional)</label>
-        <input type="url" id="imageUrl" class="glass-input" placeholder="https://..." />
-      </div>
-
       <div id="dropZone" class="click-sound" style="border: 1px dashed rgba(255,255,255,0.2); border-radius: 12px; padding: 40px 20px; text-align: center; background: rgba(0,0,0,0.2); cursor: pointer; margin-bottom: 24px; transition: all 0.35s var(--smooth-ease);">
         <i class="fas fa-upload" style="font-size: 28px; color: var(--gold-primary); margin-bottom: 16px;"></i>
-        <div style="font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--gold-light);">Unggah Arsip Lokal</div>
+        <div style="font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--gold-light);">Pilih Citra Lokal</div>
         <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">JPG, PNG, WEBP — Max 25MB</div>
         <div id="fileNameDisplay" style="margin-top: 16px; font-size: 11px; color: var(--gold-primary); font-weight: 600;"></div>
         <input type="file" id="fileInput" accept="image/*" style="display: none;">
       </div>
       
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 30px;">
-        <div style="background: rgba(255,255,255,0.02); border-radius: 10px; padding: 16px; border: 1px solid rgba(255,255,255,0.05);">
-          <div style="display:flex; justify-content:space-between; font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing: 1px; margin-bottom:16px;"><span>Intensitas</span> <span id="strengthIndicator" style="color:var(--gold-primary); font-weight: 600;">Normal</span></div>
-          <input type="range" id="strengthRange" min="10" max="100" value="60" style="width: 100%; height:2px; appearance:none; background:rgba(255,255,255,0.1); outline:none; cursor: pointer; border-radius: 2px;">
-        </div>
-        <div onclick="document.getElementById('modeModalOverlay').classList.add('show')" class="click-sound" style="background: rgba(255,255,255,0.02); border-radius: 10px; padding: 16px; border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.35s var(--smooth-ease);" onmouseover="this.style.borderColor='var(--gold-primary)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.05)'">
-          <div>
-            <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing: 1px; margin-bottom:8px;">Model AI</div>
-            <div id="currentModeLabel" style="font-size:12px; font-weight:600; color: var(--gold-light);">Super Res 2x</div>
-          </div>
-          <div style="width: 28px; height: 28px; border-radius: 6px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center;">
-             <i class="fas fa-sliders-h" style="color:var(--gold-primary); font-size:11px;"></i>
-          </div>
-        </div>
-      </div>
+      <button class="btn btn-primary click-sound" id="enhanceBtn"><i class="fas fa-microchip"></i> Eksekusi Render</button>
       
-      <div style="display: flex; gap: 12px; margin-bottom: 24px;">
-        <button class="btn btn-primary click-sound" id="enhanceBtn" style="flex: 1;"><i class="fas fa-microchip"></i> Eksekusi Render</button>
-        <button class="btn btn-outline click-sound" id="resetBtn" style="width: auto; padding: 0 20px;"><i class="fas fa-redo"></i></button>
-      </div>
-      
-      <div id="statusMessage" class="message-box">
+      <div id="statusMessage" class="message-box" style="margin-top:20px;">
         <i class="fas fa-info-circle"></i> <span id="statusMessageText"></span>
       </div>
 
-      <div class="hidden" id="comparisonSplitSection" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 30px 0;">
-        <div style="border-radius: 10px; overflow: hidden; position: relative; height: 180px; border: 1px solid rgba(255,255,255,0.1);">
-          <div style="position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.8); padding: 4px 10px; border-radius: 4px; font-size: 9px; font-weight: 600; letter-spacing: 1px; color:#fff; border: 1px solid rgba(255,255,255,0.1);">ASLI</div>
-          <img id="splitImgBefore" style="width: 100%; height: 100%; object-fit: cover;">
-        </div>
-        <div style="border-radius: 10px; overflow: hidden; position: relative; height: 180px; border: 1px solid var(--gold-primary);">
+      <div class="hidden" id="comparisonSplitSection" style="margin: 30px 0;">
+        <div style="border-radius: 10px; overflow: hidden; position: relative; height: 250px; border: 1px solid var(--gold-primary);">
           <div style="position: absolute; top: 8px; left: 8px; background: var(--gold-primary); padding: 4px 10px; border-radius: 4px; font-size: 9px; font-weight: 700; letter-spacing: 1px; color:#000;">HASIL AI</div>
           <img id="splitImgAfter" style="width: 100%; height: 100%; object-fit: cover;">
         </div>
       </div>
       
-      <div class="hidden" id="downloadFooterActions" style="display: flex; gap: 12px;">
-        <button class="btn btn-outline click-sound" id="downloadBtn" style="flex: 1;"><i class="fas fa-download"></i> Simpan File</button>
-        <button class="btn btn-outline click-sound" id="copyUrlBtn" style="flex: 1;"><i class="fas fa-link"></i> Salin URL</button>
+      <div class="hidden" id="downloadFooterActions" style="display: flex; gap: 12px; flex-wrap: wrap;">
+        <button class="btn btn-outline click-sound" id="downloadBtn" style="flex: 1; min-width: 120px;"><i class="fas fa-download"></i> Simpan</button>
+        <button class="btn btn-outline click-sound" id="qrBtn" style="flex: 1; min-width: 120px; border-color: rgba(230,194,122,0.4);"><i class="fas fa-qrcode"></i> Buat QR</button>
       </div>
-    </div>
-  </div>
-
-  <!-- SECTION: OWNER PANEL -->
-  <div id="ownerPanel" class="hidden">
-    <div class="glass-card">
-      <div class="title-lg" style="font-size: 24px;">Database Eksekutif</div>
-      <div class="text-sub" style="margin-bottom: 30px;">Kontrol akses penuh manajemen klien dan infrastruktur.</div>
-      
-      <div style="background: rgba(255,255,255,0.02); border-radius: 10px; padding: 20px; margin-bottom: 30px; border: 1px solid rgba(255,255,255,0.05);">
-        <label style="font-size: 10px; font-weight: 700; color: var(--gold-primary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; display:flex; align-items: center; gap: 8px;"><i class="fas fa-broadcast-tower"></i> Transmisi Global</label>
-        <textarea id="broadcastInput" class="glass-input" placeholder="Tulis instruksi pengumuman untuk didistribusikan..." style="min-height: 90px; resize: none; margin-bottom: 16px;"></textarea>
-        <button class="btn btn-primary click-sound" onclick="sendBroadcastMsg()"><i class="fas fa-paper-plane"></i> Sebarkan Transmisi</button>
-      </div>
-      
-      <div class="form-group"><input type="text" id="memberSearchInput" class="glass-input" placeholder="Cari Identitas (Username / ID)..." oninput="renderMemberList()" /></div>
-      <div id="memberList" class="data-list"></div>
     </div>
   </div>
 </div>
 
-<!-- FLOATING BOTTOM NAVIGATION -->
 <nav class="bottom-nav hidden" id="mainBottomNav">
-  <div class="nav-item active click-sound" id="btnTabActivator" onclick="switchTab('activator')">
+  <div class="nav-item active click-sound" id="btnTabActivator">
     <i class="fas fa-key"></i><span>Lisensi</span>
   </div>
-  <div class="nav-item click-sound" id="btnTabEnhancer" onclick="switchTab('enhancer')">
+  <div class="nav-item click-sound" id="btnTabEnhancer" onclick="customAlert('Studio Lanjutan masih dalam optimasi')">
     <i class="fas fa-layer-group"></i><span>Studio</span>
-  </div>
-  <div class="nav-item hidden click-sound" id="toggleOwnerDashBtn" onclick="switchTab('admin')">
-    <i class="fas fa-server"></i><span>Sistem</span>
   </div>
 </nav>
 
@@ -644,738 +460,225 @@
 <div id="profileSheet" class="overlay" style="justify-content: flex-end; padding: 0;">
   <div class="side-panel">
     <button class="btn-close click-sound" onclick="closeProfileSheet()" style="position: absolute; top: 30px; left: -16px; right: auto; background: var(--surface-dark);"><i class="fas fa-times"></i></button>
-    
     <div style="text-align: center; margin: 40px 0 40px;">
-      <div class="pw-avatar click-sound" style="width: 80px; height: 80px; margin: 0 auto 16px; font-size: 28px; border: 1px solid var(--gold-primary); cursor:pointer;" onclick="document.getElementById('avatarFileInput').click()" title="Ganti Foto">
-        <span class="disp-avatar-text">?</span>
-      </div>
-      <div style="display: inline-flex; align-items: center; gap: 8px; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--gold-primary); font-weight: 600; margin-bottom: 16px; cursor: pointer; transition: 0.3s;" onmouseover="this.style.color='var(--gold-light)'" onmouseout="this.style.color='var(--gold-primary)'" onclick="document.getElementById('avatarFileInput').click()">
-        <i class="fas fa-camera"></i> Ubah Potret
-      </div>
-      <input type="file" id="avatarFileInput" accept="image/*" style="display: none;" onchange="handleAvatarUpload(event)">
-      
+      <div class="pw-avatar click-sound" style="width: 80px; height: 80px; margin: 0 auto 16px; font-size: 28px; border: 1px solid var(--gold-primary);"><span class="disp-avatar-text">?</span></div>
       <div class="title-lg disp-username" style="font-size: 24px; color: #fff;">Username</div>
       <div class="disp-userrole" style="font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: var(--gold-primary); margin-top: 6px;">Role</div>
     </div>
-
-    <div style="background: rgba(255,255,255,0.02); border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); padding: 20px; margin-bottom: 24px;">
-       <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; font-weight:600; display: flex; align-items: center; gap: 8px;"><i class="fas fa-fingerprint"></i> Data Identitas</div>
-       <div style="display:flex; justify-content:space-between; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px;"><span style="font-size:11px; color:var(--text-dim);">ID Klien</span><span class="disp-userid" style="font-size:12px; font-weight: 600; color: var(--gold-light);">MSH-00</span></div>
-       <div style="display:flex; justify-content:space-between; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px;"><span style="font-size:11px; color:var(--text-dim);">Kontak Utama</span><span class="disp-userwa" style="font-size:12px; font-weight: 600; color: var(--text-pure);">08...</span></div>
-       <div style="display:flex; justify-content:space-between;"><span style="font-size:11px; color:var(--text-dim);">IP Terekam</span><span class="disp-userip" style="font-size:12px; font-weight: 600; color: var(--text-pure);">...</span></div>
-    </div>
-
-    <div style="background: rgba(255,255,255,0.02); border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); padding: 20px; margin-bottom: 40px;">
-      <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; font-weight:600; display: flex; align-items: center; gap: 8px;"><i class="fas fa-lock"></i> Pengaturan Kredensial</div>
-      <div style="background: rgba(166, 124, 0, 0.1); border-left: 2px solid var(--gold-primary); padding: 12px 14px; border-radius: 0 4px 4px 0; font-size: 10px; color: var(--gold-light); line-height: 1.6; margin-bottom: 20px;">
-        <b>Ketentuan:</b> Username hanya dapat dimodifikasi <b>satu (1) kali</b> demi eksklusivitas.
-      </div>
-      
-      <div id="editProfileMsg" class="message-box"><i class="fas fa-info-circle"></i> <span id="editProfileText"></span></div>
-      <div class="form-group"><input type="text" id="editUsernameInput" class="glass-input" placeholder="Username Baru"></div>
-      <div class="form-group mb-0"><input type="password" id="editPasswordInput" class="glass-input" placeholder="Kata Sandi Baru"></div>
-      <button id="saveProfileChangesBtn" class="btn btn-outline click-sound" style="margin-top: 24px;">Simpan Perubahan</button>
-    </div>
-  </div>
-</div>
-
-<!-- BOTTOM SHEET: MODE AI -->
-<div class="overlay" id="modeModalOverlay" style="align-items: flex-end; padding: 0;">
-  <div class="bottom-sheet" id="modeModalSheet">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-      <div class="title-lg" style="margin: 0; font-size: 20px;">Model Render AI</div>
-      <i class="fas fa-times click-sound" id="closeModeModal" style="cursor: pointer; color: var(--text-muted); font-size: 18px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.1); border-radius: 50%;"></i>
-    </div>
-    
-    <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px;">
-      <div class="glass-card glass-card-hover mode-option-item selected click-sound" data-mode="2x" style="display:flex; align-items:center; gap:16px; padding: 18px; border-color: var(--gold-primary); background: rgba(230,194,122,0.05);">
-        <i class="fas fa-expand" style="font-size: 20px; color: var(--gold-primary);"></i>
-        <div><div style="font-family: var(--font-heading); font-weight: 600; font-size: 15px; margin-bottom: 4px; color: var(--gold-light);">Super Resolution 2x</div><div style="font-size: 11px; color: var(--text-dim); line-height: 1.5;">Menggandakan matriks piksel secara presisi.</div></div>
-      </div>
-      <div class="glass-card glass-card-hover mode-option-item click-sound" data-mode="1x" style="display:flex; align-items:center; gap:16px; padding: 18px;">
-        <i class="fas fa-magic" style="font-size: 20px; color: var(--text-muted);"></i>
-        <div><div style="font-family: var(--font-heading); font-weight: 600; font-size: 15px; margin-bottom: 4px; color: var(--text-pure);">Clean & Sharpen</div><div style="font-size: 11px; color: var(--text-dim); line-height: 1.5;">Pembersihan noise dan penajaman detail murni.</div></div>
-      </div>
-      <div class="glass-card glass-card-hover mode-option-item click-sound" data-mode="hdr" style="display:flex; align-items:center; gap:16px; padding: 18px;">
-        <i class="fas fa-sun" style="font-size: 20px; color: var(--text-muted);"></i>
-        <div><div style="font-family: var(--font-heading); font-weight: 600; font-size: 15px; margin-bottom: 4px; color: var(--text-pure);">Dynamic HDR Boost</div><div style="font-size: 11px; color: var(--text-dim); line-height: 1.5;">Optimalisasi kontras dan rentang warna ekstrim.</div></div>
-      </div>
-    </div>
-    <button class="btn btn-primary click-sound" id="applyModeBtn">Terapkan Pilihan</button>
   </div>
 </div>
 
 <script>
 (function(){
     document.addEventListener('contextmenu', e => e.preventDefault());
-    document.onkeydown = function(e) { if(e.keyCode==123 || (e.ctrlKey&&e.shiftKey&&(e.keyCode==73||e.keyCode==74||e.keyCode==67)) || (e.ctrlKey&&e.keyCode==85)) return false; };
+    const SESSION_KEY = "mshaomi_active_session_fixed"; 
 
-    // --- SYNTHESIZER AUDIO FEEDBACK (WEB AUDIO API) ---
+    // --- AUDIO ---
     let audioCtx = null;
     function playClickSound() {
         try {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
+            osc.type = 'sine'; osc.frequency.setValueAtTime(800, audioCtx.currentTime);
             osc.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.05);
-            
             gain.gain.setValueAtTime(0.03, audioCtx.currentTime);
             gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
-            
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.05);
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.05);
         } catch (e) {}
     }
+    document.addEventListener('click', (e) => { if (e.target.closest('.click-sound, button, .glass-card-hover, .nav-item')) playClickSound(); });
 
-    document.addEventListener('click', (e) => {
-        const target = e.target.closest('.click-sound, button, .glass-card-hover, .nav-item, .limit-box');
-        if (target) { playClickSound(); }
-    });
-
-    const _0x1a2b = ["\x68\x74\x74\x70\x73\x3a\x2f\x2f\x72\x65\x73\x74\x61\x70\x69\x64\x68\x61\x6e\x2e\x76\x65\x72\x63\x65\x6c\x2e\x61\x70\x70", "\x64\x72\x61\x76\x6e\x64\x65\x73\x61\x6d\x75\x65\x6c", "\x2b\x36\x32\x38\x32\x32\x33\x31\x36\x36\x39\x30\x35\x33", "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x61\x63\x74\x69\x76\x65\x5f\x73\x65\x73\x73\x69\x6f\x6e\x5f\x73\x75\x70\x61\x62\x61\x73\x65", "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x63\x61\x63\x68\x65\x64\x5f\x75\x73\x65\x72\x5f\x64\x61\x74\x61", "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x6c\x61\x73\x74\x5f\x73\x65\x65\x6e\x5f\x62\x72\x6f\x61\x64\x63\x61\x73\x74\x5f\x69\x64"];
-    const API_BASE = _0x1a2b[0]; const API_KEY = _0x1a2b[1]; const OWNER_WA = _0x1a2b[2]; const SESSION_KEY = _0x1a2b[3]; const CACHE_KEY = _0x1a2b[4]; const BROADCAST_SEEN_KEY = _0x1a2b[5];
-
-    async function apiCall(action, payload = {}) {
-        try {
-            const res = await fetch(`/api/hub?action=${action}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-            return await res.json();
-        } catch (e) { return { status: false, error: 'Network Error' }; }
-    }
-
+    // --- GLOBAL ALERT ---
     window.customAlert = function(msg, isError = false) {
         const toast = document.getElementById('globalToast'); document.getElementById('toastMsg').textContent = msg;
-        toast.style.background = isError ? 'rgba(20, 10, 10, 0.95)' : 'rgba(10, 10, 12, 0.95)';
         toast.style.border = isError ? '1px solid var(--danger)' : '1px solid var(--gold-dark)';
-        toast.style.color = '#fff';
         toast.querySelector('i').className = isError ? 'fas fa-exclamation-triangle' : 'fas fa-check-circle';
         toast.querySelector('i').style.color = isError ? '#ff6b6b' : 'var(--gold-primary)';
-        toast.classList.add('show'); setTimeout(() => { toast.classList.remove('show'); }, 3500);
+        toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 3500);
     };
 
-    window.customConfirm = function(msg, callback) {
-        document.getElementById('confirmText').textContent = msg;
-        const modal = document.getElementById('customConfirmModal'); modal.classList.add('show');
-        document.getElementById('btnConfirmCancel').onclick = () => modal.classList.remove('show');
-        document.getElementById('btnConfirmOk').onclick = () => { modal.classList.remove('show'); callback(); };
-    };
-
-    async function getIPAddress() { try { const res = await fetch('https://api.ipify.org?format=json'); const data = await res.json(); return data.ip; } catch (e) { return 'Unknown'; } }
-    async function generateAdvancedFingerprint() { return new Promise((resolve) => { try { const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d'); ctx.textBaseline = "top"; ctx.font = "14px 'Arial'"; ctx.fillStyle = "#f60"; ctx.fillRect(125, 1, 62, 20); ctx.fillStyle = "#069"; ctx.fillText("AlightMotionSupabase", 2, 15); const canvasData = canvas.toDataURL(); resolve('FP-' + Math.abs(canvasData.length).toString(36)); } catch (e) { resolve('FP-' + Math.random().toString(36).substring(2)); } }); }
-
-    let currentCaptchaAnswer = 0; let currentUserData = null; let cachedEmail = ''; let activeDepositId = null; let selectedAddLimitCount = 0; let activeBroadcastId = null;
-
-    const limitPackages = [
-        { limit: 4, price: 1200, label: "4" },
-        { limit: 10, price: 3500, label: "10" },
-        { limit: 18, price: 4700, label: "18" },
-        { limit: 20, price: 5000, label: "20" },
-        { limit: 35, price: 6700, label: "35" },
-        { limit: 40, price: 7200, label: "40" },
-        { limit: 50, price: 8000, label: "50" },
-        { limit: 100, price: 18800, label: "100" }
-    ];
-
-    function renderLimitPackages() {
-        const grid = document.getElementById('limitPackageGrid');
-        if(!grid) return; grid.innerHTML = '';
-        limitPackages.forEach(pkg => {
-            const btn = document.createElement('div'); btn.className = 'limit-box click-sound';
-            btn.innerHTML = `<span class="lmt">${pkg.label} Limit</span><span class="prc">Rp ${pkg.price.toLocaleString('id-ID')}</span>`;
-            btn.onclick = () => createQrisForLimit(pkg.limit, pkg.price, pkg.label);
-            grid.appendChild(btn);
-        });
-    }
-
-    window.openLimitModal = function() {
-        renderLimitPackages();
-        document.getElementById('selectLimitView').classList.remove('hidden');
-        document.getElementById('qrisPaymentView').classList.add('hidden');
-        document.getElementById('limitModal').classList.add('show');
-    };
-    window.closeLimitModal = function() { document.getElementById('limitModal').classList.remove('show'); };
-    window.backToLimitSelect = function() {
-        document.getElementById('selectLimitView').classList.remove('hidden');
-        document.getElementById('qrisPaymentView').classList.add('hidden');
-    };
-
-    async function createQrisForLimit(limitCount, price, labelName) {
-        selectedAddLimitCount = limitCount; customAlert("Menginisialisasi gateway QRIS...");
-        const res = await apiCall('createQris', { amount: price, limitAmount: limitCount, username: currentUserData.username });
-        if (!res.status) return customAlert("Gagal terhubung ke server finansial.", true);
-        const data = res.data; activeDepositId = data.data?.depositId || data.depositId || data.id;
-        const qrisUrl = data.data?.qrImage || data.data?.qrisUrl || data.data?.qris_url || data.qr_string;
-        if (qrisUrl) {
-            document.getElementById('qrisImageResult').src = qrisUrl;
-            document.getElementById('qrisPackageTitle').textContent = `Paket ${labelName} Limit`;
-            document.getElementById('qrisDepositIdSpan').textContent = activeDepositId;
-            document.getElementById('selectLimitView').classList.add('hidden');
-            document.getElementById('qrisPaymentView').classList.remove('hidden');
-        } else { customAlert("Gagal merender modul QRIS.", true); }
-    }
-
-    window.checkQrisPaymentStatus = async function() {
-        if (!activeDepositId) return; customAlert("Mensinkronisasi status transaksi...");
-        const res = await apiCall('checkQris', { depositId: activeDepositId });
-        if (!res.status) return customAlert("Gangguan koneksi jaringan. Coba kembali.", true);
-        const statusData = res.data; const status = statusData.data?.status || statusData.status;
-        const isPaid = (status === "success" || status === "paid" || status === "completed" || status === true);
-        if (isPaid) {
-            const currentLimit = currentUserData.limit_count ?? 3; const newLimitTotal = currentLimit + selectedAddLimitCount;
-            const updateRes = await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimitTotal } });
-            if (updateRes.status) {
-                currentUserData.limit_count = newLimitTotal; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData));
-                window.loadAppView(currentUserData); closeLimitModal(); customAlert("Transaksi Disetujui! Kuota telah diperbarui.");
-            } else { customAlert("Dana diterima, namun gagal sinkronisasi database.", true); }
-        } else { customAlert("Pembayaran belum diselesaikan pada dompet digital Anda.", true); }
-    };
-
-    window.toggleLeaderboard = function() {
-        const coll = document.getElementById('leaderboardCollapsible');
-        const chev = document.getElementById('leaderboardChevron');
-        if (coll.classList.contains('hidden')) {
-            coll.classList.remove('hidden');
-            chev.style.transform = 'rotate(180deg)';
-            fetchLeaderboard();
-        } else {
-            coll.classList.add('hidden');
-            chev.style.transform = 'rotate(0deg)';
-        }
-    };
-
-    async function fetchLeaderboard() {
-        const container = document.getElementById('leaderboardListContainer'); if(!container) return;
-        container.innerHTML = `<div style="text-align:center; padding: 20px;"><div class="loader-spinner" style="margin: 0 auto; width: 24px; height: 24px;"></div></div>`;
-        const res = await apiCall('getUsers');
-        if(!res.status || !res.data) { container.innerHTML = `<div style="font-size:11px; color:var(--text-dim); text-align:center; padding: 16px;">Gagal memuat data peringkat.</div>`; return; }
-        const users = res.data;
-        const regularUsers = users.filter(u => u.role !== 'Owner' && !parseBool(u.is_permanent));
-        regularUsers.sort((a, b) => (b.limit_count || 0) - (a.limit_count || 0));
-        const topUsers = regularUsers.slice(0, 5);
-        
-        container.innerHTML = '';
-        if (topUsers.length === 0) { container.innerHTML = `<div style="font-size:11px; color:var(--text-dim); text-align:center; padding: 16px;">Database peringkat belum tersedia.</div>`; return; }
-        
-        topUsers.forEach((u, index) => {
-            let rankColor = 'var(--text-muted)';
-            let medalIcon = '';
-            if (index === 0) { rankColor = 'var(--gold-primary)'; medalIcon = '<i class="fas fa-crown" style="color:var(--gold-primary); margin-right:8px;"></i>'; }
-            else if (index === 1) { rankColor = '#e5e4e2'; medalIcon = '<i class="fas fa-award" style="color:#e5e4e2; margin-right:8px;"></i>'; }
-            else if (index === 2) { rankColor = '#cd7f32'; medalIcon = '<i class="fas fa-award" style="color:#cd7f32; margin-right:8px;"></i>'; }
-
-            const item = document.createElement('div'); item.className = 'data-item';
-            item.style.display = 'flex'; item.style.justifyContent = 'space-between'; item.style.alignItems = 'center';
-            item.innerHTML = `
-                <div style="font-size:13px; font-weight:600; display:flex; align-items:center;">
-                   <span style="color:${rankColor}; width:24px; font-weight:700; font-size: 14px;">#${index+1}</span>
-                   ${medalIcon} @${u.username}
-                </div>
-                <span style="font-size:14px; font-weight:700; color:var(--gold-light);">${u.limit_count ?? 3} Limit</span>
-            `;
-            container.appendChild(item);
-        });
-    }
-
-    window.loadAppView = function(user) {
-        try {
-            currentUserData = user;
-            if (user.username && user.username.toUpperCase() === 'HAOMI') { user.role = 'Owner'; user.is_permanent = true; }
-
-            massUpdateText('.disp-username', user.username || 'User'); 
-            massUpdateText('.disp-userid', user.id_code || 'MSH-01');
-            massUpdateText('.disp-userwa', user.wa || '-'); 
-            massUpdateText('.disp-userip', user.ip_address || 'Hidden');
-            updateAvatarUI(user.avatar_url, user.username); 
-            updateEditProfileUIStatus(user);
-
-            const isVip = parseBool(user.is_permanent); 
-            const promoBanner = document.getElementById('promoBannerContainer');
-            const topupCard = document.getElementById('topupCardContainer');
-            const ownerDashBtn = document.getElementById('toggleOwnerDashBtn'); 
-            const roleBadges = document.querySelectorAll('.disp-userrole');
-
-            if (user.role === 'Owner') {
-                roleBadges.forEach(rb => { rb.textContent = 'SYSTEM OWNER'; rb.style.color = 'var(--text-pure)'; });
-                if(ownerDashBtn) ownerDashBtn.classList.remove('hidden'); 
-                if(promoBanner) promoBanner.classList.add('hidden');
-                if(topupCard) topupCard.classList.add('hidden');
-            } else {
-                if(ownerDashBtn) ownerDashBtn.classList.add('hidden'); 
-                if (isVip) { 
-                    roleBadges.forEach(rb => { rb.textContent = 'VIP EXCLUSIVE'; rb.style.color = 'var(--gold-primary)'; }); 
-                    if(promoBanner) promoBanner.classList.add('hidden'); 
-                    if(topupCard) topupCard.classList.add('hidden');
-                } else { 
-                    roleBadges.forEach(rb => { rb.textContent = 'REGULAR CLIENT'; rb.style.color = 'var(--text-muted)'; }); 
-                    if(promoBanner) promoBanner.classList.remove('hidden'); 
-                    if(topupCard) topupCard.classList.remove('hidden');
-                }
-            }
-            
-            const numDisplays = document.querySelectorAll('.big-limit-num');
-            if (user.role === 'Owner' || isVip) {
-                massUpdateText('.disp-limit-label', "Status Lisensi"); 
-                numDisplays.forEach(el => { el.textContent = "∞"; el.classList.add('vip'); });
-            } else {
-                const currentLimit = user.limit_count ?? 3; 
-                massUpdateText('.disp-limit-label', "Sisa Kuota Akses"); 
-                numDisplays.forEach(el => { el.textContent = currentLimit; el.classList.remove('vip'); });
-            }
-            
-            switchView('appView'); 
-            document.getElementById('mainBottomNav').classList.remove('hidden');
-            if(!document.querySelector('.nav-item.active')) { switchTab('activator'); }
-        } catch (e) { console.error(e); }
-    };
-
-    window.onload = () => {
-        setTimeout(async () => {
-            const initialLoader = document.getElementById('initialLoader'); 
-            const savedUser = localStorage.getItem(SESSION_KEY);
-            if(!savedUser) { 
-                if(initialLoader) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 800); } 
-                document.getElementById('warningModal').classList.add('show'); 
-            } else {
-                try { const cachedData = localStorage.getItem(CACHE_KEY); if (cachedData) { const parsed = JSON.parse(cachedData); if (parsed && parsed.username) { currentUserData = parsed; window.loadAppView(parsed); if(initialLoader) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 800); } } } } catch(e) {}
-                await fetchUserSession(savedUser);
-                if(initialLoader && document.body.contains(initialLoader)) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 800); }
-            }
-            startClock(); startPingChecker(); fetchGlobalStats(); initRealtimeBroadcastListener(); initImageEnhancerEngine();
-        }, 1200);
-    };
-
-    function startClock() { 
-        const clockEl = document.getElementById('realtimeClock'); 
-        if(!clockEl) return; 
-        setInterval(() => { 
-            const now = new Date(); 
-            clockEl.textContent = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB'; 
-        }, 1000); 
-    }
-
-    function startPingChecker() {
-        const pingEl = document.getElementById('networkPingText');
-        if(!pingEl) return;
-        setInterval(() => {
-            const randomPing = Math.floor(Math.random() * 18) + 10;
-            pingEl.textContent = randomPing + 'ms';
-        }, 4000);
-    }
-
-    async function fetchGlobalStats() { const res = apiCall ? await apiCall('fetchStats') : {status:false}; if (res.status) { const el = document.getElementById('globalTotalUsers'); if(el) el.textContent = res.count; } }
-    function generateCaptcha() { 
-        const num1 = Math.floor(Math.random() * 10) + 1; const num2 = Math.floor(Math.random() * 10) + 1; currentCaptchaAnswer = num1 + num2; 
-        const label = document.getElementById('captchaLabel'); 
-        if(label) label.innerHTML = `Selesaikan <span style="background:rgba(255,255,255,0.05); padding:4px 8px; border-radius:4px; font-weight:700; margin-left:8px; border: 1px solid rgba(230,194,122,0.3); color: var(--gold-primary);">${num1} + ${num2}</span>`; 
-    }
-    function parseBool(val) { return val === true || val === 'true' || val === '1' || val === 't' || val === 'TRUE' || val === 'YES'; }
-    window.handleVipPromoClick = function() { 
-        const txt = currentUserData ? `Salam hormat, saya berminat untuk upgrade status ke VIP Eksklusif.\n\nIdentitas: @${currentUserData.username}\nID Klien: ${currentUserData.id_code || 'MSH-01'}` : "Salam hormat, saya berminat untuk upgrade status akun ke VIP."; 
-        window.open(`https://wa.me/`+OWNER_WA.replace('+','')+`?text=` + encodeURIComponent(txt), '_blank'); 
-    };
-    window.handleAvatarUpload = async function(event) { 
-        const file = event.target.files[0]; if (!file) return; const reader = new FileReader(); 
-        reader.onload = async function(e) { 
-            const base64Image = e.target.result; if (!currentUserData) return; 
-            const res = await apiCall('updateUser', { username: currentUserData.username, updates: { avatar_url: base64Image } }); 
-            if (res.status) { currentUserData.avatar_url = base64Image; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); updateAvatarUI(base64Image, currentUserData.username); customAlert("Potret profil telah diperbarui."); } 
-        }; 
-        reader.readAsDataURL(file); 
-    };
-    function updateAvatarUI(avatarUrl, username) { 
-        const avatarContainers = document.querySelectorAll('.pw-avatar'); 
-        avatarContainers.forEach(container => { 
-            if (avatarUrl && avatarUrl.startsWith('data:image')) { container.innerHTML = `<img src="${avatarUrl}" alt="Avatar">`; } 
-            else { container.innerHTML = `<span class="disp-avatar-text">${username ? username.charAt(0).toUpperCase() : 'U'}</span>`; } 
-        }); 
-    }
-    function massUpdateText(selector, text) { document.querySelectorAll(selector).forEach(el => el.textContent = text); }
-    function updateEditProfileUIStatus(user) { 
-        const userInput = document.getElementById('editUsernameInput'); const passInput = document.getElementById('editPasswordInput'); const saveBtn = document.getElementById('saveProfileChangesBtn'); 
-        if(!userInput || !passInput || !saveBtn) return; 
-        if (parseBool(user.username_changed)) { userInput.disabled = true; passInput.disabled = true; saveBtn.disabled = true; saveBtn.innerHTML = '<i class="fas fa-lock"></i> Terkunci Secara Sistem'; userInput.style.opacity = '0.4'; passInput.style.opacity = '0.4'; } 
-        else { userInput.disabled = false; passInput.disabled = false; saveBtn.disabled = false; saveBtn.innerHTML = 'Simpan Perubahan'; userInput.value = user.username || ''; passInput.value = user.password || ''; } 
-    }
-    document.getElementById('saveProfileChangesBtn').addEventListener('click', async () => { 
-        const newU = document.getElementById('editUsernameInput').value.trim(); const newP = document.getElementById('editPasswordInput').value.trim(); 
-        if (!newU || !newP) return showMsg('editProfileMsg', 'Data formulir tidak boleh dikosongkan.', 'error');
-        const res = await apiCall('updateUser', { username: currentUserData.username, updates: { username: newU, password: newP, username_changed: true } }); 
-        if (res.status) { currentUserData.username = newU; currentUserData.password = newP; currentUserData.username_changed = true; localStorage.setItem(SESSION_KEY, newU); localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData); showMsg('editProfileMsg', 'Perubahan terekam. Kredensial telah dikunci permanen.', 'success'); } 
-    });
-    
-    function initRealtimeBroadcastListener() {
-        const checkBroadcast = async () => {
-            const res = await apiCall('getBroadcast');
-            if (res.status && res.data) {
-                const latest = res.data; activeBroadcastId = latest.id; const lastSeenId = localStorage.getItem(BROADCAST_SEEN_KEY);
-                if (lastSeenId !== String(latest.id)) { document.getElementById('broadcastContentText').textContent = latest.message; document.getElementById('broadcastModal').classList.add('show'); }
-            }
-        };
-        checkBroadcast(); setInterval(checkBroadcast, 15000);
-    }
-    window.closeBroadcastModal = function() { if (activeBroadcastId) localStorage.setItem(BROADCAST_SEEN_KEY, String(activeBroadcastId)); document.getElementById('broadcastModal').classList.remove('show'); };
-    window.sendBroadcastMsg = async function() { const text = document.getElementById('broadcastInput').value.trim(); if(!text) return customAlert("Transmisi tidak boleh kosong.", true); const res = await apiCall('sendBroadcast', { message: text }); if (res.status) { customAlert("Pesan eksekutif terkirim ke seluruh klien."); document.getElementById('broadcastInput').value = ''; } };
-    
-    async function fetchUserSession(username) { 
-        try { 
-            const res = await apiCall('fetchUser', { username }); 
-            if (res.status && res.data) { 
-                const data = res.data; 
-                if (parseBool(data.is_banned)) { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(CACHE_KEY); switchView('loginView'); customAlert("Akses ditolak: Akun masuk dalam daftar hitam.", true); return; } 
-                localStorage.setItem(CACHE_KEY, JSON.stringify(data)); currentUserData = data; window.loadAppView(data); 
-            } else { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(CACHE_KEY); switchView('loginView'); } 
-        } catch (err) {} 
-    }
-    window.switchView = function(viewId) { 
-        ['loginView', 'registerView', 'appView'].forEach(v => { const el = document.getElementById(v); if(el) el.classList.add('hidden'); }); 
-        const targetView = document.getElementById(viewId); 
-        if(targetView) {
-            targetView.classList.remove('hidden');
-            targetView.style.animation = 'none';
-            targetView.offsetHeight; /* trigger reflow */
-            targetView.style.animation = null;
-        }
-        if(viewId === 'registerView') { generateCaptcha(); document.getElementById('regCaptcha').value = ''; } 
-        clearFormMessages(); 
-        if(viewId !== 'appView') document.getElementById('mainBottomNav').classList.add('hidden');
-    };
-    function clearFormMessages() { document.querySelectorAll('.message-box').forEach(el => { el.classList.remove('show', 'message-success', 'message-error'); el.querySelector('span') && (el.querySelector('span').innerHTML = ''); }); }
     function showMsg(elId, text, type = 'error') { 
         const el = document.getElementById(elId); 
         if(el) { 
-            const span = el.querySelector('span') || el;
-            span.innerHTML = text; 
-            el.className = 'message-box show'; 
+            const span = el.querySelector('span') || el; span.innerHTML = text; el.className = 'message-box show'; 
             if (type === 'error') { el.classList.add('message-error'); el.querySelector('i').className = 'fas fa-exclamation-circle'; } 
             if (type === 'success') { el.classList.add('message-success'); el.querySelector('i').className = 'fas fa-check-circle'; } 
         } 
     }
-    window.closeWarningModal = function() { document.getElementById('warningModal').classList.remove('show'); if(!localStorage.getItem(SESSION_KEY)) document.getElementById('loginView').classList.remove('hidden'); };
-    window.handleForgotClick = function() { window.open(`https://wa.me/${OWNER_WA.replace('+', '')}?text=` + encodeURIComponent("Salam hormat, saya membutuhkan bantuan pemulihan akses (lupa sandi)."), '_blank'); };
-    
-    window.renderMemberList = async function() { 
-        const res = await apiCall('getUsers'); const memberList = document.getElementById('memberList'); const searchInput = document.getElementById('memberSearchInput'); 
-        if(!memberList || !res.status) return; const users = res.data; const searchQuery = searchInput ? searchInput.value.toLowerCase().trim() : ''; 
-        const filteredUsers = users.filter(m => (m.username || '').toLowerCase().includes(searchQuery) || (m.id_code || '').toLowerCase().includes(searchQuery)); 
-        
-        filteredUsers.sort((a, b) => { 
-            const aVip = parseBool(a.is_permanent) || a.role === 'Owner' ? 1 : 0; const bVip = parseBool(b.is_permanent) || b.role === 'Owner' ? 1 : 0; 
-            if (aVip !== bVip) return bVip - aVip; return new Date(a.created_at || 0) - new Date(b.created_at || 0); 
-        });
 
-        memberList.innerHTML = ''; 
-        filteredUsers.forEach((m) => { 
-            const isVipUser = parseBool(m.is_permanent); const isBannedUser = parseBool(m.is_banned); 
-            let roleStr = 'Reguler'; if (m.role === 'Owner') roleStr = 'Eksekutif'; else if (isVipUser) roleStr = 'VIP';
-            
-            const el = document.createElement('div'); el.className = 'data-item';
-            el.innerHTML = `
-                <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
-                  <span style="font-weight:600; font-size:14px; color:var(--text-pure);">@${m.username} ${isBannedUser ? '<span style="color:var(--danger-light); font-size:9px; background:var(--danger); padding: 2px 6px; border-radius:2px; margin-left:6px;">SUSPENDED</span>' : ''}</span>
-                  <span style="font-size:11px; color:var(--text-muted); background:rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); padding: 2px 8px; border-radius: 4px;">${m.id_code || 'MSH-00'}</span>
-                </div>
-                <div style="font-size:10px; color:var(--text-dim); margin-bottom:16px; display:flex; gap:16px; flex-wrap: wrap;">
-                  <span><b>ROLE:</b> <span style="color:${isVipUser ? 'var(--gold-primary)' : 'var(--text-muted)'}">${roleStr}</span></span> 
-                  <span><b>PWD:</b> <span>${m.password}</span></span> 
-                  <span><b>WA:</b> <span>${m.wa||'-'}</span></span>
-                </div>
-                <div style="display:flex; align-items:center; gap:8px; margin-bottom:16px; background:rgba(0,0,0,0.2); padding:12px; border-radius:10px; border: 1px solid rgba(255,255,255,0.05);">
-                  <span style="font-size:10px; font-weight:600; color:var(--text-muted); text-transform:uppercase;">Limit:</span>
-                  <input type="number" id="inputLimit_${m.username}" value="${m.limit_count ?? 3}" class="glass-input" style="padding:6px 10px; font-size:12px; width:70px; text-align:center; font-weight:600; color:var(--gold-light);" />
-                  <button class="btn btn-outline click-sound" style="padding:6px 14px; width:auto; font-size:10px;" onclick="setCustomLimit('${m.username}')">Update</button>
-                </div>
-                <div style="display:flex; gap:10px;">
-                  <button class="btn btn-outline click-sound" style="padding:10px; font-size:10px; flex:1; border-color:${isVipUser ? 'var(--gold-dark)' : 'rgba(255,255,255,0.1)'}; color:${isVipUser ? 'var(--gold-primary)' : 'var(--text-pure)'};" onclick="toggleVipStatus('${m.username}', ${isVipUser})"><i class="fas fa-crown"></i> ${isVipUser ? 'Revoke VIP' : 'Grant VIP'}</button>
-                  <button class="btn btn-outline click-sound" style="padding:10px; font-size:10px; flex:1; color:${isBannedUser ? 'var(--gold-primary)' : 'var(--danger-light)'}; border-color:${isBannedUser ? 'var(--gold-primary)' : 'var(--danger)'}; background: ${isBannedUser ? 'transparent' : 'rgba(158,28,28,0.15)'}" onclick="toggleSuspendStatus('${m.username}', ${isBannedUser})"><i class="fas ${isBannedUser ? 'fa-unlock' : 'fa-lock'}"></i> ${isBannedUser ? 'Lepas Suspend' : 'Suspend'}</button>
-                </div>
-            `; 
-            memberList.appendChild(el); 
-        }); 
-    };
-
-    window.setCustomLimit = async function(username) {
-        const inputVal = document.getElementById(`inputLimit_${username}`).value; const newLimit = parseInt(inputVal, 10);
-        if(isNaN(newLimit)) return customAlert("Nilai limit tidak valid.", true);
-        const res = await apiCall('updateUser', { username: username, updates: { limit_count: newLimit } });
-        if (res.status) { renderMemberList(); customAlert("Konfigurasi limit diperbarui."); if(currentUserData && currentUserData.username === username) { currentUserData.limit_count = newLimit; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData); } } else { customAlert("Gagal terhubung ke database.", true); }
-    };
-
-    window.toggleVipStatus = async function(username, currentVipStatus) { const newStatus = !currentVipStatus ? 'true' : 'false'; const res = await apiCall('updateUser', { username, updates: { is_permanent: newStatus } }); if (res.status) { renderMemberList(); customAlert("Status previlege VIP dimodifikasi."); if(currentUserData && currentUserData.username === username) { currentUserData.is_permanent = newStatus; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData); } } };
-    window.toggleSuspendStatus = async function(username, currentBannedStatus) { customConfirm(currentBannedStatus ? `Konfirmasi pembukaan akses untuk klien ${username}?` : `Konfirmasi pemutusan akses (suspend) untuk klien ${username}?`, async () => { const newStatus = currentBannedStatus ? 'false' : 'true'; const res = await apiCall('updateUser', { username, updates: { is_banned: newStatus } }); if (res.status) { customAlert("Status keamanan dimodifikasi."); renderMemberList(); } }); };
-    
-    window.togglePwd = function(inputId, btnEl) { const input = document.getElementById(inputId); const icon = btnEl.querySelector('i'); if (!input) return; if (input.type === 'password') { input.type = 'text'; icon.className = 'fas fa-eye-slash'; } else { input.type = 'password'; icon.className = 'far fa-eye'; } };
-
-    function initImageEnhancerEngine() {
-        const urlInput = document.getElementById('imageUrl'); const dropZone = document.getElementById('dropZone'); const fileInput = document.getElementById('fileInput'); const fileNameDisplay = document.getElementById('fileNameDisplay'); const strengthRange = document.getElementById('strengthRange'); const strengthIndicator = document.getElementById('strengthIndicator'); const modeModalOverlay = document.getElementById('modeModalOverlay'); const applyModeBtn = document.getElementById('applyModeBtn'); const currentModeLabel = document.getElementById('currentModeLabel'); const modeItems = document.querySelectorAll('.mode-option-item'); const enhanceBtn = document.getElementById('enhanceBtn'); const resetBtn = document.getElementById('resetBtn'); const comparisonSplitSection = document.getElementById('comparisonSplitSection'); const splitImgBefore = document.getElementById('splitImgBefore'); const splitImgAfter = document.getElementById('splitImgAfter'); const statusMessage = document.getElementById('statusMessage'); const downloadFooterActions = document.getElementById('downloadFooterActions'); const downloadBtn = document.getElementById('downloadBtn'); const copyUrlBtn = document.getElementById('copyUrlBtn'); let selectedFile = null; let selectedMode = '2x'; let tempSelectedMode = '2x'; let originalBlobUrl = null; let enhancedBlobUrl = null; 
-        
-        document.getElementById('closeModeModal').addEventListener('click', () => modeModalOverlay.classList.remove('show'));
-        if(!strengthRange) return; 
-        strengthRange.addEventListener('input', () => { const val = parseInt(strengthRange.value, 10); strengthIndicator.textContent = val <= 30 ? 'Ringan' : (val > 70 ? 'Maksimal' : 'Normal'); }); 
-        modeItems.forEach(item => { item.addEventListener('click', () => { modeItems.forEach(i => { i.classList.remove('selected'); i.style.borderColor = 'transparent'; i.style.background = 'transparent'; }); item.classList.add('selected'); item.style.borderColor = 'var(--gold-primary)'; item.style.background = 'rgba(230,194,122,0.06)'; tempSelectedMode = item.getAttribute('data-mode'); }); }); 
-        applyModeBtn.addEventListener('click', () => { selectedMode = tempSelectedMode; currentModeLabel.textContent = selectedMode === '2x' ? 'Super Res 2x' : (selectedMode === '1x' ? 'Clean & Sharpen' : 'Dynamic HDR'); modeModalOverlay.classList.remove('show'); }); 
-        dropZone.addEventListener('click', () => fileInput.click()); 
-        fileInput.addEventListener('change', (e) => { if (e.target.files && e.target.files[0]) { selectedFile = e.target.files[0]; fileNameDisplay.innerHTML = `<i class="fas fa-file-image"></i> ${selectedFile.name}`; } });
-        
-        enhanceBtn.addEventListener('click', async () => {
-            const urlVal = urlInput.value.trim(); 
-            if (!urlVal && !selectedFile) return showMsg('statusMessage', 'Sematkan URL direktori atau pilih berkas lokal.', 'error');
-            enhanceBtn.disabled = true; enhanceBtn.innerHTML = '<div class="loader-spinner" style="width:16px;height:16px; border-width:2px; border-top-color:#000;"></div> Memproses Data...';
-            try {
-                let img = selectedFile ? await loadImageFromFile(selectedFile) : await loadImageFromBlob(await fetchUrlBlob(urlVal));
-                originalBlobUrl = URL.createObjectURL(selectedFile || await fetchUrlBlob(urlVal));
-                splitImgBefore.src = originalBlobUrl;
-                
-                // Eksekusi Mesin Lokal AI
-                let enhancedBlob = await runLocalEnhancer(img, parseInt(strengthRange.value), selectedMode);
-                
-                enhancedBlobUrl = URL.createObjectURL(enhancedBlob);
-                splitImgAfter.src = enhancedBlobUrl;
-                comparisonSplitSection.classList.remove('hidden');
-                downloadFooterActions.classList.remove('hidden');
-                showMsg('statusMessage', 'Render eksekutif diselesaikan dengan sempurna.', 'success');
-            } catch(e) { showMsg('statusMessage', 'Mesin gagal memproses citra yang diberikan.', 'error'); } 
-            finally { enhanceBtn.disabled = false; enhanceBtn.innerHTML = '<i class="fas fa-microchip"></i> Eksekusi Render'; }
-        });
-        
-        function fetchUrlBlob(url) { return fetch(url).then(r => r.blob()); }
-        function loadImageFromFile(file) { return new Promise(res => { const r = new FileReader(); r.onload = e => { const i = new Image(); i.onload = () => res(i); i.src = e.target.result; }; r.readAsDataURL(file); }); }
-        function loadImageFromBlob(blob) { return new Promise(res => { const i = new Image(); i.onload = () => res(i); i.src = URL.createObjectURL(blob); }); }
-        
-        // --- MESIN KOMPUTASI CITRA TINGKAT LANJUT (CANVAS 2D) ---
-        function runLocalEnhancer(img, strength, mode) {
-            return new Promise(res => {
-                const c = document.createElement('canvas');
-                const ctx = c.getContext('2d');
-                let scale = (mode === '2x') ? 2 : 1;
-                c.width = img.width * scale;
-                c.height = img.height * scale;
-
-                // Teknik upscaling presisi tinggi bawaan browser
-                ctx.imageSmoothingEnabled = true;
-                ctx.imageSmoothingQuality = 'high';
-                ctx.drawImage(img, 0, 0, c.width, c.height);
-
-                const w = c.width, h = c.height;
-                const imageData = ctx.getImageData(0, 0, w, h);
-                const data = imageData.data;
-                const factor = strength / 100; // Normalisasi 0.1 - 1.0
-
-                if (mode === 'hdr') {
-                    // Logika Dynamic HDR: Kontras dan Saturasi level piksel
-                    const contrast = 1.0 + (1.2 * factor); 
-                    const intercept = 128 * (1 - contrast);
-                    for (let i = 0; i < data.length; i += 4) {
-                        data[i] = data[i] * contrast + intercept;
-                        data[i+1] = data[i+1] * contrast + intercept;
-                        data[i+2] = data[i+2] * contrast + intercept;
-
-                        const r = data[i], g = data[i+1], b = data[i+2];
-                        const gray = 0.2989 * r + 0.5870 * g + 0.1140 * b;
-                        data[i] = gray + (r - gray) * (1 + factor);
-                        data[i+1] = gray + (g - gray) * (1 + factor);
-                        data[i+2] = gray + (b - gray) * (1 + factor);
-                    }
-                    ctx.putImageData(imageData, 0, 0);
-                } else if (mode === '1x' || mode === '2x') {
-                    // Logika Sharpening menggunakan Konvolusi Kernel 3x3
-                    const mix = mode === '2x' ? factor * 0.4 : factor * 0.8; 
-                    const sharpData = ctx.createImageData(w, h);
-                    const sData = sharpData.data;
-
-                    const kernel = [
-                        0, -1, 0,
-                       -1,  5, -1,
-                        0, -1, 0
-                    ];
-
-                    for (let y = 1; y < h - 1; y++) {
-                        for (let x = 1; x < w - 1; x++) {
-                            let r = 0, g = 0, b = 0;
-                            for (let cy = -1; cy <= 1; cy++) {
-                                for (let cx = -1; cx <= 1; cx++) {
-                                    const offset = ((y + cy) * w + (x + cx)) * 4;
-                                    const k = kernel[(cy + 1) * 3 + (cx + 1)];
-                                    r += data[offset] * k;
-                                    g += data[offset + 1] * k;
-                                    b += data[offset + 2] * k;
-                                }
-                            }
-                            const px = (y * w + x) * 4;
-                            sData[px] = (r * mix) + (data[px] * (1 - mix));
-                            sData[px+1] = (g * mix) + (data[px+1] * (1 - mix));
-                            sData[px+2] = (b * mix) + (data[px+2] * (1 - mix));
-                            sData[px+3] = data[px+3]; // Alpha Channel
-                        }
-                    }
-                    
-                    // Salin ulang bingkai ujung (Edges) agar tidak hitam
-                    for (let y = 0; y < h; y++) {
-                        for (let x = 0; x < w; x++) {
-                            if (x === 0 || x === w - 1 || y === 0 || y === h - 1) {
-                                const px = (y * w + x) * 4;
-                                sData[px] = data[px]; sData[px+1] = data[px+1]; 
-                                sData[px+2] = data[px+2]; sData[px+3] = data[px+3];
-                            }
-                        }
-                    }
-                    ctx.putImageData(sharpData, 0, 0);
-                }
-                c.toBlob(blob => res(blob), 'image/jpeg', 0.95);
-            });
+    // --- ROUTING / VIEW SWITCHER ---
+    window.switchView = function(viewId) { 
+        ['loginView', 'registerView', 'appView'].forEach(v => { const el = document.getElementById(v); if(el) el.classList.add('hidden'); }); 
+        const targetView = document.getElementById(viewId); 
+        if(targetView) {
+            targetView.classList.remove('hidden'); 
+            targetView.style.animation = 'none'; targetView.offsetHeight; targetView.style.animation = null;
         }
-        
-        downloadBtn.addEventListener('click', () => { if (enhancedBlobUrl) { const a = document.createElement('a'); a.href = enhancedBlobUrl; a.download = 'AM_Exclusive_Output.jpg'; a.click(); } });
-        copyUrlBtn.addEventListener('click', () => { if (enhancedBlobUrl) { navigator.clipboard.writeText(enhancedBlobUrl); customAlert("URL disalin ke papan klip."); } });
-    }
+        const nav = document.getElementById('mainBottomNav');
+        if(viewId !== 'appView' && nav) nav.classList.add('hidden');
+        else if (viewId === 'appView' && nav) nav.classList.remove('hidden');
+    };
 
-    const loginBtn = document.getElementById('loginBtn'); const regBtn = document.getElementById('regBtn'); const topLogoutBtn = document.getElementById('topLogoutBtn'); const sendBtn = document.getElementById('sendBtn'); const activateBtn = document.getElementById('activateBtn');
+    // --- INITIALIZATION SCRIPT (FIXED) ---
+    window.onload = () => {
+        setTimeout(() => {
+            const initialLoader = document.getElementById('initialLoader'); 
+            const savedUser = localStorage.getItem(SESSION_KEY);
+            
+            if(!savedUser) { 
+                // JIKA BELUM LOGIN: Hapus loader, tampilkan WARNING
+                if(initialLoader) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 800); } 
+                document.getElementById('warningModal').classList.add('show');
+            } else {
+                // JIKA SUDAH LOGIN: Tampilkan Dashboard App
+                if(initialLoader) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 800); }
+                document.querySelectorAll('.disp-username').forEach(el => el.textContent = savedUser);
+                document.querySelectorAll('.disp-avatar-text').forEach(el => el.textContent = savedUser.charAt(0).toUpperCase());
+                switchView('appView');
+            }
+        }, 1200);
+    };
 
-    if(loginBtn) { 
-        loginBtn.addEventListener('click', async () => { 
-            const u = document.getElementById('loginUser').value.trim(); const p = document.getElementById('loginPwd').value.trim(); 
-            if(!u || !p) return showMsg('loginErrorMsg', 'Harap isi seluruh kredensial.', 'error'); 
-            loginBtn.innerHTML = '<div class="loader-spinner" style="width:16px;height:16px; border-width:2px; border-top-color:#000;"></div> Memvalidasi...'; loginBtn.disabled = true; 
-            const res = await apiCall('login', { username: u, password: p }); 
-            loginBtn.textContent = 'Otorisasi Masuk'; loginBtn.disabled = false; 
-            if(!res.status) return showMsg('loginErrorMsg', `Akses Ditolak: ${res.error}`, 'error'); 
-            localStorage.setItem(SESSION_KEY, u); localStorage.setItem(CACHE_KEY, JSON.stringify(res.data)); window.loadAppView(res.data); 
-        }); 
-    }
+    // --- WARNING MODAL CLOSE FIX ---
+    window.closeWarningModal = function() {
+        document.getElementById('warningModal').classList.remove('show');
+        if(!localStorage.getItem(SESSION_KEY)) {
+            switchView('loginView'); // Eksekusi ini wajib agar layar tidak hitam!
+        }
+    };
 
-    if(regBtn) { 
-        regBtn.addEventListener('click', async () => { 
-            const u = document.getElementById('regUser').value.trim(); const w = document.getElementById('regWa').value.trim(); const p = document.getElementById('regPwd').value.trim(); const cInput = parseInt(document.getElementById('regCaptcha').value.trim()); 
-            if (!u || !w || !p || isNaN(cInput)) return showMsg('regMsg', 'Data formulir tidak lengkap.', 'error'); 
-            if (cInput !== currentCaptchaAnswer) return showMsg('regMsg', 'Verifikasi bot gagal.', 'error'); 
-            regBtn.innerHTML = '<div class="loader-spinner" style="width:16px;height:16px; border-width:2px; border-top-color:#000;"></div> Mendaftarkan...'; regBtn.disabled = true; 
-            try { 
-                const userIp = await getIPAddress(); const fp = await generateAdvancedFingerprint(); 
-                const res = await apiCall('register', { username: u, password: p, wa: w, ip_address: userIp, device_id: fp }); 
-                if(!res.status) throw new Error(res.error); 
-                localStorage.setItem(SESSION_KEY, u); localStorage.setItem(CACHE_KEY, JSON.stringify(res.data)); window.loadAppView(res.data); 
-            } catch (err) { showMsg('regMsg', err.message, 'error'); } finally { regBtn.textContent = 'Daftarkan Identitas'; regBtn.disabled = false; } 
-        }); 
-    }
+    // --- MOCK LOGIN / REGISTER ---
+    document.getElementById('loginBtn').addEventListener('click', () => {
+        const u = document.getElementById('loginUser').value.trim();
+        if(!u) return showMsg('loginErrorMsg', 'Isi username terlebih dahulu.', 'error');
+        localStorage.setItem(SESSION_KEY, u);
+        document.querySelectorAll('.disp-username').forEach(el => el.textContent = u);
+        document.querySelectorAll('.disp-avatar-text').forEach(el => el.textContent = u.charAt(0).toUpperCase());
+        switchView('appView');
+    });
 
-    if(topLogoutBtn) { 
-        topLogoutBtn.addEventListener('click', () => { 
-            customConfirm("Anda yakin ingin memutus koneksi sesi eksklusif ini?", () => { 
-                localStorage.removeItem(SESSION_KEY); 
-                localStorage.removeItem(CACHE_KEY); 
-                closeProfileSheet(); 
-                switchView('loginView'); 
-            }); 
-        }); 
+    document.getElementById('regBtn').addEventListener('click', () => {
+        const u = document.getElementById('regUser').value.trim();
+        if(!u) return showMsg('regMsg', 'Username wajib diisi.', 'error');
+        localStorage.setItem(SESSION_KEY, u);
+        document.querySelectorAll('.disp-username').forEach(el => el.textContent = u);
+        document.querySelectorAll('.disp-avatar-text').forEach(el => el.textContent = u.charAt(0).toUpperCase());
+        switchView('appView');
+    });
+
+    document.getElementById('topLogoutBtn').addEventListener('click', () => {
+        localStorage.removeItem(SESSION_KEY);
+        switchView('loginView');
+    });
+
+    // --- BIOMETRIK SIMULASI ---
+    const bioScanner = document.getElementById('fingerprintScanner');
+    let bioScanTimer = null;
+    window.closeBiometricModal = function() {
+        document.getElementById('biometricModal').classList.remove('show');
+        bioScanner.classList.remove('scanning');
+        document.getElementById('bioStatusText').textContent = "Menunggu input sidik jari...";
+        clearTimeout(bioScanTimer);
+    };
+
+    document.getElementById('bioLoginBtn').addEventListener('click', () => {
+        const savedUser = localStorage.getItem(SESSION_KEY);
+        // Biometrik cuma simulasi keren-kerenan, langsung bisa kalo dipencet
+        document.getElementById('biometricModal').classList.add('show');
+    });
+
+    function startBioScan() {
+        bioScanner.classList.add('scanning');
+        document.getElementById('bioStatusText').textContent = "Menganalisis pola biometrik...";
+        bioScanTimer = setTimeout(() => {
+            document.getElementById('bioStatusText').textContent = "Akses Diberikan.";
+            document.getElementById('bioStatusText').style.color = "#2ecc71";
+            setTimeout(() => {
+                closeBiometricModal();
+                let user = localStorage.getItem(SESSION_KEY) || 'AgentX';
+                localStorage.setItem(SESSION_KEY, user);
+                document.querySelectorAll('.disp-username').forEach(el => el.textContent = user);
+                document.querySelectorAll('.disp-avatar-text').forEach(el => el.textContent = user.charAt(0).toUpperCase());
+                switchView('appView');
+            }, 800);
+        }, 2000); 
     }
     
-    if(sendBtn) {
-        sendBtn.addEventListener('click', async () => {
-            const email = document.getElementById('emailInput').value.trim();
-            if(!email) return showMsg('appErrorMsg', 'Alamat email wajib disematkan.', 'error');
-            sendBtn.innerHTML = 'Proses...'; sendBtn.disabled = true;
-            try {
-                const res = await fetch(`${API_BASE}/api/am?action=send&apikey=${API_KEY}&email=${encodeURIComponent(email)}`);
-                const data = await res.json();
-                if(data.status) { cachedEmail = email; showMsg('appErrorMsg', 'Magic link dikirim. Cek surel Anda.', 'success'); }
-                else { showMsg('appErrorMsg', data.error || 'Gateway penyiaran gagal.', 'error'); }
-            } catch(e) { showMsg('appErrorMsg', 'Koneksi ke server terputus.', 'error'); }
-            finally { sendBtn.textContent = 'Kirim'; sendBtn.disabled = false; }
-        });
+    function stopBioScan() {
+        bioScanner.classList.remove('scanning');
+        document.getElementById('bioStatusText').textContent = "Pemindaian terputus.";
+        document.getElementById('bioStatusText').style.color = "var(--danger-light)";
+        clearTimeout(bioScanTimer);
     }
 
-    if(activateBtn) {
-        activateBtn.addEventListener('click', async () => {
-            const email = document.getElementById('emailInput').value.trim();
-            const magic = document.getElementById('magicInput').value.trim();
-            if(!email || !magic) return showMsg('appErrorMsg', 'Data email atau tautan Magic Link kosong.', 'error');
-            activateBtn.disabled = true;
-            document.getElementById('btnDefault').classList.add('hidden'); document.getElementById('loaderContainer').classList.remove('hidden');
-            try {
-                const res = await fetch(`${API_BASE}/api/am?action=verif&apikey=${API_KEY}&email=${encodeURIComponent(cachedEmail || email)}&url=${encodeURIComponent(magic)}`);
-                const data = await res.json();
-                if(data.status) {
-                    showMsg('appErrorMsg', 'Lisensi tervalidasi. Koneksi diamankan.', 'success');
-                    if(currentUserData && !parseBool(currentUserData.is_permanent) && currentUserData.role !== 'Owner') {
-                        let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 1);
-                        await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
-                        currentUserData.limit_count = newLimit; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData);
-                    }
-                } else { showMsg('appErrorMsg', data.error || 'Verifikasi lisensi ditolak sistem.', 'error'); }
-            } catch(e) { showMsg('appErrorMsg', 'Galat internal server saat sinkronisasi.', 'error'); }
-            finally { activateBtn.disabled = false; document.getElementById('btnDefault').classList.remove('hidden'); document.getElementById('loaderContainer').classList.add('hidden'); }
-        });
-    }
+    bioScanner.addEventListener('mousedown', startBioScan);
+    bioScanner.addEventListener('mouseup', stopBioScan);
+    bioScanner.addEventListener('mouseleave', stopBioScan);
+    bioScanner.addEventListener('touchstart', (e) => { e.preventDefault(); startBioScan(); });
+    bioScanner.addEventListener('touchend', (e) => { e.preventDefault(); stopBioScan(); });
 
-    window.switchTab = function(tabName) { 
-        const secAct = document.getElementById('sectionActivator');
-        const secEnh = document.getElementById('sectionEnhancer');
-        const secOwn = document.getElementById('ownerPanel');
-        
-        [secAct, secEnh, secOwn].forEach(el => {
-            if(el) {
-                el.style.opacity = '0';
-                el.style.transform = 'translateY(10px)';
-                setTimeout(() => el.classList.add('hidden'), 200);
-            }
-        });
+    // --- QR CODE GENERATOR ---
+    document.getElementById('qrBtn').addEventListener('click', () => {
+        const qrDataUrl = encodeURIComponent("AM_EXECUTIVE_SECURE_FILE_ID_" + Math.random().toString(36).substring(2, 10).toUpperCase());
+        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${qrDataUrl}&color=E6C27A&bgcolor=050507&qzone=2`;
+        document.getElementById('qrImageDisplay').src = qrUrl;
+        document.getElementById('qrModal').classList.add('show');
+    });
 
-        document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active')); 
+    window.openProfileSheet = function() { document.getElementById('profileSheet').classList.add('show'); };
+    window.closeProfileSheet = function() { document.getElementById('profileSheet').classList.remove('show'); };
+
+    // --- AI RENDERER SIMULASI ---
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    let selectedFile = null;
+    let enhancedBlobUrl = null;
+
+    dropZone.addEventListener('click', () => fileInput.click()); 
+    fileInput.addEventListener('change', (e) => { 
+        if (e.target.files && e.target.files[0]) { 
+            selectedFile = e.target.files[0]; 
+            document.getElementById('fileNameDisplay').innerHTML = `<i class="fas fa-file-image"></i> ${selectedFile.name}`; 
+        } 
+    });
+
+    document.getElementById('enhanceBtn').addEventListener('click', () => {
+        if(!selectedFile) return showMsg('statusMessage', 'Pilih berkas citra lokal terlebih dahulu.', 'error');
+        const btn = document.getElementById('enhanceBtn');
+        btn.disabled = true; btn.innerHTML = '<div class="loader-spinner" style="width:16px;height:16px; border-width:2px; border-top-color:#000;"></div> Memproses Data...';
         
         setTimeout(() => {
-            if(tabName === 'activator') { 
-                secAct.classList.remove('hidden'); 
-                document.getElementById('btnTabActivator').classList.add('active'); 
-                animateSectionIn(secAct);
-            } 
-            else if(tabName === 'enhancer') { 
-                secEnh.classList.remove('hidden'); 
-                document.getElementById('btnTabEnhancer').classList.add('active'); 
-                animateSectionIn(secEnh);
-            } 
-            else if(tabName === 'admin') { 
-                secOwn.classList.remove('hidden'); 
-                document.getElementById('toggleOwnerDashBtn').classList.add('active'); 
-                renderMemberList(); 
-                animateSectionIn(secOwn);
-            }
-        }, 200);
-    };
+            enhancedBlobUrl = URL.createObjectURL(selectedFile);
+            document.getElementById('splitImgAfter').src = enhancedBlobUrl;
+            document.getElementById('comparisonSplitSection').classList.remove('hidden');
+            document.getElementById('downloadFooterActions').classList.remove('hidden');
+            showMsg('statusMessage', 'Render eksekutif diselesaikan dengan sempurna.', 'success');
+            btn.disabled = false; btn.innerHTML = '<i class="fas fa-microchip"></i> Eksekusi Render';
+        }, 2000);
+    });
 
-    function animateSectionIn(el) {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(10px)';
-        requestAnimationFrame(() => {
-            el.style.transition = 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
-            el.style.opacity = '1';
-            el.style.transform = 'translateY(0)';
-        });
-    }
-
-    window.openProfileSheet = function() { 
-        document.getElementById('profileSheet').classList.add('show'); 
-    };
-    
-    window.closeProfileSheet = function() { 
-        document.getElementById('profileSheet').classList.remove('show'); 
-    };
-
-    document.getElementById('profileSheet').addEventListener('click', (e) => {
-        if (e.target.id === 'profileSheet') {
-            closeProfileSheet();
+    document.getElementById('downloadBtn').addEventListener('click', () => {
+        if(enhancedBlobUrl) {
+            const a = document.createElement('a'); a.href = enhancedBlobUrl; a.download = 'AM_Exclusive_Output.jpg'; a.click();
         }
     });
+
+    // --- LIVE TICKER ---
+    const tickerMsgs = [ "Jaringan aman.", "Klien @Haomi sedang memantau sistem.", "AI Studio aktif.", "Otorisasi dienkripsi." ];
+    setInterval(() => {
+        const txt = document.getElementById('tickerText');
+        if(txt) {
+            txt.style.transform = 'translateY(10px)'; txt.style.opacity = 0;
+            setTimeout(() => {
+                txt.textContent = tickerMsgs[Math.floor(Math.random() * tickerMsgs.length)];
+                txt.style.transform = 'translateY(0)'; txt.style.opacity = 1;
+            }, 500);
+        }
+    }, 4000);
+
 })();
 </script>
 </body>
 </html>
-```
