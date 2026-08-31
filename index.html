@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -14,69 +13,42 @@
 
 <style>
   :root {
-    /* --- TEMA DALAM RUANGAN (DARK MODE) --- */
-    --bg-base: #09090b;
-    --surface-main: rgba(24, 24, 27, 0.7);
-    --surface-alt: rgba(39, 39, 42, 0.6);
-    --surface-hover: rgba(63, 63, 70, 0.7);
+    --bg-base: #050507;
+    --surface-dark: rgba(18, 18, 20, 0.75);
+    --surface-light: rgba(28, 28, 30, 0.65);
     
-    --gold: #d4af37;
-    --gold-light: #f3e5ab;
-    --gold-dark: #aa8c2c;
+    --gold-primary: #E6C27A;
+    --gold-light: #F9E5B5;
+    --gold-dark: #A67C00;
     
-    --text-main: #ffffff;
-    --text-muted: #a1a1aa;
-    --text-dim: #71717a;
+    --text-pure: #ffffff;
+    --text-dim: #b3b3b3;
+    --text-muted: #737373;
     
-    --border-thin: rgba(212, 175, 55, 0.15);
-    --border-strong: rgba(212, 175, 55, 0.5);
+    --border-thin: rgba(230, 194, 122, 0.15);
+    --border-focus: rgba(230, 194, 122, 0.6);
     
-    --danger: #ef4444;
-    --danger-bg: rgba(239, 68, 68, 0.15);
-    --success: #10b981;
-    --success-bg: rgba(16, 185, 129, 0.15);
+    --danger: #9e1c1c;
+    --danger-light: #ff4d4d;
+    --success: #1a5e39;
     
     --font-heading: 'Playfair Display', serif;
     --font-body: 'Montserrat', sans-serif;
+    
+    /* Super Smooth Fluid Spring Easing */
     --smooth-ease: cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  /* --- TEMA LUAR RUANGAN (LIGHT MODE) --- */
-  body[data-theme="outdoor"] {
-    --bg-base: #f4f4f5;
-    --surface-main: rgba(255, 255, 255, 0.85);
-    --surface-alt: rgba(228, 228, 231, 0.6);
-    --surface-hover: rgba(212, 212, 216, 0.8);
-    
-    --gold: #b8860b;
-    --gold-light: #daaa00;
-    --gold-dark: #8b6508;
-    
-    --text-main: #18181b;
-    --text-muted: #52525b;
-    --text-dim: #71717a;
-    
-    --border-thin: rgba(184, 134, 11, 0.25);
-    --border-strong: rgba(184, 134, 11, 0.7);
-    
-    --danger: #dc2626;
-    --danger-bg: rgba(220, 38, 38, 0.1);
-    --success: #059669;
-    --success-bg: rgba(5, 150, 105, 0.1);
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; user-select: none; }
-  input, textarea { user-select: text; }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   
   body { 
     background-color: var(--bg-base); 
     font-family: var(--font-body); 
-    color: var(--text-main); 
+    color: var(--text-pure); 
     min-height: 100vh; 
     overflow-x: hidden; 
     position: relative;
-    background-image: radial-gradient(circle at 50% -10%, rgba(212, 175, 55, 0.12) 0%, transparent 50%);
-    transition: background-color 0.5s var(--smooth-ease), color 0.5s var(--smooth-ease), background-image 0.5s var(--smooth-ease);
+    background-image: radial-gradient(circle at 50% -10%, rgba(166, 124, 0, 0.12) 0%, rgba(5,5,7,1) 50%);
   }
 
   /* --- LUXURY ANIMATED LOADER --- */
@@ -87,7 +59,7 @@
   .luxury-loader { position: relative; width: 90px; height: 90px; }
   .luxury-loader::before, .luxury-loader::after {
     content: ''; position: absolute; inset: 0; border-radius: 50%;
-    border: 2px solid transparent; border-top-color: var(--gold);
+    border: 2px solid transparent; border-top-color: var(--gold-primary);
     animation: spin-luxury 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
   }
   .luxury-loader::after {
@@ -96,7 +68,7 @@
   }
   .loader-logo {
     position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    color: var(--gold); font-size: 28px;
+    color: var(--gold-primary); font-size: 28px;
     animation: pulse-glow 2s infinite;
   }
   .loader-text {
@@ -104,10 +76,10 @@
     text-transform: uppercase; letter-spacing: 5px; animation: blink-text 1.5s infinite;
   }
   @keyframes spin-luxury { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-  @keyframes pulse-glow { 0%, 100% { text-shadow: 0 0 10px rgba(212,175,55,0.2); transform: translate(-50%, -50%) scale(1); } 50% { text-shadow: 0 0 25px rgba(212,175,55,0.8); transform: translate(-50%, -50%) scale(1.1); } }
+  @keyframes pulse-glow { 0%, 100% { text-shadow: 0 0 10px rgba(230,194,122,0.2); transform: translate(-50%, -50%) scale(1); } 50% { text-shadow: 0 0 25px rgba(230,194,122,0.8); transform: translate(-50%, -50%) scale(1.1); } }
   @keyframes blink-text { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
-  .loader-spinner { width: 40px; height: 40px; border: 2px solid var(--border-thin); border-top-color: var(--gold); border-radius: 50%; animation: spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite; }
+  .loader-spinner { width: 40px; height: 40px; border: 2px solid rgba(230, 194, 122, 0.1); border-top-color: var(--gold-primary); border-radius: 50%; animation: spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
   
   .hidden { display: none !important; }
@@ -124,51 +96,52 @@
 
   /* --- PREMIUM GLASS CARD --- */
   .glass-card { 
-    background: var(--surface-main); 
-    backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+    background: var(--surface-dark); 
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
     border: 1px solid var(--border-thin); 
     border-radius: 16px; 
     padding: 35px 28px; 
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
     transition: all 0.4s var(--smooth-ease);
     position: relative;
     overflow: hidden;
   }
   .glass-card::before {
     content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 1px;
-    background: linear-gradient(90deg, transparent, var(--border-strong), transparent);
+    background: linear-gradient(90deg, transparent, rgba(230, 194, 122, 0.4), transparent);
   }
   .glass-card-hover:hover { 
-    border-color: var(--border-strong); 
+    border-color: var(--border-focus); 
     transform: translateY(-4px); 
-    box-shadow: 0 28px 50px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 28px 50px rgba(0, 0, 0, 0.6);
     cursor: pointer; 
   }
 
   /* TYPOGRAPHY */
   .title-lg { font-family: var(--font-heading); font-size: 28px; font-weight: 600; color: var(--gold-light); line-height: 1.3; margin-bottom: 8px; letter-spacing: 0.5px; }
-  .title-md { font-family: var(--font-heading); font-size: 18px; font-weight: 600; color: var(--gold); margin-bottom: 6px; }
-  .text-sub { font-size: 13px; color: var(--text-muted); line-height: 1.6; font-weight: 400; }
+  .title-md { font-family: var(--font-heading); font-size: 18px; font-weight: 600; color: var(--gold-primary); margin-bottom: 6px; }
+  .text-sub { font-size: 13px; color: var(--text-dim); line-height: 1.6; font-weight: 300; }
 
   /* FORMS & INPUTS */
   .form-group { margin-bottom: 24px; }
-  .form-group label { display: block; font-size: 10px; font-weight: 600; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
+  .form-group label { display: block; font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
   .input-wrapper { position: relative; display: flex; align-items: center; }
   .glass-input { 
     width: 100%; 
-    background: var(--surface-alt); 
-    border: 1px solid var(--border-thin); 
+    background: var(--surface-light); 
+    border: 1px solid rgba(255, 255, 255, 0.08); 
     border-radius: 10px; 
-    color: var(--text-main); 
+    color: var(--text-pure); 
     font-family: var(--font-body); 
     font-size: 14px; 
     padding: 16px 18px; 
     outline: none; 
     transition: all 0.35s var(--smooth-ease); 
   }
-  .glass-input:focus { border-color: var(--gold); box-shadow: 0 0 15px var(--border-thin); transform: scale(1.01); background: var(--surface-main); }
-  .pwd-toggle { position: absolute; right: 18px; background: none; border: none; color: var(--text-dim); font-size: 16px; cursor: pointer; transition: color 0.3s; }
-  .pwd-toggle:hover { color: var(--gold); }
+  .glass-input:focus { border-color: var(--gold-primary); background: rgba(30, 30, 30, 0.85); box-shadow: 0 0 20px rgba(230, 194, 122, 0.15); transform: scale(1.01); }
+  .pwd-toggle { position: absolute; right: 18px; background: none; border: none; color: var(--text-muted); font-size: 16px; cursor: pointer; transition: color 0.3s; }
+  .pwd-toggle:hover { color: var(--gold-primary); }
 
   /* BUTTONS WITH SPRING MICRO-INTERACTION */
   .btn { 
@@ -176,124 +149,121 @@
   }
   .btn:active { transform: scale(0.97); }
   .btn-primary { 
-    background: linear-gradient(135deg, var(--gold), var(--gold-dark)); 
+    background: linear-gradient(135deg, var(--gold-primary), #C59B46); 
     color: #050505; 
-    box-shadow: 0 8px 25px var(--border-thin); 
+    box-shadow: 0 8px 25px rgba(230, 194, 122, 0.25); 
   }
-  .btn-primary:hover { transform: translateY(-3px) scale(1.01); box-shadow: 0 14px 30px var(--border-strong); filter: brightness(1.1); }
-  .btn-primary:disabled { background: var(--surface-alt); color: var(--text-dim); cursor: not-allowed; transform: none; box-shadow: none; border: 1px solid var(--border-thin); }
+  .btn-primary:hover { transform: translateY(-3px) scale(1.01); box-shadow: 0 14px 30px rgba(230, 194, 122, 0.35); filter: brightness(1.08); }
+  .btn-primary:disabled { background: #2a2a2a; color: #666; cursor: not-allowed; transform: none; box-shadow: none; }
   
-  .btn-outline { background: transparent; border: 1px solid var(--gold); color: var(--gold-light); }
-  .btn-outline:hover { background: var(--border-thin); transform: translateY(-2px); }
+  .btn-outline { background: rgba(230, 194, 122, 0.03); border: 1px solid var(--gold-primary); color: var(--gold-light); }
+  .btn-outline:hover { background: rgba(230, 194, 122, 0.12); transform: translateY(-2px); }
 
   /* MESSAGE BOXES */
   .message-box { padding: 16px; border-radius: 10px; font-size: 12px; font-weight: 500; display: none; align-items: flex-start; gap: 12px; margin-bottom: 24px; line-height: 1.6; border-left: 3px solid transparent; }
   .message-box i { font-size: 16px; margin-top: 2px; }
   .message-box.show { display: flex; animation: smoothSlideIn 0.45s var(--smooth-ease); }
   @keyframes smoothSlideIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
-  .message-error { background: var(--danger-bg); border-color: var(--danger); color: var(--danger); }
-  .message-success { background: var(--success-bg); border-color: var(--success); color: var(--success); }
+  .message-error { background: rgba(158, 28, 28, 0.18); border-color: var(--danger); color: var(--danger-light); }
+  .message-success { background: rgba(26, 94, 57, 0.12); border-color: var(--success); color: #87d3a4; }
 
   /* GLOBAL TOAST */
-  #globalToast { position: fixed; top: -80px; left: 50%; transform: translateX(-50%); opacity: 0; background: var(--surface-main); backdrop-filter: blur(12px); border: 1px solid var(--border-thin); color: var(--text-main); padding: 16px 26px; border-radius: 12px; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 12px; z-index: 9999; transition: all 0.5s var(--smooth-ease); box-shadow: 0 20px 40px rgba(0,0,0,0.3); pointer-events: none; letter-spacing: 0.5px;}
+  #globalToast { position: fixed; top: -80px; left: 50%; transform: translateX(-50%); opacity: 0; background: rgba(10, 10, 12, 0.95); backdrop-filter: blur(12px); border: 1px solid var(--border-thin); color: #fff; padding: 16px 26px; border-radius: 12px; font-size: 12px; font-weight: 500; display: flex; align-items: center; gap: 12px; z-index: 9999; transition: all 0.5s var(--smooth-ease); box-shadow: 0 20px 40px rgba(0,0,0,0.7); pointer-events: none; letter-spacing: 0.5px;}
   #globalToast.show { top: 30px; opacity: 1; pointer-events: auto; }
 
-  /* TOP HEADER (Logo Diperkecil) */
+  /* TOP HEADER */
   .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-  .logo-wrapper { display: flex; align-items: center; gap: 10px; font-family: var(--font-heading); font-weight: 600; font-size: 16px; letter-spacing: 1px; color: var(--text-main); }
-  .logo-icon { width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, var(--gold-light), var(--gold-dark)); display: flex; align-items: center; justify-content: center; color: #000; font-size: 12px; box-shadow: 0 4px 15px var(--border-thin); }
+  .logo-wrapper { display: flex; align-items: center; gap: 12px; font-family: var(--font-heading); font-weight: 600; font-size: 20px; letter-spacing: 1px; color: var(--text-pure); }
+  .logo-icon { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, var(--gold-light), var(--gold-dark)); display: flex; align-items: center; justify-content: center; color: #000; font-size: 16px; box-shadow: 0 4px 15px rgba(230, 194, 122, 0.25); }
   
   .header-right-meta { display: flex; align-items: center; gap: 10px; }
-  .header-action-btn { background: var(--surface-alt); border: 1px solid var(--border-thin); color: var(--text-main); width: 34px; height: 34px; border-radius: 8px; font-size: 12px; cursor: pointer; transition: all 0.35s var(--smooth-ease); display: flex; align-items: center; justify-content: center; }
-  .header-action-btn:hover { background: var(--surface-hover); color: var(--gold); transform: translateY(-2px); border-color: var(--gold); }
-  .header-logout-btn { background: var(--danger-bg); border: 1px solid var(--danger); color: var(--danger); width: 34px; height: 34px; border-radius: 8px; font-size: 12px; cursor: pointer; transition: all 0.35s var(--smooth-ease); display: flex; align-items: center; justify-content: center; }
+  .header-logout-btn { background: rgba(158, 28, 28, 0.2); border: 1px solid var(--danger); color: var(--danger-light); width: 38px; height: 38px; border-radius: 10px; font-size: 12px; cursor: pointer; transition: all 0.35s var(--smooth-ease); display: flex; align-items: center; justify-content: center; }
   .header-logout-btn:hover { background: var(--danger); color: #fff; transform: translateY(-2px); }
 
-  .global-stats-badge { background: var(--surface-alt); border: 1px solid var(--border-thin); padding: 10px 18px; border-radius: 10px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; margin-bottom: 24px; width: fit-content; }
-  .live-dot { width: 6px; height: 6px; background: var(--success); border-radius: 50%; box-shadow: 0 0 8px var(--success); animation: pulse 2s infinite; }
-  @keyframes pulse { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 var(--success-bg); } 70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
+  .global-stats-badge { background: var(--surface-light); border: 1px solid rgba(255,255,255,0.05); padding: 10px 18px; border-radius: 10px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; margin-bottom: 24px; width: fit-content; }
+  .live-dot { width: 6px; height: 6px; background: var(--gold-primary); border-radius: 50%; box-shadow: 0 0 8px var(--gold-primary); animation: pulse 2s infinite; }
   
   /* BLACK CARD PROFILE WIDGET */
-  .profile-widget { background: var(--surface-main); backdrop-filter: blur(12px); display: flex; justify-content: space-between; align-items: center; padding: 24px; margin-bottom: 24px; border: 1px solid var(--border-thin); cursor: pointer; border-radius: 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.15); position: relative; overflow: hidden; transition: all 0.4s var(--smooth-ease); }
-  .profile-widget:hover { transform: translateY(-3px) scale(1.01); border-color: var(--gold); box-shadow: 0 22px 45px rgba(0,0,0,0.25); }
+  .profile-widget { background: linear-gradient(135deg, rgba(30,30,35,0.85), rgba(10,10,12,0.95)); backdrop-filter: blur(12px); display: flex; justify-content: space-between; align-items: center; padding: 24px; margin-bottom: 24px; border: 1px solid rgba(230,194,122,0.25); cursor: pointer; border-radius: 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.4); position: relative; overflow: hidden; transition: all 0.4s var(--smooth-ease); }
+  .profile-widget:hover { transform: translateY(-3px) scale(1.01); border-color: var(--gold-primary); box-shadow: 0 22px 45px rgba(0,0,0,0.55); }
   .pw-left { display: flex; align-items: center; gap: 18px; position: relative; z-index: 2; }
-  .pw-avatar { width: 52px; height: 52px; border-radius: 50%; background: var(--bg-base); display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-weight: 700; color: var(--gold); font-size: 20px; overflow: hidden; border: 1px solid var(--gold-dark); transition: transform 0.3s; }
+  .pw-avatar { width: 52px; height: 52px; border-radius: 50%; background: #222; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-weight: 700; color: var(--gold-primary); font-size: 20px; overflow: hidden; border: 1px solid var(--gold-dark); transition: transform 0.3s; }
   .profile-widget:hover .pw-avatar { transform: scale(1.05); }
   .pw-avatar img { width: 100%; height: 100%; object-fit: cover; }
   .pw-info h4 { font-family: var(--font-heading); font-size: 18px; font-weight: 600; margin-bottom: 4px; color: var(--gold-light); }
-  .pw-info p { font-size: 9px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; font-weight: 600; }
+  .pw-info p { font-size: 9px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; font-weight: 600; }
 
   /* VIP PROMO BANNER */
-  .vip-promo { background: var(--surface-alt); border: 1px solid var(--border-strong); padding: 20px 24px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; cursor: pointer; transition: all 0.4s var(--smooth-ease); }
-  .vip-promo:hover { box-shadow: 0 15px 30px var(--border-thin); transform: translateY(-3px) scale(1.01); }
-  .vip-promo i { font-size: 24px; color: var(--gold); transition: transform 0.4s; }
+  .vip-promo { background: linear-gradient(135deg, rgba(35,28,15,0.85), rgba(15,12,5,0.95)); backdrop-filter: blur(12px); border: 1px solid var(--gold-dark); padding: 20px 24px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; cursor: pointer; transition: all 0.4s var(--smooth-ease); }
+  .vip-promo:hover { box-shadow: 0 15px 30px rgba(230, 194, 122, 0.2); transform: translateY(-3px) scale(1.01); }
+  .vip-promo i { font-size: 24px; color: var(--gold-primary); transition: transform 0.4s; }
   .vip-promo:hover i { transform: scale(1.2) rotate(10deg); }
 
   /* TOP UP CARD */
-  .topup-card { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; margin-bottom: 24px; background: var(--surface-alt); border: 1px solid var(--border-thin); border-radius: 16px; transition: all 0.35s var(--smooth-ease); }
-  .topup-card:hover { border-color: var(--border-strong); transform: translateY(-2px); }
-  .btn-topup { background: transparent; color: var(--gold); border: 1px solid var(--gold); padding: 8px 16px; border-radius: 8px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.3s; }
-  .btn-topup:hover { background: var(--gold); color: #000; transform: scale(1.05); }
+  .topup-card { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; margin-bottom: 24px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; transition: all 0.35s var(--smooth-ease); }
+  .topup-card:hover { border-color: rgba(230,194,122,0.4); transform: translateY(-2px); }
+  .btn-topup { background: transparent; color: var(--gold-primary); border: 1px solid var(--gold-primary); padding: 8px 16px; border-radius: 8px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.3s; }
+  .btn-topup:hover { background: var(--gold-primary); color: #000; transform: scale(1.05); }
 
-  /* --- BIG LIMIT DISPLAY (Diperkecil) --- */
-  .limit-display-area { text-align: center; margin-bottom: 30px; padding: 30px 20px; background: var(--surface-alt); border-radius: 16px; border: 1px solid var(--border-thin); }
-  .limit-info-box { font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; line-height: 1.6; margin-bottom: 20px; display: inline-block; padding-bottom: 12px; border-bottom: 1px solid var(--border-thin); }
-  .big-limit-num { font-family: var(--font-heading); font-size: 48px; font-weight: 400; line-height: 1; margin-bottom: 8px; color: var(--gold-light); transition: transform 0.4s var(--smooth-ease); }
-  .big-limit-num.vip { color: var(--gold); text-shadow: 0 3px 15px var(--border-thin); font-size: 56px; }
-  .limit-label { font-size: 9px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; font-weight: 500; }
+  /* --- BIG LIMIT DISPLAY --- */
+  .limit-display-area { text-align: center; margin-bottom: 30px; padding: 40px 20px; background: radial-gradient(circle at center, rgba(30,30,35,0.7) 0%, rgba(10,10,12,0.5) 100%); border-radius: 18px; border: 1px solid rgba(255,255,255,0.06); box-shadow: inset 0 0 50px rgba(0,0,0,0.6); }
+  .limit-info-box { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; line-height: 1.6; margin-bottom: 24px; display: inline-block; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  .big-limit-num { font-family: var(--font-heading); font-size: 72px; font-weight: 400; line-height: 1; margin-bottom: 12px; color: var(--gold-light); transition: transform 0.4s var(--smooth-ease); }
+  .big-limit-num.vip { color: var(--gold-primary); text-shadow: 0 5px 25px rgba(230, 194, 122, 0.35); }
+  .limit-label { font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 3px; font-weight: 500; }
 
   /* LEADERBOARD BUTTON */
-  .leaderboard-toggle-btn { width: 100%; background: var(--surface-alt); border: 1px solid var(--border-thin); border-radius: 12px; padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; color: var(--text-main); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; cursor: pointer; transition: all 0.35s var(--smooth-ease); margin-bottom: 16px; }
-  .leaderboard-toggle-btn:hover { border-color: var(--gold-dark); background: var(--surface-hover); color: var(--gold-light); transform: translateY(-2px); }
+  .leaderboard-toggle-btn { width: 100%; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; color: var(--text-pure); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; cursor: pointer; transition: all 0.35s var(--smooth-ease); margin-bottom: 16px; }
+  .leaderboard-toggle-btn:hover { border-color: var(--gold-dark); background: rgba(230,194,122,0.06); color: var(--gold-light); transform: translateY(-2px); }
 
   /* --- MINIMALIST BOTTOM NAV --- */
   .bottom-nav { 
     position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); 
     width: calc(100% - 40px); max-width: 400px; height: 70px; 
-    background: var(--surface-main); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-    border: 1px solid var(--border-thin); border-radius: 40px; 
-    display: flex; justify-content: space-around; align-items: center; z-index: 100; box-shadow: 0 25px 50px rgba(0,0,0,0.3); 
+    background: rgba(15, 15, 18, 0.88); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 40px; 
+    display: flex; justify-content: space-around; align-items: center; z-index: 100; box-shadow: 0 25px 50px rgba(0,0,0,0.65); 
   }
-  .nav-item { display: flex; flex-direction: column; align-items: center; gap: 6px; color: var(--text-dim); font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.4s var(--smooth-ease); width: 33%; }
+  .nav-item { display: flex; flex-direction: column; align-items: center; gap: 6px; color: var(--text-muted); font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.4s var(--smooth-ease); width: 33%; }
   .nav-item i { font-size: 18px; transition: transform 0.4s var(--smooth-ease), color 0.3s; }
-  .nav-item.active { color: var(--gold); }
+  .nav-item.active { color: var(--gold-primary); }
   .nav-item.active i { transform: translateY(-4px) scale(1.15); }
-  .nav-item:hover { color: var(--text-main); }
+  .nav-item:hover { color: var(--text-pure); }
 
   /* --- OVERLAYS & MODALS WITH FLUID FADE & SLIDE --- */
   .overlay { 
-    position: fixed; inset: 0; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(8px); 
+    position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(10px); 
     z-index: 999; display: flex; align-items: center; justify-content: center; 
     opacity: 0; pointer-events: none; transition: opacity 0.4s var(--smooth-ease); padding: 20px; 
   }
   .overlay.show { opacity: 1; pointer-events: auto; }
   
   .modal-glass { 
-    background: var(--bg-base); border: 1px solid var(--border-strong); border-radius: 18px; 
-    padding: 40px 30px; width: 100%; max-width: 400px; box-shadow: 0 35px 70px rgba(0,0,0,0.5); 
+    background: var(--surface-dark); border: 1px solid var(--border-thin); border-radius: 18px; 
+    padding: 40px 30px; width: 100%; max-width: 400px; box-shadow: 0 35px 70px rgba(0,0,0,0.7); 
     transform: translateY(30px) scale(0.95); opacity: 0; 
     transition: all 0.5s var(--smooth-ease); position: relative; max-height: 85vh; overflow-y: auto; 
   }
   .overlay.show .modal-glass { transform: translateY(0) scale(1); opacity: 1; }
   
-  .btn-close { position: absolute; top: 20px; right: 20px; width: 34px; height: 34px; border-radius: 50%; background: var(--surface-alt); border: 1px solid var(--border-thin); color: var(--text-muted); display: flex; align-items: center; justify-content: center; font-size: 12px; cursor: pointer; transition: all 0.35s var(--smooth-ease); z-index: 10; }
-  .btn-close:hover { color: var(--gold); border-color: var(--gold); transform: rotate(90deg) scale(1.1); }
+  .btn-close { position: absolute; top: 20px; right: 20px; width: 34px; height: 34px; border-radius: 50%; background: transparent; border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted); display: flex; align-items: center; justify-content: center; font-size: 12px; cursor: pointer; transition: all 0.35s var(--smooth-ease); }
+  .btn-close:hover { color: var(--gold-primary); border-color: var(--gold-primary); transform: rotate(90deg) scale(1.1); }
 
   /* SIDE PANEL SLIDE ANIMATION */
   .side-panel { 
     position: absolute; top: 0; right: 0; width: 88%; max-width: 400px; height: 100%; 
-    background: var(--bg-base); backdrop-filter: blur(25px); 
-    border-left: 1px solid var(--border-thin); padding: 40px 24px; 
+    background: rgba(15, 15, 18, 0.96); backdrop-filter: blur(25px); 
+    border-left: 1px solid rgba(255,255,255,0.06); padding: 40px 24px; 
     transform: translateX(100%); transition: transform 0.55s var(--smooth-ease); 
-    overflow-y: auto; box-shadow: -25px 0 60px rgba(0,0,0,0.5); 
+    overflow-y: auto; box-shadow: -25px 0 60px rgba(0,0,0,0.85); 
   }
   .overlay.show .side-panel { transform: translateX(0); }
   
   /* BOTTOM SHEET ANIMATION */
   .bottom-sheet { 
     position: absolute; bottom: 0; width: 100%; max-width: 500px; 
-    background: var(--bg-base); backdrop-filter: blur(25px); 
-    border-top: 1px solid var(--border-strong); border-radius: 24px 24px 0 0; 
+    background: var(--surface-dark); backdrop-filter: blur(25px); 
+    border-top: 1px solid var(--border-thin); border-radius: 24px 24px 0 0; 
     padding: 32px 24px 45px; transform: translateY(100%); 
     transition: transform 0.5s var(--smooth-ease); max-height: 85vh; overflow-y: auto; 
   }
@@ -301,103 +271,22 @@
 
   /* GRIDS & LISTS */
   .limit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px; }
-  .limit-box { background: var(--surface-alt); border: 1px solid var(--border-thin); border-radius: 12px; padding: 20px 12px; text-align: center; cursor: pointer; transition: all 0.35s var(--smooth-ease); }
-  .limit-box:hover { border-color: var(--gold); background: var(--surface-hover); transform: translateY(-3px) scale(1.02); }
+  .limit-box { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 20px 12px; text-align: center; cursor: pointer; transition: all 0.35s var(--smooth-ease); }
+  .limit-box:hover { border-color: var(--gold-primary); background: rgba(230,194,122,0.06); transform: translateY(-3px) scale(1.02); }
   .limit-box .lmt { font-family: var(--font-heading); font-size: 24px; font-weight: 600; color: var(--gold-light); margin-bottom: 8px; display: block; }
-  .limit-box .prc { font-size: 11px; color: var(--text-muted); font-weight: 500; letter-spacing: 1px; }
+  .limit-box .prc { font-size: 11px; color: var(--text-dim); font-weight: 500; letter-spacing: 1px; }
 
   .data-list { display: flex; flex-direction: column; gap: 16px; }
-  .data-item { background: var(--surface-alt); border: 1px solid var(--border-thin); border-radius: 12px; padding: 20px; transition: all 0.35s var(--smooth-ease); }
-  .data-item:hover { border-color: var(--border-strong); transform: translateY(-2px); }
+  .data-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 20px; transition: all 0.35s var(--smooth-ease); }
+  .data-item:hover { border-color: rgba(255,255,255,0.25); transform: translateY(-2px); }
 
   ::-webkit-scrollbar { width: 4px; }
   ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--text-dim); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
   ::-webkit-scrollbar-thumb:hover { background: var(--gold-dark); }
-  
-  /* --- HOLD-TO-SCAN BIOMETRIK ANIMATION --- */
-  .bio-hold-container {
-      position: relative;
-      width: 130px; height: 130px;
-      margin: 0 auto 24px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      border-radius: 50%;
-      -webkit-tap-highlight-color: transparent;
-  }
-  .bio-ring-bg {
-      position: absolute; inset: 0;
-      border-radius: 50%;
-      border: 4px solid var(--surface-alt);
-      box-shadow: inset 0 0 15px rgba(0,0,0,0.2);
-  }
-  .bio-ring-progress {
-      position: absolute; inset: 0;
-      border-radius: 50%;
-      border: 4px solid var(--gold);
-      border-top-color: transparent;
-      border-right-color: transparent;
-      transform: rotate(-135deg);
-      opacity: 0;
-      transition: opacity 0.2s;
-  }
-  .bio-icon-hold {
-      font-size: 60px;
-      color: var(--text-dim);
-      transition: all 0.3s var(--smooth-ease);
-      z-index: 2;
-  }
-  
-  /* State Holding */
-  .bio-hold-container.holding .bio-icon-hold {
-      color: var(--gold);
-      transform: scale(0.9);
-      filter: drop-shadow(0 0 15px var(--gold-dark));
-  }
-  .bio-hold-container.holding .bio-ring-progress {
-      opacity: 1;
-      /* Animasi progress bar berputar selama 2 detik */
-      animation: fillRing 2s linear forwards;
-  }
-  /* Laser Scanner effect pas holding */
-  .bio-laser-hold {
-      position: absolute;
-      left: 15%; right: 15%; top: 20%;
-      height: 2px;
-      background: var(--gold-light);
-      box-shadow: 0 0 10px var(--gold-light);
-      display: none;
-      z-index: 3;
-      pointer-events: none;
-  }
-  .bio-hold-container.holding .bio-laser-hold {
-      display: block;
-      animation: scanLaserHold 1s ease-in-out infinite alternate;
-  }
-
-  @keyframes fillRing {
-      0% { transform: rotate(-135deg); border-top-color: transparent; border-right-color: transparent; }
-      25% { border-top-color: var(--gold); border-right-color: transparent; }
-      50% { transform: rotate(45deg); border-top-color: var(--gold); border-right-color: var(--gold); }
-      100% { transform: rotate(225deg); border-top-color: var(--gold); border-right-color: var(--gold); }
-  }
-  @keyframes scanLaserHold {
-      0% { top: 20%; opacity: 0.5; }
-      50% { opacity: 1; }
-      100% { top: 80%; opacity: 0.5; }
-  }
-
-  /* Utility for dynamic text hover inline JS */
-  .hover-text-main { transition: color 0.3s; }
-  .hover-text-main:hover { color: var(--text-main) !important; }
-  .hover-text-gold { transition: color 0.3s; }
-  .hover-text-gold:hover { color: var(--gold-light) !important; }
-
 </style>
 </head>
-<body data-theme="indoor">
+<body>
 
 <!-- LUXURY LOADER -->
 <div id="initialLoader">
@@ -408,25 +297,6 @@
 </div>
 
 <div id="globalToast"><i class="fas fa-info-circle"></i> <span id="toastMsg">Sistem Informasi</span></div>
-
-<!-- MODAL: BIOMETRIK SCAN HOLD TO UNLOCK -->
-<div id="biometricModal" class="overlay">
-  <div class="modal-glass" style="text-align: center; padding: 40px; max-width: 320px;">
-    <button class="btn-close" onclick="closeBiometricModal()"><i class="fas fa-times"></i></button>
-    <div class="title-lg" style="font-size: 20px; margin-bottom: 24px;">Autentikasi Cepat</div>
-    
-    <div class="text-sub" style="font-size: 11px; margin-bottom: 20px;">Sentuh dan tahan sensor selama 2 detik untuk memverifikasi identitas.</div>
-
-    <div id="bioHoldBox" class="bio-hold-container">
-       <div class="bio-ring-bg"></div>
-       <div class="bio-ring-progress" id="bioProgressRing"></div>
-       <i class="fas fa-fingerprint bio-icon-hold"></i>
-       <div class="bio-laser-hold"></div>
-    </div>
-    
-    <div id="bioStatusText" class="text-sub" style="color: var(--gold); font-weight: 600; margin-top: 10px; height: 20px;">Siap Memindai...</div>
-  </div>
-</div>
 
 <!-- MODAL: TOP UP & QRIS -->
 <div id="limitModal" class="overlay">
@@ -440,11 +310,11 @@
     </div>
 
     <div id="qrisPaymentView" class="hidden" style="text-align: center; margin-top: 30px;">
-      <div style="background: #fff; padding: 16px; border-radius: 12px; display: inline-block; margin-bottom: 24px; border: 2px solid var(--gold);">
+      <div style="background: #fff; padding: 16px; border-radius: 12px; display: inline-block; margin-bottom: 24px; border: 2px solid var(--gold-primary);">
         <img id="qrisImageResult" src="" alt="QRIS" style="width: 200px; height: 200px; object-fit: contain;">
       </div>
       <div id="qrisPackageTitle" style="font-family: var(--font-heading); font-size: 20px; font-weight: 600; margin-bottom: 8px; color: var(--gold-light);"></div>
-      <div style="font-size: 11px; color: var(--text-dim); margin-bottom: 30px; letter-spacing: 1px; text-transform: uppercase;">Transaction ID: <span id="qrisDepositIdSpan" style="color:var(--text-main)"></span></div>
+      <div style="font-size: 11px; color: var(--text-dim); margin-bottom: 30px; letter-spacing: 1px; text-transform: uppercase;">Transaction ID: <span id="qrisDepositIdSpan" style="color:var(--text-pure)"></span></div>
       
       <button class="btn btn-primary click-sound" onclick="checkQrisPaymentStatus()" style="margin-bottom: 16px;">Verifikasi Pembayaran</button>
       <button class="btn btn-outline click-sound" onclick="backToLimitSelect()">Kembali</button>
@@ -455,7 +325,7 @@
 <!-- MODAL: CONFIRM -->
 <div id="customConfirmModal" class="overlay">
   <div class="modal-glass" style="text-align: center; padding: 40px;">
-    <i class="fas fa-exclamation-triangle" style="font-size: 40px; color: var(--gold); margin-bottom: 24px;"></i>
+    <i class="fas fa-exclamation-triangle" style="font-size: 40px; color: var(--gold-primary); margin-bottom: 24px;"></i>
     <div class="title-lg" style="font-size: 24px;">Konfirmasi Tindakan</div>
     <div id="confirmText" class="text-sub" style="margin-bottom: 32px;">Tindakan ini bersifat final. Apakah Anda yakin ingin melanjutkannya?</div>
     <button id="btnConfirmOk" class="btn btn-primary click-sound" style="margin-bottom: 16px;">Ya, Lanjutkan</button>
@@ -465,15 +335,15 @@
 
 <!-- MODAL: WARNING KEAMANAN TOXIC -->
 <div id="warningModal" class="overlay">
-  <div class="modal-glass" style="border-color: var(--danger); box-shadow: 0 35px 70px var(--danger-bg);">
+  <div class="modal-glass" style="border-color: var(--danger); box-shadow: 0 35px 70px rgba(158, 28, 28, 0.45);">
     <div style="text-align: center; margin-bottom: 24px;">
-      <i class="fas fa-skull-crossbones" style="font-size: 40px; color: var(--danger); margin-bottom: 20px;"></i>
-      <div class="title-lg" style="font-size: 22px; color: var(--danger);">PERINGATAN KERAS!</div>
+      <i class="fas fa-skull-crossbones" style="font-size: 40px; color: var(--danger-light); margin-bottom: 20px;"></i>
+      <div class="title-lg" style="font-size: 22px; color: var(--danger-light);">PERINGATAN KERAS!</div>
     </div>
-    <div style="background: var(--danger-bg); border: 1px solid var(--danger); border-radius: 10px; padding: 20px; margin-bottom: 30px; font-size: 12px; line-height: 1.7; color: var(--text-main); text-align: justify;">
-      <b>DENGERIN BAIK-BAIK, ANJING!</b> Server ini dijaga ketat sama OXY. Kalau lu coba-coba macem-macem, eksploitasi, nyepam, atau sok ngide inspect elemen buat nge-hack web ini, IP dan Device ID lu bakal langsung dicatat dan akun lu <b>GUA BANNED PERMANEN, BANGSAT!</b> Jangan main-main sama sistem ini, tolol!
+    <div style="background: rgba(158, 28, 28, 0.15); border: 1px solid var(--danger); border-radius: 10px; padding: 20px; margin-bottom: 30px; font-size: 12px; line-height: 1.7; color: #fff; text-align: justify;">
+      <b>DENGERIN BAIK-BAIK, ANJING!</b> Server ini dijaga ketat. Kalau lu coba-coba macem-macem, eksploitasi, nyepam, atau sok ngide inspect elemen buat nge-hack web ini, IP dan Device ID lu bakal langsung gua catat dan akun lu <b>GUA BANNED PERMANEN, BANGSAT!</b> Jangan main-main sama sistem ini, tolol!
     </div>
-    <button class="btn btn-primary click-sound" style="background: var(--danger); color: #fff; box-shadow: 0 8px 20px var(--danger-bg);" onclick="closeWarningModal()">BACOT, GUA NGERTI!</button>
+    <button class="btn btn-primary click-sound" style="background: var(--danger); color: #fff; box-shadow: 0 8px 20px rgba(158, 28, 28, 0.3);" onclick="closeWarningModal()">BACOT, GUA NGERTI!</button>
   </div>
 </div>
 
@@ -481,12 +351,12 @@
 <div id="broadcastModal" class="overlay">
   <div class="modal-glass">
     <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px;">
-      <div style="width: 44px; height: 44px; border-radius: 10px; background: var(--border-thin); display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-strong);">
-        <i class="fas fa-envelope-open-text" style="font-size: 18px; color: var(--gold);"></i>
+      <div style="width: 44px; height: 44px; border-radius: 10px; background: rgba(230,194,122,0.1); display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-thin);">
+        <i class="fas fa-envelope-open-text" style="font-size: 18px; color: var(--gold-primary);"></i>
       </div>
       <div class="title-lg" style="margin: 0; font-size: 20px;">Pesan Eksekutif</div>
     </div>
-    <div id="broadcastContentText" style="background: var(--surface-alt); border-left: 2px solid var(--gold); padding: 20px; font-size: 13px; line-height: 1.8; color: var(--text-main); margin-bottom: 30px; border-radius: 0 10px 10px 0;">Memuat transmisi...</div>
+    <div id="broadcastContentText" style="background: rgba(0,0,0,0.3); border-left: 2px solid var(--gold-primary); padding: 20px; font-size: 13px; line-height: 1.8; color: var(--text-pure); margin-bottom: 30px; border-radius: 0 10px 10px 0;">Memuat transmisi...</div>
     <button class="btn btn-outline click-sound" onclick="closeBroadcastModal()">Tandai Telah Dibaca</button>
   </div>
 </div>
@@ -495,8 +365,8 @@
 <div id="loginView" class="container hidden" style="display: flex; flex-direction: column; justify-content: center; min-height: 100vh;">
   <div class="glass-card" style="padding: 40px 30px;">
     <div style="text-align: center; margin-bottom: 40px;">
-      <div style="width: 60px; height: 60px; border-radius: 14px; background: linear-gradient(135deg, var(--gold), var(--gold-dark)); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px var(--border-thin);">
-        <i class="fas fa-key" style="font-size: 24px; color: #fff;"></i>
+      <div style="width: 60px; height: 60px; border-radius: 14px; background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark)); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(230,194,122,0.25);">
+        <i class="fas fa-key" style="font-size: 24px; color: #000;"></i>
       </div>
       <div class="title-lg">Otorisasi Akses</div>
       <div class="text-sub">Masuk untuk mengakses layanan eksklusif.</div>
@@ -505,7 +375,7 @@
     <div id="loginErrorMsg" class="message-box message-error"></div>
     
     <div class="form-group"><label>Identitas (Username)</label><input type="text" id="loginUser" class="glass-input" autocomplete="off" /></div>
-    <div class="form-group" style="margin-bottom: 30px;">
+    <div class="form-group" style="margin-bottom: 40px;">
       <label>Kata Sandi</label>
       <div class="input-wrapper">
         <input type="password" id="loginPwd" class="glass-input" autocomplete="off" />
@@ -515,13 +385,9 @@
     
     <button id="loginBtn" class="btn btn-primary click-sound">Otorisasi Masuk</button>
     
-    <button type="button" class="btn btn-outline click-sound" onclick="openBiometricModal()" style="margin-top: 14px; border-style: dashed; display: flex; align-items: center; justify-content: center; gap: 8px;">
-        <i class="fas fa-fingerprint" style="font-size: 16px;"></i> Scan Biometrik Cepat
-    </button>
-    
     <div style="display: flex; justify-content: space-between; margin-top: 30px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">
-      <span class="hover-text-main click-sound" style="cursor:pointer; color: var(--text-muted);" onclick="handleForgotClick()">Lupa Sandi?</span>
-      <span class="hover-text-gold click-sound" style="cursor:pointer; color: var(--gold);" onclick="switchView('registerView')">Registrasi Akun</span>
+      <span style="cursor:pointer; color: var(--text-muted); transition: 0.3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--text-muted)'" onclick="handleForgotClick()">Lupa Sandi?</span>
+      <span style="cursor:pointer; color: var(--gold-primary); transition: 0.3s;" onmouseover="this.style.color='var(--gold-light)'" onmouseout="this.style.color='var(--gold-primary)'" onclick="switchView('registerView')">Registrasi Akun</span>
     </div>
   </div>
 </div>
@@ -551,8 +417,8 @@
     </div>
     
     <button id="regBtn" class="btn btn-primary click-sound">Daftarkan Identitas</button>
-    <div class="hover-text-main click-sound" style="margin-top: 30px; text-align: center; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; cursor:pointer; color: var(--text-muted);" onclick="switchView('loginView')">
-      Telah terdaftar? <span style="color:var(--gold);">Masuk Disini</span>
+    <div style="margin-top: 30px; text-align: center; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; cursor:pointer; color: var(--text-muted);" onclick="switchView('loginView')">
+      Telah terdaftar? <span style="color:var(--gold-primary);">Masuk Disini</span>
     </div>
   </div>
 </div>
@@ -566,11 +432,8 @@
       <span style="background: linear-gradient(135deg, var(--gold-light), var(--gold-dark)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">AM Executive</span>
     </div>
     
-    <!-- HEADER KANAN: TOMBOL TEMA & LOGOUT -->
+    <!-- HEADER KANAN: TOMBOL LOGOUT -->
     <div class="header-right-meta">
-      <button class="header-action-btn click-sound" onclick="toggleTheme()" title="Ubah Tema Ruangan">
-        <i id="themeIcon" class="fas fa-sun"></i>
-      </button>
       <button class="header-logout-btn click-sound" id="topLogoutBtn" title="Akhiri Sesi">
         <i class="fas fa-sign-out-alt"></i>
       </button>
@@ -578,20 +441,20 @@
   </div>
 
   <!-- JAM & PING JARINGAN -->
-  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; background: var(--surface-alt); border: 1px solid var(--border-thin); padding: 12px 18px; border-radius: 10px;">
-    <div style="font-size: 11px; color: var(--gold); font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; display: flex; align-items: center; gap: 8px;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; background: var(--surface-light); border: 1px solid rgba(255,255,255,0.05); padding: 12px 18px; border-radius: 10px;">
+    <div style="font-size: 11px; color: var(--gold-primary); font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; display: flex; align-items: center; gap: 8px;">
       <i class="far fa-clock"></i> <span id="realtimeClock">00:00 WIB</span>
     </div>
     <div style="font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 8px;">
-      <div class="live-dot"></div>
-      <span>Ping: <strong id="networkPingText" style="color: var(--success); font-weight: 700;">14ms</strong></span>
+      <div class="live-dot" style="background: #2ecc71; box-shadow: 0 0 8px #2ecc71;"></div>
+      <span>Ping: <strong id="networkPingText" style="color: #2ecc71; font-weight: 700;">14ms</strong></span>
     </div>
   </div>
 
   <!-- TOTAL PENGGUNA ONLINE -->
   <div class="global-stats-badge">
-    <div class="live-dot" style="background: var(--gold); box-shadow: 0 0 8px var(--gold);"></div>
-    <span>Jaringan Klien: <strong id="globalTotalUsers" style="color:var(--gold-dark); font-weight: 700;">0</strong></span>
+    <div class="live-dot"></div>
+    <span>Jaringan Klien: <strong id="globalTotalUsers" style="color:var(--gold-light); font-weight: 700;">0</strong></span>
   </div>
 
   <!-- PREMIUM PROFILE WIDGET -->
@@ -603,16 +466,16 @@
         <p class="disp-userrole">Member</p>
       </div>
     </div>
-    <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--surface-alt); display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-thin);">
-      <i class="fas fa-arrow-right" style="color: var(--gold); font-size: 12px;"></i>
+    <div style="width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.1);">
+      <i class="fas fa-arrow-right" style="color: var(--gold-primary); font-size: 12px;"></i>
     </div>
   </div>
 
   <!-- TOP UP ACTION CARD -->
   <div id="topupCardContainer" class="topup-card hidden click-sound" onclick="openLimitModal()">
      <div>
-        <div style="font-family: var(--font-heading); font-size: 18px; font-weight: 600; margin-bottom: 6px; color: var(--gold-dark);">Acquire Limit</div>
-        <div style="font-size: 11px; color: var(--text-muted); line-height: 1.5;">Isi ulang kuota eksklusif Anda via QRIS.</div>
+        <div style="font-family: var(--font-heading); font-size: 18px; font-weight: 600; margin-bottom: 6px; color: var(--gold-light);">Acquire Limit</div>
+        <div style="font-size: 11px; color: var(--text-dim); line-height: 1.5;">Isi ulang kuota eksklusif Anda via QRIS.</div>
      </div>
      <button class="btn-topup">Isi Ulang</button>
   </div>
@@ -620,7 +483,7 @@
   <!-- VIP PROMO BANNER -->
   <div id="promoBannerContainer" class="vip-promo hidden click-sound" onclick="handleVipPromoClick()">
      <div>
-       <div style="font-family: var(--font-heading); font-size: 18px; font-weight: 600; color: var(--gold-dark); margin-bottom: 6px;">Upgrade Status VIP</div>
+       <div style="font-family: var(--font-heading); font-size: 18px; font-weight: 600; color: var(--gold-light); margin-bottom: 6px;">Upgrade Status VIP</div>
        <div style="font-size: 11px; color: var(--text-muted); line-height: 1.5;">Akses tanpa batas, previlege elit selamanya.</div>
      </div>
      <i class="fas fa-gem"></i>
@@ -629,7 +492,7 @@
   <!-- LEADERBOARD ACCORDION BUTTON & LIST -->
   <div style="margin-bottom: 30px;">
     <button class="leaderboard-toggle-btn click-sound" onclick="toggleLeaderboard()">
-      <span style="display:flex; align-items:center; gap:12px;"><i class="fas fa-trophy" style="color:var(--gold); font-size: 16px;"></i> Peringkat Prestise</span>
+      <span style="display:flex; align-items:center; gap:12px;"><i class="fas fa-trophy" style="color:var(--gold-primary); font-size: 16px;"></i> Peringkat Prestise</span>
       <i class="fas fa-chevron-down" id="leaderboardChevron" style="transition: transform 0.4s var(--smooth-ease);"></i>
     </button>
     <div id="leaderboardCollapsible" class="hidden" style="margin-top: 16px;">
@@ -653,8 +516,8 @@
       <div class="title-lg" style="font-size: 24px;">Aktivasi Lisensi</div>
       <div class="text-sub" style="margin-bottom: 24px;">Otentikasi perangkat dengan server utama.</div>
       
-      <div style="background: var(--surface-alt); border-radius: 10px; padding: 18px; margin-bottom: 24px; border: 1px solid var(--border-thin);">
-         <ol style="padding-left: 18px; font-size: 11px; color: var(--text-muted); margin:0; line-height: 1.8;">
+      <div style="background: rgba(255,255,255,0.02); border-radius: 10px; padding: 18px; margin-bottom: 24px;">
+         <ol style="padding-left: 18px; font-size: 11px; color: var(--text-dim); margin:0; line-height: 1.8;">
             <li style="margin-bottom: 8px;">Ketik alamat email Anda, lalu tekan Kirim.</li>
             <li style="margin-bottom: 8px;">Periksa kotak masuk email, salin URL dari Magic Link.</li>
             <li>Tempel URL tersebut pada kolom dan eksekusi Verifikasi.</li>
@@ -695,26 +558,26 @@
         <input type="url" id="imageUrl" class="glass-input" placeholder="https://..." />
       </div>
 
-      <div id="dropZone" class="click-sound" style="border: 1px dashed var(--border-strong); border-radius: 12px; padding: 40px 20px; text-align: center; background: var(--surface-alt); cursor: pointer; margin-bottom: 24px; transition: all 0.35s var(--smooth-ease);">
-        <i class="fas fa-upload" style="font-size: 28px; color: var(--gold); margin-bottom: 16px;"></i>
-        <div style="font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--gold-dark);">Unggah Arsip Lokal</div>
+      <div id="dropZone" class="click-sound" style="border: 1px dashed rgba(255,255,255,0.2); border-radius: 12px; padding: 40px 20px; text-align: center; background: rgba(0,0,0,0.2); cursor: pointer; margin-bottom: 24px; transition: all 0.35s var(--smooth-ease);">
+        <i class="fas fa-upload" style="font-size: 28px; color: var(--gold-primary); margin-bottom: 16px;"></i>
+        <div style="font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--gold-light);">Unggah Arsip Lokal</div>
         <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">JPG, PNG, WEBP — Max 25MB</div>
-        <div id="fileNameDisplay" style="margin-top: 16px; font-size: 11px; color: var(--gold); font-weight: 600;"></div>
+        <div id="fileNameDisplay" style="margin-top: 16px; font-size: 11px; color: var(--gold-primary); font-weight: 600;"></div>
         <input type="file" id="fileInput" accept="image/*" style="display: none;">
       </div>
       
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 30px;">
-        <div style="background: var(--surface-alt); border-radius: 10px; padding: 16px; border: 1px solid var(--border-thin);">
-          <div style="display:flex; justify-content:space-between; font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing: 1px; margin-bottom:16px;"><span>Intensitas</span> <span id="strengthIndicator" style="color:var(--gold); font-weight: 600;">Normal</span></div>
-          <input type="range" id="strengthRange" min="10" max="100" value="60" style="width: 100%; height:2px; appearance:none; background:var(--border-strong); outline:none; cursor: pointer; border-radius: 2px;">
+        <div style="background: rgba(255,255,255,0.02); border-radius: 10px; padding: 16px; border: 1px solid rgba(255,255,255,0.05);">
+          <div style="display:flex; justify-content:space-between; font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing: 1px; margin-bottom:16px;"><span>Intensitas</span> <span id="strengthIndicator" style="color:var(--gold-primary); font-weight: 600;">Normal</span></div>
+          <input type="range" id="strengthRange" min="10" max="100" value="60" style="width: 100%; height:2px; appearance:none; background:rgba(255,255,255,0.1); outline:none; cursor: pointer; border-radius: 2px;">
         </div>
-        <div onclick="document.getElementById('modeModalOverlay').classList.add('show')" class="click-sound" style="background: var(--surface-alt); border-radius: 10px; padding: 16px; border: 1px solid var(--border-thin); display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.35s var(--smooth-ease);" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border-thin)'">
+        <div onclick="document.getElementById('modeModalOverlay').classList.add('show')" class="click-sound" style="background: rgba(255,255,255,0.02); border-radius: 10px; padding: 16px; border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.35s var(--smooth-ease);" onmouseover="this.style.borderColor='var(--gold-primary)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.05)'">
           <div>
             <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing: 1px; margin-bottom:8px;">Model AI</div>
-            <div id="currentModeLabel" style="font-size:12px; font-weight:600; color: var(--gold-dark);">Super Res 2x</div>
+            <div id="currentModeLabel" style="font-size:12px; font-weight:600; color: var(--gold-light);">Super Res 2x</div>
           </div>
-          <div style="width: 28px; height: 28px; border-radius: 6px; background: var(--bg-base); border: 1px solid var(--border-thin); display: flex; align-items: center; justify-content: center;">
-             <i class="fas fa-sliders-h" style="color:var(--gold); font-size:11px;"></i>
+          <div style="width: 28px; height: 28px; border-radius: 6px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center;">
+             <i class="fas fa-sliders-h" style="color:var(--gold-primary); font-size:11px;"></i>
           </div>
         </div>
       </div>
@@ -729,12 +592,12 @@
       </div>
 
       <div class="hidden" id="comparisonSplitSection" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 30px 0;">
-        <div style="border-radius: 10px; overflow: hidden; position: relative; height: 180px; border: 1px solid var(--border-thin);">
+        <div style="border-radius: 10px; overflow: hidden; position: relative; height: 180px; border: 1px solid rgba(255,255,255,0.1);">
           <div style="position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.8); padding: 4px 10px; border-radius: 4px; font-size: 9px; font-weight: 600; letter-spacing: 1px; color:#fff; border: 1px solid rgba(255,255,255,0.1);">ASLI</div>
           <img id="splitImgBefore" style="width: 100%; height: 100%; object-fit: cover;">
         </div>
-        <div style="border-radius: 10px; overflow: hidden; position: relative; height: 180px; border: 1px solid var(--gold);">
-          <div style="position: absolute; top: 8px; left: 8px; background: var(--gold); padding: 4px 10px; border-radius: 4px; font-size: 9px; font-weight: 700; letter-spacing: 1px; color:#fff;">HASIL AI</div>
+        <div style="border-radius: 10px; overflow: hidden; position: relative; height: 180px; border: 1px solid var(--gold-primary);">
+          <div style="position: absolute; top: 8px; left: 8px; background: var(--gold-primary); padding: 4px 10px; border-radius: 4px; font-size: 9px; font-weight: 700; letter-spacing: 1px; color:#000;">HASIL AI</div>
           <img id="splitImgAfter" style="width: 100%; height: 100%; object-fit: cover;">
         </div>
       </div>
@@ -752,19 +615,12 @@
       <div class="title-lg" style="font-size: 24px;">Database Eksekutif</div>
       <div class="text-sub" style="margin-bottom: 30px;">Kontrol akses penuh manajemen klien dan infrastruktur.</div>
       
-      <div style="background: var(--surface-alt); border-radius: 10px; padding: 20px; margin-bottom: 30px; border: 1px solid var(--border-thin);">
-        <label style="font-size: 10px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; display:flex; align-items: center; gap: 8px;"><i class="fas fa-broadcast-tower"></i> Transmisi Global</label>
+      <div style="background: rgba(255,255,255,0.02); border-radius: 10px; padding: 20px; margin-bottom: 30px; border: 1px solid rgba(255,255,255,0.05);">
+        <label style="font-size: 10px; font-weight: 700; color: var(--gold-primary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; display:flex; align-items: center; gap: 8px;"><i class="fas fa-broadcast-tower"></i> Transmisi Global</label>
         <textarea id="broadcastInput" class="glass-input" placeholder="Tulis instruksi pengumuman untuk didistribusikan..." style="min-height: 90px; resize: none; margin-bottom: 16px;"></textarea>
         <button class="btn btn-primary click-sound" onclick="sendBroadcastMsg()"><i class="fas fa-paper-plane"></i> Sebarkan Transmisi</button>
       </div>
       
-      <!-- FITUR FILTER & RESET MASSAL LIMIT 0 -->
-      <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;">
-        <button id="btnFilterAll" class="btn btn-primary click-sound" style="flex: 1; padding: 10px; font-size: 10px;" onclick="setMemberFilter('all')"><i class="fas fa-users"></i> Semua Klien</button>
-        <button id="btnFilterZero" class="btn btn-outline click-sound" style="flex: 1; padding: 10px; font-size: 10px;" onclick="setMemberFilter('zero')"><i class="fas fa-battery-empty"></i> Limit 0</button>
-      </div>
-      <button id="btnResetMass" class="btn btn-outline hidden click-sound" style="margin-bottom: 24px; border-color: var(--success); color: var(--success);" onclick="massResetZeroLimits()"><i class="fas fa-sync-alt"></i> Reset Massal Klien Limit 0 ke Default (3)</button>
-
       <div class="form-group"><input type="text" id="memberSearchInput" class="glass-input" placeholder="Cari Identitas (Username / ID)..." oninput="renderMemberList()" /></div>
       <div id="memberList" class="data-list"></div>
     </div>
@@ -787,31 +643,31 @@
 <!-- PROFILE SIDE PANEL -->
 <div id="profileSheet" class="overlay" style="justify-content: flex-end; padding: 0;">
   <div class="side-panel">
-    <button class="btn-close click-sound" onclick="closeProfileSheet()" style="position: absolute; top: 30px; left: -16px; right: auto; background: var(--bg-base);"><i class="fas fa-times"></i></button>
+    <button class="btn-close click-sound" onclick="closeProfileSheet()" style="position: absolute; top: 30px; left: -16px; right: auto; background: var(--surface-dark);"><i class="fas fa-times"></i></button>
     
     <div style="text-align: center; margin: 40px 0 40px;">
-      <div class="pw-avatar click-sound" style="width: 80px; height: 80px; margin: 0 auto 16px; font-size: 28px; border: 1px solid var(--gold); cursor:pointer;" onclick="document.getElementById('avatarFileInput').click()" title="Ganti Foto">
+      <div class="pw-avatar click-sound" style="width: 80px; height: 80px; margin: 0 auto 16px; font-size: 28px; border: 1px solid var(--gold-primary); cursor:pointer;" onclick="document.getElementById('avatarFileInput').click()" title="Ganti Foto">
         <span class="disp-avatar-text">?</span>
       </div>
-      <div class="hover-text-gold click-sound" style="display: inline-flex; align-items: center; gap: 8px; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); font-weight: 600; margin-bottom: 16px; cursor: pointer;" onclick="document.getElementById('avatarFileInput').click()">
+      <div style="display: inline-flex; align-items: center; gap: 8px; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--gold-primary); font-weight: 600; margin-bottom: 16px; cursor: pointer; transition: 0.3s;" onmouseover="this.style.color='var(--gold-light)'" onmouseout="this.style.color='var(--gold-primary)'" onclick="document.getElementById('avatarFileInput').click()">
         <i class="fas fa-camera"></i> Ubah Potret
       </div>
       <input type="file" id="avatarFileInput" accept="image/*" style="display: none;" onchange="handleAvatarUpload(event)">
       
-      <div class="title-lg disp-username" style="font-size: 24px; color: var(--text-main);">Username</div>
-      <div class="disp-userrole" style="font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); margin-top: 6px;">Role</div>
+      <div class="title-lg disp-username" style="font-size: 24px; color: #fff;">Username</div>
+      <div class="disp-userrole" style="font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: var(--gold-primary); margin-top: 6px;">Role</div>
     </div>
 
-    <div style="background: var(--surface-alt); border-radius: 10px; border: 1px solid var(--border-thin); padding: 20px; margin-bottom: 24px;">
+    <div style="background: rgba(255,255,255,0.02); border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); padding: 20px; margin-bottom: 24px;">
        <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; font-weight:600; display: flex; align-items: center; gap: 8px;"><i class="fas fa-fingerprint"></i> Data Identitas</div>
-       <div style="display:flex; justify-content:space-between; margin-bottom: 16px; border-bottom: 1px solid var(--border-thin); padding-bottom: 10px;"><span style="font-size:11px; color:var(--text-dim);">ID Klien</span><span class="disp-userid" style="font-size:12px; font-weight: 600; color: var(--gold-dark);">MSH-00</span></div>
-       <div style="display:flex; justify-content:space-between; margin-bottom: 16px; border-bottom: 1px solid var(--border-thin); padding-bottom: 10px;"><span style="font-size:11px; color:var(--text-dim);">Kontak Utama</span><span class="disp-userwa" style="font-size:12px; font-weight: 600; color: var(--text-main);">08...</span></div>
-       <div style="display:flex; justify-content:space-between;"><span style="font-size:11px; color:var(--text-dim);">IP Terekam</span><span class="disp-userip" style="font-size:12px; font-weight: 600; color: var(--text-main);">...</span></div>
+       <div style="display:flex; justify-content:space-between; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px;"><span style="font-size:11px; color:var(--text-dim);">ID Klien</span><span class="disp-userid" style="font-size:12px; font-weight: 600; color: var(--gold-light);">MSH-00</span></div>
+       <div style="display:flex; justify-content:space-between; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px;"><span style="font-size:11px; color:var(--text-dim);">Kontak Utama</span><span class="disp-userwa" style="font-size:12px; font-weight: 600; color: var(--text-pure);">08...</span></div>
+       <div style="display:flex; justify-content:space-between;"><span style="font-size:11px; color:var(--text-dim);">IP Terekam</span><span class="disp-userip" style="font-size:12px; font-weight: 600; color: var(--text-pure);">...</span></div>
     </div>
 
-    <div style="background: var(--surface-alt); border-radius: 10px; border: 1px solid var(--border-thin); padding: 20px; margin-bottom: 40px;">
+    <div style="background: rgba(255,255,255,0.02); border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); padding: 20px; margin-bottom: 40px;">
       <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; font-weight:600; display: flex; align-items: center; gap: 8px;"><i class="fas fa-lock"></i> Pengaturan Kredensial</div>
-      <div style="background: var(--border-thin); border-left: 2px solid var(--gold); padding: 12px 14px; border-radius: 0 4px 4px 0; font-size: 10px; color: var(--gold-dark); line-height: 1.6; margin-bottom: 20px;">
+      <div style="background: rgba(166, 124, 0, 0.1); border-left: 2px solid var(--gold-primary); padding: 12px 14px; border-radius: 0 4px 4px 0; font-size: 10px; color: var(--gold-light); line-height: 1.6; margin-bottom: 20px;">
         <b>Ketentuan:</b> Username hanya dapat dimodifikasi <b>satu (1) kali</b> demi eksklusivitas.
       </div>
       
@@ -828,21 +684,21 @@
   <div class="bottom-sheet" id="modeModalSheet">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
       <div class="title-lg" style="margin: 0; font-size: 20px;">Model Render AI</div>
-      <i class="fas fa-times click-sound" id="closeModeModal" style="cursor: pointer; color: var(--text-muted); font-size: 18px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-thin); border-radius: 50%;"></i>
+      <i class="fas fa-times click-sound" id="closeModeModal" style="cursor: pointer; color: var(--text-muted); font-size: 18px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.1); border-radius: 50%;"></i>
     </div>
     
     <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px;">
-      <div class="glass-card glass-card-hover mode-option-item selected click-sound" data-mode="2x" style="display:flex; align-items:center; gap:16px; padding: 18px; border-color: var(--gold); background: var(--border-thin);">
-        <i class="fas fa-expand" style="font-size: 20px; color: var(--gold);"></i>
-        <div><div style="font-family: var(--font-heading); font-weight: 600; font-size: 15px; margin-bottom: 4px; color: var(--gold-dark);">Super Resolution 2x</div><div style="font-size: 11px; color: var(--text-muted); line-height: 1.5;">Menggandakan matriks piksel secara presisi.</div></div>
+      <div class="glass-card glass-card-hover mode-option-item selected click-sound" data-mode="2x" style="display:flex; align-items:center; gap:16px; padding: 18px; border-color: var(--gold-primary); background: rgba(230,194,122,0.05);">
+        <i class="fas fa-expand" style="font-size: 20px; color: var(--gold-primary);"></i>
+        <div><div style="font-family: var(--font-heading); font-weight: 600; font-size: 15px; margin-bottom: 4px; color: var(--gold-light);">Super Resolution 2x</div><div style="font-size: 11px; color: var(--text-dim); line-height: 1.5;">Menggandakan matriks piksel secara presisi.</div></div>
       </div>
       <div class="glass-card glass-card-hover mode-option-item click-sound" data-mode="1x" style="display:flex; align-items:center; gap:16px; padding: 18px;">
-        <i class="fas fa-magic" style="font-size: 20px; color: var(--text-dim);"></i>
-        <div><div style="font-family: var(--font-heading); font-weight: 600; font-size: 15px; margin-bottom: 4px; color: var(--text-main);">Clean & Sharpen</div><div style="font-size: 11px; color: var(--text-muted); line-height: 1.5;">Pembersihan noise dan penajaman detail murni.</div></div>
+        <i class="fas fa-magic" style="font-size: 20px; color: var(--text-muted);"></i>
+        <div><div style="font-family: var(--font-heading); font-weight: 600; font-size: 15px; margin-bottom: 4px; color: var(--text-pure);">Clean & Sharpen</div><div style="font-size: 11px; color: var(--text-dim); line-height: 1.5;">Pembersihan noise dan penajaman detail murni.</div></div>
       </div>
       <div class="glass-card glass-card-hover mode-option-item click-sound" data-mode="hdr" style="display:flex; align-items:center; gap:16px; padding: 18px;">
-        <i class="fas fa-sun" style="font-size: 20px; color: var(--text-dim);"></i>
-        <div><div style="font-family: var(--font-heading); font-weight: 600; font-size: 15px; margin-bottom: 4px; color: var(--text-main);">Dynamic HDR Boost</div><div style="font-size: 11px; color: var(--text-muted); line-height: 1.5;">Optimalisasi kontras dan rentang warna ekstrim.</div></div>
+        <i class="fas fa-sun" style="font-size: 20px; color: var(--text-muted);"></i>
+        <div><div style="font-family: var(--font-heading); font-weight: 600; font-size: 15px; margin-bottom: 4px; color: var(--text-pure);">Dynamic HDR Boost</div><div style="font-size: 11px; color: var(--text-dim); line-height: 1.5;">Optimalisasi kontras dan rentang warna ekstrim.</div></div>
       </div>
     </div>
     <button class="btn btn-primary click-sound" id="applyModeBtn">Terapkan Pilihan</button>
@@ -889,24 +745,6 @@
 
     const _0x1a2b = ["\x68\x74\x74\x70\x73\x3a\x2f\x2f\x72\x65\x73\x74\x61\x70\x69\x64\x68\x61\x6e\x2e\x76\x65\x72\x63\x65\x6c\x2e\x61\x70\x70", "\x64\x72\x61\x76\x6e\x64\x65\x73\x61\x6d\x75\x65\x6c", "\x2b\x36\x32\x38\x32\x32\x33\x31\x36\x36\x39\x30\x35\x33", "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x61\x63\x74\x69\x76\x65\x5f\x73\x65\x73\x73\x69\x6f\x6e\x5f\x73\x75\x70\x61\x62\x61\x73\x65", "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x63\x61\x63\x68\x65\x64\x5f\x75\x73\x65\x72\x5f\x64\x61\x74\x61", "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x6c\x61\x73\x74\x5f\x73\x65\x65\x6e\x5f\x62\x72\x6f\x61\x64\x63\x61\x73\x74\x5f\x69\x64"];
     const API_BASE = _0x1a2b[0]; const API_KEY = _0x1a2b[1]; const OWNER_WA = _0x1a2b[2]; const SESSION_KEY = _0x1a2b[3]; const CACHE_KEY = _0x1a2b[4]; const BROADCAST_SEEN_KEY = _0x1a2b[5];
-    const BIO_USER_KEY = "mshaomi_bio_user"; const BIO_PWD_KEY = "mshaomi_bio_pwd";
-
-    let currentFilterMode = 'all'; 
-
-    // --- TEMA LUAR / DALAM RUANGAN ---
-    window.toggleTheme = function() {
-        const body = document.body;
-        const icon = document.getElementById('themeIcon');
-        if(body.getAttribute('data-theme') === 'indoor') {
-            body.setAttribute('data-theme', 'outdoor');
-            icon.className = 'fas fa-moon';
-            customAlert("Mode Luar Ruangan (Terang) Diaktifkan");
-        } else {
-            body.setAttribute('data-theme', 'indoor');
-            icon.className = 'fas fa-sun';
-            customAlert("Mode Dalam Ruangan (Gelap) Diaktifkan");
-        }
-    };
 
     async function apiCall(action, payload = {}) {
         try {
@@ -917,11 +755,11 @@
 
     window.customAlert = function(msg, isError = false) {
         const toast = document.getElementById('globalToast'); document.getElementById('toastMsg').textContent = msg;
-        toast.style.background = isError ? 'var(--danger-bg)' : 'var(--surface-main)';
-        toast.style.border = isError ? '1px solid var(--danger)' : '1px solid var(--border-strong)';
-        toast.style.color = 'var(--text-main)';
+        toast.style.background = isError ? 'rgba(20, 10, 10, 0.95)' : 'rgba(10, 10, 12, 0.95)';
+        toast.style.border = isError ? '1px solid var(--danger)' : '1px solid var(--gold-dark)';
+        toast.style.color = '#fff';
         toast.querySelector('i').className = isError ? 'fas fa-exclamation-triangle' : 'fas fa-check-circle';
-        toast.querySelector('i').style.color = isError ? 'var(--danger)' : 'var(--gold)';
+        toast.querySelector('i').style.color = isError ? '#ff6b6b' : 'var(--gold-primary)';
         toast.classList.add('show'); setTimeout(() => { toast.classList.remove('show'); }, 3500);
     };
 
@@ -1031,7 +869,7 @@
         topUsers.forEach((u, index) => {
             let rankColor = 'var(--text-muted)';
             let medalIcon = '';
-            if (index === 0) { rankColor = 'var(--gold)'; medalIcon = '<i class="fas fa-crown" style="color:var(--gold); margin-right:8px;"></i>'; }
+            if (index === 0) { rankColor = 'var(--gold-primary)'; medalIcon = '<i class="fas fa-crown" style="color:var(--gold-primary); margin-right:8px;"></i>'; }
             else if (index === 1) { rankColor = '#e5e4e2'; medalIcon = '<i class="fas fa-award" style="color:#e5e4e2; margin-right:8px;"></i>'; }
             else if (index === 2) { rankColor = '#cd7f32'; medalIcon = '<i class="fas fa-award" style="color:#cd7f32; margin-right:8px;"></i>'; }
 
@@ -1042,7 +880,7 @@
                    <span style="color:${rankColor}; width:24px; font-weight:700; font-size: 14px;">#${index+1}</span>
                    ${medalIcon} @${u.username}
                 </div>
-                <span style="font-size:14px; font-weight:700; color:var(--gold-dark);">${u.limit_count ?? 3} Limit</span>
+                <span style="font-size:14px; font-weight:700; color:var(--gold-light);">${u.limit_count ?? 3} Limit</span>
             `;
             container.appendChild(item);
         });
@@ -1067,14 +905,14 @@
             const roleBadges = document.querySelectorAll('.disp-userrole');
 
             if (user.role === 'Owner') {
-                roleBadges.forEach(rb => { rb.textContent = 'SYSTEM OWNER'; rb.style.color = 'var(--text-main)'; });
+                roleBadges.forEach(rb => { rb.textContent = 'SYSTEM OWNER'; rb.style.color = 'var(--text-pure)'; });
                 if(ownerDashBtn) ownerDashBtn.classList.remove('hidden'); 
                 if(promoBanner) promoBanner.classList.add('hidden');
                 if(topupCard) topupCard.classList.add('hidden');
             } else {
                 if(ownerDashBtn) ownerDashBtn.classList.add('hidden'); 
                 if (isVip) { 
-                    roleBadges.forEach(rb => { rb.textContent = 'VIP EXCLUSIVE'; rb.style.color = 'var(--gold)'; }); 
+                    roleBadges.forEach(rb => { rb.textContent = 'VIP EXCLUSIVE'; rb.style.color = 'var(--gold-primary)'; }); 
                     if(promoBanner) promoBanner.classList.add('hidden'); 
                     if(topupCard) topupCard.classList.add('hidden');
                 } else { 
@@ -1138,7 +976,7 @@
     function generateCaptcha() { 
         const num1 = Math.floor(Math.random() * 10) + 1; const num2 = Math.floor(Math.random() * 10) + 1; currentCaptchaAnswer = num1 + num2; 
         const label = document.getElementById('captchaLabel'); 
-        if(label) label.innerHTML = `Selesaikan <span style="background:var(--surface-alt); padding:4px 8px; border-radius:4px; font-weight:700; margin-left:8px; border: 1px solid var(--border-strong); color: var(--gold-dark);">${num1} + ${num2}</span>`; 
+        if(label) label.innerHTML = `Selesaikan <span style="background:rgba(255,255,255,0.05); padding:4px 8px; border-radius:4px; font-weight:700; margin-left:8px; border: 1px solid rgba(230,194,122,0.3); color: var(--gold-primary);">${num1} + ${num2}</span>`; 
     }
     function parseBool(val) { return val === true || val === 'true' || val === '1' || val === 't' || val === 'TRUE' || val === 'YES'; }
     window.handleVipPromoClick = function() { 
@@ -1225,53 +1063,17 @@
     window.closeWarningModal = function() { document.getElementById('warningModal').classList.remove('show'); if(!localStorage.getItem(SESSION_KEY)) document.getElementById('loginView').classList.remove('hidden'); };
     window.handleForgotClick = function() { window.open(`https://wa.me/${OWNER_WA.replace('+', '')}?text=` + encodeURIComponent("Salam hormat, saya membutuhkan bantuan pemulihan akses (lupa sandi)."), '_blank'); };
     
-    // FILTER LOGIC
-    window.setMemberFilter = function(mode) {
-        currentFilterMode = mode;
-        const btnAll = document.getElementById('btnFilterAll');
-        const btnZero = document.getElementById('btnFilterZero');
-        const btnResetMass = document.getElementById('btnResetMass');
-
-        if(mode === 'all') {
-            btnAll.className = 'btn btn-primary click-sound';
-            btnAll.style.flex = '1';
-            btnZero.className = 'btn btn-outline click-sound';
-            btnZero.style.flex = '1';
-            btnResetMass.classList.add('hidden');
-        } else if(mode === 'zero') {
-            btnAll.className = 'btn btn-outline click-sound';
-            btnAll.style.flex = '1';
-            btnZero.className = 'btn btn-primary click-sound';
-            btnZero.style.flex = '1';
-            btnResetMass.classList.remove('hidden');
-        }
-        renderMemberList();
-    };
-
     window.renderMemberList = async function() { 
         const res = await apiCall('getUsers'); const memberList = document.getElementById('memberList'); const searchInput = document.getElementById('memberSearchInput'); 
         if(!memberList || !res.status) return; const users = res.data; const searchQuery = searchInput ? searchInput.value.toLowerCase().trim() : ''; 
-        let filteredUsers = users.filter(m => (m.username || '').toLowerCase().includes(searchQuery) || (m.id_code || '').toLowerCase().includes(searchQuery)); 
+        const filteredUsers = users.filter(m => (m.username || '').toLowerCase().includes(searchQuery) || (m.id_code || '').toLowerCase().includes(searchQuery)); 
         
-        // Aplikasikan filter limit 0
-        if (currentFilterMode === 'zero') {
-            filteredUsers = filteredUsers.filter(m => {
-                const lmt = m.limit_count ?? 3;
-                return lmt <= 0 && m.role !== 'Owner' && !parseBool(m.is_permanent);
-            });
-        }
-
         filteredUsers.sort((a, b) => { 
             const aVip = parseBool(a.is_permanent) || a.role === 'Owner' ? 1 : 0; const bVip = parseBool(b.is_permanent) || b.role === 'Owner' ? 1 : 0; 
             if (aVip !== bVip) return bVip - aVip; return new Date(a.created_at || 0) - new Date(b.created_at || 0); 
         });
 
         memberList.innerHTML = ''; 
-        if (filteredUsers.length === 0) {
-             memberList.innerHTML = `<div style="text-align:center; padding: 20px; font-size:11px; color:var(--text-dim);">Tidak ada klien yang cocok dengan filter.</div>`;
-             return;
-        }
-
         filteredUsers.forEach((m) => { 
             const isVipUser = parseBool(m.is_permanent); const isBannedUser = parseBool(m.is_banned); 
             let roleStr = 'Reguler'; if (m.role === 'Owner') roleStr = 'Eksekutif'; else if (isVipUser) roleStr = 'VIP';
@@ -1279,46 +1081,26 @@
             const el = document.createElement('div'); el.className = 'data-item';
             el.innerHTML = `
                 <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
-                  <span style="font-weight:600; font-size:14px; color:var(--text-main);">@${m.username} ${isBannedUser ? '<span style="color:var(--danger); font-size:9px; background:var(--danger-bg); padding: 2px 6px; border-radius:2px; margin-left:6px;">SUSPENDED</span>' : ''}</span>
-                  <span style="font-size:11px; color:var(--text-muted); background:var(--bg-base); border: 1px solid var(--border-thin); padding: 2px 8px; border-radius: 4px;">${m.id_code || 'MSH-00'}</span>
+                  <span style="font-weight:600; font-size:14px; color:var(--text-pure);">@${m.username} ${isBannedUser ? '<span style="color:var(--danger-light); font-size:9px; background:var(--danger); padding: 2px 6px; border-radius:2px; margin-left:6px;">SUSPENDED</span>' : ''}</span>
+                  <span style="font-size:11px; color:var(--text-muted); background:rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); padding: 2px 8px; border-radius: 4px;">${m.id_code || 'MSH-00'}</span>
                 </div>
                 <div style="font-size:10px; color:var(--text-dim); margin-bottom:16px; display:flex; gap:16px; flex-wrap: wrap;">
-                  <span><b>ROLE:</b> <span style="color:${isVipUser ? 'var(--gold)' : 'var(--text-muted)'}">${roleStr}</span></span> 
+                  <span><b>ROLE:</b> <span style="color:${isVipUser ? 'var(--gold-primary)' : 'var(--text-muted)'}">${roleStr}</span></span> 
                   <span><b>PWD:</b> <span>${m.password}</span></span> 
                   <span><b>WA:</b> <span>${m.wa||'-'}</span></span>
                 </div>
-                <div style="display:flex; align-items:center; gap:8px; margin-bottom:16px; background:var(--bg-base); padding:12px; border-radius:10px; border: 1px solid var(--border-thin);">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:16px; background:rgba(0,0,0,0.2); padding:12px; border-radius:10px; border: 1px solid rgba(255,255,255,0.05);">
                   <span style="font-size:10px; font-weight:600; color:var(--text-muted); text-transform:uppercase;">Limit:</span>
-                  <input type="number" id="inputLimit_${m.username}" value="${m.limit_count ?? 3}" class="glass-input" style="padding:6px 10px; font-size:12px; width:70px; text-align:center; font-weight:600; color:var(--gold-dark);" />
+                  <input type="number" id="inputLimit_${m.username}" value="${m.limit_count ?? 3}" class="glass-input" style="padding:6px 10px; font-size:12px; width:70px; text-align:center; font-weight:600; color:var(--gold-light);" />
                   <button class="btn btn-outline click-sound" style="padding:6px 14px; width:auto; font-size:10px;" onclick="setCustomLimit('${m.username}')">Update</button>
                 </div>
                 <div style="display:flex; gap:10px;">
-                  <button class="btn btn-outline click-sound" style="padding:10px; font-size:10px; flex:1; border-color:${isVipUser ? 'var(--gold-dark)' : 'var(--border-thin)'}; color:${isVipUser ? 'var(--gold)' : 'var(--text-main)'};" onclick="toggleVipStatus('${m.username}', ${isVipUser})"><i class="fas fa-crown"></i> ${isVipUser ? 'Revoke VIP' : 'Grant VIP'}</button>
-                  <button class="btn btn-outline click-sound" style="padding:10px; font-size:10px; flex:1; color:${isBannedUser ? 'var(--gold)' : 'var(--danger)'}; border-color:${isBannedUser ? 'var(--gold)' : 'var(--danger)'}; background: ${isBannedUser ? 'transparent' : 'var(--danger-bg)'}" onclick="toggleSuspendStatus('${m.username}', ${isBannedUser})"><i class="fas ${isBannedUser ? 'fa-unlock' : 'fa-lock'}"></i> ${isBannedUser ? 'Lepas Suspend' : 'Suspend'}</button>
+                  <button class="btn btn-outline click-sound" style="padding:10px; font-size:10px; flex:1; border-color:${isVipUser ? 'var(--gold-dark)' : 'rgba(255,255,255,0.1)'}; color:${isVipUser ? 'var(--gold-primary)' : 'var(--text-pure)'};" onclick="toggleVipStatus('${m.username}', ${isVipUser})"><i class="fas fa-crown"></i> ${isVipUser ? 'Revoke VIP' : 'Grant VIP'}</button>
+                  <button class="btn btn-outline click-sound" style="padding:10px; font-size:10px; flex:1; color:${isBannedUser ? 'var(--gold-primary)' : 'var(--danger-light)'}; border-color:${isBannedUser ? 'var(--gold-primary)' : 'var(--danger)'}; background: ${isBannedUser ? 'transparent' : 'rgba(158,28,28,0.15)'}" onclick="toggleSuspendStatus('${m.username}', ${isBannedUser})"><i class="fas ${isBannedUser ? 'fa-unlock' : 'fa-lock'}"></i> ${isBannedUser ? 'Lepas Suspend' : 'Suspend'}</button>
                 </div>
             `; 
             memberList.appendChild(el); 
         }); 
-    };
-
-    window.massResetZeroLimits = async function() {
-        customConfirm("Apakah Anda yakin ingin mereset masal seluruh klien yang limitnya 0 kembali menjadi 3?", async () => {
-            customAlert("Mengeksekusi reset massal. Mohon tunggu...");
-            const res = await apiCall('getUsers');
-            if(!res.status) return customAlert("Gagal terhubung ke database.", true);
-            const users = res.data;
-            let successCount = 0;
-            
-            for (let m of users) {
-                const lmt = m.limit_count ?? 3;
-                if (lmt <= 0 && m.role !== 'Owner' && !parseBool(m.is_permanent)) {
-                    await apiCall('updateUser', { username: m.username, updates: { limit_count: 3 } });
-                    successCount++;
-                }
-            }
-            customAlert(`Berhasil mereset kuota untuk ${successCount} klien.`);
-            renderMemberList();
-        });
     };
 
     window.setCustomLimit = async function(username) {
@@ -1339,7 +1121,7 @@
         document.getElementById('closeModeModal').addEventListener('click', () => modeModalOverlay.classList.remove('show'));
         if(!strengthRange) return; 
         strengthRange.addEventListener('input', () => { const val = parseInt(strengthRange.value, 10); strengthIndicator.textContent = val <= 30 ? 'Ringan' : (val > 70 ? 'Maksimal' : 'Normal'); }); 
-        modeItems.forEach(item => { item.addEventListener('click', () => { modeItems.forEach(i => { i.classList.remove('selected'); i.style.borderColor = 'var(--border-thin)'; i.style.background = 'transparent'; }); item.classList.add('selected'); item.style.borderColor = 'var(--gold)'; item.style.background = 'var(--border-thin)'; tempSelectedMode = item.getAttribute('data-mode'); }); }); 
+        modeItems.forEach(item => { item.addEventListener('click', () => { modeItems.forEach(i => { i.classList.remove('selected'); i.style.borderColor = 'transparent'; i.style.background = 'transparent'; }); item.classList.add('selected'); item.style.borderColor = 'var(--gold-primary)'; item.style.background = 'rgba(230,194,122,0.06)'; tempSelectedMode = item.getAttribute('data-mode'); }); }); 
         applyModeBtn.addEventListener('click', () => { selectedMode = tempSelectedMode; currentModeLabel.textContent = selectedMode === '2x' ? 'Super Res 2x' : (selectedMode === '1x' ? 'Clean & Sharpen' : 'Dynamic HDR'); modeModalOverlay.classList.remove('show'); }); 
         dropZone.addEventListener('click', () => fileInput.click()); 
         fileInput.addEventListener('change', (e) => { if (e.target.files && e.target.files[0]) { selectedFile = e.target.files[0]; fileNameDisplay.innerHTML = `<i class="fas fa-file-image"></i> ${selectedFile.name}`; } });
@@ -1466,103 +1248,9 @@
             const res = await apiCall('login', { username: u, password: p }); 
             loginBtn.textContent = 'Otorisasi Masuk'; loginBtn.disabled = false; 
             if(!res.status) return showMsg('loginErrorMsg', `Akses Ditolak: ${res.error}`, 'error'); 
-            
-            // Simpan Kredensial buat Biometrik Login selanjutnya
-            localStorage.setItem(BIO_USER_KEY, u);
-            localStorage.setItem(BIO_PWD_KEY, p);
-
             localStorage.setItem(SESSION_KEY, u); localStorage.setItem(CACHE_KEY, JSON.stringify(res.data)); window.loadAppView(res.data); 
         }); 
     }
-
-    // --- HOLD-TO-UNLOCK BIOMETRIC LOGIC ---
-    let bioHoldTimer = null;
-    
-    window.openBiometricModal = function() {
-        const savedU = localStorage.getItem(BIO_USER_KEY);
-        const savedP = localStorage.getItem(BIO_PWD_KEY);
-        
-        if(!savedU || !savedP) {
-            return showMsg('loginErrorMsg', 'Tidak ada data biometrik tersimpan di perangkat ini.', 'error');
-        }
-
-        const modal = document.getElementById('biometricModal');
-        const holdBox = document.getElementById('bioHoldBox');
-        const statusText = document.getElementById('bioStatusText');
-
-        modal.classList.add('show');
-        holdBox.classList.remove('holding');
-        statusText.textContent = "Siap Memindai...";
-        
-        // Event Listeners for Hold
-        holdBox.onmousedown = handleHoldStart;
-        holdBox.ontouchstart = (e) => { e.preventDefault(); handleHoldStart(); };
-        
-        holdBox.onmouseup = handleHoldEnd;
-        holdBox.onmouseleave = handleHoldEnd;
-        holdBox.ontouchend = handleHoldEnd;
-        holdBox.ontouchcancel = handleHoldEnd;
-    };
-    
-    function handleHoldStart() {
-        const holdBox = document.getElementById('bioHoldBox');
-        const statusText = document.getElementById('bioStatusText');
-        
-        holdBox.classList.add('holding');
-        statusText.textContent = "Menahan... (Memindai)";
-        
-        // Clear previous timer if any
-        if(bioHoldTimer) clearTimeout(bioHoldTimer);
-        
-        // Set 2 seconds full hold
-        bioHoldTimer = setTimeout(async () => {
-            // BERHASIL 2 DETIK
-            holdBox.classList.remove('holding');
-            holdBox.onmousedown = null; holdBox.ontouchstart = null; // disable further clicks during processing
-            statusText.textContent = "Biometrik Dikenali. Menghubungkan...";
-            
-            const savedU = localStorage.getItem(BIO_USER_KEY);
-            const savedP = localStorage.getItem(BIO_PWD_KEY);
-            
-            const res = await apiCall('login', { username: savedU, password: savedP }); 
-            if(!res.status) {
-                closeBiometricModal();
-                showMsg('loginErrorMsg', `Akses Ditolak: Kredensial usang.`, 'error'); 
-                return;
-            }
-
-            closeBiometricModal();
-            localStorage.setItem(SESSION_KEY, savedU); 
-            localStorage.setItem(CACHE_KEY, JSON.stringify(res.data)); 
-            window.loadAppView(res.data); 
-            
-        }, 2000);
-    }
-    
-    function handleHoldEnd() {
-        const holdBox = document.getElementById('bioHoldBox');
-        const statusText = document.getElementById('bioStatusText');
-        
-        // Jika dilepas sebelum 2 detik kelar
-        if(holdBox.classList.contains('holding')) {
-            clearTimeout(bioHoldTimer);
-            holdBox.classList.remove('holding');
-            statusText.textContent = "Pemindaian Gagal. Tahan 2 Detik Penuh.";
-            
-            // Re-trigger animation hack for resetting progress ring smoothly
-            const ring = document.getElementById('bioProgressRing');
-            ring.style.animation = 'none';
-            ring.offsetHeight; 
-            ring.style.animation = null;
-        }
-    }
-
-    window.closeBiometricModal = function() {
-        document.getElementById('biometricModal').classList.remove('show');
-        const holdBox = document.getElementById('bioHoldBox');
-        holdBox.classList.remove('holding');
-        if(bioHoldTimer) clearTimeout(bioHoldTimer);
-    };
 
     if(regBtn) { 
         regBtn.addEventListener('click', async () => { 
@@ -1574,11 +1262,6 @@
                 const userIp = await getIPAddress(); const fp = await generateAdvancedFingerprint(); 
                 const res = await apiCall('register', { username: u, password: p, wa: w, ip_address: userIp, device_id: fp }); 
                 if(!res.status) throw new Error(res.error); 
-
-                // Simpan Biometrik setelah regis
-                localStorage.setItem(BIO_USER_KEY, u);
-                localStorage.setItem(BIO_PWD_KEY, p);
-
                 localStorage.setItem(SESSION_KEY, u); localStorage.setItem(CACHE_KEY, JSON.stringify(res.data)); window.loadAppView(res.data); 
             } catch (err) { showMsg('regMsg', err.message, 'error'); } finally { regBtn.textContent = 'Daftarkan Identitas'; regBtn.disabled = false; } 
         }); 
