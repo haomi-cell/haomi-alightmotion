@@ -678,14 +678,23 @@
           </div>
       </div>
 
-      <!-- VIEW: WINK VIDEO ENHANCER -->
+      <!-- VIEW: WINK VIDEO ENHANCER (DILENGKAPI AUTO UPLOAD KE SERVER SEMENTARA) -->
       <div id="videoStudioView" class="hidden">
           <div style="background: var(--glass-bg); border-left: 2px solid var(--gold-primary); padding: 12px 16px; border-radius: 0 8px 8px 0; font-size: 10px; color: var(--gold-light); line-height: 1.6; margin-bottom: 22px;">
-            <b>Wink HD Video:</b> Paste URL video Anda. Sistem akan memproses dan mengembalikan hasil render resolusi tinggi.
+            <b>Wink HD Video:</b> Unggah video dari galeri Anda. Sistem akan otomatis mengubahnya ke resolusi tinggi menggunakan Wink AI.
+          </div>
+
+          <!-- DROPZONE UNTUK VIDEO -->
+          <div id="dropZoneVideo" class="click-sound" style="border: 1px dashed var(--glass-border-strong); border-radius: 10px; padding: 35px 20px; text-align: center; background: var(--glass-bg); cursor: pointer; margin-bottom: 22px; transition: all 0.3s var(--smooth-ease);">
+            <i class="fas fa-cloud-upload-alt" style="font-size: 24px; color: var(--gold-primary); margin-bottom: 14px;"></i>
+            <div style="font-size: 12px; font-weight: 600; margin-bottom: 6px; color: var(--gold-light);">Unggah Video Galeri</div>
+            <div style="font-size: 9px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">MP4, MOV, AVI — Max 50MB</div>
+            <div id="videoFileNameDisplay" style="margin-top: 14px; font-size: 10px; color: var(--gold-primary); font-weight: 600;"></div>
+            <input type="file" id="videoFileInput" accept="video/*" style="display: none;">
           </div>
 
           <div class="form-group">
-            <label>URL Video Sumber</label>
+            <label>Atau Paste Tautan Video (Opsional)</label>
             <input type="url" id="videoUrlInput" class="glass-input" placeholder="https://..." autocomplete="off" />
           </div>
 
@@ -827,7 +836,7 @@
     document.onkeydown = function(e) { if(e.keyCode==123 || (e.ctrlKey&&e.shiftKey&&(e.keyCode==73||e.keyCode==74||e.keyCode==67)) || (e.ctrlKey&&e.keyCode==85)) return false; };
 
     // --- SECRETS & KEYS ---
-    const WINK_API_KEY = "e329d3cb861969fe599ef5fe"; // Wink API Endpoint Hidden
+    const WINK_API_KEY = "e329d3cb861969fe599ef5fe"; 
     const WINK_ENDPOINT = "https://ndxhs.my.id/wink-ai/hdvid";
     
     // --- THEME SWITCHER LOGIC ---
@@ -1337,7 +1346,6 @@
             const urlVal = urlInput.value.trim(); 
             if (!urlVal && !selectedFile) return showMsg('statusMessage', 'Sematkan URL direktori atau pilih berkas lokal.', 'error');
             
-            // Limit checking
             if(currentUserData && currentUserData.role !== 'Owner' && !parseBool(currentUserData.is_permanent)) {
                 if((currentUserData.limit_count || 0) <= 0) return showMsg('statusMessage', 'Limit Anda habis. Silahkan isi ulang.', 'error');
             }
@@ -1356,7 +1364,6 @@
                 downloadFooterActions.classList.remove('hidden');
                 showMsg('statusMessage', 'Render eksekutif diselesaikan dengan sempurna.', 'success');
 
-                // Deduct Limit
                 if(currentUserData && currentUserData.role !== 'Owner' && !parseBool(currentUserData.is_permanent)) {
                     let newLimit = Math.max(0, (currentUserData.limit_count || 0) - 1);
                     await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
@@ -1408,32 +1415,76 @@
         copyUrlBtn.addEventListener('click', () => { if (enhancedBlobUrl) { navigator.clipboard.writeText(enhancedBlobUrl); customAlert("URL disalin ke papan klip."); } });
     }
 
-    // --- VIDEO ENHANCER LOGIC (WINK AI) ---
+    // --- VIDEO ENHANCER LOGIC (WINK AI) DENGAN AUTO UPLOAD ---
     function initVideoEnhancerEngine() {
-        const videoInput = document.getElementById('videoUrlInput');
+        const videoUrlInput = document.getElementById('videoUrlInput');
+        const dropZoneVideo = document.getElementById('dropZoneVideo');
+        const videoFileInput = document.getElementById('videoFileInput');
+        const videoFileNameDisplay = document.getElementById('videoFileNameDisplay');
         const processBtn = document.getElementById('enhanceVideoBtn');
         const resultArea = document.getElementById('videoResultArea');
         const videoPlayer = document.getElementById('videoPlayerResult');
         const downloadBtn = document.getElementById('downloadVideoBtn');
         const copyBtn = document.getElementById('copyVideoUrlBtn');
+        
+        let selectedVideoFile = null;
         let currentResultVideoUrl = null;
 
+        dropZoneVideo.addEventListener('click', () => videoFileInput.click());
+        
+        videoFileInput.addEventListener('change', (e) => {
+            if (e.target.files && e.target.files[0]) {
+                selectedVideoFile = e.target.files[0];
+                videoFileNameDisplay.innerHTML = `<i class="fas fa-file-video"></i> ${selectedVideoFile.name}`;
+                videoUrlInput.value = ''; // Kosongkan URL agar prioritas ke file lokal
+            }
+        });
+
+        videoUrlInput.addEventListener('input', () => {
+            if(videoUrlInput.value.trim() !== '') {
+                selectedVideoFile = null;
+                videoFileNameDisplay.innerHTML = ''; // Hapus file jika user input manual
+            }
+        });
+
         processBtn.addEventListener('click', async () => {
-            const vUrl = videoInput.value.trim();
-            if(!vUrl) return showMsg('videoStatusMessage', 'Harap masukkan URL Video yang valid.', 'error');
+            let vUrl = videoUrlInput.value.trim();
+            if(!vUrl && !selectedVideoFile) return showMsg('videoStatusMessage', 'Harap unggah video dari galeri atau masukkan URL.', 'error');
             
-            // Limit checking
             if(currentUserData && currentUserData.role !== 'Owner' && !parseBool(currentUserData.is_permanent)) {
                 if((currentUserData.limit_count || 0) <= 0) return showMsg('videoStatusMessage', 'Limit Anda habis. Silahkan isi ulang.', 'error');
             }
 
             processBtn.disabled = true;
-            processBtn.innerHTML = '<div class="loader-spinner" style="width:14px;height:14px; border-width:2px; border-top-color:#000;"></div> Memproses Wink HD...';
             resultArea.classList.add('hidden');
-            showMsg('videoStatusMessage', 'Mengirim data ke server Wink AI...', 'success');
 
             try {
-                // Constructing the hidden fetch request
+                // TAHAP 1: AUTO UPLOAD KE SERVER SEMENTARA JIKA DARI GALERI
+                if(selectedVideoFile) {
+                    processBtn.innerHTML = '<div class="loader-spinner" style="width:14px;height:14px; border-width:2px; border-top-color:#000;"></div> Mengunggah ke Server...';
+                    showMsg('videoStatusMessage', 'Sedang memuat video ke server sementara...', 'success');
+                    
+                    const formData = new FormData();
+                    formData.append('file', selectedVideoFile);
+                    
+                    const uploadRes = await fetch('https://tmpfiles.org/api/v1/upload', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    
+                    const uploadData = await uploadRes.json();
+                    if(uploadData && uploadData.data && uploadData.data.url) {
+                        // Mengonversi link agar bisa langsung diakses (*direct link*)
+                        vUrl = uploadData.data.url.replace('tmpfiles.org/', 'tmpfiles.org/dl/');
+                    } else {
+                        throw new Error('Gagal mengunggah video ke server sementara.');
+                    }
+                }
+
+                // TAHAP 2: PROSES WINK AI
+                processBtn.innerHTML = '<div class="loader-spinner" style="width:14px;height:14px; border-width:2px; border-top-color:#000;"></div> Merender Wink HD...';
+                showMsg('videoStatusMessage', 'Mengirim perintah render ke Wink AI (Dapat memakan waktu)...', 'success');
+
                 const response = await fetch(WINK_ENDPOINT, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -1451,7 +1502,7 @@
                     resultArea.classList.remove('hidden');
                     showMsg('videoStatusMessage', 'Render Wink HD Video selesai!', 'success');
 
-                    // Deduct limit on success
+                    // Deduct limit
                     if(currentUserData && currentUserData.role !== 'Owner' && !parseBool(currentUserData.is_permanent)) {
                         let newLimit = Math.max(0, (currentUserData.limit_count || 0) - 1);
                         await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
@@ -1459,11 +1510,11 @@
                     }
 
                 } else {
-                    showMsg('videoStatusMessage', data.error || 'Server menolak permintaan (URL Invalid/Kadaluarsa).', 'error');
+                    showMsg('videoStatusMessage', data.error || 'Server Wink AI menolak permintaan.', 'error');
                 }
 
             } catch (err) {
-                showMsg('videoStatusMessage', 'Koneksi ke endpoint Wink AI terputus atau API sedang offline.', 'error');
+                showMsg('videoStatusMessage', 'Terjadi kesalahan sistem/koneksi saat memproses video.', 'error');
             } finally {
                 processBtn.disabled = false;
                 processBtn.innerHTML = '<i class="fas fa-video"></i> Eksekusi Render Video';
@@ -1471,10 +1522,7 @@
         });
 
         downloadBtn.addEventListener('click', () => {
-            if(currentResultVideoUrl) {
-                // Opening in new tab to trigger download or let user save
-                window.open(currentResultVideoUrl, '_blank');
-            }
+            if(currentResultVideoUrl) { window.open(currentResultVideoUrl, '_blank'); }
         });
 
         copyBtn.addEventListener('click', () => {
@@ -1482,72 +1530,6 @@
                 navigator.clipboard.writeText(currentResultVideoUrl);
                 customAlert("URL Video HD disalin ke papan klip!");
             }
-        });
-    }
-
-    const loginBtn = document.getElementById('loginBtn'); const regBtn = document.getElementById('regBtn'); const topLogoutBtn = document.getElementById('topLogoutBtn'); const sendBtn = document.getElementById('sendBtn'); const activateBtn = document.getElementById('activateBtn');
-
-    if(loginBtn) { 
-        loginBtn.addEventListener('click', async () => { 
-            const u = document.getElementById('loginUser').value.trim(); const p = document.getElementById('loginPwd').value.trim(); 
-            if(!u || !p) return showMsg('loginErrorMsg', 'Harap isi seluruh kredensial.', 'error'); 
-            loginBtn.innerHTML = '<div class="loader-spinner" style="width:14px;height:14px; border-width:2px; border-top-color:#000;"></div> Memvalidasi...'; loginBtn.disabled = true; 
-            const res = await apiCall('login', { username: u, password: p }); 
-            loginBtn.textContent = 'Otorisasi Masuk'; loginBtn.disabled = false; 
-            if(!res.status) return showMsg('loginErrorMsg', `Akses Ditolak: ${res.error}`, 'error'); 
-            
-            localStorage.setItem(SESSION_KEY, u); localStorage.setItem(CACHE_KEY, JSON.stringify(res.data)); 
-            if(!localStorage.getItem(BIO_CRED_KEY)) { temporaryBioData = {u: u, p: p, resData: res.data}; document.getElementById('bioSetupModal').classList.add('show'); } 
-            else { window.loadAppView(res.data); }
-        }); 
-    }
-
-    if(regBtn) { 
-        regBtn.addEventListener('click', async () => { 
-            const u = document.getElementById('regUser').value.trim(); const w = document.getElementById('regWa').value.trim(); const p = document.getElementById('regPwd').value.trim(); const cInput = parseInt(document.getElementById('regCaptcha').value.trim()); 
-            if (!u || !w || !p || isNaN(cInput)) return showMsg('regMsg', 'Data formulir tidak lengkap.', 'error'); 
-            if (cInput !== currentCaptchaAnswer) return showMsg('regMsg', 'Verifikasi bot gagal.', 'error'); 
-            regBtn.innerHTML = '<div class="loader-spinner" style="width:14px;height:14px; border-width:2px; border-top-color:#000;"></div> Mendaftarkan...'; regBtn.disabled = true; 
-            try { 
-                const userIp = await getIPAddress(); const fp = await generateAdvancedFingerprint(); 
-                const res = await apiCall('register', { username: u, password: p, wa: w, ip_address: userIp, device_id: fp }); 
-                if(!res.status) throw new Error(res.error); 
-                localStorage.setItem(SESSION_KEY, u); localStorage.setItem(CACHE_KEY, JSON.stringify(res.data)); 
-                temporaryBioData = {u: u, p: p, resData: res.data}; document.getElementById('registerView').classList.add('hidden'); document.getElementById('bioSetupModal').classList.add('show');
-            } catch (err) { showMsg('regMsg', err.message, 'error'); } finally { regBtn.textContent = 'Daftarkan Identitas'; regBtn.disabled = false; } 
-        }); 
-    }
-
-    if(topLogoutBtn) { topLogoutBtn.addEventListener('click', () => { customConfirm("Anda yakin ingin memutus koneksi sesi eksklusif ini?", () => { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(CACHE_KEY); closeProfileSheet(); switchView('loginView'); }); }); }
-    
-    if(sendBtn) {
-        sendBtn.addEventListener('click', async () => {
-            const email = document.getElementById('emailInput').value.trim(); if(!email) return showMsg('appErrorMsg', 'Alamat email wajib disematkan.', 'error');
-            sendBtn.innerHTML = 'Proses...'; sendBtn.disabled = true;
-            try {
-                const res = await fetch(`${API_BASE}/api/am?action=send&apikey=${API_KEY}&email=${encodeURIComponent(email)}`); const data = await res.json();
-                if(data.status) { cachedEmail = email; showMsg('appErrorMsg', 'Magic link dikirim. Cek surel Anda.', 'success'); } else { showMsg('appErrorMsg', data.error || 'Gateway penyiaran gagal.', 'error'); }
-            } catch(e) { showMsg('appErrorMsg', 'Koneksi ke server terputus.', 'error'); }
-            finally { sendBtn.textContent = 'Kirim'; sendBtn.disabled = false; }
-        });
-    }
-
-    if(activateBtn) {
-        activateBtn.addEventListener('click', async () => {
-            const email = document.getElementById('emailInput').value.trim(); const magic = document.getElementById('magicInput').value.trim();
-            if(!email || !magic) return showMsg('appErrorMsg', 'Data email atau tautan Magic Link kosong.', 'error');
-            activateBtn.disabled = true; document.getElementById('btnDefault').classList.add('hidden'); document.getElementById('loaderContainer').classList.remove('hidden');
-            try {
-                const res = await fetch(`${API_BASE}/api/am?action=verif&apikey=${API_KEY}&email=${encodeURIComponent(cachedEmail || email)}&url=${encodeURIComponent(magic)}`); const data = await res.json();
-                if(data.status) {
-                    showMsg('appErrorMsg', 'Lisensi tervalidasi. Koneksi diamankan.', 'success');
-                    if(currentUserData && !parseBool(currentUserData.is_permanent) && currentUserData.role !== 'Owner') {
-                        let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 1); await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
-                        currentUserData.limit_count = newLimit; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData);
-                    }
-                } else { showMsg('appErrorMsg', data.error || 'Verifikasi lisensi ditolak sistem.', 'error'); }
-            } catch(e) { showMsg('appErrorMsg', 'Galat internal server saat sinkronisasi.', 'error'); }
-            finally { activateBtn.disabled = false; document.getElementById('btnDefault').classList.remove('hidden'); document.getElementById('loaderContainer').classList.add('hidden'); }
         });
     }
 
