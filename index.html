@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="id" data-theme="dark">
 <head>
@@ -1414,7 +1415,7 @@
         copyUrlBtn.addEventListener('click', () => { if (enhancedBlobUrl) { navigator.clipboard.writeText(enhancedBlobUrl); customAlert("URL disalin ke papan klip."); } });
     }
 
-    // --- VIDEO ENHANCER LOGIC DENGAN MULTIPLE UPLOADER FALLBACK ---
+    // --- VIDEO ENHANCER LOGIC (FIXED) ---
     function initVideoEnhancerEngine() {
         const videoUrlInput = document.getElementById('videoUrlInput');
         const dropZoneVideo = document.getElementById('dropZoneVideo');
@@ -1460,39 +1461,62 @@
             try {
                 // TAHAP 1: AUTO UPLOAD KE SERVER SEMENTARA JIKA DARI GALERI
                 if(selectedVideoFile) {
-                    processBtn.innerHTML = '<div class="loader-spinner" style="width:14px;height:14px; border-width:2px; border-top-color:#000;"></div> Mengunggah ke Server...';
+                    processBtn.innerHTML = '<div class="loader-spinner" style="width:14px;height:14px; border-width:2px; border-top-color:#000;"></div> Mengunggah...';
                     showMsg('videoStatusMessage', 'Sedang memuat video ke server penyimpanan aman...', 'success');
-                    
-                    const formData = new FormData();
-                    formData.append('files[]', selectedVideoFile); // Format untuk Uguu.se / Pomf
-                    
+
+                    let uploadSuccess = false;
+                    let lastUploadError = '';
+
+                    // 1. Coba tmpfiles.org (Paling kebal blokir ISP)
                     try {
-                        // Mencoba Uguu.se yang terjamin tembus CORS
-                        const uploadRes = await fetch('https://uguu.se/upload.php', { method: 'POST', body: formData });
-                        const uploadData = await uploadRes.json();
-                        
-                        if(uploadData && uploadData.success) {
-                            vUrl = uploadData.files[0].url;
-                        } else {
-                            throw new Error('Server Uguu menolak file.');
+                        const fdTmp = new FormData();
+                        fdTmp.append('file', selectedVideoFile);
+                        const resTmp = await fetch('https://tmpfiles.org/api/v1/upload', { method: 'POST', body: fdTmp });
+                        if(!resTmp.ok) throw new Error("Tmpfiles HTTP Error");
+                        const dataTmp = await resTmp.json();
+                        if(dataTmp && dataTmp.status === 'success') {
+                            vUrl = dataTmp.data.url.replace('tmpfiles.org/', 'tmpfiles.org/dl/');
+                            uploadSuccess = true;
                         }
-                    } catch(uploadErr) {
-                        // Fallback Darurat: Jika Uguu.se down, ganti pakai Pomf.lain.la
-                        const fd2 = new FormData();
-                        fd2.append('files[]', selectedVideoFile);
-                        const res2 = await fetch('https://pomf.lain.la/upload.php', { method: 'POST', body: fd2 });
-                        const data2 = await res2.json();
-                        
-                        if(data2 && data2.success) {
-                            vUrl = data2.files[0].url;
-                        } else {
-                            throw new Error(`Pengunggahan Gagal: Koneksi penyimpanan sementara diblokir.`);
-                        }
+                    } catch(e) { lastUploadError = e.message; }
+
+                    // 2. Coba Uguu.se (Jika tmpfiles gagal)
+                    if(!uploadSuccess) {
+                        try {
+                            const fdUguu = new FormData();
+                            fdUguu.append('files[]', selectedVideoFile);
+                            const resUguu = await fetch('https://uguu.se/upload.php', { method: 'POST', body: fdUguu });
+                            if(!resUguu.ok) throw new Error("Uguu HTTP Error");
+                            const dataUguu = await resUguu.json();
+                            if(dataUguu && dataUguu.success) {
+                                vUrl = dataUguu.files[0].url;
+                                uploadSuccess = true;
+                            }
+                        } catch(e) { lastUploadError = e.message; }
+                    }
+
+                    // 3. Coba Pomf (Jika uguu gagal)
+                    if(!uploadSuccess) {
+                        try {
+                            const fdPomf = new FormData();
+                            fdPomf.append('files[]', selectedVideoFile);
+                            const resPomf = await fetch('https://pomf.lain.la/upload.php', { method: 'POST', body: fdPomf });
+                            if(!resPomf.ok) throw new Error("Pomf HTTP Error");
+                            const dataPomf = await resPomf.json();
+                            if(dataPomf && dataPomf.success) {
+                                vUrl = dataPomf.files[0].url;
+                                uploadSuccess = true;
+                            }
+                        } catch(e) { lastUploadError = e.message; }
+                    }
+
+                    if(!uploadSuccess) {
+                        throw new Error('Upload Video Gagal diblokir browser/Internet Positif. Silahkan unggah sendiri video Anda lalu paste tautan pada kolom URL Manual.');
                     }
                 }
 
                 // TAHAP 2: PROSES WINK AI
-                processBtn.innerHTML = '<div class="loader-spinner" style="width:14px;height:14px; border-width:2px; border-top-color:#000;"></div> Merender Wink HD...';
+                processBtn.innerHTML = '<div class="loader-spinner" style="width:14px;height:14px; border-width:2px; border-top-color:#000;"></div> Merender Wink...';
                 showMsg('videoStatusMessage', 'Mengirim perintah render ke Wink AI (Harap tunggu)...', 'success');
 
                 let apiData = null;
@@ -1504,18 +1528,24 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ apikey: WINK_API_KEY, url: vUrl })
                     });
+                    if(!response.ok) throw new Error("Wink API HTTP Error");
                     apiData = await response.json();
                 } catch(apiErr) {
-                    // Fallback CORS PROXY: Jika server Wink Anda mem-block CORS request dari Web
-                    const proxyResponse = await fetch('https://corsproxy.io/?' + encodeURIComponent(WINK_ENDPOINT), {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ apikey: WINK_API_KEY, url: vUrl })
-                    });
-                    apiData = await proxyResponse.json();
+                    try {
+                        // Fallback CORS PROXY
+                        const proxyResponse = await fetch('https://corsproxy.io/?' + encodeURIComponent(WINK_ENDPOINT), {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ apikey: WINK_API_KEY, url: vUrl })
+                        });
+                        if(!proxyResponse.ok) throw new Error("Proxy HTTP Error");
+                        apiData = await proxyResponse.json();
+                    } catch (proxyErr) {
+                        throw new Error('Server API Wink AI sedang Down atau tidak merespon Proxy (CORS Error).');
+                    }
                 }
 
-                if(apiData.status === true && (apiData.data?.url || apiData.result || apiData.url)) {
+                if(apiData && apiData.status === true && (apiData.data?.url || apiData.result || apiData.url)) {
                     currentResultVideoUrl = apiData.data?.url || apiData.result || apiData.url;
                     videoPlayer.src = currentResultVideoUrl;
                     resultArea.classList.remove('hidden');
