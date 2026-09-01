@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="id" data-theme="dark">
 <head>
@@ -306,6 +307,68 @@
   }
   .biometric-scanner.active .scan-line { display: block; }
   @keyframes scanningLine { 0% { top: 10%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 90%; opacity: 0; } }
+
+  /* IMAGE COMPARE SLIDER CSS */
+  .image-compare-wrapper {
+    position: relative;
+    width: 100%;
+    height: 280px;
+    border-radius: 12px;
+    border: 1px solid var(--glass-border-strong);
+    overflow: hidden;
+    margin: 25px 0 15px;
+    touch-action: none; /* Prevent scroll while dragging */
+    user-select: none;
+  }
+  .img-comp-base, .img-comp-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+  }
+  .img-comp-overlay {
+    clip-path: inset(0 50% 0 0);
+  }
+  .img-comp-slider {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 40px;
+    height: 100%;
+    margin-left: -20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: ew-resize;
+    z-index: 10;
+  }
+  .img-comp-slider-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 2px;
+    background-color: var(--gold-primary);
+    transform: translateX(-50%);
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    pointer-events: none;
+  }
+  .img-comp-slider-button {
+    width: 32px;
+    height: 32px;
+    background: var(--gold-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+    font-size: 14px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.6);
+    pointer-events: none;
+  }
 
   ::-webkit-scrollbar { width: 4px; }
   ::-webkit-scrollbar-track { background: transparent; }
@@ -648,14 +711,27 @@
         <i class="fas fa-info-circle"></i> <span id="statusMessageText"></span>
       </div>
 
-      <div class="hidden" id="comparisonSplitSection" style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 25px 0;">
-        <div style="border-radius: 8px; overflow: hidden; position: relative; height: 160px; border: 1px solid var(--glass-border);">
-          <div style="position: absolute; top: 6px; left: 6px; background: var(--overlay-bg); padding: 3px 8px; border-radius: 4px; font-size: 8px; font-weight: 600; letter-spacing: 1px; color:var(--text-pure); border: 1px solid var(--glass-border-strong);">ASLI</div>
-          <img id="splitImgBefore" style="width: 100%; height: 100%; object-fit: cover;">
+      <!-- IMAGE COMPARE SLIDER -->
+      <div class="hidden" id="comparisonSplitSection" style="margin: 25px 0;">
+        <div class="image-compare-wrapper" id="imageCompareWrapper">
+          <!-- Gambar bawah (Hasil AI) -->
+          <img id="splitImgAfter" class="img-comp-base" src="">
+          
+          <!-- Gambar atas (Asli) yg di crop -->
+          <img id="splitImgBefore" class="img-comp-overlay" src="">
+          
+          <!-- Slider Garis -->
+          <div class="img-comp-slider" id="imgCompSlider">
+            <div class="img-comp-slider-line"></div>
+            <div class="img-comp-slider-button"><i class="fas fa-arrows-alt-h"></i></div>
+          </div>
+          
+          <!-- Label Text -->
+          <div style="position:absolute; top:10px; left:10px; background:var(--overlay-bg); padding:4px 8px; border-radius:4px; font-size:9px; font-weight:700; color:var(--text-pure); border:1px solid var(--glass-border-strong); pointer-events:none; z-index:5;">ASLI</div>
+          <div style="position:absolute; top:10px; right:10px; background:var(--gold-primary); padding:4px 8px; border-radius:4px; font-size:9px; font-weight:700; color:#000; pointer-events:none; z-index:5;">HASIL AI</div>
         </div>
-        <div style="border-radius: 8px; overflow: hidden; position: relative; height: 160px; border: 1px solid var(--gold-primary);">
-          <div style="position: absolute; top: 6px; left: 6px; background: var(--gold-primary); padding: 3px 8px; border-radius: 4px; font-size: 8px; font-weight: 700; letter-spacing: 1px; color:#000;">HASIL AI</div>
-          <img id="splitImgAfter" style="width: 100%; height: 100%; object-fit: cover;">
+        <div style="font-size:9px; color:var(--text-dim); text-align:center; margin-top:-10px; margin-bottom: 20px; text-transform:uppercase; letter-spacing:1px;">
+           <i class="fas fa-arrows-alt-h" style="margin-right: 4px;"></i> Geser garis untuk membandingkan
         </div>
       </div>
       
@@ -1264,8 +1340,69 @@
     window.togglePwd = function(inputId, btnEl) { const input = document.getElementById(inputId); const icon = btnEl.querySelector('i'); if (!input) return; if (input.type === 'password') { input.type = 'text'; icon.className = 'fas fa-eye-slash'; } else { input.type = 'password'; icon.className = 'far fa-eye'; } };
 
     function initImageEnhancerEngine() {
-        const urlInput = document.getElementById('imageUrl'); const dropZone = document.getElementById('dropZone'); const fileInput = document.getElementById('fileInput'); const fileNameDisplay = document.getElementById('fileNameDisplay'); const strengthRange = document.getElementById('strengthRange'); const strengthIndicator = document.getElementById('strengthIndicator'); const modeModalOverlay = document.getElementById('modeModalOverlay'); const applyModeBtn = document.getElementById('applyModeBtn'); const currentModeLabel = document.getElementById('currentModeLabel'); const modeItems = document.querySelectorAll('.mode-option-item'); const enhanceBtn = document.getElementById('enhanceBtn'); const resetBtn = document.getElementById('resetBtn'); const comparisonSplitSection = document.getElementById('comparisonSplitSection'); const splitImgBefore = document.getElementById('splitImgBefore'); const splitImgAfter = document.getElementById('splitImgAfter'); const statusMessage = document.getElementById('statusMessage'); const downloadFooterActions = document.getElementById('downloadFooterActions'); const downloadBtn = document.getElementById('downloadBtn'); const copyUrlBtn = document.getElementById('copyUrlBtn'); let selectedFile = null; let selectedMode = '2x'; let tempSelectedMode = '2x'; let originalBlobUrl = null; let enhancedBlobUrl = null; 
+        const urlInput = document.getElementById('imageUrl'); 
+        const dropZone = document.getElementById('dropZone'); 
+        const fileInput = document.getElementById('fileInput'); 
+        const fileNameDisplay = document.getElementById('fileNameDisplay'); 
+        const strengthRange = document.getElementById('strengthRange'); 
+        const strengthIndicator = document.getElementById('strengthIndicator'); 
+        const modeModalOverlay = document.getElementById('modeModalOverlay'); 
+        const applyModeBtn = document.getElementById('applyModeBtn'); 
+        const currentModeLabel = document.getElementById('currentModeLabel'); 
+        const modeItems = document.querySelectorAll('.mode-option-item'); 
+        const enhanceBtn = document.getElementById('enhanceBtn'); 
+        const resetBtn = document.getElementById('resetBtn'); 
+        const comparisonSplitSection = document.getElementById('comparisonSplitSection'); 
+        const splitImgBefore = document.getElementById('splitImgBefore'); 
+        const splitImgAfter = document.getElementById('splitImgAfter'); 
+        const statusMessage = document.getElementById('statusMessage'); 
+        const downloadFooterActions = document.getElementById('downloadFooterActions'); 
+        const downloadBtn = document.getElementById('downloadBtn'); 
+        const copyUrlBtn = document.getElementById('copyUrlBtn'); 
         
+        let selectedFile = null; let selectedMode = '2x'; let tempSelectedMode = '2x'; let originalBlobUrl = null; let enhancedBlobUrl = null; 
+        
+        // --- LOGIKA SLIDER COMPARE (Geser Gambar) ---
+        const wrapper = document.getElementById('imageCompareWrapper');
+        const slider = document.getElementById('imgCompSlider');
+        let isSliding = false;
+
+        function slide(event) {
+            if (!isSliding) return;
+            let x = 0;
+            if (event.type.includes('touch')) {
+                x = event.touches[0].clientX - wrapper.getBoundingClientRect().left;
+            } else {
+                x = event.clientX - wrapper.getBoundingClientRect().left;
+            }
+            
+            const width = wrapper.offsetWidth;
+            if (x < 0) x = 0;
+            if (x > width) x = width;
+            
+            const percentage = (x / width) * 100;
+            slider.style.left = percentage + '%';
+            // Memotong gambar overlay dari sisi kanan berdasarkan persentase
+            splitImgBefore.style.clipPath = `inset(0 ${100 - percentage}% 0 0)`;
+        }
+
+        if(wrapper && slider) {
+            wrapper.addEventListener('mousedown', (e) => { isSliding = true; slide(e); });
+            wrapper.addEventListener('touchstart', (e) => { isSliding = true; slide(e); }, {passive: true});
+            
+            window.addEventListener('mouseup', () => isSliding = false);
+            window.addEventListener('touchend', () => isSliding = false);
+            
+            window.addEventListener('mousemove', slide);
+            window.addEventListener('touchmove', (e) => {
+                if(isSliding) {
+                    if (e.cancelable) e.preventDefault(); // Mencegah scrolling saat menggeser slider
+                    slide(e);
+                }
+            }, {passive: false});
+        }
+        // ------------------------------------------
+
         document.getElementById('closeModeModal').addEventListener('click', () => modeModalOverlay.classList.remove('show'));
         if(!strengthRange) return; 
         strengthRange.addEventListener('input', () => { const val = parseInt(strengthRange.value, 10); strengthIndicator.textContent = val <= 30 ? 'Ringan' : (val > 70 ? 'Maksimal' : 'Normal'); }); 
@@ -1286,7 +1423,12 @@
                 let enhancedBlob = await runLocalEnhancer(img, parseInt(strengthRange.value), selectedMode);
                 
                 enhancedBlobUrl = URL.createObjectURL(enhancedBlob);
-                splitImgAfter.src = enhancedBlobUrl;
+                splitImgAfter.src = enhancedBlobUrl; // Gambar Hasil AI di belakang
+                
+                // Reset posisi slider ke 50%
+                slider.style.left = '50%';
+                splitImgBefore.style.clipPath = 'inset(0 50% 0 0)';
+
                 comparisonSplitSection.classList.remove('hidden');
                 downloadFooterActions.classList.remove('hidden');
                 showMsg('statusMessage', 'Render eksekutif diselesaikan dengan sempurna.', 'success');
@@ -1390,7 +1532,6 @@
             try {
                 const res = await fetch(`${API_BASE}/api/am?action=verif&apikey=${API_KEY}&email=${encodeURIComponent(cachedEmail || email)}&url=${encodeURIComponent(magic)}`); const data = await res.json();
                 if(data.status) {
-                    // Update pesan pada kotak inline dan jalankan notifikasi toast/pop-up atas
                     showMsg('appErrorMsg', 'Berhasil! Akun Anda sudah menjadi premium.', 'success');
                     customAlert('Berhasil! Akun Anda sudah premium. Aktivasi Magic Link selesai.');
                     
