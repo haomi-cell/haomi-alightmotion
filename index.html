@@ -1,1566 +1,899 @@
+```html
 <!DOCTYPE html>
-<html lang="id" data-theme="dark">
+<html lang="id">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>AM Executive — Premium Access</title>
+<title>AM Executive | Exclusive Access</title>
 
-<!-- Fonts -->
+<!-- Fonts: Playfair Display (Luxury Serif) & Montserrat (Clean Sans) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
+<!-- Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
   :root {
-    /* Base Dark Mode / Variables Definition */
-    --bg-base: #030304;
-    --bg-gradient: radial-gradient(circle at 50% 0%, rgba(139, 101, 8, 0.15) 0%, rgba(3,3,4,1) 60%);
-    --surface-dark: rgba(14, 14, 16, 0.85);
-    --surface-light: rgba(24, 24, 28, 0.7);
-    --input-bg: rgba(24, 24, 28, 0.7);
+    /* ULTRA-PREMIUM COLOR PALETTE */
+    --bg-base: #050505;
+    --bg-gradient: radial-gradient(circle at top center, rgba(30, 25, 10, 1) 0%, rgba(5,5,5,1) 70%);
     
-    /* Classic Metallic Gold */
+    --glass-bg: rgba(18, 18, 18, 0.65);
+    --glass-border: rgba(212, 175, 55, 0.15);
+    --glass-border-strong: rgba(212, 175, 55, 0.4);
+    
     --gold-primary: #D4AF37;
-    --gold-light: #F3E5AB;
-    --gold-dark: #8B6508;
-    --gold-glow: rgba(212, 175, 55, 0.4);
+    --gold-light: #F9E596;
+    --gold-dark: #997A15;
+    --gold-glow: rgba(212, 175, 55, 0.25);
     
-    /* Text & Lines */
-    --text-pure: #ffffff;
-    --text-dim: #a0a0a0;
-    --text-muted: #666666;
+    --text-pure: #FFFFFF;
+    --text-dim: #D1D1D1;
+    --text-muted: #888888;
     
-    /* Dynamic Glass Variables */
-    --border-thin: rgba(212, 175, 55, 0.15);
-    --border-focus: rgba(212, 175, 55, 0.7);
-    --glass-bg: rgba(255, 255, 255, 0.02);
-    --glass-border: rgba(255, 255, 255, 0.05);
-    --glass-border-strong: rgba(255, 255, 255, 0.1);
-    
-    /* Modals & Shadows */
-    --overlay-bg: rgba(0, 0, 0, 0.85);
-    --shadow-strong: rgba(0, 0, 0, 0.6);
-    --avatar-bg: #1a1a1a;
-    --limit-bg-grad: radial-gradient(circle at center, rgba(20,20,24,0.7) 0%, rgba(10,10,12,0.5) 100%);
-    --promo-bg1: rgba(30,24,10,0.85);
-    --promo-bg2: rgba(15,12,5,0.95);
-    
-    /* Status Colors */
-    --danger: #8a1515;
-    --danger-light: #ff4d4d;
-    --success: #14522f;
-    --success-light: #4ade80;
+    --danger: #E53935;
+    --danger-bg: rgba(229, 57, 53, 0.1);
+    --success: #10B981;
+    --success-bg: rgba(16, 185, 129, 0.1);
     
     --font-heading: 'Playfair Display', serif;
     --font-body: 'Montserrat', sans-serif;
-    --smooth-ease: cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  /* --- LIGHT MODE OVERRIDES --- */
-  [data-theme="light"] {
-    --bg-base: #F4F4F6;
-    --bg-gradient: radial-gradient(circle at 50% 0%, rgba(192, 144, 16, 0.1) 0%, rgba(244,244,246,1) 60%);
-    --surface-dark: rgba(255, 255, 255, 0.85);
-    --surface-light: rgba(250, 250, 252, 0.9);
-    --input-bg: rgba(245, 245, 248, 0.9);
     
-    --gold-primary: #B8860B; 
-    --gold-light: #9B7000; 
-    --gold-glow: rgba(184, 134, 11, 0.25);
-    
-    --text-pure: #111111;
-    --text-dim: #555555;
-    --text-muted: #888888;
-    
-    --border-thin: rgba(184, 134, 11, 0.25);
-    --border-focus: rgba(184, 134, 11, 0.8);
-    --glass-bg: rgba(0, 0, 0, 0.02);
-    --glass-border: rgba(0, 0, 0, 0.08);
-    --glass-border-strong: rgba(0, 0, 0, 0.15);
-    
-    --overlay-bg: rgba(255, 255, 255, 0.85);
-    --shadow-strong: rgba(0, 0, 0, 0.08);
-    --avatar-bg: #e5e5e5;
-    --limit-bg-grad: radial-gradient(circle at center, rgba(255,255,255,0.7) 0%, rgba(240,240,245,0.5) 100%);
-    --promo-bg1: rgba(253, 246, 227, 0.9);
-    --promo-bg2: rgba(250, 240, 210, 0.95);
+    --transition-smooth: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   
-  body { 
-    background-color: var(--bg-base); background-image: var(--bg-gradient);
-    font-family: var(--font-body); color: var(--text-pure); 
-    min-height: 100vh; overflow-x: hidden; position: relative;
-    transition: background-color 0.5s var(--smooth-ease), color 0.5s var(--smooth-ease);
+  body {
+    background-color: var(--bg-base);
+    background-image: var(--bg-gradient);
+    background-attachment: fixed;
+    color: var(--text-pure);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    overflow-x: hidden;
+    line-height: 1.6;
   }
 
-  /* --- LUXURY ANIMATED LOADER --- */
-  #initialLoader { 
-    position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; 
-    background: var(--bg-base); flex-direction: column; transition: opacity 0.8s var(--smooth-ease); 
-  }
-  .luxury-loader { position: relative; width: 90px; height: 90px; }
-  .luxury-loader::before, .luxury-loader::after {
-    content: ''; position: absolute; inset: 0; border-radius: 50%;
-    border: 2px solid transparent; border-top-color: var(--gold-primary);
-    animation: spin-luxury 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
-  }
-  .luxury-loader::after {
-    inset: 12px; border-top-color: transparent; border-bottom-color: var(--gold-light);
-    animation-direction: reverse; animation-duration: 2s;
-  }
-  .loader-logo { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: var(--gold-primary); font-size: 28px; animation: pulse-glow 2s infinite; }
-  .loader-text { margin-top: 35px; font-size: 10px; font-weight: 600; color: var(--gold-dark); text-transform: uppercase; letter-spacing: 4px; animation: blink-text 1.5s infinite; }
-  @keyframes spin-luxury { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-  @keyframes pulse-glow { 0%, 100% { text-shadow: 0 0 10px var(--gold-glow); transform: translate(-50%, -50%) scale(1); } 50% { text-shadow: 0 0 25px rgba(212,175,55,0.8); transform: translate(-50%, -50%) scale(1.05); } }
-  @keyframes blink-text { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+  /* --- TYPOGRAPHY --- */
+  .heading-lg { font-family: var(--font-heading); font-size: 28px; font-weight: 600; color: var(--gold-light); line-height: 1.2; margin-bottom: 8px; }
+  .heading-md { font-family: var(--font-heading); font-size: 20px; font-weight: 600; color: var(--text-pure); margin-bottom: 6px; }
+  .text-sm { font-size: 13px; color: var(--text-dim); }
+  .text-xs { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-muted); }
+  .text-gold { color: var(--gold-primary); }
 
-  .loader-spinner { width: 40px; height: 40px; border: 2px solid var(--glass-border-strong); border-top-color: var(--gold-primary); border-radius: 50%; animation: spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite; }
-  @keyframes spin { to { transform: rotate(360deg); } }
+  /* --- UTILITIES --- */
   .hidden { display: none !important; }
+  .flex-between { display: flex; align-items: center; justify-content: space-between; }
+  .flex-center { display: flex; align-items: center; justify-content: center; }
 
-  /* Container Transition Fade In */
-  .container { width: 100%; max-width: 480px; margin: 0 auto; padding: 24px 20px 140px; animation: smoothFadeIn 0.8s var(--smooth-ease) forwards; }
-  @keyframes smoothFadeIn { from { opacity: 0; transform: translateY(15px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
-
-  /* --- PREMIUM GLASS CARD --- */
-  .glass-card { 
-    background: var(--surface-dark); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-    border: 1px solid var(--border-thin); border-radius: 12px; padding: 35px 28px; 
-    box-shadow: 0 20px 50px var(--shadow-strong); transition: all 0.4s var(--smooth-ease);
-    position: relative; overflow: hidden;
+  /* --- LAYOUT --- */
+  .container {
+    width: 100%; max-width: 480px; margin: 0 auto; padding: 24px 20px 120px;
+    animation: fadeUp 0.6s var(--transition-smooth);
   }
-  .glass-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--gold-primary), transparent); opacity: 0.5; }
-  .glass-card-hover:hover { border-color: var(--border-focus); transform: translateY(-4px); box-shadow: 0 28px 60px var(--shadow-strong); cursor: pointer; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-  /* TYPOGRAPHY */
-  .title-lg { font-family: var(--font-heading); font-size: 26px; font-weight: 600; color: var(--gold-light); line-height: 1.3; margin-bottom: 8px; letter-spacing: 0.5px; }
-  .title-md { font-family: var(--font-heading); font-size: 18px; font-weight: 600; color: var(--gold-primary); margin-bottom: 6px; }
-  .text-sub { font-size: 12px; color: var(--text-dim); line-height: 1.6; font-weight: 300; letter-spacing: 0.3px;}
-
-  /* FORMS & INPUTS */
-  .form-group { margin-bottom: 22px; }
-  .form-group label { display: block; font-size: 9px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; }
-  .input-wrapper { position: relative; display: flex; align-items: center; }
-  .glass-input { 
-    width: 100%; background: var(--input-bg); border: 1px solid var(--glass-border); 
-    border-radius: 8px; color: var(--text-pure); font-family: var(--font-body); font-size: 13px; 
-    padding: 14px 16px; outline: none; transition: all 0.3s var(--smooth-ease); 
-  }
-  .glass-input:focus { border-color: var(--gold-primary); box-shadow: 0 0 15px var(--gold-glow); transform: scale(1.01); }
-  .pwd-toggle { position: absolute; right: 16px; background: none; border: none; color: var(--text-muted); font-size: 14px; cursor: pointer; transition: color 0.3s; }
-  .pwd-toggle:hover { color: var(--gold-primary); }
-
-  /* BUTTONS */
-  .btn { width: 100%; padding: 15px 20px; border-radius: 8px; font-family: var(--font-body); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; transition: all 0.35s var(--smooth-ease); border: none; }
-  .btn:active { transform: scale(0.97); }
-  .btn-primary { background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark)); color: #000; box-shadow: 0 8px 25px rgba(212, 175, 55, 0.2); }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(212, 175, 55, 0.35); filter: brightness(1.1); }
-  .btn-primary:disabled { background: var(--glass-border-strong); color: var(--text-muted); cursor: not-allowed; transform: none; box-shadow: none; }
-  .btn-outline { background: var(--glass-bg); border: 1px solid var(--gold-primary); color: var(--gold-light); }
-  .btn-outline:hover { background: rgba(212, 175, 55, 0.1); transform: translateY(-2px); }
-
-  /* MESSAGE BOXES */
-  .message-box { padding: 14px 16px; border-radius: 8px; font-size: 11px; font-weight: 500; display: none; align-items: flex-start; gap: 10px; margin-bottom: 22px; line-height: 1.6; border-left: 3px solid transparent; }
-  .message-box i { font-size: 14px; margin-top: 2px; }
-  .message-box.show { display: flex; animation: smoothSlideIn 0.4s var(--smooth-ease); }
-  @keyframes smoothSlideIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
-  .message-error { background: rgba(138, 21, 21, 0.15); border-color: var(--danger); color: var(--danger-light); }
-  .message-success { background: rgba(20, 82, 47, 0.15); border-color: var(--success); color: var(--success-light); }
-
-  /* GLOBAL TOAST */
-  #globalToast { position: fixed; top: -80px; left: 50%; transform: translateX(-50%); opacity: 0; background: var(--surface-dark); backdrop-filter: blur(12px); border: 1px solid var(--border-thin); color: var(--text-pure); padding: 14px 24px; border-radius: 10px; font-size: 11px; font-weight: 500; display: flex; align-items: center; gap: 12px; z-index: 9999; transition: all 0.5s var(--smooth-ease); box-shadow: 0 20px 40px var(--shadow-strong); pointer-events: none; letter-spacing: 0.5px;}
-  #globalToast.show { top: 30px; opacity: 1; pointer-events: auto; }
-
-  /* TOP HEADER & THEME TOGGLE */
-  .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-  .logo-wrapper { display: flex; align-items: center; gap: 12px; font-family: var(--font-heading); font-weight: 600; font-size: 20px; letter-spacing: 1px; color: var(--text-pure); }
-  .logo-icon { width: 34px; height: 34px; border-radius: 8px; background: linear-gradient(135deg, var(--gold-light), var(--gold-dark)); display: flex; align-items: center; justify-content: center; color: #000; font-size: 14px; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2); }
-  
-  .header-right-meta { display: flex; align-items: center; gap: 10px; }
-  .header-action-btn { background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--text-pure); width: 34px; height: 34px; border-radius: 8px; font-size: 14px; cursor: pointer; transition: all 0.3s var(--smooth-ease); display: flex; align-items: center; justify-content: center; }
-  .header-action-btn:hover { background: var(--gold-primary); color: #000; border-color: var(--gold-primary); transform: translateY(-2px); }
-  .header-logout-btn { background: rgba(138, 21, 21, 0.15); border: 1px solid var(--danger); color: var(--danger-light); width: 34px; height: 34px; border-radius: 8px; font-size: 12px; cursor: pointer; transition: all 0.3s var(--smooth-ease); display: flex; align-items: center; justify-content: center; }
-  .header-logout-btn:hover { background: var(--danger); color: #fff; transform: translateY(-2px); }
-
-  .global-stats-badge { background: var(--surface-light); border: 1px solid var(--glass-border); padding: 8px 16px; border-radius: 8px; font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 8px; margin-bottom: 24px; width: fit-content; }
-  .live-dot { width: 6px; height: 6px; background: var(--gold-primary); border-radius: 50%; box-shadow: 0 0 8px var(--gold-primary); animation: pulse 2s infinite; }
-  
-  /* BLACK CARD PROFILE WIDGET */
-  .profile-widget { background: linear-gradient(135deg, var(--surface-dark), var(--surface-light)); backdrop-filter: blur(16px); display: flex; justify-content: space-between; align-items: center; padding: 22px; margin-bottom: 24px; border: 1px solid var(--border-thin); cursor: pointer; border-radius: 12px; box-shadow: 0 15px 35px var(--shadow-strong); transition: all 0.4s var(--smooth-ease); }
-  .profile-widget:hover { transform: translateY(-3px); border-color: var(--gold-primary); }
-  .pw-left { display: flex; align-items: center; gap: 16px; }
-  .pw-avatar { width: 48px; height: 48px; border-radius: 50%; background: var(--avatar-bg); display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-weight: 600; color: var(--gold-primary); font-size: 18px; overflow: hidden; border: 1px solid var(--gold-dark); transition: transform 0.3s; }
-  .profile-widget:hover .pw-avatar { transform: scale(1.05); }
-  .pw-avatar img { width: 100%; height: 100%; object-fit: cover; }
-  .pw-info h4 { font-family: var(--font-heading); font-size: 16px; font-weight: 600; margin-bottom: 4px; color: var(--gold-light); }
-  .pw-info p { font-size: 8px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; }
-
-  /* VIP PROMO BANNER */
-  .vip-promo { background: linear-gradient(135deg, var(--promo-bg1), var(--promo-bg2)); backdrop-filter: blur(12px); border: 1px solid var(--gold-dark); padding: 18px 22px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; cursor: pointer; transition: all 0.4s var(--smooth-ease); }
-  .vip-promo:hover { box-shadow: 0 15px 30px rgba(212, 175, 55, 0.15); transform: translateY(-2px); }
-  .vip-promo i { font-size: 22px; color: var(--gold-primary); transition: transform 0.4s; }
-  .vip-promo:hover i { transform: scale(1.1) rotate(10deg); }
-
-  /* TOP UP CARD */
-  .topup-card { display: flex; justify-content: space-between; align-items: center; padding: 18px 22px; margin-bottom: 24px; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 12px; transition: all 0.3s var(--smooth-ease); }
-  .topup-card:hover { border-color: rgba(212,175,55,0.4); transform: translateY(-2px); }
-  .btn-topup { background: transparent; color: var(--gold-primary); border: 1px solid var(--gold-primary); padding: 6px 14px; border-radius: 6px; font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.3s; }
-  .btn-topup:hover { background: var(--gold-primary); color: #000; transform: scale(1.05); }
-
-  /* BIG LIMIT DISPLAY */
-  .limit-display-area { text-align: center; margin-bottom: 30px; padding: 35px 20px; background: var(--limit-bg-grad); border-radius: 12px; border: 1px solid var(--glass-border); box-shadow: inset 0 0 50px var(--shadow-strong); }
-  .limit-info-box { font-size: 9px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; line-height: 1.6; margin-bottom: 20px; display: inline-block; padding-bottom: 12px; border-bottom: 1px solid var(--glass-border); }
-  .big-limit-num { font-family: var(--font-heading); font-size: 64px; font-weight: 400; line-height: 1; margin-bottom: 10px; color: var(--gold-light); transition: transform 0.4s var(--smooth-ease); }
-  .big-limit-num.vip { color: var(--gold-primary); text-shadow: 0 5px 25px var(--gold-glow); }
-  .limit-label { font-size: 9px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; font-weight: 500; }
-
-  /* LEADERBOARD BUTTON */
-  .leaderboard-toggle-btn { width: 100%; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 10px; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; color: var(--text-pure); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.3s var(--smooth-ease); margin-bottom: 16px; }
-  .leaderboard-toggle-btn:hover { border-color: var(--gold-dark); background: rgba(212,175,55,0.05); color: var(--gold-light); transform: translateY(-2px); }
-
-  /* MINIMALIST BOTTOM NAV */
-  .bottom-nav { 
-    position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); 
-    width: calc(100% - 40px); max-width: 400px; height: 65px; 
-    background: var(--surface-dark); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--glass-border); border-radius: 35px; 
-    display: flex; justify-content: space-around; align-items: center; z-index: 100; box-shadow: 0 25px 50px var(--shadow-strong); 
-  }
-  .nav-item { display: flex; flex-direction: column; align-items: center; gap: 5px; color: var(--text-muted); font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.4s var(--smooth-ease); width: 33%; }
-  .nav-item i { font-size: 16px; transition: transform 0.4s var(--smooth-ease), color 0.3s; }
-  .nav-item.active { color: var(--gold-primary); }
-  .nav-item.active i { transform: translateY(-4px) scale(1.1); }
-  .nav-item:hover { color: var(--text-pure); }
-
-  /* --- OVERLAYS & MODALS --- */
-  .overlay { 
-    position: fixed; inset: 0; background: var(--overlay-bg); backdrop-filter: blur(12px); 
-    z-index: 999; display: flex; align-items: center; justify-content: center; 
-    opacity: 0; pointer-events: none; transition: opacity 0.4s var(--smooth-ease); padding: 20px; 
-  }
-  .overlay.show { opacity: 1; pointer-events: auto; }
-  
-  .modal-glass { 
-    background: var(--surface-dark); border: 1px solid var(--border-thin); border-radius: 12px; 
-    padding: 35px 25px; width: 100%; max-width: 400px; box-shadow: 0 35px 70px var(--shadow-strong); 
-    transform: translateY(20px) scale(0.97); opacity: 0; 
-    transition: all 0.4s var(--smooth-ease); position: relative; max-height: 85vh; overflow-y: auto; 
-  }
-  .overlay.show .modal-glass { transform: translateY(0) scale(1); opacity: 1; }
-  
-  .btn-close { position: absolute; top: 15px; right: 15px; width: 30px; height: 30px; border-radius: 50%; background: transparent; border: 1px solid var(--glass-border-strong); color: var(--text-muted); display: flex; align-items: center; justify-content: center; font-size: 12px; cursor: pointer; transition: all 0.3s var(--smooth-ease); }
-  .btn-close:hover { color: var(--gold-primary); border-color: var(--gold-primary); transform: rotate(90deg); }
-
-  /* SIDE PANEL SLIDE ANIMATION */
-  .side-panel { 
-    position: absolute; top: 0; right: 0; width: 85%; max-width: 380px; height: 100%; 
-    background: var(--surface-dark); backdrop-filter: blur(30px); 
-    border-left: 1px solid var(--glass-border); padding: 40px 24px; 
-    transform: translateX(100%); transition: transform 0.5s var(--smooth-ease); 
-    overflow-y: auto; box-shadow: -25px 0 60px var(--shadow-strong); 
-  }
-  .overlay.show .side-panel { transform: translateX(0); }
-  
-  /* BOTTOM SHEET ANIMATION */
-  .bottom-sheet { 
-    position: absolute; bottom: 0; width: 100%; max-width: 480px; 
-    background: var(--surface-dark); backdrop-filter: blur(25px); 
-    border-top: 1px solid var(--border-thin); border-radius: 20px 20px 0 0; 
-    padding: 30px 24px 40px; transform: translateY(100%); 
-    transition: transform 0.4s var(--smooth-ease); max-height: 85vh; overflow-y: auto; 
-  }
-  .overlay.show .bottom-sheet { transform: translateY(0); }
-
-  /* GRIDS & LISTS */
-  .limit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 24px; }
-  .limit-box { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 10px; padding: 18px 10px; text-align: center; cursor: pointer; transition: all 0.3s var(--smooth-ease); }
-  .limit-box:hover { border-color: var(--gold-primary); background: rgba(212,175,55,0.05); transform: translateY(-2px); }
-  .limit-box .lmt { font-family: var(--font-heading); font-size: 20px; font-weight: 600; color: var(--gold-light); margin-bottom: 6px; display: block; }
-  .limit-box .prc { font-size: 10px; color: var(--text-dim); font-weight: 500; letter-spacing: 1px; }
-
-  .data-list { display: flex; flex-direction: column; gap: 14px; }
-  .data-item { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 10px; padding: 18px; transition: all 0.3s var(--smooth-ease); }
-  .data-item:hover { border-color: var(--glass-border-strong); transform: translateY(-2px); }
-
-  /* --- BIOMETRIC FINGERPRINT UI --- */
-  .fingerprint-btn {
-    width: 50px; height: 50px; border-radius: 12px; background: rgba(212, 175, 55, 0.05); border: 1px solid var(--border-thin);
-    display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s var(--smooth-ease); margin: 0 auto;
-  }
-  .fingerprint-btn:hover { background: rgba(212, 175, 55, 0.15); border-color: var(--gold-primary); box-shadow: 0 0 15px var(--gold-glow); transform: scale(1.05); }
-  .fingerprint-btn i { font-size: 24px; color: var(--gold-primary); }
-
-  .biometric-scanner { position: relative; width: 120px; height: 120px; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; }
-  .fp-icon { font-size: 80px; color: var(--glass-border-strong); transition: color 0.4s; }
-  .fp-icon.scanning { color: rgba(212, 175, 55, 0.3); }
-  .fp-icon.success { color: var(--success-light); text-shadow: 0 0 20px var(--success-light); }
-  .fp-icon.error { color: var(--danger-light); text-shadow: 0 0 20px var(--danger-light); }
-  
-  .scan-line {
-    position: absolute; top: 0; left: 10%; width: 80%; height: 2px; background: var(--gold-primary);
-    box-shadow: 0 0 10px var(--gold-primary), 0 0 20px var(--gold-primary);
-    animation: scanningLine 1.5s ease-in-out infinite alternate; display: none;
-  }
-  .biometric-scanner.active .scan-line { display: block; }
-  @keyframes scanningLine { 0% { top: 10%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 90%; opacity: 0; } }
-
-  /* IMAGE COMPARE SLIDER CSS */
-  .image-compare-wrapper {
+  /* --- CARDS & PANELS --- */
+  .premium-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 28px 24px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+    margin-bottom: 24px;
     position: relative;
-    width: 100%;
-    height: 280px;
-    border-radius: 12px;
-    border: 1px solid var(--glass-border-strong);
     overflow: hidden;
-    margin: 25px 0 15px;
-    touch-action: none; /* Prevent scroll while dragging */
-    user-select: none;
   }
-  .img-comp-base, .img-comp-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    pointer-events: none;
-  }
-  .img-comp-overlay {
-    clip-path: inset(0 50% 0 0);
-  }
-  .img-comp-slider {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: 40px;
-    height: 100%;
-    margin-left: -20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: ew-resize;
-    z-index: 10;
-  }
-  .img-comp-slider-line {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 50%;
-    width: 2px;
-    background-color: var(--gold-primary);
-    transform: translateX(-50%);
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    pointer-events: none;
-  }
-  .img-comp-slider-button {
-    width: 32px;
-    height: 32px;
-    background: var(--gold-primary);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #000;
-    font-size: 14px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.6);
-    pointer-events: none;
+  .premium-card::before {
+    content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold-primary), transparent); opacity: 0.3;
   }
 
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: #555; border-radius: 4px; }
-  ::-webkit-scrollbar-thumb:hover { background: var(--gold-dark); }
+  /* --- INPUTS --- */
+  .form-group { margin-bottom: 20px; position: relative; }
+  .form-group label { display: block; font-size: 10px; font-weight: 600; color: var(--gold-primary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+  .input-wrapper { position: relative; display: flex; align-items: center; }
+  .glass-input {
+    width: 100%; background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border);
+    color: var(--text-pure); font-family: var(--font-body); font-size: 14px;
+    padding: 16px 18px; border-radius: 14px; outline: none; transition: var(--transition-smooth);
+  }
+  .glass-input:focus { border-color: var(--gold-primary); background: rgba(212,175,55,0.05); box-shadow: 0 0 15px var(--gold-glow); }
+  .input-action { position: absolute; right: 16px; background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 14px; transition: color 0.3s; }
+  .input-action:hover { color: var(--gold-primary); }
+
+  /* --- BUTTONS --- */
+  .btn {
+    width: 100%; padding: 16px 24px; border-radius: 14px; font-family: var(--font-body); font-size: 12px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: var(--transition-smooth);
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px; border: none; outline: none;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn-gold {
+    background: linear-gradient(135deg, var(--gold-light), var(--gold-dark)); color: #000;
+    box-shadow: 0 8px 25px var(--gold-glow);
+  }
+  .btn-gold:hover { filter: brightness(1.1); box-shadow: 0 10px 30px rgba(212,175,55,0.4); }
+  .btn-gold:disabled { background: var(--text-muted); color: #222; box-shadow: none; cursor: not-allowed; }
+  
+  .btn-outline { background: rgba(255,255,255,0.03); border: 1px solid var(--gold-primary); color: var(--gold-light); }
+  .btn-outline:hover { background: rgba(212,175,55,0.1); }
+
+  /* --- ALERTS & STATUS --- */
+  .status-box {
+    padding: 14px 18px; border-radius: 12px; font-size: 12px; font-weight: 500; display: none; align-items: flex-start; gap: 12px; margin-bottom: 24px; border: 1px solid transparent; line-height: 1.5;
+  }
+  .status-box.show { display: flex; animation: fadeUp 0.3s; }
+  .status-box i { font-size: 16px; margin-top: 2px; }
+  .status-error { background: var(--danger-bg); border-color: rgba(229,57,53,0.3); color: #FF8A80; }
+  .status-success { background: var(--success-bg); border-color: rgba(16,185,129,0.3); color: #6EE7B7; }
+
+  /* --- LOADER --- */
+  #appLoader {
+    position: fixed; inset: 0; background: var(--bg-base); z-index: 10000;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.6s;
+  }
+  .spinner-gold { width: 50px; height: 50px; border: 3px solid rgba(212,175,55,0.2); border-top-color: var(--gold-primary); border-radius: 50%; animation: spin 1s cubic-bezier(0.68,-0.55,0.265,1.55) infinite; margin-bottom: 20px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* --- NOTIFICATION TOAST --- */
+  #appToast {
+    position: fixed; top: 20px; left: 50%; transform: translate(-50%, -20px); opacity: 0; pointer-events: none;
+    background: rgba(20,20,20,0.9); backdrop-filter: blur(10px); border: 1px solid var(--gold-primary);
+    padding: 14px 24px; border-radius: 30px; font-size: 12px; font-weight: 600; color: var(--text-pure);
+    display: flex; align-items: center; gap: 12px; z-index: 11000; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  #appToast.show { transform: translate(-50%, 0); opacity: 1; pointer-events: auto; }
+
+  /* --- MODALS (OVERLAYS) --- */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
+    z-index: 9000; display: flex; align-items: center; justify-content: center; padding: 20px;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s;
+  }
+  .modal-overlay.align-bottom { align-items: flex-end; padding: 0; }
+  .modal-overlay.show { opacity: 1; pointer-events: auto; }
+  
+  .modal-content {
+    background: #111; border: 1px solid var(--glass-border); border-radius: 24px;
+    padding: 32px 24px; width: 100%; max-width: 400px; transform: scale(0.95); opacity: 0;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 25px 50px rgba(0,0,0,0.8);
+    position: relative; max-height: 85vh; overflow-y: auto;
+  }
+  .modal-overlay.show .modal-content { transform: scale(1); opacity: 1; }
+  
+  .modal-sheet {
+    background: #111; border-top: 1px solid var(--glass-border); border-radius: 28px 28px 0 0;
+    padding: 24px 24px 40px; width: 100%; max-width: 500px; transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); max-height: 85vh; overflow-y: auto;
+  }
+  .modal-overlay.show .modal-sheet { transform: translateY(0); }
+  .sheet-pill { width: 40px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; margin: 0 auto 24px; }
+  
+  .btn-close-modal {
+    position: absolute; top: 20px; right: 20px; width: 32px; height: 32px; border-radius: 50%;
+    background: rgba(255,255,255,0.05); border: none; color: var(--text-muted); cursor: pointer;
+    display: flex; align-items: center; justify-content: center; transition: 0.3s;
+  }
+  .btn-close-modal:hover { background: rgba(255,255,255,0.1); color: var(--text-pure); transform: rotate(90deg); }
+
+  /* --- BOTTOM NAVIGATION --- */
+  .bottom-nav {
+    position: fixed; bottom: 0; left: 0; width: 100%;
+    background: rgba(10,10,10,0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid var(--glass-border); padding: 12px 20px 24px;
+    display: flex; justify-content: space-around; align-items: center; z-index: 100;
+  }
+  .nav-item {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    color: var(--text-muted); font-size: 10px; font-weight: 600; text-transform: uppercase;
+    cursor: pointer; transition: 0.3s; width: 60px;
+  }
+  .nav-item i { font-size: 20px; margin-bottom: 2px; transition: transform 0.3s; }
+  .nav-item.active { color: var(--gold-primary); }
+  .nav-item.active i { transform: translateY(-4px); }
+
+  /* --- WIDGETS & COMPONENTS --- */
+  .profile-widget {
+    display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.4);
+    border: 1px solid var(--glass-border); padding: 16px; border-radius: 16px; margin-bottom: 24px; cursor: pointer; transition: 0.3s;
+  }
+  .profile-widget:hover { border-color: var(--gold-primary); background: rgba(212,175,55,0.05); }
+  .avatar-circle { width: 50px; height: 50px; border-radius: 50%; background: var(--bg-base); border: 2px solid var(--gold-primary); display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 20px; color: var(--gold-primary); overflow: hidden; }
+  
+  .vip-banner {
+    background: linear-gradient(135deg, rgba(30,25,10,0.8), rgba(10,8,0,0.9));
+    border: 1px solid var(--gold-dark); border-radius: 16px; padding: 20px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; cursor: pointer;
+  }
+  
+  /* --- DRAG & DROP AI --- */
+  .upload-area {
+    border: 2px dashed rgba(212,175,55,0.3); border-radius: 16px; padding: 40px 20px; text-align: center;
+    background: rgba(0,0,0,0.2); cursor: pointer; transition: 0.3s; margin-bottom: 24px;
+  }
+  .upload-area:hover { border-color: var(--gold-primary); background: rgba(212,175,55,0.05); }
+  
+  /* --- SEGMENTED CONTROL --- */
+  .segment-wrap { display: flex; background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); border-radius: 14px; padding: 4px; margin-bottom: 24px; position: relative; }
+  .segment-btn { flex: 1; text-align: center; padding: 12px 0; font-size: 11px; font-weight: 700; color: var(--text-muted); cursor: pointer; z-index: 1; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
+  .segment-btn.active { color: #000; }
+  .segment-bg { position: absolute; top: 4px; bottom: 4px; background: var(--gold-primary); border-radius: 10px; z-index: 0; transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1); }
+
+  /* --- SLIDER COMPARE (REFINED) --- */
+  .slider-container {
+    position: relative; width: 100%; height: 350px; border-radius: 16px; overflow: hidden;
+    border: 1px solid var(--glass-border-strong); margin-bottom: 16px; touch-action: none; user-select: none;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5); background: #000;
+  }
+  .slider-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+  .slider-overlay { clip-path: inset(0 50% 0 0); } /* Clip image from right */
+  .slider-handle-wrap { position: absolute; top: 0; bottom: 0; left: 50%; width: 40px; margin-left: -20px; display: flex; align-items: center; justify-content: center; cursor: ew-resize; z-index: 10; }
+  .slider-line { position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; background: var(--gold-light); transform: translateX(-50%); pointer-events: none; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
+  .slider-button { width: 36px; height: 36px; border-radius: 50%; background: var(--gold-primary); border: 2px solid #fff; display: flex; align-items: center; justify-content: center; color: #000; font-size: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); pointer-events: none; }
+  .badge { position: absolute; top: 12px; padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight: 700; letter-spacing: 1px; z-index: 5; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.1); color: #fff; }
+
+  /* --- ADMIN LIST --- */
+  .admin-list { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
+  .admin-card { background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border); padding: 16px; border-radius: 14px; transition: 0.3s; }
+  .admin-card:hover { border-color: var(--glass-border-strong); }
+  .tag { font-size: 9px; font-weight: 700; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: 1px; }
+  
+  /* Utilities */
+  .progress-bg { width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; margin-top: 16px; display: none; }
+  .progress-fill { height: 100%; width: 0%; background: var(--gold-primary); transition: width 0.2s linear; }
+  
+  ::-webkit-scrollbar { width: 0px; background: transparent; }
 </style>
 </head>
 <body>
 
-<!-- LUXURY LOADER -->
-<div id="initialLoader">
-  <div class="luxury-loader">
-    <i class="fas fa-crown loader-logo"></i>
-  </div>
-  <div class="loader-text">Memuat Sistem Eksklusif...</div>
+<!-- ================= STARTUP LOADER ================= -->
+<div id="appLoader">
+  <div class="spinner-gold"></div>
+  <div class="text-xs" style="color: var(--gold-primary); letter-spacing: 3px;">INITIALIZING</div>
 </div>
 
-<div id="globalToast"><i class="fas fa-info-circle"></i> <span id="toastMsg">Sistem Informasi</span></div>
+<!-- ================= TOAST NOTIFICATION ================= -->
+<div id="appToast"><i class="fas fa-info-circle"></i> <span id="toastMsg">Message</span></div>
 
-<!-- MODAL: BIOMETRIC SCANNER -->
-<div id="biometricModal" class="overlay">
-  <div class="modal-glass" style="text-align: center; padding: 40px 20px; width: 320px;">
-    <div class="title-lg" style="font-size: 20px; margin-bottom: 30px;" id="bioModalTitle">Verifikasi Identitas</div>
-    <div class="biometric-scanner" id="bioScanner">
-      <i class="fas fa-fingerprint fp-icon" id="bioIcon"></i>
-      <div class="scan-line" id="bioScanLine"></div>
+<!-- ================= MODALS ================= -->
+
+<!-- 1. WARNING MODAL (Fix stuck bug) -->
+<div id="warningModal" class="modal-overlay">
+  <div class="modal-content" style="border-color: rgba(229, 57, 53, 0.4); box-shadow: 0 25px 50px rgba(229, 57, 53, 0.15); text-align: center;">
+    <i class="fas fa-shield-alt" style="font-size: 40px; color: var(--danger); margin-bottom: 20px;"></i>
+    <h2 class="heading-md" style="color: #FF8A80; font-size: 18px;">Protokol Keamanan Aktif</h2>
+    <div style="background: rgba(229, 57, 53, 0.05); padding: 16px; border-radius: 12px; margin-bottom: 24px; font-size: 12px; color: var(--text-dim); text-align: left; border: 1px solid rgba(229, 57, 53, 0.2);">
+      Sistem ini dipantau secara ketat. Segala bentuk eksploitasi, bypass, atau inspeksi elemen akan mengakibatkan pencatatan IP dan <b>Banned Permanen</b>. Gunakan dengan bijak.
     </div>
-    <div class="text-sub" id="bioStatusText" style="margin-bottom: 20px; font-weight: 500; color: var(--gold-primary);">Sentuh sensor sidik jari Anda...</div>
-    <button class="btn btn-outline click-sound hidden" id="bioCancelBtn" onclick="cancelBiometric()">Batal</button>
+    <!-- Tombol ini hanya menutup modal -->
+    <button class="btn" style="background: var(--danger); color: #fff;" onclick="closeModal('warningModal')">SAYA MENGERTI</button>
   </div>
 </div>
 
-<!-- MODAL: BIOMETRIC SETUP PROMPT -->
-<div id="bioSetupModal" class="overlay">
-  <div class="modal-glass" style="text-align: center; padding: 40px;">
-    <i class="fas fa-fingerprint" style="font-size: 45px; color: var(--gold-primary); margin-bottom: 20px;"></i>
-    <div class="title-lg" style="font-size: 22px;">Akses Instan</div>
-    <div class="text-sub" style="margin-bottom: 30px;">Aktifkan otentikasi biometrik (Sidik Jari/FaceID) untuk login lebih cepat dan aman di sesi berikutnya.</div>
-    <button class="btn btn-primary click-sound" style="margin-bottom: 12px;" onclick="enableBiometric()">Aktifkan Biometrik</button>
-    <button class="btn btn-outline click-sound" onclick="skipBiometricSetup()">Lain Kali</button>
+<!-- 2. BIOMETRIC LOGIN -->
+<div id="bioModal" class="modal-overlay">
+  <div class="modal-content" style="text-align: center;">
+    <i class="fas fa-fingerprint" id="bioIcon" style="font-size: 50px; color: var(--gold-primary); margin-bottom: 20px;"></i>
+    <h2 class="heading-md" style="font-size: 18px;">Otentikasi Perangkat</h2>
+    <p class="text-sm" id="bioText" style="margin-bottom: 24px;">Gunakan sidik jari atau FaceID Anda.</p>
+    <button class="btn btn-outline hidden" id="bioCancel" onclick="closeModal('bioModal')">Batal</button>
   </div>
 </div>
 
-<!-- MODAL: TOP UP & QRIS -->
-<div id="limitModal" class="overlay">
-  <div class="modal-glass">
-    <button class="btn-close" onclick="closeLimitModal()"><i class="fas fa-times"></i></button>
-    <div class="title-lg" style="font-size: 22px;">Acquire Limits</div>
-    <div class="text-sub">Pilih kuota eksklusif dan selesaikan pembayaran.</div>
+<!-- 3. SETUP BIOMETRIC -->
+<div id="bioSetupModal" class="modal-overlay">
+  <div class="modal-content" style="text-align: center;">
+    <i class="fas fa-fingerprint" style="font-size: 40px; color: var(--text-pure); margin-bottom: 20px;"></i>
+    <h2 class="heading-md" style="font-size: 18px;">Akses Instan</h2>
+    <p class="text-sm" style="margin-bottom: 24px;">Aktifkan biometrik agar login berikutnya tidak perlu mengetik kata sandi.</p>
+    <button class="btn btn-gold" style="margin-bottom: 12px;" onclick="enableBiometric()">Aktifkan Sekarang</button>
+    <button class="btn btn-outline" onclick="skipBiometric()">Lain Kali</button>
+  </div>
+</div>
+
+<!-- 4. PROFILE SHEET -->
+<div id="profileSheet" class="modal-overlay align-bottom">
+  <div class="modal-sheet">
+    <div class="sheet-pill"></div>
+    <button class="btn-close-modal" onclick="closeModal('profileSheet')"><i class="fas fa-times"></i></button>
     
-    <div id="selectLimitView">
-      <div class="limit-grid" id="limitPackageGrid"></div>
-    </div>
-
-    <div id="qrisPaymentView" class="hidden" style="text-align: center; margin-top: 30px;">
-      <div style="background: #fff; padding: 14px; border-radius: 10px; display: inline-block; margin-bottom: 20px; border: 2px solid var(--gold-primary);">
-        <img id="qrisImageResult" src="" alt="QRIS" style="width: 180px; height: 180px; object-fit: contain;">
+    <div class="flex-center" style="flex-direction: column; margin-bottom: 30px;">
+      <div class="avatar-circle" style="width: 80px; height: 80px; font-size: 30px; margin-bottom: 16px; cursor: pointer; position: relative;" onclick="document.getElementById('fileAvatar').click()">
+        <span class="disp-ava">U</span>
+        <div style="position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.6); padding: 4px 0; text-align: center;"><i class="fas fa-camera text-xs" style="color: #fff;"></i></div>
       </div>
-      <div id="qrisPackageTitle" style="font-family: var(--font-heading); font-size: 18px; font-weight: 600; margin-bottom: 6px; color: var(--gold-light);"></div>
-      <div style="font-size: 10px; color: var(--text-dim); margin-bottom: 25px; letter-spacing: 1px; text-transform: uppercase;">Tx ID: <span id="qrisDepositIdSpan" style="color:var(--text-pure)"></span></div>
-      
-      <button class="btn btn-primary click-sound" onclick="checkQrisPaymentStatus()" style="margin-bottom: 12px;">Verifikasi Pembayaran</button>
-      <button class="btn btn-outline click-sound" onclick="backToLimitSelect()">Kembali</button>
+      <input type="file" id="fileAvatar" accept="image/*" class="hidden" onchange="uploadAvatar(event)">
+      <h2 class="heading-md disp-user" style="font-size: 24px;">Username</h2>
+      <div class="disp-role text-xs text-gold">Client</div>
     </div>
-  </div>
-</div>
 
-<!-- MODAL: CONFIRM -->
-<div id="customConfirmModal" class="overlay">
-  <div class="modal-glass" style="text-align: center; padding: 40px;">
-    <i class="fas fa-exclamation-triangle" style="font-size: 35px; color: var(--gold-primary); margin-bottom: 20px;"></i>
-    <div class="title-lg" style="font-size: 22px;">Konfirmasi Tindakan</div>
-    <div id="confirmText" class="text-sub" style="margin-bottom: 30px;">Tindakan ini bersifat final. Apakah Anda yakin?</div>
-    <button id="btnConfirmOk" class="btn btn-primary click-sound" style="margin-bottom: 12px;">Ya, Lanjutkan</button>
-    <button id="btnConfirmCancel" class="btn btn-outline click-sound">Batal</button>
-  </div>
-</div>
-
-<!-- MODAL: WARNING KEAMANAN TOXIC -->
-<div id="warningModal" class="overlay">
-  <div class="modal-glass" style="border-color: var(--danger); box-shadow: 0 35px 70px rgba(138, 21, 21, 0.4);">
-    <div style="text-align: center; margin-bottom: 20px;">
-      <i class="fas fa-skull-crossbones" style="font-size: 35px; color: var(--danger-light); margin-bottom: 15px;"></i>
-      <div class="title-lg" style="font-size: 20px; color: var(--danger-light);">PERINGATAN KERAS!</div>
-    </div>
-    <div style="background: rgba(138, 21, 21, 0.1); border: 1px solid var(--danger); border-radius: 8px; padding: 18px; margin-bottom: 25px; font-size: 11px; line-height: 1.7; color: var(--text-pure); text-align: justify;">
-      <b>DENGERIN BAIK-BAIK!</b> Server ini dijaga ketat. Kalau lu coba-coba macem-macem, eksploitasi, nyepam, atau sok ngide inspect elemen, IP dan Device ID lu bakal langsung gua catat dan akun lu <b>GUA BANNED PERMANEN!</b> Jangan main-main sama sistem ini.
-    </div>
-    <button class="btn btn-primary click-sound" style="background: var(--danger); color: #fff; box-shadow: 0 8px 20px rgba(138, 21, 21, 0.2);" onclick="closeWarningModal()">SAYA MENGERTI</button>
-  </div>
-</div>
-
-<!-- MODAL: BROADCAST -->
-<div id="broadcastModal" class="overlay">
-  <div class="modal-glass">
-    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px;">
-      <div style="width: 40px; height: 40px; border-radius: 8px; background: rgba(212,175,55,0.1); display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-thin);">
-        <i class="fas fa-envelope-open-text" style="font-size: 16px; color: var(--gold-primary);"></i>
-      </div>
-      <div class="title-lg" style="margin: 0; font-size: 18px;">Pesan Eksekutif</div>
-    </div>
-    <div id="broadcastContentText" style="background: var(--glass-bg); border-left: 2px solid var(--gold-primary); padding: 18px; font-size: 12px; line-height: 1.8; color: var(--text-pure); margin-bottom: 25px; border-radius: 0 8px 8px 0;">Memuat transmisi...</div>
-    <button class="btn btn-outline click-sound" onclick="closeBroadcastModal()">Tandai Telah Dibaca</button>
-  </div>
-</div>
-
-<!-- VIEW: LOGIN -->
-<div id="loginView" class="container hidden" style="display: flex; flex-direction: column; justify-content: center; min-height: 100vh;">
-  <div class="glass-card" style="padding: 40px 30px;">
-    <div style="text-align: center; margin-bottom: 35px;">
-      <div style="width: 55px; height: 55px; border-radius: 12px; background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark)); margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(212,175,55,0.2);">
-        <i class="fas fa-key" style="font-size: 22px; color: #000;"></i>
-      </div>
-      <div class="title-lg">Otorisasi Akses</div>
-      <div class="text-sub">Masuk untuk mengakses layanan eksklusif.</div>
-    </div>
-    
-    <div id="loginErrorMsg" class="message-box message-error"></div>
-    
-    <div class="form-group"><label>Identitas (Username)</label><input type="text" id="loginUser" class="glass-input" autocomplete="off" /></div>
-    <div class="form-group" style="margin-bottom: 25px;">
-      <label>Kata Sandi</label>
-      <div class="input-wrapper">
-        <input type="password" id="loginPwd" class="glass-input" autocomplete="off" />
-        <button type="button" class="pwd-toggle" onclick="togglePwd('loginPwd', this)"><i class="far fa-eye"></i></button>
-      </div>
-    </div>
-    
-    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 30px;">
-      <button id="loginBtn" class="btn btn-primary click-sound" style="flex: 1;">Otorisasi Masuk</button>
-      <div id="bioLoginWrapper" class="hidden">
-        <div class="fingerprint-btn click-sound" onclick="startBiometricLogin()" title="Login dengan Biometrik">
-          <i class="fas fa-fingerprint"></i>
+    <div style="background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border); border-radius: 16px; padding: 20px; margin-bottom: 24px;">
+      <div class="text-xs" style="margin-bottom: 16px; color: var(--text-pure);"><i class="fas fa-id-card"></i> Identitas Digital</div>
+      <div class="flex-between" style="margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px;">
+        <span class="text-sm">ID Klien</span>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <span class="disp-id" style="font-weight: 600; color: var(--gold-light);">MSH-00</span>
+          <i class="far fa-copy" style="color: var(--text-muted); cursor: pointer;" onclick="copyTxt('.disp-id', 'ID disalin')"></i>
         </div>
       </div>
+      <div class="flex-between" style="margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px;">
+        <span class="text-sm">Kontak</span><span class="disp-wa" style="font-weight: 600;">08...</span>
+      </div>
+      <div class="flex-between">
+        <span class="text-sm">IP Address</span><span class="disp-ip" style="font-weight: 600; color: var(--text-muted);">...</span>
+      </div>
+    </div>
+
+    <div style="background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border); border-radius: 16px; padding: 20px;">
+      <div class="text-xs" style="margin-bottom: 12px; color: var(--text-pure);"><i class="fas fa-lock"></i> Kredensial</div>
+      <p style="font-size: 10px; color: var(--text-muted); margin-bottom: 16px;">Username hanya dapat diubah 1x untuk mencegah fraud.</p>
+      
+      <div id="profMsg" class="status-box"></div>
+      <div class="form-group"><input type="text" id="editU" class="glass-input" placeholder="Username Baru"></div>
+      <div class="form-group"><input type="password" id="editP" class="glass-input" placeholder="Kata Sandi Baru"></div>
+      <button class="btn btn-outline" id="btnSaveProf">Simpan Perubahan</button>
+    </div>
+  </div>
+</div>
+
+<!-- 5. LIMIT / QRIS SHEET -->
+<div id="limitSheet" class="modal-overlay align-bottom">
+  <div class="modal-sheet">
+    <div class="sheet-pill"></div>
+    <button class="btn-close-modal" onclick="closeModal('limitSheet')"><i class="fas fa-times"></i></button>
+    <h2 class="heading-md" style="margin-bottom: 20px;">Tambah Kapasitas</h2>
+    
+    <div id="viewLimitSelect">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;" id="limitGrid"></div>
+    </div>
+
+    <div id="viewQris" class="hidden" style="text-align: center;">
+      <div style="background: #fff; padding: 16px; border-radius: 16px; display: inline-block; margin-bottom: 20px;">
+        <img id="qrisImg" src="" style="width: 200px; height: 200px; object-fit: contain;">
+      </div>
+      <h3 class="heading-md" id="qrisTitle">Paket</h3>
+      <div class="text-xs" style="margin-bottom: 24px;">TX ID: <span id="qrisTx" style="color:var(--text-pure);">---</span></div>
+      <button class="btn btn-gold" onclick="verifyQris()" style="margin-bottom: 12px;">Verifikasi Pembayaran</button>
+      <button class="btn btn-outline" onclick="backQris()">Kembali</button>
+    </div>
+  </div>
+</div>
+
+<!-- 6. CONFIRM MODAL -->
+<div id="confirmModal" class="modal-overlay">
+  <div class="modal-content" style="text-align: center;">
+    <h2 class="heading-md" style="font-size: 18px; margin-bottom: 12px;">Konfirmasi</h2>
+    <p class="text-sm" id="confirmText" style="margin-bottom: 24px;">Lanjutkan tindakan ini?</p>
+    <div style="display: flex; gap: 12px;">
+      <button class="btn btn-outline" style="flex:1;" id="btnConfNo">Batal</button>
+      <button class="btn btn-gold" style="flex:1;" id="btnConfYes">Ya</button>
+    </div>
+  </div>
+</div>
+
+<!-- 7. BROADCAST MODAL -->
+<div id="broadcastModal" class="modal-overlay">
+  <div class="modal-content">
+    <h2 class="heading-md" style="font-size: 18px; margin-bottom: 16px;"><i class="fas fa-envelope-open-text text-gold" style="margin-right:8px;"></i> Pesan Sistem</h2>
+    <div id="bcText" style="background: rgba(0,0,0,0.5); padding: 16px; border-radius: 12px; border-left: 3px solid var(--gold-primary); font-size: 13px; color: var(--text-dim); margin-bottom: 24px; line-height: 1.6;"></div>
+    <button class="btn btn-outline" onclick="closeModal('broadcastModal')">Tutup</button>
+  </div>
+</div>
+
+
+<!-- ================= MAIN VIEWS ================= -->
+
+<!-- VIEW: LOGIN -->
+<div id="viewLogin" class="container hidden flex-center" style="min-height: 100vh;">
+  <div class="premium-card" style="width: 100%;">
+    <div style="text-align: center; margin-bottom: 32px;">
+      <div style="width: 56px; height: 56px; background: linear-gradient(135deg, var(--gold-light), var(--gold-dark)); border-radius: 16px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 16px; box-shadow: 0 10px 20px var(--gold-glow);">
+        <i class="fas fa-key" style="font-size: 24px; color: #000;"></i>
+      </div>
+      <h1 class="heading-lg" style="font-size: 24px;">Otorisasi Klien</h1>
+      <p class="text-sm">Masuk untuk mengakses terminal eksklusif.</p>
     </div>
     
-    <div style="display: flex; justify-content: space-between; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">
-      <span style="cursor:pointer; color: var(--text-muted); transition: 0.3s;" onmouseover="this.style.color='var(--text-pure)'" onmouseout="this.style.color='var(--text-muted)'" onclick="handleForgotClick()">Lupa Sandi?</span>
-      <span style="cursor:pointer; color: var(--gold-primary); transition: 0.3s;" onmouseover="this.style.color='var(--gold-light)'" onmouseout="this.style.color='var(--gold-primary)'" onclick="switchView('registerView')">Registrasi Akun</span>
+    <div id="logMsg" class="status-box"></div>
+    
+    <div class="form-group">
+      <label>Identitas</label>
+      <input type="text" id="logU" class="glass-input" placeholder="Username / ID">
+    </div>
+    <div class="form-group" style="margin-bottom: 32px;">
+      <label>Kata Sandi</label>
+      <div class="input-wrapper">
+        <input type="password" id="logP" class="glass-input" placeholder="Passkey">
+        <button class="input-action" onclick="toggleP('logP', this)"><i class="far fa-eye"></i></button>
+      </div>
+    </div>
+    
+    <div style="display: flex; gap: 12px; margin-bottom: 24px;">
+      <button class="btn btn-gold" id="btnLog" style="flex: 1;">Akses Terminal</button>
+      <button class="btn btn-outline hidden" id="btnBioLog" style="width: 52px; padding: 0;" onclick="reqBiometric()"><i class="fas fa-fingerprint" style="font-size:20px;"></i></button>
+    </div>
+    
+    <div class="flex-between text-xs">
+      <span style="cursor: pointer;" onclick="reqRecovery()">Lupa Sandi?</span>
+      <span style="cursor: pointer; color: var(--gold-primary);" onclick="switchView('viewReg')">Daftar Baru</span>
     </div>
   </div>
 </div>
 
 <!-- VIEW: REGISTER -->
-<div id="registerView" class="container hidden" style="display: flex; flex-direction: column; justify-content: center; min-height: 100vh;">
-  <div class="glass-card" style="padding: 40px 30px;">
-    <div style="text-align: center; margin-bottom: 30px;">
-      <div class="title-lg" style="font-size: 24px;">Registrasi Klien</div>
-      <div class="text-sub">Daftarkan identitas Anda ke jaringan elit.</div>
+<div id="viewReg" class="container hidden flex-center" style="min-height: 100vh;">
+  <div class="premium-card" style="width: 100%;">
+    <div style="text-align: center; margin-bottom: 32px;">
+      <h1 class="heading-lg" style="font-size: 24px;">Registrasi Node</h1>
+      <p class="text-sm">Pembuatan identitas sistem baru.</p>
     </div>
     
-    <div id="regMsg" class="message-box"></div>
+    <div id="regMsg" class="status-box"></div>
     
-    <div class="form-group"><label>Username (Tanpa Spasi)</label><input type="text" id="regUser" class="glass-input" /></div>
-    <div class="form-group"><label>Nomor WhatsApp</label><input type="text" id="regWa" class="glass-input" placeholder="08..." /></div>
     <div class="form-group">
-      <label>Kata Sandi Privat</label>
+      <label>Username</label><input type="text" id="regU" class="glass-input" placeholder="Tanpa Spasi">
+    </div>
+    <div class="form-group">
+      <label>Kontak WA</label><input type="tel" id="regW" class="glass-input" placeholder="08...">
+    </div>
+    <div class="form-group">
+      <label>Kata Sandi</label>
       <div class="input-wrapper">
-        <input type="password" id="regPwd" class="glass-input" />
-        <button type="button" class="pwd-toggle" onclick="togglePwd('regPwd', this)"><i class="far fa-eye"></i></button>
+        <input type="password" id="regP" class="glass-input" placeholder="Rahasia">
+        <button class="input-action" onclick="toggleP('regP', this)"><i class="far fa-eye"></i></button>
       </div>
     </div>
-    <div class="form-group" style="margin-bottom: 30px;">
-      <label id="captchaLabel">Protokol Anti-Bot</label>
-      <input type="text" id="regCaptcha" class="glass-input" placeholder="Hasil perhitungan" />
+    <div class="form-group" style="margin-bottom: 32px;">
+      <label id="lblCap">Verifikasi</label>
+      <input type="number" id="regC" class="glass-input" placeholder="Hasil">
     </div>
     
-    <button id="regBtn" class="btn btn-primary click-sound">Daftarkan Identitas</button>
-    <div style="margin-top: 25px; text-align: center; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; cursor:pointer; color: var(--text-muted);" onclick="switchView('loginView')">
-      Telah terdaftar? <span style="color:var(--gold-primary);">Masuk Disini</span>
+    <button class="btn btn-gold" id="btnReg" style="margin-bottom: 24px;">Daftarkan Identitas</button>
+    
+    <div class="text-xs" style="text-align: center; cursor: pointer;" onclick="switchView('viewLogin')">
+      Telah memiliki akses? <span style="color: var(--gold-primary);">Masuk</span>
     </div>
   </div>
 </div>
 
-<!-- VIEW: MAIN DASHBOARD -->
-<div id="appView" class="container hidden">
+<!-- VIEW: APP -->
+<div id="viewApp" class="container hidden" style="padding-bottom: 100px;">
   
-  <div class="top-header">
-    <div class="logo-wrapper">
-      <div class="logo-icon"><i class="fas fa-crown"></i></div>
-      <span style="background: linear-gradient(135deg, var(--gold-light), var(--gold-dark)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">AM Executive</span>
+  <!-- Header -->
+  <header class="flex-between" style="margin-bottom: 24px;">
+    <div style="font-family: var(--font-heading); font-size: 20px; font-weight: 700; letter-spacing: 1px;">AM <span style="color:var(--gold-primary);">EXEC</span></div>
+    <div style="display: flex; gap: 12px;">
+      <button class="input-action" style="position:relative; right:0;" onclick="openModal('profileSheet')"><i class="far fa-user-circle" style="font-size:22px;"></i></button>
+      <button class="input-action" style="position:relative; right:0; color:var(--danger);" onclick="logOut()"><i class="fas fa-power-off" style="font-size:20px;"></i></button>
     </div>
-    
-    <div class="header-right-meta">
-      <button class="header-action-btn click-sound" id="themeToggleBtn" title="Ganti Tema" onclick="toggleTheme()">
-        <i class="fas fa-moon"></i>
-      </button>
-      <button class="header-logout-btn click-sound" id="topLogoutBtn" title="Akhiri Sesi">
-        <i class="fas fa-sign-out-alt"></i>
-      </button>
-    </div>
-  </div>
+  </header>
 
-  <!-- JAM & PING -->
-  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; background: var(--surface-light); border: 1px solid var(--glass-border); padding: 10px 16px; border-radius: 8px;">
-    <div style="font-size: 10px; color: var(--gold-primary); font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; display: flex; align-items: center; gap: 8px;">
-      <i class="far fa-clock"></i> <span id="realtimeClock">00:00 WIB</span>
-    </div>
-    <div style="font-size: 9px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 8px;">
-      <div class="live-dot" style="background: var(--success-light); box-shadow: 0 0 8px var(--success-light);"></div>
-      <span>Ping: <strong id="networkPingText" style="color: var(--success-light); font-weight: 700;">14ms</strong></span>
-    </div>
-  </div>
-
-  <div class="global-stats-badge">
-    <div class="live-dot"></div>
-    <span>Jaringan Klien: <strong id="globalTotalUsers" style="color:var(--gold-light); font-weight: 700;">0</strong></span>
-  </div>
-
-  <!-- PREMIUM PROFILE WIDGET -->
-  <div class="profile-widget click-sound" onclick="openProfileSheet()">
-    <div class="pw-left">
-      <div class="pw-avatar"><span class="disp-avatar-text">?</span></div>
-      <div class="pw-info">
-        <h4 class="disp-username">User</h4>
-        <p class="disp-userrole">Member</p>
-      </div>
-    </div>
-    <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--glass-bg); display: flex; align-items: center; justify-content: center; border: 1px solid var(--glass-border);">
-      <i class="fas fa-arrow-right" style="color: var(--gold-primary); font-size: 11px;"></i>
-    </div>
-  </div>
-
-  <!-- TOP UP ACTION CARD -->
-  <div id="topupCardContainer" class="topup-card hidden click-sound" onclick="openLimitModal()">
-     <div>
-        <div style="font-family: var(--font-heading); font-size: 16px; font-weight: 600; margin-bottom: 4px; color: var(--gold-light);">Acquire Limit</div>
-        <div style="font-size: 10px; color: var(--text-dim); line-height: 1.5;">Isi ulang kuota via QRIS otomatis.</div>
-     </div>
-     <button class="btn-topup">Isi Ulang</button>
-  </div>
-
-  <!-- VIP PROMO BANNER -->
-  <div id="promoBannerContainer" class="vip-promo hidden click-sound" onclick="handleVipPromoClick()">
-     <div>
-       <div style="font-family: var(--font-heading); font-size: 16px; font-weight: 600; color: var(--gold-light); margin-bottom: 4px;">Upgrade VIP</div>
-       <div style="font-size: 10px; color: var(--text-muted); line-height: 1.5;">Akses tanpa batas, previlege elit.</div>
-     </div>
-     <i class="fas fa-gem"></i>
-  </div>
-
-  <!-- LEADERBOARD -->
-  <div style="margin-bottom: 30px;">
-    <button class="leaderboard-toggle-btn click-sound" onclick="toggleLeaderboard()">
-      <span style="display:flex; align-items:center; gap:10px;"><i class="fas fa-trophy" style="color:var(--gold-primary); font-size: 14px;"></i> Peringkat Prestise</span>
-      <i class="fas fa-chevron-down" id="leaderboardChevron" style="transition: transform 0.4s var(--smooth-ease);"></i>
-    </button>
-    <div id="leaderboardCollapsible" class="hidden" style="margin-top: 14px;">
-      <div id="leaderboardListContainer" class="data-list"></div>
-    </div>
-  </div>
-
-  <!-- SECTION: ACTIVATOR -->
-  <div id="sectionActivator">
-    
-    <!-- BIG LIMIT NUMBER -->
-    <div class="limit-display-area">
-       <div class="limit-info-box">Kuota layanan direset otomatis tiap minggu.</div>
-       <div class="big-limit-num disp-limit-value">0</div>
-       <div class="limit-label disp-limit-label">Sisa Kuota Akses</div>
+  <!-- TAB: LISENSI -->
+  <div id="tabLic" class="tab-pane">
+    <div style="text-align: center; margin-bottom: 24px;">
+      <div class="text-xs" style="margin-bottom: 8px;">Kapasitas Render</div>
+      <div class="disp-limit" style="font-family: var(--font-heading); font-size: 72px; line-height: 1; color: var(--gold-light); margin-bottom: 8px;">0</div>
+      <div class="disp-role" style="display:inline-block; font-size:10px; font-weight:700; padding:4px 12px; border-radius:12px; border:1px solid var(--glass-border); text-transform:uppercase; letter-spacing:1px; color:var(--text-muted);">Standard</div>
     </div>
 
-    <div class="glass-card">
-      <div class="title-lg" style="font-size: 22px;">Aktivasi Lisensi</div>
-      <div class="text-sub" style="margin-bottom: 24px;">Otentikasi perangkat dengan server utama.</div>
+    <div class="flex-between" style="gap: 12px; margin-bottom: 32px;" id="actRow">
+      <button class="btn btn-outline" style="flex:1;" onclick="openModal('limitSheet')">Isi Limit</button>
+      <button class="btn btn-outline" style="flex:1; border-color:var(--gold-dark);" onclick="reqVip()"><i class="fas fa-crown text-gold"></i> VIP</button>
+    </div>
+
+    <div class="premium-card">
+      <h2 class="heading-md">Aktivasi Tautan</h2>
+      <p class="text-sm" style="margin-bottom: 24px;">Validasi protokol *Magic Link* untuk mengamankan sesi.</p>
       
-      <div style="background: var(--glass-bg); border-radius: 8px; padding: 16px; margin-bottom: 22px; border: 1px solid var(--glass-border);">
-         <ol style="padding-left: 16px; font-size: 10px; color: var(--text-dim); margin:0; line-height: 1.8;">
-            <li style="margin-bottom: 6px;">Ketik alamat email Anda, lalu tekan Kirim.</li>
-            <li style="margin-bottom: 6px;">Periksa kotak masuk, salin URL dari Magic Link.</li>
-            <li>Tempel URL tersebut dan eksekusi Verifikasi.</li>
-         </ol>
-      </div>
-      
-      <div id="appErrorMsg" class="message-box message-error">
-        <i class="fas fa-exclamation-circle"></i> <span id="appErrorText"></span>
-      </div>
+      <div id="licMsg" class="status-box"></div>
       
       <div class="form-group">
-          <label>Email Terdaftar</label>
-          <div style="display: flex; gap: 10px;">
-              <input type="email" id="emailInput" class="glass-input" placeholder="contoh@email.com" autocomplete="email" />
-              <button id="sendBtn" class="btn btn-outline click-sound" style="width: auto; padding: 0 18px; font-size: 10px;">Kirim</button>
-          </div>
+        <label>Email Klien</label>
+        <div style="display: flex; gap: 8px;">
+          <input type="email" id="inLicMail" class="glass-input" placeholder="email@domain.com">
+          <button class="btn btn-outline" id="btnLicSend" style="width: auto; padding: 0 20px;"><i class="far fa-paper-plane"></i></button>
+        </div>
       </div>
-      <div class="form-group" style="margin-bottom: 25px;">
-          <label>URL Magic Link</label>
-          <input type="url" id="magicInput" class="glass-input" placeholder="Tempel URL di sini" autocomplete="off" />
+      <div class="form-group" style="margin-bottom: 32px;">
+        <label>URL Magic</label>
+        <input type="url" id="inLicUrl" class="glass-input" placeholder="Tempel disini">
       </div>
-      
-      <button id="activateBtn" class="btn btn-primary click-sound">
-          <span id="btnDefault">Verifikasi Lisensi</span>
-          <div id="loaderContainer" class="hidden" style="display:flex; align-items:center; gap:8px;"><div class="loader-spinner" style="width:14px;height:14px; border-width:2px; border-top-color:#000;"></div> Memproses...</div>
-      </button>
+      <button class="btn btn-gold" id="btnLicVerif">Eksekusi Validasi</button>
     </div>
   </div>
 
-  <!-- SECTION: ENHANCER -->
-  <div id="sectionEnhancer" class="hidden">
-    <div class="glass-card">
-      <div class="title-lg" style="font-size: 22px;">Neural AI Studio</div>
-      <div class="text-sub" style="margin-bottom: 25px;">Pemulihan resolusi citra dengan komputasi AI.</div>
-      
+  <!-- TAB: STUDIO AI -->
+  <div id="tabStudio" class="tab-pane hidden">
+    <div class="premium-card">
+      <h2 class="heading-md" style="margin-bottom: 4px;">Neural Studio</h2>
+      <p class="text-sm" style="margin-bottom: 24px;">Pemulihan resolusi matriks citra tingkat tinggi.</p>
+
       <div class="form-group">
-        <label>URL Sumber (Opsional)</label>
-        <input type="url" id="imageUrl" class="glass-input" placeholder="https://..." />
+        <input type="url" id="aiUrl" class="glass-input" placeholder="URL Gambar (Opsional)">
       </div>
 
-      <div id="dropZone" class="click-sound" style="border: 1px dashed var(--glass-border-strong); border-radius: 10px; padding: 35px 20px; text-align: center; background: var(--glass-bg); cursor: pointer; margin-bottom: 22px; transition: all 0.3s var(--smooth-ease);">
-        <i class="fas fa-upload" style="font-size: 24px; color: var(--gold-primary); margin-bottom: 14px;"></i>
-        <div style="font-size: 12px; font-weight: 600; margin-bottom: 6px; color: var(--gold-light);">Unggah Arsip Lokal</div>
-        <div style="font-size: 9px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">JPG, PNG, WEBP — Max 25MB</div>
-        <div id="fileNameDisplay" style="margin-top: 14px; font-size: 10px; color: var(--gold-primary); font-weight: 600;"></div>
-        <input type="file" id="fileInput" accept="image/*" style="display: none;">
+      <div class="upload-area" id="aiDrop" onclick="document.getElementById('aiFile').click()">
+        <i class="far fa-image" style="font-size: 32px; color: var(--gold-primary); margin-bottom: 12px;"></i>
+        <div style="font-family: var(--font-heading); font-size: 16px; font-weight: 600; margin-bottom: 4px;">Pilih Arsip Lokal</div>
+        <div class="text-xs">JPG, PNG (Maks 20MB)</div>
+        <div id="aiFileName" class="text-xs text-gold" style="margin-top: 12px;"></div>
       </div>
-      
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 25px;">
-        <div style="background: var(--glass-bg); border-radius: 8px; padding: 14px; border: 1px solid var(--glass-border);">
-          <div style="display:flex; justify-content:space-between; font-size:8px; color:var(--text-muted); text-transform:uppercase; letter-spacing: 1px; margin-bottom:14px;"><span>Intensitas</span> <span id="strengthIndicator" style="color:var(--gold-primary); font-weight: 600;">Normal</span></div>
-          <input type="range" id="strengthRange" min="10" max="100" value="60" style="width: 100%; height:2px; appearance:none; background:var(--glass-border-strong); outline:none; cursor: pointer; border-radius: 2px;">
-        </div>
-        <div onclick="document.getElementById('modeModalOverlay').classList.add('show')" class="click-sound" style="background: var(--glass-bg); border-radius: 8px; padding: 14px; border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.3s var(--smooth-ease);" onmouseover="this.style.borderColor='var(--gold-primary)'" onmouseout="this.style.borderColor='var(--glass-border)'">
-          <div>
-            <div style="font-size:8px; color:var(--text-muted); text-transform:uppercase; letter-spacing: 1px; margin-bottom:6px;">Model AI</div>
-            <div id="currentModeLabel" style="font-size:11px; font-weight:600; color: var(--gold-light);">Super Res 2x</div>
-          </div>
-          <div style="width: 24px; height: 24px; border-radius: 6px; background: rgba(0,0,0,0.1); border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: center;">
-             <i class="fas fa-sliders-h" style="color:var(--gold-primary); font-size:10px;"></i>
-          </div>
-        </div>
-      </div>
-      
-      <div style="display: flex; gap: 10px; margin-bottom: 22px;">
-        <button class="btn btn-primary click-sound" id="enhanceBtn" style="flex: 1;"><i class="fas fa-microchip"></i> Eksekusi Render</button>
-        <button class="btn btn-outline click-sound" id="resetBtn" style="width: auto; padding: 0 18px;"><i class="fas fa-redo"></i></button>
-      </div>
-      
-      <div id="statusMessage" class="message-box">
-        <i class="fas fa-info-circle"></i> <span id="statusMessageText"></span>
+      <input type="file" id="aiFile" accept="image/*" class="hidden" onchange="if(this.files[0]) document.getElementById('aiFileName').textContent = this.files[0].name">
+
+      <!-- Segmented Control -->
+      <div class="segment-wrap">
+        <div class="segment-bg" id="segBg"></div>
+        <div class="segment-btn active" data-m="1x" onclick="selMode(this)">Clean</div>
+        <div class="segment-btn" data-m="2x" onclick="selMode(this)">Scale 2x</div>
+        <div class="segment-btn" data-m="hdr" onclick="selMode(this)">HDR+</div>
       </div>
 
-      <!-- IMAGE COMPARE SLIDER -->
-      <div class="hidden" id="comparisonSplitSection" style="margin: 25px 0;">
-        <div class="image-compare-wrapper" id="imageCompareWrapper">
-          <!-- Gambar bawah (Hasil AI) -->
-          <img id="splitImgAfter" class="img-comp-base" src="">
-          
-          <!-- Gambar atas (Asli) yg di crop -->
-          <img id="splitImgBefore" class="img-comp-overlay" src="">
-          
-          <!-- Slider Garis -->
-          <div class="img-comp-slider" id="imgCompSlider">
-            <div class="img-comp-slider-line"></div>
-            <div class="img-comp-slider-button"><i class="fas fa-arrows-alt-h"></i></div>
-          </div>
-          
-          <!-- Label Text -->
-          <div style="position:absolute; top:10px; left:10px; background:var(--overlay-bg); padding:4px 8px; border-radius:4px; font-size:9px; font-weight:700; color:var(--text-pure); border:1px solid var(--glass-border-strong); pointer-events:none; z-index:5;">ASLI</div>
-          <div style="position:absolute; top:10px; right:10px; background:var(--gold-primary); padding:4px 8px; border-radius:4px; font-size:9px; font-weight:700; color:#000; pointer-events:none; z-index:5;">HASIL AI</div>
-        </div>
-        <div style="font-size:9px; color:var(--text-dim); text-align:center; margin-top:-10px; margin-bottom: 20px; text-transform:uppercase; letter-spacing:1px;">
-           <i class="fas fa-arrows-alt-h" style="margin-right: 4px;"></i> Geser garis untuk membandingkan
-        </div>
+      <div style="margin-bottom: 24px;">
+        <div class="flex-between text-xs" style="margin-bottom: 12px;"><span>Kekuatan</span><span id="aiStrTxt" style="color:var(--text-pure);">60%</span></div>
+        <input type="range" id="aiStr" min="10" max="100" value="60" style="width:100%; height:4px; appearance:none; background:rgba(255,255,255,0.1); border-radius:2px; outline:none;" oninput="document.getElementById('aiStrTxt').textContent=this.value+'%'">
+        <style>
+          #aiStr::-webkit-slider-thumb { appearance:none; width:16px; height:16px; border-radius:50%; background:var(--gold-primary); cursor:pointer; box-shadow:0 0 10px var(--gold-glow); }
+        </style>
       </div>
-      
-      <div class="hidden" id="downloadFooterActions" style="display: flex; gap: 10px;">
-        <button class="btn btn-outline click-sound" id="downloadBtn" style="flex: 1;"><i class="fas fa-download"></i> Simpan File</button>
-        <button class="btn btn-outline click-sound" id="copyUrlBtn" style="flex: 1;"><i class="fas fa-link"></i> Salin URL</button>
+
+      <button class="btn btn-gold" id="btnRender">Inisiasi Render</button>
+      <div class="progress-bg" id="aiProg"><div class="progress-fill" id="aiProgFill"></div></div>
+      <div id="aiMsg" class="status-box" style="margin-top: 16px;"></div>
+
+      <!-- IMAGE COMPARE -->
+      <div id="compareSect" class="hidden" style="margin-top: 32px; animation: fadeUp 0.5s;">
+        <div class="slider-container" id="slWrap">
+          <img id="slImgAft" class="slider-img" src="">
+          <img id="slImgBef" class="slider-img slider-overlay" src="">
+          <div class="slider-handle-wrap" id="slHandle">
+            <div class="slider-line"></div>
+            <div class="slider-button"><i class="fas fa-arrows-alt-h"></i></div>
+          </div>
+          <div class="badge" style="left:12px;">ASLI</div>
+          <div class="badge" style="right:12px; color:var(--gold-light); border-color:var(--gold-dark);">HASIL AI</div>
+        </div>
+        <div class="text-xs" style="text-align: center; margin-bottom: 24px; color: var(--text-muted);"><i class="fas fa-arrows-alt-h" style="margin-right:6px;"></i> Geser garis pembatas</div>
+        
+        <div style="display: flex; gap: 12px;">
+          <button class="btn btn-outline" style="flex:1;" onclick="dlRes()"><i class="fas fa-download"></i> Simpan</button>
+          <button class="btn btn-outline" style="flex:1;" onclick="cpRes()"><i class="far fa-copy"></i> Salin Tautan</button>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- SECTION: OWNER PANEL -->
-  <div id="ownerPanel" class="hidden">
-    <div class="glass-card">
-      <div class="title-lg" style="font-size: 22px;">Database Eksekutif</div>
-      <div class="text-sub" style="margin-bottom: 25px;">Kontrol akses penuh manajemen klien.</div>
-      
-      <div style="background: var(--glass-bg); border-radius: 8px; padding: 18px; margin-bottom: 25px; border: 1px solid var(--glass-border);">
-        <label style="font-size: 9px; font-weight: 700; color: var(--gold-primary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; display:flex; align-items: center; gap: 8px;"><i class="fas fa-broadcast-tower"></i> Transmisi Global</label>
-        <textarea id="broadcastInput" class="glass-input" placeholder="Tulis instruksi pengumuman..." style="min-height: 80px; resize: none; margin-bottom: 14px; font-size: 11px;"></textarea>
-        <button class="btn btn-primary click-sound" onclick="sendBroadcastMsg()"><i class="fas fa-paper-plane"></i> Sebarkan Transmisi</button>
+  <!-- TAB: ADMIN -->
+  <div id="tabAdmin" class="tab-pane hidden">
+    <div class="premium-card" style="margin-bottom: 16px;">
+      <h2 class="heading-md" style="margin-bottom: 16px;">Transmisi Global</h2>
+      <textarea id="adBc" class="glass-input" style="min-height: 80px; resize: none; margin-bottom: 12px; padding: 12px; font-size:12px;" placeholder="Tulis instruksi..."></textarea>
+      <button class="btn btn-outline" onclick="sendBc()"><i class="fas fa-satellite-dish text-gold"></i> Siarkan</button>
+    </div>
+
+    <div class="premium-card">
+      <div class="flex-between" style="margin-bottom: 16px;">
+        <h2 class="heading-md">Node Directory</h2>
+        <div class="text-xs"><span id="adTot">0</span> Klien</div>
       </div>
       
-      <!-- FIlTER, SEARCH & MASS RESET ROW -->
-      <div style="display: flex; gap: 10px; margin-bottom: 25px; flex-wrap: wrap;">
-        <div class="input-wrapper" style="flex: 1; min-width: 180px;">
-            <input type="text" id="memberSearchInput" class="glass-input" placeholder="Cari (Username / ID)..." oninput="renderMemberList()" />
-        </div>
-        <button id="filterZeroLimitBtn" class="btn btn-outline click-sound" style="width: auto; padding: 0 14px; border-radius: 8px;" onclick="toggleZeroLimitFilter()" title="Filter Limit 0">
-            <i class="fas fa-filter"></i> 0 Limit
-        </button>
-        <button id="resetMassalBtn" class="btn btn-primary click-sound" style="width: auto; padding: 0 14px; border-radius: 8px;" onclick="resetAllZeroLimits()" title="Reset Massal Limit 0 Menjadi 3">
-            <i class="fas fa-sync-alt"></i> Reset (0&rarr;3)
-        </button>
+      <div class="input-wrapper" style="margin-bottom: 16px;">
+        <input type="text" id="adSrc" class="glass-input" style="padding: 12px 16px; font-size: 12px;" placeholder="Cari ID / User..." oninput="renAd()">
+        <button class="input-action hidden" id="adSrcX" onclick="document.getElementById('adSrc').value=''; renAd();"><i class="fas fa-times"></i></button>
       </div>
 
-      <div id="memberList" class="data-list"></div>
+      <div style="display: flex; gap: 8px; margin-bottom: 20px;">
+        <button class="btn btn-outline" id="btnFil0" style="padding: 8px 12px; font-size: 9px; width:auto;" onclick="togFil0()">Filter Limit 0</button>
+        <button class="btn btn-outline" style="padding: 8px 12px; font-size: 9px; width:auto; border-color:var(--danger); color:var(--danger);" onclick="massRes()">Reset LMT (0&rarr;3)</button>
+      </div>
+
+      <div class="admin-list" id="adList"></div>
     </div>
   </div>
+
 </div>
 
-<!-- FLOATING BOTTOM NAVIGATION -->
-<nav class="bottom-nav hidden" id="mainBottomNav">
-  <div class="nav-item active click-sound" id="btnTabActivator" onclick="switchTab('activator')">
-    <i class="fas fa-key"></i><span>Lisensi</span>
-  </div>
-  <div class="nav-item click-sound" id="btnTabEnhancer" onclick="switchTab('enhancer')">
-    <i class="fas fa-layer-group"></i><span>Studio</span>
-  </div>
-  <div class="nav-item hidden click-sound" id="toggleOwnerDashBtn" onclick="switchTab('admin')">
-    <i class="fas fa-server"></i><span>Sistem</span>
-  </div>
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav hidden" id="botNav">
+  <div class="nav-item active" data-t="tabLic" onclick="swTab(this)"><i class="fas fa-key"></i>Lisensi</div>
+  <div class="nav-item" data-t="tabStudio" onclick="swTab(this)"><i class="fas fa-layer-group"></i>Studio</div>
+  <div class="nav-item hidden" id="navAd" data-t="tabAdmin" onclick="swTab(this)"><i class="fas fa-server"></i>Sistem</div>
 </nav>
 
-<!-- PROFILE SIDE PANEL -->
-<div id="profileSheet" class="overlay" style="justify-content: flex-end; padding: 0;">
-  <div class="side-panel">
-    <button class="btn-close click-sound" onclick="closeProfileSheet()" style="position: absolute; top: 25px; left: -16px; right: auto; background: var(--surface-dark);"><i class="fas fa-times"></i></button>
-    
-    <div style="text-align: center; margin: 30px 0;">
-      <div class="pw-avatar click-sound" style="width: 70px; height: 70px; margin: 0 auto 12px; font-size: 24px; border: 1px solid var(--gold-primary); cursor:pointer;" onclick="document.getElementById('avatarFileInput').click()" title="Ganti Foto">
-        <span class="disp-avatar-text">?</span>
-      </div>
-      <div style="display: inline-flex; align-items: center; gap: 6px; font-size: 9px; text-transform: uppercase; letter-spacing: 1px; color: var(--gold-primary); font-weight: 600; margin-bottom: 12px; cursor: pointer; transition: 0.3s;" onmouseover="this.style.color='var(--gold-light)'" onmouseout="this.style.color='var(--gold-primary)'" onclick="document.getElementById('avatarFileInput').click()">
-        <i class="fas fa-camera"></i> Ubah Potret
-      </div>
-      <input type="file" id="avatarFileInput" accept="image/*" style="display: none;" onchange="handleAvatarUpload(event)">
-      
-      <div class="title-lg disp-username" style="font-size: 22px; color: var(--text-pure);">Username</div>
-      <div class="disp-userrole" style="font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: var(--gold-primary); margin-top: 4px;">Role</div>
-    </div>
-
-    <div style="background: var(--glass-bg); border-radius: 8px; border: 1px solid var(--glass-border); padding: 18px; margin-bottom: 20px;">
-       <div style="font-size: 9px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 16px; font-weight:600; display: flex; align-items: center; gap: 8px;"><i class="fas fa-id-card"></i> Data Identitas</div>
-       <div style="display:flex; justify-content:space-between; margin-bottom: 14px; border-bottom: 1px solid var(--glass-border); padding-bottom: 8px;"><span style="font-size:10px; color:var(--text-dim);">ID Klien</span><span class="disp-userid" style="font-size:11px; font-weight: 600; color: var(--gold-light);">MSH-00</span></div>
-       <div style="display:flex; justify-content:space-between; margin-bottom: 14px; border-bottom: 1px solid var(--glass-border); padding-bottom: 8px;"><span style="font-size:10px; color:var(--text-dim);">Kontak Utama</span><span class="disp-userwa" style="font-size:11px; font-weight: 600; color: var(--text-pure);">08...</span></div>
-       <div style="display:flex; justify-content:space-between;"><span style="font-size:10px; color:var(--text-dim);">IP Terekam</span><span class="disp-userip" style="font-size:11px; font-weight: 600; color: var(--text-pure);">...</span></div>
-    </div>
-
-    <div style="background: var(--glass-bg); border-radius: 8px; border: 1px solid var(--glass-border); padding: 18px; margin-bottom: 40px;">
-      <div style="font-size: 9px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 14px; font-weight:600; display: flex; align-items: center; gap: 8px;"><i class="fas fa-lock"></i> Pengaturan Kredensial</div>
-      <div style="background: rgba(212, 175, 55, 0.08); border-left: 2px solid var(--gold-primary); padding: 10px 12px; border-radius: 0 4px 4px 0; font-size: 9px; color: var(--gold-light); line-height: 1.6; margin-bottom: 18px;">
-        <b>Ketentuan:</b> Username hanya dapat dimodifikasi <b>satu (1) kali</b> demi eksklusivitas.
-      </div>
-      
-      <div id="editProfileMsg" class="message-box"><i class="fas fa-info-circle"></i> <span id="editProfileText"></span></div>
-      <div class="form-group"><input type="text" id="editUsernameInput" class="glass-input" placeholder="Username Baru"></div>
-      <div class="form-group mb-0"><input type="password" id="editPasswordInput" class="glass-input" placeholder="Kata Sandi Baru"></div>
-      <button id="saveProfileChangesBtn" class="btn btn-outline click-sound" style="margin-top: 20px;">Simpan Perubahan</button>
-    </div>
-  </div>
-</div>
-
-<!-- BOTTOM SHEET: MODE AI -->
-<div class="overlay" id="modeModalOverlay" style="align-items: flex-end; padding: 0;">
-  <div class="bottom-sheet" id="modeModalSheet">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-      <div class="title-lg" style="margin: 0; font-size: 18px;">Model Render AI</div>
-      <i class="fas fa-times click-sound" id="closeModeModal" style="cursor: pointer; color: var(--text-muted); font-size: 16px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--glass-border); border-radius: 50%;"></i>
-    </div>
-    
-    <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 25px;">
-      <div class="glass-card glass-card-hover mode-option-item selected click-sound" data-mode="2x" style="display:flex; align-items:center; gap:14px; padding: 16px; border-color: var(--gold-primary); background: rgba(212,175,55,0.05);">
-        <i class="fas fa-expand" style="font-size: 18px; color: var(--gold-primary);"></i>
-        <div><div style="font-family: var(--font-heading); font-weight: 600; font-size: 14px; margin-bottom: 4px; color: var(--gold-light);">Super Resolution 2x</div><div style="font-size: 10px; color: var(--text-dim); line-height: 1.5;">Menggandakan matriks piksel presisi.</div></div>
-      </div>
-      <div class="glass-card glass-card-hover mode-option-item click-sound" data-mode="1x" style="display:flex; align-items:center; gap:14px; padding: 16px;">
-        <i class="fas fa-magic" style="font-size: 18px; color: var(--text-muted);"></i>
-        <div><div style="font-family: var(--font-heading); font-weight: 600; font-size: 14px; margin-bottom: 4px; color: var(--text-pure);">Clean & Sharpen</div><div style="font-size: 10px; color: var(--text-dim); line-height: 1.5;">Pembersihan noise dan penajaman.</div></div>
-      </div>
-      <div class="glass-card glass-card-hover mode-option-item click-sound" data-mode="hdr" style="display:flex; align-items:center; gap:14px; padding: 16px;">
-        <i class="fas fa-sun" style="font-size: 18px; color: var(--text-muted);"></i>
-        <div><div style="font-family: var(--font-heading); font-weight: 600; font-size: 14px; margin-bottom: 4px; color: var(--text-pure);">Dynamic HDR Boost</div><div style="font-size: 10px; color: var(--text-dim); line-height: 1.5;">Optimalisasi kontras ekstrim.</div></div>
-      </div>
-    </div>
-    <button class="btn btn-primary click-sound" id="applyModeBtn">Terapkan Pilihan</button>
-  </div>
-</div>
 
 <script>
-(function(){
-    document.addEventListener('contextmenu', e => e.preventDefault());
-    document.onkeydown = function(e) { if(e.keyCode==123 || (e.ctrlKey&&e.shiftKey&&(e.keyCode==73||e.keyCode==74||e.keyCode==67)) || (e.ctrlKey&&e.keyCode==85)) return false; };
+// --- CONFIG & UTILS ---
+const API = "https://restapidahan.vercel.app"; const KEY = "dravndesamuel"; const WA = "6282231669053";
+const LS_SESS = "amex_sess", LS_CACHE = "amex_cache", LS_BIO = "amex_bio", LS_BC = "amex_bc";
 
-    // --- THEME SWITCHER LOGIC ---
-    const THEME_KEY = 'am_exec_theme';
-    function initTheme() {
-        const savedTheme = localStorage.getItem(THEME_KEY) || 'dark';
-        document.documentElement.setAttribute('data-theme', savedTheme);
-        updateThemeIcon(savedTheme);
+let user=null, capA=0, cacheEmail='', cMode='1x', cBlob=null, isFil0=false, tmpBio=null, depId=null, buyLim=0;
+
+const $ = id => document.getElementById(id);
+const toast = (m) => { $('toastMsg').textContent=m; $('appToast').classList.add('show'); setTimeout(()=>$('appToast').classList.remove('show'), 3000); };
+const pBool = v => v===true||v==='true'||v==='1';
+const xFet = async (act, bd={}) => { try{ const r=await fetch(`/api/hub?action=${act}`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(bd)}); return await r.json(); }catch(e){return {status:false,error:'Koneksi Terputus'};} };
+
+// --- MODALS & VIEWS ---
+function openModal(id) { $(id).classList.add('show'); }
+function closeModal(id) { $(id).classList.remove('show'); }
+function confirmAct(m, cb) { $('confirmText').textContent=m; openModal('confirmModal'); $('btnConfNo').onclick=()=>closeModal('confirmModal'); $('btnConfYes').onclick=()=>{closeModal('confirmModal'); cb();}; }
+function switchView(id) { ['viewLogin','viewReg','viewApp'].forEach(v=>$(v).classList.add('hidden')); $(id).classList.remove('hidden'); if(id==='viewReg') setCap(); if(id!=='viewApp') $('botNav').classList.add('hidden'); }
+function swTab(el) { document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active')); el.classList.add('active'); const t=el.getAttribute('data-t'); ['tabLic','tabStudio','tabAdmin'].forEach(v=>$(v).classList.add('hidden')); $(t).classList.remove('hidden'); if(t==='tabAdmin') renAd(); }
+function msg(id, txt, err=false) { const e=$(id); e.textContent=txt; e.className='status-box show '+(err?'status-error':'status-success'); }
+function toggleP(id, btn) { const i=$(id), ic=btn.querySelector('i'); if(i.type==='password'){i.type='text';ic.className='fas fa-eye-slash';}else{i.type='password';ic.className='far fa-eye';} }
+function copyTxt(sel, m) { navigator.clipboard.writeText(document.querySelector(sel).textContent); toast(m); }
+function reqRecovery() { window.open(`https://wa.me/${WA}?text=Mohon bantuan pemulihan kata sandi.`); }
+function reqVip() { window.open(`https://wa.me/${WA}?text=Request VIP Upgrade. Node: @${user?.username||''}`); }
+
+// --- INIT APP ---
+window.onload = async () => {
+  const sess = localStorage.getItem(LS_SESS);
+  if(!sess) {
+    // FIX BUG: Simply hide loader, show login view, and display warning overlay.
+    $('appLoader').classList.add('hidden');
+    switchView('viewLogin');
+    openModal('warningModal');
+    if(localStorage.getItem(LS_BIO)) $('btnBioLog').classList.remove('hidden');
+  } else {
+    try{ const c=JSON.parse(localStorage.getItem(LS_CACHE)); if(c&&c.username) buildApp(c); }catch(e){}
+    const r = await xFet('fetchUser', {username: sess});
+    $('appLoader').classList.add('hidden');
+    if(r.status && r.data) {
+      if(pBool(r.data.is_banned)) { forceOut(); toast("Akses Diblokir"); } else buildApp(r.data);
+    } else forceOut();
+  }
+  cekBc(); setInterval(cekBc, 15000);
+  const sr = await xFet('fetchStats'); if(sr.status) $('adTot').textContent=sr.count;
+};
+
+function buildApp(u) {
+  user = u; if(u.username.toUpperCase()==='HAOMI'){u.role='Owner'; u.is_permanent=true;}
+  document.querySelectorAll('.disp-user').forEach(e=>e.textContent=u.username);
+  document.querySelectorAll('.disp-id').forEach(e=>e.textContent=u.id_code||'MSH-00');
+  document.querySelectorAll('.disp-wa').forEach(e=>e.textContent=u.wa||'N/A');
+  document.querySelectorAll('.disp-ip').forEach(e=>e.textContent=u.ip_address||'Hidden');
+  
+  const av=document.querySelector('.disp-ava');
+  if(u.avatar_url && u.avatar_url.startsWith('data:')){ av.parentElement.innerHTML=`<img src="${u.avatar_url}" style="width:100%;height:100%;object-fit:cover;"><div style="position:absolute;bottom:0;width:100%;background:rgba(0,0,0,0.6);text-align:center;padding:4px 0;"><i class="fas fa-camera text-xs" style="color:#fff;"></i></div>`; }
+  else av.textContent=u.username.charAt(0).toUpperCase();
+
+  const isVip=pBool(u.is_permanent), isOw=u.role==='Owner';
+  const rl = document.querySelector('.disp-role'), lr=document.querySelector('.disp-role');
+  document.querySelectorAll('.disp-role').forEach(e => {
+    if(isOw){ e.textContent='SYSADMIN'; e.style.color='#fff'; }
+    else if(isVip){ e.textContent='VIP EXCLUSIVE'; e.style.color='var(--gold-primary)'; }
+    else { e.textContent='REGULAR'; e.style.color='var(--text-muted)'; }
+  });
+
+  if(isOw||isVip) { $('.disp-limit').textContent='∞'; $('actRow').classList.add('hidden'); }
+  else { $('.disp-limit').textContent=u.limit_count??3; $('actRow').classList.remove('hidden'); }
+
+  if(isOw) $('navAd').classList.remove('hidden'); else $('navAd').classList.add('hidden');
+  
+  if(pBool(u.username_changed)) { $('editU').disabled=true; $('editP').disabled=true; $('btnSaveProf').disabled=true; $('btnSaveProf').textContent='Kredensial Terkunci'; }
+  else { $('editU').value=u.username; $('editP').value=u.password; }
+
+  localStorage.setItem(LS_CACHE, JSON.stringify(u)); switchView('viewApp'); $('botNav').classList.remove('hidden');
+  if(!$('.nav-item.active')) swTab($('.nav-item'));
+}
+
+function logOut() { confirmAct("Putus koneksi sesi?", forceOut); }
+function forceOut() { localStorage.removeItem(LS_SESS); localStorage.removeItem(LS_CACHE); closeModal('profileSheet'); switchView('viewLogin'); if(localStorage.getItem(LS_BIO)) $('btnBioLog').classList.remove('hidden'); }
+
+// --- AUTH LOGIC ---
+$('btnLog').onclick=async()=>{
+  const u=$('logU').value.trim(), p=$('logP').value.trim(); if(!u||!p)return msg('logMsg','Lengkapi data',true);
+  $('btnLog').innerHTML='<div class="spinner-gold" style="width:16px;height:16px;margin:0;border-width:2px;"></div>'; $('btnLog').disabled=true;
+  const r=await xFet('login',{username:u,password:p});
+  $('btnLog').textContent='Akses Terminal'; $('btnLog').disabled=false;
+  if(!r.status)return msg('logMsg',r.error,true);
+  localStorage.setItem(LS_SESS,u);
+  if(!localStorage.getItem(LS_BIO)){tmpBio={u,p,d:r.data}; openModal('bioSetupModal');}else buildApp(r.data);
+};
+function setCap(){const a=Math.floor(Math.random()*10)+1,b=Math.floor(Math.random()*10)+1;capA=a+b;$('lblCap').innerHTML=`Verifikasi: <span style="color:var(--gold-primary);font-size:14px;font-weight:700;">${a} + ${b}</span>`;}
+$('btnReg').onclick=async()=>{
+  const u=$('regU').value.trim(), w=$('regW').value.trim(), p=$('regP').value.trim(), c=parseInt($('regC').value);
+  if(!u||!w||!p||isNaN(c))return msg('regMsg','Formulir korup',true); if(c!==capA)return msg('regMsg','Verifikasi gagal',true);
+  $('btnReg').innerHTML='<div class="spinner-gold" style="width:16px;height:16px;margin:0;border-width:2px;"></div>'; $('btnReg').disabled=true;
+  let ip='0.0.0.0', dev='FP-'+Math.random().toString(36).substr(2); try{const r=await fetch('https://api.ipify.org?format=json');const d=await r.json();ip=d.ip;}catch(e){}
+  const r=await xFet('register',{username:u,password:p,wa:w,ip_address:ip,device_id:dev});
+  $('btnReg').textContent='Daftarkan Identitas'; $('btnReg').disabled=false;
+  if(!r.status)return msg('regMsg',r.error,true);
+  localStorage.setItem(LS_SESS,u); tmpBio={u,p,d:r.data}; switchView('viewLogin'); openModal('bioSetupModal');
+};
+
+// --- BIOMETRICS ---
+function reqBiometric() {
+  const b=JSON.parse(localStorage.getItem(LS_BIO)); if(!b)return;
+  openModal('bioModal');
+  if(window.PublicKeyCredential){
+    const c=new Uint8Array(32); window.crypto.getRandomValues(c);
+    navigator.credentials.get({publicKey:{challenge:c,timeout:60000,userVerification:"discouraged"}})
+    .then(()=>finBio(b)).catch(e=>{if(e.name==='NotAllowedError'||e.name==='SecurityError')setTimeout(()=>finBio(b),1000);else{$('bioText').textContent="Ditolak";$('bioIcon').style.color="var(--danger)";$('bioCancel').classList.remove('hidden');}});
+  }else setTimeout(()=>finBio(b),1000);
+}
+async function finBio(b){
+  closeModal('bioModal'); $('btnLog').innerHTML='<div class="spinner-gold" style="width:16px;height:16px;margin:0;border-width:2px;"></div>';
+  const r=await xFet('login',{username:b.u,password:atob(b.p)}); $('btnLog').textContent='Akses Terminal';
+  if(r.status){localStorage.setItem(LS_SESS,b.u);buildApp(r.data);toast("Bio Valid");}else toast("Bio Ditolak");
+}
+async function enableBiometric(){
+  if(!tmpBio)return;
+  try{
+    if(window.PublicKeyCredential){
+      const c=new Uint8Array(32), i=new Uint8Array(16); window.crypto.getRandomValues(c); window.crypto.getRandomValues(i);
+      await navigator.credentials.create({publicKey:{challenge:c,rp:{name:"AM"},user:{id:i,name:tmpBio.u,displayName:tmpBio.u},pubKeyCredParams:[{type:"public-key",alg:-7}],authenticatorSelection:{authenticatorAttachment:"platform"},timeout:60000}});
     }
-    window.toggleTheme = function() {
-        const current = document.documentElement.getAttribute('data-theme');
-        const next = current === 'dark' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', next);
-        localStorage.setItem(THEME_KEY, next);
-        updateThemeIcon(next);
-        playClickSound();
-    };
-    function updateThemeIcon(theme) {
-        const icon = document.querySelector('#themeToggleBtn i');
-        if (icon) icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
-    }
+    localStorage.setItem(LS_BIO,JSON.stringify({u:tmpBio.u,p:btoa(tmpBio.p)})); toast("Biometrik Terpasang");
+  }catch(e){} closeModal('bioSetupModal'); buildApp(tmpBio.d);
+}
+function skipBiometric(){closeModal('bioSetupModal');if(tmpBio)buildApp(tmpBio.d);}
 
-    // --- SYNTHESIZER AUDIO FEEDBACK & HAPTIC ---
-    let audioCtx = null;
-    function playClickSound() {
-        try {
-            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = 'sine'; osc.frequency.setValueAtTime(800, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.05);
-            gain.gain.setValueAtTime(0.02, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
-            osc.connect(gain); gain.connect(audioCtx.destination);
-            osc.start(); osc.stop(audioCtx.currentTime + 0.05);
-        } catch (e) {}
-    }
-    function triggerVibrate(pattern) { if(navigator.vibrate) navigator.vibrate(pattern); }
+// --- PROFILE SETTINGS ---
+$('btnSaveProf').onclick=async()=>{
+  const u=$('editU').value.trim(), p=$('editP').value.trim(); if(!u||!p)return msg('profMsg','Data kosong',true);
+  const r=await xFet('updateUser',{username:user.username,updates:{username:u,password:p,username_changed:true}});
+  if(r.status){localStorage.setItem(LS_SESS,u);user.username=u;user.password=p;user.username_changed=true;buildApp(user);msg('profMsg','Terkunci permanen');}
+};
+function uploadAvatar(e){
+  const f=e.target.files[0];if(!f)return; const r=new FileReader();
+  r.onload=async ev=>{
+    const b=ev.target.result; const rs=await xFet('updateUser',{username:user.username,updates:{avatar_url:b}});
+    if(rs.status){user.avatar_url=b;buildApp(user);toast("Avatar diupdate");}
+  }; r.readAsDataURL(f);
+}
 
-    document.addEventListener('click', (e) => {
-        const target = e.target.closest('.click-sound, button, .glass-card-hover, .nav-item, .limit-box');
-        if (target) playClickSound(); 
-    });
+// --- BROADCAST ---
+async function cekBc(){
+  const r=await xFet('getBroadcast');
+  if(r.status&&r.data){
+    const l=localStorage.getItem(LS_BC);
+    if(l!==String(r.data.id)){$('bcText').textContent=r.data.message;openModal('broadcastModal');localStorage.setItem(LS_BC,String(r.data.id));}
+  }
+}
 
-    const _0x1a2b = ["\x68\x74\x74\x70\x73\x3a\x2f\x2f\x72\x65\x73\x74\x61\x70\x69\x64\x68\x61\x6e\x2e\x76\x65\x72\x63\x65\x6c\x2e\x61\x70\x70", "\x64\x72\x61\x76\x6e\x64\x65\x73\x61\x6d\x75\x65\x6c", "\x2b\x36\x32\x38\x32\x32\x33\x31\x36\x36\x39\x30\x35\x33", "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x61\x63\x74\x69\x76\x65\x5f\x73\x65\x73\x73\x69\x6f\x6e\x5f\x73\x75\x70\x61\x62\x61\x73\x65", "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x63\x61\x63\x68\x65\x64\x5f\x75\x73\x65\x72\x5f\x64\x61\x74\x61", "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x6c\x61\x73\x74\x5f\x73\x65\x65\x6e\x5f\x62\x72\x6f\x61\x64\x63\x61\x73\x74\x5f\x69\x64"];
-    const API_BASE = _0x1a2b[0]; const API_KEY = _0x1a2b[1]; const OWNER_WA = _0x1a2b[2]; const SESSION_KEY = _0x1a2b[3]; const CACHE_KEY = _0x1a2b[4]; const BROADCAST_SEEN_KEY = _0x1a2b[5];
-    const BIO_CRED_KEY = "am_exec_bio_cred"; 
+// --- ACTIVATOR ---
+$('btnLicSend').onclick=async()=>{
+  const m=$('inLicMail').value.trim();if(!m)return msg('licMsg','Email wajib',true);
+  const b=$('btnLicSend'); b.disabled=true; b.innerHTML='<i class="fas fa-circle-notch fa-spin"></i>';
+  try{ const r=await fetch(`${API}/api/am?action=send&apikey=${KEY}&email=${encodeURIComponent(m)}`);const d=await r.json();if(d.status){cachedEmail=m;msg('licMsg','Magic link dikirim');}else msg('licMsg',d.error,true); }catch(e){} b.disabled=false;b.innerHTML='<i class="far fa-paper-plane"></i>';
+};
+$('btnLicVerif').onclick=async()=>{
+  const m=$('inLicMail').value.trim(), u=$('inLicUrl').value.trim(); if(!m||!u)return msg('licMsg','URL kosong',true);
+  const b=$('btnLicVerif'); b.disabled=true; b.textContent='Memvalidasi...';
+  try{
+    const r=await fetch(`${API}/api/am?action=verif&apikey=${KEY}&email=${encodeURIComponent(cachedEmail||m)}&url=${encodeURIComponent(u)}`);const d=await r.json();
+    if(d.status){
+      toast("Berhasil! Premium aktif."); msg('licMsg','Akses diamankan');
+      if(user&&!pBool(user.is_permanent)&&user.role!=='Owner'){
+        const nl=Math.max(0,(user.limit_count??3)-1); await xFet('updateUser',{username:user.username,updates:{limit_count:nl}}); user.limit_count=nl; buildApp(user);
+      }
+    }else msg('licMsg',d.error||"Gagal verif",true);
+  }catch(e){} b.disabled=false; b.textContent='Eksekusi Validasi';
+};
 
-    async function apiCall(action, payload = {}) {
-        try {
-            const res = await fetch(`/api/hub?action=${action}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-            return await res.json();
-        } catch (e) { return { status: false, error: 'Network Error' }; }
-    }
+// --- LIMIT / QRIS ---
+const pks=[{l:4,p:1200},{l:10,p:3500},{l:18,p:4700},{l:20,p:5000},{l:35,p:6700},{l:40,p:7200},{l:50,p:8000},{l:100,p:18800}];
+// Intercept limitSheet open to render limits
+const oMod = openModal; openModal=(id)=>{oMod(id); if(id==='limitSheet'){ $('viewQris').classList.add('hidden'); $('viewLimitSelect').classList.remove('hidden');
+  const g=$('limitGrid');g.innerHTML='';
+  pks.forEach(k=>{const d=document.createElement('div');d.className='premium-card flex-center';d.style.flexDirection='column';d.style.padding='16px';d.style.margin='0';d.style.cursor='pointer';
+    d.innerHTML=`<div style="font-family:var(--font-heading);font-size:24px;color:var(--gold-light);line-height:1;">${k.l}</div><div class="text-xs" style="margin-bottom:8px;">LMT</div><div class="text-sm">Rp ${k.p.toLocaleString('id-ID')}</div>`;
+    d.onclick=()=>mkQris(k.l,k.p); g.appendChild(d);});
+}};
+async function mkQris(l,p){
+  buyLim=l; toast("Membuat Invoice..."); const r=await xFet('createQris',{amount:p,limitAmount:l,username:user.username});
+  if(r.status&&r.data){
+    const d=r.data; depId=d.data?.depositId||d.depositId||d.id; const u=d.data?.qrImage||d.data?.qrisUrl||d.qr_string;
+    if(u){$('qrisImg').src=u;$('qrisTitle').textContent=`Paket ${l} LMT`;$('qrisTx').textContent=depId; $('viewLimitSelect').classList.add('hidden');$('viewQris').classList.remove('hidden');}
+  }else toast("Gagal generate QRIS");
+}
+async function verifyQris(){
+  if(!depId)return; toast("Cek status..."); const r=await xFet('checkQris',{depositId:depId});
+  if(r.status){
+    const s=r.data?.data?.status||r.data?.status;
+    if(s==='success'||s==='paid'||s===true){
+      const nl=(user.limit_count??3)+buyLim; await xFet('updateUser',{username:user.username,updates:{limit_count:nl}});
+      user.limit_count=nl; buildApp(user); closeModal('limitSheet'); toast("Transaksi Sukses!");
+    }else toast("Belum Dibayar");
+  }else toast("Gagal cek");
+}
+function backQris(){$('viewQris').classList.add('hidden');$('viewLimitSelect').classList.remove('hidden');}
 
-    window.customAlert = function(msg, isError = false) {
-        const toast = document.getElementById('globalToast'); document.getElementById('toastMsg').textContent = msg;
-        toast.style.border = isError ? '1px solid var(--danger)' : '1px solid var(--gold-dark)';
-        toast.querySelector('i').className = isError ? 'fas fa-exclamation-triangle' : 'fas fa-check-circle';
-        toast.querySelector('i').style.color = isError ? '#ff6b6b' : 'var(--gold-primary)';
-        toast.classList.add('show'); setTimeout(() => { toast.classList.remove('show'); }, 3500);
-    };
+// --- STUDIO (AI) ---
+function selMode(el){ document.querySelectorAll('.segment-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); cMode=el.getAttribute('data-m'); const w=el.offsetWidth,l=el.offsetLeft; $('segBg').style.width=w+'px';$('segBg').style.left=l+'px'; }
+setTimeout(()=>selMode(document.querySelector('.segment-btn.active')),200);
 
-    window.customConfirm = function(msg, callback) {
-        document.getElementById('confirmText').textContent = msg;
-        const modal = document.getElementById('customConfirmModal'); modal.classList.add('show');
-        document.getElementById('btnConfirmCancel').onclick = () => modal.classList.remove('show');
-        document.getElementById('btnConfirmOk').onclick = () => { modal.classList.remove('show'); callback(); };
-    };
+// Image Slider Logic
+const slWrap=$('slWrap'), slHand=$('slHandle'), slOvl=$('slImgBef'); let isSlid=false;
+function doSl(e){ if(!isSlid)return; let x=(e.type.includes('touch')?e.touches[0].clientX:e.clientX)-slWrap.getBoundingClientRect().left; const w=slWrap.offsetWidth; if(x<0)x=0;if(x>w)x=w; const p=(x/w)*100; slHand.style.left=p+'%'; slOvl.style.clipPath=`inset(0 ${100-p}% 0 0)`; }
+slWrap.onmousedown=e=>{isSlid=true;doSl(e);}; slWrap.ontouchstart=e=>{isSlid=true;doSl(e);};
+window.onmouseup=()=>isSlid=false; window.ontouchend=()=>isSlid=false;
+window.onmousemove=doSl; window.ontouchmove=e=>{if(isSlid){if(e.cancelable)e.preventDefault();doSl(e);}};
 
-    async function getIPAddress() { try { const res = await fetch('https://api.ipify.org?format=json'); const data = await res.json(); return data.ip; } catch (e) { return 'Unknown'; } }
-    async function generateAdvancedFingerprint() { return new Promise((resolve) => { try { const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d'); ctx.textBaseline = "top"; ctx.font = "14px 'Arial'"; ctx.fillStyle = "#f60"; ctx.fillRect(125, 1, 62, 20); ctx.fillStyle = "#069"; ctx.fillText("AlightMotionSupabase", 2, 15); const canvasData = canvas.toDataURL(); resolve('FP-' + Math.abs(canvasData.length).toString(36)); } catch (e) { resolve('FP-' + Math.random().toString(36).substring(2)); } }); }
-
-    let currentCaptchaAnswer = 0; let currentUserData = null; let cachedEmail = ''; let activeDepositId = null; let selectedAddLimitCount = 0; let activeBroadcastId = null;
-    let temporaryBioData = null; 
-
-    // --- BIOMETRIC LOGIC ---
-    function checkBiometricAvailable() {
-        if(localStorage.getItem(BIO_CRED_KEY)) { document.getElementById('bioLoginWrapper').classList.remove('hidden'); } 
-        else { document.getElementById('bioLoginWrapper').classList.add('hidden'); }
-    }
-
-    window.startBiometricLogin = async function() {
-        const bioData = JSON.parse(localStorage.getItem(BIO_CRED_KEY));
-        if(!bioData) return customAlert("Biometrik belum dikonfigurasi.", true);
-
-        const modal = document.getElementById('biometricModal');
-        const scanner = document.getElementById('bioScanner');
-        const icon = document.getElementById('bioIcon');
-        const statusTxt = document.getElementById('bioStatusText');
-        
-        modal.classList.add('show'); scanner.classList.add('active');
-        icon.className = 'fas fa-fingerprint fp-icon scanning';
-        statusTxt.textContent = "Memindai Biometrik..."; statusTxt.style.color = "var(--gold-primary)";
-        triggerVibrate([30, 50, 30]);
-
-        try {
-            if(window.PublicKeyCredential) {
-                const challenge = new Uint8Array(32); window.crypto.getRandomValues(challenge);
-                await navigator.credentials.get({ publicKey: { challenge: challenge, timeout: 60000, userVerification: "discouraged" } });
-                handleBioSuccess(bioData);
-            } else { throw new Error("WebAuthnNotSupported"); }
-        } catch (err) {
-            if (err.name === 'NotAllowedError' || err.message === "WebAuthnNotSupported" || err.name === 'SecurityError') {
-                setTimeout(() => handleBioSuccess(bioData), 2000); 
-            } else { handleBioError(); }
-        }
-    };
-
-    function handleBioSuccess(bioData) {
-        const scanner = document.getElementById('bioScanner');
-        const icon = document.getElementById('bioIcon');
-        const statusTxt = document.getElementById('bioStatusText');
-        
-        scanner.classList.remove('active'); icon.className = 'fas fa-fingerprint fp-icon success';
-        statusTxt.textContent = "Verifikasi Berhasil"; statusTxt.style.color = "var(--success-light)";
-        triggerVibrate([100, 50, 100]);
-        
-        setTimeout(async () => {
-            document.getElementById('biometricModal').classList.remove('show');
-            const loginBtn = document.getElementById('loginBtn');
-            loginBtn.innerHTML = '<div class="loader-spinner" style="width:14px;height:14px; border-width:2px; border-top-color:#000;"></div> Memvalidasi...'; loginBtn.disabled = true; 
-            const res = await apiCall('login', { username: bioData.u, password: atob(bioData.p) }); 
-            loginBtn.textContent = 'Otorisasi Masuk'; loginBtn.disabled = false; 
-            if(!res.status) return customAlert(`Biometrik Ditolak: ${res.error}`, true);
-            
-            localStorage.setItem(SESSION_KEY, bioData.u); 
-            localStorage.setItem(CACHE_KEY, JSON.stringify(res.data)); window.loadAppView(res.data); 
-        }, 1000);
-    }
-
-    function handleBioError() {
-        const scanner = document.getElementById('bioScanner'); const icon = document.getElementById('bioIcon'); const statusTxt = document.getElementById('bioStatusText');
-        scanner.classList.remove('active'); icon.className = 'fas fa-fingerprint fp-icon error';
-        statusTxt.textContent = "Biometrik Ditolak"; statusTxt.style.color = "var(--danger-light)";
-        triggerVibrate([200]); document.getElementById('bioCancelBtn').classList.remove('hidden');
-    }
-
-    window.cancelBiometric = function() { document.getElementById('biometricModal').classList.remove('show'); document.getElementById('bioCancelBtn').classList.add('hidden'); }
-    window.enableBiometric = async function() {
-        if(!temporaryBioData) return;
-        const btn = document.querySelector('#bioSetupModal .btn-primary'); btn.textContent = 'Memproses...'; btn.disabled = true;
-
-        try {
-            if(window.PublicKeyCredential) {
-                const challenge = new Uint8Array(32); window.crypto.getRandomValues(challenge);
-                const userId = new Uint8Array(16); window.crypto.getRandomValues(userId);
-                try {
-                    await navigator.credentials.create({
-                        publicKey: { challenge: challenge, rp: { name: "AM Executive" }, user: { id: userId, name: temporaryBioData.u, displayName: temporaryBioData.u }, pubKeyCredParams: [{ type: "public-key", alg: -7 }, { type: "public-key", alg: -257 }], authenticatorSelection: { authenticatorAttachment: "platform", userVerification: "discouraged" }, timeout: 60000, attestation: "none" }
-                    });
-                } catch (e) { }
-            }
-            localStorage.setItem(BIO_CRED_KEY, JSON.stringify({u: temporaryBioData.u, p: btoa(temporaryBioData.p)}));
-            customAlert("Biometrik berhasil didaftarkan pada perangkat ini.");
-            document.getElementById('bioSetupModal').classList.remove('show'); checkBiometricAvailable();
-            window.loadAppView(temporaryBioData.resData);
-        } catch(e) { customAlert("Gagal mendaftarkan biometrik.", true);
-        } finally { btn.textContent = 'Aktifkan Biometrik'; btn.disabled = false; }
-    };
-    window.skipBiometricSetup = function() { document.getElementById('bioSetupModal').classList.remove('show'); if(temporaryBioData) window.loadAppView(temporaryBioData.resData); };
-
-    // --- LIMIT PURCHASING LOGIC ---
-    const limitPackages = [
-        { limit: 4, price: 1200, label: "4" }, { limit: 10, price: 3500, label: "10" },
-        { limit: 18, price: 4700, label: "18" }, { limit: 20, price: 5000, label: "20" },
-        { limit: 35, price: 6700, label: "35" }, { limit: 40, price: 7200, label: "40" },
-        { limit: 50, price: 8000, label: "50" }, { limit: 100, price: 18800, label: "100" }
-    ];
-
-    function renderLimitPackages() {
-        const grid = document.getElementById('limitPackageGrid'); if(!grid) return; grid.innerHTML = '';
-        limitPackages.forEach(pkg => {
-            const btn = document.createElement('div'); btn.className = 'limit-box click-sound';
-            btn.innerHTML = `<span class="lmt">${pkg.label} Limit</span><span class="prc">Rp ${pkg.price.toLocaleString('id-ID')}</span>`;
-            btn.onclick = () => createQrisForLimit(pkg.limit, pkg.price, pkg.label);
-            grid.appendChild(btn);
-        });
-    }
-
-    window.openLimitModal = function() { renderLimitPackages(); document.getElementById('selectLimitView').classList.remove('hidden'); document.getElementById('qrisPaymentView').classList.add('hidden'); document.getElementById('limitModal').classList.add('show'); };
-    window.closeLimitModal = function() { document.getElementById('limitModal').classList.remove('show'); };
-    window.backToLimitSelect = function() { document.getElementById('selectLimitView').classList.remove('hidden'); document.getElementById('qrisPaymentView').classList.add('hidden'); };
-
-    async function createQrisForLimit(limitCount, price, labelName) {
-        selectedAddLimitCount = limitCount; customAlert("Menginisialisasi gateway QRIS...");
-        const res = await apiCall('createQris', { amount: price, limitAmount: limitCount, username: currentUserData.username });
-        if (!res.status) return customAlert("Gagal terhubung ke server finansial.", true);
-        const data = res.data; activeDepositId = data.data?.depositId || data.depositId || data.id;
-        const qrisUrl = data.data?.qrImage || data.data?.qrisUrl || data.data?.qris_url || data.qr_string;
-        if (qrisUrl) {
-            document.getElementById('qrisImageResult').src = qrisUrl; document.getElementById('qrisPackageTitle').textContent = `Paket ${labelName} Limit`; document.getElementById('qrisDepositIdSpan').textContent = activeDepositId;
-            document.getElementById('selectLimitView').classList.add('hidden'); document.getElementById('qrisPaymentView').classList.remove('hidden');
-        } else { customAlert("Gagal merender modul QRIS.", true); }
-    }
-
-    window.checkQrisPaymentStatus = async function() {
-        if (!activeDepositId) return; customAlert("Mensinkronisasi status transaksi...");
-        const res = await apiCall('checkQris', { depositId: activeDepositId });
-        if (!res.status) return customAlert("Gangguan koneksi jaringan. Coba kembali.", true);
-        const statusData = res.data; const status = statusData.data?.status || statusData.status;
-        const isPaid = (status === "success" || status === "paid" || status === "completed" || status === true);
-        if (isPaid) {
-            const currentLimit = currentUserData.limit_count ?? 3; const newLimitTotal = currentLimit + selectedAddLimitCount;
-            const updateRes = await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimitTotal } });
-            if (updateRes.status) {
-                currentUserData.limit_count = newLimitTotal; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData));
-                window.loadAppView(currentUserData); closeLimitModal(); customAlert("Transaksi Disetujui! Kuota diperbarui.");
-            } else { customAlert("Dana diterima, namun gagal sinkronisasi database.", true); }
-        } else { customAlert("Pembayaran belum diselesaikan pada dompet digital Anda.", true); }
-    };
-
-    window.toggleLeaderboard = function() {
-        const coll = document.getElementById('leaderboardCollapsible'); const chev = document.getElementById('leaderboardChevron');
-        if (coll.classList.contains('hidden')) { coll.classList.remove('hidden'); chev.style.transform = 'rotate(180deg)'; fetchLeaderboard(); } 
-        else { coll.classList.add('hidden'); chev.style.transform = 'rotate(0deg)'; }
-    };
-
-    async function fetchLeaderboard() {
-        const container = document.getElementById('leaderboardListContainer'); if(!container) return;
-        container.innerHTML = `<div style="text-align:center; padding: 20px;"><div class="loader-spinner" style="margin: 0 auto; width: 20px; height: 20px;"></div></div>`;
-        const res = await apiCall('getUsers');
-        if(!res.status || !res.data) { container.innerHTML = `<div style="font-size:10px; color:var(--text-dim); text-align:center; padding: 14px;">Gagal memuat data peringkat.</div>`; return; }
-        const users = res.data;
-        const regularUsers = users.filter(u => u.role !== 'Owner' && !parseBool(u.is_permanent));
-        regularUsers.sort((a, b) => (b.limit_count || 0) - (a.limit_count || 0));
-        const topUsers = regularUsers.slice(0, 5);
-        
-        container.innerHTML = '';
-        if (topUsers.length === 0) { container.innerHTML = `<div style="font-size:10px; color:var(--text-dim); text-align:center; padding: 14px;">Database peringkat belum tersedia.</div>`; return; }
-        
-        topUsers.forEach((u, index) => {
-            let rankColor = 'var(--text-muted)'; let medalIcon = '';
-            if (index === 0) { rankColor = 'var(--gold-primary)'; medalIcon = '<i class="fas fa-crown" style="color:var(--gold-primary); margin-right:8px;"></i>'; }
-            else if (index === 1) { rankColor = '#e5e4e2'; medalIcon = '<i class="fas fa-award" style="color:#e5e4e2; margin-right:8px;"></i>'; }
-            else if (index === 2) { rankColor = '#cd7f32'; medalIcon = '<i class="fas fa-award" style="color:#cd7f32; margin-right:8px;"></i>'; }
-
-            const item = document.createElement('div'); item.className = 'data-item';
-            item.style.display = 'flex'; item.style.justifyContent = 'space-between'; item.style.alignItems = 'center';
-            item.innerHTML = `<div style="font-size:11px; font-weight:600; display:flex; align-items:center;"><span style="color:${rankColor}; width:24px; font-weight:700; font-size: 12px;">#${index+1}</span>${medalIcon} @${u.username}</div><span style="font-size:12px; font-weight:700; color:var(--gold-light);">${u.limit_count ?? 3} Limit</span>`;
-            container.appendChild(item);
-        });
-    }
-
-    // --- ZERO LIMIT FILTER LOGIC ---
-    let isZeroLimitFilterActive = false;
-    window.toggleZeroLimitFilter = function() {
-        isZeroLimitFilterActive = !isZeroLimitFilterActive;
-        const btn = document.getElementById('filterZeroLimitBtn');
-        if(isZeroLimitFilterActive) {
-            btn.classList.add('btn-primary'); btn.classList.remove('btn-outline');
-            btn.style.color = '#000'; 
-        } else {
-            btn.classList.add('btn-outline'); btn.classList.remove('btn-primary');
-            btn.style.color = 'var(--gold-light)';
-        }
-        renderMemberList(); 
-    };
-
-    // --- MASS RESET ZERO LIMIT LOGIC ---
-    window.resetAllZeroLimits = async function() {
-        customConfirm("Apakah Anda yakin ingin mereset SELURUH klien dengan limit 0 menjadi 3 secara otomatis?", async () => {
-            const btn = document.getElementById('resetMassalBtn');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mereset...';
-            btn.disabled = true;
-
-            try {
-                const res = await apiCall('getUsers');
-                if(!res.status) throw new Error("Gagal mengambil data.");
-                
-                const users = res.data;
-                // Get all users who are not Owner, not VIP, and have limit <= 0
-                const zeroLimitUsers = users.filter(u => 
-                    u.role !== 'Owner' && 
-                    !parseBool(u.is_permanent) && 
-                    (u.limit_count || 0) <= 0
-                );
-                
-                if(zeroLimitUsers.length === 0) {
-                    customAlert("Tidak ada klien dengan limit 0 yang perlu direset.");
-                    return;
-                }
-
-                // Batch API calls async using Promise.all for speed
-                const updatePromises = zeroLimitUsers.map(u => 
-                    apiCall('updateUser', { username: u.username, updates: { limit_count: 3 } })
-                );
-
-                await Promise.all(updatePromises);
-                
-                customAlert(`Proses Berhasil! Limit ${zeroLimitUsers.length} klien telah diubah menjadi 3.`);
-                renderMemberList(); // Refresh list to show updated values
-            } catch(e) {
-                customAlert("Terjadi galat saat memproses reset massal.", true);
-            } finally {
-                btn.innerHTML = originalText;
-                btn.disabled = false;
-            }
-        });
-    };
-
-    window.loadAppView = function(user) {
-        try {
-            currentUserData = user;
-            if (user.username && user.username.toUpperCase() === 'HAOMI') { user.role = 'Owner'; user.is_permanent = true; }
-            massUpdateText('.disp-username', user.username || 'User'); massUpdateText('.disp-userid', user.id_code || 'MSH-01');
-            massUpdateText('.disp-userwa', user.wa || '-'); massUpdateText('.disp-userip', user.ip_address || 'Hidden');
-            updateAvatarUI(user.avatar_url, user.username); updateEditProfileUIStatus(user);
-
-            const isVip = parseBool(user.is_permanent); 
-            const promoBanner = document.getElementById('promoBannerContainer'); const topupCard = document.getElementById('topupCardContainer'); const ownerDashBtn = document.getElementById('toggleOwnerDashBtn'); const roleBadges = document.querySelectorAll('.disp-userrole');
-
-            if (user.role === 'Owner') {
-                roleBadges.forEach(rb => { rb.textContent = 'SYSTEM OWNER'; rb.style.color = 'var(--text-pure)'; });
-                if(ownerDashBtn) ownerDashBtn.classList.remove('hidden'); if(promoBanner) promoBanner.classList.add('hidden'); if(topupCard) topupCard.classList.add('hidden');
-            } else {
-                if(ownerDashBtn) ownerDashBtn.classList.add('hidden'); 
-                if (isVip) { 
-                    roleBadges.forEach(rb => { rb.textContent = 'VIP EXCLUSIVE'; rb.style.color = 'var(--gold-primary)'; }); 
-                    if(promoBanner) promoBanner.classList.add('hidden'); if(topupCard) topupCard.classList.add('hidden');
-                } else { 
-                    roleBadges.forEach(rb => { rb.textContent = 'REGULAR CLIENT'; rb.style.color = 'var(--text-muted)'; }); 
-                    if(promoBanner) promoBanner.classList.remove('hidden'); if(topupCard) topupCard.classList.remove('hidden');
-                }
-            }
-            
-            const numDisplays = document.querySelectorAll('.big-limit-num');
-            if (user.role === 'Owner' || isVip) {
-                massUpdateText('.disp-limit-label', "Status Lisensi"); numDisplays.forEach(el => { el.textContent = "∞"; el.classList.add('vip'); });
-            } else {
-                const currentLimit = user.limit_count ?? 3; massUpdateText('.disp-limit-label', "Sisa Kuota Akses"); numDisplays.forEach(el => { el.textContent = currentLimit; el.classList.remove('vip'); });
-            }
-            
-            switchView('appView'); document.getElementById('mainBottomNav').classList.remove('hidden');
-            if(!document.querySelector('.nav-item.active')) switchTab('activator');
-        } catch (e) { }
-    };
-
-    window.onload = () => {
-        initTheme(); 
-        setTimeout(async () => {
-            checkBiometricAvailable();
-            const initialLoader = document.getElementById('initialLoader'); const savedUser = localStorage.getItem(SESSION_KEY);
-            if(!savedUser) { 
-                if(initialLoader) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 800); } 
-                document.getElementById('warningModal').classList.add('show'); 
-            } else {
-                try { const cachedData = localStorage.getItem(CACHE_KEY); if (cachedData) { const parsed = JSON.parse(cachedData); if (parsed && parsed.username) { currentUserData = parsed; window.loadAppView(parsed); if(initialLoader) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 800); } } } } catch(e) {}
-                await fetchUserSession(savedUser);
-                if(initialLoader && document.body.contains(initialLoader)) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 800); }
-            }
-            startClock(); startPingChecker(); fetchGlobalStats(); initRealtimeBroadcastListener(); initImageEnhancerEngine();
-        }, 1200);
-    };
-
-    function startClock() { const clockEl = document.getElementById('realtimeClock'); if(!clockEl) return; setInterval(() => { const now = new Date(); clockEl.textContent = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB'; }, 1000); }
-    function startPingChecker() { const pingEl = document.getElementById('networkPingText'); if(!pingEl) return; setInterval(() => { const randomPing = Math.floor(Math.random() * 18) + 10; pingEl.textContent = randomPing + 'ms'; }, 4000); }
-    async function fetchGlobalStats() { const res = apiCall ? await apiCall('fetchStats') : {status:false}; if (res.status) { const el = document.getElementById('globalTotalUsers'); if(el) el.textContent = res.count; } }
-    function generateCaptcha() { const num1 = Math.floor(Math.random() * 10) + 1; const num2 = Math.floor(Math.random() * 10) + 1; currentCaptchaAnswer = num1 + num2; const label = document.getElementById('captchaLabel'); if(label) label.innerHTML = `Selesaikan <span style="background:var(--glass-bg); padding:3px 6px; border-radius:4px; font-weight:700; margin-left:6px; border: 1px solid var(--border-thin); color: var(--gold-primary);">${num1} + ${num2}</span>`; }
-    function parseBool(val) { return val === true || val === 'true' || val === '1' || val === 't' || val === 'TRUE' || val === 'YES'; }
-    window.handleVipPromoClick = function() { const txt = currentUserData ? `Salam hormat, saya berminat untuk upgrade status ke VIP Eksklusif.\n\nIdentitas: @${currentUserData.username}\nID Klien: ${currentUserData.id_code || 'MSH-01'}` : "Salam hormat, saya berminat untuk upgrade status akun ke VIP."; window.open(`https://wa.me/`+OWNER_WA.replace('+','')+`?text=` + encodeURIComponent(txt), '_blank'); };
-    window.handleAvatarUpload = async function(event) { 
-        const file = event.target.files[0]; if (!file) return; const reader = new FileReader(); 
-        reader.onload = async function(e) { 
-            const base64Image = e.target.result; if (!currentUserData) return; 
-            const res = await apiCall('updateUser', { username: currentUserData.username, updates: { avatar_url: base64Image } }); 
-            if (res.status) { currentUserData.avatar_url = base64Image; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); updateAvatarUI(base64Image, currentUserData.username); customAlert("Potret profil telah diperbarui."); } 
-        }; reader.readAsDataURL(file); 
-    };
-    function updateAvatarUI(avatarUrl, username) { const avatarContainers = document.querySelectorAll('.pw-avatar'); avatarContainers.forEach(container => { if (avatarUrl && avatarUrl.startsWith('data:image')) { container.innerHTML = `<img src="${avatarUrl}" alt="Avatar">`; } else { container.innerHTML = `<span class="disp-avatar-text">${username ? username.charAt(0).toUpperCase() : 'U'}</span>`; } }); }
-    function massUpdateText(selector, text) { document.querySelectorAll(selector).forEach(el => el.textContent = text); }
-    function updateEditProfileUIStatus(user) { 
-        const userInput = document.getElementById('editUsernameInput'); const passInput = document.getElementById('editPasswordInput'); const saveBtn = document.getElementById('saveProfileChangesBtn'); 
-        if(!userInput || !passInput || !saveBtn) return; 
-        if (parseBool(user.username_changed)) { userInput.disabled = true; passInput.disabled = true; saveBtn.disabled = true; saveBtn.innerHTML = '<i class="fas fa-lock"></i> Terkunci Secara Sistem'; userInput.style.opacity = '0.4'; passInput.style.opacity = '0.4'; } 
-        else { userInput.disabled = false; passInput.disabled = false; saveBtn.disabled = false; saveBtn.innerHTML = 'Simpan Perubahan'; userInput.value = user.username || ''; passInput.value = user.password || ''; } 
-    }
-    document.getElementById('saveProfileChangesBtn').addEventListener('click', async () => { 
-        const newU = document.getElementById('editUsernameInput').value.trim(); const newP = document.getElementById('editPasswordInput').value.trim(); 
-        if (!newU || !newP) return showMsg('editProfileMsg', 'Data formulir tidak boleh dikosongkan.', 'error');
-        const res = await apiCall('updateUser', { username: currentUserData.username, updates: { username: newU, password: newP, username_changed: true } }); 
-        if (res.status) { currentUserData.username = newU; currentUserData.password = newP; currentUserData.username_changed = true; localStorage.setItem(SESSION_KEY, newU); localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData); showMsg('editProfileMsg', 'Perubahan terekam. Kredensial telah dikunci permanen.', 'success'); } 
-    });
+$('btnRender').onclick=async()=>{
+  const u=$('aiUrl').value.trim(), f=$('aiFile').files[0]; if(!u&&!f)return msg('aiMsg','Arsip/URL kosong',true);
+  const b=$('btnRender'); b.disabled=true; b.textContent='Memproses...'; $('aiProg').style.display='block';
+  let p=0; const iv=setInterval(()=>{p+=Math.random()*15;if(p>90)p=90;$('aiProgFill').style.width=p+'%';},200);
+  
+  try{
+    const lI=(s)=>new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.src=s;});
+    let sU = f?URL.createObjectURL(f):URL.createObjectURL(await fetch(u).then(r=>r.blob()));
+    let img=await lI(sU); $('slImgBef').src=sU;
     
-    function initRealtimeBroadcastListener() {
-        const checkBroadcast = async () => {
-            const res = await apiCall('getBroadcast');
-            if (res.status && res.data) {
-                const latest = res.data; activeBroadcastId = latest.id; const lastSeenId = localStorage.getItem(BROADCAST_SEEN_KEY);
-                if (lastSeenId !== String(latest.id)) { document.getElementById('broadcastContentText').textContent = latest.message; document.getElementById('broadcastModal').classList.add('show'); }
-            }
-        }; checkBroadcast(); setInterval(checkBroadcast, 15000);
-    }
-    window.closeBroadcastModal = function() { if (activeBroadcastId) localStorage.setItem(BROADCAST_SEEN_KEY, String(activeBroadcastId)); document.getElementById('broadcastModal').classList.remove('show'); };
-    window.sendBroadcastMsg = async function() { const text = document.getElementById('broadcastInput').value.trim(); if(!text) return customAlert("Transmisi tidak boleh kosong.", true); const res = await apiCall('sendBroadcast', { message: text }); if (res.status) { customAlert("Pesan eksekutif terkirim ke seluruh klien."); document.getElementById('broadcastInput').value = ''; } };
+    const c=document.createElement('canvas'), cx=c.getContext('2d'); let sc=cMode==='2x'?2:1; c.width=img.width*sc;c.height=img.height*sc; cx.imageSmoothingEnabled=true;cx.imageSmoothingQuality='high';cx.drawImage(img,0,0,c.width,c.height);
+    const id=cx.getImageData(0,0,c.width,c.height), dt=id.data, st=$('aiStr').value/100;
     
-    async function fetchUserSession(username) { 
-        try { 
-            const res = await apiCall('fetchUser', { username }); 
-            if (res.status && res.data) { 
-                const data = res.data; 
-                if (parseBool(data.is_banned)) { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(CACHE_KEY); switchView('loginView'); customAlert("Akses ditolak: Akun di-suspend.", true); return; } 
-                localStorage.setItem(CACHE_KEY, JSON.stringify(data)); currentUserData = data; window.loadAppView(data); 
-            } else { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(CACHE_KEY); switchView('loginView'); } 
-        } catch (err) {} 
+    if(cMode==='hdr'){
+      const cr=1.0+(1.2*st), ic=128*(1-cr);
+      for(let i=0;i<dt.length;i+=4){
+        dt[i]=dt[i]*cr+ic;dt[i+1]=dt[i+1]*cr+ic;dt[i+2]=dt[i+2]*cr+ic;
+        const r=dt[i],g=dt[i+1],bl=dt[i+2],gr=0.2989*r+0.587*g+0.114*bl;
+        dt[i]=gr+(r-gr)*(1+st);dt[i+1]=gr+(g-gr)*(1+st);dt[i+2]=gr+(bl-gr)*(1+st);
+      } cx.putImageData(id,0,0);
+    }else{
+      const mx=cMode==='2x'?st*0.4:st*0.8, sd=cx.createImageData(c.width,c.height), sdt=sd.data, k=[0,-1,0,-1,5,-1,0,-1,0], w=c.width,h=c.height;
+      for(let y=1;y<h-1;y++){for(let x=1;x<w-1;x++){
+        let r=0,g=0,bl=0; for(let cy=-1;cy<=1;cy++){for(let cx=-1;cx<=1;cx++){ const of=((y+cy)*w+(x+cx))*4, kv=k[(cy+1)*3+(cx+1)]; r+=dt[of]*kv;g+=dt[of+1]*kv;bl+=dt[of+2]*kv; }}
+        const px=(y*w+x)*4; sdt[px]=(r*mx)+(dt[px]*(1-mx));sdt[px+1]=(g*mx)+(dt[px+1]*(1-mx));sdt[px+2]=(bl*mx)+(dt[px+2]*(1-mx));sdt[px+3]=dt[px+3];
+      }}
+      for(let y=0;y<h;y++){for(let x=0;x<w;x++){if(x===0||x===w-1||y===0||y===h-1){const px=(y*w+x)*4;sdt[px]=dt[px];sdt[px+1]=dt[px+1];sdt[px+2]=dt[px+2];sdt[px+3]=dt[px+3];}}} cx.putImageData(sd,0,0);
     }
-    window.switchView = function(viewId) { 
-        ['loginView', 'registerView', 'appView'].forEach(v => { const el = document.getElementById(v); if(el) el.classList.add('hidden'); }); 
-        const targetView = document.getElementById(viewId); 
-        if(targetView) { targetView.classList.remove('hidden'); targetView.style.animation = 'none'; targetView.offsetHeight; targetView.style.animation = null; }
-        if(viewId === 'registerView') { generateCaptcha(); document.getElementById('regCaptcha').value = ''; } 
-        clearFormMessages(); 
-        if(viewId !== 'appView') document.getElementById('mainBottomNav').classList.add('hidden');
-        if(viewId === 'loginView') checkBiometricAvailable();
-    };
-    function clearFormMessages() { document.querySelectorAll('.message-box').forEach(el => { el.classList.remove('show', 'message-success', 'message-error'); el.querySelector('span') && (el.querySelector('span').innerHTML = ''); }); }
-    function showMsg(elId, text, type = 'error') { 
-        const el = document.getElementById(elId); if(el) { const span = el.querySelector('span') || el; span.innerHTML = text; el.className = 'message-box show'; 
-            if (type === 'error') { el.classList.add('message-error'); el.querySelector('i').className = 'fas fa-exclamation-circle'; } 
-            if (type === 'success') { el.classList.add('message-success'); el.querySelector('i').className = 'fas fa-check-circle'; } 
-        } 
-    }
-    window.closeWarningModal = function() { document.getElementById('warningModal').classList.remove('show'); if(!localStorage.getItem(SESSION_KEY)) document.getElementById('loginView').classList.remove('hidden'); };
-    window.handleForgotClick = function() { window.open(`https://wa.me/${OWNER_WA.replace('+', '')}?text=` + encodeURIComponent("Salam hormat, saya membutuhkan bantuan pemulihan akses (lupa sandi)."), '_blank'); };
-    
-    window.renderMemberList = async function() { 
-        const res = await apiCall('getUsers'); const memberList = document.getElementById('memberList'); const searchInput = document.getElementById('memberSearchInput'); 
-        if(!memberList || !res.status) return; const users = res.data; const searchQuery = searchInput ? searchInput.value.toLowerCase().trim() : ''; 
-        
-        let filteredUsers = users.filter(m => (m.username || '').toLowerCase().includes(searchQuery) || (m.id_code || '').toLowerCase().includes(searchQuery)); 
-        
-        if (isZeroLimitFilterActive) {
-            filteredUsers = filteredUsers.filter(m => (m.limit_count || 0) <= 0 && m.role !== 'Owner' && !parseBool(m.is_permanent));
-        }
+    cBlob=await new Promise(r=>c.toBlob(r,'image/jpeg',0.95)); $('slImgAft').src=URL.createObjectURL(cBlob);
+    slHand.style.left='50%'; slOvl.style.clipPath='inset(0 50% 0 0)';
+    clearInterval(iv); $('aiProgFill').style.width='100%'; setTimeout(()=>{$('aiProg').style.display='none';$('aiProgFill').style.width='0%';},500);
+    $('compareSect').classList.remove('hidden'); toast("Render Selesai");
+  }catch(e){clearInterval(iv);$('aiProg').style.display='none';msg('aiMsg','Gagal render',true);}
+  b.disabled=false; b.textContent='Inisiasi Render';
+};
+function dlRes(){if(cBlob){const a=document.createElement('a');a.href=URL.createObjectURL(cBlob);a.download='AM_Executive_AI.jpg';a.click();}}
+function cpRes(){if(cBlob){navigator.clipboard.writeText($('slImgAft').src);toast("URL Disalin");}}
 
-        filteredUsers.sort((a, b) => { 
-            const aVip = parseBool(a.is_permanent) || a.role === 'Owner' ? 1 : 0; const bVip = parseBool(b.is_permanent) || b.role === 'Owner' ? 1 : 0; 
-            if (aVip !== bVip) return bVip - aVip; return new Date(a.created_at || 0) - new Date(b.created_at || 0); 
-        });
-
-        memberList.innerHTML = ''; 
-        if(filteredUsers.length === 0) {
-             memberList.innerHTML = `<div style="text-align:center; padding: 20px; font-size:11px; color:var(--text-dim);">Tidak ada klien yang cocok dengan kriteria.</div>`;
-             return;
-        }
-
-        filteredUsers.forEach((m) => { 
-            const isVipUser = parseBool(m.is_permanent); const isBannedUser = parseBool(m.is_banned); 
-            let roleStr = 'Reguler'; if (m.role === 'Owner') roleStr = 'Eksekutif'; else if (isVipUser) roleStr = 'VIP';
-            
-            const el = document.createElement('div'); el.className = 'data-item';
-            el.innerHTML = `
-                <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-                  <span style="font-weight:600; font-size:12px; color:var(--text-pure);">@${m.username} ${isBannedUser ? '<span style="color:var(--danger-light); font-size:8px; background:var(--danger); padding: 2px 4px; border-radius:2px; margin-left:6px;">SUSPENDED</span>' : ''}</span>
-                  <span style="font-size:9px; color:var(--text-muted); background:var(--glass-bg); border: 1px solid var(--glass-border); padding: 2px 6px; border-radius: 4px;">${m.id_code || 'MSH-00'}</span>
-                </div>
-                <div style="font-size:9px; color:var(--text-dim); margin-bottom:14px; display:flex; gap:12px; flex-wrap: wrap;">
-                  <span><b>ROLE:</b> <span style="color:${isVipUser ? 'var(--gold-primary)' : 'var(--text-muted)'}">${roleStr}</span></span> 
-                  <span><b>PWD:</b> <span>${m.password}</span></span> 
-                  <span><b>WA:</b> <span>${m.wa||'-'}</span></span>
-                </div>
-                <div style="display:flex; align-items:center; gap:8px; margin-bottom:14px; background:var(--glass-bg); padding:10px; border-radius:8px; border: 1px solid var(--glass-border);">
-                  <span style="font-size:9px; font-weight:600; color:var(--text-muted); text-transform:uppercase;">Limit:</span>
-                  <input type="number" id="inputLimit_${m.username}" value="${m.limit_count ?? 3}" class="glass-input" style="padding:6px; font-size:10px; width:60px; text-align:center; font-weight:600; color:var(--gold-light);" />
-                  <button class="btn btn-outline click-sound" style="padding:6px 10px; width:auto; font-size:9px;" onclick="setCustomLimit('${m.username}')">Update</button>
-                </div>
-                <div style="display:flex; gap:8px;">
-                  <button class="btn btn-outline click-sound" style="padding:8px; font-size:9px; flex:1; border-color:${isVipUser ? 'var(--gold-dark)' : 'var(--glass-border)'}; color:${isVipUser ? 'var(--gold-primary)' : 'var(--text-pure)'};" onclick="toggleVipStatus('${m.username}', ${isVipUser})"><i class="fas fa-crown"></i> ${isVipUser ? 'Revoke VIP' : 'Grant VIP'}</button>
-                  <button class="btn btn-outline click-sound" style="padding:8px; font-size:9px; flex:1; color:${isBannedUser ? 'var(--gold-primary)' : 'var(--danger-light)'}; border-color:${isBannedUser ? 'var(--gold-primary)' : 'var(--danger)'}; background: ${isBannedUser ? 'transparent' : 'rgba(138,21,21,0.15)'}" onclick="toggleSuspendStatus('${m.username}', ${isBannedUser})"><i class="fas ${isBannedUser ? 'fa-unlock' : 'fa-lock'}"></i> ${isBannedUser ? 'Lepas Suspend' : 'Suspend'}</button>
-                </div>
-            `; 
-            memberList.appendChild(el); 
-        }); 
-    };
-
-    window.setCustomLimit = async function(username) {
-        const inputVal = document.getElementById(`inputLimit_${username}`).value; const newLimit = parseInt(inputVal, 10);
-        if(isNaN(newLimit)) return customAlert("Nilai limit tidak valid.", true);
-        const res = await apiCall('updateUser', { username: username, updates: { limit_count: newLimit } });
-        if (res.status) { renderMemberList(); customAlert("Konfigurasi limit diperbarui."); if(currentUserData && currentUserData.username === username) { currentUserData.limit_count = newLimit; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData); } } else { customAlert("Gagal terhubung ke database.", true); }
-    };
-
-    window.toggleVipStatus = async function(username, currentVipStatus) { const newStatus = !currentVipStatus ? 'true' : 'false'; const res = await apiCall('updateUser', { username, updates: { is_permanent: newStatus } }); if (res.status) { renderMemberList(); customAlert("Status previlege VIP dimodifikasi."); if(currentUserData && currentUserData.username === username) { currentUserData.is_permanent = newStatus; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData); } } };
-    window.toggleSuspendStatus = async function(username, currentBannedStatus) { customConfirm(currentBannedStatus ? `Konfirmasi pembukaan akses untuk klien ${username}?` : `Konfirmasi pemutusan akses (suspend) untuk klien ${username}?`, async () => { const newStatus = currentBannedStatus ? 'false' : 'true'; const res = await apiCall('updateUser', { username, updates: { is_banned: newStatus } }); if (res.status) { customAlert("Status keamanan dimodifikasi."); renderMemberList(); } }); };
-    window.togglePwd = function(inputId, btnEl) { const input = document.getElementById(inputId); const icon = btnEl.querySelector('i'); if (!input) return; if (input.type === 'password') { input.type = 'text'; icon.className = 'fas fa-eye-slash'; } else { input.type = 'password'; icon.className = 'far fa-eye'; } };
-
-    function initImageEnhancerEngine() {
-        const urlInput = document.getElementById('imageUrl'); 
-        const dropZone = document.getElementById('dropZone'); 
-        const fileInput = document.getElementById('fileInput'); 
-        const fileNameDisplay = document.getElementById('fileNameDisplay'); 
-        const strengthRange = document.getElementById('strengthRange'); 
-        const strengthIndicator = document.getElementById('strengthIndicator'); 
-        const modeModalOverlay = document.getElementById('modeModalOverlay'); 
-        const applyModeBtn = document.getElementById('applyModeBtn'); 
-        const currentModeLabel = document.getElementById('currentModeLabel'); 
-        const modeItems = document.querySelectorAll('.mode-option-item'); 
-        const enhanceBtn = document.getElementById('enhanceBtn'); 
-        const resetBtn = document.getElementById('resetBtn'); 
-        const comparisonSplitSection = document.getElementById('comparisonSplitSection'); 
-        const splitImgBefore = document.getElementById('splitImgBefore'); 
-        const splitImgAfter = document.getElementById('splitImgAfter'); 
-        const statusMessage = document.getElementById('statusMessage'); 
-        const downloadFooterActions = document.getElementById('downloadFooterActions'); 
-        const downloadBtn = document.getElementById('downloadBtn'); 
-        const copyUrlBtn = document.getElementById('copyUrlBtn'); 
-        
-        let selectedFile = null; let selectedMode = '2x'; let tempSelectedMode = '2x'; let originalBlobUrl = null; let enhancedBlobUrl = null; 
-        
-        // --- LOGIKA SLIDER COMPARE (Geser Gambar) ---
-        const wrapper = document.getElementById('imageCompareWrapper');
-        const slider = document.getElementById('imgCompSlider');
-        let isSliding = false;
-
-        function slide(event) {
-            if (!isSliding) return;
-            let x = 0;
-            if (event.type.includes('touch')) {
-                x = event.touches[0].clientX - wrapper.getBoundingClientRect().left;
-            } else {
-                x = event.clientX - wrapper.getBoundingClientRect().left;
-            }
-            
-            const width = wrapper.offsetWidth;
-            if (x < 0) x = 0;
-            if (x > width) x = width;
-            
-            const percentage = (x / width) * 100;
-            slider.style.left = percentage + '%';
-            // Memotong gambar overlay dari sisi kanan berdasarkan persentase
-            splitImgBefore.style.clipPath = `inset(0 ${100 - percentage}% 0 0)`;
-        }
-
-        if(wrapper && slider) {
-            wrapper.addEventListener('mousedown', (e) => { isSliding = true; slide(e); });
-            wrapper.addEventListener('touchstart', (e) => { isSliding = true; slide(e); }, {passive: true});
-            
-            window.addEventListener('mouseup', () => isSliding = false);
-            window.addEventListener('touchend', () => isSliding = false);
-            
-            window.addEventListener('mousemove', slide);
-            window.addEventListener('touchmove', (e) => {
-                if(isSliding) {
-                    if (e.cancelable) e.preventDefault(); // Mencegah scrolling saat menggeser slider
-                    slide(e);
-                }
-            }, {passive: false});
-        }
-        // ------------------------------------------
-
-        document.getElementById('closeModeModal').addEventListener('click', () => modeModalOverlay.classList.remove('show'));
-        if(!strengthRange) return; 
-        strengthRange.addEventListener('input', () => { const val = parseInt(strengthRange.value, 10); strengthIndicator.textContent = val <= 30 ? 'Ringan' : (val > 70 ? 'Maksimal' : 'Normal'); }); 
-        modeItems.forEach(item => { item.addEventListener('click', () => { modeItems.forEach(i => { i.classList.remove('selected'); i.style.borderColor = 'transparent'; i.style.background = 'transparent'; }); item.classList.add('selected'); item.style.borderColor = 'var(--gold-primary)'; item.style.background = 'rgba(212,175,55,0.05)'; tempSelectedMode = item.getAttribute('data-mode'); }); }); 
-        applyModeBtn.addEventListener('click', () => { selectedMode = tempSelectedMode; currentModeLabel.textContent = selectedMode === '2x' ? 'Super Res 2x' : (selectedMode === '1x' ? 'Clean & Sharpen' : 'Dynamic HDR'); modeModalOverlay.classList.remove('show'); }); 
-        dropZone.addEventListener('click', () => fileInput.click()); 
-        fileInput.addEventListener('change', (e) => { if (e.target.files && e.target.files[0]) { selectedFile = e.target.files[0]; fileNameDisplay.innerHTML = `<i class="fas fa-file-image"></i> ${selectedFile.name}`; } });
-        
-        enhanceBtn.addEventListener('click', async () => {
-            const urlVal = urlInput.value.trim(); 
-            if (!urlVal && !selectedFile) return showMsg('statusMessage', 'Sematkan URL direktori atau pilih berkas lokal.', 'error');
-            enhanceBtn.disabled = true; enhanceBtn.innerHTML = '<div class="loader-spinner" style="width:14px;height:14px; border-width:2px; border-top-color:#000;"></div> Memproses Data...';
-            try {
-                let img = selectedFile ? await loadImageFromFile(selectedFile) : await loadImageFromBlob(await fetchUrlBlob(urlVal));
-                originalBlobUrl = URL.createObjectURL(selectedFile || await fetchUrlBlob(urlVal));
-                splitImgBefore.src = originalBlobUrl;
-                
-                let enhancedBlob = await runLocalEnhancer(img, parseInt(strengthRange.value), selectedMode);
-                
-                enhancedBlobUrl = URL.createObjectURL(enhancedBlob);
-                splitImgAfter.src = enhancedBlobUrl; // Gambar Hasil AI di belakang
-                
-                // Reset posisi slider ke 50%
-                slider.style.left = '50%';
-                splitImgBefore.style.clipPath = 'inset(0 50% 0 0)';
-
-                comparisonSplitSection.classList.remove('hidden');
-                downloadFooterActions.classList.remove('hidden');
-                showMsg('statusMessage', 'Render eksekutif diselesaikan dengan sempurna.', 'success');
-            } catch(e) { showMsg('statusMessage', 'Mesin gagal memproses citra yang diberikan.', 'error'); } 
-            finally { enhanceBtn.disabled = false; enhanceBtn.innerHTML = '<i class="fas fa-microchip"></i> Eksekusi Render'; }
-        });
-        
-        function fetchUrlBlob(url) { return fetch(url).then(r => r.blob()); }
-        function loadImageFromFile(file) { return new Promise(res => { const r = new FileReader(); r.onload = e => { const i = new Image(); i.onload = () => res(i); i.src = e.target.result; }; r.readAsDataURL(file); }); }
-        function loadImageFromBlob(blob) { return new Promise(res => { const i = new Image(); i.onload = () => res(i); i.src = URL.createObjectURL(blob); }); }
-        
-        function runLocalEnhancer(img, strength, mode) {
-            return new Promise(res => {
-                const c = document.createElement('canvas'); const ctx = c.getContext('2d');
-                let scale = (mode === '2x') ? 2 : 1; c.width = img.width * scale; c.height = img.height * scale;
-                ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high'; ctx.drawImage(img, 0, 0, c.width, c.height);
-                const w = c.width, h = c.height; const imageData = ctx.getImageData(0, 0, w, h); const data = imageData.data; const factor = strength / 100; 
-
-                if (mode === 'hdr') {
-                    const contrast = 1.0 + (1.2 * factor); const intercept = 128 * (1 - contrast);
-                    for (let i = 0; i < data.length; i += 4) {
-                        data[i] = data[i] * contrast + intercept; data[i+1] = data[i+1] * contrast + intercept; data[i+2] = data[i+2] * contrast + intercept;
-                        const r = data[i], g = data[i+1], b = data[i+2]; const gray = 0.2989 * r + 0.5870 * g + 0.1140 * b;
-                        data[i] = gray + (r - gray) * (1 + factor); data[i+1] = gray + (g - gray) * (1 + factor); data[i+2] = gray + (b - gray) * (1 + factor);
-                    }
-                    ctx.putImageData(imageData, 0, 0);
-                } else if (mode === '1x' || mode === '2x') {
-                    const mix = mode === '2x' ? factor * 0.4 : factor * 0.8; const sharpData = ctx.createImageData(w, h); const sData = sharpData.data;
-                    const kernel = [ 0, -1, 0, -1,  5, -1, 0, -1, 0 ];
-                    for (let y = 1; y < h - 1; y++) {
-                        for (let x = 1; x < w - 1; x++) {
-                            let r = 0, g = 0, b = 0;
-                            for (let cy = -1; cy <= 1; cy++) { for (let cx = -1; cx <= 1; cx++) { const offset = ((y + cy) * w + (x + cx)) * 4; const k = kernel[(cy + 1) * 3 + (cx + 1)]; r += data[offset] * k; g += data[offset + 1] * k; b += data[offset + 2] * k; } }
-                            const px = (y * w + x) * 4;
-                            sData[px] = (r * mix) + (data[px] * (1 - mix)); sData[px+1] = (g * mix) + (data[px+1] * (1 - mix)); sData[px+2] = (b * mix) + (data[px+2] * (1 - mix)); sData[px+3] = data[px+3]; 
-                        }
-                    }
-                    for (let y = 0; y < h; y++) { for (let x = 0; x < w; x++) { if (x === 0 || x === w - 1 || y === 0 || y === h - 1) { const px = (y * w + x) * 4; sData[px] = data[px]; sData[px+1] = data[px+1]; sData[px+2] = data[px+2]; sData[px+3] = data[px+3]; } } }
-                    ctx.putImageData(sharpData, 0, 0);
-                }
-                c.toBlob(blob => res(blob), 'image/jpeg', 0.95);
-            });
-        }
-        
-        downloadBtn.addEventListener('click', () => { if (enhancedBlobUrl) { const a = document.createElement('a'); a.href = enhancedBlobUrl; a.download = 'AM_Executive_Output.jpg'; a.click(); } });
-        copyUrlBtn.addEventListener('click', () => { if (enhancedBlobUrl) { navigator.clipboard.writeText(enhancedBlobUrl); customAlert("URL disalin ke papan klip."); } });
-    }
-
-    const loginBtn = document.getElementById('loginBtn'); const regBtn = document.getElementById('regBtn'); const topLogoutBtn = document.getElementById('topLogoutBtn'); const sendBtn = document.getElementById('sendBtn'); const activateBtn = document.getElementById('activateBtn');
-
-    if(loginBtn) { 
-        loginBtn.addEventListener('click', async () => { 
-            const u = document.getElementById('loginUser').value.trim(); const p = document.getElementById('loginPwd').value.trim(); 
-            if(!u || !p) return showMsg('loginErrorMsg', 'Harap isi seluruh kredensial.', 'error'); 
-            loginBtn.innerHTML = '<div class="loader-spinner" style="width:14px;height:14px; border-width:2px; border-top-color:#000;"></div> Memvalidasi...'; loginBtn.disabled = true; 
-            const res = await apiCall('login', { username: u, password: p }); 
-            loginBtn.textContent = 'Otorisasi Masuk'; loginBtn.disabled = false; 
-            if(!res.status) return showMsg('loginErrorMsg', `Akses Ditolak: ${res.error}`, 'error'); 
-            
-            localStorage.setItem(SESSION_KEY, u); localStorage.setItem(CACHE_KEY, JSON.stringify(res.data)); 
-            if(!localStorage.getItem(BIO_CRED_KEY)) { temporaryBioData = {u: u, p: p, resData: res.data}; document.getElementById('bioSetupModal').classList.add('show'); } 
-            else { window.loadAppView(res.data); }
-        }); 
-    }
-
-    if(regBtn) { 
-        regBtn.addEventListener('click', async () => { 
-            const u = document.getElementById('regUser').value.trim(); const w = document.getElementById('regWa').value.trim(); const p = document.getElementById('regPwd').value.trim(); const cInput = parseInt(document.getElementById('regCaptcha').value.trim()); 
-            if (!u || !w || !p || isNaN(cInput)) return showMsg('regMsg', 'Data formulir tidak lengkap.', 'error'); 
-            if (cInput !== currentCaptchaAnswer) return showMsg('regMsg', 'Verifikasi bot gagal.', 'error'); 
-            regBtn.innerHTML = '<div class="loader-spinner" style="width:14px;height:14px; border-width:2px; border-top-color:#000;"></div> Mendaftarkan...'; regBtn.disabled = true; 
-            try { 
-                const userIp = await getIPAddress(); const fp = await generateAdvancedFingerprint(); 
-                const res = await apiCall('register', { username: u, password: p, wa: w, ip_address: userIp, device_id: fp }); 
-                if(!res.status) throw new Error(res.error); 
-                localStorage.setItem(SESSION_KEY, u); localStorage.setItem(CACHE_KEY, JSON.stringify(res.data)); 
-                temporaryBioData = {u: u, p: p, resData: res.data}; document.getElementById('registerView').classList.add('hidden'); document.getElementById('bioSetupModal').classList.add('show');
-            } catch (err) { showMsg('regMsg', err.message, 'error'); } finally { regBtn.textContent = 'Daftarkan Identitas'; regBtn.disabled = false; } 
-        }); 
-    }
-
-    if(topLogoutBtn) { topLogoutBtn.addEventListener('click', () => { customConfirm("Anda yakin ingin memutus koneksi sesi eksklusif ini?", () => { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(CACHE_KEY); closeProfileSheet(); switchView('loginView'); }); }); }
-    
-    if(sendBtn) {
-        sendBtn.addEventListener('click', async () => {
-            const email = document.getElementById('emailInput').value.trim(); if(!email) return showMsg('appErrorMsg', 'Alamat email wajib disematkan.', 'error');
-            sendBtn.innerHTML = 'Proses...'; sendBtn.disabled = true;
-            try {
-                const res = await fetch(`${API_BASE}/api/am?action=send&apikey=${API_KEY}&email=${encodeURIComponent(email)}`); const data = await res.json();
-                if(data.status) { cachedEmail = email; showMsg('appErrorMsg', 'Magic link dikirim. Cek surel Anda.', 'success'); } else { showMsg('appErrorMsg', data.error || 'Gateway penyiaran gagal.', 'error'); }
-            } catch(e) { showMsg('appErrorMsg', 'Koneksi ke server terputus.', 'error'); }
-            finally { sendBtn.textContent = 'Kirim'; sendBtn.disabled = false; }
-        });
-    }
-
-    if(activateBtn) {
-        activateBtn.addEventListener('click', async () => {
-            const email = document.getElementById('emailInput').value.trim(); const magic = document.getElementById('magicInput').value.trim();
-            if(!email || !magic) return showMsg('appErrorMsg', 'Data email atau tautan Magic Link kosong.', 'error');
-            activateBtn.disabled = true; document.getElementById('btnDefault').classList.add('hidden'); document.getElementById('loaderContainer').classList.remove('hidden');
-            try {
-                const res = await fetch(`${API_BASE}/api/am?action=verif&apikey=${API_KEY}&email=${encodeURIComponent(cachedEmail || email)}&url=${encodeURIComponent(magic)}`); const data = await res.json();
-                if(data.status) {
-                    showMsg('appErrorMsg', 'Berhasil! Akun Anda sudah menjadi premium.', 'success');
-                    customAlert('Berhasil! Akun Anda sudah premium. Aktivasi Magic Link selesai.');
-                    
-                    if(currentUserData && !parseBool(currentUserData.is_permanent) && currentUserData.role !== 'Owner') {
-                        let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 1); await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
-                        currentUserData.limit_count = newLimit; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData);
-                    }
-                } else { showMsg('appErrorMsg', data.error || 'Verifikasi lisensi ditolak sistem.', 'error'); }
-            } catch(e) { showMsg('appErrorMsg', 'Galat internal server saat sinkronisasi.', 'error'); }
-            finally { activateBtn.disabled = false; document.getElementById('btnDefault').classList.remove('hidden'); document.getElementById('loaderContainer').classList.add('hidden'); }
-        });
-    }
-
-    window.switchTab = function(tabName) { 
-        const secAct = document.getElementById('sectionActivator'); const secEnh = document.getElementById('sectionEnhancer'); const secOwn = document.getElementById('ownerPanel');
-        [secAct, secEnh, secOwn].forEach(el => { if(el) { el.style.opacity = '0'; el.style.transform = 'translateY(10px)'; setTimeout(() => el.classList.add('hidden'), 200); } });
-        document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active')); 
-        setTimeout(() => {
-            if(tabName === 'activator') { secAct.classList.remove('hidden'); document.getElementById('btnTabActivator').classList.add('active'); animateSectionIn(secAct); } 
-            else if(tabName === 'enhancer') { secEnh.classList.remove('hidden'); document.getElementById('btnTabEnhancer').classList.add('active'); animateSectionIn(secEnh); } 
-            else if(tabName === 'admin') { secOwn.classList.remove('hidden'); document.getElementById('toggleOwnerDashBtn').classList.add('active'); renderMemberList(); animateSectionIn(secOwn); }
-        }, 200);
-    };
-
-    function animateSectionIn(el) { el.style.opacity = '0'; el.style.transform = 'translateY(10px)'; requestAnimationFrame(() => { el.style.transition = 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)'; el.style.opacity = '1'; el.style.transform = 'translateY(0)'; }); }
-
-    window.openProfileSheet = function() { document.getElementById('profileSheet').classList.add('show'); };
-    window.closeProfileSheet = function() { document.getElementById('profileSheet').classList.remove('show'); };
-    document.getElementById('profileSheet').addEventListener('click', (e) => { if (e.target.id === 'profileSheet') closeProfileSheet(); });
-})();
+// --- ADMIN ---
+function togFil0(){ isFil0=!isFil0; const b=$('btnFil0'); if(isFil0){b.classList.remove('btn-outline');b.style.background='var(--gold-primary)';b.style.color='#000';}else{b.classList.add('btn-outline');b.style.background='none';b.style.color='var(--gold-light)';} renAd(); }
+async function renAd(){
+  const q=$('adSrc').value.toLowerCase(); if(q)$('adSrcX').classList.remove('hidden');else $('adSrcX').classList.add('hidden');
+  const ls=$('adList'); ls.innerHTML='<div class="spinner-gold" style="width:24px;height:24px;margin:20px auto;"></div>';
+  const r=await xFet('getUsers'); if(!r.status){ls.innerHTML='<div class="text-xs text-center">Error</div>';return;}
+  let u=r.data.filter(x=>(x.username||'').toLowerCase().includes(q)||(x.id_code||'').toLowerCase().includes(q));
+  if(isFil0) u=u.filter(x=>(x.limit_count||0)<=0&&x.role!=='Owner'&&!pBool(x.is_permanent));
+  u.sort((a,b)=>(pBool(b.is_permanent)?1:0)-(pBool(a.is_permanent)?1:0));
+  ls.innerHTML=''; if(!u.length){ls.innerHTML='<div class="text-xs" style="text-align:center;padding:20px;">0 Data</div>';return;}
+  
+  u.forEach(x=>{
+    const v=pBool(x.is_permanent), b=pBool(x.is_banned);
+    const d=document.createElement('div'); d.className='admin-card';
+    d.innerHTML=`
+      <div class="flex-between" style="margin-bottom:12px;">
+        <div style="font-family:var(--font-heading);font-weight:700;font-size:14px;">@${x.username}</div>
+        <div class="text-xs" style="color:var(--text-muted);">${x.id_code||'--'}</div>
+      </div>
+      <div style="display:flex;gap:6px;margin-bottom:12px;">
+        <span class="tag" style="background:rgba(255,255,255,0.1);color:var(--text-dim);">${x.role==='Owner'?'ADMIN':'KLIEN'}</span>
+        ${v?'<span class="tag" style="background:rgba(212,175,55,0.1);color:var(--gold-primary);border:1px solid rgba(212,175,55,0.3);">VIP</span>':''}
+        ${b?'<span class="tag" style="background:rgba(229,57,53,0.15);color:var(--danger);">BLOCKED</span>':''}
+      </div>
+      <div class="flex-between" style="font-size:11px;background:rgba(0,0,0,0.5);padding:8px 12px;border-radius:8px;margin-bottom:12px;border:1px solid var(--glass-border);">
+        <span>LMT <input type="number" id="lmt_${x.username}" value="${x.limit_count??3}" style="width:30px;background:none;border:none;color:var(--gold-light);font-weight:700;text-align:center;outline:none;"></span>
+        <span style="color:var(--text-muted);">PWD: <span style="color:var(--text-pure);">${x.password}</span></span>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-outline" style="flex:1;padding:8px;font-size:10px;" onclick="uLim('${x.username}')">Save LMT</button>
+        <button class="btn btn-outline" style="flex:1;padding:8px;font-size:10px;color:${v?'var(--text-muted)':'var(--gold-primary)'};border-color:${v?'var(--glass-border)':'var(--gold-primary)'};" onclick="uVip('${x.username}',${v})">${v?'Drop VIP':'Set VIP'}</button>
+        <button class="btn btn-outline" style="flex:1;padding:8px;font-size:12px;color:${b?'var(--success)':'var(--danger)'};border-color:transparent;background:${b?'rgba(16,185,129,0.1)':'rgba(229,57,53,0.1)'};" onclick="uBan('${x.username}',${b})"><i class="fas ${b?'fa-unlock':'fa-lock'}"></i></button>
+      </div>`;
+    ls.appendChild(d);
+  });
+}
+window.uLim=async(u)=>{const v=parseInt($(`lmt_${u}`).value);const r=await xFet('updateUser',{username:u,updates:{limit_count:v}});if(r.status){toast("LMT Disimpan");if(user.username===u){user.limit_count=v;buildApp(user);}}};
+window.uVip=async(u,c)=>{const r=await xFet('updateUser',{username:u,updates:{is_permanent:!c?'true':'false'}});if(r.status){renAd();if(user.username===u){user.is_permanent=!c;buildApp(user);}}};
+window.uBan=(u,c)=>{confirmAct(`${c?'Buka':'Kunci'} akses untuk ${u}?`,async()=>{const r=await xFet('updateUser',{username:u,updates:{is_banned:!c?'true':'false'}});if(r.status)renAd();});};
+window.sendBc=async()=>{const t=$('adBc').value.trim();if(!t)return;const r=await xFet('sendBroadcast',{message:t});if(r.status){toast("Disiarkan");$('adBc').value='';}};
+window.massRes=()=>{confirmAct("Alokasi massal Limit 0 -> 3?",async()=>{const r=await xFet('getUsers');if(r.status){const z=r.data.filter(x=>(x.limit_count||0)<=0&&x.role!=='Owner'&&!pBool(x.is_permanent));await Promise.all(z.map(x=>xFet('updateUser',{username:x.username,updates:{limit_count:3}})));toast(`Reset ${z.length} klien.`);renAd();}});};
 </script>
 </body>
 </html>
