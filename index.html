@@ -1391,7 +1391,10 @@
             try {
                 const res = await fetch(`${API_BASE}/api/am?action=verif&apikey=${API_KEY}&email=${encodeURIComponent(cachedEmail || email)}&url=${encodeURIComponent(magic)}`); const data = await res.json();
                 if(data.status) {
-                    showMsg('appErrorMsg', 'Lisensi tervalidasi. Koneksi diamankan.', 'success');
+                    // Update pesan pada kotak inline dan jalankan notifikasi toast/pop-up atas
+                    showMsg('appErrorMsg', 'Berhasil! Akun Anda sudah menjadi premium.', 'success');
+                    customAlert('Berhasil! Akun Anda sudah premium. Aktivasi Magic Link selesai.');
+                    
                     if(currentUserData && !parseBool(currentUserData.is_permanent) && currentUserData.role !== 'Owner') {
                         let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 1); await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
                         currentUserData.limit_count = newLimit; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData);
