@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="id" data-theme="dark">
 <head>
@@ -677,10 +678,10 @@
           </div>
       </div>
 
-      <!-- VIEW: WINK VIDEO ENHANCER (SISTEM UPLOAD RAW BINARY + PROXY BYPASS) -->
+      <!-- VIEW: WINK VIDEO ENHANCER (TELEGRA.PH + CATBOX URL GENERATOR) -->
       <div id="videoStudioView" class="hidden">
           <div style="background: var(--glass-bg); border-left: 2px solid var(--gold-primary); padding: 12px 16px; border-radius: 0 8px 8px 0; font-size: 10px; color: var(--gold-light); line-height: 1.6; margin-bottom: 22px;">
-            <b>Wink HD Video:</b> Unggah video dari galeri Anda. Sistem akan otomatis mengubahnya ke resolusi tinggi menggunakan Wink AI.
+            <b>Wink HD Video:</b> Unggah video Anda. Sistem akan otomatis mempublikasikannya menjadi Tautan (URL) dan merendernya di Wink AI. <br><span style="color:var(--text-muted); font-size:9px;">(Usahakan ukuran video di bawah 5MB agar tidak dicegat Internet Positif).</span>
           </div>
 
           <!-- DROPZONE UNTUK VIDEO -->
@@ -1411,7 +1412,7 @@
         copyUrlBtn.addEventListener('click', () => { if (enhancedBlobUrl) { navigator.clipboard.writeText(enhancedBlobUrl); customAlert("URL disalin ke papan klip."); } });
     }
 
-    // --- VIDEO ENHANCER LOGIC (ANTI BLOKIR PROXY & RAW BINARY) ---
+    // --- VIDEO ENHANCER LOGIC (TELEGRAPH + CATBOX BYPASS) ---
     function initVideoEnhancerEngine() {
         const videoUrlInput = document.getElementById('videoUrlInput');
         const dropZoneVideo = document.getElementById('dropZoneVideo');
@@ -1455,84 +1456,79 @@
             resultArea.classList.add('hidden');
 
             try {
+                // TAHAP 1: MENGUBAH VIDEO MENJADI URL (AUTO UPLOAD)
                 if(selectedVideoFile) {
                     processBtn.innerHTML = '<div class="loader-spinner" style="width:14px;height:14px; border-width:2px; border-top-color:#000;"></div> Mengunggah...';
-                    
                     let uploadSuccess = false;
 
-                    // METODE 1: FILEBIN (Raw Binary Transfer - Sangat kebal CORS dan Error Header)
-                    try {
-                        showMsg('videoStatusMessage', 'Mencoba Node Utama (Direct Transfer)...', 'success');
-                        // Membuat ID random agar tidak bentrok
-                        const binId = 'amxvid' + Date.now().toString(36) + Math.random().toString(36).substring(2,6);
-                        const safeName = 'video_' + Date.now() + '.mp4'; // Memaksa nama file standar
-                        
-                        const uploadRes = await fetch(`https://filebin.net/${binId}/${safeName}`, {
-                            method: 'POST',
-                            body: selectedVideoFile, // Murni file tanpa FormData
-                            headers: { 'Content-Type': selectedVideoFile.type || 'video/mp4' }
-                        });
-                        
-                        if (uploadRes.ok) {
-                            vUrl = `https://filebin.net/${binId}/${safeName}`;
-                            uploadSuccess = true;
-                        }
-                    } catch(e) { console.log("M1 Filebin Fail:", e); }
-
-                    // METODE 2: TMPFILES via CORS PROXY (Melewati Internet Positif)
-                    if (!uploadSuccess) {
+                    // METODE 1: TELEGRAM SERVER (Sangat Cepat & 100% Lolos Blokir ISP)
+                    // Batas ukuran Telegraph adalah sekitar 5MB
+                    if (selectedVideoFile.size <= 5.5 * 1024 * 1024) { 
                         try {
-                            showMsg('videoStatusMessage', 'Node 1 Diblokir. Mencoba Jalur Proxy Bypass...', 'success');
-                            const fdTmp = new FormData();
-                            fdTmp.append('file', selectedVideoFile);
+                            showMsg('videoStatusMessage', 'Mengunggah via Jalur Telegram (Anti-Blokir)...', 'success');
+                            const fdTele = new FormData();
+                            fdTele.append('file', selectedVideoFile);
                             
-                            // Hit API melalui corsproxy agar ISP mengira kita buka situs corsproxy.io, bukan tmpfiles
-                            const resTmp = await fetch('https://corsproxy.io/?' + encodeURIComponent('https://tmpfiles.org/api/v1/upload'), { 
-                                method: 'POST', 
-                                body: fdTmp 
-                            });
+                            const resTele = await fetch('https://telegra.ph/upload', { method: 'POST', body: fdTele });
+                            const dataTele = await resTele.json();
                             
-                            const dataTmp = await resTmp.json();
-                            if (dataTmp && dataTmp.status === 'success') {
-                                vUrl = dataTmp.data.url.replace('tmpfiles.org/', 'tmpfiles.org/dl/');
+                            if (dataTele && dataTele[0] && dataTele[0].src) {
+                                vUrl = "https://telegra.ph" + dataTele[0].src;
                                 uploadSuccess = true;
                             }
-                        } catch (e) { console.log("M2 Proxy Fail:", e); }
+                        } catch (e) { console.log("Telegram upload fail", e); }
+                    } else {
+                        showMsg('videoStatusMessage', 'Ukuran > 5MB. Memilih server kapasitas besar...', 'success');
                     }
 
-                    // METODE 3: UGUU via CORS PROXY (Peluang terakhir)
+                    // METODE 2: CATBOX.MOE (Jika ukuran > 5MB atau Telegram gagal)
                     if (!uploadSuccess) {
                         try {
-                            showMsg('videoStatusMessage', 'Node 2 Gagal. Mencoba Jalur Alternatif Terakhir...', 'success');
-                            const fdUguu = new FormData();
-                            fdUguu.append('files[]', selectedVideoFile);
+                            showMsg('videoStatusMessage', 'Mencoba Server Catbox (Prioritas 2)...', 'success');
+                            const fdCat = new FormData();
+                            fdCat.append('reqtype', 'fileupload');
+                            fdCat.append('time', '1h');
+                            fdCat.append('fileToUpload', selectedVideoFile);
                             
-                            const resUguu = await fetch('https://corsproxy.io/?' + encodeURIComponent('https://uguu.se/upload.php'), { 
-                                method: 'POST', 
-                                body: fdUguu 
-                            });
+                            const resCat = await fetch('https://litterbox.catbox.moe/api', { method: 'POST', body: fdCat });
+                            const urlCat = await resCat.text();
                             
-                            const dataUguu = await resUguu.json();
-                            if (dataUguu && dataUguu.success) {
-                                vUrl = dataUguu.files[0].url;
+                            if (urlCat && urlCat.startsWith('http')) {
+                                vUrl = urlCat;
                                 uploadSuccess = true;
                             }
-                        } catch (e) { console.log("M3 Proxy Fail:", e); }
+                        } catch (e) { console.log("Catbox upload fail", e); }
+                    }
+
+                    // METODE 3: FILE.IO (Jalur Proxy Terakhir)
+                    if (!uploadSuccess) {
+                        try {
+                            showMsg('videoStatusMessage', 'Mencoba Jalur Proxy Terakhir...', 'success');
+                            const fdFileio = new FormData();
+                            fdFileio.append('file', selectedVideoFile);
+                            
+                            const resFileio = await fetch('https://corsproxy.io/?' + encodeURIComponent('https://file.io'), { method: 'POST', body: fdFileio });
+                            const dataFileio = await resFileio.json();
+                            
+                            if (dataFileio && dataFileio.success) {
+                                vUrl = dataFileio.link;
+                                uploadSuccess = true;
+                            }
+                        } catch (e) { console.log("File.io upload fail", e); }
                     }
 
                     if (!uploadSuccess) {
-                        throw new Error('Sistem mendeteksi pemblokiran yang amat ketat dari provider internet / browser Anda. Harap unggah video manual ke "filebin.net" lalu tempel tautannya di kolom URL.');
+                        throw new Error('Semua jalur upload diblokir oleh provider internet Anda. Mohon unggah video manual ke "catbox.moe" atau "file.io" di browser Google Chrome, lalu tempel link-nya di kolom URL.');
                     }
                 }
 
-                // TAHAP 2: PROSES WINK AI
+                // TAHAP 2: PROSES WINK AI MENGGUNAKAN URL YANG DIDAPAT
                 processBtn.innerHTML = '<div class="loader-spinner" style="width:14px;height:14px; border-width:2px; border-top-color:#000;"></div> Merender Wink...';
                 showMsg('videoStatusMessage', 'Mengirim perintah render ke Wink AI (Harap tunggu)...', 'success');
 
                 let apiData = null;
 
                 try {
-                    // Coba request normal terlebih dahulu
                     const response = await fetch(WINK_ENDPOINT, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -1542,7 +1538,6 @@
                     apiData = await response.json();
                 } catch(apiErr) {
                     try {
-                        // Fallback CORS PROXY untuk Wink API
                         const proxyResponse = await fetch('https://corsproxy.io/?' + encodeURIComponent(WINK_ENDPOINT), {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
@@ -1551,7 +1546,7 @@
                         if(!proxyResponse.ok) throw new Error("Proxy HTTP Error");
                         apiData = await proxyResponse.json();
                     } catch (proxyErr) {
-                        throw new Error('Server API Wink AI sedang Down atau tidak merespon Proxy (CORS Error).');
+                        throw new Error('Server API Wink AI sedang Down atau tidak merespon (CORS Error).');
                     }
                 }
 
@@ -1572,7 +1567,6 @@
                 }
 
             } catch (err) {
-                // Menampilkan alasan error spesifik
                 showMsg('videoStatusMessage', `Error Internal: ${err.message}`, 'error');
             } finally {
                 processBtn.disabled = false;
