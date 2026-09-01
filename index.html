@@ -678,7 +678,7 @@
           </div>
       </div>
 
-      <!-- VIEW: WINK VIDEO ENHANCER (DILENGKAPI AUTO UPLOAD KE SERVER SEMENTARA) -->
+      <!-- VIEW: WINK VIDEO ENHANCER -->
       <div id="videoStudioView" class="hidden">
           <div style="background: var(--glass-bg); border-left: 2px solid var(--gold-primary); padding: 12px 16px; border-radius: 0 8px 8px 0; font-size: 10px; color: var(--gold-light); line-height: 1.6; margin-bottom: 22px;">
             <b>Wink HD Video:</b> Unggah video dari galeri Anda. Sistem akan otomatis mengubahnya ke resolusi tinggi menggunakan Wink AI.
@@ -905,9 +905,6 @@
         document.getElementById('btnConfirmCancel').onclick = () => modal.classList.remove('show');
         document.getElementById('btnConfirmOk').onclick = () => { modal.classList.remove('show'); callback(); };
     };
-
-    async function getIPAddress() { try { const res = await fetch('https://api.ipify.org?format=json'); const data = await res.json(); return data.ip; } catch (e) { return 'Unknown'; } }
-    async function generateAdvancedFingerprint() { return new Promise((resolve) => { try { const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d'); ctx.textBaseline = "top"; ctx.font = "14px 'Arial'"; ctx.fillStyle = "#f60"; ctx.fillRect(125, 1, 62, 20); ctx.fillStyle = "#069"; ctx.fillText("AlightMotionSupabase", 2, 15); const canvasData = canvas.toDataURL(); resolve('FP-' + Math.abs(canvasData.length).toString(36)); } catch (e) { resolve('FP-' + Math.random().toString(36).substring(2)); } }); }
 
     let currentCaptchaAnswer = 0; let currentUserData = null; let cachedEmail = ''; let activeDepositId = null; let selectedAddLimitCount = 0; let activeBroadcastId = null;
     let temporaryBioData = null; 
@@ -1415,7 +1412,7 @@
         copyUrlBtn.addEventListener('click', () => { if (enhancedBlobUrl) { navigator.clipboard.writeText(enhancedBlobUrl); customAlert("URL disalin ke papan klip."); } });
     }
 
-    // --- VIDEO ENHANCER LOGIC (FIXED) ---
+    // --- VIDEO ENHANCER LOGIC (MULTI-SERVER FALLBACK SYSTEM) ---
     function initVideoEnhancerEngine() {
         const videoUrlInput = document.getElementById('videoUrlInput');
         const dropZoneVideo = document.getElementById('dropZoneVideo');
@@ -1459,59 +1456,68 @@
             resultArea.classList.add('hidden');
 
             try {
-                // TAHAP 1: AUTO UPLOAD KE SERVER SEMENTARA JIKA DARI GALERI
+                // TAHAP 1: AUTO UPLOAD KE SERVER SEMENTARA DENGAN 3 LAPIS CADANGAN
                 if(selectedVideoFile) {
                     processBtn.innerHTML = '<div class="loader-spinner" style="width:14px;height:14px; border-width:2px; border-top-color:#000;"></div> Mengunggah...';
-                    showMsg('videoStatusMessage', 'Sedang memuat video ke server penyimpanan aman...', 'success');
-
+                    
                     let uploadSuccess = false;
                     let lastUploadError = '';
 
-                    // 1. Coba tmpfiles.org (Paling kebal blokir ISP)
-                    try {
-                        const fdTmp = new FormData();
-                        fdTmp.append('file', selectedVideoFile);
-                        const resTmp = await fetch('https://tmpfiles.org/api/v1/upload', { method: 'POST', body: fdTmp });
-                        if(!resTmp.ok) throw new Error("Tmpfiles HTTP Error");
-                        const dataTmp = await resTmp.json();
-                        if(dataTmp && dataTmp.status === 'success') {
-                            vUrl = dataTmp.data.url.replace('tmpfiles.org/', 'tmpfiles.org/dl/');
-                            uploadSuccess = true;
-                        }
-                    } catch(e) { lastUploadError = e.message; }
-
-                    // 2. Coba Uguu.se (Jika tmpfiles gagal)
-                    if(!uploadSuccess) {
+                    // CADANGAN 1: LITTERBOX (Catbox.moe) -> Sangat ramah CORS & Bebas IP Positif
+                    if (!uploadSuccess) {
                         try {
+                            showMsg('videoStatusMessage', 'Mengunggah ke Server Catbox (Prioritas Utama)...', 'success');
+                            const fdCat = new FormData();
+                            fdCat.append('reqtype', 'fileupload');
+                            fdCat.append('time', '1h');
+                            fdCat.append('fileToUpload', selectedVideoFile);
+                            
+                            const resCat = await fetch('https://litterbox.catbox.moe/api', { method: 'POST', body: fdCat });
+                            if (!resCat.ok) throw new Error("Catbox HTTP Error");
+                            const urlCat = await resCat.text();
+                            
+                            if (urlCat && urlCat.startsWith('http')) {
+                                vUrl = urlCat;
+                                uploadSuccess = true;
+                            }
+                        } catch (e) { lastUploadError = e.message; }
+                    }
+
+                    // CADANGAN 2: Tmpfiles.org
+                    if (!uploadSuccess) {
+                        try {
+                            showMsg('videoStatusMessage', 'Server 1 diblokir. Mengalihkan ke Server Tmpfiles...', 'success');
+                            const fdTmp = new FormData();
+                            fdTmp.append('file', selectedVideoFile);
+                            const resTmp = await fetch('https://tmpfiles.org/api/v1/upload', { method: 'POST', body: fdTmp });
+                            if (!resTmp.ok) throw new Error("Tmpfiles HTTP Error");
+                            const dataTmp = await resTmp.json();
+                            if (dataTmp && dataTmp.status === 'success') {
+                                vUrl = dataTmp.data.url.replace('tmpfiles.org/', 'tmpfiles.org/dl/');
+                                uploadSuccess = true;
+                            }
+                        } catch (e) { lastUploadError = e.message; }
+                    }
+
+                    // CADANGAN 3: Uguu.se
+                    if (!uploadSuccess) {
+                        try {
+                            showMsg('videoStatusMessage', 'Server 2 gagal. Mengalihkan ke Server Uguu...', 'success');
                             const fdUguu = new FormData();
                             fdUguu.append('files[]', selectedVideoFile);
                             const resUguu = await fetch('https://uguu.se/upload.php', { method: 'POST', body: fdUguu });
-                            if(!resUguu.ok) throw new Error("Uguu HTTP Error");
+                            if (!resUguu.ok) throw new Error("Uguu HTTP Error");
                             const dataUguu = await resUguu.json();
-                            if(dataUguu && dataUguu.success) {
+                            if (dataUguu && dataUguu.success) {
                                 vUrl = dataUguu.files[0].url;
                                 uploadSuccess = true;
                             }
-                        } catch(e) { lastUploadError = e.message; }
+                        } catch (e) { lastUploadError = e.message; }
                     }
 
-                    // 3. Coba Pomf (Jika uguu gagal)
-                    if(!uploadSuccess) {
-                        try {
-                            const fdPomf = new FormData();
-                            fdPomf.append('files[]', selectedVideoFile);
-                            const resPomf = await fetch('https://pomf.lain.la/upload.php', { method: 'POST', body: fdPomf });
-                            if(!resPomf.ok) throw new Error("Pomf HTTP Error");
-                            const dataPomf = await resPomf.json();
-                            if(dataPomf && dataPomf.success) {
-                                vUrl = dataPomf.files[0].url;
-                                uploadSuccess = true;
-                            }
-                        } catch(e) { lastUploadError = e.message; }
-                    }
-
-                    if(!uploadSuccess) {
-                        throw new Error('Upload Video Gagal diblokir browser/Internet Positif. Silahkan unggah sendiri video Anda lalu paste tautan pada kolom URL Manual.');
+                    // JIKA SEMUA GAGAL
+                    if (!uploadSuccess) {
+                        throw new Error('Semua server penyimpanan diblokir oleh provider internet Anda (CORS/Internet Positif). Silahkan unggah video manual ke catbox.moe lalu paste tautannya.');
                     }
                 }
 
