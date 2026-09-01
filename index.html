@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="id" data-theme="dark">
 <head>
@@ -159,8 +160,8 @@
   .btn-primary { background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark)); color: #000; box-shadow: 0 8px 25px rgba(212, 175, 55, 0.2); }
   .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(212, 175, 55, 0.35); filter: brightness(1.1); }
   .btn-primary:disabled { background: var(--glass-border-strong); color: var(--text-muted); cursor: not-allowed; transform: none; box-shadow: none; }
-  .btn-outline { background: var(--glass-bg); border: 1px solid var(--glass-border-strong); color: var(--text-pure); }
-  .btn-outline:hover, .btn-outline.active { background: rgba(212, 175, 55, 0.1); border-color: var(--gold-primary); color: var(--gold-light); transform: translateY(-2px); }
+  .btn-outline { background: var(--glass-bg); border: 1px solid var(--gold-primary); color: var(--gold-light); }
+  .btn-outline:hover { background: rgba(212, 175, 55, 0.1); transform: translateY(-2px); }
 
   /* MESSAGE BOXES */
   .message-box { padding: 14px 16px; border-radius: 8px; font-size: 11px; font-weight: 500; display: none; align-items: flex-start; gap: 10px; margin-bottom: 22px; line-height: 1.6; border-left: 3px solid transparent; }
@@ -306,10 +307,6 @@
   }
   .biometric-scanner.active .scan-line { display: block; }
   @keyframes scanningLine { 0% { top: 10%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 90%; opacity: 0; } }
-
-  /* STUDIO TABS */
-  .studio-tabs { display: flex; gap: 10px; margin-bottom: 24px; border-bottom: 1px solid var(--glass-border); padding-bottom: 16px; }
-  .studio-tabs button { flex: 1; padding: 12px; border-radius: 8px; font-size: 10px; }
 
   ::-webkit-scrollbar { width: 4px; }
   ::-webkit-scrollbar-track { background: transparent; }
@@ -612,112 +609,61 @@
   <div id="sectionEnhancer" class="hidden">
     <div class="glass-card">
       <div class="title-lg" style="font-size: 22px;">Neural AI Studio</div>
-      <div class="text-sub" style="margin-bottom: 20px;">Pemulihan resolusi media dengan komputasi AI tingkat lanjut.</div>
+      <div class="text-sub" style="margin-bottom: 25px;">Pemulihan resolusi citra dengan komputasi AI.</div>
       
-      <!-- SUB-NAV TAB: PHOTO VS VIDEO -->
-      <div class="studio-tabs">
-        <button id="tabPhotoBtn" class="btn btn-outline active click-sound" onclick="switchStudioTab('photo')"><i class="fas fa-image"></i> AI Photo</button>
-        <button id="tabVideoBtn" class="btn btn-outline click-sound" onclick="switchStudioTab('video')"><i class="fas fa-video"></i> Wink Video</button>
+      <div class="form-group">
+        <label>URL Sumber (Opsional)</label>
+        <input type="url" id="imageUrl" class="glass-input" placeholder="https://..." />
       </div>
 
-      <!-- VIEW: PHOTO ENHANCER -->
-      <div id="photoStudioView">
-          <div class="form-group">
-            <label>URL Sumber Foto (Opsional)</label>
-            <input type="url" id="imageUrl" class="glass-input" placeholder="https://..." />
+      <div id="dropZone" class="click-sound" style="border: 1px dashed var(--glass-border-strong); border-radius: 10px; padding: 35px 20px; text-align: center; background: var(--glass-bg); cursor: pointer; margin-bottom: 22px; transition: all 0.3s var(--smooth-ease);">
+        <i class="fas fa-upload" style="font-size: 24px; color: var(--gold-primary); margin-bottom: 14px;"></i>
+        <div style="font-size: 12px; font-weight: 600; margin-bottom: 6px; color: var(--gold-light);">Unggah Arsip Lokal</div>
+        <div style="font-size: 9px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">JPG, PNG, WEBP — Max 25MB</div>
+        <div id="fileNameDisplay" style="margin-top: 14px; font-size: 10px; color: var(--gold-primary); font-weight: 600;"></div>
+        <input type="file" id="fileInput" accept="image/*" style="display: none;">
+      </div>
+      
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 25px;">
+        <div style="background: var(--glass-bg); border-radius: 8px; padding: 14px; border: 1px solid var(--glass-border);">
+          <div style="display:flex; justify-content:space-between; font-size:8px; color:var(--text-muted); text-transform:uppercase; letter-spacing: 1px; margin-bottom:14px;"><span>Intensitas</span> <span id="strengthIndicator" style="color:var(--gold-primary); font-weight: 600;">Normal</span></div>
+          <input type="range" id="strengthRange" min="10" max="100" value="60" style="width: 100%; height:2px; appearance:none; background:var(--glass-border-strong); outline:none; cursor: pointer; border-radius: 2px;">
+        </div>
+        <div onclick="document.getElementById('modeModalOverlay').classList.add('show')" class="click-sound" style="background: var(--glass-bg); border-radius: 8px; padding: 14px; border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.3s var(--smooth-ease);" onmouseover="this.style.borderColor='var(--gold-primary)'" onmouseout="this.style.borderColor='var(--glass-border)'">
+          <div>
+            <div style="font-size:8px; color:var(--text-muted); text-transform:uppercase; letter-spacing: 1px; margin-bottom:6px;">Model AI</div>
+            <div id="currentModeLabel" style="font-size:11px; font-weight:600; color: var(--gold-light);">Super Res 2x</div>
           </div>
-
-          <div id="dropZone" class="click-sound" style="border: 1px dashed var(--glass-border-strong); border-radius: 10px; padding: 35px 20px; text-align: center; background: var(--glass-bg); cursor: pointer; margin-bottom: 22px; transition: all 0.3s var(--smooth-ease);">
-            <i class="fas fa-upload" style="font-size: 24px; color: var(--gold-primary); margin-bottom: 14px;"></i>
-            <div style="font-size: 12px; font-weight: 600; margin-bottom: 6px; color: var(--gold-light);">Unggah Arsip Lokal</div>
-            <div style="font-size: 9px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">JPG, PNG, WEBP — Max 25MB</div>
-            <div id="fileNameDisplay" style="margin-top: 14px; font-size: 10px; color: var(--gold-primary); font-weight: 600;"></div>
-            <input type="file" id="fileInput" accept="image/*" style="display: none;">
+          <div style="width: 24px; height: 24px; border-radius: 6px; background: rgba(0,0,0,0.1); border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: center;">
+             <i class="fas fa-sliders-h" style="color:var(--gold-primary); font-size:10px;"></i>
           </div>
-          
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 25px;">
-            <div style="background: var(--glass-bg); border-radius: 8px; padding: 14px; border: 1px solid var(--glass-border);">
-              <div style="display:flex; justify-content:space-between; font-size:8px; color:var(--text-muted); text-transform:uppercase; letter-spacing: 1px; margin-bottom:14px;"><span>Intensitas</span> <span id="strengthIndicator" style="color:var(--gold-primary); font-weight: 600;">Normal</span></div>
-              <input type="range" id="strengthRange" min="10" max="100" value="60" style="width: 100%; height:2px; appearance:none; background:var(--glass-border-strong); outline:none; cursor: pointer; border-radius: 2px;">
-            </div>
-            <div onclick="document.getElementById('modeModalOverlay').classList.add('show')" class="click-sound" style="background: var(--glass-bg); border-radius: 8px; padding: 14px; border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.3s var(--smooth-ease);" onmouseover="this.style.borderColor='var(--gold-primary)'" onmouseout="this.style.borderColor='var(--glass-border)'">
-              <div>
-                <div style="font-size:8px; color:var(--text-muted); text-transform:uppercase; letter-spacing: 1px; margin-bottom:6px;">Model AI</div>
-                <div id="currentModeLabel" style="font-size:11px; font-weight:600; color: var(--gold-light);">Super Res 2x</div>
-              </div>
-              <div style="width: 24px; height: 24px; border-radius: 6px; background: rgba(0,0,0,0.1); border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: center;">
-                 <i class="fas fa-sliders-h" style="color:var(--gold-primary); font-size:10px;"></i>
-              </div>
-            </div>
-          </div>
-          
-          <div style="display: flex; gap: 10px; margin-bottom: 22px;">
-            <button class="btn btn-primary click-sound" id="enhanceBtn" style="flex: 1;"><i class="fas fa-microchip"></i> Eksekusi Render Foto</button>
-            <button class="btn btn-outline click-sound" id="resetBtn" style="width: auto; padding: 0 18px;"><i class="fas fa-redo"></i></button>
-          </div>
-          
-          <div id="statusMessage" class="message-box">
-            <i class="fas fa-info-circle"></i> <span id="statusMessageText"></span>
-          </div>
-
-          <div class="hidden" id="comparisonSplitSection" style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 25px 0;">
-            <div style="border-radius: 8px; overflow: hidden; position: relative; height: 160px; border: 1px solid var(--glass-border);">
-              <div style="position: absolute; top: 6px; left: 6px; background: var(--overlay-bg); padding: 3px 8px; border-radius: 4px; font-size: 8px; font-weight: 600; letter-spacing: 1px; color:var(--text-pure); border: 1px solid var(--glass-border-strong);">ASLI</div>
-              <img id="splitImgBefore" style="width: 100%; height: 100%; object-fit: cover;">
-            </div>
-            <div style="border-radius: 8px; overflow: hidden; position: relative; height: 160px; border: 1px solid var(--gold-primary);">
-              <div style="position: absolute; top: 6px; left: 6px; background: var(--gold-primary); padding: 3px 8px; border-radius: 4px; font-size: 8px; font-weight: 700; letter-spacing: 1px; color:#000;">HASIL AI</div>
-              <img id="splitImgAfter" style="width: 100%; height: 100%; object-fit: cover;">
-            </div>
-          </div>
-          
-          <div class="hidden" id="downloadFooterActions" style="display: flex; gap: 10px;">
-            <button class="btn btn-outline click-sound" id="downloadBtn" style="flex: 1;"><i class="fas fa-download"></i> Simpan File</button>
-            <button class="btn btn-outline click-sound" id="copyUrlBtn" style="flex: 1;"><i class="fas fa-link"></i> Salin URL</button>
-          </div>
+        </div>
+      </div>
+      
+      <div style="display: flex; gap: 10px; margin-bottom: 22px;">
+        <button class="btn btn-primary click-sound" id="enhanceBtn" style="flex: 1;"><i class="fas fa-microchip"></i> Eksekusi Render</button>
+        <button class="btn btn-outline click-sound" id="resetBtn" style="width: auto; padding: 0 18px;"><i class="fas fa-redo"></i></button>
+      </div>
+      
+      <div id="statusMessage" class="message-box">
+        <i class="fas fa-info-circle"></i> <span id="statusMessageText"></span>
       </div>
 
-      <!-- VIEW: WINK VIDEO ENHANCER (TELEGRA.PH + CATBOX URL GENERATOR) -->
-      <div id="videoStudioView" class="hidden">
-          <div style="background: var(--glass-bg); border-left: 2px solid var(--gold-primary); padding: 12px 16px; border-radius: 0 8px 8px 0; font-size: 10px; color: var(--gold-light); line-height: 1.6; margin-bottom: 22px;">
-            <b>Wink HD Video:</b> Unggah video Anda. Sistem akan otomatis mempublikasikannya menjadi Tautan (URL) dan merendernya di Wink AI. <br><span style="color:var(--text-muted); font-size:9px;">(Usahakan ukuran video di bawah 5MB agar tidak dicegat Internet Positif).</span>
-          </div>
-
-          <!-- DROPZONE UNTUK VIDEO -->
-          <div id="dropZoneVideo" class="click-sound" style="border: 1px dashed var(--glass-border-strong); border-radius: 10px; padding: 35px 20px; text-align: center; background: var(--glass-bg); cursor: pointer; margin-bottom: 22px; transition: all 0.3s var(--smooth-ease);">
-            <i class="fas fa-cloud-upload-alt" style="font-size: 24px; color: var(--gold-primary); margin-bottom: 14px;"></i>
-            <div style="font-size: 12px; font-weight: 600; margin-bottom: 6px; color: var(--gold-light);">Unggah Video Galeri</div>
-            <div style="font-size: 9px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">MP4, MOV, AVI — Max 50MB</div>
-            <div id="videoFileNameDisplay" style="margin-top: 14px; font-size: 10px; color: var(--gold-primary); font-weight: 600;"></div>
-            <input type="file" id="videoFileInput" accept="video/*" style="display: none;">
-          </div>
-
-          <div class="form-group">
-            <label>Atau Paste Tautan Video (Opsional)</label>
-            <input type="url" id="videoUrlInput" class="glass-input" placeholder="https://..." autocomplete="off" />
-          </div>
-
-          <button class="btn btn-primary click-sound" id="enhanceVideoBtn" style="margin-bottom: 22px;">
-            <i class="fas fa-video"></i> Eksekusi Render Video
-          </button>
-
-          <div id="videoStatusMessage" class="message-box">
-            <i class="fas fa-info-circle"></i> <span id="videoStatusText"></span>
-          </div>
-
-          <!-- Video Result Area -->
-          <div id="videoResultArea" class="hidden" style="margin-top: 25px;">
-              <div style="border-radius: 8px; overflow: hidden; position: relative; border: 1px solid var(--gold-primary); background: #000;">
-                  <div style="position: absolute; top: 8px; left: 8px; background: var(--gold-primary); padding: 4px 10px; border-radius: 4px; font-size: 8px; font-weight: 700; letter-spacing: 1px; color:#000; z-index: 10;">WINK HD RESULT</div>
-                  <video id="videoPlayerResult" controls style="width: 100%; display: block; max-height: 250px;"></video>
-              </div>
-              <div style="display: flex; gap: 10px; margin-top: 15px;">
-                  <button class="btn btn-outline click-sound" id="downloadVideoBtn" style="flex: 1;"><i class="fas fa-download"></i> Unduh Video</button>
-                  <button class="btn btn-outline click-sound" id="copyVideoUrlBtn" style="flex: 1;"><i class="fas fa-link"></i> Salin URL</button>
-              </div>
-          </div>
+      <div class="hidden" id="comparisonSplitSection" style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 25px 0;">
+        <div style="border-radius: 8px; overflow: hidden; position: relative; height: 160px; border: 1px solid var(--glass-border);">
+          <div style="position: absolute; top: 6px; left: 6px; background: var(--overlay-bg); padding: 3px 8px; border-radius: 4px; font-size: 8px; font-weight: 600; letter-spacing: 1px; color:var(--text-pure); border: 1px solid var(--glass-border-strong);">ASLI</div>
+          <img id="splitImgBefore" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+        <div style="border-radius: 8px; overflow: hidden; position: relative; height: 160px; border: 1px solid var(--gold-primary);">
+          <div style="position: absolute; top: 6px; left: 6px; background: var(--gold-primary); padding: 3px 8px; border-radius: 4px; font-size: 8px; font-weight: 700; letter-spacing: 1px; color:#000;">HASIL AI</div>
+          <img id="splitImgAfter" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
       </div>
-
+      
+      <div class="hidden" id="downloadFooterActions" style="display: flex; gap: 10px;">
+        <button class="btn btn-outline click-sound" id="downloadBtn" style="flex: 1;"><i class="fas fa-download"></i> Simpan File</button>
+        <button class="btn btn-outline click-sound" id="copyUrlBtn" style="flex: 1;"><i class="fas fa-link"></i> Salin URL</button>
+      </div>
     </div>
   </div>
 
@@ -834,10 +780,6 @@
     document.addEventListener('contextmenu', e => e.preventDefault());
     document.onkeydown = function(e) { if(e.keyCode==123 || (e.ctrlKey&&e.shiftKey&&(e.keyCode==73||e.keyCode==74||e.keyCode==67)) || (e.ctrlKey&&e.keyCode==85)) return false; };
 
-    // --- SECRETS & KEYS ---
-    const WINK_API_KEY = "e329d3cb861969fe599ef5fe"; 
-    const WINK_ENDPOINT = "https://ndxhs.my.id/wink-ai/hdvid";
-    
     // --- THEME SWITCHER LOGIC ---
     const THEME_KEY = 'am_exec_theme';
     function initTheme() {
@@ -905,24 +847,11 @@
         document.getElementById('btnConfirmOk').onclick = () => { modal.classList.remove('show'); callback(); };
     };
 
+    async function getIPAddress() { try { const res = await fetch('https://api.ipify.org?format=json'); const data = await res.json(); return data.ip; } catch (e) { return 'Unknown'; } }
+    async function generateAdvancedFingerprint() { return new Promise((resolve) => { try { const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d'); ctx.textBaseline = "top"; ctx.font = "14px 'Arial'"; ctx.fillStyle = "#f60"; ctx.fillRect(125, 1, 62, 20); ctx.fillStyle = "#069"; ctx.fillText("AlightMotionSupabase", 2, 15); const canvasData = canvas.toDataURL(); resolve('FP-' + Math.abs(canvasData.length).toString(36)); } catch (e) { resolve('FP-' + Math.random().toString(36).substring(2)); } }); }
+
     let currentCaptchaAnswer = 0; let currentUserData = null; let cachedEmail = ''; let activeDepositId = null; let selectedAddLimitCount = 0; let activeBroadcastId = null;
     let temporaryBioData = null; 
-
-    // --- STUDIO TABS SWITCHER ---
-    window.switchStudioTab = function(type) {
-        const pBtn = document.getElementById('tabPhotoBtn');
-        const vBtn = document.getElementById('tabVideoBtn');
-        const pView = document.getElementById('photoStudioView');
-        const vView = document.getElementById('videoStudioView');
-
-        if(type === 'photo') {
-            pBtn.classList.add('active'); vBtn.classList.remove('active');
-            pView.classList.remove('hidden'); vView.classList.add('hidden');
-        } else {
-            vBtn.classList.add('active'); pBtn.classList.remove('active');
-            vView.classList.remove('hidden'); pView.classList.add('hidden');
-        }
-    }
 
     // --- BIOMETRIC LOGIC ---
     function checkBiometricAvailable() {
@@ -1120,18 +1049,27 @@
                 if(!res.status) throw new Error("Gagal mengambil data.");
                 
                 const users = res.data;
-                const zeroLimitUsers = users.filter(u => u.role !== 'Owner' && !parseBool(u.is_permanent) && (u.limit_count || 0) <= 0);
+                // Get all users who are not Owner, not VIP, and have limit <= 0
+                const zeroLimitUsers = users.filter(u => 
+                    u.role !== 'Owner' && 
+                    !parseBool(u.is_permanent) && 
+                    (u.limit_count || 0) <= 0
+                );
                 
                 if(zeroLimitUsers.length === 0) {
                     customAlert("Tidak ada klien dengan limit 0 yang perlu direset.");
                     return;
                 }
 
-                const updatePromises = zeroLimitUsers.map(u => apiCall('updateUser', { username: u.username, updates: { limit_count: 3 } }) );
+                // Batch API calls async using Promise.all for speed
+                const updatePromises = zeroLimitUsers.map(u => 
+                    apiCall('updateUser', { username: u.username, updates: { limit_count: 3 } })
+                );
+
                 await Promise.all(updatePromises);
                 
                 customAlert(`Proses Berhasil! Limit ${zeroLimitUsers.length} klien telah diubah menjadi 3.`);
-                renderMemberList(); 
+                renderMemberList(); // Refresh list to show updated values
             } catch(e) {
                 customAlert("Terjadi galat saat memproses reset massal.", true);
             } finally {
@@ -1191,7 +1129,7 @@
                 await fetchUserSession(savedUser);
                 if(initialLoader && document.body.contains(initialLoader)) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 800); }
             }
-            startClock(); startPingChecker(); fetchGlobalStats(); initRealtimeBroadcastListener(); initImageEnhancerEngine(); initVideoEnhancerEngine();
+            startClock(); startPingChecker(); fetchGlobalStats(); initRealtimeBroadcastListener(); initImageEnhancerEngine();
         }, 1200);
     };
 
@@ -1326,7 +1264,6 @@
     window.toggleSuspendStatus = async function(username, currentBannedStatus) { customConfirm(currentBannedStatus ? `Konfirmasi pembukaan akses untuk klien ${username}?` : `Konfirmasi pemutusan akses (suspend) untuk klien ${username}?`, async () => { const newStatus = currentBannedStatus ? 'false' : 'true'; const res = await apiCall('updateUser', { username, updates: { is_banned: newStatus } }); if (res.status) { customAlert("Status keamanan dimodifikasi."); renderMemberList(); } }); };
     window.togglePwd = function(inputId, btnEl) { const input = document.getElementById(inputId); const icon = btnEl.querySelector('i'); if (!input) return; if (input.type === 'password') { input.type = 'text'; icon.className = 'fas fa-eye-slash'; } else { input.type = 'password'; icon.className = 'far fa-eye'; } };
 
-    // --- PHOTO ENHANCER LOGIC ---
     function initImageEnhancerEngine() {
         const urlInput = document.getElementById('imageUrl'); const dropZone = document.getElementById('dropZone'); const fileInput = document.getElementById('fileInput'); const fileNameDisplay = document.getElementById('fileNameDisplay'); const strengthRange = document.getElementById('strengthRange'); const strengthIndicator = document.getElementById('strengthIndicator'); const modeModalOverlay = document.getElementById('modeModalOverlay'); const applyModeBtn = document.getElementById('applyModeBtn'); const currentModeLabel = document.getElementById('currentModeLabel'); const modeItems = document.querySelectorAll('.mode-option-item'); const enhanceBtn = document.getElementById('enhanceBtn'); const resetBtn = document.getElementById('resetBtn'); const comparisonSplitSection = document.getElementById('comparisonSplitSection'); const splitImgBefore = document.getElementById('splitImgBefore'); const splitImgAfter = document.getElementById('splitImgAfter'); const statusMessage = document.getElementById('statusMessage'); const downloadFooterActions = document.getElementById('downloadFooterActions'); const downloadBtn = document.getElementById('downloadBtn'); const copyUrlBtn = document.getElementById('copyUrlBtn'); let selectedFile = null; let selectedMode = '2x'; let tempSelectedMode = '2x'; let originalBlobUrl = null; let enhancedBlobUrl = null; 
         
@@ -1341,11 +1278,6 @@
         enhanceBtn.addEventListener('click', async () => {
             const urlVal = urlInput.value.trim(); 
             if (!urlVal && !selectedFile) return showMsg('statusMessage', 'Sematkan URL direktori atau pilih berkas lokal.', 'error');
-            
-            if(currentUserData && currentUserData.role !== 'Owner' && !parseBool(currentUserData.is_permanent)) {
-                if((currentUserData.limit_count || 0) <= 0) return showMsg('statusMessage', 'Limit Anda habis. Silahkan isi ulang.', 'error');
-            }
-
             enhanceBtn.disabled = true; enhanceBtn.innerHTML = '<div class="loader-spinner" style="width:14px;height:14px; border-width:2px; border-top-color:#000;"></div> Memproses Data...';
             try {
                 let img = selectedFile ? await loadImageFromFile(selectedFile) : await loadImageFromBlob(await fetchUrlBlob(urlVal));
@@ -1359,15 +1291,8 @@
                 comparisonSplitSection.classList.remove('hidden');
                 downloadFooterActions.classList.remove('hidden');
                 showMsg('statusMessage', 'Render eksekutif diselesaikan dengan sempurna.', 'success');
-
-                if(currentUserData && currentUserData.role !== 'Owner' && !parseBool(currentUserData.is_permanent)) {
-                    let newLimit = Math.max(0, (currentUserData.limit_count || 0) - 1);
-                    await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
-                    currentUserData.limit_count = newLimit; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData);
-                }
-
             } catch(e) { showMsg('statusMessage', 'Mesin gagal memproses citra yang diberikan.', 'error'); } 
-            finally { enhanceBtn.disabled = false; enhanceBtn.innerHTML = '<i class="fas fa-microchip"></i> Eksekusi Render Foto'; }
+            finally { enhanceBtn.disabled = false; enhanceBtn.innerHTML = '<i class="fas fa-microchip"></i> Eksekusi Render'; }
         });
         
         function fetchUrlBlob(url) { return fetch(url).then(r => r.blob()); }
@@ -1411,177 +1336,69 @@
         copyUrlBtn.addEventListener('click', () => { if (enhancedBlobUrl) { navigator.clipboard.writeText(enhancedBlobUrl); customAlert("URL disalin ke papan klip."); } });
     }
 
-    // --- VIDEO ENHANCER LOGIC (TELEGRAPH + CATBOX BYPASS) ---
-    function initVideoEnhancerEngine() {
-        const videoUrlInput = document.getElementById('videoUrlInput');
-        const dropZoneVideo = document.getElementById('dropZoneVideo');
-        const videoFileInput = document.getElementById('videoFileInput');
-        const videoFileNameDisplay = document.getElementById('videoFileNameDisplay');
-        const processBtn = document.getElementById('enhanceVideoBtn');
-        const resultArea = document.getElementById('videoResultArea');
-        const videoPlayer = document.getElementById('videoPlayerResult');
-        const downloadBtn = document.getElementById('downloadVideoBtn');
-        const copyBtn = document.getElementById('copyVideoUrlBtn');
-        
-        let selectedVideoFile = null;
-        let currentResultVideoUrl = null;
+    const loginBtn = document.getElementById('loginBtn'); const regBtn = document.getElementById('regBtn'); const topLogoutBtn = document.getElementById('topLogoutBtn'); const sendBtn = document.getElementById('sendBtn'); const activateBtn = document.getElementById('activateBtn');
 
-        dropZoneVideo.addEventListener('click', () => videoFileInput.click());
-        
-        videoFileInput.addEventListener('change', (e) => {
-            if (e.target.files && e.target.files[0]) {
-                selectedVideoFile = e.target.files[0];
-                videoFileNameDisplay.innerHTML = `<i class="fas fa-file-video"></i> ${selectedVideoFile.name}`;
-                videoUrlInput.value = ''; 
-            }
-        });
-
-        videoUrlInput.addEventListener('input', () => {
-            if(videoUrlInput.value.trim() !== '') {
-                selectedVideoFile = null;
-                videoFileNameDisplay.innerHTML = ''; 
-            }
-        });
-
-        processBtn.addEventListener('click', async () => {
-            let vUrl = videoUrlInput.value.trim();
-            if(!vUrl && !selectedVideoFile) return showMsg('videoStatusMessage', 'Harap unggah video dari galeri atau masukkan URL.', 'error');
+    if(loginBtn) { 
+        loginBtn.addEventListener('click', async () => { 
+            const u = document.getElementById('loginUser').value.trim(); const p = document.getElementById('loginPwd').value.trim(); 
+            if(!u || !p) return showMsg('loginErrorMsg', 'Harap isi seluruh kredensial.', 'error'); 
+            loginBtn.innerHTML = '<div class="loader-spinner" style="width:14px;height:14px; border-width:2px; border-top-color:#000;"></div> Memvalidasi...'; loginBtn.disabled = true; 
+            const res = await apiCall('login', { username: u, password: p }); 
+            loginBtn.textContent = 'Otorisasi Masuk'; loginBtn.disabled = false; 
+            if(!res.status) return showMsg('loginErrorMsg', `Akses Ditolak: ${res.error}`, 'error'); 
             
-            if(currentUserData && currentUserData.role !== 'Owner' && !parseBool(currentUserData.is_permanent)) {
-                if((currentUserData.limit_count || 0) <= 0) return showMsg('videoStatusMessage', 'Limit Anda habis. Silahkan isi ulang.', 'error');
-            }
+            localStorage.setItem(SESSION_KEY, u); localStorage.setItem(CACHE_KEY, JSON.stringify(res.data)); 
+            if(!localStorage.getItem(BIO_CRED_KEY)) { temporaryBioData = {u: u, p: p, resData: res.data}; document.getElementById('bioSetupModal').classList.add('show'); } 
+            else { window.loadAppView(res.data); }
+        }); 
+    }
 
-            processBtn.disabled = true;
-            resultArea.classList.add('hidden');
+    if(regBtn) { 
+        regBtn.addEventListener('click', async () => { 
+            const u = document.getElementById('regUser').value.trim(); const w = document.getElementById('regWa').value.trim(); const p = document.getElementById('regPwd').value.trim(); const cInput = parseInt(document.getElementById('regCaptcha').value.trim()); 
+            if (!u || !w || !p || isNaN(cInput)) return showMsg('regMsg', 'Data formulir tidak lengkap.', 'error'); 
+            if (cInput !== currentCaptchaAnswer) return showMsg('regMsg', 'Verifikasi bot gagal.', 'error'); 
+            regBtn.innerHTML = '<div class="loader-spinner" style="width:14px;height:14px; border-width:2px; border-top-color:#000;"></div> Mendaftarkan...'; regBtn.disabled = true; 
+            try { 
+                const userIp = await getIPAddress(); const fp = await generateAdvancedFingerprint(); 
+                const res = await apiCall('register', { username: u, password: p, wa: w, ip_address: userIp, device_id: fp }); 
+                if(!res.status) throw new Error(res.error); 
+                localStorage.setItem(SESSION_KEY, u); localStorage.setItem(CACHE_KEY, JSON.stringify(res.data)); 
+                temporaryBioData = {u: u, p: p, resData: res.data}; document.getElementById('registerView').classList.add('hidden'); document.getElementById('bioSetupModal').classList.add('show');
+            } catch (err) { showMsg('regMsg', err.message, 'error'); } finally { regBtn.textContent = 'Daftarkan Identitas'; regBtn.disabled = false; } 
+        }); 
+    }
 
+    if(topLogoutBtn) { topLogoutBtn.addEventListener('click', () => { customConfirm("Anda yakin ingin memutus koneksi sesi eksklusif ini?", () => { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(CACHE_KEY); closeProfileSheet(); switchView('loginView'); }); }); }
+    
+    if(sendBtn) {
+        sendBtn.addEventListener('click', async () => {
+            const email = document.getElementById('emailInput').value.trim(); if(!email) return showMsg('appErrorMsg', 'Alamat email wajib disematkan.', 'error');
+            sendBtn.innerHTML = 'Proses...'; sendBtn.disabled = true;
             try {
-                // TAHAP 1: MENGUBAH VIDEO MENJADI URL (AUTO UPLOAD)
-                if(selectedVideoFile) {
-                    processBtn.innerHTML = '<div class="loader-spinner" style="width:14px;height:14px; border-width:2px; border-top-color:#000;"></div> Mengunggah...';
-                    let uploadSuccess = false;
+                const res = await fetch(`${API_BASE}/api/am?action=send&apikey=${API_KEY}&email=${encodeURIComponent(email)}`); const data = await res.json();
+                if(data.status) { cachedEmail = email; showMsg('appErrorMsg', 'Magic link dikirim. Cek surel Anda.', 'success'); } else { showMsg('appErrorMsg', data.error || 'Gateway penyiaran gagal.', 'error'); }
+            } catch(e) { showMsg('appErrorMsg', 'Koneksi ke server terputus.', 'error'); }
+            finally { sendBtn.textContent = 'Kirim'; sendBtn.disabled = false; }
+        });
+    }
 
-                    // METODE 1: TELEGRAM SERVER (Sangat Cepat & 100% Lolos Blokir ISP)
-                    // Batas ukuran Telegraph adalah sekitar 5MB
-                    if (selectedVideoFile.size <= 5.5 * 1024 * 1024) { 
-                        try {
-                            showMsg('videoStatusMessage', 'Mengunggah via Jalur Telegram (Anti-Blokir)...', 'success');
-                            const fdTele = new FormData();
-                            fdTele.append('file', selectedVideoFile);
-                            
-                            const resTele = await fetch('https://telegra.ph/upload', { method: 'POST', body: fdTele });
-                            const dataTele = await resTele.json();
-                            
-                            if (dataTele && dataTele[0] && dataTele[0].src) {
-                                vUrl = "https://telegra.ph" + dataTele[0].src;
-                                uploadSuccess = true;
-                            }
-                        } catch (e) { console.log("Telegram upload fail", e); }
-                    } else {
-                        showMsg('videoStatusMessage', 'Ukuran > 5MB. Memilih server kapasitas besar...', 'success');
-                    }
-
-                    // METODE 2: CATBOX.MOE (Jika ukuran > 5MB atau Telegram gagal)
-                    if (!uploadSuccess) {
-                        try {
-                            showMsg('videoStatusMessage', 'Mencoba Server Catbox (Prioritas 2)...', 'success');
-                            const fdCat = new FormData();
-                            fdCat.append('reqtype', 'fileupload');
-                            fdCat.append('time', '1h');
-                            fdCat.append('fileToUpload', selectedVideoFile);
-                            
-                            const resCat = await fetch('https://litterbox.catbox.moe/api', { method: 'POST', body: fdCat });
-                            const urlCat = await resCat.text();
-                            
-                            if (urlCat && urlCat.startsWith('http')) {
-                                vUrl = urlCat;
-                                uploadSuccess = true;
-                            }
-                        } catch (e) { console.log("Catbox upload fail", e); }
-                    }
-
-                    // METODE 3: FILE.IO (Jalur Proxy Terakhir)
-                    if (!uploadSuccess) {
-                        try {
-                            showMsg('videoStatusMessage', 'Mencoba Jalur Proxy Terakhir...', 'success');
-                            const fdFileio = new FormData();
-                            fdFileio.append('file', selectedVideoFile);
-                            
-                            const resFileio = await fetch('https://corsproxy.io/?' + encodeURIComponent('https://file.io'), { method: 'POST', body: fdFileio });
-                            const dataFileio = await resFileio.json();
-                            
-                            if (dataFileio && dataFileio.success) {
-                                vUrl = dataFileio.link;
-                                uploadSuccess = true;
-                            }
-                        } catch (e) { console.log("File.io upload fail", e); }
-                    }
-
-                    if (!uploadSuccess) {
-                        throw new Error('Semua jalur upload diblokir oleh provider internet Anda. Mohon unggah video manual ke "catbox.moe" atau "file.io" di browser Google Chrome, lalu tempel link-nya di kolom URL.');
-                    }
-                }
-
-                // TAHAP 2: PROSES WINK AI MENGGUNAKAN URL YANG DIDAPAT
-                processBtn.innerHTML = '<div class="loader-spinner" style="width:14px;height:14px; border-width:2px; border-top-color:#000;"></div> Merender Wink...';
-                showMsg('videoStatusMessage', 'Mengirim perintah render ke Wink AI (Harap tunggu)...', 'success');
-
-                let apiData = null;
-
-                try {
-                    const response = await fetch(WINK_ENDPOINT, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ apikey: WINK_API_KEY, url: vUrl })
-                    });
-                    if(!response.ok) throw new Error("Wink API HTTP Error");
-                    apiData = await response.json();
-                } catch(apiErr) {
-                    try {
-                        const proxyResponse = await fetch('https://corsproxy.io/?' + encodeURIComponent(WINK_ENDPOINT), {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ apikey: WINK_API_KEY, url: vUrl })
-                        });
-                        if(!proxyResponse.ok) throw new Error("Proxy HTTP Error");
-                        apiData = await proxyResponse.json();
-                    } catch (proxyErr) {
-                        throw new Error('Server API Wink AI sedang Down atau tidak merespon (CORS Error).');
-                    }
-                }
-
-                if(apiData && apiData.status === true && (apiData.data?.url || apiData.result || apiData.url)) {
-                    currentResultVideoUrl = apiData.data?.url || apiData.result || apiData.url;
-                    videoPlayer.src = currentResultVideoUrl;
-                    resultArea.classList.remove('hidden');
-                    showMsg('videoStatusMessage', 'Render Wink HD Video selesai!', 'success');
-
-                    // Deduct limit
-                    if(currentUserData && currentUserData.role !== 'Owner' && !parseBool(currentUserData.is_permanent)) {
-                        let newLimit = Math.max(0, (currentUserData.limit_count || 0) - 1);
-                        await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
+    if(activateBtn) {
+        activateBtn.addEventListener('click', async () => {
+            const email = document.getElementById('emailInput').value.trim(); const magic = document.getElementById('magicInput').value.trim();
+            if(!email || !magic) return showMsg('appErrorMsg', 'Data email atau tautan Magic Link kosong.', 'error');
+            activateBtn.disabled = true; document.getElementById('btnDefault').classList.add('hidden'); document.getElementById('loaderContainer').classList.remove('hidden');
+            try {
+                const res = await fetch(`${API_BASE}/api/am?action=verif&apikey=${API_KEY}&email=${encodeURIComponent(cachedEmail || email)}&url=${encodeURIComponent(magic)}`); const data = await res.json();
+                if(data.status) {
+                    showMsg('appErrorMsg', 'Lisensi tervalidasi. Koneksi diamankan.', 'success');
+                    if(currentUserData && !parseBool(currentUserData.is_permanent) && currentUserData.role !== 'Owner') {
+                        let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 1); await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
                         currentUserData.limit_count = newLimit; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData);
                     }
-                } else {
-                    showMsg('videoStatusMessage', apiData.error || 'Server Wink AI menolak perintah Anda.', 'error');
-                }
-
-            } catch (err) {
-                showMsg('videoStatusMessage', `Error Internal: ${err.message}`, 'error');
-            } finally {
-                processBtn.disabled = false;
-                processBtn.innerHTML = '<i class="fas fa-video"></i> Eksekusi Render Video';
-            }
-        });
-
-        downloadBtn.addEventListener('click', () => {
-            if(currentResultVideoUrl) { window.open(currentResultVideoUrl, '_blank'); }
-        });
-
-        copyBtn.addEventListener('click', () => {
-            if(currentResultVideoUrl) {
-                navigator.clipboard.writeText(currentResultVideoUrl);
-                customAlert("URL Video HD disalin ke papan klip!");
-            }
+                } else { showMsg('appErrorMsg', data.error || 'Verifikasi lisensi ditolak sistem.', 'error'); }
+            } catch(e) { showMsg('appErrorMsg', 'Galat internal server saat sinkronisasi.', 'error'); }
+            finally { activateBtn.disabled = false; document.getElementById('btnDefault').classList.remove('hidden'); document.getElementById('loaderContainer').classList.add('hidden'); }
         });
     }
 
