@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="id" data-theme="dark">
 <head>
@@ -89,12 +90,24 @@
 
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   
+  /* UKURAN DESKTOP & PATTERN (IMPROVEMENT 1) */
   body { 
-    background-color: var(--bg-base); background-image: var(--bg-gradient);
+    background-color: var(--bg-base); 
+    background-image: url('data:image/svg+xml;utf8,<svg width="40" height="40" xmlns="http://www.w3.org/2000/svg"><circle cx="2" cy="2" r="1.5" fill="rgba(212,175,55,0.05)"/></svg>'), var(--bg-gradient);
     font-family: var(--font-body); color: var(--text-pure); 
     min-height: 100vh; overflow-x: hidden; position: relative;
     transition: background-color 0.5s var(--smooth-ease), color 0.5s var(--smooth-ease);
   }
+
+  .container { 
+    width: 100%; max-width: 480px; margin: 0 auto; padding: 24px 20px 140px; 
+    animation: smoothFadeIn 0.8s var(--smooth-ease) forwards; 
+    background: var(--bg-base);
+    min-height: 100vh;
+    box-shadow: 0 0 50px rgba(0,0,0,0.5); /* Efek bingkai HP di desktop */
+    position: relative;
+  }
+  @keyframes smoothFadeIn { from { opacity: 0; transform: translateY(15px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
   /* --- LUXURY ANIMATED LOADER --- */
   #initialLoader { 
@@ -121,10 +134,6 @@
   @keyframes spin { to { transform: rotate(360deg); } }
   .hidden { display: none !important; }
 
-  /* Container Transition Fade In */
-  .container { width: 100%; max-width: 480px; margin: 0 auto; padding: 24px 20px 140px; animation: smoothFadeIn 0.8s var(--smooth-ease) forwards; }
-  @keyframes smoothFadeIn { from { opacity: 0; transform: translateY(15px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
-
   /* --- PREMIUM GLASS CARD --- */
   .glass-card { 
     background: var(--surface-dark); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
@@ -150,6 +159,20 @@
     padding: 14px 16px; outline: none; transition: all 0.3s var(--smooth-ease); 
   }
   .glass-input:focus { border-color: var(--gold-primary); box-shadow: 0 0 15px var(--gold-glow); transform: scale(1.01); }
+  
+  /* MICRO-INTERACTION ERROR (IMPROVEMENT 2) */
+  @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-6px); }
+      50% { transform: translateX(6px); }
+      75% { transform: translateX(-6px); }
+  }
+  .input-error {
+      border-color: var(--danger-light) !important;
+      box-shadow: 0 0 15px rgba(255, 77, 77, 0.3) !important;
+      animation: shake 0.4s ease-in-out;
+  }
+
   .pwd-toggle { position: absolute; right: 16px; background: none; border: none; color: var(--text-muted); font-size: 14px; cursor: pointer; transition: color 0.3s; }
   .pwd-toggle:hover { color: var(--gold-primary); }
 
@@ -307,7 +330,7 @@
   .biometric-scanner.active .scan-line { display: block; }
   @keyframes scanningLine { 0% { top: 10%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 90%; opacity: 0; } }
 
-  /* IMAGE COMPARE SLIDER CSS */
+  /* IMAGE COMPARE SLIDER CSS (IMPROVEMENT 5) */
   .image-compare-wrapper {
     position: relative;
     width: 100%;
@@ -335,9 +358,9 @@
     position: absolute;
     top: 0;
     left: 50%;
-    width: 40px;
+    width: 60px; /* Area Sentuh Diperbesar */
     height: 100%;
-    margin-left: -20px;
+    margin-left: -30px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -367,6 +390,13 @@
     font-size: 14px;
     box-shadow: 0 0 15px rgba(0,0,0,0.6);
     pointer-events: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  
+  /* Efek Glow saat tuas ditekan/aktif */
+  .img-comp-slider:active .img-comp-slider-button {
+    box-shadow: 0 0 25px var(--gold-light);
+    transform: scale(1.15);
   }
 
   ::-webkit-scrollbar { width: 4px; }
@@ -386,6 +416,26 @@
 </div>
 
 <div id="globalToast"><i class="fas fa-info-circle"></i> <span id="toastMsg">Sistem Informasi</span></div>
+
+<!-- MODAL: HELP / FAQ (IMPROVEMENT 6) -->
+<div id="helpModal" class="overlay">
+  <div class="modal-glass">
+    <button class="btn-close click-sound" onclick="closeHelpModal()"><i class="fas fa-times"></i></button>
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px;">
+      <div style="width: 40px; height: 40px; border-radius: 8px; background: rgba(212,175,55,0.1); display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-thin);">
+        <i class="fas fa-book-open" style="font-size: 16px; color: var(--gold-primary);"></i>
+      </div>
+      <div class="title-lg" style="margin: 0; font-size: 18px;">Pusat Bantuan</div>
+    </div>
+    
+    <div style="font-size: 11px; line-height: 1.7; color: var(--text-pure); margin-bottom: 25px;">
+      <p style="margin-bottom: 12px;"><b style="color:var(--gold-light);">Neural AI Studio:</b> Fitur ini digunakan untuk menjernihkan atau memperbesar resolusi foto buram (HD/Super Res) secara otomatis menggunakan AI.</p>
+      <p style="margin-bottom: 12px;"><b style="color:var(--gold-light);">Aktivasi Lisensi:</b> Untuk menautkan sesi login saat ini ke server utama. Jika gagal, fitur premium tidak bisa digunakan.</p>
+      <p><b style="color:var(--gold-light);">Magic Link:</b> Tautan (URL) khusus sekali pakai yang kami kirim ke email Anda untuk mengkonfirmasi kepemilikan akun secara otomatis tanpa perlu password.</p>
+    </div>
+    <button class="btn btn-outline click-sound" onclick="closeHelpModal()">Saya Mengerti</button>
+  </div>
+</div>
 
 <!-- MODAL: BIOMETRIC SCANNER -->
 <div id="biometricModal" class="overlay">
@@ -474,8 +524,8 @@
   </div>
 </div>
 
-<!-- VIEW: LOGIN -->
-<div id="loginView" class="container hidden" style="display: flex; flex-direction: column; justify-content: center; min-height: 100vh;">
+<!-- VIEW: LOGIN (IMPROVEMENT 7 - Semantik HTML `main`) -->
+<main id="loginView" class="container hidden" style="display: flex; flex-direction: column; justify-content: center; min-height: 100vh;">
   <div class="glass-card" style="padding: 40px 30px;">
     <div style="text-align: center; margin-bottom: 35px;">
       <div style="width: 55px; height: 55px; border-radius: 12px; background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark)); margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(212,175,55,0.2);">
@@ -492,7 +542,7 @@
       <label>Kata Sandi</label>
       <div class="input-wrapper">
         <input type="password" id="loginPwd" class="glass-input" autocomplete="off" />
-        <button type="button" class="pwd-toggle" onclick="togglePwd('loginPwd', this)"><i class="far fa-eye"></i></button>
+        <button type="button" class="pwd-toggle" onclick="togglePwd('loginPwd', this)" aria-label="Lihat Sandi"><i class="far fa-eye"></i></button>
       </div>
     </div>
     
@@ -510,10 +560,10 @@
       <span style="cursor:pointer; color: var(--gold-primary); transition: 0.3s;" onmouseover="this.style.color='var(--gold-light)'" onmouseout="this.style.color='var(--gold-primary)'" onclick="switchView('registerView')">Registrasi Akun</span>
     </div>
   </div>
-</div>
+</main>
 
 <!-- VIEW: REGISTER -->
-<div id="registerView" class="container hidden" style="display: flex; flex-direction: column; justify-content: center; min-height: 100vh;">
+<main id="registerView" class="container hidden" style="display: flex; flex-direction: column; justify-content: center; min-height: 100vh;">
   <div class="glass-card" style="padding: 40px 30px;">
     <div style="text-align: center; margin-bottom: 30px;">
       <div class="title-lg" style="font-size: 24px;">Registrasi Klien</div>
@@ -528,7 +578,7 @@
       <label>Kata Sandi Privat</label>
       <div class="input-wrapper">
         <input type="password" id="regPwd" class="glass-input" />
-        <button type="button" class="pwd-toggle" onclick="togglePwd('regPwd', this)"><i class="far fa-eye"></i></button>
+        <button type="button" class="pwd-toggle" onclick="togglePwd('regPwd', this)" aria-label="Lihat Sandi"><i class="far fa-eye"></i></button>
       </div>
     </div>
     <div class="form-group" style="margin-bottom: 30px;">
@@ -541,26 +591,30 @@
       Telah terdaftar? <span style="color:var(--gold-primary);">Masuk Disini</span>
     </div>
   </div>
-</div>
+</main>
 
 <!-- VIEW: MAIN DASHBOARD -->
-<div id="appView" class="container hidden">
+<main id="appView" class="container hidden">
   
-  <div class="top-header">
+  <!-- IMPROVEMENT 7 - Semantik HTML header -->
+  <header class="top-header">
     <div class="logo-wrapper">
       <div class="logo-icon"><i class="fas fa-crown"></i></div>
       <span style="background: linear-gradient(135deg, var(--gold-light), var(--gold-dark)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">AM Executive</span>
     </div>
     
     <div class="header-right-meta">
-      <button class="header-action-btn click-sound" id="themeToggleBtn" title="Ganti Tema" onclick="toggleTheme()">
+      <button class="header-action-btn click-sound" aria-label="Bantuan" title="Pusat Bantuan" onclick="openHelpModal()">
+        <i class="fas fa-question"></i>
+      </button>
+      <button class="header-action-btn click-sound" id="themeToggleBtn" aria-label="Ganti Tema" title="Ganti Tema" onclick="toggleTheme()">
         <i class="fas fa-moon"></i>
       </button>
-      <button class="header-logout-btn click-sound" id="topLogoutBtn" title="Akhiri Sesi">
+      <button class="header-logout-btn click-sound" id="topLogoutBtn" aria-label="Keluar" title="Akhiri Sesi">
         <i class="fas fa-sign-out-alt"></i>
       </button>
     </div>
-  </div>
+  </header>
 
   <!-- JAM & PING -->
   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; background: var(--surface-light); border: 1px solid var(--glass-border); padding: 10px 16px; border-radius: 8px;">
@@ -769,10 +823,10 @@
       <div id="memberList" class="data-list"></div>
     </div>
   </div>
-</div>
+</main>
 
-<!-- FLOATING BOTTOM NAVIGATION -->
-<nav class="bottom-nav hidden" id="mainBottomNav">
+<!-- FLOATING BOTTOM NAVIGATION (IMPROVEMENT 7 - Semantik HTML nav) -->
+<nav class="bottom-nav hidden" id="mainBottomNav" aria-label="Navigasi Utama">
   <div class="nav-item active click-sound" id="btnTabActivator" onclick="switchTab('activator')">
     <i class="fas fa-key"></i><span>Lisensi</span>
   </div>
@@ -800,6 +854,25 @@
       
       <div class="title-lg disp-username" style="font-size: 22px; color: var(--text-pure);">Username</div>
       <div class="disp-userrole" style="font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: var(--gold-primary); margin-top: 4px;">Role</div>
+    </div>
+
+    <!-- IMPROVEMENT 4: ACTIVITY LOG / RIWAYAT PENGGUNAAN MOCKUP -->
+    <div style="background: var(--glass-bg); border-radius: 8px; border: 1px solid var(--glass-border); padding: 18px; margin-bottom: 20px;">
+       <div style="font-size: 9px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 14px; font-weight:600; display: flex; align-items: center; gap: 8px;"><i class="fas fa-history"></i> Riwayat Aktivitas</div>
+       <div class="data-list" id="activityLogList">
+          <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:12px; border-bottom:1px solid var(--glass-border); margin-bottom:12px;">
+             <div><div style="font-size:11px; color:var(--text-pure); font-weight:600; margin-bottom:4px;">Neural AI Render</div><div style="font-size:9px; color:var(--text-dim);">Hari ini, 10:45</div></div>
+             <div style="font-size:11px; font-weight:700; color:var(--danger-light);">-1 Limit</div>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:12px; border-bottom:1px solid var(--glass-border); margin-bottom:12px;">
+             <div><div style="font-size:11px; color:var(--text-pure); font-weight:600; margin-bottom:4px;">Acquire Kuota (QRIS)</div><div style="font-size:9px; color:var(--text-dim);">2 Hari lalu</div></div>
+             <div style="font-size:11px; font-weight:700; color:var(--success-light);">+10 Limit</div>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+             <div><div style="font-size:11px; color:var(--text-pure); font-weight:600; margin-bottom:4px;">Otorisasi Sistem</div><div style="font-size:9px; color:var(--text-dim);">Minggu lalu</div></div>
+             <div style="font-size:11px; font-weight:700; color:var(--success-light);">Login</div>
+          </div>
+       </div>
     </div>
 
     <div style="background: var(--glass-bg); border-radius: 8px; border: 1px solid var(--glass-border); padding: 18px; margin-bottom: 20px;">
@@ -874,6 +947,19 @@
         if (icon) icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
     }
 
+    // --- MICRO-INTERACTION: SHAKE ANIMATION FOR ERRORS (IMPROVEMENT 2) ---
+    function triggerErrorShake(inputIds) {
+        inputIds.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.classList.remove('input-error'); // Reset animasi jika ditekan berulang
+                void el.offsetWidth; // Trigger reflow
+                el.classList.add('input-error');
+                setTimeout(() => el.classList.remove('input-error'), 400); // Hapus class sesudah animasi selesai
+            }
+        });
+    }
+
     // --- SYNTHESIZER AUDIO FEEDBACK & HAPTIC ---
     let audioCtx = null;
     function playClickSound() {
@@ -905,6 +991,10 @@
             return await res.json();
         } catch (e) { return { status: false, error: 'Network Error' }; }
     }
+
+    // Modal Bantuan
+    window.openHelpModal = function() { document.getElementById('helpModal').classList.add('show'); };
+    window.closeHelpModal = function() { document.getElementById('helpModal').classList.remove('show'); };
 
     window.customAlert = function(msg, isError = false) {
         const toast = document.getElementById('globalToast'); document.getElementById('toastMsg').textContent = msg;
@@ -975,7 +1065,10 @@
             loginBtn.innerHTML = '<div class="loader-spinner" style="width:14px;height:14px; border-width:2px; border-top-color:#000;"></div> Memvalidasi...'; loginBtn.disabled = true; 
             const res = await apiCall('login', { username: bioData.u, password: atob(bioData.p) }); 
             loginBtn.textContent = 'Otorisasi Masuk'; loginBtn.disabled = false; 
-            if(!res.status) return customAlert(`Biometrik Ditolak: ${res.error}`, true);
+            if(!res.status) {
+                triggerErrorShake(['loginUser', 'loginPwd']);
+                return customAlert(`Biometrik Ditolak: ${res.error}`, true);
+            }
             
             localStorage.setItem(SESSION_KEY, bioData.u); 
             localStorage.setItem(CACHE_KEY, JSON.stringify(res.data)); window.loadAppView(res.data); 
@@ -1069,6 +1162,7 @@
         else { coll.classList.add('hidden'); chev.style.transform = 'rotate(0deg)'; }
     };
 
+    // EMPTY STATES IMPROVEMENT (Leaderboard)
     async function fetchLeaderboard() {
         const container = document.getElementById('leaderboardListContainer'); if(!container) return;
         container.innerHTML = `<div style="text-align:center; padding: 20px;"><div class="loader-spinner" style="margin: 0 auto; width: 20px; height: 20px;"></div></div>`;
@@ -1080,7 +1174,15 @@
         const topUsers = regularUsers.slice(0, 5);
         
         container.innerHTML = '';
-        if (topUsers.length === 0) { container.innerHTML = `<div style="font-size:10px; color:var(--text-dim); text-align:center; padding: 14px;">Database peringkat belum tersedia.</div>`; return; }
+        if (topUsers.length === 0) { 
+            // IMPROVEMENT 3 - Empty state SVG
+            container.innerHTML = `
+              <div style="text-align:center; padding: 30px 10px;">
+                 <i class="fas fa-trophy" style="font-size: 35px; color: var(--glass-border-strong); margin-bottom: 15px;"></i>
+                 <div style="font-size:11px; color:var(--text-dim); font-weight: 500;">Database peringkat belum tersedia.</div>
+              </div>`; 
+            return; 
+        }
         
         topUsers.forEach((u, index) => {
             let rankColor = 'var(--text-muted)'; let medalIcon = '';
@@ -1231,7 +1333,10 @@
     }
     document.getElementById('saveProfileChangesBtn').addEventListener('click', async () => { 
         const newU = document.getElementById('editUsernameInput').value.trim(); const newP = document.getElementById('editPasswordInput').value.trim(); 
-        if (!newU || !newP) return showMsg('editProfileMsg', 'Data formulir tidak boleh dikosongkan.', 'error');
+        if (!newU || !newP) {
+             triggerErrorShake(['editUsernameInput', 'editPasswordInput']);
+             return showMsg('editProfileMsg', 'Data formulir tidak boleh dikosongkan.', 'error');
+        }
         const res = await apiCall('updateUser', { username: currentUserData.username, updates: { username: newU, password: newP, username_changed: true } }); 
         if (res.status) { currentUserData.username = newU; currentUserData.password = newP; currentUserData.username_changed = true; localStorage.setItem(SESSION_KEY, newU); localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData); showMsg('editProfileMsg', 'Perubahan terekam. Kredensial telah dikunci permanen.', 'success'); } 
     });
@@ -1277,6 +1382,7 @@
     window.closeWarningModal = function() { document.getElementById('warningModal').classList.remove('show'); if(!localStorage.getItem(SESSION_KEY)) document.getElementById('loginView').classList.remove('hidden'); };
     window.handleForgotClick = function() { window.open(`https://wa.me/${OWNER_WA.replace('+', '')}?text=` + encodeURIComponent("Salam hormat, saya membutuhkan bantuan pemulihan akses (lupa sandi)."), '_blank'); };
     
+    // EMPTY STATES IMPROVEMENT (Member List)
     window.renderMemberList = async function() { 
         const res = await apiCall('getUsers'); const memberList = document.getElementById('memberList'); const searchInput = document.getElementById('memberSearchInput'); 
         if(!memberList || !res.status) return; const users = res.data; const searchQuery = searchInput ? searchInput.value.toLowerCase().trim() : ''; 
@@ -1294,7 +1400,11 @@
 
         memberList.innerHTML = ''; 
         if(filteredUsers.length === 0) {
-             memberList.innerHTML = `<div style="text-align:center; padding: 20px; font-size:11px; color:var(--text-dim);">Tidak ada klien yang cocok dengan kriteria.</div>`;
+             memberList.innerHTML = `
+             <div style="text-align:center; padding: 40px 10px;">
+                 <i class="fas fa-folder-open" style="font-size: 35px; color: var(--glass-border-strong); margin-bottom: 15px;"></i>
+                 <div style="font-size:11px; color:var(--text-dim); font-weight: 500;">Tidak ada klien yang cocok dengan kriteria.</div>
+             </div>`;
              return;
         }
 
@@ -1412,7 +1522,10 @@
         
         enhanceBtn.addEventListener('click', async () => {
             const urlVal = urlInput.value.trim(); 
-            if (!urlVal && !selectedFile) return showMsg('statusMessage', 'Sematkan URL direktori atau pilih berkas lokal.', 'error');
+            if (!urlVal && !selectedFile) {
+                triggerErrorShake(['imageUrl']);
+                return showMsg('statusMessage', 'Sematkan URL direktori atau pilih berkas lokal.', 'error');
+            }
             enhanceBtn.disabled = true; enhanceBtn.innerHTML = '<div class="loader-spinner" style="width:14px;height:14px; border-width:2px; border-top-color:#000;"></div> Memproses Data...';
             try {
                 let img = selectedFile ? await loadImageFromFile(selectedFile) : await loadImageFromBlob(await fetchUrlBlob(urlVal));
@@ -1481,11 +1594,17 @@
     if(loginBtn) { 
         loginBtn.addEventListener('click', async () => { 
             const u = document.getElementById('loginUser').value.trim(); const p = document.getElementById('loginPwd').value.trim(); 
-            if(!u || !p) return showMsg('loginErrorMsg', 'Harap isi seluruh kredensial.', 'error'); 
+            if(!u || !p) {
+                triggerErrorShake(['loginUser', 'loginPwd']);
+                return showMsg('loginErrorMsg', 'Harap isi seluruh kredensial.', 'error'); 
+            }
             loginBtn.innerHTML = '<div class="loader-spinner" style="width:14px;height:14px; border-width:2px; border-top-color:#000;"></div> Memvalidasi...'; loginBtn.disabled = true; 
             const res = await apiCall('login', { username: u, password: p }); 
             loginBtn.textContent = 'Otorisasi Masuk'; loginBtn.disabled = false; 
-            if(!res.status) return showMsg('loginErrorMsg', `Akses Ditolak: ${res.error}`, 'error'); 
+            if(!res.status) {
+                triggerErrorShake(['loginUser', 'loginPwd']);
+                return showMsg('loginErrorMsg', `Akses Ditolak: ${res.error}`, 'error'); 
+            }
             
             localStorage.setItem(SESSION_KEY, u); localStorage.setItem(CACHE_KEY, JSON.stringify(res.data)); 
             if(!localStorage.getItem(BIO_CRED_KEY)) { temporaryBioData = {u: u, p: p, resData: res.data}; document.getElementById('bioSetupModal').classList.add('show'); } 
@@ -1496,8 +1615,14 @@
     if(regBtn) { 
         regBtn.addEventListener('click', async () => { 
             const u = document.getElementById('regUser').value.trim(); const w = document.getElementById('regWa').value.trim(); const p = document.getElementById('regPwd').value.trim(); const cInput = parseInt(document.getElementById('regCaptcha').value.trim()); 
-            if (!u || !w || !p || isNaN(cInput)) return showMsg('regMsg', 'Data formulir tidak lengkap.', 'error'); 
-            if (cInput !== currentCaptchaAnswer) return showMsg('regMsg', 'Verifikasi bot gagal.', 'error'); 
+            if (!u || !w || !p || isNaN(cInput)) {
+                triggerErrorShake(['regUser', 'regWa', 'regPwd', 'regCaptcha']);
+                return showMsg('regMsg', 'Data formulir tidak lengkap.', 'error'); 
+            }
+            if (cInput !== currentCaptchaAnswer) {
+                triggerErrorShake(['regCaptcha']);
+                return showMsg('regMsg', 'Verifikasi bot gagal.', 'error'); 
+            }
             regBtn.innerHTML = '<div class="loader-spinner" style="width:14px;height:14px; border-width:2px; border-top-color:#000;"></div> Mendaftarkan...'; regBtn.disabled = true; 
             try { 
                 const userIp = await getIPAddress(); const fp = await generateAdvancedFingerprint(); 
@@ -1505,7 +1630,9 @@
                 if(!res.status) throw new Error(res.error); 
                 localStorage.setItem(SESSION_KEY, u); localStorage.setItem(CACHE_KEY, JSON.stringify(res.data)); 
                 temporaryBioData = {u: u, p: p, resData: res.data}; document.getElementById('registerView').classList.add('hidden'); document.getElementById('bioSetupModal').classList.add('show');
-            } catch (err) { showMsg('regMsg', err.message, 'error'); } finally { regBtn.textContent = 'Daftarkan Identitas'; regBtn.disabled = false; } 
+            } catch (err) { 
+                showMsg('regMsg', err.message, 'error'); 
+            } finally { regBtn.textContent = 'Daftarkan Identitas'; regBtn.disabled = false; } 
         }); 
     }
 
@@ -1513,7 +1640,11 @@
     
     if(sendBtn) {
         sendBtn.addEventListener('click', async () => {
-            const email = document.getElementById('emailInput').value.trim(); if(!email) return showMsg('appErrorMsg', 'Alamat email wajib disematkan.', 'error');
+            const email = document.getElementById('emailInput').value.trim(); 
+            if(!email) {
+                triggerErrorShake(['emailInput']);
+                return showMsg('appErrorMsg', 'Alamat email wajib disematkan.', 'error');
+            }
             sendBtn.innerHTML = 'Proses...'; sendBtn.disabled = true;
             try {
                 const res = await fetch(`${API_BASE}/api/am?action=send&apikey=${API_KEY}&email=${encodeURIComponent(email)}`); const data = await res.json();
@@ -1526,7 +1657,10 @@
     if(activateBtn) {
         activateBtn.addEventListener('click', async () => {
             const email = document.getElementById('emailInput').value.trim(); const magic = document.getElementById('magicInput').value.trim();
-            if(!email || !magic) return showMsg('appErrorMsg', 'Data email atau tautan Magic Link kosong.', 'error');
+            if(!email || !magic) {
+                triggerErrorShake(['emailInput', 'magicInput']);
+                return showMsg('appErrorMsg', 'Data email atau tautan Magic Link kosong.', 'error');
+            }
             activateBtn.disabled = true; document.getElementById('btnDefault').classList.add('hidden'); document.getElementById('loaderContainer').classList.remove('hidden');
             try {
                 const res = await fetch(`${API_BASE}/api/am?action=verif&apikey=${API_KEY}&email=${encodeURIComponent(cachedEmail || email)}&url=${encodeURIComponent(magic)}`); const data = await res.json();
@@ -1564,3 +1698,4 @@
 </script>
 </body>
 </html>
+```
