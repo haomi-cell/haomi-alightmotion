@@ -11,6 +11,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@200;300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+<!-- FFmpeg WASM Core -->
+<script src="https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js"></script>
+<script src="https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/index.js"></script>
+
 <style>
   :root {
     /* NEXT-GEN CYBER PALETTE */
@@ -272,6 +276,28 @@
   .list-item:hover { background: var(--glass-highlight); }
   .admin-pill-data { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.05); padding: 6px 10px; border-radius: 8px; font-size: 11px; margin-right: 6px; margin-bottom: 6px; color: var(--text-dim); }
 
+  /* --- TIKTOK HD VIDEO STYLES --- */
+  .mode-grid { display: grid; gap: 12px; margin-bottom: 24px; }
+  .mode-label { display: block; cursor: pointer; }
+  .mode-label input[type="radio"] { display: none; }
+  .mode-card { display: flex; align-items: flex-start; gap: 16px; padding: 16px; border-radius: 16px; background: rgba(255,255,255,0.02); box-shadow: inset 0 0 0 1px var(--glass-border); transition: 0.3s; }
+  .mode-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; background: rgba(255,255,255,0.05); color: var(--text-dim); transition: 0.3s;}
+  .mode-info h4 { font-family: var(--font-heading); font-size: 14px; margin-bottom: 4px; color: var(--text-pure); }
+  .mode-info p { font-size: 12px; color: var(--text-dim); line-height: 1.4; }
+  .mode-label input[type="radio"]:checked + .mode-card { background: rgba(139, 92, 246, 0.1); box-shadow: inset 0 0 0 2px var(--accent-1); }
+  .mode-label input[type="radio"]:checked + .mode-card .mode-icon { background: var(--accent-1); color: #fff; box-shadow: 0 0 15px var(--accent-glow); }
+  
+  .progress-wrapper { margin-top: 24px; display: none; }
+  .progress-bar-bg { width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; margin-bottom: 8px; }
+  .progress-fill { width: 0%; height: 100%; background: linear-gradient(90deg, var(--accent-1), var(--accent-2)); transition: width 0.3s; }
+  .progress-text { display: flex; justify-content: space-between; font-size: 12px; color: var(--accent-2); font-weight: 500; font-family: monospace; }
+  .terminal-log { background: #000; border-radius: 12px; padding: 12px; margin-top: 12px; height: 120px; overflow-y: auto; font-family: monospace; font-size: 10px; color: #10B981; line-height: 1.5; box-shadow: inset 0 0 0 1px #333; display: none; }
+  .video-info-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 16px; display: none; }
+  .info-card { background: rgba(255,255,255,0.03); border-radius: 12px; padding: 12px 8px; text-align: center; box-shadow: inset 0 0 0 1px var(--glass-border); }
+  .info-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px; font-family: var(--font-heading); }
+  .info-val { font-size: 13px; font-weight: 600; color: var(--accent-2); }
+  #resultVideo { width: 100%; border-radius: 16px; margin-top: 20px; margin-bottom: 16px; border: 1px solid var(--glass-border); display: none; }
+
   ::-webkit-scrollbar { width: 0px; background: transparent; }
 </style>
 </head>
@@ -295,6 +321,7 @@
     <div style="font-size: 14px; line-height: 1.8; color: var(--text-dim); margin-bottom: 32px;">
       <p style="margin-bottom: 20px;"><strong style="color:var(--text-pure);">Otorisasi Lisensi:</strong> Login cepat tanpa password. Masukkan email, klik link di inbox Anda, lalu paste URL tersebut ke sistem.</p>
       <p style="margin-bottom: 20px;"><strong style="color:var(--text-pure);">Penjernih Foto AI:</strong> Alat ajaib untuk memperbesar (upscale) resolusi gambar pecah dan menjernihkan foto blur secara otomatis.</p>
+      <p style="margin-bottom: 20px;"><strong style="color:var(--text-pure);">TikTok HD Engine:</strong> Render video Anda agar sesuai dengan standar algoritma HD TikTok (Gratis, tidak mengurangi Token).</p>
       <p><strong style="color:var(--text-pure);">Isi Ulang Token:</strong> Token dibutuhkan untuk setiap proses rendering gambar AI. Top up otomatis menggunakan QRIS.</p>
     </div>
     <button class="btn btn-ghost click-sound" onclick="closeHelpModal()">Saya Paham</button>
@@ -614,6 +641,88 @@
     </div>
   </div>
 
+  <!-- SECTION: TIKTOK HD VIDEO -->
+  <div id="sectionVideo" class="hidden">
+    <div class="fluid-panel" style="border-color: var(--accent-2); box-shadow: inset 0 0 0 1px rgba(6, 182, 212, 0.2);">
+      <h2 class="title-h2"><i class="fas fa-video" style="margin-right:8px; color:var(--accent-2);"></i> TikTok HD Engine</h2>
+      <p class="subtitle" style="margin-bottom: 24px;">Render format & metada video agar sesuai standar algoritma TikTok. <span style="color:var(--success); font-weight:600;">(Gratis, 0 Token)</span></p>
+      
+      <div style="background: rgba(6, 182, 212, 0.05); border-left: 3px solid var(--accent-2); padding: 16px; border-radius: 0 16px 16px 0; margin-bottom: 24px;">
+        <div style="font-family: var(--font-heading); font-weight: 500; font-size: 13px; color: var(--accent-2); margin-bottom: 8px;">
+          <i class="fas fa-lightbulb"></i> Instruksi Bypass Algoritma
+        </div>
+        <ol style="margin-left: 20px; font-size: 12px; color: var(--text-dim); line-height: 1.6;">
+          <li>Pilih mode kompresi dan proses video Anda.</li>
+          <li>Simpan video hasil render ke galeri.</li>
+          <li>Buka <strong style="color:var(--text-pure);">tiktok.com</strong> di browser Chrome/Safari.</li>
+          <li>Wajib nyalakan <strong style="color:var(--accent-1);">Situs Desktop (Desktop Mode)</strong>.</li>
+          <li>Upload video dari web tersebut agar kualitas tetap HD.</li>
+        </ol>
+      </div>
+
+      <div id="tiktokDropzone" class="cyber-dropzone click-sound" onclick="document.getElementById('tiktokVideoInput').click()">
+        <i class="fas fa-cloud-upload-alt" style="font-size: 36px; color: var(--text-dim); margin-bottom: 16px;"></i>
+        <div id="tiktokDzText" style="font-family: var(--font-heading); font-size: 15px; font-weight: 500; color: var(--text-pure); margin-bottom: 6px;">Ketuk untuk memilih video</div>
+        <div class="subtitle" style="font-size: 11px;">MP4, MOV (Maks disarankan: 1 Menit)</div>
+        <input type="file" id="tiktokVideoInput" accept="video/mp4,video/quicktime" class="hidden">
+      </div>
+
+      <div class="video-info-grid" id="tiktokVideoInfo">
+        <div class="info-card"><div class="info-label">Ukuran</div><div class="info-val" id="tiktokInfoSize">-</div></div>
+        <div class="info-card"><div class="info-label">Durasi</div><div class="info-val" id="tiktokInfoDur">-</div></div>
+        <div class="info-card"><div class="info-label">Resolusi</div><div class="info-val" id="tiktokInfoRes">-</div></div>
+        <div class="info-card"><div class="info-label">FPS</div><div class="info-val" id="tiktokInfoFps">~</div></div>
+      </div>
+
+      <h3 style="font-family: var(--font-heading); font-size: 13px; font-weight: 500; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin: 24px 0 12px;">Pilih Mode Eksekusi</h3>
+      
+      <div class="mode-grid">
+        <label class="mode-label">
+          <input type="radio" name="tiktokEngineMode" value="fast" checked>
+          <div class="mode-card click-sound">
+            <div class="mode-icon"><i class="fas fa-bolt"></i></div>
+            <div class="mode-info">
+              <h4>Fast Patch (Instan)</h4>
+              <p>Hanya menyuntikkan metadata container. 1-3 detik tanpa render ulang. (Recommended)</p>
+            </div>
+          </div>
+        </label>
+        <label class="mode-label">
+          <input type="radio" name="tiktokEngineMode" value="optimize">
+          <div class="mode-card click-sound">
+            <div class="mode-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
+            <div class="mode-info">
+              <h4>Optimize HD (Stabil)</h4>
+              <p>Encode ulang standar algoritma TikTok. Membutuhkan waktu render (HP bisa panas).</p>
+            </div>
+          </div>
+        </label>
+        <label class="mode-label">
+          <input type="radio" name="tiktokEngineMode" value="60fps">
+          <div class="mode-card click-sound">
+            <div class="mode-icon"><i class="fas fa-gauge-high"></i></div>
+            <div class="mode-info">
+              <h4>Ultra 60 FPS</h4>
+              <p>Memaksa framerate video menjadi 60FPS agar pergerakan sangat mulus. (Render berat)</p>
+            </div>
+          </div>
+        </label>
+      </div>
+
+      <button class="btn btn-primary click-sound" id="processTiktokBtn" disabled>Pilih Video Terlebih Dahulu</button>
+
+      <div class="progress-wrapper" id="tiktokProgressWrapper">
+        <div class="progress-text"><span id="tiktokStatusTxt">Memuat Engine...</span><span id="tiktokPctTxt">0%</span></div>
+        <div class="progress-bar-bg"><div class="progress-fill" id="tiktokProgressFill"></div></div>
+        <div class="terminal-log" id="tiktokTerminalLog"></div>
+      </div>
+
+      <video id="resultVideo" controls playsinline></video>
+      <button class="btn btn-ghost click-sound hidden" id="downloadTiktokBtn" style="border:1px solid var(--success); color:var(--success); background:var(--success-bg);"><i class="fas fa-download"></i> Simpan Video HD</button>
+
+    </div>
+  </div>
+
   <!-- SECTION: OWNER PANEL -->
   <div id="ownerPanel" class="hidden">
     <div class="fluid-panel">
@@ -651,6 +760,9 @@
   </div>
   <div class="island-item click-sound" id="btnTabEnhancer" onclick="switchTab('enhancer')">
     <i class="fas fa-wand-magic-sparkles"></i><span>AI Studio</span>
+  </div>
+  <div class="island-item click-sound" id="btnTabVideo" onclick="switchTab('video')">
+    <i class="fas fa-video"></i><span>TikTok HD</span>
   </div>
   <div class="island-item hidden click-sound" id="toggleOwnerDashBtn" onclick="switchTab('admin')">
     <i class="fas fa-server"></i><span>System</span>
@@ -1042,7 +1154,7 @@
                 await fetchUserSession(savedUser);
                 if(initialLoader && document.body.contains(initialLoader)) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 600); }
             }
-            startClock(); startPingChecker(); fetchGlobalStats(); initRealtimeBroadcastListener(); initImageEnhancerEngine();
+            startClock(); startPingChecker(); fetchGlobalStats(); initRealtimeBroadcastListener(); initImageEnhancerEngine(); initTikTokUploaderEngine();
         }, 1200);
     };
 
@@ -1212,6 +1324,16 @@
         enhanceBtn.addEventListener('click', async () => {
             const urlVal = urlInput.value.trim(); 
             if (!urlVal && !selectedFile) { triggerErrorShake(['imageUrl']); return showMsg('statusMessage', 'Pilih file atau URL.', 'error'); }
+            
+            // Limit Checking untuk AM Prem Photo Enhancer
+            if (!parseBool(currentUserData.is_permanent) && currentUserData.role !== 'Owner') {
+                if ((currentUserData.limit_count || 0) <= 0) {
+                    customAlert("Token Anda habis. Silakan isi ulang (Top Up).", true);
+                    openLimitModal();
+                    return;
+                }
+            }
+
             enhanceBtn.disabled = true; enhanceBtn.innerHTML = '<div class="loader-spinner"></div> Merender...';
             try {
                 let img = selectedFile ? await loadImageFromFile(selectedFile) : await loadImageFromBlob(await fetchUrlBlob(urlVal));
@@ -1221,6 +1343,17 @@
                 slider.style.left = '50%'; splitImgBefore.style.clipPath = 'inset(0 50% 0 0)';
                 comparisonSplitSection.classList.remove('hidden'); downloadFooterActions.style.display = 'flex';
                 showMsg('statusMessage', 'Render AI selesai.', 'success');
+
+                // Kurangi Limit (Khusus AI Enhancer)
+                if (!parseBool(currentUserData.is_permanent) && currentUserData.role !== 'Owner') {
+                    let newLimit = Math.max(0, (currentUserData.limit_count || 0) - 1);
+                    const updateRes = await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
+                    if(updateRes.status) {
+                        currentUserData.limit_count = newLimit;
+                        localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData));
+                        window.loadAppView(currentUserData);
+                    }
+                }
             } catch(e) { showMsg('statusMessage', 'Gagal memproses gambar.', 'error'); } 
             finally { enhanceBtn.disabled = false; enhanceBtn.innerHTML = '<i class="fas fa-microchip" style="margin-right:8px;"></i> Mulai Eksekusi'; }
         });
@@ -1251,6 +1384,203 @@
         
         downloadBtn.addEventListener('click', () => { if (enhancedBlobUrl) { const a = document.createElement('a'); a.href = enhancedBlobUrl; a.download = 'AM_Studio_AI.jpg'; a.click(); } });
         copyUrlBtn.addEventListener('click', () => { if (enhancedBlobUrl) { navigator.clipboard.writeText(enhancedBlobUrl); customAlert("URL disalin ke clipboard."); } });
+    }
+
+    // --- TIKTOK HD VIDEO COMPRESSOR LOGIC ---
+    function initTikTokUploaderEngine() {
+        const { FFmpeg } = window.FFmpegWASM;
+        const { fetchFile } = window.FFmpegUtil;
+        let ffmpeg = null;
+        let selectedFile = null;
+        let finalUrl = null;
+
+        const videoInput = document.getElementById('tiktokVideoInput');
+        const dropzone = document.getElementById('tiktokDropzone');
+        const dzText = document.getElementById('tiktokDzText');
+        const videoInfo = document.getElementById('tiktokVideoInfo');
+        const processBtn = document.getElementById('processTiktokBtn');
+        const progressWrapper = document.getElementById('tiktokProgressWrapper');
+        const progressFill = document.getElementById('tiktokProgressFill');
+        const statusTxt = document.getElementById('tiktokStatusTxt');
+        const pctTxt = document.getElementById('tiktokPctTxt');
+        const terminalLog = document.getElementById('tiktokTerminalLog');
+        const resultVideo = document.getElementById('resultVideo');
+        const downloadBtn = document.getElementById('downloadTiktokBtn');
+
+        videoInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                selectedFile = file;
+                dzText.innerHTML = `<i class="fas fa-check-circle" style="color:var(--success); font-size:20px; display:inline;"></i> ${file.name}`;
+                
+                const mbSize = (file.size / (1024 * 1024)).toFixed(2);
+                document.getElementById('tiktokInfoSize').innerText = `${mbSize} MB`;
+
+                const videoEl = document.createElement('video');
+                videoEl.preload = 'metadata';
+                videoEl.onloadedmetadata = function() {
+                    window.URL.revokeObjectURL(videoEl.src);
+                    document.getElementById('tiktokInfoDur').innerText = `${Math.round(videoEl.duration)}s`;
+                    document.getElementById('tiktokInfoRes').innerText = `${videoEl.videoWidth}x${videoEl.videoHeight}`;
+                    videoInfo.style.display = 'grid';
+                    processBtn.disabled = false;
+                    processBtn.innerHTML = '<i class="fas fa-microchip"></i> Proses Video Sekarang';
+                    
+                    resultVideo.style.display = 'none';
+                    downloadBtn.classList.add('hidden');
+                    progressWrapper.style.display = 'none';
+                }
+                videoEl.src = URL.createObjectURL(file);
+            }
+        });
+
+        function appendLog(msg) {
+            terminalLog.innerHTML += `> ${msg}<br>`;
+            terminalLog.scrollTop = terminalLog.scrollHeight;
+        }
+
+        async function loadFFmpeg() {
+            if (ffmpeg && ffmpeg.loaded) return true;
+            ffmpeg = new FFmpeg();
+            
+            ffmpeg.on('log', ({ message }) => { appendLog(message); });
+            ffmpeg.on('progress', ({ progress }) => {
+                const pct = Math.min(100, Math.round(progress * 100));
+                progressFill.style.width = `${pct}%`;
+                pctTxt.innerText = `${pct}%`;
+            });
+
+            try {
+                appendLog("Memuat inti FFmpeg WebAssembly...");
+                await ffmpeg.load({
+                    coreURL: 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/dist/umd/ffmpeg-core.js',
+                    wasmURL: 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/dist/umd/ffmpeg-core.wasm'
+                });
+                return true;
+            } catch (err) {
+                appendLog(`<span style="color:var(--danger)">Error Load Engine: ${err.message}</span>`);
+                return false;
+            }
+        }
+
+        processBtn.addEventListener('click', async () => {
+            if (!selectedFile) return;
+
+            // TIDAK ADA POTONG LIMIT DI SINI! FULL GRATIS!
+
+            const mode = document.querySelector('input[name="tiktokEngineMode"]:checked').value;
+            
+            processBtn.disabled = true;
+            processBtn.innerHTML = '<div class="loader-spinner"></div> Menyiapkan Mesin...';
+            progressWrapper.style.display = 'block';
+            terminalLog.style.display = 'block';
+            terminalLog.innerHTML = ''; 
+            progressFill.style.width = '0%';
+            pctTxt.innerText = '0%';
+            statusTxt.innerText = 'Memuat Engine...';
+            resultVideo.style.display = 'none';
+            downloadBtn.classList.add('hidden');
+
+            const isLoaded = await loadFFmpeg();
+            if (!isLoaded) {
+                statusTxt.innerText = 'Gagal memuat engine!';
+                processBtn.disabled = false;
+                processBtn.innerHTML = 'Coba Lagi';
+                return;
+            }
+
+            try {
+                statusTxt.innerText = 'Menyalin ke Memori...';
+                const inputName = 'input.mp4';
+                const outputName = 'AM_HD_Output.mp4';
+                
+                await ffmpeg.writeFile(inputName, await fetchFile(selectedFile));
+
+                let args = [];
+                statusTxt.innerText = 'Mengeksekusi Kode Patch...';
+                
+                if (mode === 'fast') {
+                    appendLog("Mode: Fast Patch (Instant Metadata Injection)");
+                    args = [
+                        '-i', inputName,
+                        '-c', 'copy',
+                        '-movflags', '+faststart',
+                        '-metadata', 'comment=AM_Executive_HD_Patch', 
+                        outputName
+                    ];
+                } 
+                else if (mode === 'optimize') {
+                    appendLog("Mode: Optimize HD (H.264/AAC Re-encoding)");
+                    args = [
+                        '-i', inputName,
+                        '-c:v', 'libx264',
+                        '-preset', 'ultrafast',
+                        '-crf', '23',
+                        '-pix_fmt', 'yuv420p',
+                        '-c:a', 'aac',
+                        '-b:a', '128k',
+                        '-movflags', '+faststart',
+                        '-metadata', 'comment=AM_Executive_Optimized',
+                        outputName
+                    ];
+                }
+                else if (mode === '60fps') {
+                    appendLog("Mode: 60 FPS Boost (H.264 Interpolation)");
+                    args = [
+                        '-i', inputName,
+                        '-filter:v', 'fps=fps=60',
+                        '-c:v', 'libx264',
+                        '-preset', 'ultrafast',
+                        '-crf', '24',
+                        '-pix_fmt', 'yuv420p',
+                        '-c:a', 'aac',
+                        '-b:a', '128k',
+                        '-movflags', '+faststart',
+                        outputName
+                    ];
+                }
+
+                appendLog("Memulai proses... JANGAN TUTUP BROWSER!");
+                const start = Date.now();
+                
+                await ffmpeg.exec(args);
+                
+                const duration = ((Date.now() - start) / 1000).toFixed(1);
+                appendLog(`Selesai dalam ${duration} detik.`);
+
+                statusTxt.innerText = 'Menyiapkan File Unduhan...';
+                const data = await ffmpeg.readFile(outputName);
+                
+                if (finalUrl) URL.revokeObjectURL(finalUrl);
+                const blob = new Blob([data.buffer], { type: 'video/mp4' });
+                finalUrl = URL.createObjectURL(blob);
+
+                statusTxt.innerText = 'Proses Berhasil!';
+                progressFill.style.width = '100%';
+                pctTxt.innerText = '100%';
+                
+                resultVideo.src = finalUrl;
+                resultVideo.style.display = 'block';
+                downloadBtn.classList.remove('hidden');
+
+                downloadBtn.onclick = () => {
+                    const a = document.createElement('a');
+                    a.href = finalUrl;
+                    a.download = `AM_Executive_HD_${Math.floor(Math.random()*1000)}.mp4`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    appendLog("Video mulai diunduh. Silakan upload via Web Desktop!");
+                };
+
+            } catch (e) {
+                appendLog(`<span style="color:var(--danger)">Error: ${e.message}</span>`);
+                statusTxt.innerText = 'Terjadi Kesalahan!';
+            } finally {
+                processBtn.disabled = false;
+                processBtn.innerHTML = '<i class="fas fa-check"></i> Proses Selesai';
+            }
+        });
     }
 
     // --- SYSTEM BUTTON LISTENERS ---
@@ -1323,12 +1653,18 @@
 
     // --- TAB SWITCHER LOGIC (Fluid) ---
     window.switchTab = function(tabName) { 
-        const secAct = document.getElementById('sectionActivator'); const secEnh = document.getElementById('sectionEnhancer'); const secOwn = document.getElementById('ownerPanel');
-        [secAct, secEnh, secOwn].forEach(el => { if(el) { el.style.opacity = '0'; el.style.transform = 'scale(0.98)'; setTimeout(() => el.classList.add('hidden'), 300); } });
+        const secAct = document.getElementById('sectionActivator'); 
+        const secEnh = document.getElementById('sectionEnhancer'); 
+        const secOwn = document.getElementById('ownerPanel');
+        const secVid = document.getElementById('sectionVideo');
+
+        [secAct, secEnh, secOwn, secVid].forEach(el => { if(el) { el.style.opacity = '0'; el.style.transform = 'scale(0.98)'; setTimeout(() => el.classList.add('hidden'), 300); } });
         document.querySelectorAll('.island-item').forEach(btn => btn.classList.remove('active')); 
+        
         setTimeout(() => {
             if(tabName === 'activator') { secAct.classList.remove('hidden'); document.getElementById('btnTabActivator').classList.add('active'); animateSectionIn(secAct); } 
             else if(tabName === 'enhancer') { secEnh.classList.remove('hidden'); document.getElementById('btnTabEnhancer').classList.add('active'); animateSectionIn(secEnh); } 
+            else if(tabName === 'video') { secVid.classList.remove('hidden'); document.getElementById('btnTabVideo').classList.add('active'); animateSectionIn(secVid); }
             else if(tabName === 'admin') { secOwn.classList.remove('hidden'); document.getElementById('toggleOwnerDashBtn').classList.add('active'); renderMemberList(); animateSectionIn(secOwn); }
         }, 300);
     };
@@ -1342,3 +1678,4 @@
 </script>
 </body>
 </html>
+
