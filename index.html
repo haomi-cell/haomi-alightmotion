@@ -718,7 +718,7 @@
       </div>
 
       <video id="resultVideo" controls playsinline></video>
-      <button class="btn btn-ghost click-sound hidden" id="downloadTiktokBtn" style="border:1px solid var(--success); color:var(--success); background:var(--success-bg); margin-top: 16px;"><i class="fas fa-download"></i> Simpan Video HD</button>
+      <button class="btn btn-ghost click-sound hidden" id="downloadTiktokBtn" style="border:1px solid var(--success); color:var(--success); background:var(--success-bg);"><i class="fas fa-download"></i> Simpan Video HD</button>
 
     </div>
   </div>
@@ -1235,7 +1235,7 @@
     window.closeWarningModal = function() { document.getElementById('warningModal').classList.remove('show'); if(!localStorage.getItem(SESSION_KEY)) document.getElementById('loginView').classList.remove('hidden'); };
     window.handleForgotClick = function() { window.open(`https://wa.me/${OWNER_WA.replace('+', '')}?text=` + encodeURIComponent("Halo Admin, saya lupa password akun saya."), '_blank'); };
     
-    // --- ADMIN PANEL - MEMBER LIST RENDERER ---
+    // --- ADMIN PANEL - MEMBER LIST RENDERER (LENGKAP: IP, WA, PASS) ---
     window.renderMemberList = async function() { 
         const res = await apiCall('getUsers'); const memberList = document.getElementById('memberList'); const searchInput = document.getElementById('memberSearchInput'); 
         if(!memberList || !res.status) return; const users = res.data; const searchQuery = searchInput ? searchInput.value.toLowerCase().trim() : ''; 
@@ -1324,6 +1324,16 @@
         enhanceBtn.addEventListener('click', async () => {
             const urlVal = urlInput.value.trim(); 
             if (!urlVal && !selectedFile) { triggerErrorShake(['imageUrl']); return showMsg('statusMessage', 'Pilih file atau URL.', 'error'); }
+            
+            // Limit Checking untuk AM Prem Photo Enhancer
+            if (!parseBool(currentUserData.is_permanent) && currentUserData.role !== 'Owner') {
+                if ((currentUserData.limit_count || 0) <= 0) {
+                    customAlert("Token Anda habis. Silakan isi ulang (Top Up).", true);
+                    openLimitModal();
+                    return;
+                }
+            }
+
             enhanceBtn.disabled = true; enhanceBtn.innerHTML = '<div class="loader-spinner"></div> Merender...';
             try {
                 let img = selectedFile ? await loadImageFromFile(selectedFile) : await loadImageFromBlob(await fetchUrlBlob(urlVal));
@@ -1333,6 +1343,17 @@
                 slider.style.left = '50%'; splitImgBefore.style.clipPath = 'inset(0 50% 0 0)';
                 comparisonSplitSection.classList.remove('hidden'); downloadFooterActions.style.display = 'flex';
                 showMsg('statusMessage', 'Render AI selesai.', 'success');
+
+                // Kurangi Limit (Khusus AI Enhancer)
+                if (!parseBool(currentUserData.is_permanent) && currentUserData.role !== 'Owner') {
+                    let newLimit = Math.max(0, (currentUserData.limit_count || 0) - 1);
+                    const updateRes = await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
+                    if(updateRes.status) {
+                        currentUserData.limit_count = newLimit;
+                        localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData));
+                        window.loadAppView(currentUserData);
+                    }
+                }
             } catch(e) { showMsg('statusMessage', 'Gagal memproses gambar.', 'error'); } 
             finally { enhanceBtn.disabled = false; enhanceBtn.innerHTML = '<i class="fas fa-microchip" style="margin-right:8px;"></i> Mulai Eksekusi'; }
         });
@@ -1365,137 +1386,268 @@
         copyUrlBtn.addEventListener('click', () => { if (enhancedBlobUrl) { navigator.clipboard.writeText(enhancedBlobUrl); customAlert("URL disalin ke clipboard."); } });
     }
 
-    // --- TIKTOK HD ENGINE LOGIC ---
+    // --- TIKTOK HD VIDEO COMPRESSOR LOGIC ---
     function initTikTokUploaderEngine() {
-        const processBtn = document.getElementById('processTiktokBtn');
-        const fileInput = document.getElementById('tiktokVideoInput');
-        let selectedVideo = null;
+        const { FFmpeg } = window.FFmpegWASM;
+        const { fetchFile } = window.FFmpegUtil;
         let ffmpeg = null;
+        let selectedFile = null;
+        let finalUrl = null;
 
-        // FIXED CORS LOAD FFMPEG
+        const videoInput = document.getElementById('tiktokVideoInput');
+        const dropzone = document.getElementById('tiktokDropzone');
+        const dzText = document.getElementById('tiktokDzText');
+        const videoInfo = document.getElementById('tiktokVideoInfo');
+        const processBtn = document.getElementById('processTiktokBtn');
+        const progressWrapper = document.getElementById('tiktokProgressWrapper');
+        const progressFill = document.getElementById('tiktokProgressFill');
+        const statusTxt = document.getElementById('tiktokStatusTxt');
+        const pctTxt = document.getElementById('tiktokPctTxt');
+        const terminalLog = document.getElementById('tiktokTerminalLog');
+        const resultVideo = document.getElementById('resultVideo');
+        const downloadBtn = document.getElementById('downloadTiktokBtn');
+
+        videoInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                selectedFile = file;
+                dzText.innerHTML = `<i class="fas fa-check-circle" style="color:var(--success); font-size:20px; display:inline;"></i> ${file.name}`;
+                
+                const mbSize = (file.size / (1024 * 1024)).toFixed(2);
+                document.getElementById('tiktokInfoSize').innerText = `${mbSize} MB`;
+
+                const videoEl = document.createElement('video');
+                videoEl.preload = 'metadata';
+                videoEl.onloadedmetadata = function() {
+                    window.URL.revokeObjectURL(videoEl.src);
+                    document.getElementById('tiktokInfoDur').innerText = `${Math.round(videoEl.duration)}s`;
+                    document.getElementById('tiktokInfoRes').innerText = `${videoEl.videoWidth}x${videoEl.videoHeight}`;
+                    videoInfo.style.display = 'grid';
+                    processBtn.disabled = false;
+                    processBtn.innerHTML = '<i class="fas fa-microchip"></i> Proses Video Sekarang';
+                    
+                    resultVideo.style.display = 'none';
+                    downloadBtn.classList.add('hidden');
+                    progressWrapper.style.display = 'none';
+                }
+                videoEl.src = URL.createObjectURL(file);
+            }
+        });
+
+        function appendLog(msg) {
+            terminalLog.innerHTML += `> ${msg}<br>`;
+            terminalLog.scrollTop = terminalLog.scrollHeight;
+        }
+
         async function loadFFmpeg() {
             if (ffmpeg && ffmpeg.loaded) return true;
+            ffmpeg = new FFmpeg();
+            
+            ffmpeg.on('log', ({ message }) => { appendLog(message); });
+            ffmpeg.on('progress', ({ progress }) => {
+                const pct = Math.min(100, Math.round(progress * 100));
+                progressFill.style.width = `${pct}%`;
+                pctTxt.innerText = `${pct}%`;
+            });
+
             try {
-                const { FFmpeg } = FFmpegWASM;
-                const { toBlobURL } = FFmpegUtil;
-                ffmpeg = new FFmpeg();
-                
-                ffmpeg.on('log', ({ message }) => {
-                    const logEl = document.getElementById('tiktokTerminalLog');
-                    if(logEl) {
-                        logEl.innerHTML += `<div>> ${message}</div>`;
-                        logEl.scrollTop = logEl.scrollHeight;
-                    }
-                });
-                
-                ffmpeg.on('progress', ({ progress }) => {
-                    const pct = Math.min(100, Math.round(progress * 100));
-                    document.getElementById('tiktokProgressFill').style.width = `${pct}%`;
-                    document.getElementById('tiktokPctTxt').innerText = `${pct}%`;
-                });
-
-                const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd';
-                const workerURL = 'https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd/814.ffmpeg.js';
-                
-                const coreBlobURL = await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript');
-                const wasmBlobURL = await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm');
-                const workerBlobURL = await toBlobURL(workerURL, 'text/javascript');
-
+                appendLog("Memuat inti FFmpeg WebAssembly...");
                 await ffmpeg.load({
-                    coreURL: coreBlobURL,
-                    wasmURL: wasmBlobURL,
-                    classWorkerURL: workerBlobURL
+                    coreURL: 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/dist/umd/ffmpeg-core.js',
+                    wasmURL: 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/dist/umd/ffmpeg-core.wasm'
                 });
                 return true;
             } catch (err) {
-                console.error(err);
-                document.getElementById('tiktokStatusTxt').innerHTML = `<span style="color:var(--danger)">Error: ${err.message}</span>`;
+                appendLog(`<span style="color:var(--danger)">Error Load Engine: ${err.message}</span>`);
                 return false;
             }
         }
 
-        fileInput.addEventListener('change', (e) => {
-            if (e.target.files && e.target.files[0]) {
-                selectedVideo = e.target.files[0];
-                document.getElementById('tiktokDzText').textContent = selectedVideo.name;
-                
-                // Show info
-                document.getElementById('tiktokVideoInfo').style.display = 'grid';
-                document.getElementById('tiktokInfoSize').textContent = (selectedVideo.size / (1024*1024)).toFixed(1) + ' MB';
-                
-                processBtn.disabled = false;
-                processBtn.textContent = "Mulai Eksekusi (0 Token)";
-                document.getElementById('resultVideo').style.display = 'none';
-                document.getElementById('downloadTiktokBtn').classList.add('hidden');
-                document.getElementById('tiktokProgressWrapper').style.display = 'none';
-            }
-        });
-
         processBtn.addEventListener('click', async () => {
-            if(!selectedVideo) return;
+            if (!selectedFile) return;
+
+            // TIDAK ADA POTONG LIMIT DI SINI! FULL GRATIS!
+
             const mode = document.querySelector('input[name="tiktokEngineMode"]:checked').value;
             
-            document.getElementById('tiktokProgressWrapper').style.display = 'block';
-            document.getElementById('tiktokTerminalLog').style.display = 'block';
-            document.getElementById('tiktokStatusTxt').innerText = "Memuat Engine...";
-            document.getElementById('tiktokProgressFill').style.width = `0%`;
-            document.getElementById('tiktokPctTxt').innerText = `0%`;
-            document.getElementById('tiktokTerminalLog').innerHTML = '';
             processBtn.disabled = true;
+            processBtn.innerHTML = '<div class="loader-spinner"></div> Menyiapkan Mesin...';
+            progressWrapper.style.display = 'block';
+            terminalLog.style.display = 'block';
+            terminalLog.innerHTML = ''; 
+            progressFill.style.width = '0%';
+            pctTxt.innerText = '0%';
+            statusTxt.innerText = 'Memuat Engine...';
+            resultVideo.style.display = 'none';
+            downloadBtn.classList.add('hidden');
 
             const isLoaded = await loadFFmpeg();
-            if(!isLoaded) {
-                 processBtn.disabled = false;
-                 return;
+            if (!isLoaded) {
+                statusTxt.innerText = 'Gagal memuat engine!';
+                processBtn.disabled = false;
+                processBtn.innerHTML = 'Coba Lagi';
+                return;
             }
 
-            document.getElementById('tiktokStatusTxt').innerText = "Memproses Video...";
-            const { fetchFile } = FFmpegUtil;
-            
             try {
-                // Write file to memory
-                await ffmpeg.writeFile('input.mp4', await fetchFile(selectedVideo));
+                statusTxt.innerText = 'Menyalin ke Memori...';
+                const inputName = 'input.mp4';
+                const outputName = 'AM_HD_Output.mp4';
                 
-                let ffmpegArgs = [];
-                if(mode === 'fast') {
-                    // Just remux and move moov atom
-                    ffmpegArgs = ['-i', 'input.mp4', '-c', 'copy', '-movflags', '+faststart', 'output.mp4'];
-                } else if (mode === 'optimize') {
-                    // Re-encode to H264, standard tiktok settings
-                    ffmpegArgs = ['-i', 'input.mp4', '-c:v', 'libx264', '-preset', 'fast', '-crf', '23', '-c:a', 'aac', '-b:a', '128k', '-movflags', '+faststart', '-pix_fmt', 'yuv420p', 'output.mp4'];
-                } else if (mode === '60fps') {
-                    // Interpolate/force 60fps
-                    ffmpegArgs = ['-i', 'input.mp4', '-filter:v', 'fps=fps=60', '-c:v', 'libx264', '-preset', 'fast', '-crf', '23', '-c:a', 'aac', '-movflags', '+faststart', '-pix_fmt', 'yuv420p', 'output.mp4'];
+                await ffmpeg.writeFile(inputName, await fetchFile(selectedFile));
+
+                let args = [];
+                statusTxt.innerText = 'Mengeksekusi Kode Patch...';
+                
+                if (mode === 'fast') {
+                    appendLog("Mode: Fast Patch (Instant Metadata Injection)");
+                    args = [
+                        '-i', inputName,
+                        '-c', 'copy',
+                        '-movflags', '+faststart',
+                        '-metadata', 'comment=AM_Executive_HD_Patch', 
+                        outputName
+                    ];
+                } 
+                else if (mode === 'optimize') {
+                    appendLog("Mode: Optimize HD (H.264/AAC Re-encoding)");
+                    args = [
+                        '-i', inputName,
+                        '-c:v', 'libx264',
+                        '-preset', 'ultrafast',
+                        '-crf', '23',
+                        '-pix_fmt', 'yuv420p',
+                        '-c:a', 'aac',
+                        '-b:a', '128k',
+                        '-movflags', '+faststart',
+                        '-metadata', 'comment=AM_Executive_Optimized',
+                        outputName
+                    ];
+                }
+                else if (mode === '60fps') {
+                    appendLog("Mode: 60 FPS Boost (H.264 Interpolation)");
+                    args = [
+                        '-i', inputName,
+                        '-filter:v', 'fps=fps=60',
+                        '-c:v', 'libx264',
+                        '-preset', 'ultrafast',
+                        '-crf', '24',
+                        '-pix_fmt', 'yuv420p',
+                        '-c:a', 'aac',
+                        '-b:a', '128k',
+                        '-movflags', '+faststart',
+                        outputName
+                    ];
                 }
 
-                await ffmpeg.exec(ffmpegArgs);
+                appendLog("Memulai proses... JANGAN TUTUP BROWSER!");
+                const start = Date.now();
                 
-                const data = await ffmpeg.readFile('output.mp4');
+                await ffmpeg.exec(args);
+                
+                const duration = ((Date.now() - start) / 1000).toFixed(1);
+                appendLog(`Selesai dalam ${duration} detik.`);
+
+                statusTxt.innerText = 'Menyiapkan File Unduhan...';
+                const data = await ffmpeg.readFile(outputName);
+                
+                if (finalUrl) URL.revokeObjectURL(finalUrl);
                 const blob = new Blob([data.buffer], { type: 'video/mp4' });
-                const url = URL.createObjectURL(blob);
+                finalUrl = URL.createObjectURL(blob);
+
+                statusTxt.innerText = 'Proses Berhasil!';
+                progressFill.style.width = '100%';
+                pctTxt.innerText = '100%';
                 
-                const resVid = document.getElementById('resultVideo');
-                resVid.src = url;
-                resVid.style.display = 'block';
-                
-                const dlBtn = document.getElementById('downloadTiktokBtn');
-                dlBtn.classList.remove('hidden');
-                dlBtn.onclick = () => {
+                resultVideo.src = finalUrl;
+                resultVideo.style.display = 'block';
+                downloadBtn.classList.remove('hidden');
+
+                downloadBtn.onclick = () => {
                     const a = document.createElement('a');
-                    a.href = url;
-                    a.download = `AM_HD_${mode}_${selectedVideo.name}`;
+                    a.href = finalUrl;
+                    a.download = `AM_Executive_HD_${Math.floor(Math.random()*1000)}.mp4`;
+                    document.body.appendChild(a);
                     a.click();
+                    document.body.removeChild(a);
+                    appendLog("Video mulai diunduh. Silakan upload via Web Desktop!");
                 };
 
-                document.getElementById('tiktokStatusTxt').innerText = "Render Selesai!";
-                document.getElementById('tiktokStatusTxt').style.color = "var(--success)";
-                customAlert("Video HD siap diunduh!");
-            } catch (err) {
-                document.getElementById('tiktokStatusTxt').innerHTML = `<span style="color:var(--danger)">Gagal: ${err.message}</span>`;
+            } catch (e) {
+                appendLog(`<span style="color:var(--danger)">Error: ${e.message}</span>`);
+                statusTxt.innerText = 'Terjadi Kesalahan!';
             } finally {
                 processBtn.disabled = false;
-                processBtn.textContent = "Proses Video Lain (0 Token)";
+                processBtn.innerHTML = '<i class="fas fa-check"></i> Proses Selesai';
             }
+        });
+    }
+
+    // --- SYSTEM BUTTON LISTENERS ---
+    const loginBtn = document.getElementById('loginBtn'); const regBtn = document.getElementById('regBtn'); const topLogoutBtn = document.getElementById('topLogoutBtn'); const sendBtn = document.getElementById('sendBtn'); const activateBtn = document.getElementById('activateBtn');
+
+    if(loginBtn) { 
+        loginBtn.addEventListener('click', async () => { 
+            const u = document.getElementById('loginUser').value.trim(); const p = document.getElementById('loginPwd').value.trim(); 
+            if(!u || !p) { triggerErrorShake(['loginUser', 'loginPwd']); return showMsg('loginErrorMsg', 'Isi username dan password.', 'error'); }
+            loginBtn.innerHTML = '<div class="loader-spinner"></div> Loading...'; loginBtn.disabled = true; 
+            const res = await apiCall('login', { username: u, password: p }); 
+            loginBtn.textContent = 'Masuk Sistem'; loginBtn.disabled = false; 
+            if(!res.status) { triggerErrorShake(['loginUser', 'loginPwd']); return showMsg('loginErrorMsg', `Gagal: ${res.error}`, 'error'); }
+            
+            localStorage.setItem(SESSION_KEY, u); localStorage.setItem(CACHE_KEY, JSON.stringify(res.data)); 
+            if(!localStorage.getItem(BIO_CRED_KEY)) { temporaryBioData = {u: u, p: p, resData: res.data}; document.getElementById('bioSetupModal').classList.add('show'); } 
+            else { window.loadAppView(res.data); }
+        }); 
+    }
+
+    if(regBtn) { 
+        regBtn.addEventListener('click', async () => { 
+            const u = document.getElementById('regUser').value.trim(); const w = document.getElementById('regWa').value.trim(); const p = document.getElementById('regPwd').value.trim(); const cInput = parseInt(document.getElementById('regCaptcha').value.trim()); 
+            if (!u || !w || !p || isNaN(cInput)) { triggerErrorShake(['regUser', 'regWa', 'regPwd', 'regCaptcha']); return showMsg('regMsg', 'Isi data dengan lengkap.', 'error'); }
+            if (cInput !== currentCaptchaAnswer) { triggerErrorShake(['regCaptcha']); return showMsg('regMsg', 'Jawaban hitungan salah.', 'error'); }
+            regBtn.innerHTML = '<div class="loader-spinner"></div> Loading...'; regBtn.disabled = true; 
+            try { 
+                const userIp = await getIPAddress(); const fp = await generateAdvancedFingerprint(); 
+                const res = await apiCall('register', { username: u, password: p, wa: w, ip_address: userIp, device_id: fp }); 
+                if(!res.status) throw new Error(res.error); 
+                localStorage.setItem(SESSION_KEY, u); localStorage.setItem(CACHE_KEY, JSON.stringify(res.data)); 
+                temporaryBioData = {u: u, p: p, resData: res.data}; document.getElementById('registerView').classList.add('hidden'); document.getElementById('bioSetupModal').classList.add('show');
+            } catch (err) { showMsg('regMsg', err.message, 'error'); } finally { regBtn.textContent = 'Daftarkan Sekarang'; regBtn.disabled = false; } 
+        }); 
+    }
+
+    if(topLogoutBtn) { topLogoutBtn.addEventListener('click', () => { customConfirm("Keluar dari sesi jaringan ini?", () => { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(CACHE_KEY); closeProfileSheet(); switchView('loginView'); }); }); }
+    
+    if(sendBtn) {
+        sendBtn.addEventListener('click', async () => {
+            const email = document.getElementById('emailInput').value.trim(); 
+            if(!email) { triggerErrorShake(['emailInput']); return showMsg('appErrorMsg', 'Masukkan email Anda.', 'error'); }
+            sendBtn.innerHTML = '<div class="loader-spinner"></div>'; sendBtn.disabled = true;
+            try {
+                const res = await fetch(`${API_BASE}/api/am?action=send&apikey=${API_KEY}&email=${encodeURIComponent(email)}`); const data = await res.json();
+                if(data.status) { cachedEmail = email; showMsg('appErrorMsg', 'Link dikirim ke email.', 'success'); } else { showMsg('appErrorMsg', data.error || 'Gagal.', 'error'); }
+            } catch(e) { showMsg('appErrorMsg', 'Server sibuk.', 'error'); }
+            finally { sendBtn.textContent = 'Kirim Link'; sendBtn.disabled = false; }
+        });
+    }
+
+    if(activateBtn) {
+        activateBtn.addEventListener('click', async () => {
+            const email = document.getElementById('emailInput').value.trim(); const magic = document.getElementById('magicInput').value.trim();
+            if(!email || !magic) { triggerErrorShake(['emailInput', 'magicInput']); return showMsg('appErrorMsg', 'Isi email dan URL dari email.', 'error'); }
+            activateBtn.disabled = true; document.getElementById('btnDefault').classList.add('hidden'); document.getElementById('loaderContainer').classList.remove('hidden');
+            try {
+                const res = await fetch(`${API_BASE}/api/am?action=verif&apikey=${API_KEY}&email=${encodeURIComponent(cachedEmail || email)}&url=${encodeURIComponent(magic)}`); const data = await res.json();
+                if(data.status) {
+                    showMsg('appErrorMsg', 'Sukses login Magic Link.', 'success'); customAlert('Lisensi Tervalidasi.');
+                    if(currentUserData && !parseBool(currentUserData.is_permanent) && currentUserData.role !== 'Owner') {
+                        let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 1); await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
+                        currentUserData.limit_count = newLimit; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData);
+                    }
+                } else { showMsg('appErrorMsg', data.error || 'Tautan salah/kadaluarsa.', 'error'); }
+            } catch(e) { showMsg('appErrorMsg', 'Koneksi error.', 'error'); }
+            finally { activateBtn.disabled = false; document.getElementById('btnDefault').classList.remove('hidden'); document.getElementById('loaderContainer').classList.add('hidden'); }
         });
     }
 
@@ -1503,18 +1655,16 @@
     window.switchTab = function(tabName) { 
         const secAct = document.getElementById('sectionActivator'); 
         const secEnh = document.getElementById('sectionEnhancer'); 
-        const secVid = document.getElementById('sectionVideo'); 
         const secOwn = document.getElementById('ownerPanel');
-        
-        [secAct, secEnh, secVid, secOwn].forEach(el => { 
-            if(el) { el.style.opacity = '0'; el.style.transform = 'scale(0.98)'; setTimeout(() => el.classList.add('hidden'), 300); } 
-        });
+        const secVid = document.getElementById('sectionVideo');
+
+        [secAct, secEnh, secOwn, secVid].forEach(el => { if(el) { el.style.opacity = '0'; el.style.transform = 'scale(0.98)'; setTimeout(() => el.classList.add('hidden'), 300); } });
         document.querySelectorAll('.island-item').forEach(btn => btn.classList.remove('active')); 
         
         setTimeout(() => {
             if(tabName === 'activator') { secAct.classList.remove('hidden'); document.getElementById('btnTabActivator').classList.add('active'); animateSectionIn(secAct); } 
             else if(tabName === 'enhancer') { secEnh.classList.remove('hidden'); document.getElementById('btnTabEnhancer').classList.add('active'); animateSectionIn(secEnh); } 
-            else if(tabName === 'video') { secVid.classList.remove('hidden'); document.getElementById('btnTabVideo').classList.add('active'); animateSectionIn(secVid); } 
+            else if(tabName === 'video') { secVid.classList.remove('hidden'); document.getElementById('btnTabVideo').classList.add('active'); animateSectionIn(secVid); }
             else if(tabName === 'admin') { secOwn.classList.remove('hidden'); document.getElementById('toggleOwnerDashBtn').classList.add('active'); renderMemberList(); animateSectionIn(secOwn); }
         }, 300);
     };
