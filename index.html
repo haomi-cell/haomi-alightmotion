@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="id" data-theme="dark">
 <head>
@@ -8,7 +9,7 @@
 <!-- Fonts & Icons -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Cinzel:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Cinzel:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
@@ -59,6 +60,7 @@
     
     --font-heading: 'Cinzel', serif;
     --font-body: 'Plus Jakarta Sans', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
     --smooth-ease: cubic-bezier(0.16, 1, 0.3, 1);
   }
 
@@ -242,6 +244,7 @@
     box-shadow: 0 0 0 3px var(--gold-glow); 
   }
   .glass-input::placeholder { color: var(--text-muted); opacity: 0.75; }
+  select.glass-input { appearance: none; -webkit-appearance: none; cursor: pointer; }
   
   @keyframes shake {
       0%, 100% { transform: translateX(0); }
@@ -480,7 +483,7 @@
   /* FLOATING DOCK BOTTOM NAV */
   .bottom-nav { 
     position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%); 
-    width: calc(100% - 36px); max-width: 380px; height: 58px; 
+    width: calc(100% - 36px); max-width: 400px; height: 58px; 
     background: var(--surface-card); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
     border: 1px solid var(--border-thin); border-radius: 30px; 
     display: flex; justify-content: space-around; align-items: center; 
@@ -490,9 +493,9 @@
   .nav-item { 
     display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; 
     color: var(--text-muted); font-size: 9px; font-weight: 600; 
-    text-transform: uppercase; letter-spacing: 0.8px; 
+    text-transform: uppercase; letter-spacing: 0.5px; 
     cursor: pointer; transition: all 0.3s var(--smooth-ease); 
-    padding: 7px 16px; border-radius: 20px;
+    padding: 7px 12px; border-radius: 20px;
   }
   .nav-item i { font-size: 15px; transition: transform 0.3s var(--smooth-ease), color 0.3s; }
   .nav-item.active { color: var(--gold-primary); background: rgba(212, 175, 55, 0.08); }
@@ -630,7 +633,53 @@
     box-shadow: 0 0 8px var(--gold-glow);
   }
 
-  ::-webkit-scrollbar { width: 4px; }
+  /* PROMPT GENERATOR STYLES */
+  .code-block {
+      font-family: var(--font-mono);
+      background: var(--input-bg);
+      border: 1px solid var(--border-thin);
+      padding: 12px;
+      border-radius: 12px;
+      overflow-x: auto;
+      font-size: 11px;
+      color: var(--text-pure);
+  }
+  .mode-switch-container {
+      display: flex;
+      background: var(--surface-dark);
+      padding: 4px;
+      border-radius: 12px;
+      border: 1px solid var(--border-thin);
+      margin-bottom: 16px;
+      position: relative;
+  }
+  .mode-switch-btn {
+      flex: 1;
+      padding: 10px 0;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all 0.3s var(--smooth-ease);
+      z-index: 2;
+  }
+  .mode-switch-btn.active { color: #111; }
+  .mode-switch-slider {
+      position: absolute;
+      top: 4px; bottom: 4px; left: 4px;
+      width: calc(50% - 4px);
+      background: var(--gold-gradient);
+      border-radius: 8px;
+      transition: transform 0.3s var(--smooth-ease);
+      z-index: 1;
+      box-shadow: var(--shadow-glow);
+  }
+  
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 4px; }
   ::-webkit-scrollbar-thumb:hover { background: var(--gold-dark); }
@@ -661,8 +710,8 @@
     
     <div style="font-size: 11px; line-height: 1.65; color: var(--text-pure); margin-bottom: 22px;">
       <p style="margin-bottom: 10px;"><b style="color:var(--gold-light);">Neural AI Studio:</b> Fitur otomatis untuk merestorasi dan meningkatkan resolusi citra menjadi resolusi tinggi (HD/Super Res).</p>
+      <p style="margin-bottom: 10px;"><b style="color:var(--gold-light);">AI Prompt Pro:</b> Generator canggih untuk menganalisis gambar/video menjadi prompt siap pakai untuk Midjourney, DALL-E, atau Sora.</p>
       <p style="margin-bottom: 10px;"><b style="color:var(--gold-light);">Aktivasi Lisensi:</b> Sinkronisasi sesi otentikasi perangkat klien ke gerbang server utama.</p>
-      <p><b style="color:var(--gold-light);">Magic Link:</b> Tautan enkripsi sekali pakai yang diteruskan ke email terdaftar untuk otorisasi tanpa kata sandi.</p>
     </div>
     <button class="btn btn-outline click-sound" onclick="closeHelpModal()">Tutup Panduan</button>
   </div>
@@ -1015,6 +1064,96 @@
     </div>
   </div>
 
+  <!-- SECTION: PROMPT GENERATOR PRO -->
+  <div id="sectionPromptGen" class="hidden">
+    <div class="glass-card">
+      <div class="title-lg">AI Prompt Pro</div>
+      <div class="text-sub" style="margin-bottom: 20px;">Meracik prompt sinematik resolusi tinggi dari ekstraksi elemen gambar atau video.</div>
+      
+      <!-- Segmented Control (Mode Switcher) -->
+      <div class="mode-switch-container">
+          <div class="mode-switch-slider" id="promptModeSlider"></div>
+          <div class="mode-switch-btn active click-sound" id="btnModeImage" onclick="switchPromptMode('image')"><i class="fas fa-image" style="margin-right:4px;"></i> Mode Gambar</div>
+          <div class="mode-switch-btn click-sound" id="btnModeVideo" onclick="switchPromptMode('video')"><i class="fas fa-video" style="margin-right:4px;"></i> Mode Video</div>
+      </div>
+
+      <div class="text-sub" id="promptModeDesc" style="margin-bottom: 18px; padding: 12px; background: var(--input-bg); border-radius: 10px; border: 1px solid var(--border-thin);">
+         AI akan membaca detail visual gambar Anda (pencahayaan, tekstur, gaya) menjadi prompt super detail (Midjourney, DALL-E).
+      </div>
+
+      <!-- Area Unggah File -->
+      <div class="form-group">
+        <label>Pilih Media</label>
+        <input type="file" id="promptFileInput" style="display: none;" accept="image/*">
+        
+        <div id="promptUploadZone" class="click-sound" style="border: 1px dashed var(--border-gold); border-radius: 14px; padding: 30px 18px; text-align: center; background: var(--surface-light); cursor: pointer; transition: all 0.25s var(--smooth-ease);">
+          <i id="promptUploadIcon" class="fas fa-image" style="font-size: 26px; color: var(--gold-primary); margin-bottom: 10px;"></i>
+          <div style="font-size: 12px; font-weight: 600; margin-bottom: 4px; color: var(--gold-light);">Klik atau tarik file ke sini</div>
+          <div id="promptUploadDesc" style="font-size: 9px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Mendukung JPG, PNG, WEBP</div>
+        </div>
+        
+        <!-- Preview -->
+        <div id="promptPreviewWrapper" class="hidden" style="position: relative; border-radius: 14px; overflow: hidden; background: #000; border: 1px solid var(--border-thin); aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; margin-top: 10px;">
+           <img id="promptImgPreview" class="hidden" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+           <video id="promptVideoPreview" class="hidden" controls style="max-width: 100%; max-height: 100%;"></video>
+           <button class="btn-close click-sound" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.6);" onclick="clearPromptMedia()"><i class="fas fa-times"></i></button>
+        </div>
+      </div>
+
+      <!-- Aspect Ratio Dropdown -->
+      <div id="promptArGroup" class="form-group">
+          <label>Rasio Aspek (Ukuran Output)</label>
+          <div class="input-wrapper">
+              <select id="promptAspectRatio" class="glass-input">
+                  <option value="1:1">1:1 (Persegi - Feed, Logo)</option>
+                  <option value="16:9" selected>16:9 (Layar Lebar - YouTube, Web)</option>
+                  <option value="9:16">9:16 (Vertikal - TikTok, Reels)</option>
+                  <option value="4:3">4:3 (Klasik - Fotografi, Tablet)</option>
+                  <option value="3:4">3:4 (Portrait - Pas Foto, Karakter)</option>
+                  <option value="21:9">21:9 (Sinematik - Epik Bioskop)</option>
+              </select>
+          </div>
+      </div>
+
+      <div id="promptErrorMsg" class="message-box message-error">
+        <i class="fas fa-exclamation-circle"></i> <span id="promptErrorText"></span>
+      </div>
+
+      <button id="btnGeneratePrompt" class="btn btn-primary click-sound" style="margin-top: 10px;">
+        <span id="promptBtnDefault"><i class="fas fa-wand-magic-sparkles"></i> Buat Prompt Sekarang</span>
+        <div id="promptBtnLoader" class="hidden" style="display:flex; align-items:center; gap:8px;"><div class="loader-spinner" style="width:13px;height:13px; border-width:2px; border-top-color:#111;"></div> <span id="promptBtnLoaderText">Memproses...</span></div>
+      </button>
+
+      <!-- RESULTS AREA -->
+      <div id="promptResultsSection" class="hidden" style="margin-top: 30px; border-top: 1px solid var(--border-thin); padding-top: 20px;">
+         <div class="title-md" style="margin-bottom: 16px;"><i class="fas fa-poll-h" style="color:var(--gold-primary); margin-right: 6px;"></i> Hasil Ekstraksi AI</div>
+         
+         <div style="margin-bottom: 24px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+               <div style="font-size: 11px; font-weight: 600; color: var(--text-pure);"><i class="fas fa-font text-muted" style="color: var(--gold-primary);"></i> Teks Prompt Siap Pakai</div>
+               <div style="display: flex; gap: 6px;">
+                 <button class="btn btn-outline click-sound" style="padding: 4px 10px; width: auto; font-size: 9px;" onclick="copyToClipboard('englishPromptText')"><i class="fas fa-copy"></i> Salin</button>
+                 <button class="btn btn-outline click-sound" style="padding: 4px 10px; width: auto; font-size: 9px;" onclick="downloadPromptText('prompt.txt', 'englishPromptText')"><i class="fas fa-download"></i></button>
+               </div>
+            </div>
+            <div id="englishPromptText" class="code-block" style="white-space: pre-wrap; font-family: var(--font-body); font-size: 12px; line-height: 1.6;"></div>
+         </div>
+
+         <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+               <div style="font-size: 11px; font-weight: 600; color: var(--text-pure);"><i class="fas fa-code text-muted" style="color: #34D399;"></i> Data JSON Terstruktur</div>
+               <div style="display: flex; gap: 6px;">
+                 <button class="btn btn-outline click-sound" style="padding: 4px 10px; width: auto; font-size: 9px;" onclick="copyToClipboard('jsonPromptText')"><i class="fas fa-copy"></i> Salin</button>
+                 <button class="btn btn-outline click-sound" style="padding: 4px 10px; width: auto; font-size: 9px;" onclick="downloadPromptText('analysis.json', 'jsonPromptText')"><i class="fas fa-download"></i></button>
+               </div>
+            </div>
+            <pre id="jsonPromptText" class="code-block" style="white-space: pre-wrap;"></pre>
+         </div>
+      </div>
+
+    </div>
+  </div>
+
   <!-- SECTION: OWNER PANEL -->
   <div id="ownerPanel" class="hidden">
     <div class="glass-card">
@@ -1051,7 +1190,11 @@
     <i class="fas fa-key"></i><span>Lisensi</span>
   </div>
   <div class="nav-item click-sound" id="btnTabEnhancer" onclick="switchTab('enhancer')">
-    <i class="fas fa-wand-magic-sparkles"></i><span>Studio</span>
+    <i class="fas fa-layer-group"></i><span>Studio</span>
+  </div>
+  <!-- NEW TAB PROMPT GEN -->
+  <div class="nav-item click-sound" id="btnTabPromptGen" onclick="switchTab('promptGen')">
+    <i class="fas fa-pen-nib"></i><span>Prompt</span>
   </div>
   <div class="nav-item hidden click-sound" id="toggleOwnerDashBtn" onclick="switchTab('admin')">
     <i class="fas fa-shield-halved"></i><span>Admin</span>
@@ -1204,6 +1347,9 @@
     const _0x1a2b = ["\x68\x74\x74\x70\x73\x3a\x2f\x2f\x72\x65\x73\x74\x61\x70\x69\x64\x68\x61\x6e\x2e\x76\x65\x72\x63\x65\x6c\x2e\x61\x70\x70", "\x64\x72\x61\x76\x6e\x64\x65\x73\x61\x6d\x75\x65\x6c", "\x2b\x36\x32\x38\x32\x32\x33\x31\x36\x36\x39\x30\x35\x33", "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x61\x63\x74\x69\x76\x65\x5f\x73\x65\x73\x73\x69\x6f\x6e\x5f\x73\x75\x70\x61\x62\x61\x73\x65", "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x63\x61\x63\x68\x65\x64\x5f\x75\x73\x65\x72\x5f\x64\x61\x74\x61", "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x6c\x61\x73\x74\x5f\x73\x65\x65\x6e\x5f\x62\x72\x6f\x61\x64\x63\x61\x73\x74\x5f\x69\x64"];
     const API_BASE = _0x1a2b[0]; const API_KEY = _0x1a2b[1]; const OWNER_WA = _0x1a2b[2]; const SESSION_KEY = _0x1a2b[3]; const CACHE_KEY = _0x1a2b[4]; const BROADCAST_SEEN_KEY = _0x1a2b[5];
     const BIO_CRED_KEY = "am_exec_bio_cred"; 
+
+    // API Key Gemini Prompt Generator (Sesuai original kode, dikelola via environment user)
+    const GEMINI_API_KEY = ""; 
 
     async function apiCall(action, payload = {}) {
         try {
@@ -1520,7 +1666,7 @@
                 await fetchUserSession(savedUser);
                 if(initialLoader && document.body.contains(initialLoader)) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 600); }
             }
-            startClock(); startPingChecker(); fetchGlobalStats(); initRealtimeBroadcastListener(); initImageEnhancerEngine();
+            startClock(); startPingChecker(); fetchGlobalStats(); initRealtimeBroadcastListener(); initImageEnhancerEngine(); initPromptGeneratorEngine();
         }, 1000);
     };
 
@@ -1578,6 +1724,7 @@
             } else { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(CACHE_KEY); switchView('loginView'); } 
         } catch (err) {} 
     }
+
     window.switchView = function(viewId) { 
         ['loginView', 'registerView', 'appView'].forEach(v => { const el = document.getElementById(v); if(el) el.classList.add('hidden'); }); 
         const targetView = document.getElementById(viewId); 
@@ -1812,6 +1959,308 @@
         copyUrlBtn.addEventListener('click', () => { if (enhancedBlobUrl) { navigator.clipboard.writeText(enhancedBlobUrl); customAlert("URL disalin ke clipboard."); } });
     }
 
+    // --- AI PROMPT GENERATOR PRO LOGIC ---
+    let promptMode = 'image';
+    let promptFile = null;
+    let promptPreviewUrl = null;
+
+    window.switchPromptMode = function(mode) {
+        promptMode = mode;
+        const slider = document.getElementById('promptModeSlider');
+        const btnImg = document.getElementById('btnModeImage');
+        const btnVid = document.getElementById('btnModeVideo');
+        const desc = document.getElementById('promptModeDesc');
+        const arGroup = document.getElementById('promptArGroup');
+        const uploadIcon = document.getElementById('promptUploadIcon');
+        const uploadDesc = document.getElementById('promptUploadDesc');
+
+        if(mode === 'image') {
+            slider.style.transform = 'translateX(0)';
+            btnImg.classList.add('active'); btnVid.classList.remove('active');
+            desc.textContent = "AI akan membaca detail visual gambar Anda (pencahayaan, tekstur, gaya) menjadi prompt super detail (Midjourney, DALL-E).";
+            arGroup.classList.remove('hidden');
+            uploadIcon.className = "fas fa-image";
+            uploadDesc.textContent = "Mendukung JPG, PNG, WEBP";
+            document.getElementById('promptFileInput').accept = "image/*";
+        } else {
+            slider.style.transform = 'translateX(100%)';
+            btnVid.classList.add('active'); btnImg.classList.remove('active');
+            desc.textContent = "AI akan membedah video Anda menjadi beberapa segmen waktu dan aksi untuk membuat urutan prompt AI Video (Runway, Sora).";
+            arGroup.classList.add('hidden');
+            uploadIcon.className = "fas fa-film";
+            uploadDesc.textContent = "Mendukung MP4, MOV (Max 60 dtk)";
+            document.getElementById('promptFileInput').accept = "video/*";
+        }
+        clearPromptMedia();
+    };
+
+    document.getElementById('promptUploadZone').addEventListener('click', () => document.getElementById('promptFileInput').click());
+    
+    document.getElementById('promptFileInput').addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const isImage = file.type.startsWith('image/');
+        const isVideo = file.type.startsWith('video/');
+
+        if (promptMode === 'image' && !isImage) return showMsg('promptErrorMsg', 'Format salah. Unggah file Gambar.', 'error');
+        if (promptMode === 'video' && !isVideo) return showMsg('promptErrorMsg', 'Format salah. Unggah file Video.', 'error');
+
+        promptFile = file;
+        if (promptPreviewUrl) URL.revokeObjectURL(promptPreviewUrl);
+        promptPreviewUrl = URL.createObjectURL(file);
+        
+        document.getElementById('promptUploadZone').classList.add('hidden');
+        document.getElementById('promptPreviewWrapper').classList.remove('hidden');
+        document.getElementById('promptErrorMsg').classList.remove('show');
+        document.getElementById('promptResultsSection').classList.add('hidden');
+
+        if (promptMode === 'image') {
+            const img = document.getElementById('promptImgPreview');
+            img.src = promptPreviewUrl;
+            img.classList.remove('hidden');
+            document.getElementById('promptVideoPreview').classList.add('hidden');
+        } else {
+            const vid = document.getElementById('promptVideoPreview');
+            vid.src = promptPreviewUrl;
+            vid.classList.remove('hidden');
+            document.getElementById('promptImgPreview').classList.add('hidden');
+        }
+    });
+
+    window.clearPromptMedia = function() {
+        promptFile = null;
+        if(promptPreviewUrl) { URL.revokeObjectURL(promptPreviewUrl); promptPreviewUrl = null; }
+        document.getElementById('promptFileInput').value = '';
+        document.getElementById('promptUploadZone').classList.remove('hidden');
+        document.getElementById('promptPreviewWrapper').classList.add('hidden');
+        document.getElementById('promptResultsSection').classList.add('hidden');
+        document.getElementById('promptErrorMsg').classList.remove('show');
+    };
+
+    const extractVideoFrames = async (file, segmentLength = 8, framesPerSegment = 3) => {
+        return new Promise((resolve, reject) => {
+            const video = document.createElement('video');
+            video.preload = 'metadata';
+            video.src = URL.createObjectURL(file);
+            video.muted = true;
+            video.playsInline = true;
+
+            video.onloadedmetadata = async () => {
+                const duration = video.duration;
+                const segmentsCount = Math.ceil(duration / segmentLength);
+                const framesData = [];
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = 640; 
+                canvas.height = Math.floor(640 * (video.videoHeight / video.videoWidth));
+
+                for (let i = 0; i < segmentsCount; i++) {
+                    const segmentStart = i * segmentLength;
+                    const segmentEnd = Math.min((i + 1) * segmentLength, duration);
+                    const actualSegmentDuration = segmentEnd - segmentStart;
+                    for (let j = 0; j < framesPerSegment; j++) {
+                        const timePoint = segmentStart + (actualSegmentDuration * (j / (framesPerSegment - 1 || 1)));
+                        if (timePoint > duration) break; 
+                        video.currentTime = timePoint;
+                        await new Promise(r => { video.onseeked = r });
+                        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                        const base64Data = canvas.toDataURL('image/jpeg', 0.8).split(',')[1];
+                        framesData.push({ segment: i + 1, time: timePoint.toFixed(1), data: base64Data });
+                    }
+                }
+                URL.revokeObjectURL(video.src);
+                resolve({ duration, segmentsCount, framesData });
+            };
+            video.onerror = () => reject("Gagal memuat metadata video.");
+        });
+    };
+
+    const promptFileToBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result.split(',')[1]);
+            reader.onerror = error => reject(error);
+        });
+    };
+
+    document.getElementById('btnGeneratePrompt').addEventListener('click', async () => {
+        if (!promptFile) return showMsg('promptErrorMsg', 'Silakan unggah file media terlebih dahulu.', 'error');
+        if (!GEMINI_API_KEY) return showMsg('promptErrorMsg', 'Konfigurasi API Key (Gemini) belum tersedia di server.', 'error');
+
+        const btnDefault = document.getElementById('promptBtnDefault');
+        const btnLoader = document.getElementById('promptBtnLoader');
+        const loaderText = document.getElementById('promptBtnLoaderText');
+        const btnElement = document.getElementById('btnGeneratePrompt');
+        
+        btnDefault.classList.add('hidden');
+        btnLoader.classList.remove('hidden');
+        btnElement.disabled = true;
+        document.getElementById('promptErrorMsg').classList.remove('show');
+        document.getElementById('promptResultsSection').classList.add('hidden');
+
+        try {
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${GEMINI_API_KEY}`;
+            let payload = {};
+
+            if (promptMode === 'image') {
+                loaderText.textContent = "Menganalisis matriks piksel...";
+                const base64Image = await promptFileToBase64(promptFile);
+                const aspectRatio = document.getElementById('promptAspectRatio').value;
+                
+                const systemPrompt = `You are a master AI Prompt Engineer for high-end cinematic visuals. 
+Analyze the provided image and generate output STRICTLY in the following format. 
+User requested Aspect Ratio: ${aspectRatio}. Include this parameter in the prompt (e.g., --ar ${aspectRatio} if Midjourney style).
+
+RULES:
+- Perform deep visual analysis.
+- Never leave fields empty in JSON. If uncertain, infer logically to make it sound professional and realistic.
+- The JSON must be RAW, valid JSON without any markdown formatting blocks (do not wrap in \`\`\`json).
+- The English prompt must be a fully detailed professional paragraph optimized for models like Midjourney v6.
+
+OUTPUT FORMAT MUST BE EXACTLY THIS:
+---ENGLISH PROMPT---
+[A fully detailed professional paragraph optimized for AI image models. Minimum 80 words. No extra commentary.]
+---JSON OUTPUT---
+{
+"main_subject": "Detailed description of main subject",
+"secondary_elements": "Description of background or secondary focus",
+"environment": "Setting and environment details",
+"lighting": "Lighting type, direction, intensity",
+"camera_angle": "Camera angle and framing",
+"depth_of_field": "Depth of field details",
+"texture_details": "Visual texture details",
+"mood": "Emotional mood and atmosphere",
+"color_grading": "Color palette and grading style",
+"style_reference": "Artistic or cinematic style",
+"full_prompt": "Complete optimized image generation prompt, minimum 80 words (same as above).",
+"quality_tags": "8K, ultra-detailed, hyperrealistic, professional lighting, sharp focus, --ar ${aspectRatio}"
+}`;
+                payload = { contents: [{ role: "user", parts: [{ text: systemPrompt }, { inlineData: { mimeType: promptFile.type, data: base64Image } }] }] };
+            } else {
+                loaderText.textContent = "Mengekstrak keyframe...";
+                const { duration, segmentsCount, framesData } = await extractVideoFrames(promptFile);
+                loaderText.textContent = `Menganalisis ${segmentsCount} segmen video...`;
+                const parts = framesData.map(frame => ({ inlineData: { mimeType: 'image/jpeg', data: frame.data } }));
+                const systemPrompt = `You are a master AI Video Prompt Engineer. 
+I am providing ${framesData.length} keyframes extracted from a video, representing ${segmentsCount} segments (8 seconds each). Total duration: ${duration.toFixed(2)}s.
+Images are ordered chronologically.
+
+RULES:
+- Analyze each 8-second segment independently but maintain overall cinematic continuity.
+- Never leave fields empty in JSON.
+- All text fields must be descriptive (minimum 6 words).
+- The JSON must be RAW, valid JSON without any markdown formatting blocks (do not wrap in \`\`\`json).
+
+OUTPUT FORMAT MUST BE EXACTLY THIS:
+---ENGLISH PROMPTS---
+Segment 1 (0–8s):
+[Minimum 80-word cinematic paragraph describing action, setting, lighting, motion.]
+(Continue for all ${segmentsCount} segments)
+
+---JSON OUTPUT---
+{
+"total_duration_seconds": ${duration.toFixed(2)},
+"segment_length_seconds": 8,
+"segments": [
+{
+"segment_number": 1,
+"time_range": "0-8",
+"main_subject": "string",
+"action_progression": "string",
+"secondary_elements": "string",
+"environment_details": "string",
+"lighting": "string",
+"camera_angle": "string",
+"camera_movement": "string",
+"depth_of_field": "string",
+"visual_texture": "string",
+"cinematic_style": "string",
+"emotional_tone": "string",
+"color_grading": "string",
+"full_prompt": "Standalone cinematic prompt minimum 80 words.",
+"quality_tags": "4K, ultra-detailed, cinematic lighting, dynamic motion"
+}
+]
+}`;
+                parts.unshift({ text: systemPrompt }); 
+                payload = { contents: [{ role: "user", parts: parts }] };
+            }
+
+            const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+            if (!response.ok) throw new Error(`Gateway menolak otorisasi API (${response.status})`);
+            const result = await response.json();
+            const textResponse = result.candidates?.[0]?.content?.parts?.[0]?.text;
+            if (!textResponse) throw new Error("AI gagal merespons ekstraksi.");
+
+            parsePromptResponse(textResponse);
+        } catch (err) {
+            showMsg('promptErrorMsg', err.message || 'Terjadi kesalahan sistem saat memproses.', 'error');
+        } finally {
+            btnDefault.classList.remove('hidden');
+            btnLoader.classList.add('hidden');
+            btnElement.disabled = false;
+        }
+    });
+
+    const parsePromptResponse = (rawText) => {
+        try {
+            const jsonMarker = "---JSON OUTPUT---";
+            let englishPart = ""; let jsonPart = "";
+
+            if (rawText.includes(jsonMarker)) {
+                const parts = rawText.split(jsonMarker);
+                let textSection = parts[0].trim();
+                if (textSection.startsWith("---ENGLISH PROMPTS---")) textSection = textSection.replace("---ENGLISH PROMPTS---", "");
+                else if (textSection.startsWith("---ENGLISH PROMPT---")) textSection = textSection.replace("---ENGLISH PROMPT---", "");
+                englishPart = textSection.trim();
+                
+                let rawJson = parts[1].trim();
+                rawJson = rawJson.replace(/^```json\s*/i, '').replace(/^```\s*/, '').replace(/```\s*$/, '');
+                
+                const parsedObj = JSON.parse(rawJson); 
+                jsonPart = JSON.stringify(parsedObj, null, 2);
+            } else {
+                throw new Error("Format output tidak terstruktur.");
+            }
+
+            document.getElementById('englishPromptText').textContent = englishPart;
+            document.getElementById('jsonPromptText').textContent = jsonPart;
+            document.getElementById('promptResultsSection').classList.remove('hidden');
+            
+            // Limit deduction (if user is regular)
+            if(currentUserData && !parseBool(currentUserData.is_permanent) && currentUserData.role !== 'Owner') {
+                let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 1); 
+                apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } }).then(() => {
+                    currentUserData.limit_count = newLimit; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData);
+                });
+            }
+
+        } catch (e) {
+            showMsg('promptErrorMsg', 'Gagal memparsing data dari AI. Menampilkan fallback.', 'error');
+            document.getElementById('englishPromptText').textContent = rawText;
+            document.getElementById('jsonPromptText').textContent = "{}";
+            document.getElementById('promptResultsSection').classList.remove('hidden');
+        }
+    };
+
+    window.copyToClipboard = (elementId) => {
+        const text = document.getElementById(elementId).textContent;
+        navigator.clipboard.writeText(text).then(() => customAlert("Disalin ke clipboard.")).catch(() => customAlert("Gagal menyalin teks.", true));
+    };
+
+    window.downloadPromptText = (filename, elementId) => {
+        const text = document.getElementById(elementId).textContent;
+        const element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+        element.setAttribute('download', filename);
+        element.style.display = 'none';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+    };
+
     const loginBtn = document.getElementById('loginBtn'); const regBtn = document.getElementById('regBtn'); const topLogoutBtn = document.getElementById('topLogoutBtn'); const sendBtn = document.getElementById('sendBtn'); const activateBtn = document.getElementById('activateBtn');
 
     if(loginBtn) { 
@@ -1902,12 +2351,18 @@
     }
 
     window.switchTab = function(tabName) { 
-        const secAct = document.getElementById('sectionActivator'); const secEnh = document.getElementById('sectionEnhancer'); const secOwn = document.getElementById('ownerPanel');
-        [secAct, secEnh, secOwn].forEach(el => { if(el) { el.style.opacity = '0'; el.style.transform = 'translateY(6px)'; setTimeout(() => el.classList.add('hidden'), 180); } });
+        const secAct = document.getElementById('sectionActivator'); 
+        const secEnh = document.getElementById('sectionEnhancer'); 
+        const secPrompt = document.getElementById('sectionPromptGen'); // NEW SECTION
+        const secOwn = document.getElementById('ownerPanel');
+        
+        [secAct, secEnh, secPrompt, secOwn].forEach(el => { if(el) { el.style.opacity = '0'; el.style.transform = 'translateY(6px)'; setTimeout(() => el.classList.add('hidden'), 180); } });
         document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active')); 
+        
         setTimeout(() => {
             if(tabName === 'activator') { secAct.classList.remove('hidden'); document.getElementById('btnTabActivator').classList.add('active'); animateSectionIn(secAct); } 
             else if(tabName === 'enhancer') { secEnh.classList.remove('hidden'); document.getElementById('btnTabEnhancer').classList.add('active'); animateSectionIn(secEnh); } 
+            else if(tabName === 'promptGen') { secPrompt.classList.remove('hidden'); document.getElementById('btnTabPromptGen').classList.add('active'); animateSectionIn(secPrompt); } // NEW TAB LOGIC
             else if(tabName === 'admin') { secOwn.classList.remove('hidden'); document.getElementById('toggleOwnerDashBtn').classList.add('active'); renderMemberList(); animateSectionIn(secOwn); }
         }, 180);
     };
@@ -1921,3 +2376,4 @@
 </script>
 </body>
 </html>
+```
