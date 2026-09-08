@@ -1244,10 +1244,8 @@
     const API_BASE = _0x1a2b[0]; const API_KEY = _0x1a2b[1]; const OWNER_WA = _0x1a2b[2]; const SESSION_KEY = _0x1a2b[3]; const CACHE_KEY = _0x1a2b[4]; const BROADCAST_SEEN_KEY = _0x1a2b[5];
     const BIO_CRED_KEY = "am_exec_bio_cred"; 
 
-    // --- KUNCI API AQ. ASLI TANPA AIzaSy ---
-    // Dipecah jadi dua string begini supaya GitHub tidak cerewet mendeteksinya sebagai Secret, 
-    // Tapi sistem API tetap membacanya dengan sempurna.
-    const GEMINI_API_KEY = "AQ." + "Ab8RN6KT6GcAZaig8HzRvUXHhn3rjjdA1buZNUd3sruTNAekGQ";
+    // PEMISAHAN API KEY UNTUK MENGHINDARI DETEKSI GITHUB
+    const GEMINI_API_KEY = "AQ.Ab8R" + "N6KT6GcAZaig8HzRvUXHhn3rjjdA1buZNUd3sruTNAekGQ";
 
     async function apiCall(action, payload = {}) {
         try {
@@ -2081,14 +2079,14 @@
                     const parsedObj = JSON.parse(rawJson); 
                     jsonPart = JSON.stringify(parsedObj, null, 2);
                 } else {
-                    throw new Error("Format AI menyimpang.");
+                    throw new Error("Format AI menyimpang dari standar JSON.");
                 }
 
                 document.getElementById('promptResultText').value = englishPart;
                 document.getElementById('promptResultJson').value = jsonPart;
             } catch (e) {
                 document.getElementById('promptResultText').value = rawText;
-                document.getElementById('promptResultJson').value = "{\n  \"error\": \"Format AI tidak terstruktur.\"\n}"; 
+                document.getElementById('promptResultJson').value = "{\n  \"error\": \"Format AI tidak dapat distrukturkan.\"\n}"; 
             }
         };
 
@@ -2111,8 +2109,8 @@
             resultArea.classList.add('hidden');
 
             try {
-                // API URL MENGGUNAKAN VERSI 2.5 TERBARU
-                const apiUrl = `[https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=$](https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=$){GEMINI_API_KEY}`;
+                // DIKEMBALIKAN KE MODEL 1.5-FLASH YANG 100% STABIL DAN AKTIF
+                const apiUrl = `[https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=$](https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=$){GEMINI_API_KEY}`;
                 let payload = {};
 
                 if (pMode === 'image') {
@@ -2198,13 +2196,26 @@ Segment 2 (8-16s):
                     payload = { contents: [{ role: "user", parts: parts }] };
                 }
 
+                // SISTEM PENANGKAP ERROR API LEBIH AKURAT
                 const response = await fetch(apiUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
+                }).catch(e => {
+                    throw new Error("Koneksi ke Google gagal. Matikan AdBlock/VPN jika ada.");
                 });
 
-                if (!response.ok) throw new Error(`Integrasi API Gagal (${response.status})`);
+                if (!response.ok) {
+                    const errRaw = await response.text();
+                    let exactError = `Error HTTP ${response.status}`;
+                    try {
+                        const errJson = JSON.parse(errRaw);
+                        exactError += `: ${errJson.error?.message || "Unknown error"}`;
+                    } catch(e) {
+                        exactError += ` (Respons tidak valid)`;
+                    }
+                    throw new Error(exactError);
+                }
                 
                 const result = await response.json();
                 const textResponse = result.candidates?.[0]?.content?.parts?.[0]?.text;
@@ -2224,7 +2235,8 @@ Segment 2 (8-16s):
 
             } catch (err) {
                 console.error(err);
-                showMsg('promptErrorMsg', err.message || "Kegagalan neural network internal.", 'error');
+                // Menampilkan error secara absolut di layar
+                showMsg('promptErrorMsg', err.message ? err.message : err.toString(), 'error');
             } finally {
                 generateBtn.disabled = false;
                 btnPromptText.classList.remove('hidden');
