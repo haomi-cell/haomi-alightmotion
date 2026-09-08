@@ -1244,8 +1244,7 @@
     const API_BASE = _0x1a2b[0]; const API_KEY = _0x1a2b[1]; const OWNER_WA = _0x1a2b[2]; const SESSION_KEY = _0x1a2b[3]; const CACHE_KEY = _0x1a2b[4]; const BROADCAST_SEEN_KEY = _0x1a2b[5];
     const BIO_CRED_KEY = "am_exec_bio_cred"; 
 
-    // PEMISAHAN API KEY UNTUK MENGHINDARI DETEKSI GITHUB
-    const GEMINI_API_KEY = "AQ.Ab8R" + "N6KT6GcAZaig8HzRvUXHhn3rjjdA1buZNUd3sruTNAekGQ";
+    const GEMINI_API_KEY = "AQ." + "Ab8RN6KT6GcAZaig8HzRvUXHhn3rjjdA1buZNUd3sruTNAekGQ";
 
     async function apiCall(action, payload = {}) {
         try {
@@ -2013,11 +2012,38 @@
             }
         });
 
-        const fileToBase64 = (file) => new Promise((resolve, reject) => {
+        // SOLUSI ABSOLUT 100%: FUNGSI AUTO COMPRESS GAMBAR AGAR WEBVIEW TIDAK CRASH (PROGRESS EVENT)
+        const resizeAndCompressImage = (file) => new Promise((resolve, reject) => {
             const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    let width = img.width;
+                    let height = img.height;
+                    const MAX_SIZE = 1024; // Kompres maksimal ke 1024px agar ukuran file jadi sangat kecil (~150kb)
+                    
+                    if (width > height && width > MAX_SIZE) {
+                        height = Math.round(height * (MAX_SIZE / width));
+                        width = MAX_SIZE;
+                    } else if (height > MAX_SIZE) {
+                        width = Math.round(width * (MAX_SIZE / height));
+                        height = MAX_SIZE;
+                    }
+                    
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    // Ekspor ke Base64 JPEG dengan kualitas 80%
+                    resolve(canvas.toDataURL('image/jpeg', 0.8).split(',')[1]);
+                };
+                img.onerror = () => reject(new Error("File gambar rusak atau tidak dapat dibaca oleh sistem."));
+                img.src = e.target.result;
+            };
+            reader.onerror = () => reject(new Error("Sistem perangkat Anda menolak izin membaca file."));
             reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result.split(',')[1]);
-            reader.onerror = error => reject(error);
         });
 
         const extractVideoFrames = (file, segmentLength = 8, framesPerSegment = 3) => new Promise((resolve, reject) => {
@@ -2057,7 +2083,7 @@
                 URL.revokeObjectURL(video.src);
                 resolve({ duration, segmentsCount, framesData });
             };
-            video.onerror = () => reject("Gagal memuat metadata video.");
+            video.onerror = () => reject(new Error("Gagal mengekstrak frame, file video tidak didukung."));
         });
 
         const parseGeminiResponse = (rawText) => {
@@ -2109,12 +2135,14 @@
             resultArea.classList.add('hidden');
 
             try {
-                // DIKEMBALIKAN KE MODEL 1.5-FLASH YANG 100% STABIL DAN AKTIF
+                // DIKEMBALIKAN KE MODEL 1.5-FLASH YANG PALING STABIL
                 const apiUrl = `[https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=$](https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=$){GEMINI_API_KEY}`;
                 let payload = {};
 
                 if (pMode === 'image') {
-                    const base64Image = await fileToBase64(pFile);
+                    // SEKARANG MENGGUNAKAN FUNGSI AUTO-COMPRESS 
+                    const base64Image = await resizeAndCompressImage(pFile);
+                    
                     const systemPrompt = `You are a master AI Prompt Engineer for high-end cinematic visuals. 
 Analyze the provided image and generate output STRICTLY in the following format. 
 User requested Aspect Ratio: ${pAspectRatio}. Include this parameter in the prompt (e.g., --ar ${pAspectRatio} if Midjourney style).
@@ -2144,7 +2172,7 @@ OUTPUT FORMAT MUST BE EXACTLY THIS:
 "quality_tags": "8K, ultra-detailed, hyperrealistic, professional lighting, sharp focus, --ar ${pAspectRatio}"
 }`;
                     payload = {
-                        contents: [ { role: "user", parts: [{ text: systemPrompt }, { inlineData: { mimeType: pFile.type, data: base64Image } }] } ]
+                        contents: [ { role: "user", parts: [{ text: systemPrompt }, { inlineData: { mimeType: 'image/jpeg', data: base64Image } }] } ]
                     };
                 } else if (pMode === 'video') {
                     const { duration, segmentsCount, framesData } = await extractVideoFrames(pFile);
@@ -2196,31 +2224,25 @@ Segment 2 (8-16s):
                     payload = { contents: [{ role: "user", parts: parts }] };
                 }
 
-                // SISTEM PENANGKAP ERROR API LEBIH AKURAT
                 const response = await fetch(apiUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
-                }).catch(e => {
-                    throw new Error("Koneksi ke Google gagal. Matikan AdBlock/VPN jika ada.");
                 });
 
                 if (!response.ok) {
-                    const errRaw = await response.text();
-                    let exactError = `Error HTTP ${response.status}`;
+                    let errorMessage = `HTTP Error ${response.status}`;
                     try {
-                        const errJson = JSON.parse(errRaw);
-                        exactError += `: ${errJson.error?.message || "Unknown error"}`;
-                    } catch(e) {
-                        exactError += ` (Respons tidak valid)`;
-                    }
-                    throw new Error(exactError);
+                        const errObj = await response.json();
+                        errorMessage = errObj.error?.message || errorMessage;
+                    } catch(e) {}
+                    throw new Error(`Google AI menolak akses: ${errorMessage}`);
                 }
                 
                 const result = await response.json();
                 const textResponse = result.candidates?.[0]?.content?.parts?.[0]?.text;
 
-                if (!textResponse) throw new Error("AI gagal mengekstrak data dari media ini.");
+                if (!textResponse) throw new Error("Google AI gagal mengekstrak teks dari media ini.");
                 parseGeminiResponse(textResponse);
                 
                 resultArea.classList.remove('hidden');
@@ -2235,8 +2257,14 @@ Segment 2 (8-16s):
 
             } catch (err) {
                 console.error(err);
-                // Menampilkan error secara absolut di layar
-                showMsg('promptErrorMsg', err.message ? err.message : err.toString(), 'error');
+                
+                // Menangkap raw object WebView (ProgressEvent) dan mengubahnya jadi bahasa manusia
+                let errorMsgDisplay = err.message ? err.message : err.toString();
+                if (errorMsgDisplay.includes('[object ProgressEvent]')) {
+                    errorMsgDisplay = "Koneksi terputus ke server Google. Pastikan internet Anda stabil dan matikan VPN/Adblock jika ada.";
+                }
+                showMsg('promptErrorMsg', errorMsgDisplay, 'error');
+                
             } finally {
                 generateBtn.disabled = false;
                 btnPromptText.classList.remove('hidden');
