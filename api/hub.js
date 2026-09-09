@@ -134,6 +134,65 @@ export default async function handler(req, res) {
                 return res.status(200).json({ status: true });
             }
 
+            // ==========================================
+            // --- FITUR FORUM CHAT & SURAT DEVELOPER ---
+            // ==========================================
+            case 'sendMessage':
+            case 'sendFeedback': {
+                const username = body.username ? String(body.username).trim() : 'Anonim';
+                const message = body.message ? String(body.message).trim() : '';
+                const role = body.role || 'Member';
+                const category = body.category || 'PUBLIC';
+                const time = body.time || new Date().toLocaleString('id-ID');
+                const avatar_url = body.avatar_url || '';
+
+                if (!message) {
+                    return res.status(200).json({ status: false, error: 'Pesan tidak boleh kosong.' });
+                }
+
+                const { data, error } = await supabase.from('forum_messages').insert([{
+                    username,
+                    role,
+                    category,
+                    message,
+                    time,
+                    avatar_url,
+                    created_at: new Date().toISOString()
+                }]).select();
+
+                if (error) {
+                    return res.status(200).json({ status: false, error: 'Supabase Error: ' + error.message });
+                }
+
+                return res.status(200).json({ status: true, data: data && data.length > 0 ? data[0] : null });
+            }
+
+            case 'getMessages':
+            case 'getFeedbacks': {
+                const { data, error } = await supabase
+                    .from('forum_messages')
+                    .select('*')
+                    .order('created_at', { ascending: true })
+                    .limit(100);
+
+                if (error) {
+                    return res.status(200).json({ status: false, error: 'Supabase Error: ' + error.message });
+                }
+
+                return res.status(200).json({ status: true, data: data || [] });
+            }
+
+            case 'deleteMessage': {
+                if (!body.id) {
+                    return res.status(200).json({ status: false, error: 'ID pesan tidak ditemukan.' });
+                }
+                const { error } = await supabase.from('forum_messages').delete().eq('id', body.id);
+                if (error) {
+                    return res.status(200).json({ status: false, error: error.message });
+                }
+                return res.status(200).json({ status: true });
+            }
+
             // --- ENDPOINT QRIS RAMASHOP ---
             case 'createQris': {
                 const response = await axios.post(`${RAMASHOP_BASE_URL}/deposit/create`, {
