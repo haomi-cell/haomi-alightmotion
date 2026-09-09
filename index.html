@@ -492,7 +492,7 @@
     color: var(--text-muted); font-size: 9px; font-weight: 600; 
     text-transform: uppercase; letter-spacing: 0.8px; 
     cursor: pointer; transition: all 0.3s var(--smooth-ease); 
-    padding: 7px 16px; border-radius: 20px;
+    padding: 7px 14px; border-radius: 20px;
   }
   .nav-item i { font-size: 15px; transition: transform 0.3s var(--smooth-ease), color 0.3s; }
   .nav-item.active { color: var(--gold-primary); background: rgba(212, 175, 55, 0.08); }
@@ -630,10 +630,11 @@
     box-shadow: 0 0 8px var(--gold-glow);
   }
 
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 4px; }
-  ::-webkit-scrollbar-thumb:hover { background: var(--gold-dark); }
+  /* CUSTOM SCROLLBAR FOR CHAT */
+  .chat-box-scroll::-webkit-scrollbar { width: 4px; }
+  .chat-box-scroll::-webkit-scrollbar-track { background: transparent; }
+  .chat-box-scroll::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 4px; }
+  .chat-box-scroll::-webkit-scrollbar-thumb:hover { background: var(--gold-dark); }
 </style>
 </head>
 <body>
@@ -1015,6 +1016,31 @@
     </div>
   </div>
 
+  <!-- SECTION: FORUM CHAT -->
+  <div id="sectionChat" class="hidden">
+    <div class="glass-card" style="display:flex; flex-direction:column; height: 75vh; padding: 22px 18px;">
+      <div class="title-lg">Forum Komunikasi</div>
+      <div class="text-sub" style="margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border-thin);">
+        Umpan balik langsung & interaksi antar klien eksekutif.
+      </div>
+      
+      <!-- Area Pesan -->
+      <div id="chatMessagesBox" class="chat-box-scroll" style="flex: 1; overflow-y: auto; display:flex; flex-direction:column; gap:14px; margin-bottom: 16px; padding-right:8px;">
+        <div style="text-align:center; padding: 20px;">
+          <div class="loader-spinner" style="margin: 0 auto; width: 18px; height: 18px;"></div>
+        </div>
+      </div>
+      
+      <!-- Input Pesan -->
+      <div style="display: flex; gap: 8px;">
+        <input type="text" id="chatInputMsg" class="glass-input" placeholder="Tulis transmisi..." autocomplete="off">
+        <button class="btn btn-primary click-sound" id="btnSendChat" style="width: auto; padding: 0 16px; font-size: 14px;">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- SECTION: OWNER PANEL -->
   <div id="ownerPanel" class="hidden">
     <div class="glass-card">
@@ -1053,6 +1079,9 @@
   <div class="nav-item click-sound" id="btnTabEnhancer" onclick="switchTab('enhancer')">
     <i class="fas fa-wand-magic-sparkles"></i><span>Studio</span>
   </div>
+  <div class="nav-item click-sound" id="btnTabChat" onclick="switchTab('chat')">
+    <i class="fas fa-comments"></i><span>Forum</span>
+  </div>
   <div class="nav-item hidden click-sound" id="toggleOwnerDashBtn" onclick="switchTab('admin')">
     <i class="fas fa-shield-halved"></i><span>Admin</span>
   </div>
@@ -1078,20 +1107,14 @@
 
     <!-- ACTIVITY LOG -->
     <div style="background: var(--surface-light); border-radius: 12px; border: 1px solid var(--border-thin); padding: 15px; margin-bottom: 16px;">
-       <div style="font-size: 9px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 12px; font-weight:600; display: flex; align-items: center; gap: 6px;"><i class="fas fa-history"></i> Riwayat Aktivitas</div>
-       <div class="data-list" id="activityLogList">
-          <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:10px; border-bottom:1px solid var(--border-thin); margin-bottom:10px;">
-             <div><div style="font-size:11px; color:var(--text-pure); font-weight:600; margin-bottom:2px;">Neural AI Render</div><div style="font-size:9px; color:var(--text-dim);">Hari ini, 10:45</div></div>
-             <div style="font-size:11px; font-weight:700; color:var(--danger-light);">-1 Limit</div>
-          </div>
-          <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:10px; border-bottom:1px solid var(--border-thin); margin-bottom:10px;">
-             <div><div style="font-size:11px; color:var(--text-pure); font-weight:600; margin-bottom:2px;">Acquire Kuota (QRIS)</div><div style="font-size:9px; color:var(--text-dim);">2 Hari lalu</div></div>
-             <div style="font-size:11px; font-weight:700; color:var(--success-light);">+10 Limit</div>
-          </div>
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-             <div><div style="font-size:11px; color:var(--text-pure); font-weight:600; margin-bottom:2px;">Otorisasi Sistem</div><div style="font-size:9px; color:var(--text-dim);">Minggu lalu</div></div>
-             <div style="font-size:11px; font-weight:700; color:var(--success-light);">Login</div>
-          </div>
+       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+         <div style="font-size: 9px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.2px; font-weight:600; display: flex; align-items: center; gap: 6px;">
+           <i class="fas fa-history"></i> Riwayat Aktivitas
+         </div>
+         <button onclick="clearActivityLogs()" style="background:none; border:none; color:var(--danger-light); font-size:9px; cursor:pointer; text-transform:uppercase; font-weight:700; letter-spacing:0.5px;"><i class="fas fa-trash"></i> Bersihkan</button>
+       </div>
+       <div class="data-list" id="activityLogList" style="max-height: 250px; overflow-y: auto; padding-right: 4px;">
+          <!-- Log akan di-render di sini oleh JavaScript -->
        </div>
     </div>
 
@@ -1147,6 +1170,63 @@
     document.addEventListener('contextmenu', e => e.preventDefault());
     document.onkeydown = function(e) { if(e.keyCode==123 || (e.ctrlKey&&e.shiftKey&&(e.keyCode==73||e.keyCode==74||e.keyCode==67)) || (e.ctrlKey&&e.keyCode==85)) return false; };
 
+    // --- ACTIVITY LOG SYSTEM ---
+    function addActivityLog(title, desc, statusText, statusColor) {
+        if(!currentUserData || !currentUserData.username) return;
+        const logKey = 'am_log_' + currentUserData.username;
+        let logs = JSON.parse(localStorage.getItem(logKey) || '[]');
+        
+        const now = new Date();
+        const days = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
+        const dayStr = days[now.getDay()];
+        const dateStr = `${now.getDate().toString().padStart(2, '0')}/${(now.getMonth()+1).toString().padStart(2, '0')}/${now.getFullYear()}`;
+        const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')} WIB`;
+        
+        logs.unshift({ title, desc, datetime: `${dayStr}, ${dateStr} - ${timeStr}`, statusText, statusColor });
+        if(logs.length > 30) logs.pop(); // Batasi 30 log terakhir untuk performa
+        
+        localStorage.setItem(logKey, JSON.stringify(logs));
+        renderActivityLogs();
+    }
+
+    function renderActivityLogs() {
+        const container = document.getElementById('activityLogList');
+        if(!container || !currentUserData) return;
+        
+        const logs = JSON.parse(localStorage.getItem('am_log_' + currentUserData.username) || '[]');
+        container.innerHTML = '';
+        
+        if(logs.length === 0) {
+            container.innerHTML = `<div style="font-size:10px; color:var(--text-dim); text-align:center; padding:15px;">Riwayat aktivitas kosong.</div>`;
+            return;
+        }
+        
+        logs.forEach((log, index) => {
+            const isLast = index === logs.length - 1;
+            container.innerHTML += `
+            <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:10px; border-bottom:${isLast ? 'none' : '1px solid var(--border-thin)'}; margin-bottom:${isLast ? '0' : '10px'};">
+               <div style="flex: 1; padding-right: 10px;">
+                 <div style="font-size:11px; color:var(--text-pure); font-weight:600; margin-bottom:2px;">${log.title}</div>
+                 <div style="font-size:9px; color:var(--text-dim); line-height: 1.4;">
+                   <i class="far fa-clock" style="margin-right:2px;"></i> ${log.datetime}<br>
+                   ${log.desc}
+                 </div>
+               </div>
+               <div style="font-size:11px; font-weight:700; color:${log.statusColor}; white-space: nowrap;">${log.statusText}</div>
+            </div>`;
+        });
+    }
+
+    window.clearActivityLogs = function() {
+        if(!currentUserData) return;
+        customConfirm("Apakah Anda yakin ingin menghapus seluruh riwayat aktivitas lokal?", () => {
+            localStorage.removeItem('am_log_' + currentUserData.username);
+            renderActivityLogs();
+            customAlert("Log aktivitas berhasil dibersihkan.");
+            addActivityLog("Pembersihan Sistem", "Klien menghapus riwayat log aktivitas", "Selesai", "var(--text-muted)");
+        });
+    }
+
     // --- THEME SWITCHER LOGIC ---
     const THEME_KEY = 'am_exec_theme';
     function initTheme() {
@@ -1161,6 +1241,7 @@
         localStorage.setItem(THEME_KEY, next);
         updateThemeIcon(next);
         playClickSound();
+        addActivityLog("Preferensi UI", `Mengubah tema sistem ke mode ${next.toUpperCase()}`, "Info", "var(--gold-primary)");
     };
     function updateThemeIcon(theme) {
         const icon = document.querySelector('#themeToggleBtn i');
@@ -1291,7 +1372,9 @@
             }
             
             localStorage.setItem(SESSION_KEY, bioData.u); 
-            localStorage.setItem(CACHE_KEY, JSON.stringify(res.data)); window.loadAppView(res.data); 
+            localStorage.setItem(CACHE_KEY, JSON.stringify(res.data)); 
+            window.loadAppView(res.data); 
+            addActivityLog("Otorisasi Sistem", "Login melalui sensor Biometrik", "Sukses", "var(--success-light)");
         }, 800);
     }
 
@@ -1321,6 +1404,7 @@
             customAlert("Biometrik berhasil didaftarkan pada perangkat ini.");
             document.getElementById('bioSetupModal').classList.remove('show'); checkBiometricAvailable();
             window.loadAppView(temporaryBioData.resData);
+            addActivityLog("Keamanan Akun", "Kredensial biometrik ditambahkan ke perangkat", "Aman", "var(--success-light)");
         } catch(e) { customAlert("Gagal mendaftarkan biometrik.", true);
         } finally { btn.textContent = 'Aktifkan Biometrik'; btn.disabled = false; }
     };
@@ -1357,6 +1441,7 @@
         if (qrisUrl) {
             document.getElementById('qrisImageResult').src = qrisUrl; document.getElementById('qrisPackageTitle').textContent = `Paket ${labelName} Limit`; document.getElementById('qrisDepositIdSpan').textContent = activeDepositId;
             document.getElementById('selectLimitView').classList.add('hidden'); document.getElementById('qrisPaymentView').classList.remove('hidden');
+            addActivityLog("Acquire Kuota", `Inisialisasi Invoice QRIS paket ${labelName} Limit`, "Pending", "var(--gold-primary)");
         } else { customAlert("Gagal merender modul QRIS.", true); }
     }
 
@@ -1372,6 +1457,7 @@
             if (updateRes.status) {
                 currentUserData.limit_count = newLimitTotal; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData));
                 window.loadAppView(currentUserData); closeLimitModal(); customAlert("Transaksi Disetujui! Kuota diperbarui.");
+                addActivityLog("Acquire Kuota", `Invoice QRIS telah dilunasi (+${selectedAddLimitCount} Limit)`, "Sukses", "var(--success-light)");
             } else { customAlert("Dana diterima, namun gagal sinkronisasi database.", true); }
         } else { customAlert("Pembayaran belum diselesaikan pada dompet digital Anda.", true); }
     };
@@ -1461,6 +1547,7 @@
                 await Promise.all(updatePromises);
                 customAlert(`Berhasil mereset kuota ${zeroLimitUsers.length} klien.`);
                 renderMemberList();
+                addActivityLog("Tindakan Admin", `Melakukan reset limit (0->3) untuk ${zeroLimitUsers.length} klien`, "Selesai", "var(--success-light)");
             } catch(e) {
                 customAlert("Terjadi galat saat memproses reset massal.", true);
             } finally {
@@ -1502,6 +1589,8 @@
                 const currentLimit = user.limit_count ?? 3; massUpdateText('.disp-limit-label', "Sisa Kuota Akses"); numDisplays.forEach(el => { el.textContent = currentLimit; el.classList.remove('vip'); });
             }
             
+            renderActivityLogs(); // Render logs upon login
+            
             switchView('appView'); document.getElementById('mainBottomNav').classList.remove('hidden');
             if(!document.querySelector('.nav-item.active')) switchTab('activator');
         } catch (e) { }
@@ -1524,7 +1613,7 @@
         }, 1000);
     };
 
-    function startClock() { const clockEl = document.getElementById('realtimeClock'); if(!clockEl) return; setInterval(() => { const now = new Date(); clockEl.textContent = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB'; }, 1000); }
+    function startClock() { const clockEl = document.getElementById('realtimeClock'); if(!clockEl) return; setInterval(() => { const now = new Date(); clockEl.textContent = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' WIB'; }, 1000); }
     function startPingChecker() { const pingEl = document.getElementById('networkPingText'); if(!pingEl) return; setInterval(() => { const randomPing = Math.floor(Math.random() * 14) + 12; pingEl.textContent = randomPing + 'ms'; }, 4000); }
     async function fetchGlobalStats() { const res = apiCall ? await apiCall('fetchStats') : {status:false}; if (res.status) { const el = document.getElementById('globalTotalUsers'); if(el) el.textContent = res.count; } }
     function generateCaptcha() { const num1 = Math.floor(Math.random() * 10) + 1; const num2 = Math.floor(Math.random() * 10) + 1; currentCaptchaAnswer = num1 + num2; const label = document.getElementById('captchaLabel'); if(label) label.innerHTML = `Selesaikan <span style="background:var(--surface-light); padding:2px 6px; border-radius:4px; font-weight:700; margin-left:4px; border: 1px solid var(--border-thin); color: var(--gold-primary);">${num1} + ${num2}</span>`; }
@@ -1535,7 +1624,11 @@
         reader.onload = async function(e) { 
             const base64Image = e.target.result; if (!currentUserData) return; 
             const res = await apiCall('updateUser', { username: currentUserData.username, updates: { avatar_url: base64Image } }); 
-            if (res.status) { currentUserData.avatar_url = base64Image; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); updateAvatarUI(base64Image, currentUserData.username); customAlert("Potret profil telah diperbarui."); } 
+            if (res.status) { 
+                currentUserData.avatar_url = base64Image; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); 
+                updateAvatarUI(base64Image, currentUserData.username); customAlert("Potret profil telah diperbarui."); 
+                addActivityLog("Pembaruan Profil", "Potret avatar klien berhasil diunggah dan disimpan", "Selesai", "var(--success-light)");
+            } 
         }; reader.readAsDataURL(file); 
     };
     function updateAvatarUI(avatarUrl, username) { const avatarContainers = document.querySelectorAll('.pw-avatar'); avatarContainers.forEach(container => { if (avatarUrl && avatarUrl.startsWith('data:image')) { container.innerHTML = `<img src="${avatarUrl}" alt="Avatar">`; } else { container.innerHTML = `<span class="disp-avatar-text">${username ? username.charAt(0).toUpperCase() : 'U'}</span>`; } }); }
@@ -1553,7 +1646,10 @@
              return showMsg('editProfileMsg', 'Data formulir tidak boleh dikosongkan.', 'error');
         }
         const res = await apiCall('updateUser', { username: currentUserData.username, updates: { username: newU, password: newP, username_changed: true } }); 
-        if (res.status) { currentUserData.username = newU; currentUserData.password = newP; currentUserData.username_changed = true; localStorage.setItem(SESSION_KEY, newU); localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData); showMsg('editProfileMsg', 'Perubahan terekam. Kredensial telah dikunci permanen.', 'success'); } 
+        if (res.status) { 
+            addActivityLog("Pembaruan Kredensial", `Username / Password diubah (Sistem Terkunci)`, "Kritis", "var(--danger-light)");
+            currentUserData.username = newU; currentUserData.password = newP; currentUserData.username_changed = true; localStorage.setItem(SESSION_KEY, newU); localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData); showMsg('editProfileMsg', 'Perubahan terekam. Kredensial telah dikunci permanen.', 'success'); 
+        } 
     });
     
     function initRealtimeBroadcastListener() {
@@ -1566,7 +1662,16 @@
         }; checkBroadcast(); setInterval(checkBroadcast, 15000);
     }
     window.closeBroadcastModal = function() { if (activeBroadcastId) localStorage.setItem(BROADCAST_SEEN_KEY, String(activeBroadcastId)); document.getElementById('broadcastModal').classList.remove('show'); };
-    window.sendBroadcastMsg = async function() { const text = document.getElementById('broadcastInput').value.trim(); if(!text) return customAlert("Transmisi tidak boleh kosong.", true); const res = await apiCall('sendBroadcast', { message: text }); if (res.status) { customAlert("Pesan eksekutif terkirim ke seluruh klien."); document.getElementById('broadcastInput').value = ''; } };
+    window.sendBroadcastMsg = async function() { 
+        const text = document.getElementById('broadcastInput').value.trim(); 
+        if(!text) return customAlert("Transmisi tidak boleh kosong.", true); 
+        const res = await apiCall('sendBroadcast', { message: text }); 
+        if (res.status) { 
+            customAlert("Pesan eksekutif terkirim ke seluruh klien."); 
+            document.getElementById('broadcastInput').value = ''; 
+            addActivityLog("Transmisi Global", "Menyiarkan pesan popup ke seluruh klien", "Selesai", "var(--success-light)");
+        } 
+    };
     
     async function fetchUserSession(username) { 
         try { 
@@ -1655,11 +1760,34 @@
         const inputVal = document.getElementById(`inputLimit_${username}`).value; const newLimit = parseInt(inputVal, 10);
         if(isNaN(newLimit)) return customAlert("Nilai limit tidak valid.", true);
         const res = await apiCall('updateUser', { username: username, updates: { limit_count: newLimit } });
-        if (res.status) { renderMemberList(); customAlert("Konfigurasi limit diperbarui."); if(currentUserData && currentUserData.username === username) { currentUserData.limit_count = newLimit; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData); } } else { customAlert("Gagal terhubung ke database.", true); }
+        if (res.status) { 
+            renderMemberList(); customAlert("Konfigurasi limit diperbarui."); 
+            if(currentUserData && currentUserData.username === username) { currentUserData.limit_count = newLimit; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData); }
+            addActivityLog("Tindakan Admin", `Mengubah kuota limit klien @${username} menjadi ${newLimit}`, "Selesai", "var(--success-light)");
+        } else { customAlert("Gagal terhubung ke database.", true); }
     };
 
-    window.toggleVipStatus = async function(username, currentVipStatus) { const newStatus = !currentVipStatus ? 'true' : 'false'; const res = await apiCall('updateUser', { username, updates: { is_permanent: newStatus } }); if (res.status) { renderMemberList(); customAlert("Status previlege VIP dimodifikasi."); if(currentUserData && currentUserData.username === username) { currentUserData.is_permanent = newStatus; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData); } } };
-    window.toggleSuspendStatus = async function(username, currentBannedStatus) { customConfirm(currentBannedStatus ? `Konfirmasi pembukaan akses untuk klien ${username}?` : `Konfirmasi pemutusan akses (suspend) untuk klien ${username}?`, async () => { const newStatus = currentBannedStatus ? 'false' : 'true'; const res = await apiCall('updateUser', { username, updates: { is_banned: newStatus } }); if (res.status) { customAlert("Status keamanan dimodifikasi."); renderMemberList(); } }); };
+    window.toggleVipStatus = async function(username, currentVipStatus) { 
+        const newStatus = !currentVipStatus ? 'true' : 'false'; 
+        const res = await apiCall('updateUser', { username, updates: { is_permanent: newStatus } }); 
+        if (res.status) { 
+            renderMemberList(); customAlert("Status previlege VIP dimodifikasi."); 
+            if(currentUserData && currentUserData.username === username) { currentUserData.is_permanent = newStatus; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData); }
+            addActivityLog("Tindakan Admin", `Mengubah akses VIP klien @${username} menjadi ${newStatus}`, "Selesai", "var(--success-light)");
+        } 
+    };
+    
+    window.toggleSuspendStatus = async function(username, currentBannedStatus) { 
+        customConfirm(currentBannedStatus ? `Konfirmasi pembukaan akses untuk klien ${username}?` : `Konfirmasi pemutusan akses (suspend) untuk klien ${username}?`, async () => { 
+            const newStatus = currentBannedStatus ? 'false' : 'true'; 
+            const res = await apiCall('updateUser', { username, updates: { is_banned: newStatus } }); 
+            if (res.status) { 
+                customAlert("Status keamanan dimodifikasi."); renderMemberList(); 
+                addActivityLog("Tindakan Admin", `Mengubah status SUSPEND klien @${username} menjadi ${newStatus}`, "Kritis", "var(--danger-light)");
+            } 
+        }); 
+    };
+    
     window.togglePwd = function(inputId, btnEl) { const input = document.getElementById(inputId); const icon = btnEl.querySelector('i'); if (!input) return; if (input.type === 'password') { input.type = 'text'; icon.className = 'fas fa-eye-slash'; } else { input.type = 'password'; icon.className = 'far fa-eye'; } };
 
     function initImageEnhancerEngine() {
@@ -1767,6 +1895,10 @@
                 comparisonSplitSection.classList.remove('hidden');
                 downloadFooterActions.classList.remove('hidden');
                 showMsg('statusMessage', 'Proses render selesai dengan resolusi optimal.', 'success');
+                
+                let modeTxt = selectedMode === '2x' ? 'Super Res 2x' : (selectedMode === '1x' ? 'Clean & Sharpen' : 'Dynamic HDR');
+                addActivityLog("Neural AI Studio", `Eksekusi Render dengan mode ${modeTxt} (Kekuatan ${strengthRange.value}%)`, "-1 Limit", "var(--danger-light)");
+                
             } catch(e) { showMsg('statusMessage', 'Mesin gagal memproses citra yang diberikan.', 'error'); } 
             finally { enhanceBtn.disabled = false; enhanceBtn.innerHTML = '<i class="fas fa-wand-magic-sparkles"></i> Eksekusi Render'; }
         });
@@ -1808,7 +1940,7 @@
             });
         }
         
-        downloadBtn.addEventListener('click', () => { if (enhancedBlobUrl) { const a = document.createElement('a'); a.href = enhancedBlobUrl; a.download = 'AM_Executive_Output.jpg'; a.click(); } });
+        downloadBtn.addEventListener('click', () => { if (enhancedBlobUrl) { const a = document.createElement('a'); a.href = enhancedBlobUrl; a.download = 'AM_Executive_Output.jpg'; a.click(); addActivityLog("Studio Ekspor", "Mengunduh hasil render citra ke perangkat", "Info", "var(--gold-primary)"); } });
         copyUrlBtn.addEventListener('click', () => { if (enhancedBlobUrl) { navigator.clipboard.writeText(enhancedBlobUrl); customAlert("URL disalin ke clipboard."); } });
     }
 
@@ -1832,6 +1964,8 @@
             localStorage.setItem(SESSION_KEY, u); localStorage.setItem(CACHE_KEY, JSON.stringify(res.data)); 
             if(!localStorage.getItem(BIO_CRED_KEY)) { temporaryBioData = {u: u, p: p, resData: res.data}; document.getElementById('bioSetupModal').classList.add('show'); } 
             else { window.loadAppView(res.data); }
+            
+            addActivityLog("Otorisasi Sistem", "Klien berhasil melakukan login menggunakan sandi", "Sukses", "var(--success-light)");
         }); 
     }
 
@@ -1853,13 +1987,14 @@
                 if(!res.status) throw new Error(res.error); 
                 localStorage.setItem(SESSION_KEY, u); localStorage.setItem(CACHE_KEY, JSON.stringify(res.data)); 
                 temporaryBioData = {u: u, p: p, resData: res.data}; document.getElementById('registerView').classList.add('hidden'); document.getElementById('bioSetupModal').classList.add('show');
+                addActivityLog("Registrasi Klien", "Identitas baru berhasil diregistrasikan ke server", "Sukses", "var(--success-light)");
             } catch (err) { 
                 showMsg('regMsg', err.message, 'error'); 
             } finally { regBtn.textContent = 'Daftarkan Identitas'; regBtn.disabled = false; } 
         }); 
     }
 
-    if(topLogoutBtn) { topLogoutBtn.addEventListener('click', () => { customConfirm("Anda yakin ingin memutus koneksi sesi eksklusif ini?", () => { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(CACHE_KEY); closeProfileSheet(); switchView('loginView'); }); }); }
+    if(topLogoutBtn) { topLogoutBtn.addEventListener('click', () => { customConfirm("Anda yakin ingin memutus koneksi sesi eksklusif ini?", () => { addActivityLog("Otorisasi Sistem", "Mengakhiri sesi eksekutif (Logout)", "Selesai", "var(--text-muted)"); setTimeout(() => { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(CACHE_KEY); closeProfileSheet(); switchView('loginView'); }, 300); }); }); }
     
     if(sendBtn) {
         sendBtn.addEventListener('click', async () => {
@@ -1871,7 +2006,10 @@
             sendBtn.innerHTML = 'Proses...'; sendBtn.disabled = true;
             try {
                 const res = await fetch(`${API_BASE}/api/am?action=send&apikey=${API_KEY}&email=${encodeURIComponent(email)}`); const data = await res.json();
-                if(data.status) { cachedEmail = email; showMsg('appErrorMsg', 'Magic link dikirim. Cek surel Anda.', 'success'); } else { showMsg('appErrorMsg', data.error || 'Gateway pengiriman gagal.', 'error'); }
+                if(data.status) { 
+                    cachedEmail = email; showMsg('appErrorMsg', 'Magic link dikirim. Cek surel Anda.', 'success'); 
+                    addActivityLog("Gateway Email", `Mengirim URL Magic Link ke alamat surel: ${email}`, "Terkirim", "var(--gold-primary)");
+                } else { showMsg('appErrorMsg', data.error || 'Gateway pengiriman gagal.', 'error'); }
             } catch(e) { showMsg('appErrorMsg', 'Koneksi ke server terputus.', 'error'); }
             finally { sendBtn.textContent = 'Kirim'; sendBtn.disabled = false; }
         });
@@ -1890,6 +2028,7 @@
                 if(data.status) {
                     showMsg('appErrorMsg', 'Berhasil! Akun Anda telah terverifikasi premium.', 'success');
                     customAlert('Aktivasi Magic Link berhasil diverifikasi.');
+                    addActivityLog("Lisensi Perangkat", `Verifikasi sukses via URL Magic Link`, "Selesai", "var(--success-light)");
                     
                     if(currentUserData && !parseBool(currentUserData.is_permanent) && currentUserData.role !== 'Owner') {
                         let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 1); await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
@@ -1901,14 +2040,127 @@
         });
     }
 
+    // --- FORUM CHAT LOGIC ---
+    let chatIntervalId = null;
+
+    async function loadChatMessages() {
+        const box = document.getElementById('chatMessagesBox');
+        const res = await apiCall('getMessages'); 
+        
+        if(!res.status || !res.data || res.data.length === 0) {
+            if(box.innerHTML.includes('loader-spinner') || box.innerHTML.trim() === '') {
+                box.innerHTML = `<div style="text-align:center; padding:30px; font-size:11px; color:var(--text-dim);">Belum ada transmisi. Jadilah yang pertama memulai topik diskusi.</div>`;
+            }
+            return;
+        }
+
+        let htmlString = '';
+        const msgs = res.data.reverse(); // Asumsi API mengembalikan pesan terbaru di indeks awal, reverse untuk flow chat dari atas ke bawah
+        
+        msgs.forEach(msg => {
+            const isMe = currentUserData && msg.username === currentUserData.username;
+            const isOwner = msg.role === 'Owner';
+            const badgeHtml = isOwner ? `<i class="fas fa-crown" style="color:var(--gold-primary); font-size:9px; margin-right:4px;"></i>` : '';
+            
+            // Format waktu sederhana dari ISO string jika perlu
+            let timeFmt = msg.created_at;
+            try { 
+                const d = new Date(msg.created_at); 
+                timeFmt = `${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
+            } catch(e){}
+
+            htmlString += `
+            <div style="display:flex; flex-direction:column; align-items:${isMe ? 'flex-end' : 'flex-start'};">
+                <div style="font-size:9px; color:var(--text-muted); margin-bottom:4px; padding: 0 4px;">
+                    ${isMe ? '' : badgeHtml}<b style="${isOwner && !isMe ? 'color:var(--gold-light)' : ''}">${msg.username}</b> • ${timeFmt}
+                </div>
+                <div style="background:${isMe ? 'var(--gold-gradient)' : 'var(--surface-light)'}; color:${isMe ? '#111' : 'var(--text-pure)'}; border:1px solid ${isMe ? 'transparent' : 'var(--border-thin)'}; padding:10px 14px; border-radius: ${isMe ? '14px 14px 0 14px' : '14px 14px 14px 0'}; font-size:11px; line-height:1.5; max-width:85%; word-wrap:break-word;">
+                    ${msg.message}
+                </div>
+            </div>`;
+        });
+        
+        // Cek jika scroll ada di paling bawah (auto scroll)
+        const isScrolledToBottom = box.scrollHeight - box.clientHeight <= box.scrollTop + 50;
+        box.innerHTML = htmlString;
+        if(isScrolledToBottom || box.innerHTML.includes('loader-spinner')) {
+            box.scrollTop = box.scrollHeight;
+        }
+    }
+
+    document.getElementById('btnSendChat').addEventListener('click', async () => {
+        const inputEl = document.getElementById('chatInputMsg');
+        const text = inputEl.value.trim();
+        if(!text) return;
+
+        inputEl.value = '';
+        inputEl.disabled = true;
+
+        // Optimistic UI Update
+        const box = document.getElementById('chatMessagesBox');
+        if(box.innerHTML.includes('Belum ada transmisi')) box.innerHTML = '';
+        
+        const now = new Date();
+        const timeStr = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+        
+        box.innerHTML += `
+        <div style="display:flex; flex-direction:column; align-items:flex-end; opacity: 0.6;" id="optimisticMsg">
+            <div style="font-size:9px; color:var(--text-muted); margin-bottom:4px; padding: 0 4px;">
+                <b>${currentUserData.username}</b> • Mengirim...
+            </div>
+            <div style="background:var(--gold-gradient); color:#111; border:1px solid transparent; padding:10px 14px; border-radius: 14px 14px 0 14px; font-size:11px; line-height:1.5; max-width:85%; word-wrap:break-word;">
+                ${text}
+            </div>
+        </div>`;
+        box.scrollTop = box.scrollHeight;
+
+        const res = await apiCall('sendMessage', { username: currentUserData.username, message: text, role: currentUserData.role });
+        
+        inputEl.disabled = false;
+        inputEl.focus();
+        
+        if(!res.status) {
+            customAlert("Gagal mengirim transmisi ke server.", true);
+            const optMsg = document.getElementById('optimisticMsg');
+            if(optMsg) optMsg.remove();
+        } else {
+            addActivityLog("Forum Interaksi", `Mengirim surat/pesan umpan balik global`, "Terkirim", "var(--success-light)");
+            loadChatMessages();
+        }
+    });
+    
+    // Kirim pesan dengan tombol Enter
+    document.getElementById('chatInputMsg').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') document.getElementById('btnSendChat').click();
+    });
+
     window.switchTab = function(tabName) { 
-        const secAct = document.getElementById('sectionActivator'); const secEnh = document.getElementById('sectionEnhancer'); const secOwn = document.getElementById('ownerPanel');
-        [secAct, secEnh, secOwn].forEach(el => { if(el) { el.style.opacity = '0'; el.style.transform = 'translateY(6px)'; setTimeout(() => el.classList.add('hidden'), 180); } });
+        const secAct = document.getElementById('sectionActivator'); 
+        const secEnh = document.getElementById('sectionEnhancer'); 
+        const secChat = document.getElementById('sectionChat');
+        const secOwn = document.getElementById('ownerPanel');
+        
+        // Bersihkan interval chat jika keluar dari tab chat
+        if(chatIntervalId) clearInterval(chatIntervalId);
+
+        [secAct, secEnh, secChat, secOwn].forEach(el => { if(el) { el.style.opacity = '0'; el.style.transform = 'translateY(6px)'; setTimeout(() => el.classList.add('hidden'), 180); } });
         document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active')); 
+        
         setTimeout(() => {
-            if(tabName === 'activator') { secAct.classList.remove('hidden'); document.getElementById('btnTabActivator').classList.add('active'); animateSectionIn(secAct); } 
-            else if(tabName === 'enhancer') { secEnh.classList.remove('hidden'); document.getElementById('btnTabEnhancer').classList.add('active'); animateSectionIn(secEnh); } 
-            else if(tabName === 'admin') { secOwn.classList.remove('hidden'); document.getElementById('toggleOwnerDashBtn').classList.add('active'); renderMemberList(); animateSectionIn(secOwn); }
+            if(tabName === 'activator') { 
+                secAct.classList.remove('hidden'); document.getElementById('btnTabActivator').classList.add('active'); animateSectionIn(secAct); 
+            } 
+            else if(tabName === 'enhancer') { 
+                secEnh.classList.remove('hidden'); document.getElementById('btnTabEnhancer').classList.add('active'); animateSectionIn(secEnh); 
+            } 
+            else if(tabName === 'chat') { 
+                secChat.classList.remove('hidden'); document.getElementById('btnTabChat').classList.add('active'); animateSectionIn(secChat); 
+                loadChatMessages();
+                chatIntervalId = setInterval(loadChatMessages, 8000); // Polling setiap 8 detik
+            }
+            else if(tabName === 'admin') { 
+                secOwn.classList.remove('hidden'); document.getElementById('toggleOwnerDashBtn').classList.add('active'); renderMemberList(); animateSectionIn(secOwn); 
+            }
         }, 180);
     };
 
