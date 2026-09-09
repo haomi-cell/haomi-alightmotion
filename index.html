@@ -2055,32 +2055,63 @@
         }
 
         let htmlString = '';
-        const msgs = res.data.reverse(); // Asumsi API mengembalikan pesan terbaru di indeks awal, reverse untuk flow chat dari atas ke bawah
+        
+        // PENTING: Dihapus .reverse() karena API hub.js sudah memakai .order('created_at', { ascending: true })
+        // Sehingga array aslinya (res.data) sudah urut dari yang paling lama -> ke yang paling baru
+        const msgs = res.data; 
         
         msgs.forEach(msg => {
             const isMe = currentUserData && msg.username === currentUserData.username;
             const isOwner = msg.role === 'Owner';
-            const badgeHtml = isOwner ? `<i class="fas fa-crown" style="color:var(--gold-primary); font-size:9px; margin-right:4px;"></i>` : '';
             
-            // Format waktu sederhana dari ISO string jika perlu
-            let timeFmt = msg.created_at;
-            try { 
-                const d = new Date(msg.created_at); 
-                timeFmt = `${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
-            } catch(e){}
+            // Render Badge Role (Crown untuk Owner)
+            const badgeHtml = isOwner ? `<i class="fas fa-crown" style="color:var(--gold-primary); font-size:10px; margin-right:4px;" title="Owner"></i>` : '';
+            
+            // Prioritaskan kolom 'time' string dari Supabase, jika kosong pakai 'created_at'
+            let timeFmt = msg.time || msg.created_at;
+            try { if(!msg.time) { const d = new Date(msg.created_at); timeFmt = `${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`; } } catch(e){}
 
-            htmlString += `
-            <div style="display:flex; flex-direction:column; align-items:${isMe ? 'flex-end' : 'flex-start'};">
-                <div style="font-size:9px; color:var(--text-muted); margin-bottom:4px; padding: 0 4px;">
-                    ${isMe ? '' : badgeHtml}<b style="${isOwner && !isMe ? 'color:var(--gold-light)' : ''}">${msg.username}</b> • ${timeFmt}
-                </div>
-                <div style="background:${isMe ? 'var(--gold-gradient)' : 'var(--surface-light)'}; color:${isMe ? '#111' : 'var(--text-pure)'}; border:1px solid ${isMe ? 'transparent' : 'var(--border-thin)'}; padding:10px 14px; border-radius: ${isMe ? '14px 14px 0 14px' : '14px 14px 14px 0'}; font-size:11px; line-height:1.5; max-width:85%; word-wrap:break-word;">
-                    ${msg.message}
-                </div>
-            </div>`;
+            // Cek Avatar dari DB Supabase
+            let avatarHtml = '';
+            if (msg.avatar_url && msg.avatar_url !== "EMPTY" && msg.avatar_url.startsWith('data:image')) {
+                avatarHtml = `<img src="${msg.avatar_url}" style="width:100%; height:100%; object-fit:cover;">`;
+            } else {
+                avatarHtml = `<span style="font-weight:700; font-size:12px; color:var(--gold-primary);">${msg.username ? msg.username.charAt(0).toUpperCase() : 'U'}</span>`;
+            }
+
+            // Render UI Berdasarkan Pengirim (Kiri/Kanan)
+            if (isMe) {
+                // Tampilan Chat Kita Sendiri (Kanan)
+                htmlString += `
+                <div style="display:flex; justify-content:flex-end; gap:8px; margin-bottom: 6px;">
+                    <div style="display:flex; flex-direction:column; align-items:flex-end;">
+                        <div style="font-size:9px; color:var(--text-muted); margin-bottom:4px; padding: 0 4px;">
+                            ${timeFmt} <span style="background:var(--surface-dark); padding:1px 4px; border-radius:3px; font-size:7px;">${msg.category || 'PUBLIC'}</span>
+                        </div>
+                        <div style="background:var(--gold-gradient); color:#111; padding:10px 14px; border-radius: 14px 14px 0 14px; font-size:11px; line-height:1.5; max-width:240px; word-wrap:break-word; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+                            ${msg.message}
+                        </div>
+                    </div>
+                </div>`;
+            } else {
+                // Tampilan Chat Orang Lain (Kiri)
+                htmlString += `
+                <div style="display:flex; justify-content:flex-start; gap:10px; margin-bottom: 6px;">
+                    <div style="width:30px; height:30px; border-radius:50%; background:var(--avatar-bg); border: 1px solid var(--border-gold); display:flex; align-items:center; justify-content:center; overflow:hidden; flex-shrink: 0; margin-top: 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.3);">
+                        ${avatarHtml}
+                    </div>
+                    <div style="display:flex; flex-direction:column; align-items:flex-start;">
+                        <div style="font-size:9px; color:var(--text-muted); margin-bottom:4px; padding: 0 4px;">
+                            ${badgeHtml}<b style="${isOwner ? 'color:var(--gold-light)' : 'color:var(--text-pure)'}">${msg.username}</b> • ${timeFmt} <span style="background:var(--surface-dark); padding:1px 4px; border-radius:3px; font-size:7px;">${msg.category || 'PUBLIC'}</span>
+                        </div>
+                        <div style="background:var(--surface-light); color:var(--text-pure); border:1px solid var(--border-thin); padding:10px 14px; border-radius: 14px 14px 14px 0; font-size:11px; line-height:1.5; max-width:240px; word-wrap:break-word;">
+                            ${msg.message}
+                        </div>
+                    </div>
+                </div>`;
+            }
         });
         
-        // Cek jika scroll ada di paling bawah (auto scroll)
         const isScrolledToBottom = box.scrollHeight - box.clientHeight <= box.scrollTop + 50;
         box.innerHTML = htmlString;
         if(isScrolledToBottom || box.innerHTML.includes('loader-spinner')) {
@@ -2096,25 +2127,36 @@
         inputEl.value = '';
         inputEl.disabled = true;
 
-        // Optimistic UI Update
         const box = document.getElementById('chatMessagesBox');
         if(box.innerHTML.includes('Belum ada transmisi')) box.innerHTML = '';
         
-        const now = new Date();
-        const timeStr = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
-        
+        // Optimistic UI Render (Senada dengan bubble chat kanan)
         box.innerHTML += `
-        <div style="display:flex; flex-direction:column; align-items:flex-end; opacity: 0.6;" id="optimisticMsg">
-            <div style="font-size:9px; color:var(--text-muted); margin-bottom:4px; padding: 0 4px;">
-                <b>${currentUserData.username}</b> • Mengirim...
-            </div>
-            <div style="background:var(--gold-gradient); color:#111; border:1px solid transparent; padding:10px 14px; border-radius: 14px 14px 0 14px; font-size:11px; line-height:1.5; max-width:85%; word-wrap:break-word;">
-                ${text}
+        <div style="display:flex; justify-content:flex-end; gap:8px; margin-bottom: 6px; opacity: 0.5;" id="optimisticMsg">
+            <div style="display:flex; flex-direction:column; align-items:flex-end;">
+                <div style="font-size:9px; color:var(--text-muted); margin-bottom:4px; padding: 0 4px;">
+                    Mengirim...
+                </div>
+                <div style="background:var(--gold-gradient); color:#111; padding:10px 14px; border-radius: 14px 14px 0 14px; font-size:11px; line-height:1.5; max-width:240px; word-wrap:break-word;">
+                    ${text}
+                </div>
             </div>
         </div>`;
         box.scrollTop = box.scrollHeight;
 
-        const res = await apiCall('sendMessage', { username: currentUserData.username, message: text, role: currentUserData.role });
+        // Pembuatan Format Waktu sesuai DB
+        const nowForDb = new Date();
+        const dbTimeStr = `${nowForDb.getDate()}/${nowForDb.getMonth()+1}/${nowForDb.getFullYear()}, ${nowForDb.getHours().toString().padStart(2,'0')}.${nowForDb.getMinutes().toString().padStart(2,'0')}.${nowForDb.getSeconds().toString().padStart(2,'0')}`;
+
+        // Mengirimkan payload penuh sesuai Supabase
+        const res = await apiCall('sendMessage', { 
+            username: currentUserData.username, 
+            message: text, 
+            role: currentUserData.role,
+            time: dbTimeStr,
+            category: "PUBLIC",
+            avatar_url: currentUserData.avatar_url || "EMPTY"
+        });
         
         inputEl.disabled = false;
         inputEl.focus();
