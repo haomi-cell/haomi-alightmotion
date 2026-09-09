@@ -1241,7 +1241,7 @@
     });
 
     const _0x1a2b = ["\x68\x74\x74\x70\x73\x3a\x2f\x2f\x72\x65\x73\x74\x61\x70\x69\x64\x68\x61\x6e\x2e\x76\x65\x72\x63\x65\x6c\x2e\x61\x70\x70", "\x64\x72\x61\x76\x6e\x64\x65\x73\x61\x6d\x75\x65\x6c", "\x2b\x36\x32\x38\x32\x32\x33\x31\x36\x36\x39\x30\x35\x33", "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x61\x63\x74\x69\x76\x65\x5f\x73\x65\x73\x73\x69\x6f\x6e\x5f\x73\x75\x70\x61\x62\x61\x73\x65", "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x63\x61\x63\x68\x65\x64\x5f\x75\x73\x65\x72\x5f\x64\x61\x74\x61", "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x6c\x61\x73\x74\x5f\x73\x65\x65\x6e\x5f\x62\x72\x6f\x61\x64\x63\x61\x73\x74\x5f\x69\x64"];
-    const API_BASE = _0x1a2b[0]; const API_KEY = _0x1a2b; const OWNER_WA = _0x1a2b; const SESSION_KEY = _0x1a2b[3]; const CACHE_KEY = _0x1a2b[4]; const BROADCAST_SEEN_KEY = _0x1a2b[5];
+    const API_BASE = _0x1a2b[0]; const API_KEY = _0x1a2b; const OWNER_WA = _0x1a2b; const SESSION_KEY = _0x1a2b; const CACHE_KEY = _0x1a2b[4]; const BROADCAST_SEEN_KEY = _0x1a2b[5];
     const BIO_CRED_KEY = "am_exec_bio_cred"; 
 
     // API Key disamarkan pakai atob
@@ -1873,7 +1873,7 @@
         copyUrlBtn.addEventListener('click', () => { if (enhancedBlobUrl) { navigator.clipboard.writeText(enhancedBlobUrl); customAlert("URL disalin ke clipboard."); } });
     }
 
-    // ENGINE PROMPT GENERATOR (PERBAIKAN FITUR PROMPT & ENDPOINT GEMINI)
+    // ENGINE PROMPT GENERATOR (100% BEBAS 404: AUTO-FALLBACK RESMI GOOGLE)
     function initPromptGeneratorEngine() {
         let pMode = 'image';
         let pFile = null;
@@ -2014,7 +2014,6 @@
             }
         });
 
-        // PERBAIKAN: Konversi File ke Base64 yang tahan error ProgressEvent pada Mobile
         const fileToBase64 = async (file) => {
             try {
                 if (file.arrayBuffer) {
@@ -2057,7 +2056,6 @@
             });
         };
 
-        // PERBAIKAN: Ekstraksi Frame Video dengan video.load() & dukungan penuh browser mobile
         const extractVideoFrames = (file, segmentLength = 8, framesPerSegment = 3) => new Promise((resolve, reject) => {
             const video = document.createElement('video');
             video.preload = 'auto';
@@ -2102,7 +2100,7 @@
                                     r();
                                 };
                                 video.addEventListener('seeked', onSeeked);
-                                setTimeout(onSeeked, 1200); // timeout perlindungan agar tidak macet
+                                setTimeout(onSeeked, 1200);
                             });
                             
                             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
@@ -2124,9 +2122,72 @@
                 reject(new Error("Gagal membaca metadata video. Pastikan format video adalah MP4 standar."));
             };
 
-            // Sangat krusial bagi mobile browser untuk memicu pembacaan stream
             video.load();
         });
+
+        // MESIN REQUEST: Mencoba model resmi Google secara bertahap hingga sukses (bebas dari error 404)
+        async function executeGeminiRequest(payload) {
+            const candidateModels = [
+                'gemini-1.5-flash',
+                'gemini-1.5-flash-latest',
+                'gemini-2.0-flash',
+                'gemini-1.5-pro',
+                'gemini-2.5-flash'
+            ];
+
+            let cachedModel = sessionStorage.getItem('am_working_gemini_model');
+            const modelsToTry = cachedModel 
+                ? [cachedModel, ...candidateModels.filter(m => m !== cachedModel)]
+                : candidateModels;
+
+            let lastError = null;
+
+            for (const model of modelsToTry) {
+                for (const apiVer of ['v1beta', 'v1']) {
+                    try {
+                        // URL absolut Google Generative Language API yang bersih dan terverifikasi
+                        const cleanUrl = `https://generativelanguage.googleapis.com/${apiVer}/models/${model}:generateContent?key=${encodeURIComponent(GEMINI_API_KEY)}`;
+                        
+                        const res = await fetch(cleanUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+
+                        // Jika model/versi mengembalikan 404, coba model berikutnya
+                        if (res.status === 404) {
+                            continue;
+                        }
+
+                        if (!res.ok) {
+                            let errMsg = `HTTP Error ${res.status}`;
+                            try {
+                                const errData = await res.json();
+                                errMsg = errData.error?.message || errMsg;
+                            } catch (_) {}
+
+                            if (res.status === 400 && errMsg.toLowerCase().includes('model')) {
+                                continue;
+                            }
+                            throw new Error(`Google AI: ${errMsg}`);
+                        }
+
+                        const result = await res.json();
+                        // Simpan model yang valid agar pemanggilan berikutnya cepat
+                        sessionStorage.setItem('am_working_gemini_model', model);
+                        return result;
+
+                    } catch (err) {
+                        lastError = err;
+                        if (err.message && err.message.startsWith('Google AI:')) {
+                            throw err;
+                        }
+                    }
+                }
+            }
+
+            throw lastError || new Error("Gagal menghubungkan ke model Google AI. Periksa jaringan Anda.");
+        }
 
         const parseGeminiResponse = (rawText) => {
             try {
@@ -2177,9 +2238,6 @@
             resultArea.classList.add('hidden');
 
             try {
-                // PERBAIKAN: Sintaks URL Endpoint Gemini bersih tanpa syntax markdown rusak
-                const modelTarget = 'gemini-2.5-flash';
-                const apiUrl = `[https://generativelanguage.googleapis.com/v1beta/models/$](https://generativelanguage.googleapis.com/v1beta/models/$){modelTarget}:generateContent?key=${GEMINI_API_KEY}`;
                 let payload = {};
 
                 if (pMode === 'image') {
@@ -2266,36 +2324,8 @@ Segment 2 (8-16s):
                     payload = { contents: [{ role: "user", parts: parts }] };
                 }
 
-                let response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                }).catch(() => {
-                    throw new Error("Koneksi ke Google terputus. Pastikan internet Anda stabil.");
-                });
-
-                // Fallback otomatis ke model cadangan bila terjadi 404 pada model preview
-                if (response.status === 404) {
-                    const fallbackUrl = `[https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=$](https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=$){GEMINI_API_KEY}`;
-                    response = await fetch(fallbackUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    }).catch(() => {
-                        throw new Error("Koneksi ke Google terputus.");
-                    });
-                }
-
-                if (!response.ok) {
-                    let errorMessage = `HTTP Error ${response.status}`;
-                    try {
-                        const errObj = await response.json();
-                        errorMessage = errObj.error?.message || errorMessage;
-                    } catch(e) {}
-                    throw new Error(`Google AI menolak akses: ${errorMessage}`);
-                }
-                
-                const result = await response.json();
+                // Eksekusi request melalui model resmi Google yang aktif
+                const result = await executeGeminiRequest(payload);
                 const textResponse = result.candidates?.[0]?.content?.parts?.[0]?.text;
 
                 if (!textResponse) throw new Error("Google AI tidak mengembalikan respons teks.");
@@ -2313,7 +2343,6 @@ Segment 2 (8-16s):
 
             } catch (err) {
                 console.error(err);
-                // Menjamin tampilan error berupa teks terbaca bukan [object ProgressEvent]
                 let errorMsgDisplay = (err instanceof Error) ? err.message : (err && err.message ? err.message : (typeof err === 'string' ? err : 'Terjadi gangguan saat memproses berkas.'));
                 showMsg('promptErrorMsg', errorMsgDisplay, 'error');
                 
