@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="id" data-theme="dark">
 <head>
@@ -1996,6 +1997,9 @@
 
     if(topLogoutBtn) { topLogoutBtn.addEventListener('click', () => { customConfirm("Anda yakin ingin memutus koneksi sesi eksklusif ini?", () => { addActivityLog("Otorisasi Sistem", "Mengakhiri sesi eksekutif (Logout)", "Selesai", "var(--text-muted)"); setTimeout(() => { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(CACHE_KEY); closeProfileSheet(); switchView('loginView'); }, 300); }); }); }
     
+    // VARIABEL PENYIMPANAN JOB ID (DARI SYNOXCLOUD API)
+    let cachedJobId = "job_v1:default";
+
     if(sendBtn) {
         sendBtn.addEventListener('click', async () => {
             const email = document.getElementById('emailInput').value.trim(); 
@@ -2005,11 +2009,18 @@
             }
             sendBtn.innerHTML = 'Proses...'; sendBtn.disabled = true;
             try {
-                const res = await fetch(`${API_BASE}/api/am?action=send&apikey=${API_KEY}&email=${encodeURIComponent(email)}`); const data = await res.json();
-                if(data.status) { 
-                    cachedEmail = email; showMsg('appErrorMsg', 'Magic link dikirim. Cek surel Anda.', 'success'); 
+                const res = await fetch(`https://api.synoxcloud.xyz/am/send`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ gmail: email, apikey: "FREE" })
+                }); 
+                const data = await res.json();
+                if(data.status || data.success || res.ok) { 
+                    cachedEmail = email; 
+                    if(data.jobId) cachedJobId = data.jobId; // Simpan JobId jika diberikan oleh SynoxCloud
+                    showMsg('appErrorMsg', 'Magic link dikirim. Cek surel Anda.', 'success'); 
                     addActivityLog("Gateway Email", `Mengirim URL Magic Link ke alamat surel: ${email}`, "Terkirim", "var(--gold-primary)");
-                } else { showMsg('appErrorMsg', data.error || 'Gateway pengiriman gagal.', 'error'); }
+                } else { showMsg('appErrorMsg', data.message || data.error || 'Gateway pengiriman gagal.', 'error'); }
             } catch(e) { showMsg('appErrorMsg', 'Koneksi ke server terputus.', 'error'); }
             finally { sendBtn.textContent = 'Kirim'; sendBtn.disabled = false; }
         });
@@ -2024,8 +2035,13 @@
             }
             activateBtn.disabled = true; document.getElementById('btnDefault').classList.add('hidden'); document.getElementById('loaderContainer').classList.remove('hidden');
             try {
-                const res = await fetch(`${API_BASE}/api/am?action=verif&apikey=${API_KEY}&email=${encodeURIComponent(cachedEmail || email)}&url=${encodeURIComponent(magic)}`); const data = await res.json();
-                if(data.status) {
+                const res = await fetch(`https://api.synoxcloud.xyz/am/verif`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ jobId: cachedJobId, link: magic, apikey: "FREE" })
+                }); 
+                const data = await res.json();
+                if(data.status || data.success || res.ok) {
                     showMsg('appErrorMsg', 'Berhasil! Akun Anda telah terverifikasi premium.', 'success');
                     customAlert('Aktivasi Magic Link berhasil diverifikasi.');
                     addActivityLog("Lisensi Perangkat", `Verifikasi sukses via URL Magic Link`, "Selesai", "var(--success-light)");
@@ -2034,7 +2050,7 @@
                         let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 1); await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
                         currentUserData.limit_count = newLimit; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData);
                     }
-                } else { showMsg('appErrorMsg', data.error || 'Verifikasi lisensi ditolak sistem.', 'error'); }
+                } else { showMsg('appErrorMsg', data.message || data.error || 'Verifikasi lisensi ditolak sistem.', 'error'); }
             } catch(e) { showMsg('appErrorMsg', 'Galat internal server saat sinkronisasi.', 'error'); }
             finally { activateBtn.disabled = false; document.getElementById('btnDefault').classList.remove('hidden'); document.getElementById('loaderContainer').classList.add('hidden'); }
         });
@@ -2173,3 +2189,4 @@
 </script>
 </body>
 </html>
+```
