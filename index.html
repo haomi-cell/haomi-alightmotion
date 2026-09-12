@@ -1947,36 +1947,40 @@
 
     const loginBtn = document.getElementById('loginBtn'); const regBtn = document.getElementById('regBtn'); const topLogoutBtn = document.getElementById('topLogoutBtn'); const sendBtn = document.getElementById('sendBtn'); const activateBtn = document.getElementById('activateBtn');
 
-    let cachedJobId = null; // Variabel baru untuk menampung Job ID dari API SynoxCloud
+    let cachedJobId = null; 
 
     if(sendBtn) {
         sendBtn.addEventListener('click', async () => {
-            const email = document.getElementById('emailInput').value.trim(); 
+            const email = document.getElementById('emailInput').value.trim();
             if(!email) {
                 triggerErrorShake(['emailInput']);
                 return showMsg('appErrorMsg', 'Alamat email wajib diisi.', 'error');
             }
             sendBtn.innerHTML = 'Proses...'; sendBtn.disabled = true;
             try {
-                // Konfigurasi endpoint POST SynoxCloud untuk /am/send
                 const res = await fetch("https://api.synoxcloud.xyz/am/send", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ gmail: email, apikey: "FREE" })
-                }); 
+                });
+                
                 const data = await res.json();
                 
-                // Menangkap jobId yang diberikan server jika berhasil
-                if(data.jobId || data.status === true || data.success === true) { 
-                    cachedEmail = email; 
-                    cachedJobId = data.jobId || data.data?.jobId; // Simpan Job ID ke memori lokal sementara
-                    showMsg('appErrorMsg', 'Magic link dikirim. Cek surel Anda.', 'success'); 
-                    addActivityLog("Gateway Email", `Mengirim URL Magic Link ke alamat surel: ${email}`, "Terkirim", "var(--gold-primary)");
-                } else { 
-                    showMsg('appErrorMsg', data.message || data.error || 'Gateway pengiriman gagal.', 'error'); 
+                if (res.ok && (data.jobId || data.status === true || data.success === true)) {
+                    cachedEmail = email;
+                    cachedJobId = data.jobId || data.data?.jobId;
+                    showMsg('appErrorMsg', 'Magic link dikirim. Cek surel Anda.', 'success');
+                    addActivityLog("Gateway Email", `Mengirim URL Magic Link ke: ${email}`, "Terkirim", "var(--gold-primary)");
+                } else {
+                    let errMsg = data.message || data.error || 'Gateway pengiriman gagal.';
+                    // Menerjemahkan Error 409 menjadi pesan cooldown
+                    if (res.status === 409 || errMsg.includes('409')) {
+                        errMsg = 'Cooldown: Terlalu banyak permintaan. Tunggu 1-2 menit sebelum kirim ulang.';
+                    }
+                    showMsg('appErrorMsg', errMsg, 'error');
                 }
-            } catch(e) { 
-                showMsg('appErrorMsg', 'Koneksi ke server terputus.', 'error'); 
+            } catch(e) {
+                showMsg('appErrorMsg', 'Koneksi ke server terputus.', 'error');
             }
             finally { sendBtn.textContent = 'Kirim'; sendBtn.disabled = false; }
         });
@@ -1984,29 +1988,31 @@
 
     if(activateBtn) {
         activateBtn.addEventListener('click', async () => {
-            const email = document.getElementById('emailInput').value.trim(); const magic = document.getElementById('magicInput').value.trim();
+            const email = document.getElementById('emailInput').value.trim();
+            const magic = document.getElementById('magicInput').value.trim();
+            
             if(!email || !magic) {
                 triggerErrorShake(['emailInput', 'magicInput']);
                 return showMsg('appErrorMsg', 'Email atau tautan Magic Link belum diisi.', 'error');
             }
             
-            // Validasi lokal untuk memastikan user sudah melewati langkah 1 (memiliki Job ID)
             if(!cachedJobId) {
                 triggerErrorShake(['magicInput']);
-                return showMsg('appErrorMsg', 'Job ID tidak ditemukan di database. Gunakan tombol Kirim dulu sebelum Verifikasi.', 'error');
+                return showMsg('appErrorMsg', 'Sesi Job ID tidak ditemukan. Harap klik "Kirim" terlebih dahulu sebelum verifikasi.', 'error');
             }
 
             activateBtn.disabled = true; document.getElementById('btnDefault').classList.add('hidden'); document.getElementById('loaderContainer').classList.remove('hidden');
+            
             try {
-                // Konfigurasi endpoint POST SynoxCloud untuk /am/verif membawa jobId & link
                 const res = await fetch("https://api.synoxcloud.xyz/am/verif", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ jobId: cachedJobId, link: magic, apikey: "FREE" })
-                }); 
+                });
+                
                 const data = await res.json();
                 
-                if(data.status === true || data.success === true || (data.message && data.message.toLowerCase().includes('berhasil'))) {
+                if (res.ok && (data.status === true || data.success === true || (data.message && data.message.toLowerCase().includes('berhasil')))) {
                     showMsg('appErrorMsg', 'Berhasil! Akun Anda telah terverifikasi premium.', 'success');
                     customAlert('Aktivasi Magic Link berhasil diverifikasi.');
                     addActivityLog("Lisensi Perangkat", `Verifikasi sukses via URL Magic Link`, "Selesai", "var(--success-light)");
@@ -2015,11 +2021,15 @@
                         let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 1); await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
                         currentUserData.limit_count = newLimit; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData);
                     }
-                } else { 
-                    showMsg('appErrorMsg', data.message || data.error || 'Verifikasi lisensi ditolak sistem.', 'error'); 
+                } else {
+                    let errMsg = data.message || data.error || 'Verifikasi lisensi ditolak sistem.';
+                    if (res.status === 409 || errMsg.includes('409')) {
+                        errMsg = 'Terjadi konflik permintaan. Coba muat ulang aplikasi.';
+                    }
+                    showMsg('appErrorMsg', errMsg, 'error');
                 }
-            } catch(e) { 
-                showMsg('appErrorMsg', 'Galat internal server saat sinkronisasi.', 'error'); 
+            } catch(e) {
+                showMsg('appErrorMsg', 'Galat internal server saat sinkronisasi.', 'error');
             }
             finally { activateBtn.disabled = false; document.getElementById('btnDefault').classList.remove('hidden'); document.getElementById('loaderContainer').classList.add('hidden'); }
         });
