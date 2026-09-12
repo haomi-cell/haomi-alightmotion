@@ -1973,9 +1973,9 @@
                     addActivityLog("Gateway Email", `Mengirim URL Magic Link ke: ${email}`, "Terkirim", "var(--gold-primary)");
                 } else {
                     let errMsg = data.message || data.error || 'Gateway pengiriman gagal.';
-                    // Menerjemahkan Error 409 menjadi pesan cooldown
+                    // Menerjemahkan Error 409 menjadi pesan cooldown + menampilkan error aslinya
                     if (res.status === 409 || errMsg.includes('409')) {
-                        errMsg = 'Cooldown: Terlalu banyak permintaan. Tunggu 1-2 menit sebelum kirim ulang.';
+                        errMsg = `[Server API Menolak] Cooldown: API memblokir request karena terlalu sering. Tunggu beberapa menit atau gunakan email lain. (Raw: ${data.message || '409'})`;
                     }
                     showMsg('appErrorMsg', errMsg, 'error');
                 }
@@ -2024,7 +2024,7 @@
                 } else {
                     let errMsg = data.message || data.error || 'Verifikasi lisensi ditolak sistem.';
                     if (res.status === 409 || errMsg.includes('409')) {
-                        errMsg = 'Terjadi konflik permintaan. Coba muat ulang aplikasi.';
+                        errMsg = `[Server API Menolak] Terjadi konflik permintaan. (Raw: ${data.message || '409'})`;
                     }
                     showMsg('appErrorMsg', errMsg, 'error');
                 }
