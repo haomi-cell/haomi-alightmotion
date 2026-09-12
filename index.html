@@ -1316,8 +1316,12 @@
     async function getIPAddress() { try { const res = await fetch('https://api.ipify.org?format=json'); const data = await res.json(); return data.ip; } catch (e) { return 'Unknown'; } }
     async function generateAdvancedFingerprint() { return new Promise((resolve) => { try { const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d'); ctx.textBaseline = "top"; ctx.font = "14px 'Arial'"; ctx.fillStyle = "#f60"; ctx.fillRect(125, 1, 62, 20); ctx.fillStyle = "#069"; ctx.fillText("AlightMotionSupabase", 2, 15); const canvasData = canvas.toDataURL(); resolve('FP-' + Math.abs(canvasData.length).toString(36)); } catch (e) { resolve('FP-' + Math.random().toString(36).substring(2)); } }); }
 
-    let currentCaptchaAnswer = 0; let currentUserData = null; let cachedEmail = ''; let activeDepositId = null; let selectedAddLimitCount = 0; let activeBroadcastId = null;
+    let currentCaptchaAnswer = 0; let currentUserData = null; let activeDepositId = null; let selectedAddLimitCount = 0; let activeBroadcastId = null;
     let temporaryBioData = null; 
+    
+    // Variabel caching untuk Job ID dan Email API Alight Motion (Disimpan di Local Storage agar aman saat refresh)
+    let cachedJobId = localStorage.getItem('am_temp_jobid') || null;
+    let cachedEmail = localStorage.getItem('am_temp_email') || '';
 
     // --- BIOMETRIC LOGIC ---
     function checkBiometricAvailable() {
@@ -1947,8 +1951,6 @@
 
     const loginBtn = document.getElementById('loginBtn'); const regBtn = document.getElementById('regBtn'); const topLogoutBtn = document.getElementById('topLogoutBtn'); const sendBtn = document.getElementById('sendBtn'); const activateBtn = document.getElementById('activateBtn');
 
-    let cachedJobId = null; 
-
     if(sendBtn) {
         sendBtn.addEventListener('click', async () => {
             const email = document.getElementById('emailInput').value.trim();
@@ -1967,13 +1969,18 @@
                 const data = await res.json();
                 
                 if (res.ok && (data.jobId || data.status === true || data.success === true)) {
+                    const returnedJobId = data.jobId || data.data?.jobId;
+                    
+                    // Simpan ke memory dan Local Storage agar kebal refresh
                     cachedEmail = email;
-                    cachedJobId = data.jobId || data.data?.jobId;
+                    cachedJobId = returnedJobId;
+                    localStorage.setItem('am_temp_email', cachedEmail);
+                    if(cachedJobId) localStorage.setItem('am_temp_jobid', cachedJobId);
+                    
                     showMsg('appErrorMsg', 'Magic link dikirim. Cek surel Anda.', 'success');
                     addActivityLog("Gateway Email", `Mengirim URL Magic Link ke: ${email}`, "Terkirim", "var(--gold-primary)");
                 } else {
                     let errMsg = data.message || data.error || 'Gateway pengiriman gagal.';
-                    // Menerjemahkan Error 409 menjadi pesan cooldown + menampilkan error aslinya
                     if (res.status === 409 || errMsg.includes('409')) {
                         errMsg = `[Server API Menolak] Cooldown: API memblokir request karena terlalu sering. Tunggu beberapa menit atau gunakan email lain. (Raw: ${data.message || '409'})`;
                     }
@@ -1991,14 +1998,16 @@
             const email = document.getElementById('emailInput').value.trim();
             const magic = document.getElementById('magicInput').value.trim();
             
+            // Periksa email dan link dari input
             if(!email || !magic) {
                 triggerErrorShake(['emailInput', 'magicInput']);
                 return showMsg('appErrorMsg', 'Email atau tautan Magic Link belum diisi.', 'error');
             }
             
+            // Validasi Job ID yang tersimpan (di memory atau local storage)
             if(!cachedJobId) {
                 triggerErrorShake(['magicInput']);
-                return showMsg('appErrorMsg', 'Sesi Job ID tidak ditemukan. Harap klik "Kirim" terlebih dahulu sebelum verifikasi.', 'error');
+                return showMsg('appErrorMsg', 'Sesi Job ID tidak ditemukan. Harap klik "Kirim" terlebih dahulu sebelum melakukan verifikasi.', 'error');
             }
 
             activateBtn.disabled = true; document.getElementById('btnDefault').classList.add('hidden'); document.getElementById('loaderContainer').classList.remove('hidden');
@@ -2016,6 +2025,10 @@
                     showMsg('appErrorMsg', 'Berhasil! Akun Anda telah terverifikasi premium.', 'success');
                     customAlert('Aktivasi Magic Link berhasil diverifikasi.');
                     addActivityLog("Lisensi Perangkat", `Verifikasi sukses via URL Magic Link`, "Selesai", "var(--success-light)");
+                    
+                    // Bersihkan cache jika berhasil
+                    localStorage.removeItem('am_temp_jobid');
+                    cachedJobId = null;
                     
                     if(currentUserData && !parseBool(currentUserData.is_permanent) && currentUserData.role !== 'Owner') {
                         let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 1); await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
