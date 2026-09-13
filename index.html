@@ -1183,7 +1183,7 @@
         const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')} WIB`;
         
         logs.unshift({ title, desc, datetime: `${dayStr}, ${dateStr} - ${timeStr}`, statusText, statusColor });
-        if(logs.length > 30) logs.pop();
+        if(logs.length > 30) logs.pop(); // Batasi 30 log terakhir untuk performa
         
         localStorage.setItem(logKey, JSON.stringify(logs));
         renderActivityLogs();
@@ -1282,129 +1282,9 @@
         if (target) playClickSound(); 
     });
 
-    const _0x1a2b = [
-        "\x2b\x36\x32\x38\x32\x32\x33\x31\x36\x36\x39\x30\x35\x33", // +6282231669053
-        "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x61\x63\x74\x69\x76\x65\x5f\x73\x65\x73\x73\x69\x6f\x6e\x5f\x73\x75\x70\x61\x62\x61\x73\x65", // mshaomi_active_session_supabase
-        "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x63\x61\x63\x68\x65\x64\x5f\x75\x73\x65\x72\x5f\x64\x61\x74\x61", // mshaomi_cached_user_data
-        "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x6c\x61\x73\x74\x5f\x73\x65\x65\x6e\x5f\x62\x72\x6f\x61\x64\x63\x61\x73\x74\x5f\x69\x64" // mshaomi_last_seen_broadcast_id
-    ];
-    const OWNER_WA = _0x1a2b[0]; const SESSION_KEY = _0x1a2b[1]; const CACHE_KEY = _0x1a2b[2]; const BROADCAST_SEEN_KEY = _0x1a2b[3];
+    const _0x1a2b = ["\x68\x74\x74\x70\x73\x3a\x2f\x2f\x72\x65\x73\x74\x61\x70\x69\x64\x68\x61\x6e\x2e\x76\x65\x72\x63\x65\x6c\x2e\x61\x70\x70", "\x64\x72\x61\x76\x6e\x64\x65\x73\x61\x6d\x75\x65\x6c", "\x2b\x36\x32\x38\x32\x32\x33\x31\x36\x36\x39\x30\x35\x33", "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x61\x63\x74\x69\x76\x65\x5f\x73\x65\x73\x73\x69\x6f\x6e\x5f\x73\x75\x70\x61\x62\x61\x73\x65", "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x63\x61\x63\x68\x65\x64\x5f\x75\x73\x65\x72\x5f\x64\x61\x74\x61", "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x6c\x61\x73\x74\x5f\x73\x65\x65\x6e\x5f\x62\x72\x6f\x61\x64\x63\x61\x73\x74\x5f\x69\x64"];
+    const API_BASE = _0x1a2b[0]; const API_KEY = _0x1a2b[1]; const OWNER_WA = _0x1a2b[2]; const SESSION_KEY = _0x1a2b[3]; const CACHE_KEY = _0x1a2b[4]; const BROADCAST_SEEN_KEY = _0x1a2b[5];
     const BIO_CRED_KEY = "am_exec_bio_cred"; 
-
-    // --- ALIGHT MOTION API HANDLERS (SynoxCloud & KyzzNekoo Multi-Gateway) ---
-    let cachedJobId = '';
-
-    async function sendAmMagicLink(email) {
-        // Gateway 1: SynoxCloud API
-        try {
-            const res = await fetch('https://api.synoxcloud.xyz/am/send', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ gmail: email, apikey: 'FREE' })
-            });
-            const data = await res.json();
-            if (data.status === true || data.success === true || data.jobId || (data.data && data.data.jobId)) {
-                cachedJobId = data.jobId || (data.data && data.data.jobId) || '';
-                return { status: true, message: data.message || 'Magic link terkirim via SynoxCloud. Cek surel Anda.', data };
-            }
-        } catch (e) {
-            console.warn('SynoxCloud send error, mencoba gateway cadangan...', e);
-        }
-
-        // Gateway 2: KyzzNekoo v4 (POST)
-        try {
-            const res = await fetch('https://api.kyzznekoo.my.id/api/alightmotion/v4/magic-link', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: email, gmail: email })
-            });
-            const data = await res.json();
-            if (data.status === true || data.success === true) {
-                if (data.jobId || (data.data && data.data.jobId)) cachedJobId = data.jobId || data.data.jobId;
-                return { status: true, message: data.message || 'Magic link terkirim via KyzzNekoo v4. Cek surel Anda.', data };
-            }
-        } catch (e) {
-            console.warn('KyzzNekoo v4 error...', e);
-        }
-
-        // Gateway 3: KyzzNekoo v3 (GET)
-        try {
-            const res = await fetch(`https://api.kyzznekoo.my.id/api/alightmotion/v3/magic-link?email=${encodeURIComponent(email)}`);
-            const data = await res.json();
-            if (data.status === true || data.success === true) {
-                return { status: true, message: data.message || 'Magic link terkirim via KyzzNekoo v3. Cek surel Anda.', data };
-            }
-        } catch (e) {}
-
-        // Gateway 4: KyzzNekoo v1 (GET)
-        try {
-            const res = await fetch(`https://api.kyzznekoo.my.id/api/alightmotion/v1/magic-link?email=${encodeURIComponent(email)}`);
-            const data = await res.json();
-            if (data.status === true || data.success === true) {
-                return { status: true, message: data.message || 'Magic link terkirim via KyzzNekoo v1. Cek surel Anda.', data };
-            }
-            return { status: false, error: data.error || data.message || 'Gateway pengiriman gagal merespon.' };
-        } catch (e) {
-            return { status: false, error: 'Koneksi ke semua gateway pengiriman terputus.' };
-        }
-    }
-
-    async function verifAmMagicLink(email, magicUrl) {
-        // Gateway 1: SynoxCloud API
-        try {
-            const res = await fetch('https://api.synoxcloud.xyz/am/verif', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    jobId: cachedJobId || '',
-                    link: magicUrl,
-                    apikey: 'FREE'
-                })
-            });
-            const data = await res.json();
-            if (data.status === true || data.success === true || (data.message && /berhasil|success|premium/i.test(data.message))) {
-                return { status: true, message: data.message || 'Akun Anda berhasil diverifikasi premium.', data };
-            }
-        } catch (e) {
-            console.warn('SynoxCloud verif error, mencoba gateway cadangan...', e);
-        }
-
-        // Gateway 2: KyzzNekoo v4 (POST)
-        try {
-            const res = await fetch('https://api.kyzznekoo.my.id/api/alightmotion/v4/verif', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ link: magicUrl, url: magicUrl, jobId: cachedJobId || '' })
-            });
-            const data = await res.json();
-            if (data.status === true || data.success === true) {
-                return { status: true, message: data.message || 'Akun Anda berhasil diverifikasi premium.', data };
-            }
-        } catch (e) {
-            console.warn('KyzzNekoo v4 verif error...', e);
-        }
-
-        // Gateway 3: KyzzNekoo v3 (GET)
-        try {
-            const res = await fetch(`https://api.kyzznekoo.my.id/api/alightmotion/v3/applyPremium?link=${encodeURIComponent(magicUrl)}&email=${encodeURIComponent(email)}`);
-            const data = await res.json();
-            if (data.status === true || data.success === true) {
-                return { status: true, message: data.message || 'Akun Anda berhasil diverifikasi premium.', data };
-            }
-        } catch (e) {}
-
-        // Gateway 4: KyzzNekoo v1 (GET)
-        try {
-            const res = await fetch(`https://api.kyzznekoo.my.id/api/alightmotion/v1/applyPremium?link=${encodeURIComponent(magicUrl)}&email=${encodeURIComponent(email)}`);
-            const data = await res.json();
-            if (data.status === true || data.success === true) {
-                return { status: true, message: data.message || 'Akun Anda berhasil diverifikasi premium.', data };
-            }
-            return { status: false, error: data.error || data.message || 'Verifikasi lisensi ditolak sistem.' };
-        } catch (e) {
-            return { status: false, error: 'Gagal tersambung ke server verifikasi lisensi.' };
-        }
-    }
 
     async function apiCall(action, payload = {}) {
         try {
@@ -1709,7 +1589,7 @@
                 const currentLimit = user.limit_count ?? 3; massUpdateText('.disp-limit-label', "Sisa Kuota Akses"); numDisplays.forEach(el => { el.textContent = currentLimit; el.classList.remove('vip'); });
             }
             
-            renderActivityLogs();
+            renderActivityLogs(); // Render logs upon login
             
             switchView('appView'); document.getElementById('mainBottomNav').classList.remove('hidden');
             if(!document.querySelector('.nav-item.active')) switchTab('activator');
@@ -2116,7 +1996,6 @@
 
     if(topLogoutBtn) { topLogoutBtn.addEventListener('click', () => { customConfirm("Anda yakin ingin memutus koneksi sesi eksklusif ini?", () => { addActivityLog("Otorisasi Sistem", "Mengakhiri sesi eksekutif (Logout)", "Selesai", "var(--text-muted)"); setTimeout(() => { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(CACHE_KEY); closeProfileSheet(); switchView('loginView'); }, 300); }); }); }
     
-    // --- SEND MAGIC LINK ---
     if(sendBtn) {
         sendBtn.addEventListener('click', async () => {
             const email = document.getElementById('emailInput').value.trim(); 
@@ -2126,60 +2005,38 @@
             }
             sendBtn.innerHTML = 'Proses...'; sendBtn.disabled = true;
             try {
-                const res = await sendAmMagicLink(email);
-                if(res.status) { 
-                    cachedEmail = email; 
-                    showMsg('appErrorMsg', res.message || 'Magic link dikirim. Cek surel Anda.', 'success'); 
+                const res = await fetch(`${API_BASE}/api/am?action=send&apikey=${API_KEY}&email=${encodeURIComponent(email)}`); const data = await res.json();
+                if(data.status) { 
+                    cachedEmail = email; showMsg('appErrorMsg', 'Magic link dikirim. Cek surel Anda.', 'success'); 
                     addActivityLog("Gateway Email", `Mengirim URL Magic Link ke alamat surel: ${email}`, "Terkirim", "var(--gold-primary)");
-                } else { 
-                    showMsg('appErrorMsg', res.error || 'Gateway pengiriman gagal.', 'error'); 
-                }
-            } catch(e) { 
-                showMsg('appErrorMsg', 'Koneksi ke server terputus.', 'error'); 
-            } finally { 
-                sendBtn.textContent = 'Kirim'; 
-                sendBtn.disabled = false; 
-            }
+                } else { showMsg('appErrorMsg', data.error || 'Gateway pengiriman gagal.', 'error'); }
+            } catch(e) { showMsg('appErrorMsg', 'Koneksi ke server terputus.', 'error'); }
+            finally { sendBtn.textContent = 'Kirim'; sendBtn.disabled = false; }
         });
     }
 
-    // --- VERIFIKASI MAGIC LINK ---
     if(activateBtn) {
         activateBtn.addEventListener('click', async () => {
-            const email = document.getElementById('emailInput').value.trim(); 
-            const magic = document.getElementById('magicInput').value.trim();
+            const email = document.getElementById('emailInput').value.trim(); const magic = document.getElementById('magicInput').value.trim();
             if(!email || !magic) {
                 triggerErrorShake(['emailInput', 'magicInput']);
                 return showMsg('appErrorMsg', 'Email atau tautan Magic Link belum diisi.', 'error');
             }
-            activateBtn.disabled = true; 
-            document.getElementById('btnDefault').classList.add('hidden'); 
-            document.getElementById('loaderContainer').classList.remove('hidden');
-            
+            activateBtn.disabled = true; document.getElementById('btnDefault').classList.add('hidden'); document.getElementById('loaderContainer').classList.remove('hidden');
             try {
-                const res = await verifAmMagicLink(cachedEmail || email, magic);
-                if(res.status) {
-                    showMsg('appErrorMsg', res.message || 'Berhasil! Akun Anda telah terverifikasi premium.', 'success');
+                const res = await fetch(`${API_BASE}/api/am?action=verif&apikey=${API_KEY}&email=${encodeURIComponent(cachedEmail || email)}&url=${encodeURIComponent(magic)}`); const data = await res.json();
+                if(data.status) {
+                    showMsg('appErrorMsg', 'Berhasil! Akun Anda telah terverifikasi premium.', 'success');
                     customAlert('Aktivasi Magic Link berhasil diverifikasi.');
                     addActivityLog("Lisensi Perangkat", `Verifikasi sukses via URL Magic Link`, "Selesai", "var(--success-light)");
                     
                     if(currentUserData && !parseBool(currentUserData.is_permanent) && currentUserData.role !== 'Owner') {
-                        let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 1); 
-                        await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
-                        currentUserData.limit_count = newLimit; 
-                        localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); 
-                        window.loadAppView(currentUserData);
+                        let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 1); await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
+                        currentUserData.limit_count = newLimit; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData);
                     }
-                } else { 
-                    showMsg('appErrorMsg', res.error || 'Verifikasi lisensi ditolak sistem.', 'error'); 
-                }
-            } catch(e) { 
-                showMsg('appErrorMsg', 'Galat internal server saat sinkronisasi.', 'error'); 
-            } finally { 
-                activateBtn.disabled = false; 
-                document.getElementById('btnDefault').classList.remove('hidden'); 
-                document.getElementById('loaderContainer').classList.add('hidden'); 
-            }
+                } else { showMsg('appErrorMsg', data.error || 'Verifikasi lisensi ditolak sistem.', 'error'); }
+            } catch(e) { showMsg('appErrorMsg', 'Galat internal server saat sinkronisasi.', 'error'); }
+            finally { activateBtn.disabled = false; document.getElementById('btnDefault').classList.remove('hidden'); document.getElementById('loaderContainer').classList.add('hidden'); }
         });
     }
 
@@ -2198,13 +2055,14 @@
         }
 
         let htmlString = '';
-        const msgs = res.data.reverse();
+        const msgs = res.data.reverse(); // Asumsi API mengembalikan pesan terbaru di indeks awal, reverse untuk flow chat dari atas ke bawah
         
         msgs.forEach(msg => {
             const isMe = currentUserData && msg.username === currentUserData.username;
             const isOwner = msg.role === 'Owner';
             const badgeHtml = isOwner ? `<i class="fas fa-crown" style="color:var(--gold-primary); font-size:9px; margin-right:4px;"></i>` : '';
             
+            // Format waktu sederhana dari ISO string jika perlu
             let timeFmt = msg.created_at;
             try { 
                 const d = new Date(msg.created_at); 
@@ -2222,6 +2080,7 @@
             </div>`;
         });
         
+        // Cek jika scroll ada di paling bawah (auto scroll)
         const isScrolledToBottom = box.scrollHeight - box.clientHeight <= box.scrollTop + 50;
         box.innerHTML = htmlString;
         if(isScrolledToBottom || box.innerHTML.includes('loader-spinner')) {
@@ -2237,6 +2096,7 @@
         inputEl.value = '';
         inputEl.disabled = true;
 
+        // Optimistic UI Update
         const box = document.getElementById('chatMessagesBox');
         if(box.innerHTML.includes('Belum ada transmisi')) box.innerHTML = '';
         
@@ -2269,6 +2129,7 @@
         }
     });
     
+    // Kirim pesan dengan tombol Enter
     document.getElementById('chatInputMsg').addEventListener('keypress', function (e) {
         if (e.key === 'Enter') document.getElementById('btnSendChat').click();
     });
@@ -2279,6 +2140,7 @@
         const secChat = document.getElementById('sectionChat');
         const secOwn = document.getElementById('ownerPanel');
         
+        // Bersihkan interval chat jika keluar dari tab chat
         if(chatIntervalId) clearInterval(chatIntervalId);
 
         [secAct, secEnh, secChat, secOwn].forEach(el => { if(el) { el.style.opacity = '0'; el.style.transform = 'translateY(6px)'; setTimeout(() => el.classList.add('hidden'), 180); } });
@@ -2294,10 +2156,9 @@
             else if(tabName === 'chat') { 
                 secChat.classList.remove('hidden'); document.getElementById('btnTabChat').classList.add('active'); animateSectionIn(secChat); 
                 loadChatMessages();
-                chatIntervalId = setInterval(loadChatMessages, 8000);
+                chatIntervalId = setInterval(loadChatMessages, 8000); // Polling setiap 8 detik
             }
             else if(tabName === 'admin') { 
-                secOwn.classList.remove('hidden'); document.getElementById('toggleOwnerDashBtn').classList.addadmin') { 
                 secOwn.classList.remove('hidden'); document.getElementById('toggleOwnerDashBtn').classList.add('active'); renderMemberList(); animateSectionIn(secOwn); 
             }
         }, 180);
