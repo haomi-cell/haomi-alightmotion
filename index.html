@@ -2015,6 +2015,10 @@
                 if(data.status || data.success || data.jobId) {
                     cachedEmail = email;
                     cachedJobId = data.jobId || (data.data && data.data.jobId) || '';
+                    
+                    // Simpan ke localStorage agar tidak hilang saat buka aplikasi Gmail
+                    localStorage.setItem('am_cached_job_id', cachedJobId);
+                    
                     showMsg('appErrorMsg', 'Magic link dikirim. Cek surel Anda.', 'success');
                     addActivityLog("Gateway Email", `Mengirim URL Magic Link ke alamat surel: ${email}`, "Terkirim", "var(--gold-primary)");
                 } else {
@@ -2038,11 +2042,14 @@
             activateBtn.disabled = true; document.getElementById('btnDefault').classList.add('hidden'); document.getElementById('loaderContainer').classList.remove('hidden');
 
             try {
+                // Ambil Job ID dari RAM atau dari Storage (memori browser)
+                const currentJobId = cachedJobId || localStorage.getItem('am_cached_job_id') || "job_v1:default";
+                
                 const res = await fetch('https://api.synoxcloud.xyz/am/verif', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        jobId: cachedJobId || "job_v1:default",
+                        jobId: currentJobId,
                         link: magic,
                         apikey: 'FREE'
                     })
