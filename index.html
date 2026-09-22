@@ -1318,7 +1318,6 @@
     async function getIPAddress() { try { const res = await fetch('https://api.ipify.org?format=json'); const data = await res.json(); return data.ip; } catch (e) { return 'Unknown'; } }
     async function generateAdvancedFingerprint() { return new Promise((resolve) => { try { const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d'); ctx.textBaseline = "top"; ctx.font = "14px 'Arial'"; ctx.fillStyle = "#f60"; ctx.fillRect(125, 1, 62, 20); ctx.fillStyle = "#069"; ctx.fillText("AlightMotionSupabase", 2, 15); const canvasData = canvas.toDataURL(); resolve('FP-' + Math.abs(canvasData.length).toString(36)); } catch (e) { resolve('FP-' + Math.random().toString(36).substring(2)); } }); }
 
-
     // --- BIOMETRIC LOGIC ---
     function checkBiometricAvailable() {
         if(localStorage.getItem(BIO_CRED_KEY)) { document.getElementById('bioLoginWrapper').classList.remove('hidden'); } 
@@ -1997,6 +1996,38 @@
 
     if(topLogoutBtn) { topLogoutBtn.addEventListener('click', () => { customConfirm("Anda yakin ingin memutus koneksi sesi eksklusif ini?", () => { addActivityLog("Otorisasi Sistem", "Mengakhiri sesi eksekutif (Logout)", "Selesai", "var(--text-muted)"); setTimeout(() => { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(CACHE_KEY); closeProfileSheet(); switchView('loginView'); }, 300); }); }); }
     
+    // --- MAGIC LINK & EMAIL PERSISTENCE (PERBAIKAN) ---
+    const MAGIC_LINK_KEY = 'am_exec_magic_link';
+    const MAGIC_EMAIL_KEY = 'am_exec_magic_email';
+    const MAGIC_JOB_KEY = 'am_exec_job_id'; 
+
+    function initializeFormPersistence() {
+        const emailInput = document.getElementById('emailInput');
+        const magicInput = document.getElementById('magicInput');
+        
+        const savedEmail = localStorage.getItem(MAGIC_EMAIL_KEY);
+        const savedMagic = localStorage.getItem(MAGIC_LINK_KEY);
+        const savedJobId = localStorage.getItem(MAGIC_JOB_KEY);
+        
+        if (savedEmail && emailInput) emailInput.value = savedEmail;
+        if (savedMagic && magicInput) magicInput.value = savedMagic;
+        if (savedJobId) cachedJobId = savedJobId; 
+    }
+
+    if (document.getElementById('emailInput')) {
+        document.getElementById('emailInput').addEventListener('input', (e) => {
+            localStorage.setItem(MAGIC_EMAIL_KEY, e.target.value.trim());
+        });
+    }
+    if (document.getElementById('magicInput')) {
+        document.getElementById('magicInput').addEventListener('input', (e) => {
+            localStorage.setItem(MAGIC_LINK_KEY, e.target.value.trim());
+        });
+    }
+    
+    setTimeout(initializeFormPersistence, 200);
+
+    // --- TOMBOL KIRIM MAGIC LINK ---
     if(sendBtn) {
         sendBtn.addEventListener('click', async () => {
             const email = document.getElementById('emailInput').value.trim();
@@ -2004,7 +2035,9 @@
                 triggerErrorShake(['emailInput']);
                 return showMsg('appErrorMsg', 'Alamat email wajib diisi.', 'error');
             }
-            sendBtn.innerHTML = 'Proses...'; sendBtn.disabled = true;
+            sendBtn.innerHTML = 'Proses...'; 
+            sendBtn.disabled = true;
+            
             try {
                 const res = await fetch('https://api.synoxcloud.xyz/am/send', {
                     method: 'POST',
@@ -2012,12 +2045,13 @@
                     body: JSON.stringify({ gmail: email, apikey: 'FREE' })
                 });
                 const data = await res.json();
+                
                 if(data.status || data.success || data.jobId) {
                     cachedEmail = email;
                     cachedJobId = data.jobId || (data.data && data.data.jobId) || '';
                     
-                    // Simpan ke localStorage agar tidak hilang saat buka aplikasi Gmail
-                    localStorage.setItem('am_cached_job_id', cachedJobId);
+                    // SIMPAN JOB ID KE LOCAL STORAGE
+                    localStorage.setItem(MAGIC_JOB_KEY, cachedJobId);
                     
                     showMsg('appErrorMsg', 'Magic link dikirim. Cek surel Anda.', 'success');
                     addActivityLog("Gateway Email", `Mengirim URL Magic Link ke alamat surel: ${email}`, "Terkirim", "var(--gold-primary)");
@@ -2027,29 +2061,37 @@
             } catch(e) {
                 showMsg('appErrorMsg', 'Koneksi ke server terputus.', 'error');
             }
-            finally { sendBtn.textContent = 'Kirim'; sendBtn.disabled = false; }
+            finally { 
+                sendBtn.textContent = 'Kirim'; 
+                sendBtn.disabled = false; 
+            }
         });
     }
 
+    // --- TOMBOL VERIFIKASI MAGIC LINK ---
     if(activateBtn) {
         activateBtn.addEventListener('click', async () => {
             const email = document.getElementById('emailInput').value.trim();
             const magic = document.getElementById('magicInput').value.trim();
+            
             if(!email || !magic) {
                 triggerErrorShake(['emailInput', 'magicInput']);
                 return showMsg('appErrorMsg', 'Email atau tautan Magic Link belum diisi.', 'error');
             }
-            activateBtn.disabled = true; document.getElementById('btnDefault').classList.add('hidden'); document.getElementById('loaderContainer').classList.remove('hidden');
+            
+            activateBtn.disabled = true; 
+            document.getElementById('btnDefault').classList.add('hidden'); 
+            document.getElementById('loaderContainer').classList.remove('hidden');
+
+            // Pastikan jobId diambil dari cache atau localstorage
+            const activeJobId = cachedJobId || localStorage.getItem(MAGIC_JOB_KEY) || "job_v1:default";
 
             try {
-                // Ambil Job ID dari RAM atau dari Storage (memori browser)
-                const currentJobId = cachedJobId || localStorage.getItem('am_cached_job_id') || "job_v1:default";
-                
                 const res = await fetch('https://api.synoxcloud.xyz/am/verif', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        jobId: currentJobId,
+                        jobId: activeJobId, 
                         link: magic,
                         apikey: 'FREE'
                     })
@@ -2059,6 +2101,16 @@
                 if(data.status || data.success || (data.message && data.message.toLowerCase().includes('success'))) {
                     showMsg('appErrorMsg', 'Berhasil! Akun Anda telah terverifikasi premium.', 'success');
                     customAlert('Aktivasi Magic Link berhasil diverifikasi.');
+                    
+                    // BERSIHKAN LOCAL STORAGE SETELAH SUKSES
+                    localStorage.removeItem(MAGIC_LINK_KEY);
+                    localStorage.removeItem(MAGIC_EMAIL_KEY);
+                    localStorage.removeItem(MAGIC_JOB_KEY);
+                    
+                    document.getElementById('emailInput').value = '';
+                    document.getElementById('magicInput').value = '';
+                    cachedJobId = '';
+                    
                     addActivityLog("Lisensi Perangkat", `Verifikasi sukses via URL Magic Link`, "Selesai", "var(--success-light)");
 
                     if(currentUserData && !parseBool(currentUserData.is_permanent) && currentUserData.role !== 'Owner') {
