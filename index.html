@@ -1286,9 +1286,6 @@
     const API_BASE = _0x1a2b[0]; const API_KEY = _0x1a2b[1]; const OWNER_WA = _0x1a2b[2]; const SESSION_KEY = _0x1a2b[3]; const CACHE_KEY = _0x1a2b[4]; const BROADCAST_SEEN_KEY = _0x1a2b[5];
     const BIO_CRED_KEY = "am_exec_bio_cred"; 
 
-    let currentCaptchaAnswer = 0; let currentUserData = null; let cachedEmail = ''; let cachedJobId = ''; let activeDepositId = null; let selectedAddLimitCount = 0; let activeBroadcastId = null;
-    let temporaryBioData = null; 
-
     async function apiCall(action, payload = {}) {
         try {
             const res = await fetch(`/api/hub?action=${action}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
@@ -1317,6 +1314,9 @@
 
     async function getIPAddress() { try { const res = await fetch('https://api.ipify.org?format=json'); const data = await res.json(); return data.ip; } catch (e) { return 'Unknown'; } }
     async function generateAdvancedFingerprint() { return new Promise((resolve) => { try { const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d'); ctx.textBaseline = "top"; ctx.font = "14px 'Arial'"; ctx.fillStyle = "#f60"; ctx.fillRect(125, 1, 62, 20); ctx.fillStyle = "#069"; ctx.fillText("AlightMotionSupabase", 2, 15); const canvasData = canvas.toDataURL(); resolve('FP-' + Math.abs(canvasData.length).toString(36)); } catch (e) { resolve('FP-' + Math.random().toString(36).substring(2)); } }); }
+
+    let currentCaptchaAnswer = 0; let currentUserData = null; let cachedEmail = ''; let activeDepositId = null; let selectedAddLimitCount = 0; let activeBroadcastId = null;
+    let temporaryBioData = null; 
 
     // --- BIOMETRIC LOGIC ---
     function checkBiometricAvailable() {
@@ -1996,141 +1996,47 @@
 
     if(topLogoutBtn) { topLogoutBtn.addEventListener('click', () => { customConfirm("Anda yakin ingin memutus koneksi sesi eksklusif ini?", () => { addActivityLog("Otorisasi Sistem", "Mengakhiri sesi eksekutif (Logout)", "Selesai", "var(--text-muted)"); setTimeout(() => { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(CACHE_KEY); closeProfileSheet(); switchView('loginView'); }, 300); }); }); }
     
-    // --- MAGIC LINK & EMAIL PERSISTENCE (PERBAIKAN) ---
-    const MAGIC_LINK_KEY = 'am_exec_magic_link';
-    const MAGIC_EMAIL_KEY = 'am_exec_magic_email';
-    const MAGIC_JOB_KEY = 'am_exec_job_id'; 
-
-    function initializeFormPersistence() {
-        const emailInput = document.getElementById('emailInput');
-        const magicInput = document.getElementById('magicInput');
-        
-        const savedEmail = localStorage.getItem(MAGIC_EMAIL_KEY);
-        const savedMagic = localStorage.getItem(MAGIC_LINK_KEY);
-        const savedJobId = localStorage.getItem(MAGIC_JOB_KEY);
-        
-        if (savedEmail && emailInput) emailInput.value = savedEmail;
-        if (savedMagic && magicInput) magicInput.value = savedMagic;
-        if (savedJobId) cachedJobId = savedJobId; 
-    }
-
-    if (document.getElementById('emailInput')) {
-        document.getElementById('emailInput').addEventListener('input', (e) => {
-            localStorage.setItem(MAGIC_EMAIL_KEY, e.target.value.trim());
-        });
-    }
-    if (document.getElementById('magicInput')) {
-        document.getElementById('magicInput').addEventListener('input', (e) => {
-            localStorage.setItem(MAGIC_LINK_KEY, e.target.value.trim());
-        });
-    }
-    
-    setTimeout(initializeFormPersistence, 200);
-
-    // --- TOMBOL KIRIM MAGIC LINK ---
     if(sendBtn) {
         sendBtn.addEventListener('click', async () => {
-            const email = document.getElementById('emailInput').value.trim();
+            const email = document.getElementById('emailInput').value.trim(); 
             if(!email) {
                 triggerErrorShake(['emailInput']);
                 return showMsg('appErrorMsg', 'Alamat email wajib diisi.', 'error');
             }
-            sendBtn.innerHTML = 'Proses...'; 
-            sendBtn.disabled = true;
-            
+            sendBtn.innerHTML = 'Proses...'; sendBtn.disabled = true;
             try {
-                const res = await fetch('https://api.synoxcloud.xyz/am/send', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ gmail: email, apikey: 'FREE' })
-                });
-                const data = await res.json();
-                
-                if(data.status || data.success || data.jobId) {
-                    cachedEmail = email;
-                    cachedJobId = data.jobId || (data.data && data.data.jobId) || '';
-                    
-                    // SIMPAN JOB ID KE LOCAL STORAGE
-                    localStorage.setItem(MAGIC_JOB_KEY, cachedJobId);
-                    
-                    showMsg('appErrorMsg', 'Magic link dikirim. Cek surel Anda.', 'success');
+                const res = await fetch(`${API_BASE}/api/am?action=send&apikey=${API_KEY}&email=${encodeURIComponent(email)}`); const data = await res.json();
+                if(data.status) { 
+                    cachedEmail = email; showMsg('appErrorMsg', 'Magic link dikirim. Cek surel Anda.', 'success'); 
                     addActivityLog("Gateway Email", `Mengirim URL Magic Link ke alamat surel: ${email}`, "Terkirim", "var(--gold-primary)");
-                } else {
-                    showMsg('appErrorMsg', data.error || data.message || 'Gateway pengiriman gagal.', 'error');
-                }
-            } catch(e) {
-                showMsg('appErrorMsg', 'Koneksi ke server terputus.', 'error');
-            }
-            finally { 
-                sendBtn.textContent = 'Kirim'; 
-                sendBtn.disabled = false; 
-            }
+                } else { showMsg('appErrorMsg', data.error || 'Gateway pengiriman gagal.', 'error'); }
+            } catch(e) { showMsg('appErrorMsg', 'Koneksi ke server terputus.', 'error'); }
+            finally { sendBtn.textContent = 'Kirim'; sendBtn.disabled = false; }
         });
     }
 
-    // --- TOMBOL VERIFIKASI MAGIC LINK ---
     if(activateBtn) {
         activateBtn.addEventListener('click', async () => {
-            const email = document.getElementById('emailInput').value.trim();
-            const magic = document.getElementById('magicInput').value.trim();
-            
+            const email = document.getElementById('emailInput').value.trim(); const magic = document.getElementById('magicInput').value.trim();
             if(!email || !magic) {
                 triggerErrorShake(['emailInput', 'magicInput']);
                 return showMsg('appErrorMsg', 'Email atau tautan Magic Link belum diisi.', 'error');
             }
-            
-            activateBtn.disabled = true; 
-            document.getElementById('btnDefault').classList.add('hidden'); 
-            document.getElementById('loaderContainer').classList.remove('hidden');
-
-            // Pastikan jobId diambil dari cache atau localstorage
-            const activeJobId = cachedJobId || localStorage.getItem(MAGIC_JOB_KEY) || "job_v1:default";
-
+            activateBtn.disabled = true; document.getElementById('btnDefault').classList.add('hidden'); document.getElementById('loaderContainer').classList.remove('hidden');
             try {
-                const res = await fetch('https://api.synoxcloud.xyz/am/verif', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        jobId: activeJobId, 
-                        link: magic,
-                        apikey: 'FREE'
-                    })
-                });
-                const data = await res.json();
-
-                if(data.status || data.success || (data.message && data.message.toLowerCase().includes('success'))) {
+                const res = await fetch(`${API_BASE}/api/am?action=verif&apikey=${API_KEY}&email=${encodeURIComponent(cachedEmail || email)}&url=${encodeURIComponent(magic)}`); const data = await res.json();
+                if(data.status) {
                     showMsg('appErrorMsg', 'Berhasil! Akun Anda telah terverifikasi premium.', 'success');
                     customAlert('Aktivasi Magic Link berhasil diverifikasi.');
-                    
-                    // BERSIHKAN LOCAL STORAGE SETELAH SUKSES
-                    localStorage.removeItem(MAGIC_LINK_KEY);
-                    localStorage.removeItem(MAGIC_EMAIL_KEY);
-                    localStorage.removeItem(MAGIC_JOB_KEY);
-                    
-                    document.getElementById('emailInput').value = '';
-                    document.getElementById('magicInput').value = '';
-                    cachedJobId = '';
-                    
                     addActivityLog("Lisensi Perangkat", `Verifikasi sukses via URL Magic Link`, "Selesai", "var(--success-light)");
-
+                    
                     if(currentUserData && !parseBool(currentUserData.is_permanent) && currentUserData.role !== 'Owner') {
-                        let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 1);
-                        await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
-                        currentUserData.limit_count = newLimit;
-                        localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData));
-                        window.loadAppView(currentUserData);
+                        let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 1); await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
+                        currentUserData.limit_count = newLimit; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData);
                     }
-                } else {
-                    showMsg('appErrorMsg', data.error || data.message || 'Verifikasi lisensi ditolak sistem.', 'error');
-                }
-            } catch(e) {
-                showMsg('appErrorMsg', 'Galat internal server saat sinkronisasi.', 'error');
-            }
-            finally {
-                activateBtn.disabled = false;
-                document.getElementById('btnDefault').classList.remove('hidden');
-                document.getElementById('loaderContainer').classList.add('hidden');
-            }
+                } else { showMsg('appErrorMsg', data.error || 'Verifikasi lisensi ditolak sistem.', 'error'); }
+            } catch(e) { showMsg('appErrorMsg', 'Galat internal server saat sinkronisasi.', 'error'); }
+            finally { activateBtn.disabled = false; document.getElementById('btnDefault').classList.remove('hidden'); document.getElementById('loaderContainer').classList.add('hidden'); }
         });
     }
 
