@@ -1041,6 +1041,32 @@
     </div>
   </div>
 
+  <!-- SECTION: WA REACTION -->
+  <div id="sectionReact" class="hidden">
+    <div class="glass-card">
+      <div class="title-lg">WA Channel Reactor</div>
+      <div class="text-sub" style="margin-bottom: 20px;">Kirim reaksi otomatis (VIP) nang saluran WhatsApp.</div>
+      
+      <div class="form-group">
+        <label>URL Saluran WhatsApp</label>
+        <input type="url" id="waReactUrl" class="glass-input" placeholder="https://whatsapp.com/channel/..." />
+      </div>
+      
+      <div class="form-group" style="margin-bottom: 22px;">
+        <label>Emoji Reaksi</label>
+        <input type="text" id="waReactEmoji" class="glass-input" placeholder="Conto: 🙏🏻🙂🤧" />
+      </div>
+      
+      <button id="btnSendReaction" class="btn btn-primary click-sound">
+        <i class="fab fa-whatsapp"></i> Eksekusi Reaksi
+      </button>
+
+      <div id="reactStatusMessage" class="message-box" style="margin-top: 18px;">
+        <i class="fas fa-info-circle"></i> <span id="reactStatusText"></span>
+      </div>
+    </div>
+  </div>
+
   <!-- SECTION: OWNER PANEL -->
   <div id="ownerPanel" class="hidden">
     <div class="glass-card">
@@ -1081,6 +1107,9 @@
   </div>
   <div class="nav-item click-sound" id="btnTabChat" onclick="switchTab('chat')">
     <i class="fas fa-comments"></i><span>Forum</span>
+  </div>
+  <div class="nav-item click-sound" id="btnTabReact" onclick="switchTab('react')">
+    <i class="fab fa-whatsapp"></i><span>React</span>
   </div>
   <div class="nav-item hidden click-sound" id="toggleOwnerDashBtn" onclick="switchTab('admin')">
     <i class="fas fa-shield-halved"></i><span>Admin</span>
@@ -2144,15 +2173,69 @@
         if (e.key === 'Enter') document.getElementById('btnSendChat').click();
     });
 
+    // Menambah event listener kanggo tombol WA React
+    const btnSendReaction = document.getElementById('btnSendReaction');
+    if (btnSendReaction) {
+        btnSendReaction.addEventListener('click', async () => {
+            const urlVal = document.getElementById('waReactUrl').value.trim();
+            const emojiVal = document.getElementById('waReactEmoji').value.trim();
+
+            if (!urlVal || !emojiVal) {
+                triggerErrorShake(['waReactUrl', 'waReactEmoji']);
+                return showMsg('reactStatusMessage', 'URL lan Emoji kudu diisi.', 'error');
+            }
+
+            btnSendReaction.innerHTML = '<div class="loader-spinner" style="width:13px;height:13px; border-width:2px; border-top-color:#111;"></div> Memproses...';
+            btnSendReaction.disabled = true;
+
+            try {
+                const res = await fetch('/api/reactch', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url: urlVal, reaction: emojiVal })
+                });
+                const data = await res.json();
+                
+                if (data.statusCode === 200 || data.status === true) {
+                    showMsg('reactStatusMessage', 'Mantap! Reaction VIP sukses mlebu antrean.', 'success');
+                    addActivityLog("WA Reactor", `Kirim reaksi ${emojiVal} nang saluran WA`, "-1 Limit", "var(--success-light)");
+                    
+                    if(currentUserData && !parseBool(currentUserData.is_permanent) && currentUserData.role !== 'Owner') {
+                        let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 1); 
+                        await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
+                        currentUserData.limit_count = newLimit; 
+                        localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); 
+                        window.loadAppView(currentUserData);
+                    }
+                } else {
+                    showMsg('reactStatusMessage', data.message || 'Gagal ngirim reaksi.', 'error');
+                }
+            } catch (err) {
+                showMsg('reactStatusMessage', 'Koneksi API macet/putus.', 'error');
+            } finally {
+                btnSendReaction.innerHTML = '<i class="fab fa-whatsapp"></i> Eksekusi Reaksi';
+                btnSendReaction.disabled = false;
+            }
+        });
+    }
+
+    // Fungsi SwitchTab sing wis dimodifikasi kanggo nampung Tab WA React
     window.switchTab = function(tabName) { 
         const secAct = document.getElementById('sectionActivator'); 
         const secEnh = document.getElementById('sectionEnhancer'); 
         const secChat = document.getElementById('sectionChat');
         const secOwn = document.getElementById('ownerPanel');
+        const secReact = document.getElementById('sectionReact');
         
         if(chatIntervalId) clearInterval(chatIntervalId);
 
-        [secAct, secEnh, secChat, secOwn].forEach(el => { if(el) { el.style.opacity = '0'; el.style.transform = 'translateY(6px)'; setTimeout(() => el.classList.add('hidden'), 180); } });
+        [secAct, secEnh, secChat, secOwn, secReact].forEach(el => { 
+            if(el) { 
+                el.style.opacity = '0'; 
+                el.style.transform = 'translateY(6px)'; 
+                setTimeout(() => el.classList.add('hidden'), 180); 
+            } 
+        });
         document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active')); 
         
         setTimeout(() => {
@@ -2166,6 +2249,9 @@
                 secChat.classList.remove('hidden'); document.getElementById('btnTabChat').classList.add('active'); animateSectionIn(secChat); 
                 loadChatMessages();
                 chatIntervalId = setInterval(loadChatMessages, 8000); 
+            }
+            else if(tabName === 'react') { 
+                secReact.classList.remove('hidden'); document.getElementById('btnTabReact').classList.add('active'); animateSectionIn(secReact); 
             }
             else if(tabName === 'admin') { 
                 secOwn.classList.remove('hidden'); document.getElementById('toggleOwnerDashBtn').classList.add('active'); renderMemberList(); animateSectionIn(secOwn); 
