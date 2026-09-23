@@ -5,57 +5,8 @@ const supabaseUrl = process.env.SUPABASE_URL || '';
 const supabaseKey = process.env.SUPABASE_SERVICE_KEY || '';
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-// ==========================================
-// --- CLASS GATEWAY NEVAPEDIA ---
-// ==========================================
-class NevapediaPay {
-    constructor() {
-        this.apiKey = 'SKY_45a18f8910ed4fb2';
-        this.baseURL = 'https://app.nevapedia.com/api';
-    }
-
-    async _get(endpoint, params = {}) {
-        params.apikey = this.apiKey;
-        try {
-            const response = await axios.get(`${this.baseURL}${endpoint}`, { params });
-            return response.data;
-        } catch (error) {
-            if (error.response) return { error: true, detail: error.response.data };
-            return { error: true, message: error.message };
-        }
-    }
-
-    async cekSaldo() {
-        return await this._get('/balance');
-    }
-
-    async buatInvoice(amount) {
-        return await this._get('/invoice', { amount: amount });
-    }
-
-    async cekStatusInvoice(invoiceId) {
-        return await this._get('/invoice/status', { invoice_id: invoiceId });
-    }
-
-    async metodeWithdraw() {
-        return await this._get('/withdraw/methods');
-    }
-
-    async withdraw(amount, method, accountNumber, instant = false) {
-        return await this._get('/withdraw', {
-            amount: amount,
-            method: method,
-            account_number: accountNumber,
-            instant: instant ? 'true' : 'false'
-        });
-    }
-
-    async cekStatusWithdraw(withdrawId) {
-        return await this._get('/withdraw/status', { id: withdrawId });
-    }
-}
-
-const pembayaran = new NevapediaPay();
+const RAMASHOP_BASE_URL = "https://ramashop.my.id/api/public";
+const RAMASHOP_API_KEY = "rg_ea029ad8b5262570682db8bbc92a43";
 
 export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -102,6 +53,7 @@ export default async function handler(req, res) {
                     return res.status(200).json({ status: false, error: 'Akun ini telah ditangguhkan.' });
                 }
 
+                // Proteksi khusus Owner
                 if (username.toUpperCase() === 'HAOMI' || data.role === 'Owner') {
                     data.role = 'Owner';
                     data.is_permanent = true;
@@ -120,6 +72,7 @@ export default async function handler(req, res) {
                     return res.status(200).json({ status: false, error: 'Semua kolom registrasi wajib diisi.' });
                 }
 
+                // Cek duplikasi username
                 const { data: existingUser } = await supabase.from('users').select('username').eq('username', username);
                 if (existingUser && existingUser.length > 0) {
                     return res.status(200).json({ status: false, error: 'Username sudah digunakan.' });
@@ -198,7 +151,13 @@ export default async function handler(req, res) {
                 }
 
                 const { data, error } = await supabase.from('forum_messages').insert([{
-                    username, role, category, message, time, avatar_url, created_at: new Date().toISOString()
+                    username,
+                    role,
+                    category,
+                    message,
+                    time,
+                    avatar_url,
+                    created_at: new Date().toISOString()
                 }]).select();
 
                 if (error) {
@@ -210,10 +169,16 @@ export default async function handler(req, res) {
 
             case 'getMessages':
             case 'getFeedbacks': {
-                const { data, error } = await supabase.from('forum_messages').select('*').order('created_at', { ascending: true }).limit(100);
+                const { data, error } = await supabase
+                    .from('forum_messages')
+                    .select('*')
+                    .order('created_at', { ascending: true })
+                    .limit(100);
+
                 if (error) {
                     return res.status(200).json({ status: false, error: 'Supabase Error: ' + error.message });
                 }
+
                 return res.status(200).json({ status: true, data: data || [] });
             }
 
@@ -222,78 +187,36 @@ export default async function handler(req, res) {
                     return res.status(200).json({ status: false, error: 'ID pesan tidak ditemukan.' });
                 }
                 const { error } = await supabase.from('forum_messages').delete().eq('id', body.id);
-                if (error) return res.status(200).json({ status: false, error: error.message });
+                if (error) {
+                    return res.status(200).json({ status: false, error: error.message });
+                }
                 return res.status(200).json({ status: true });
             }
 
-            // ==========================================
-            // --- ENDPOINT QRIS NEVAPEDIA ---
-            // ==========================================
+            // --- ENDPOINT QRIS RAMASHOP ---
             case 'createQris': {
-                if (!body.amount) {
-                    return res.status(200).json({ status: false, error: 'Amount tidak valid' });
-                }
-
-                const invoiceData = await pembayaran.buatInvoice(body.amount);
-                if (invoiceData.error) {
-                    return res.status(200).json({ status: false, error: invoiceData.detail?.message || invoiceData.message || 'Gagal membuat invoice.' });
-                }
-                return res.status(200).json({ status: true, data: invoiceData });
+                const response = await axios.post(`${RAMASHOP_BASE_URL}/deposit/create`, {
+                    amount: body.amount,
+                    method: "qris"
+                }, {
+                    headers: {
+                        "X-API-Key": RAMASHOP_API_KEY,
+                        "Content-Type": "application/json"
+                    },
+                    timeout: 20000
+                });
+                return res.status(200).json({ status: true, data: response.data });
             }
 
             case 'checkQris': {
-                const targetId = body.invoiceId || body.depositId;
-                if (!targetId) {
-                    return res.status(200).json({ status: false, error: 'Invoice ID tidak ditemukan' });
-                }
-
-                const statusData = await pembayaran.cekStatusInvoice(targetId);
-                if (statusData.error) {
-                    return res.status(200).json({ status: false, error: statusData.detail?.message || statusData.message || 'Gagal mengecek status pembayaran.' });
-                }
-                return res.status(200).json({ status: true, data: statusData });
-            }
-
-            // ==========================================
-            // --- ENDPOINT ALIGHT MOTION (AM) API ---
-            // ==========================================
-            case 'sendMagicLink': {
-                if (!body.email) {
-                    return res.status(200).json({ status: false, error: 'Email wajib diisi' });
-                }
-                
-                try {
-                    const response = await axios.get(`https://api.jerexd.my.id/api/am`, {
-                        params: {
-                            action: 'send',
-                            apikey: 'jere_sTl9OLzPIyMn', // API Key diamankan di server
-                            email: body.email
-                        }
-                    });
-                    return res.status(200).json(response.data);
-                } catch (error) {
-                    return res.status(200).json({ status: false, error: 'Gagal menghubungi server AM (Jerexd).' });
-                }
-            }
-
-            case 'verifMagicLink': {
-                if (!body.email || !body.url) {
-                    return res.status(200).json({ status: false, error: 'Email dan URL wajib diisi' });
-                }
-                
-                try {
-                    const response = await axios.get(`https://api.jerexd.my.id/api/am`, {
-                        params: {
-                            action: 'verif',
-                            apikey: 'jere_sTl9OLzPIyMn', // API Key diamankan di server
-                            email: body.email,
-                            url: body.url
-                        }
-                    });
-                    return res.status(200).json(response.data);
-                } catch (error) {
-                    return res.status(200).json({ status: false, error: 'Gagal memverifikasi lisensi.' });
-                }
+                const response = await axios.get(`${RAMASHOP_BASE_URL}/deposit/status/${body.depositId}`, {
+                    headers: {
+                        "X-API-Key": RAMASHOP_API_KEY,
+                        "Content-Type": "application/json"
+                    },
+                    timeout: 20000
+                });
+                return res.status(200).json({ status: true, data: response.data });
             }
 
             default:
