@@ -2216,7 +2216,7 @@
     window.closeProfileSheet = function() { document.getElementById('profileSheet').classList.remove('show'); };
     document.getElementById('profileSheet').addEventListener('click', (e) => { if (e.target.id === 'profileSheet') closeProfileSheet(); });
 
-    // --- WA CHANNEL REACTOR (Direct API seperti cURL & Node.js) ---
+    // --- WA CHANNEL REACTOR (Menggunakan Proxy untuk bypass blokir browser CORS) ---
     const btnSendReact = document.getElementById('btnSendReact');
     if (btnSendReact) {
         btnSendReact.addEventListener('click', async () => {
@@ -2232,11 +2232,14 @@
             
             btnSendReact.disabled = true; 
             btnText.classList.add('hidden'); 
-            loader.classList.remove('hidden');
+            loader.classList.add('hidden'); // Sembunyikan loader sementara tampilkan proses
             
             try {
-                const endpoint = 'https://api.jerexd.my.id/api/whatsapp/reactch?apikey=jere_sTl9OLzPIyMn';
-                const response = await fetch(endpoint, {
+                // Menggunakan corsproxy.io agar browser mengizinkan pengiriman POST ke API Jerexd
+                const targetApi = 'https://api.jerexd.my.id/api/whatsapp/reactch?apikey=jere_sTl9OLzPIyMn';
+                const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(targetApi);
+                
+                const response = await fetch(proxyUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ url: urlInput, reaction: emojiInput })
@@ -2245,13 +2248,13 @@
                 const data = await response.json();
                 
                 if(data.status || data.statusCode === 200) {
-                    showMsg('reactMsgBox', `Berhasil! Reaksi ${data.result?.reaction || ''} dikirim.`, 'success');
+                    showMsg('reactMsgBox', `Berhasil! Reaksi dikirim ke antrean.`, 'success');
                     addActivityLog("WA Reactor", `Eksekusi reaksi ke saluran WA target`, "Selesai", "var(--success-light)");
                 } else { 
                     showMsg('reactMsgBox', data.error || data.message || 'Gagal memproses reaksi.', 'error'); 
                 }
             } catch(e) { 
-                showMsg('reactMsgBox', 'Koneksi API Gagal: ' + e.message, 'error'); 
+                showMsg('reactMsgBox', 'Koneksi Gagal: ' + e.message, 'error'); 
             } finally { 
                 btnSendReact.disabled = false; 
                 btnText.classList.remove('hidden'); 
