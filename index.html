@@ -1113,9 +1113,7 @@
          </div>
          <button onclick="clearActivityLogs()" style="background:none; border:none; color:var(--danger-light); font-size:9px; cursor:pointer; text-transform:uppercase; font-weight:700; letter-spacing:0.5px;"><i class="fas fa-trash"></i> Bersihkan</button>
        </div>
-       <div class="data-list" id="activityLogList" style="max-height: 250px; overflow-y: auto; padding-right: 4px;">
-          <!-- Log akan di-render di sini oleh JavaScript -->
-       </div>
+       <div class="data-list" id="activityLogList" style="max-height: 250px; overflow-y: auto; padding-right: 4px;"></div>
     </div>
 
     <div style="background: var(--surface-light); border-radius: 12px; border: 1px solid var(--border-thin); padding: 15px; margin-bottom: 16px;">
@@ -1183,7 +1181,7 @@
         const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')} WIB`;
         
         logs.unshift({ title, desc, datetime: `${dayStr}, ${dateStr} - ${timeStr}`, statusText, statusColor });
-        if(logs.length > 30) logs.pop(); // Batasi 30 log terakhir untuk performa
+        if(logs.length > 30) logs.pop();
         
         localStorage.setItem(logKey, JSON.stringify(logs));
         renderActivityLogs();
@@ -1261,7 +1259,7 @@
         });
     }
 
-    // --- SYNTHESIZER AUDIO FEEDBACK & HAPTIC ---
+    // --- AUDIO & FEEDBACK ---
     let audioCtx = null;
     function playClickSound() {
         try {
@@ -1282,8 +1280,13 @@
         if (target) playClickSound(); 
     });
 
-    const _0x1a2b = ["\x68\x74\x74\x70\x73\x3a\x2f\x2f\x72\x65\x73\x74\x61\x70\x69\x64\x68\x61\x6e\x2e\x76\x65\x72\x63\x65\x6c\x2e\x61\x70\x70", "\x64\x72\x61\x76\x6e\x64\x65\x73\x61\x6d\x75\x65\x6c", "\x2b\x36\x32\x38\x32\x32\x33\x31\x36\x36\x39\x30\x35\x33", "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x61\x63\x74\x69\x76\x65\x5f\x73\x65\x73\x73\x69\x6f\x6e\x5f\x73\x75\x70\x61\x62\x61\x73\x65", "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x63\x61\x63\x68\x65\x64\x5f\x75\x73\x65\x72\x5f\x64\x61\x74\x61", "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x6c\x61\x73\x74\x5f\x73\x65\x65\x6e\x5f\x62\x72\x6f\x61\x64\x63\x61\x73\x74\x5f\x69\x64"];
-    const API_BASE = _0x1a2b[0]; const API_KEY = _0x1a2b[1]; const OWNER_WA = _0x1a2b[2]; const SESSION_KEY = _0x1a2b[3]; const CACHE_KEY = _0x1a2b[4]; const BROADCAST_SEEN_KEY = _0x1a2b[5];
+    // --- ENDPOINT CONFIGURATION ---
+    const API_BASE = 'https://api.jerexd.my.id';
+    const API_KEY = 'jere_sTl9OLzPIyMn';
+    const OWNER_WA = '+6282231669053';
+    const SESSION_KEY = 'mshaomi_active_session_supabase';
+    const CACHE_KEY = 'mshaomi_cached_user_data';
+    const BROADCAST_SEEN_KEY = 'mshaomi_last_seen_broadcast_id';
     const BIO_CRED_KEY = "am_exec_bio_cred"; 
 
     async function apiCall(action, payload = {}) {
@@ -1293,7 +1296,6 @@
         } catch (e) { return { status: false, error: 'Network Error' }; }
     }
 
-    // Modal Bantuan
     window.openHelpModal = function() { document.getElementById('helpModal').classList.add('show'); };
     window.closeHelpModal = function() { document.getElementById('helpModal').classList.remove('show'); };
 
@@ -1410,7 +1412,7 @@
     };
     window.skipBiometricSetup = function() { document.getElementById('bioSetupModal').classList.remove('show'); if(temporaryBioData) window.loadAppView(temporaryBioData.resData); };
 
-    // --- LIMIT PURCHASING LOGIC ---
+    // --- NEVAPEDIA LIMIT PURCHASING LOGIC ---
     const limitPackages = [
         { limit: 4, price: 1200, label: "4" }, { limit: 10, price: 3500, label: "10" },
         { limit: 18, price: 4700, label: "18" }, { limit: 20, price: 5000, label: "20" },
@@ -1433,24 +1435,39 @@
     window.backToLimitSelect = function() { document.getElementById('selectLimitView').classList.remove('hidden'); document.getElementById('qrisPaymentView').classList.add('hidden'); };
 
     async function createQrisForLimit(limitCount, price, labelName) {
-        selectedAddLimitCount = limitCount; customAlert("Menginisialisasi gateway QRIS...");
+        selectedAddLimitCount = limitCount; customAlert("Menginisialisasi gateway Nevapedia...");
         const res = await apiCall('createQris', { amount: price, limitAmount: limitCount, username: currentUserData.username });
         if (!res.status) return customAlert("Gagal terhubung ke server finansial.", true);
-        const data = res.data; activeDepositId = data.data?.depositId || data.depositId || data.id;
-        const qrisUrl = data.data?.qrImage || data.data?.qrisUrl || data.data?.qris_url || data.qr_string;
+        const data = res.data;
+        
+        // Parsing disesuaikan untuk struktur respon NevapediaPay
+        activeDepositId = data.invoice_id || data.data?.invoice_id || data.id || data.data?.depositId || data.depositId;
+        
+        let qrisUrl = data.qr_image || data.data?.qr_image || data.qris_url || data.data?.qrisUrl || data.data?.qris_url || data.qr_string;
+        if (qrisUrl && !qrisUrl.startsWith('http') && !qrisUrl.startsWith('data:')) {
+            qrisUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(qrisUrl)}`;
+        }
+
         if (qrisUrl) {
-            document.getElementById('qrisImageResult').src = qrisUrl; document.getElementById('qrisPackageTitle').textContent = `Paket ${labelName} Limit`; document.getElementById('qrisDepositIdSpan').textContent = activeDepositId;
-            document.getElementById('selectLimitView').classList.add('hidden'); document.getElementById('qrisPaymentView').classList.remove('hidden');
-            addActivityLog("Acquire Kuota", `Inisialisasi Invoice QRIS paket ${labelName} Limit`, "Pending", "var(--gold-primary)");
-        } else { customAlert("Gagal merender modul QRIS.", true); }
+            document.getElementById('qrisImageResult').src = qrisUrl; 
+            document.getElementById('qrisPackageTitle').textContent = `Paket ${labelName} Limit`; 
+            document.getElementById('qrisDepositIdSpan').textContent = activeDepositId || '-';
+            document.getElementById('selectLimitView').classList.add('hidden'); 
+            document.getElementById('qrisPaymentView').classList.remove('hidden');
+            addActivityLog("Acquire Kuota", `Inisialisasi Invoice Nevapedia paket ${labelName} Limit`, "Pending", "var(--gold-primary)");
+        } else { 
+            customAlert("Gagal merender modul QRIS.", true); 
+        }
     }
 
     window.checkQrisPaymentStatus = async function() {
         if (!activeDepositId) return; customAlert("Mensinkronisasi status transaksi...");
-        const res = await apiCall('checkQris', { depositId: activeDepositId });
+        const res = await apiCall('checkQris', { invoiceId: activeDepositId, depositId: activeDepositId });
         if (!res.status) return customAlert("Gangguan koneksi jaringan. Coba kembali.", true);
-        const statusData = res.data; const status = statusData.data?.status || statusData.status;
-        const isPaid = (status === "success" || status === "paid" || status === "completed" || status === true);
+        const statusData = res.data;
+        const statusRaw = (statusData.status || statusData.data?.status || '').toString().toUpperCase();
+        
+        const isPaid = (statusRaw === "PAID" || statusRaw === "SUCCESS" || statusRaw === "COMPLETED" || statusData.status === true);
         if (isPaid) {
             const currentLimit = currentUserData.limit_count ?? 3; const newLimitTotal = currentLimit + selectedAddLimitCount;
             const updateRes = await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimitTotal } });
@@ -1459,7 +1476,7 @@
                 window.loadAppView(currentUserData); closeLimitModal(); customAlert("Transaksi Disetujui! Kuota diperbarui.");
                 addActivityLog("Acquire Kuota", `Invoice QRIS telah dilunasi (+${selectedAddLimitCount} Limit)`, "Sukses", "var(--success-light)");
             } else { customAlert("Dana diterima, namun gagal sinkronisasi database.", true); }
-        } else { customAlert("Pembayaran belum diselesaikan pada dompet digital Anda.", true); }
+        } else { customAlert("Pembayaran belum terdeteksi. Silakan selesaikan tagihan.", true); }
     };
 
     window.toggleLeaderboard = function() {
@@ -1516,7 +1533,6 @@
         renderMemberList(); 
     };
 
-    // --- MASS RESET ZERO LIMIT LOGIC ---
     window.resetAllZeroLimits = async function() {
         customConfirm("Apakah Anda yakin ingin mereset seluruh klien dengan limit 0 menjadi 3?", async () => {
             const btn = document.getElementById('resetMassalBtn');
@@ -1589,8 +1605,7 @@
                 const currentLimit = user.limit_count ?? 3; massUpdateText('.disp-limit-label', "Sisa Kuota Akses"); numDisplays.forEach(el => { el.textContent = currentLimit; el.classList.remove('vip'); });
             }
             
-            renderActivityLogs(); // Render logs upon login
-            
+            renderActivityLogs();
             switchView('appView'); document.getElementById('mainBottomNav').classList.remove('hidden');
             if(!document.querySelector('.nav-item.active')) switchTab('activator');
         } catch (e) { }
@@ -1996,6 +2011,7 @@
 
     if(topLogoutBtn) { topLogoutBtn.addEventListener('click', () => { customConfirm("Anda yakin ingin memutus koneksi sesi eksklusif ini?", () => { addActivityLog("Otorisasi Sistem", "Mengakhiri sesi eksekutif (Logout)", "Selesai", "var(--text-muted)"); setTimeout(() => { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(CACHE_KEY); closeProfileSheet(); switchView('loginView'); }, 300); }); }); }
     
+    // --- INTEGRASI AM API (JEREXD) ---
     if(sendBtn) {
         sendBtn.addEventListener('click', async () => {
             const email = document.getElementById('emailInput').value.trim(); 
@@ -2005,7 +2021,8 @@
             }
             sendBtn.innerHTML = 'Proses...'; sendBtn.disabled = true;
             try {
-                const res = await fetch(`${API_BASE}/api/am?action=send&apikey=${API_KEY}&email=${encodeURIComponent(email)}`); const data = await res.json();
+                const res = await fetch(`${API_BASE}/api/am?action=send&apikey=${API_KEY}&email=${encodeURIComponent(email)}`); 
+                const data = await res.json();
                 if(data.status) { 
                     cachedEmail = email; showMsg('appErrorMsg', 'Magic link dikirim. Cek surel Anda.', 'success'); 
                     addActivityLog("Gateway Email", `Mengirim URL Magic Link ke alamat surel: ${email}`, "Terkirim", "var(--gold-primary)");
@@ -2017,22 +2034,29 @@
 
     if(activateBtn) {
         activateBtn.addEventListener('click', async () => {
-            const email = document.getElementById('emailInput').value.trim(); const magic = document.getElementById('magicInput').value.trim();
+            const email = document.getElementById('emailInput').value.trim(); 
+            const magic = document.getElementById('magicInput').value.trim();
             if(!email || !magic) {
                 triggerErrorShake(['emailInput', 'magicInput']);
                 return showMsg('appErrorMsg', 'Email atau tautan Magic Link belum diisi.', 'error');
             }
-            activateBtn.disabled = true; document.getElementById('btnDefault').classList.add('hidden'); document.getElementById('loaderContainer').classList.remove('hidden');
+            activateBtn.disabled = true; 
+            document.getElementById('btnDefault').classList.add('hidden'); 
+            document.getElementById('loaderContainer').classList.remove('hidden');
             try {
-                const res = await fetch(`${API_BASE}/api/am?action=verif&apikey=${API_KEY}&email=${encodeURIComponent(cachedEmail || email)}&url=${encodeURIComponent(magic)}`); const data = await res.json();
+                const res = await fetch(`${API_BASE}/api/am?action=verif&apikey=${API_KEY}&email=${encodeURIComponent(cachedEmail || email)}&url=${encodeURIComponent(magic)}`); 
+                const data = await res.json();
                 if(data.status) {
                     showMsg('appErrorMsg', 'Berhasil! Akun Anda telah terverifikasi premium.', 'success');
                     customAlert('Aktivasi Magic Link berhasil diverifikasi.');
                     addActivityLog("Lisensi Perangkat", `Verifikasi sukses via URL Magic Link`, "Selesai", "var(--success-light)");
                     
                     if(currentUserData && !parseBool(currentUserData.is_permanent) && currentUserData.role !== 'Owner') {
-                        let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 1); await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
-                        currentUserData.limit_count = newLimit; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData);
+                        let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 1); 
+                        await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
+                        currentUserData.limit_count = newLimit; 
+                        localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); 
+                        window.loadAppView(currentUserData);
                     }
                 } else { showMsg('appErrorMsg', data.error || 'Verifikasi lisensi ditolak sistem.', 'error'); }
             } catch(e) { showMsg('appErrorMsg', 'Galat internal server saat sinkronisasi.', 'error'); }
@@ -2055,14 +2079,13 @@
         }
 
         let htmlString = '';
-        const msgs = res.data.reverse(); // Asumsi API mengembalikan pesan terbaru di indeks awal, reverse untuk flow chat dari atas ke bawah
+        const msgs = res.data.reverse();
         
         msgs.forEach(msg => {
             const isMe = currentUserData && msg.username === currentUserData.username;
             const isOwner = msg.role === 'Owner';
             const badgeHtml = isOwner ? `<i class="fas fa-crown" style="color:var(--gold-primary); font-size:9px; margin-right:4px;"></i>` : '';
             
-            // Format waktu sederhana dari ISO string jika perlu
             let timeFmt = msg.created_at;
             try { 
                 const d = new Date(msg.created_at); 
@@ -2080,7 +2103,6 @@
             </div>`;
         });
         
-        // Cek jika scroll ada di paling bawah (auto scroll)
         const isScrolledToBottom = box.scrollHeight - box.clientHeight <= box.scrollTop + 50;
         box.innerHTML = htmlString;
         if(isScrolledToBottom || box.innerHTML.includes('loader-spinner')) {
@@ -2096,7 +2118,6 @@
         inputEl.value = '';
         inputEl.disabled = true;
 
-        // Optimistic UI Update
         const box = document.getElementById('chatMessagesBox');
         if(box.innerHTML.includes('Belum ada transmisi')) box.innerHTML = '';
         
@@ -2129,7 +2150,6 @@
         }
     });
     
-    // Kirim pesan dengan tombol Enter
     document.getElementById('chatInputMsg').addEventListener('keypress', function (e) {
         if (e.key === 'Enter') document.getElementById('btnSendChat').click();
     });
@@ -2140,7 +2160,6 @@
         const secChat = document.getElementById('sectionChat');
         const secOwn = document.getElementById('ownerPanel');
         
-        // Bersihkan interval chat jika keluar dari tab chat
         if(chatIntervalId) clearInterval(chatIntervalId);
 
         [secAct, secEnh, secChat, secOwn].forEach(el => { if(el) { el.style.opacity = '0'; el.style.transform = 'translateY(6px)'; setTimeout(() => el.classList.add('hidden'), 180); } });
@@ -2156,7 +2175,7 @@
             else if(tabName === 'chat') { 
                 secChat.classList.remove('hidden'); document.getElementById('btnTabChat').classList.add('active'); animateSectionIn(secChat); 
                 loadChatMessages();
-                chatIntervalId = setInterval(loadChatMessages, 8000); // Polling setiap 8 detik
+                chatIntervalId = setInterval(loadChatMessages, 8000);
             }
             else if(tabName === 'admin') { 
                 secOwn.classList.remove('hidden'); document.getElementById('toggleOwnerDashBtn').classList.add('active'); renderMemberList(); animateSectionIn(secOwn); 
