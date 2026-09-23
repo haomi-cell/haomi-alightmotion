@@ -1045,7 +1045,7 @@
   <div id="sectionReact" class="hidden">
     <div class="glass-card">
       <div class="title-lg">WA Channel Reactor</div>
-      <div class="text-sub" style="margin-bottom: 20px;">Kirim reaksi otomatis (VIP) nang saluran WhatsApp.</div>
+      <div class="text-sub" style="margin-bottom: 20px;">Kirim reaksi otomatis nang saluran WhatsApp.</div>
       
       <div class="form-group">
         <label>URL Saluran WhatsApp</label>
@@ -2185,6 +2185,15 @@
                 return showMsg('reactStatusMessage', 'URL lan Emoji kudu diisi.', 'error');
             }
 
+            // Pengecekan limit saderenge API call
+            const isPremium = currentUserData && (parseBool(currentUserData.is_permanent) || currentUserData.role === 'Owner');
+            if (!isPremium) {
+                const currentLimit = currentUserData.limit_count ?? 3;
+                if (currentLimit < 2) {
+                    return showMsg('reactStatusMessage', 'Sisa limit ora cukup. Fitur iki butuh 2 limit.', 'error');
+                }
+            }
+
             btnSendReaction.innerHTML = '<div class="loader-spinner" style="width:13px;height:13px; border-width:2px; border-top-color:#111;"></div> Memproses...';
             btnSendReaction.disabled = true;
 
@@ -2197,21 +2206,23 @@
                 const data = await res.json();
                 
                 if (data.statusCode === 200 || data.status === true) {
-                    showMsg('reactStatusMessage', 'Mantap! Reaction VIP sukses mlebu antrean.', 'success');
-                    addActivityLog("WA Reactor", `Kirim reaksi ${emojiVal} nang saluran WA`, "-1 Limit", "var(--success-light)");
+                    showMsg('reactStatusMessage', 'Mantap! Reaksi sukses mlebu antrean.', 'success');
+                    addActivityLog("WA Reactor", `Kirim reaksi ${emojiVal} nang saluran WA`, "-2 Limit", "var(--success-light)");
                     
-                    if(currentUserData && !parseBool(currentUserData.is_permanent) && currentUserData.role !== 'Owner') {
-                        let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 1); 
+                    if(!isPremium) {
+                        let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 2); 
                         await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
                         currentUserData.limit_count = newLimit; 
                         localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); 
                         window.loadAppView(currentUserData);
                     }
                 } else {
-                    showMsg('reactStatusMessage', data.message || 'Gagal ngirim reaksi.', 'error');
+                    // API returns false/error (limit ora dipotong)
+                    showMsg('reactStatusMessage', data.message || 'Gagal ngirim reaksi. Limit aman.', 'error');
                 }
             } catch (err) {
-                showMsg('reactStatusMessage', 'Koneksi API macet/putus.', 'error');
+                // Koneksi macet (limit ora dipotong)
+                showMsg('reactStatusMessage', 'Koneksi API macet/putus. Limit tetep aman.', 'error');
             } finally {
                 btnSendReaction.innerHTML = '<i class="fab fa-whatsapp"></i> Eksekusi Reaksi';
                 btnSendReaction.disabled = false;
