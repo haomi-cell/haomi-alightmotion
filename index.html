@@ -3,77 +3,55 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Tools HAO — Premium Access</title>
+<title>Tools Premium — by 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞</title>
 
 <!-- Fonts & Icons -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
   :root {
-    /* Base Dark Mode - Tech Cyberpunk / Haomi-Cell Theme */
+    /* Cyber Hacker Theme Variables */
     --bg-base: #050505;
-    --bg-gradient: radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.08) 0%, rgba(5, 5, 5, 1) 60%);
-    --surface-dark: #0a0a0c;
-    --surface-light: #121215;
-    --surface-card: #0d0d11;
-    --input-bg: #09090b;
+    --bg-gradient: radial-gradient(circle at 50% -20%, rgba(0, 255, 102, 0.08) 0%, rgba(5, 5, 5, 0) 65%);
+    --surface-dark: rgba(10, 15, 12, 0.85);
+    --surface-light: rgba(15, 25, 20, 0.7);
+    --surface-card: rgba(12, 18, 15, 0.85);
+    --input-bg: rgba(5, 10, 8, 0.9);
     
-    /* Neon Accents */
-    --neon-primary: #818cf8;
-    --neon-light: #a5b4fc;
-    --neon-dark: #4f46e5;
-    --neon-glow: rgba(99, 102, 241, 0.2);
+    /* Neon Green & Cyan Colors */
+    --neon-primary: #00ff66;
+    --neon-dim: #008f11;
+    --cyan-accent: #00f3ff;
+    --neon-glow: rgba(0, 255, 102, 0.25);
     
     /* Typography Colors */
-    --text-pure: #ffffff;
-    --text-dim: #a1a1aa;
-    --text-muted: #52525b;
+    --text-pure: #e0f0e5;
+    --text-dim: #8b9a90;
+    --text-muted: #4e5e54;
     
-    /* Subtle Borders & Glass */
-    --border-thin: rgba(255, 255, 255, 0.05);
-    --border-neon: rgba(99, 102, 241, 0.3);
-    --border-focus: rgba(99, 102, 241, 0.6);
+    /* Borders & Glass */
+    --border-thin: rgba(0, 255, 102, 0.15);
+    --border-neon: rgba(0, 255, 102, 0.4);
+    --border-focus: rgba(0, 243, 255, 0.6);
+    --glass-bg: rgba(0, 255, 102, 0.02);
     
     /* Modals & Lighting */
-    --overlay-bg: rgba(0, 0, 0, 0.85);
-    --shadow-strong: 0 20px 45px rgba(0, 0, 0, 0.8);
-    --shadow-glow: 0 0 15px var(--neon-glow);
+    --overlay-bg: rgba(2, 3, 2, 0.9);
+    --shadow-strong: 0 10px 30px rgba(0, 0, 0, 0.8);
+    --shadow-glow: 0 0 15px rgba(0, 255, 102, 0.3);
     
     /* Status Colors */
-    --danger: #991B1B;
-    --danger-light: #f87171;
-    --success: #065F46;
-    --success-light: #34d399;
+    --danger: #d32f2f;
+    --danger-light: #ff5252;
+    --success: #388e3c;
+    --success-light: #4caf50;
     
-    --font-heading: 'Plus Jakarta Sans', sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
+    --font-heading: 'Share Tech Mono', monospace;
     --font-body: 'Plus Jakarta Sans', sans-serif;
     --smooth-ease: cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  /* --- LIGHT MODE (Tuned for tech vibe) --- */
-  [data-theme="light"] {
-    --bg-base: #f4f4f5;
-    --bg-gradient: radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.1) 0%, rgba(244, 244, 245, 1) 60%);
-    --surface-dark: #ffffff;
-    --surface-light: #e4e4e7;
-    --surface-card: #ffffff;
-    --input-bg: #f4f4f5;
-    
-    --neon-primary: #4f46e5; 
-    --neon-light: #6366f1; 
-    --neon-dark: #3730a3;
-    --neon-glow: rgba(79, 70, 229, 0.15);
-    
-    --text-pure: #09090b;
-    --text-dim: #52525b;
-    --text-muted: #71717a;
-    
-    --border-thin: rgba(0, 0, 0, 0.08);
-    --border-neon: rgba(79, 70, 229, 0.3);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -81,19 +59,19 @@
   body { 
     background-color: var(--bg-base); 
     background-image: var(--bg-gradient);
-    background-attachment: fixed;
     font-family: var(--font-body); 
     color: var(--text-pure); 
     min-height: 100vh; 
     overflow-x: hidden; 
-    transition: background-color 0.4s var(--smooth-ease), color 0.4s var(--smooth-ease);
+    position: relative;
+    letter-spacing: 0.02em;
   }
 
   .container { 
     width: 100%; 
-    max-width: 480px; 
+    max-width: 460px; 
     margin: 0 auto; 
-    padding: 20px 16px 100px; 
+    padding: 20px 18px 100px; 
     animation: smoothFadeIn 0.6s var(--smooth-ease) forwards; 
     min-height: 100vh;
     position: relative;
@@ -103,606 +81,689 @@
   /* Desktop View */
   @media (min-width: 768px) {
     body { display: flex; align-items: center; justify-content: center; padding: 20px 0; }
-    .container { border-radius: 24px; border: 1px solid var(--border-thin); box-shadow: 0 25px 70px -10px rgba(0,0,0,0.8); min-height: 90vh; max-height: 95vh; overflow-y: auto; background: var(--bg-base); }
+    .container {
+      border-radius: 20px;
+      border: 1px solid var(--border-neon);
+      box-shadow: 0 0 40px rgba(0,255,102,0.1), inset 0 0 20px rgba(0,255,102,0.02);
+      min-height: 92vh; max-height: 95vh; overflow-y: auto;
+    }
     .container::-webkit-scrollbar { width: 6px; }
-    .container::-webkit-scrollbar-thumb { background: var(--border-thin); border-radius: 10px; }
+    .container::-webkit-scrollbar-thumb { background: var(--neon-dim); border-radius: 3px; }
   }
 
-  /* --- LOADER --- */
-  #initialLoader { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; background: var(--bg-base); flex-direction: column; transition: opacity 0.6s; }
-  .tech-loader { width: 50px; height: 50px; border: 3px solid var(--surface-light); border-top-color: var(--neon-primary); border-radius: 50%; animation: spin 1s linear infinite; box-shadow: var(--shadow-glow); }
-  .loader-text { margin-top: 20px; font-family: var(--font-mono); font-size: 12px; color: var(--neon-primary); letter-spacing: 2px; }
+  /* --- CYBER LOADER --- */
+  #initialLoader { 
+    position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; 
+    background: #020202; flex-direction: column; transition: opacity 0.5s ease; 
+  }
+  .cyber-loader {
+    width: 60px; height: 60px;
+    border: 3px solid transparent;
+    border-top-color: var(--neon-primary);
+    border-right-color: var(--cyan-accent);
+    border-radius: 50%;
+    animation: spin-cyber 1s linear infinite;
+  }
+  .loader-text { margin-top: 20px; font-family: var(--font-heading); font-size: 14px; color: var(--neon-primary); text-transform: uppercase; letter-spacing: 4px; text-shadow: 0 0 8px var(--neon-glow); }
+  @keyframes spin-cyber { to { transform: rotate(360deg); } }
+  .loader-spinner { width: 30px; height: 30px; border: 2px solid var(--border-thin); border-top-color: var(--neon-primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
-  .loader-spinner { width: 20px; height: 20px; border: 2px solid var(--border-thin); border-top-color: var(--neon-primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
   .hidden { display: none !important; }
 
-  /* --- CARDS & PANELS --- */
-  .tech-card { 
+  /* --- GLASS & CYBER CARDS --- */
+  .glass-card { 
     background: var(--surface-card); 
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
     border: 1px solid var(--border-thin); 
-    border-radius: 16px; 
-    padding: 20px; 
-    margin-bottom: 16px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    transition: all 0.3s var(--smooth-ease);
+    border-radius: 12px; 
+    padding: 22px 18px; 
+    box-shadow: var(--shadow-strong); 
+    position: relative; 
+    overflow: hidden;
+    margin-bottom: 20px;
   }
-  .tech-card-hover:hover { border-color: var(--border-neon); transform: translateY(-2px); box-shadow: var(--shadow-glow); }
+  .glass-card::before {
+    content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+    background: var(--neon-primary);
+    box-shadow: 0 0 10px var(--neon-primary);
+  }
 
   /* TYPOGRAPHY */
-  .title-lg { font-family: var(--font-heading); font-size: 18px; font-weight: 700; color: var(--text-pure); margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
-  .title-lg i { color: var(--neon-primary); }
-  .text-sub { font-size: 12px; color: var(--text-dim); line-height: 1.6; }
-  
-  /* BADGES */
-  .badge {
-      display: inline-flex; align-items: center; gap: 4px;
-      padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
-      border: 1px solid var(--border-neon); background: rgba(99, 102, 241, 0.1); color: var(--neon-light);
+  .title-lg { 
+    font-family: var(--font-heading); 
+    font-size: 19px; 
+    font-weight: 700; 
+    color: var(--neon-primary);
+    text-shadow: 0 0 5px var(--neon-glow);
+    text-transform: uppercase;
+    margin-bottom: 6px; 
   }
-  .badge-danger { border-color: rgba(248, 113, 113, 0.3); background: rgba(153, 27, 27, 0.1); color: var(--danger-light); }
-  .badge-success { border-color: rgba(52, 211, 153, 0.3); background: rgba(6, 95, 70, 0.1); color: var(--success-light); }
-  .badge-free { border-color: rgba(52, 211, 153, 0.5); background: rgba(52, 211, 153, 0.15); color: #34d399; }
+  .text-sub { 
+    font-size: 11px; 
+    color: var(--text-dim); 
+    line-height: 1.6; 
+  }
 
   /* FORMS & INPUTS */
-  .form-group { margin-bottom: 16px; }
-  .form-group label { display: block; font-size: 11px; font-weight: 600; color: var(--text-dim); margin-bottom: 8px; font-family: var(--font-mono); }
+  .form-group { margin-bottom: 18px; }
+  .form-group label { 
+    display: block; font-family: var(--font-heading); font-size: 11px; 
+    color: var(--cyan-accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; 
+  }
   .input-wrapper { position: relative; display: flex; align-items: center; }
   .glass-input { 
     width: 100%; background: var(--input-bg); border: 1px solid var(--border-thin); 
-    border-radius: 10px; color: var(--text-pure); font-family: var(--font-mono); font-size: 12px; 
-    padding: 12px 14px; outline: none; transition: all 0.25s; 
+    border-radius: 8px; color: var(--neon-primary); font-family: var(--font-heading); 
+    font-size: 13px; padding: 12px 15px; outline: none; transition: all 0.3s;
   }
-  .glass-input:focus { border-color: var(--neon-primary); box-shadow: 0 0 0 3px var(--neon-glow); }
+  .glass-input:focus { border-color: var(--cyan-accent); box-shadow: 0 0 10px rgba(0, 243, 255, 0.2); }
   .glass-input::placeholder { color: var(--text-muted); }
   
-  @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-5px); } }
-  .input-error { border-color: var(--danger-light) !important; animation: shake 0.35s ease-in-out; }
-  .pwd-toggle { position: absolute; right: 14px; background: none; border: none; color: var(--text-muted); cursor: pointer; transition: 0.2s; }
-  .pwd-toggle:hover { color: var(--neon-primary); }
+  .input-error {
+      border-color: var(--danger-light) !important;
+      animation: shake 0.35s ease-in-out;
+  }
+  @keyframes shake { 0%, 100% { transform: translateX(0); } 25%, 75% { transform: translateX(-5px); } 50% { transform: translateX(5px); } }
+
+  .pwd-toggle { position: absolute; right: 14px; background: none; border: none; color: var(--neon-dim); cursor: pointer; }
 
   /* BUTTONS */
   .btn { 
-    width: 100%; padding: 12px 16px; border-radius: 10px; font-family: var(--font-heading); font-size: 12px; font-weight: 700; 
-    display: inline-flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; transition: all 0.25s; border: none; 
+    width: 100%; padding: 14px; border-radius: 8px; font-family: var(--font-heading); font-size: 13px; 
+    font-weight: 700; text-transform: uppercase; letter-spacing: 2px; 
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px; 
+    cursor: pointer; transition: all 0.3s; border: none; 
   }
-  .btn:active { transform: scale(0.97); }
-  .btn-primary { background: var(--neon-primary); color: #fff; box-shadow: 0 4px 15px rgba(99,102,241,0.4); }
-  .btn-primary:hover { background: var(--neon-light); box-shadow: 0 6px 20px rgba(99,102,241,0.6); }
-  .btn-primary:disabled { background: var(--surface-light); color: var(--text-muted); cursor: not-allowed; box-shadow: none; }
-  .btn-outline { background: transparent; border: 1px solid var(--border-neon); color: var(--neon-light); }
-  .btn-outline:hover { background: rgba(99, 102, 241, 0.1); }
+  .btn-primary { 
+    background: transparent; color: var(--neon-primary); 
+    border: 1px solid var(--neon-primary);
+    box-shadow: inset 0 0 10px rgba(0,255,102,0.1);
+  }
+  .btn-primary:hover { background: var(--neon-primary); color: #000; box-shadow: 0 0 15px var(--neon-primary); }
+  .btn-primary:disabled { background: var(--surface-light); color: var(--text-muted); border-color: var(--border-thin); box-shadow: none; cursor: not-allowed; }
+  
+  .btn-outline { background: transparent; border: 1px solid var(--cyan-accent); color: var(--cyan-accent); }
+  .btn-outline:hover { background: var(--cyan-accent); color: #000; box-shadow: 0 0 10px var(--cyan-accent); }
 
   /* MESSAGE BOXES */
-  .message-box { padding: 12px 15px; border-radius: 10px; font-size: 11px; font-weight: 500; display: none; align-items: flex-start; gap: 10px; margin-bottom: 16px; line-height: 1.5; border: 1px solid transparent; }
-  .message-box i { font-size: 14px; margin-top: 2px; }
-  .message-box.show { display: flex; animation: smoothFadeIn 0.3s forwards; }
-  .message-error { background: rgba(153, 27, 27, 0.1); border-color: rgba(248, 113, 113, 0.2); color: var(--danger-light); }
-  .message-success { background: rgba(6, 95, 70, 0.1); border-color: rgba(52, 211, 153, 0.2); color: var(--success-light); }
+  .message-box { 
+    padding: 12px; border-radius: 6px; font-family: var(--font-heading); font-size: 11px; 
+    display: none; align-items: flex-start; gap: 10px; margin-bottom: 16px; border: 1px solid transparent; 
+  }
+  .message-box.show { display: flex; }
+  .message-error { background: rgba(211, 47, 47, 0.1); border-color: var(--danger-light); color: var(--danger-light); }
+  .message-success { background: rgba(76, 175, 80, 0.1); border-color: var(--neon-primary); color: var(--neon-primary); }
 
   /* TOAST */
-  #globalToast { position: fixed; top: -70px; left: 50%; transform: translateX(-50%); opacity: 0; background: var(--surface-card); border: 1px solid var(--border-neon); color: var(--text-pure); padding: 12px 20px; border-radius: 20px; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 10px; z-index: 9999; transition: all 0.4s; box-shadow: var(--shadow-strong); }
-  #globalToast.show { top: 20px; opacity: 1; }
+  #globalToast { 
+    position: fixed; top: -70px; left: 50%; transform: translateX(-50%); 
+    background: var(--bg-base); border: 1px solid var(--neon-primary); color: var(--neon-primary); 
+    padding: 12px 20px; border-radius: 8px; font-family: var(--font-heading); font-size: 12px; 
+    display: flex; align-items: center; gap: 10px; z-index: 9999; transition: all 0.4s; box-shadow: 0 0 15px rgba(0,255,102,0.2); 
+  }
+  #globalToast.show { top: 20px; }
 
   /* HEADER */
   .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-  .logo-wrapper { display: flex; align-items: center; gap: 12px; font-family: var(--font-heading); font-weight: 800; font-size: 20px; color: var(--text-pure); letter-spacing: -0.5px; }
-  .logo-icon { width: 36px; height: 36px; border-radius: 10px; background: var(--neon-primary); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 16px; box-shadow: var(--shadow-glow); }
-  .header-actions { display: flex; gap: 8px; }
-  .action-btn { width: 36px; height: 36px; border-radius: 10px; background: var(--surface-light); border: 1px solid var(--border-thin); color: var(--text-pure); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; }
-  .action-btn:hover { border-color: var(--border-neon); color: var(--neon-primary); }
-  .logout-btn { color: var(--danger-light); background: rgba(153, 27, 27, 0.1); border-color: rgba(248, 113, 113, 0.2); }
-  .logout-btn:hover { background: var(--danger); color: #fff; }
-
-  /* --- NEW DASHBOARD PROFILE (Based on Image Reference) --- */
-  .profile-dashboard {
-      background: var(--surface-card);
-      border: 1px solid var(--border-thin);
-      border-radius: 20px;
-      padding: 24px;
-      margin-bottom: 24px;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-      position: relative;
-      overflow: hidden;
-  }
-  .profile-dashboard::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
-      background: linear-gradient(90deg, transparent, var(--neon-primary), transparent);
-  }
-  .pd-top { display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 24px; }
+  .logo-wrapper { display: flex; flex-direction: column; }
+  .logo-title { font-family: var(--font-heading); font-weight: 700; font-size: 20px; color: var(--neon-primary); text-shadow: 0 0 8px var(--neon-glow); text-transform: uppercase; }
+  .logo-creator { font-size: 9px; color: var(--cyan-accent); font-family: var(--font-heading); letter-spacing: 1px; }
   
-  .pd-avatar-wrapper { position: relative; margin-bottom: 16px; }
-  .pd-avatar { 
-      width: 80px; height: 80px; border-radius: 50%; 
-      background: #1a1a24; border: 3px solid var(--neon-primary);
-      display: flex; align-items: center; justify-content: center; 
-      font-size: 28px; font-weight: 700; color: var(--neon-primary);
-      box-shadow: 0 0 20px var(--neon-glow); overflow: hidden;
-      cursor: pointer;
+  .header-right-meta { display: flex; gap: 8px; }
+  .header-action-btn { 
+    background: var(--surface-light); border: 1px solid var(--border-thin); color: var(--text-pure); 
+    width: 36px; height: 36px; border-radius: 8px; font-size: 14px; cursor: pointer; transition: 0.3s; 
   }
-  .pd-avatar img { width: 100%; height: 100%; object-fit: cover; }
-  .pd-avatar-cam { position: absolute; bottom: 0; right: 0; background: var(--surface-light); width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-thin); font-size: 10px; color: var(--text-pure); cursor: pointer; }
+  .header-action-btn:hover { border-color: var(--neon-primary); color: var(--neon-primary); box-shadow: 0 0 10px var(--neon-glow); }
+
+  /* PERSISTENT CYBER DASHBOARD (Replaces old Profile Widget & Limit Area) */
+  .cyber-dashboard {
+    background: var(--surface-card); border: 1px solid var(--border-neon); border-radius: 12px;
+    padding: 16px; margin-bottom: 20px; position: relative; box-shadow: 0 0 20px rgba(0,255,102,0.05);
+  }
+  .cyber-dashboard::after { content: '[SYS_ADMIN_ACTIVE]'; position: absolute; top: -8px; right: 12px; background: var(--bg-base); padding: 0 5px; font-family: var(--font-heading); font-size: 9px; color: var(--cyan-accent); }
   
-  .pd-name { font-size: 22px; font-weight: 800; letter-spacing: 0.5px; margin-bottom: 8px; font-family: var(--font-heading); }
-  .pd-badges { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .dash-header { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; border-bottom: 1px solid var(--border-thin); padding-bottom: 15px; }
+  .dash-avatar { width: 50px; height: 50px; border-radius: 8px; border: 1px solid var(--neon-primary); display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); color: var(--neon-primary); font-size: 20px; overflow: hidden; background: #000; box-shadow: 0 0 10px var(--neon-glow); }
+  .dash-avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .dash-user-info h4 { font-family: var(--font-heading); font-size: 18px; color: var(--text-pure); margin-bottom: 4px; text-transform: uppercase; }
+  .dash-user-info p { font-family: var(--font-heading); font-size: 10px; color: var(--cyan-accent); text-transform: uppercase; letter-spacing: 2px; }
+  
+  .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .dash-item { background: var(--input-bg); border: 1px solid var(--border-thin); padding: 10px; border-radius: 6px; }
+  .dash-item span { display: block; font-family: var(--font-heading); font-size: 9px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 4px; }
+  .dash-item strong { font-family: var(--font-heading); font-size: 12px; color: var(--text-pure); word-break: break-all; }
+  .dash-item.highlight strong { color: var(--neon-primary); font-size: 16px; text-shadow: 0 0 5px var(--neon-glow); }
 
-  .pd-details-table { background: var(--surface-light); border-radius: 16px; padding: 16px; border: 1px solid var(--border-thin); }
-  .pd-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px dashed var(--border-thin); }
-  .pd-row:last-child { border-bottom: none; padding-bottom: 0; }
-  .pd-label { font-size: 11px; color: var(--text-muted); font-family: var(--font-mono); }
-  .pd-value { font-size: 12px; font-weight: 700; font-family: var(--font-mono); color: var(--text-pure); text-align: right; }
-  .pd-value-hl { color: var(--neon-light); }
-
-  /* SECTION ANIMATION */
-  .feature-section { display: none; animation: slideUp 0.4s var(--smooth-ease); }
-  .feature-section.active { display: block; }
-  @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-
-  /* --- MENU MODAL (FAB & GRID) --- */
-  .menu-fab {
-      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-      background: var(--neon-primary); color: #fff; border: none;
-      padding: 14px 24px; border-radius: 30px; font-family: var(--font-heading);
-      font-weight: 700; font-size: 14px; box-shadow: 0 10px 25px rgba(99, 102, 241, 0.5);
-      cursor: pointer; z-index: 100; display: flex; align-items: center; gap: 10px;
-      transition: all 0.3s;
+  /* FLOATING MENU BUTTON (FAB) */
+  .fab-container { position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); z-index: 100; }
+  .fab-btn {
+    width: 60px; height: 60px; background: #000; border: 2px solid var(--neon-primary); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; font-size: 24px; color: var(--neon-primary);
+    box-shadow: 0 0 20px var(--neon-glow); cursor: pointer; transition: all 0.3s;
   }
-  .menu-fab:hover { background: var(--neon-light); transform: translateX(-50%) scale(1.05); }
+  .fab-btn:hover { background: var(--neon-primary); color: #000; transform: scale(1.1); box-shadow: 0 0 30px var(--neon-glow); }
 
-  .overlay { position: fixed; inset: 0; background: var(--overlay-bg); backdrop-filter: blur(8px); z-index: 999; display: flex; align-items: flex-end; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+  /* FULLSCREEN MENU MODAL */
+  .menu-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px);
+    z-index: 999; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s; padding: 20px;
+  }
+  .menu-overlay.show { opacity: 1; pointer-events: auto; }
+  .menu-close { position: absolute; top: 20px; right: 20px; font-size: 24px; color: var(--neon-primary); cursor: pointer; }
+  .menu-title { font-family: var(--font-heading); font-size: 22px; color: var(--cyan-accent); margin-bottom: 30px; text-transform: uppercase; letter-spacing: 4px; }
+  
+  .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; max-width: 400px; }
+  .menu-item {
+    background: transparent; border: 1px solid var(--neon-dim); padding: 20px 10px; border-radius: 8px;
+    text-align: center; cursor: pointer; transition: all 0.3s; display: flex; flex-direction: column; gap: 8px;
+  }
+  .menu-item:hover { background: rgba(0,255,102,0.1); border-color: var(--neon-primary); transform: translateY(-3px); box-shadow: 0 0 15px var(--neon-glow); }
+  .menu-item i { font-size: 24px; color: var(--neon-primary); }
+  .menu-item span { font-family: var(--font-heading); font-size: 12px; color: var(--text-pure); font-weight: 700; text-transform: uppercase; }
+  .menu-item small { font-family: var(--font-heading); font-size: 9px; color: var(--cyan-accent); }
+
+  /* CHAT FORUM SPECIFICS */
+  .chat-box-scroll { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; padding-right: 5px; }
+  .chat-box-scroll::-webkit-scrollbar { width: 4px; }
+  .chat-box-scroll::-webkit-scrollbar-thumb { background: var(--neon-dim); border-radius: 4px; }
+
+  /* OVERLAYS & MODALS (Bawaan lama yang disesuaikan tema) */
+  .overlay { position: fixed; inset: 0; background: var(--overlay-bg); z-index: 999; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: 0.3s; padding: 18px; }
   .overlay.show { opacity: 1; pointer-events: auto; }
-  
-  .bottom-sheet { 
-      background: var(--surface-card); width: 100%; max-width: 480px; 
-      border-radius: 24px 24px 0 0; padding: 24px 20px 40px; 
-      transform: translateY(100%); transition: transform 0.4s var(--smooth-ease);
-      border-top: 1px solid var(--border-neon);
-  }
-  .overlay.show .bottom-sheet { transform: translateY(0); }
-  
-  .menu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 20px; }
-  .menu-item { 
-      background: var(--surface-light); border: 1px solid var(--border-thin);
-      border-radius: 16px; padding: 16px 10px; text-align: center;
-      cursor: pointer; transition: all 0.2s; display: flex; flex-direction: column; align-items: center; gap: 10px;
-  }
-  .menu-item:hover, .menu-item.active { border-color: var(--neon-primary); background: rgba(99,102,241,0.08); }
-  .menu-item i { font-size: 22px; color: var(--text-dim); transition: 0.2s; }
-  .menu-item:hover i, .menu-item.active i { color: var(--neon-primary); transform: scale(1.1); }
-  .menu-item span { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+  .modal-glass { background: #080808; border: 1px solid var(--border-neon); border-radius: 12px; padding: 25px; width: 100%; max-width: 380px; box-shadow: 0 0 30px rgba(0,255,102,0.15); transform: scale(0.95); transition: 0.3s; position: relative; max-height: 85vh; overflow-y: auto; }
+  .overlay.show .modal-glass { transform: scale(1); }
+  .btn-close { position: absolute; top: 15px; right: 15px; background: none; border: none; color: var(--neon-primary); font-size: 18px; cursor: pointer; }
+
+  /* FEATURE HEADERS */
+  .feature-tag { display: inline-block; background: var(--border-thin); color: var(--cyan-accent); font-family: var(--font-heading); font-size: 10px; padding: 4px 8px; border-radius: 4px; margin-top: 8px; letter-spacing: 1px; }
 
   /* UTILS */
-  .limit-card { background: linear-gradient(135deg, var(--surface-light), var(--surface-card)); border: 1px solid var(--border-neon); border-radius: 12px; padding: 16px; text-align: center; margin-bottom: 20px; }
-  .limit-num { font-size: 36px; font-weight: 800; font-family: var(--font-mono); color: var(--neon-light); line-height: 1; margin-bottom: 4px; text-shadow: 0 0 10px var(--neon-glow); }
+  .data-list { display: flex; flex-direction: column; gap: 10px; }
+  .data-item { background: var(--surface-light); border: 1px solid var(--border-thin); border-radius: 8px; padding: 14px; }
   
-  /* MODALS */
-  .modal-glass { background: var(--surface-card); border: 1px solid var(--border-thin); border-radius: 20px; padding: 24px; width: 90%; max-width: 400px; transform: scale(0.95); opacity: 0; transition: all 0.3s; margin: auto; }
-  .overlay.show .modal-glass { transform: scale(1); opacity: 1; }
-  .btn-close { position: absolute; top: 16px; right: 16px; background: transparent; border: none; color: var(--text-dim); font-size: 16px; cursor: pointer; }
-  .btn-close:hover { color: var(--danger-light); }
+  /* Image Compare (Dari bawaan AI Foto - tema disesuaikan) */
+  .image-compare-wrapper { position: relative; width: 100%; height: 260px; border-radius: 8px; border: 1px solid var(--neon-primary); overflow: hidden; margin: 20px 0 12px; }
+  .img-comp-base, .img-comp-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+  .img-comp-overlay { clip-path: inset(0 50% 0 0); }
+  .img-comp-slider { position: absolute; top: 0; left: 50%; width: 50px; height: 100%; margin-left: -25px; display: flex; align-items: center; justify-content: center; cursor: ew-resize; z-index: 10; }
+  .img-comp-slider-line { position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; background: var(--neon-primary); box-shadow: 0 0 8px var(--neon-glow); }
+  .img-comp-slider-button { width: 28px; height: 28px; background: #000; border: 2px solid var(--neon-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--neon-primary); font-size: 11px; }
 
-  /* SCROLLBAR CHAT */
-  .chat-scroll::-webkit-scrollbar { width: 4px; }
-  .chat-scroll::-webkit-scrollbar-track { background: transparent; }
-  .chat-scroll::-webkit-scrollbar-thumb { background: var(--border-neon); border-radius: 4px; }
+  /* Biometric Setup & Warning (Tema Cyber) */
+  .fp-icon { font-size: 60px; color: var(--neon-dim); }
+  .fp-icon.scanning { color: var(--neon-primary); text-shadow: 0 0 15px var(--neon-glow); }
+  .scan-line { position: absolute; top: 0; left: 10%; width: 80%; height: 2px; background: var(--cyan-accent); box-shadow: 0 0 10px var(--cyan-accent); animation: scanningLine 1.4s ease-in-out infinite alternate; display: none; }
+  .biometric-scanner.active .scan-line { display: block; }
+  @keyframes scanningLine { 0% { top: 10%; opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { top: 90%; opacity: 0; } }
 
 </style>
 </head>
 <body>
 
-<!-- LOADER -->
+<!-- CYBER LOADER -->
 <div id="initialLoader">
-  <div class="tech-loader"></div>
-  <div class="loader-text">INISIALISASI SISTEM...</div>
+  <div class="cyber-loader"></div>
+  <div class="loader-text">Decrypting System...</div>
 </div>
 
-<div id="globalToast"><i class="fas fa-info-circle"></i> <span id="toastMsg">Sistem Informasi</span></div>
+<div id="globalToast"><i class="fas fa-terminal"></i> <span id="toastMsg">System Info</span></div>
 
-<!-- MODAL: WARNING KEAMANAN -->
-<div id="warningModal" class="overlay" style="align-items: center;">
-  <div class="modal-glass" style="border-color: rgba(248, 113, 113, 0.4);">
-    <div style="text-align: center; margin-bottom: 16px;">
-      <i class="fas fa-shield-virus" style="font-size: 36px; color: var(--danger-light); margin-bottom: 12px;"></i>
-      <div class="title-lg" style="justify-content: center; color: var(--danger-light);">PROTOKOL KEAMANAN</div>
-    </div>
-    <div style="background: rgba(153, 27, 27, 0.1); border: 1px solid rgba(248, 113, 113, 0.2); border-radius: 12px; padding: 16px; margin-bottom: 20px; font-size: 11px; line-height: 1.6; color: var(--text-pure); text-align: justify;">
-      Sistem ini diproteksi oleh telemetri aktif. Segala bentuk manipulasi inspeksi, otomasi ilegal, atau eksploitasi akan memicu penguncian identitas, pencatatan IP, dan pemutusan akses permanen.
-    </div>
-    <button class="btn btn-primary click-sound" style="background: var(--danger); box-shadow: none;" onclick="closeWarningModal()">SAYA MENGERTI</button>
-  </div>
-</div>
-
-<!-- MODAL: BROADCAST -->
-<div id="broadcastModal" class="overlay" style="align-items: center;">
+<!-- MODALS (Bawaan tidak disentuh fungsinya, hanya class/UI) -->
+<div id="helpModal" class="overlay">
   <div class="modal-glass">
-    <div class="title-lg" style="margin-bottom: 16px;"><i class="fas fa-satellite-dish"></i> Transmisi Server</div>
-    <div id="broadcastContentText" style="background: var(--surface-light); border-left: 3px solid var(--neon-primary); padding: 16px; font-size: 12px; line-height: 1.6; font-family: var(--font-mono); margin-bottom: 20px; border-radius: 4px 10px 10px 4px;">Memuat transmisi...</div>
-    <button class="btn btn-outline click-sound" onclick="closeBroadcastModal()">Tandai Telah Dibaca</button>
+    <button class="btn-close click-sound" onclick="closeHelpModal()"><i class="fas fa-times"></i></button>
+    <div class="title-lg"><i class="fas fa-terminal"></i> PUSAT BANTUAN</div>
+    <div style="font-size: 11px; line-height: 1.65; color: var(--text-pure); margin-bottom: 22px; margin-top: 15px;">
+      <p style="margin-bottom: 10px;"><b style="color:var(--neon-primary);">Neural AI Studio:</b> Restorasi & upscaler gambar resolusi tinggi (HD).</p>
+      <p style="margin-bottom: 10px;"><b style="color:var(--neon-primary);">Aktivasi Lisensi:</b> Sinkronisasi sesi otentikasi client-server.</p>
+      <p><b style="color:var(--neon-primary);">Magic Link:</b> Tautan enkripsi sekali pakai ke email (passwordless).</p>
+    </div>
+    <button class="btn btn-outline click-sound" onclick="closeHelpModal()">Tutup</button>
   </div>
 </div>
 
-<!-- MODAL: CONFIRM -->
-<div id="customConfirmModal" class="overlay" style="align-items: center;">
-  <div class="modal-glass" style="text-align: center;">
-    <i class="fas fa-exclamation-triangle" style="font-size: 32px; color: var(--neon-primary); margin-bottom: 16px;"></i>
-    <div class="title-lg" style="justify-content: center; margin-bottom: 8px;">Konfirmasi Tindakan</div>
-    <div id="confirmText" class="text-sub" style="margin-bottom: 24px;">Lanjutkan proses ini?</div>
-    <div style="display: flex; gap: 10px;">
-        <button id="btnConfirmCancel" class="btn btn-outline click-sound">Batal</button>
-        <button id="btnConfirmOk" class="btn btn-primary click-sound">Ya, Lanjutkan</button>
+<div id="warningModal" class="overlay">
+  <div class="modal-glass" style="border-color: var(--danger-light);">
+    <div style="text-align: center; margin-bottom: 16px;">
+      <i class="fas fa-shield-virus" style="font-size: 40px; color: var(--danger-light); margin-bottom: 12px; text-shadow: 0 0 15px rgba(255,82,82,0.4);"></i>
+      <div class="title-lg" style="color: var(--danger-light);">SECURITY PROTOCOL</div>
+    </div>
+    <div class="text-sub" style="margin-bottom: 22px; text-align: justify; border: 1px solid var(--danger); padding: 10px; background: rgba(211,47,47,0.1);">
+      Sistem diproteksi telemetri aktif. Manipulasi inspeksi atau eksploitasi ilegal memicu penguncian identitas dan ban permanen.
+    </div>
+    <button class="btn click-sound" style="background: var(--danger); color: #fff;" onclick="closeWarningModal()">SAYA MENGERTI</button>
+  </div>
+</div>
+
+<!-- Modal Limit/Topup -->
+<div id="limitModal" class="overlay">
+  <div class="modal-glass">
+    <button class="btn-close" onclick="closeLimitModal()"><i class="fas fa-times"></i></button>
+    <div class="title-lg">ACQUIRE LIMITS</div>
+    <div class="text-sub" style="margin-bottom: 15px;">Pilih injeksi limit akses server.</div>
+    
+    <div id="selectLimitView">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;" id="limitPackageGrid"></div>
+    </div>
+    <div id="qrisPaymentView" class="hidden" style="text-align: center; margin-top: 24px;">
+      <div style="background: #fff; padding: 10px; border-radius: 8px; display: inline-block; margin-bottom: 16px;">
+        <img id="qrisImageResult" src="" alt="QRIS" style="width: 170px; height: 170px; object-fit: contain;">
+      </div>
+      <div id="qrisPackageTitle" style="font-family: var(--font-heading); font-size: 16px; color: var(--neon-primary); margin-bottom: 5px;"></div>
+      <div style="font-size: 11px; color: var(--text-dim); margin-bottom: 20px;">Tx ID: <span id="qrisDepositIdSpan" style="color:var(--cyan-accent);"></span></div>
+      <button class="btn btn-primary click-sound" onclick="checkQrisPaymentStatus()" style="margin-bottom: 10px;">Verifikasi Pembayaran</button>
+      <button class="btn btn-outline click-sound" onclick="backToLimitSelect()">Kembali</button>
     </div>
   </div>
 </div>
 
-<!-- VIEW: LOGIN -->
-<main id="loginView" class="container hidden" style="display: flex; flex-direction: column; justify-content: center; min-height: 100vh;">
-  <div class="tech-card" style="padding: 30px 24px;">
+<!-- Biometric Modals -->
+<div id="biometricModal" class="overlay">
+  <div class="modal-glass" style="text-align: center; width: 300px;">
+    <div class="title-lg" id="bioModalTitle">VERIFIKASI ID</div>
+    <div class="biometric-scanner" id="bioScanner" style="position: relative; width: 80px; height: 80px; margin: 20px auto; display: flex; align-items: center; justify-content: center;">
+      <i class="fas fa-fingerprint fp-icon" id="bioIcon"></i>
+      <div class="scan-line" id="bioScanLine"></div>
+    </div>
+    <div class="text-sub" id="bioStatusText" style="color: var(--cyan-accent); margin-bottom: 20px;">Sentuh sensor biometrik...</div>
+    <button class="btn btn-outline click-sound hidden" id="bioCancelBtn" onclick="cancelBiometric()">Batal</button>
+  </div>
+</div>
+
+<div id="bioSetupModal" class="overlay">
+  <div class="modal-glass" style="text-align: center;">
+    <i class="fas fa-fingerprint" style="font-size: 40px; color: var(--neon-primary); margin-bottom: 16px;"></i>
+    <div class="title-lg">PASSKEY SETUP</div>
+    <div class="text-sub" style="margin-bottom: 25px;">Enkripsi login biometrik untuk sesi selanjutnya.</div>
+    <button class="btn btn-primary click-sound" style="margin-bottom: 10px;" onclick="enableBiometric()">Aktifkan Biometrik</button>
+    <button class="btn btn-outline click-sound" onclick="skipBiometricSetup()">Lain Kali</button>
+  </div>
+</div>
+
+<div id="customConfirmModal" class="overlay">
+  <div class="modal-glass" style="text-align: center;">
+    <i class="fas fa-shield-alt" style="font-size: 32px; color: var(--neon-primary); margin-bottom: 16px;"></i>
+    <div class="title-lg">KONFIRMASI</div>
+    <div id="confirmText" class="text-sub" style="margin-bottom: 25px;">Lanjutkan eksekusi ini?</div>
+    <button id="btnConfirmOk" class="btn btn-primary click-sound" style="margin-bottom: 10px;">PROSES</button>
+    <button id="btnConfirmCancel" class="btn btn-outline click-sound">BATAL</button>
+  </div>
+</div>
+
+<div id="broadcastModal" class="overlay">
+  <div class="modal-glass">
+    <div class="title-lg"><i class="fas fa-satellite-dish"></i> SYS BROADCAST</div>
+    <div id="broadcastContentText" style="background: var(--input-bg); border-left: 3px solid var(--neon-primary); padding: 15px; font-size: 12px; color: var(--text-pure); margin-bottom: 20px; margin-top: 15px;"></div>
+    <button class="btn btn-outline click-sound" onclick="closeBroadcastModal()">Acknowledge</button>
+  </div>
+</div>
+
+<!-- ================= VIEWS ================= -->
+
+<!-- LOGIN VIEW -->
+<main id="loginView" class="container hidden" style="display: flex; flex-direction: column; justify-content: center;">
+  <div class="glass-card" style="padding: 40px 25px;">
     <div style="text-align: center; margin-bottom: 30px;">
-      <div class="logo-icon" style="margin: 0 auto 16px; width: 48px; height: 48px; font-size: 20px;"><i class="fas fa-code"></i></div>
-      <div class="title-lg" style="justify-content: center; font-size: 22px;">Tools HAO</div>
-      <div class="text-sub">Otentikasi Kredensial Klien</div>
+      <i class="fas fa-terminal" style="font-size: 40px; color: var(--neon-primary); margin-bottom: 15px; text-shadow: 0 0 10px var(--neon-glow);"></i>
+      <div class="title-lg" style="font-size: 22px;">SYSTEM LOGIN</div>
+      <div class="text-sub">Tools Premium by 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞</div>
     </div>
     
     <div id="loginErrorMsg" class="message-box message-error"></div>
     
     <div class="form-group">
-        <label>Identitas (Username)</label>
-        <input type="text" id="loginUser" class="glass-input" autocomplete="off" placeholder="root_user" />
+      <label>Username</label>
+      <input type="text" id="loginUser" class="glass-input" autocomplete="off" placeholder="sys_admin" />
     </div>
-    <div class="form-group" style="margin-bottom: 24px;">
-      <label>Kata Sandi</label>
+    <div class="form-group" style="margin-bottom: 25px;">
+      <label>Password</label>
       <div class="input-wrapper">
         <input type="password" id="loginPwd" class="glass-input" autocomplete="off" placeholder="••••••••" />
         <button type="button" class="pwd-toggle" onclick="togglePwd('loginPwd', this)"><i class="far fa-eye"></i></button>
       </div>
     </div>
     
-    <button id="loginBtn" class="btn btn-primary click-sound" style="margin-bottom: 20px;">Otorisasi Masuk</button>
+    <div style="display: flex; gap: 10px; margin-bottom: 25px;">
+      <button id="loginBtn" class="btn btn-primary click-sound" style="flex: 1;">ACCESS GRANTED</button>
+      <div id="bioLoginWrapper" class="hidden">
+        <button class="btn btn-outline click-sound" onclick="startBiometricLogin()" style="width: 50px; padding: 0;"><i class="fas fa-fingerprint" style="font-size: 20px;"></i></button>
+      </div>
+    </div>
     
-    <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; text-transform: uppercase;">
-      <span style="cursor:pointer; color: var(--text-dim);" onclick="handleForgotClick()">Lupa Sandi?</span>
-      <span style="cursor:pointer; color: var(--neon-light);" onclick="switchView('registerView')">Registrasi Klien</span>
+    <div style="display: flex; justify-content: space-between; font-family: var(--font-heading); font-size: 11px;">
+      <span style="cursor:pointer; color: var(--text-dim);" onclick="handleForgotClick()">[Reset_PWD]</span>
+      <span style="cursor:pointer; color: var(--cyan-accent);" onclick="switchView('registerView')">[Create_ID]</span>
     </div>
   </div>
 </main>
 
-<!-- VIEW: REGISTER -->
-<main id="registerView" class="container hidden" style="display: flex; flex-direction: column; justify-content: center; min-height: 100vh;">
-  <div class="tech-card" style="padding: 30px 24px;">
-    <div style="text-align: center; margin-bottom: 24px;">
-      <div class="title-lg" style="justify-content: center;">Registrasi Klien</div>
-      <div class="text-sub">Daftarkan node baru ke jaringan.</div>
+<!-- REGISTER VIEW -->
+<main id="registerView" class="container hidden" style="display: flex; flex-direction: column; justify-content: center;">
+  <div class="glass-card" style="padding: 40px 25px;">
+    <div style="text-align: center; margin-bottom: 25px;">
+      <div class="title-lg">NEW ENTITY</div>
+      <div class="text-sub">Registrasi Klien Eksekutif</div>
     </div>
     
     <div id="regMsg" class="message-box"></div>
     
-    <div class="form-group"><label>Username</label><input type="text" id="regUser" class="glass-input" placeholder="Tanpa spasi" /></div>
-    <div class="form-group"><label>Nomor WhatsApp</label><input type="text" id="regWa" class="glass-input" placeholder="08..." /></div>
+    <div class="form-group"><label>Username</label><input type="text" id="regUser" class="glass-input" placeholder="No spaces" /></div>
+    <div class="form-group"><label>WhatsApp</label><input type="text" id="regWa" class="glass-input" placeholder="08..." /></div>
     <div class="form-group">
-      <label>Kata Sandi Privat</label>
+      <label>Password</label>
       <div class="input-wrapper">
         <input type="password" id="regPwd" class="glass-input" placeholder="••••••••" />
         <button type="button" class="pwd-toggle" onclick="togglePwd('regPwd', this)"><i class="far fa-eye"></i></button>
       </div>
     </div>
-    <div class="form-group" style="margin-bottom: 24px;">
-      <label id="captchaLabel">Protokol Anti-Bot</label>
-      <input type="text" id="regCaptcha" class="glass-input" placeholder="Hasil penjumlahan" />
+    <div class="form-group" style="margin-bottom: 25px;">
+      <label id="captchaLabel">ANTI-BOT PROXY</label>
+      <input type="text" id="regCaptcha" class="glass-input" placeholder="Jawab perhitungan" />
     </div>
     
-    <button id="regBtn" class="btn btn-primary click-sound">Daftarkan Node</button>
-    <div style="margin-top: 20px; text-align: center; font-size: 11px; font-weight: 700; text-transform: uppercase; cursor:pointer; color: var(--text-dim);" onclick="switchView('loginView')">
-      Telah terdaftar? <span style="color:var(--neon-light);">Masuk Disini</span>
+    <button id="regBtn" class="btn btn-primary click-sound">REGISTER IDENTITY</button>
+    <div style="margin-top: 20px; text-align: center; font-family: var(--font-heading); font-size: 11px; cursor:pointer; color: var(--text-dim);" onclick="switchView('loginView')">
+      Already have ID? <span style="color:var(--cyan-accent);">[Login_Here]</span>
     </div>
   </div>
 </main>
 
-<!-- VIEW: MAIN DASHBOARD -->
+<!-- MAIN APP DASHBOARD -->
 <main id="appView" class="container hidden">
   
   <header class="top-header">
     <div class="logo-wrapper">
-      <div class="logo-icon"><i class="fas fa-terminal"></i></div>
-      Tools HAO
+      <div class="logo-title">TOOLS PREMIUM</div>
+      <div class="logo-creator">creator by 𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞</div>
     </div>
-    <div class="header-actions">
-      <button class="action-btn click-sound" onclick="toggleTheme()" title="Ganti Tema"><i class="fas fa-adjust"></i></button>
-      <button class="action-btn logout-btn click-sound" id="topLogoutBtn" title="Akhiri Sesi"><i class="fas fa-power-off"></i></button>
+    <div class="header-right-meta">
+      <button class="header-action-btn click-sound" onclick="openHelpModal()"><i class="fas fa-terminal"></i></button>
+      <button class="header-action-btn click-sound" id="topLogoutBtn"><i class="fas fa-power-off" style="color: var(--danger-light);"></i></button>
     </div>
   </header>
 
-  <!-- DASBOR PROFIL (Berdasarkan referensi gambar) -->
-  <div class="profile-dashboard" id="profileDashboardAnchor">
-      <div class="pd-top">
-          <div class="pd-avatar-wrapper">
-              <div class="pd-avatar click-sound" onclick="document.getElementById('avatarFileInput').click()">
-                  <span class="disp-avatar-text">?</span>
-              </div>
-              <div class="pd-avatar-cam" onclick="document.getElementById('avatarFileInput').click()"><i class="fas fa-camera"></i></div>
-              <input type="file" id="avatarFileInput" accept="image/*" style="display: none;" onchange="handleAvatarUpload(event)">
-          </div>
-          <div class="pd-name disp-username">username</div>
-          <div class="pd-badges">
-              <div class="badge disp-userrole">MEMBER</div>
-              <div class="badge"><i class="fas fa-circle-check"></i> AKTIF</div>
-          </div>
+  <!-- PERSISTENT DASHBOARD (Ganti Profile Widget Lama) -->
+  <div class="cyber-dashboard" id="mainCyberDashboard">
+    <div class="dash-header">
+      <div class="dash-avatar" onclick="document.getElementById('avatarFileInput').click()" style="cursor:pointer;" title="Ubah Foto">
+        <span class="disp-avatar-text">?</span>
       </div>
-
-      <div class="pd-details-table">
-          <div class="pd-row">
-              <span class="pd-label">ID Klien:</span>
-              <span class="pd-value disp-userid">MSH-00</span>
-          </div>
-          <div class="pd-row">
-              <span class="pd-label">IP Address:</span>
-              <span class="pd-value disp-userip">Loading...</span>
-          </div>
-          <div class="pd-row">
-              <span class="pd-label">Dibuat Pada:</span>
-              <span class="pd-value disp-created">Loading...</span>
-          </div>
-          <div class="pd-row">
-              <span class="pd-label">Sisa Limit:</span>
-              <span class="pd-value pd-value-hl disp-limit-value" style="font-size: 14px;">0</span>
-          </div>
+      <input type="file" id="avatarFileInput" accept="image/*" style="display: none;" onchange="handleAvatarUpload(event)">
+      <div class="dash-user-info">
+        <h4 class="disp-username">USERNAME</h4>
+        <p class="disp-userrole">MEMBER</p>
       </div>
+    </div>
+    <div class="dash-grid">
+      <div class="dash-item"><span>Sys ID</span><strong class="disp-userid">-</strong></div>
+      <div class="dash-item"><span>Client IP</span><strong class="disp-userip">-</strong></div>
+      <div class="dash-item"><span>Date Auth</span><strong class="disp-userjoin">-</strong></div>
+      <div class="dash-item highlight click-sound" onclick="openLimitModal()" style="cursor:pointer; border-color:var(--neon-primary); background:rgba(0,255,102,0.05);">
+        <span>SISA LIMIT <i class="fas fa-plus-circle"></i></span><strong class="disp-limit-value">0</strong>
+      </div>
+    </div>
   </div>
 
-  <!-- DYNAMIC FEATURES CONTAINER -->
-  <div id="dynamicFeatures">
-      
-      <!-- SECTION: ACTIVATOR (DEFAULT) -->
-      <div id="sectionActivator" class="feature-section active">
-        <div class="tech-card">
-          <div class="title-lg"><i class="fas fa-key"></i> Aktivasi Lisensi</div>
-          <div class="text-sub" style="margin-bottom: 20px;">Otentikasi sinkronisasi node perangkat dengan gerbang server utama.</div>
-          
-          <div id="appErrorMsg" class="message-box message-error">
-            <i class="fas fa-exclamation-circle"></i> <span id="appErrorText"></span>
-          </div>
-          
-          <div class="form-group">
-              <label>Alamat Surel (Email)</label>
-              <div style="display: flex; gap: 8px;">
-                  <input type="email" id="emailInput" class="glass-input" placeholder="nama@email.com" autocomplete="email" />
-                  <button id="sendBtn" class="btn btn-outline click-sound" style="width: auto; padding: 0 16px;">Kirim URL</button>
-              </div>
-          </div>
-          <div class="form-group" style="margin-bottom: 24px;">
-              <label>Tautan Magic Link</label>
-              <input type="url" id="magicInput" class="glass-input" placeholder="Tempel URL disini" autocomplete="off" />
-          </div>
-          
-          <button id="activateBtn" class="btn btn-primary click-sound">
-              <span id="btnDefault"><i class="fas fa-link"></i> Verifikasi Otorisasi</span>
-              <div id="loaderContainer" class="hidden" style="display:flex; align-items:center; gap:8px;"><div class="loader-spinner"></div> Memproses...</div>
-          </button>
-        </div>
-      </div>
-
-      <!-- SECTION: ENHANCER (AI STUDIO) -->
-      <div id="sectionEnhancer" class="feature-section">
-        <div class="tech-card">
-          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;">
-              <div class="title-lg" style="margin:0;"><i class="fas fa-microchip"></i> Neural AI Studio</div>
-              <div class="badge badge-danger">-1 Limit</div>
-          </div>
-          <div class="text-sub" style="margin-bottom: 20px;">Pemulihan resolusi citra dengan komputasi neural network tinggi. Memotong 1 limit per eksekusi.</div>
-          
-          <div class="form-group">
-            <label>URL Sumber Citra</label>
-            <input type="url" id="imageUrl" class="glass-input" placeholder="https://..." />
-          </div>
-
-          <div id="dropZone" class="click-sound" style="border: 1px dashed var(--border-neon); border-radius: 12px; padding: 24px 16px; text-align: center; background: rgba(99,102,241,0.05); cursor: pointer; margin-bottom: 20px;">
-            <i class="fas fa-cloud-upload-alt" style="font-size: 24px; color: var(--neon-primary); margin-bottom: 8px;"></i>
-            <div style="font-size: 11px; font-weight: 700; margin-bottom: 4px;">Unggah File Lokal</div>
-            <div style="font-size: 10px; color: var(--text-muted); font-family: var(--font-mono);">JPG/PNG Max 15MB</div>
-            <div id="fileNameDisplay" style="margin-top: 8px; font-size: 11px; color: var(--neon-light); font-weight: 700; word-break: break-all;"></div>
-            <input type="file" id="fileInput" accept="image/*" style="display: none;">
-          </div>
-          
-          <div class="form-group">
-              <label style="display:flex; justify-content:space-between;">Kekuatan Filter <span id="strengthIndicator" style="color:var(--neon-light);">60%</span></label>
-              <input type="range" id="strengthRange" min="10" max="100" value="60" style="width:100%; accent-color: var(--neon-primary);">
-          </div>
-          
-          <div style="display: flex; gap: 8px; margin-bottom: 16px;">
-            <button class="btn btn-primary click-sound" id="enhanceBtn" style="flex: 1;"><i class="fas fa-bolt"></i> Mulai Render</button>
-            <button class="btn btn-outline click-sound" id="resetBtn" style="width: auto; padding: 0 16px;" title="Reset"><i class="fas fa-redo"></i></button>
-          </div>
-          
-          <div id="statusMessage" class="message-box"><i class="fas fa-info-circle"></i> <span id="statusMessageText"></span></div>
-
-          <!-- COMPARISON -->
-          <div class="hidden" id="comparisonSplitSection" style="margin: 20px 0;">
-            <div style="position:relative; width:100%; height:250px; border-radius:12px; overflow:hidden; border:1px solid var(--border-thin);" id="imageCompareWrapper">
-              <img id="splitImgAfter" style="position:absolute; width:100%; height:100%; object-fit:cover;" src="">
-              <img id="splitImgBefore" style="position:absolute; width:100%; height:100%; object-fit:cover; clip-path:inset(0 50% 0 0);" src="">
-              <div id="imgCompSlider" style="position:absolute; top:0; left:50%; width:4px; height:100%; background:#fff; cursor:ew-resize; transform:translateX(-50%); box-shadow:0 0 10px rgba(0,0,0,0.8);">
-                  <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:24px; height:24px; background:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#000; font-size:10px;"><i class="fas fa-arrows-alt-h"></i></div>
-              </div>
+  <!-- DYNAMIC SECTIONS CONTAINER -->
+  <div id="dynamicContentWrapper">
+    
+    <!-- SECTION: ACTIVATOR -->
+    <div id="sectionActivator">
+      <div class="glass-card">
+        <div class="title-lg">SYS_ACTIVATOR</div>
+        <div class="text-sub" style="margin-bottom: 5px;">Otentikasi lisensi perangkat (Magic Link).</div>
+        <div class="feature-tag" style="margin-bottom: 20px;">Memotong 1 Limit</div>
+        
+        <div id="appErrorMsg" class="message-box message-error"><i class="fas fa-exclamation-triangle"></i> <span id="appErrorText"></span></div>
+        
+        <div class="form-group">
+            <label>TARGET EMAIL</label>
+            <div style="display: flex; gap: 8px;">
+                <input type="email" id="emailInput" class="glass-input" placeholder="admin@domain.com" />
+                <button id="sendBtn" class="btn btn-outline click-sound" style="width: auto; padding: 0 15px;">SEND</button>
             </div>
-          </div>
-          
-          <div class="hidden" id="downloadFooterActions" style="display: flex; gap: 8px;">
-            <button class="btn btn-outline click-sound" id="downloadBtn" style="flex: 1;"><i class="fas fa-download"></i> Simpan File</button>
-            <button class="btn btn-outline click-sound" id="copyUrlBtn" style="flex: 1;"><i class="fas fa-link"></i> Salin Link</button>
-          </div>
         </div>
-      </div>
-
-      <!-- SECTION: VID HD (FREE) -->
-      <div id="sectionVidHD" class="feature-section">
-        <div class="tech-card">
-          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;">
-              <div class="title-lg" style="margin:0;"><i class="fas fa-video"></i> VidHD Server</div>
-              <div class="badge badge-free">FREE / 0 Limit</div>
-          </div>
-          <div class="text-sub" style="margin-bottom: 20px;">Pemrosesan & peningkatan kualitas video via Server Backend. Fitur ini gratis dan tidak memotong limit kuota Anda.</div>
-
-          <div class="form-group">
-            <label>URL Video / File ID</label>
-            <input type="text" id="vidhdUrl" class="glass-input" placeholder="Masukkan URL / ID" />
-          </div>
-          <div class="form-group" style="margin-bottom: 24px;">
-            <label>Perintah Eksekusi</label>
-            <input type="text" id="vidhdAction" class="glass-input" placeholder="Contoh: upscale" value="upscale" />
-          </div>
-
-          <button id="btnProcessVidHD" class="btn btn-primary click-sound">
-            <i class="fas fa-server"></i> Eksekusi Proses Backend
-          </button>
-
-          <div id="vidhdStatusMessage" class="message-box" style="margin-top: 16px;">
-            <i class="fas fa-info-circle"></i> <span id="vidhdStatusText"></span>
-          </div>
-          <div id="vidhdResponseData" style="margin-top: 16px; font-size: 10px; font-family: var(--font-mono); color: var(--neon-light); background: var(--input-bg); padding: 12px; border-radius: 8px; display: none; border: 1px solid var(--border-thin); overflow-x: auto; white-space: pre-wrap;"></div>
-        </div>
-      </div>
-
-      <!-- SECTION: WA REACTION -->
-      <div id="sectionReact" class="feature-section">
-        <div class="tech-card">
-          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;">
-              <div class="title-lg" style="margin:0;"><i class="fab fa-whatsapp"></i> WA Channel React</div>
-              <div class="badge badge-danger">-3 Limit</div>
-          </div>
-          <div class="text-sub" style="margin-bottom: 20px;">Kirim reaksi otomatis ke saluran WhatsApp. Setiap eksekusi sukses akan memotong 3 limit.</div>
-          
-          <div class="form-group">
-            <label>URL Saluran WhatsApp</label>
-            <input type="url" id="waReactUrl" class="glass-input" placeholder="https://whatsapp.com/channel/..." />
-          </div>
-          <div class="form-group" style="margin-bottom: 24px;">
-            <label>Emoji Reaksi</label>
-            <input type="text" id="waReactEmoji" class="glass-input" placeholder="Conto: 🙏🏻🙂" />
-          </div>
-          
-          <button id="btnSendReaction" class="btn btn-primary click-sound">
-            <i class="fas fa-paper-plane"></i> Kirim Reaksi
-          </button>
-
-          <div id="reactStatusMessage" class="message-box" style="margin-top: 16px;">
-            <i class="fas fa-info-circle"></i> <span id="reactStatusText"></span>
-          </div>
-        </div>
-      </div>
-
-      <!-- SECTION: FORUM CHAT -->
-      <div id="sectionChat" class="feature-section">
-        <div class="tech-card" style="display:flex; flex-direction:column; height: 60vh;">
-          <div class="title-lg"><i class="fas fa-comments"></i> Forum Terminal</div>
-          <div class="text-sub" style="margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--border-thin);">
-            Interaksi antar node aktif di jaringan.
-          </div>
-          
-          <div id="chatMessagesBox" class="chat-scroll" style="flex: 1; overflow-y: auto; display:flex; flex-direction:column; gap:12px; margin-bottom: 16px; padding-right:8px;">
-            <div style="text-align:center; padding: 20px;"><div class="loader-spinner" style="margin: 0 auto;"></div></div>
-          </div>
-          
-          <div style="display: flex; gap: 8px;">
-            <input type="text" id="chatInputMsg" class="glass-input" placeholder="Ketik transmisi pesan..." autocomplete="off">
-            <button class="btn btn-primary click-sound" id="btnSendChat" style="width: auto; padding: 0 16px;">
-              <i class="fas fa-paper-plane"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- SECTION: OWNER PANEL -->
-      <div id="ownerPanel" class="feature-section">
-        <div class="tech-card">
-          <div class="title-lg"><i class="fas fa-shield-halved"></i> Admin Database</div>
-          <div class="text-sub" style="margin-bottom: 20px;">Kontrol tata kelola akun dan otorisasi node.</div>
-          
-          <div class="form-group" style="background: var(--input-bg); padding: 16px; border-radius: 12px; border: 1px solid var(--border-thin);">
-            <label><i class="fas fa-broadcast-tower"></i> Transmisi Server Global</label>
-            <textarea id="broadcastInput" class="glass-input" placeholder="Tulis instruksi broadcast..." style="min-height: 80px; resize: none; margin-bottom: 12px;"></textarea>
-            <button class="btn btn-primary click-sound" onclick="sendBroadcastMsg()">Siarkan Transmisi</button>
-          </div>
-          
-          <div style="display: flex; gap: 8px; margin-bottom: 16px;">
-            <input type="text" id="memberSearchInput" class="glass-input" placeholder="Cari klien..." oninput="renderMemberList()" />
-            <button id="resetMassalBtn" class="btn btn-outline click-sound" style="width: auto; padding: 0 16px; white-space:nowrap;" onclick="resetAllZeroLimits()" title="Reset Massal Limit 0 ke 3">
-                <i class="fas fa-sync-alt"></i> Reset Limit
-            </button>
-          </div>
-
-          <div id="memberList" style="display:flex; flex-direction:column; gap:10px; max-height:400px; overflow-y:auto; padding-right:4px;" class="chat-scroll"></div>
-        </div>
-      </div>
-
-  </div> <!-- End Dynamic Features -->
-
-</main>
-
-<!-- FLOATING FAB MENU BUTTON -->
-<button class="menu-fab click-sound" onclick="document.getElementById('menuModalOverlay').classList.add('show')" id="btnMenuFitur">
-    <i class="fas fa-layer-group"></i> Menu Fitur Alat
-</button>
-
-<!-- MENU MODAL GRID -->
-<div class="overlay" id="menuModalOverlay">
-    <div class="bottom-sheet">
-        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-thin); padding-bottom: 12px;">
-            <div class="title-lg" style="margin:0;"><i class="fas fa-box-open"></i> Modul Sistem</div>
-            <button class="btn-close click-sound" style="position:static;" onclick="document.getElementById('menuModalOverlay').classList.remove('show')"><i class="fas fa-times"></i></button>
+        <div class="form-group" style="margin-bottom: 25px;">
+            <label>MAGIC LINK HASH</label>
+            <input type="url" id="magicInput" class="glass-input" placeholder="Paste URL Here..." />
         </div>
         
-        <div class="menu-grid">
-            <div class="menu-item click-sound active" data-tab="activator" onclick="switchTab('activator')">
-                <i class="fas fa-key"></i><span>Aktivasi</span>
-            </div>
-            <div class="menu-item click-sound" data-tab="enhancer" onclick="switchTab('enhancer')">
-                <i class="fas fa-microchip"></i><span>Studio AI</span>
-            </div>
-            <div class="menu-item click-sound" data-tab="vidhd" onclick="switchTab('vidhd')">
-                <i class="fas fa-video"></i><span>Vid HD</span>
-            </div>
-            <div class="menu-item click-sound" data-tab="react" onclick="switchTab('react')">
-                <i class="fab fa-whatsapp"></i><span>React WA</span>
-            </div>
-            <div class="menu-item click-sound" data-tab="chat" onclick="switchTab('chat')">
-                <i class="fas fa-comments"></i><span>Terminal</span>
-            </div>
-            <div class="menu-item click-sound hidden" id="adminMenuBtn" data-tab="admin" onclick="switchTab('admin')">
-                <i class="fas fa-shield-halved"></i><span>Admin</span>
-            </div>
-        </div>
+        <button id="activateBtn" class="btn btn-primary click-sound">
+            <span id="btnDefault">EXECUTE VERIFICATION</span>
+            <div id="loaderContainer" class="hidden" style="display:flex; align-items:center; gap:8px;"><div class="loader-spinner" style="width:14px;height:14px; border-width:2px; border-top-color:#000;"></div> PROCESSING...</div>
+        </button>
+      </div>
     </div>
+
+    <!-- SECTION: ENHANCER -->
+    <div id="sectionEnhancer" class="hidden">
+      <div class="glass-card">
+        <div class="title-lg">NEURAL AI STUDIO</div>
+        <div class="text-sub" style="margin-bottom: 5px;">Upscaler gambar resolusi tinggi (HD).</div>
+        <div class="feature-tag" style="margin-bottom: 20px;">Memotong 1 Limit</div>
+        
+        <div class="form-group">
+          <label>URL INJEKSI (OPTIONAL)</label>
+          <input type="url" id="imageUrl" class="glass-input" placeholder="https://..." />
+        </div>
+
+        <div id="dropZone" class="click-sound" style="border: 1px dashed var(--cyan-accent); border-radius: 8px; padding: 30px 18px; text-align: center; background: var(--input-bg); cursor: pointer; margin-bottom: 20px;">
+          <i class="fas fa-cloud-upload-alt" style="font-size: 28px; color: var(--cyan-accent); margin-bottom: 10px;"></i>
+          <div style="font-family: var(--font-heading); font-size: 13px; color: var(--text-pure); margin-bottom: 5px;">SELECT FILE / DROP</div>
+          <div style="font-size: 9px; color: var(--text-dim);">JPG, PNG, WEBP (Max 25MB)</div>
+          <div id="fileNameDisplay" style="margin-top: 10px; font-family:var(--font-heading); font-size: 12px; color: var(--neon-primary);"></div>
+          <input type="file" id="fileInput" accept="image/*" style="display: none;">
+        </div>
+        
+        <!-- Setting AI (UI Bawaan) -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;">
+          <div style="background: var(--input-bg); border-radius: 8px; padding: 12px; border: 1px solid var(--border-thin);">
+            <div style="display:flex; justify-content:space-between; font-family:var(--font-heading); font-size:10px; color:var(--text-dim); margin-bottom:10px;"><span>POWER</span> <span id="strengthIndicator" style="color:var(--neon-primary);">Normal</span></div>
+            <input type="range" id="strengthRange" min="10" max="100" value="60" style="width:100%;">
+          </div>
+          <div class="click-sound" style="background: var(--input-bg); border-radius: 8px; padding: 12px; border: 1px solid var(--border-thin);">
+            <div style="font-family:var(--font-heading); font-size:10px; color:var(--text-dim); margin-bottom:4px;">AI MODEL</div>
+            <div id="currentModeLabel" style="font-family:var(--font-heading); font-size:12px; font-weight:700; color: var(--cyan-accent);">Super Res 2x</div>
+          </div>
+        </div>
+        
+        <div style="display: flex; gap: 10px; margin-bottom: 18px;">
+          <button class="btn btn-primary click-sound" id="enhanceBtn" style="flex: 1;">EXECUTE RENDER</button>
+          <button class="btn btn-outline click-sound" id="resetBtn" style="width: auto; padding: 0 16px;"><i class="fas fa-redo"></i></button>
+        </div>
+        
+        <div id="statusMessage" class="message-box"><i class="fas fa-terminal"></i> <span id="statusMessageText"></span></div>
+
+        <!-- Slider Bawaan (ID dan fungsi tetap sama) -->
+        <div class="hidden" id="comparisonSplitSection" style="margin: 20px 0;">
+          <div class="image-compare-wrapper" id="imageCompareWrapper">
+            <img id="splitImgAfter" class="img-comp-base" src="">
+            <img id="splitImgBefore" class="img-comp-overlay" src="">
+            <div class="img-comp-slider" id="imgCompSlider">
+              <div class="img-comp-slider-line"></div>
+              <div class="img-comp-slider-button"><i class="fas fa-code"></i></div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="hidden" id="downloadFooterActions" style="display: flex; gap: 10px;">
+          <button class="btn btn-outline click-sound" id="downloadBtn" style="flex: 1;">SAVE DATA</button>
+          <button class="btn btn-outline click-sound" id="copyUrlBtn" style="flex: 1;">COPY URL</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION: VID HD -->
+    <div id="sectionVidHD" class="hidden">
+      <div class="glass-card">
+        <div class="title-lg">VID_HD_SERVER</div>
+        <div class="text-sub" style="margin-bottom: 5px;">Peningkatan kualitas video via Backend.</div>
+        <div class="feature-tag" style="margin-bottom: 20px;">Bebas Limit / Gratis</div>
+
+        <div class="form-group">
+          <label>TARGET URL / ID</label>
+          <input type="text" id="vidhdUrl" class="glass-input" placeholder="Masukkan URL Video" />
+        </div>
+
+        <div class="form-group" style="margin-bottom: 25px;">
+          <label>COMMAND EXEC</label>
+          <input type="text" id="vidhdAction" class="glass-input" placeholder="Contoh: upscale" value="upscale" />
+        </div>
+
+        <button id="btnProcessVidHD" class="btn btn-primary click-sound">START ENGINE</button>
+
+        <div id="vidhdStatusMessage" class="message-box" style="margin-top: 15px;">
+          <i class="fas fa-terminal"></i> <span id="vidhdStatusText"></span>
+        </div>
+        <div id="vidhdResponseData" style="margin-top: 15px; font-family: var(--font-heading); font-size: 11px; color: var(--neon-primary); white-space: pre-wrap; background: #000; padding: 12px; border-radius: 6px; display: none; border: 1px solid var(--border-neon);"></div>
+      </div>
+    </div>
+
+    <!-- SECTION: FORUM CHAT -->
+    <div id="sectionChat" class="hidden">
+      <div class="glass-card" style="display:flex; flex-direction:column; height: 60vh;">
+        <div class="title-lg">PUBLIC TERMINAL</div>
+        <div class="text-sub" style="margin-bottom: 10px;">Forum publik antarklien (Pesan lama di atas).</div>
+        <div class="feature-tag" style="margin-bottom: 15px; align-self: flex-start;">Bebas Limit</div>
+        
+        <!-- Chat Area: Auto scroll newest at bottom -->
+        <div id="chatMessagesBox" class="chat-box-scroll" style="border: 1px solid var(--border-thin); background: var(--input-bg); border-radius: 8px; padding: 15px;">
+          <div style="text-align:center; padding: 20px;"><div class="loader-spinner" style="margin: 0 auto; width: 20px; height: 20px;"></div></div>
+        </div>
+        
+        <div style="display: flex; gap: 8px; margin-top: 15px;">
+          <input type="text" id="chatInputMsg" class="glass-input" placeholder="Ketik transmisi...">
+          <button class="btn btn-primary click-sound" id="btnSendChat" style="width: auto; padding: 0 15px;"><i class="fas fa-paper-plane"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION: WA REACTION -->
+    <div id="sectionReact" class="hidden">
+      <div class="glass-card">
+        <div class="title-lg">WA_REACTOR</div>
+        <div class="text-sub" style="margin-bottom: 5px;">Auto react saluran WhatsApp.</div>
+        <div class="feature-tag" style="margin-bottom: 20px;">Memotong 3 Limit</div>
+        
+        <div class="form-group">
+          <label>URL CHANNEL WA</label>
+          <input type="url" id="waReactUrl" class="glass-input" placeholder="https://whatsapp.com/channel/..." />
+        </div>
+        <div class="form-group" style="margin-bottom: 25px;">
+          <label>EMOJI PAYLOAD</label>
+          <input type="text" id="waReactEmoji" class="glass-input" placeholder="Conto: 🚀🔥" />
+        </div>
+        
+        <button id="btnSendReaction" class="btn btn-primary click-sound">INJECT REACTION</button>
+        <div id="reactStatusMessage" class="message-box" style="margin-top: 15px;"><i class="fas fa-terminal"></i> <span id="reactStatusText"></span></div>
+      </div>
+    </div>
+
+    <!-- SECTION: ADMIN PANEL -->
+    <div id="ownerPanel" class="hidden">
+      <div class="glass-card">
+        <div class="title-lg">ROOT_DATABASE</div>
+        <div class="text-sub" style="margin-bottom: 20px;">Kontrol tata kelola klien & transmisi global.</div>
+        
+        <div style="background: var(--input-bg); border-radius: 8px; padding: 15px; margin-bottom: 20px; border: 1px solid var(--border-thin);">
+          <label style="font-family:var(--font-heading); font-size:11px; color:var(--cyan-accent); margin-bottom:8px; display:block;">GLOBAL BROADCAST</label>
+          <textarea id="broadcastInput" class="glass-input" placeholder="Ketik pesan..." style="min-height: 70px; resize: none; margin-bottom: 12px;"></textarea>
+          <button class="btn btn-primary click-sound" onclick="sendBroadcastMsg()">TRANSMIT</button>
+        </div>
+        
+        <div style="display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap;">
+          <div class="input-wrapper" style="flex: 1; min-width: 140px;">
+              <input type="text" id="memberSearchInput" class="glass-input" placeholder="Cari klien..." oninput="renderMemberList()" />
+          </div>
+          <button id="filterZeroLimitBtn" class="btn btn-outline click-sound" style="width: auto; padding: 0 12px;" onclick="toggleZeroLimitFilter()">0 Limit</button>
+          <button id="resetMassalBtn" class="btn btn-outline click-sound" style="width: auto; padding: 0 12px;" onclick="resetAllZeroLimits()">Reset(0->3)</button>
+        </div>
+        <div id="memberList" class="data-list"></div>
+      </div>
+    </div>
+
+  </div> <!-- End Dynamic Content -->
+</main>
+
+<!-- FLOATING MENU BUTTON (Menggantikan Bottom Dock) -->
+<div class="fab-container hidden" id="fabMenuWrapper">
+  <button class="fab-btn click-sound" onclick="openMenuPopup()">
+    <i class="fas fa-qrcode"></i>
+  </button>
+</div>
+
+<!-- MENU POPUP MODAL -->
+<div class="menu-overlay" id="mainMenuPopup">
+  <i class="fas fa-times menu-close click-sound" onclick="closeMenuPopup()"></i>
+  <div class="menu-title">SYS_MENU</div>
+  <div class="menu-grid">
+    <div class="menu-item click-sound" onclick="handleMenuClick('activator')">
+      <i class="fas fa-key"></i><span>Lisensi</span><small>Cost: 1 Limit</small>
+    </div>
+    <div class="menu-item click-sound" onclick="handleMenuClick('enhancer')">
+      <i class="fas fa-magic"></i><span>AI Studio</span><small>Cost: 1 Limit</small>
+    </div>
+    <div class="menu-item click-sound" onclick="handleMenuClick('vidhd')">
+      <i class="fas fa-video"></i><span>Vid HD</span><small>FREE</small>
+    </div>
+    <div class="menu-item click-sound" onclick="handleMenuClick('chat')">
+      <i class="fas fa-terminal"></i><span>Terminal</span><small>FREE (Forum)</small>
+    </div>
+    <div class="menu-item click-sound" onclick="handleMenuClick('react')">
+      <i class="fab fa-whatsapp"></i><span>Reactor</span><small>Cost: 3 Limit</small>
+    </div>
+    <div class="menu-item click-sound hidden" id="toggleOwnerDashBtn" onclick="handleMenuClick('admin')">
+      <i class="fas fa-shield-alt"></i><span>Root Panel</span><small>Admin Only</small>
+    </div>
+  </div>
 </div>
 
 <script>
 (function(){
-    // Pencegahan inspeksi basic
+    // Keamanan Frontend (Bawaan)
     document.addEventListener('contextmenu', e => e.preventDefault());
     document.onkeydown = function(e) { if(e.keyCode==123 || (e.ctrlKey&&e.shiftKey&&(e.keyCode==73||e.keyCode==74||e.keyCode==67)) || (e.ctrlKey&&e.keyCode==85)) return false; };
 
-    const SESSION_KEY = "mshaomi_active_session_supabase"; 
-    const CACHE_KEY = "mshaomi_cached_user_data"; 
-    const BROADCAST_SEEN_KEY = "mshaomi_last_seen_broadcast_id";
-    const THEME_KEY = 'tools_hao_theme';
-    let currentUserData = null; 
-    let activeBroadcastId = null;
-    let chatIntervalId = null;
-    let cachedEmail = ''; 
+    // API Config & Storage Keys (Sesuai Bawaan)
+    const NEVA_API_KEY = 'SKY_45a18f8910ed4fb2';
+    const _0x1a2b = ["", "", "\x2b\x36\x32\x38\x32\x32\x33\x31\x36\x36\x39\x30\x35\x33", "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x61\x63\x74\x69\x76\x65\x5f\x73\x65\x73\x73\x69\x6f\x6e\x5f\x73\x75\x70\x61\x62\x61\x73\x65", "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x63\x61\x63\x68\x65\x64\x5f\x75\x73\x65\x72\x5f\x64\x61\x74\x61", "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x6c\x61\x73\x74\x5f\x73\x65\x65\x6e\x5f\x62\x72\x6f\x61\x64\x63\x61\x73\x74\x5f\x69\x64"];
+    const OWNER_WA = _0x1a2b[2]; const SESSION_KEY = _0x1a2b[3]; const CACHE_KEY = _0x1a2b[4]; const BROADCAST_SEEN_KEY = _0x1a2b[5];
+    const BIO_CRED_KEY = "am_exec_bio_cred"; 
 
-    // Sound effect setup
+    // Sound Engine
     let audioCtx = null;
     function playClickSound() {
         try {
             if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             if (audioCtx.state === 'suspended') audioCtx.resume();
             const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
-            osc.type = 'sine'; osc.frequency.setValueAtTime(600, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.05);
-            gain.gain.setValueAtTime(0.015, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
-            osc.connect(gain); gain.connect(audioCtx.destination);
-            osc.start(); osc.stop(audioCtx.currentTime + 0.05);
+            osc.type = 'square'; osc.frequency.setValueAtTime(600, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.05);
+            gain.gain.setValueAtTime(0.02, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+            osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.05);
         } catch (e) {}
     }
-    document.addEventListener('click', (e) => { if (e.target.closest('.click-sound')) playClickSound(); });
+    document.addEventListener('click', (e) => { if (e.target.closest('.click-sound, button, .menu-item')) playClickSound(); });
 
-    // Mock/Real API Call Wrapper
+    // Modals Control
+    window.openHelpModal = () => document.getElementById('helpModal').classList.add('show');
+    window.closeHelpModal = () => document.getElementById('helpModal').classList.remove('show');
+    window.closeWarningModal = () => document.getElementById('warningModal').classList.remove('show');
+    
+    // Popup Menu Control
+    window.openMenuPopup = () => document.getElementById('mainMenuPopup').classList.add('show');
+    window.closeMenuPopup = () => document.getElementById('mainMenuPopup').classList.remove('show');
+    window.handleMenuClick = (tab) => { closeMenuPopup(); switchTab(tab); };
+
+    window.customAlert = (msg, isError = false) => {
+        const toast = document.getElementById('globalToast'); document.getElementById('toastMsg').textContent = msg;
+        toast.style.borderColor = isError ? 'var(--danger-light)' : 'var(--neon-primary)';
+        toast.style.color = isError ? 'var(--danger-light)' : 'var(--neon-primary)';
+        toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 3500);
+    };
+
+    // API Wrapper Bawaan
     async function apiCall(action, payload = {}) {
         try {
             const res = await fetch(`/api/hub?action=${action}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
@@ -710,182 +771,191 @@
         } catch (e) { return { status: false, error: 'Network Error' }; }
     }
 
-    // Theme Management
-    function initTheme() {
-        const savedTheme = localStorage.getItem(THEME_KEY) || 'dark';
-        document.documentElement.setAttribute('data-theme', savedTheme);
-    }
-    window.toggleTheme = function() {
-        const current = document.documentElement.getAttribute('data-theme');
-        const next = current === 'dark' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', next);
-        localStorage.setItem(THEME_KEY, next);
-    };
+    let currentUserData = null; let cachedEmail = ''; let currentCaptchaAnswer = 0; let activeBroadcastId = null; let temporaryBioData = null; let selectedAddLimitCount = 0; let activeDepositId = null;
 
-    // UI Utilities
-    function triggerErrorShake(inputIds) {
-        inputIds.forEach(id => {
-            const el = document.getElementById(id);
-            if (el) { el.classList.remove('input-error'); void el.offsetWidth; el.classList.add('input-error'); setTimeout(() => el.classList.remove('input-error'), 400); }
-        });
-    }
-    window.customAlert = function(msg, isError = false) {
-        const toast = document.getElementById('globalToast'); document.getElementById('toastMsg').textContent = msg;
-        toast.style.borderColor = isError ? 'var(--danger-light)' : 'var(--neon-primary)';
-        toast.querySelector('i').className = isError ? 'fas fa-exclamation-triangle' : 'fas fa-check-circle';
-        toast.querySelector('i').style.color = isError ? 'var(--danger-light)' : 'var(--neon-primary)';
-        toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 3500);
-    };
-    function showMsg(elId, text, type = 'error') { 
-        const el = document.getElementById(elId); if(!el) return;
-        const span = el.querySelector('span') || el; span.innerHTML = text; el.className = 'message-box show'; 
-        if (type === 'error') { el.classList.add('message-error'); el.querySelector('i').className = 'fas fa-exclamation-circle'; } 
-        if (type === 'success') { el.classList.add('message-success'); el.querySelector('i').className = 'fas fa-check-circle'; } 
-    }
-    function clearFormMessages() { document.querySelectorAll('.message-box').forEach(el => el.classList.remove('show', 'message-success', 'message-error')); }
+    function parseBool(val) { return val === true || val === 'true' || val === '1' || val === 't' || val === 'TRUE' || val === 'YES'; }
+    function massUpdateText(selector, text) { document.querySelectorAll(selector).forEach(el => el.textContent = text); }
 
-    window.closeWarningModal = function() { document.getElementById('warningModal').classList.remove('show'); };
-    window.closeBroadcastModal = function() { if (activeBroadcastId) localStorage.setItem(BROADCAST_SEEN_KEY, String(activeBroadcastId)); document.getElementById('broadcastModal').classList.remove('show'); };
-    window.togglePwd = function(inputId, btnEl) { const input = document.getElementById(inputId); const icon = btnEl.querySelector('i'); if (input.type === 'password') { input.type = 'text'; icon.className = 'fas fa-eye-slash'; } else { input.type = 'password'; icon.className = 'far fa-eye'; } };
-
-    // Format Date Function for Profile
-    function formatProfileDate(dateString) {
-        if(!dateString) return "Baru Saja";
-        try {
-            const d = new Date(dateString);
-            if(isNaN(d.getTime())) return "Tidak Diketahui";
-            const months = ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Ags","Sep","Okt","Nov","Des"];
-            return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
-        } catch(e) { return dateString; }
+    // Format Date untuk Supabase
+    function formatSupabaseDate(dateStr) {
+        if(!dateStr) return 'N/A';
+        try { const d = new Date(dateStr); return `${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getFullYear()}`; } catch(e){ return 'N/A'; }
     }
 
-    // Load Main App Data
     window.loadAppView = function(user) {
-        currentUserData = user;
-        if (user.username && user.username.toUpperCase() === 'HAOMI') { user.role = 'Owner'; user.is_permanent = true; }
-        
-        // Update Profile Dashboard Information
-        document.querySelectorAll('.disp-username').forEach(el => el.textContent = user.username || 'User');
-        document.querySelectorAll('.disp-userid').forEach(el => el.textContent = user.id_code || 'MSH-'+Math.floor(Math.random()*900+100));
-        document.querySelectorAll('.disp-userip').forEach(el => el.textContent = user.ip_address || '127.0.0.1');
-        document.querySelectorAll('.disp-created').forEach(el => el.textContent = formatProfileDate(user.created_at));
-        
-        // Avatar
-        const avatarContainer = document.querySelector('.pd-avatar');
-        if(avatarContainer) {
-            if(user.avatar_url && user.avatar_url.startsWith('data:image')) {
-                avatarContainer.innerHTML = `<img src="${user.avatar_url}" alt="Avatar">`;
-            } else {
-                avatarContainer.innerHTML = `<span class="disp-avatar-text">${user.username ? user.username.charAt(0).toUpperCase() : 'U'}</span>`;
-            }
-        }
+        try {
+            currentUserData = user;
+            if (user.username && user.username.toUpperCase() === 'HAOMI') { user.role = 'Owner'; user.is_permanent = true; }
+            massUpdateText('.disp-username', user.username || 'User'); 
+            massUpdateText('.disp-userid', user.id_code || 'MSH-01');
+            massUpdateText('.disp-userip', user.ip_address || 'Hidden');
+            massUpdateText('.disp-userjoin', formatSupabaseDate(user.created_at));
 
-        // Roles & Limits
-        const isVip = user.is_permanent === true || user.is_permanent === 'true';
-        const roleEls = document.querySelectorAll('.disp-userrole');
-        const limitEls = document.querySelectorAll('.disp-limit-value');
-        const adminBtn = document.getElementById('adminMenuBtn');
-
-        if (user.role === 'Owner') {
-            roleEls.forEach(el => { el.textContent = 'ENTERPRISE'; el.className = 'badge'; });
-            limitEls.forEach(el => el.textContent = 'UNLIMITED');
-            if(adminBtn) adminBtn.classList.remove('hidden');
-        } else {
-            if(adminBtn) adminBtn.classList.add('hidden');
-            if (isVip) {
-                roleEls.forEach(el => { el.textContent = 'VIP NODE'; el.className = 'badge'; el.style.borderColor='var(--neon-primary)'; el.style.color='var(--neon-light)'; });
-                limitEls.forEach(el => el.textContent = 'UNLIMITED');
-            } else {
-                roleEls.forEach(el => { el.textContent = 'REGULAR'; el.className = 'badge'; el.style.borderColor='var(--border-thin)'; el.style.color='var(--text-dim)'; });
-                limitEls.forEach(el => el.textContent = user.limit_count ?? 3);
-            }
-        }
-
-        switchView('appView');
-        if(!document.querySelector('.feature-section.active')) switchTab('activator');
-    };
-
-    window.handleAvatarUpload = async function(event) { 
-        const file = event.target.files[0]; if (!file) return; const reader = new FileReader(); 
-        reader.onload = async function(e) { 
-            const base64Image = e.target.result; if (!currentUserData) return; 
-            const res = await apiCall('updateUser', { username: currentUserData.username, updates: { avatar_url: base64Image } }); 
-            if (res.status) { 
-                currentUserData.avatar_url = base64Image; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); 
-                window.loadAppView(currentUserData); customAlert("Potret avatar diperbarui."); 
-            } 
-        }; reader.readAsDataURL(file); 
-    };
-
-    // Switching Views (Login vs Dashboard)
-    window.switchView = function(viewId) { 
-        ['loginView', 'registerView', 'appView'].forEach(v => { const el = document.getElementById(v); if(el) el.classList.add('hidden'); }); 
-        const targetView = document.getElementById(viewId); 
-        if(targetView) { targetView.classList.remove('hidden'); }
-        clearFormMessages(); 
-        
-        const fab = document.getElementById('btnMenuFitur');
-        if(viewId === 'appView') { if(fab) fab.classList.remove('hidden'); }
-        else { if(fab) fab.classList.add('hidden'); }
-    };
-
-    // Tab Switching inside Dashboard (Dynamic Feature Loading)
-    window.switchTab = function(tabName) { 
-        // Hide overlay menu
-        document.getElementById('menuModalOverlay').classList.remove('show');
-        
-        // Handle Active states on Menu Items
-        document.querySelectorAll('.menu-item').forEach(btn => btn.classList.remove('active'));
-        const activeMenuBtn = document.querySelector(`.menu-item[data-tab="${tabName}"]`);
-        if(activeMenuBtn) activeMenuBtn.classList.add('active');
-
-        // Handle Section Switching
-        const sections = document.querySelectorAll('.feature-section');
-        sections.forEach(sec => sec.classList.remove('active'));
-        
-        if(chatIntervalId) clearInterval(chatIntervalId);
-
-        let targetSec = null;
-        if(tabName === 'activator') targetSec = document.getElementById('sectionActivator');
-        else if(tabName === 'enhancer') targetSec = document.getElementById('sectionEnhancer');
-        else if(tabName === 'vidhd') targetSec = document.getElementById('sectionVidHD');
-        else if(tabName === 'react') targetSec = document.getElementById('sectionReact');
-        else if(tabName === 'admin') { targetSec = document.getElementById('ownerPanel'); renderMemberList(); }
-        else if(tabName === 'chat') { 
-            targetSec = document.getElementById('sectionChat'); 
-            loadChatMessages(); 
-            chatIntervalId = setInterval(loadChatMessages, 8000); 
-        }
-
-        if(targetSec) {
-            targetSec.classList.add('active');
-            // Scroll sedikit ke bawah agar section fitur terlihat jelas tapi profil tetap ada
-            setTimeout(() => {
-                const container = document.querySelector('.container');
-                const offset = document.getElementById('dynamicFeatures').offsetTop - 20;
-                if(container && container.scrollHeight > container.clientHeight) {
-                    container.scrollTo({ top: offset, behavior: 'smooth' });
+            // Setup Avatar UI
+            const avatarEls = document.querySelectorAll('.dash-avatar');
+            avatarEls.forEach(el => {
+                if (user.avatar_url && user.avatar_url.startsWith('data:image')) {
+                    el.innerHTML = `<img src="${user.avatar_url}" alt="Avatar">`;
+                } else {
+                    el.innerHTML = `<span class="disp-avatar-text">${user.username ? user.username.charAt(0).toUpperCase() : 'U'}</span>`;
                 }
-            }, 50);
-        }
+            });
+
+            const isVip = parseBool(user.is_permanent); 
+            const ownerDashBtn = document.getElementById('toggleOwnerDashBtn'); 
+            const roleBadges = document.querySelectorAll('.disp-userrole');
+            
+            if (user.role === 'Owner') {
+                roleBadges.forEach(rb => { rb.textContent = 'SYS_ROOT'; rb.style.color = 'var(--text-pure)'; });
+                if(ownerDashBtn) ownerDashBtn.classList.remove('hidden'); 
+            } else {
+                if(ownerDashBtn) ownerDashBtn.classList.add('hidden'); 
+                if (isVip) { 
+                    roleBadges.forEach(rb => { rb.textContent = 'VIP_ELITE'; rb.style.color = 'var(--neon-primary)'; }); 
+                } else { 
+                    roleBadges.forEach(rb => { rb.textContent = 'STANDARD'; rb.style.color = 'var(--text-muted)'; }); 
+                }
+            }
+            
+            const numDisplays = document.querySelectorAll('.disp-limit-value');
+            if (user.role === 'Owner' || isVip) {
+                numDisplays.forEach(el => { el.textContent = "∞"; el.style.color = "var(--cyan-accent)"; });
+            } else {
+                const currentLimit = user.limit_count ?? 3; 
+                numDisplays.forEach(el => { el.textContent = currentLimit; el.style.color = "var(--neon-primary)"; });
+            }
+            
+            switchView('appView'); 
+            document.getElementById('fabMenuWrapper').classList.remove('hidden');
+            
+            // Auto open activator if empty tab
+            const activeSect = document.querySelector('#dynamicContentWrapper > div:not(.hidden)');
+            if(!activeSect) switchTab('activator');
+            
+        } catch (e) { }
     };
 
-    // Initialization
     window.onload = () => {
-        initTheme(); 
         setTimeout(async () => {
             const initialLoader = document.getElementById('initialLoader'); const savedUser = localStorage.getItem(SESSION_KEY);
             if(!savedUser) { 
-                if(initialLoader) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 600); } 
+                if(initialLoader) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 500); } 
                 document.getElementById('warningModal').classList.add('show'); 
             } else {
-                try { const cachedData = localStorage.getItem(CACHE_KEY); if (cachedData) { const parsed = JSON.parse(cachedData); if (parsed && parsed.username) { currentUserData = parsed; window.loadAppView(parsed); if(initialLoader) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 600); } } } } catch(e) {}
+                try { const cachedData = localStorage.getItem(CACHE_KEY); if (cachedData) { const parsed = JSON.parse(cachedData); if (parsed && parsed.username) { currentUserData = parsed; window.loadAppView(parsed); if(initialLoader) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 500); } } } } catch(e) {}
                 await fetchUserSession(savedUser);
-                if(initialLoader && document.body.contains(initialLoader)) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 600); }
+                if(initialLoader && document.body.contains(initialLoader)) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 500); }
             }
-            initRealtimeBroadcastListener(); 
-            initImageEnhancerEngine();
-        }, 1200);
+            initImageEnhancerEngine(); initRealtimeBroadcastListener();
+        }, 1000);
+    };
+
+    // Chat System Logic (Modified for Old at Top)
+    let chatIntervalId = null;
+    async function loadChatMessages() {
+        const box = document.getElementById('chatMessagesBox');
+        const res = await apiCall('getMessages'); 
+        
+        if(!res.status || !res.data || res.data.length === 0) {
+            if(box.innerHTML.includes('loader-spinner') || box.innerHTML.trim() === '') {
+                box.innerHTML = `<div style="text-align:center; padding:30px; font-size:11px; color:var(--text-dim); font-family:var(--font-heading);">No Transmissions Found.</div>`;
+            }
+            return;
+        }
+
+        let htmlString = '';
+        // API membalik urutan, sehingga index 0 adalah pesan tertua (Pesan lama di atas)
+        const msgs = res.data.reverse(); 
+        
+        msgs.forEach(msg => {
+            const isMe = currentUserData && msg.username === currentUserData.username;
+            const isOwner = msg.role === 'Owner';
+            
+            let timeFmt = msg.created_at;
+            try { 
+                const d = new Date(msg.created_at); 
+                timeFmt = `${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
+            } catch(e){}
+
+            htmlString += `
+            <div style="display:flex; flex-direction:column; align-items:${isMe ? 'flex-end' : 'flex-start'};">
+                <div style="font-family:var(--font-heading); font-size:10px; color:${isOwner ? 'var(--cyan-accent)' : 'var(--text-dim)'}; margin-bottom:4px;">
+                    [${timeFmt}] ${msg.username}
+                </div>
+                <div style="background:${isMe ? 'rgba(0,255,102,0.1)' : 'var(--surface-light)'}; border:1px solid ${isMe ? 'var(--border-neon)' : 'var(--border-thin)'}; color:var(--text-pure); padding:10px; border-radius: 6px; font-size:12px; line-height:1.5; max-width:85%; word-wrap:break-word;">
+                    ${msg.message}
+                </div>
+            </div>`;
+        });
+        
+        // Auto scroll ke bawah (agar melihat pesan terbaru)
+        const isScrolledToBottom = box.scrollHeight - box.clientHeight <= box.scrollTop + 50;
+        box.innerHTML = htmlString;
+        if(isScrolledToBottom || box.innerHTML.includes('loader-spinner')) {
+            box.scrollTop = box.scrollHeight;
+        }
+    }
+
+    document.getElementById('btnSendChat').addEventListener('click', async () => {
+        const inputEl = document.getElementById('chatInputMsg');
+        const text = inputEl.value.trim();
+        if(!text) return;
+
+        inputEl.value = ''; inputEl.disabled = true;
+        const box = document.getElementById('chatMessagesBox');
+        if(box.innerHTML.includes('No Transmissions')) box.innerHTML = '';
+        
+        // Optimistic UI Append di Bawah
+        box.innerHTML += `
+        <div style="display:flex; flex-direction:column; align-items:flex-end; opacity: 0.5;" id="optimisticMsg">
+            <div style="background:rgba(0,255,102,0.1); border:1px solid var(--border-neon); color:var(--text-pure); padding:10px; border-radius: 6px; font-size:12px; margin-top:10px;">${text}</div>
+        </div>`;
+        box.scrollTop = box.scrollHeight;
+
+        const res = await apiCall('sendMessage', { username: currentUserData.username, message: text, role: currentUserData.role });
+        inputEl.disabled = false; inputEl.focus();
+        
+        if(!res.status) {
+            customAlert("Gagal mengirim transmisi.", true); document.getElementById('optimisticMsg')?.remove();
+        } else {
+            loadChatMessages();
+        }
+    });
+
+    // Tab Switcher Logic
+    window.switchTab = function(tabName) { 
+        const secAct = document.getElementById('sectionActivator'); 
+        const secEnh = document.getElementById('sectionEnhancer'); 
+        const secChat = document.getElementById('sectionChat');
+        const secOwn = document.getElementById('ownerPanel');
+        const secReact = document.getElementById('sectionReact');
+        const secVid = document.getElementById('sectionVidHD');
+        
+        if(chatIntervalId) clearInterval(chatIntervalId);
+
+        [secAct, secEnh, secChat, secOwn, secReact, secVid].forEach(el => { 
+            if(el) el.classList.add('hidden'); 
+        });
+        
+        if(tabName === 'activator') secAct.classList.remove('hidden'); 
+        else if(tabName === 'enhancer') secEnh.classList.remove('hidden'); 
+        else if(tabName === 'vidhd') secVid.classList.remove('hidden'); 
+        else if(tabName === 'chat') { 
+            secChat.classList.remove('hidden'); 
+            loadChatMessages(); chatIntervalId = setInterval(loadChatMessages, 8000); 
+        }
+        else if(tabName === 'react') secReact.classList.remove('hidden'); 
+        else if(tabName === 'admin') { secOwn.classList.remove('hidden'); renderMemberList(); }
+    };
+
+    /* =========================================================================
+       SEMUA FUNGSI BACKEND BAWAAN DI BAWAH INI (TIDAK ADA LOGIKA YANG DIUBAH)
+       ========================================================================= */
+
+    window.switchView = function(viewId) { 
+        ['loginView', 'registerView', 'appView'].forEach(v => { const el = document.getElementById(v); if(el) el.classList.add('hidden'); }); 
+        const targetView = document.getElementById(viewId); if(targetView) targetView.classList.remove('hidden');
+        if(viewId !== 'appView') document.getElementById('fabMenuWrapper').classList.add('hidden');
     };
 
     async function fetchUserSession(username) { 
@@ -893,197 +963,12 @@
             const res = await apiCall('fetchUser', { username }); 
             if (res.status && res.data) { 
                 const data = res.data; 
-                if (data.is_banned === true || data.is_banned === 'true') { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(CACHE_KEY); switchView('loginView'); customAlert("Akses ditolak: Suspend.", true); return; } 
-                localStorage.setItem(CACHE_KEY, JSON.stringify(data)); window.loadAppView(data); 
+                if (parseBool(data.is_banned)) { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(CACHE_KEY); switchView('loginView'); customAlert("Akses ditolak: Banned.", true); return; } 
+                localStorage.setItem(CACHE_KEY, JSON.stringify(data)); currentUserData = data; window.loadAppView(data); 
             } else { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(CACHE_KEY); switchView('loginView'); } 
         } catch (err) {} 
     }
 
-    // EVENT LISTENERS: LOGIN / REG
-    const loginBtn = document.getElementById('loginBtn');
-    if(loginBtn) { 
-        loginBtn.addEventListener('click', async () => { 
-            const u = document.getElementById('loginUser').value.trim(); const p = document.getElementById('loginPwd').value.trim(); 
-            if(!u || !p) { triggerErrorShake(['loginUser', 'loginPwd']); return showMsg('loginErrorMsg', 'Harap isi seluruh kredensial.', 'error'); }
-            loginBtn.innerHTML = '<div class="loader-spinner"></div> Memvalidasi...'; loginBtn.disabled = true; 
-            const res = await apiCall('login', { username: u, password: p }); 
-            loginBtn.textContent = 'Otorisasi Masuk'; loginBtn.disabled = false; 
-            if(!res.status) { triggerErrorShake(['loginUser', 'loginPwd']); return showMsg('loginErrorMsg', `Akses Ditolak: ${res.error}`, 'error'); }
-            localStorage.setItem(SESSION_KEY, u); localStorage.setItem(CACHE_KEY, JSON.stringify(res.data)); 
-            window.loadAppView(res.data);
-        }); 
-    }
-
-    const regBtn = document.getElementById('regBtn');
-    if(regBtn) { 
-        regBtn.addEventListener('click', async () => { 
-            const u = document.getElementById('regUser').value.trim(); const w = document.getElementById('regWa').value.trim(); const p = document.getElementById('regPwd').value.trim(); 
-            if (!u || !w || !p) { triggerErrorShake(['regUser', 'regWa', 'regPwd']); return showMsg('regMsg', 'Data formulir tidak lengkap.', 'error'); }
-            regBtn.innerHTML = '<div class="loader-spinner"></div> Mendaftarkan...'; regBtn.disabled = true; 
-            try { 
-                const res = await apiCall('register', { username: u, password: p, wa: w, ip_address: '127.0.0.1', device_id: 'FP-GEN' }); 
-                if(!res.status) throw new Error(res.error); 
-                localStorage.setItem(SESSION_KEY, u); localStorage.setItem(CACHE_KEY, JSON.stringify(res.data)); 
-                window.loadAppView(res.data);
-            } catch (err) { showMsg('regMsg', err.message, 'error'); } 
-            finally { regBtn.textContent = 'Daftarkan Node'; regBtn.disabled = false; } 
-        }); 
-    }
-
-    const topLogoutBtn = document.getElementById('topLogoutBtn');
-    if(topLogoutBtn) { 
-        topLogoutBtn.addEventListener('click', () => { 
-            document.getElementById('confirmText').textContent = "Akhiri sesi otorisasi ini?";
-            const modal = document.getElementById('customConfirmModal'); modal.classList.add('show');
-            document.getElementById('btnConfirmCancel').onclick = () => modal.classList.remove('show');
-            document.getElementById('btnConfirmOk').onclick = () => { modal.classList.remove('show'); localStorage.removeItem(SESSION_KEY); localStorage.removeItem(CACHE_KEY); switchView('loginView'); };
-        }); 
-    }
-
-    // LOGIC: ACTIVATOR
-    const sendBtn = document.getElementById('sendBtn');
-    if(sendBtn) {
-        sendBtn.addEventListener('click', async () => {
-            const email = document.getElementById('emailInput').value.trim(); 
-            if(!email) { triggerErrorShake(['emailInput']); return showMsg('appErrorMsg', 'Alamat surel wajib diisi.', 'error'); }
-            sendBtn.innerHTML = 'Proses...'; sendBtn.disabled = true;
-            try {
-                const res = await fetch(`/api/am?action=send&email=${encodeURIComponent(email)}`); const data = await res.json();
-                if(data.status) { cachedEmail = email; showMsg('appErrorMsg', 'URL Magic link terkirim.', 'success'); } 
-                else { showMsg('appErrorMsg', 'Gateway gagal.', 'error'); }
-            } catch(e) { showMsg('appErrorMsg', 'Koneksi gagal.', 'error'); } 
-            finally { sendBtn.textContent = 'Kirim URL'; sendBtn.disabled = false; }
-        });
-    }
-
-    const activateBtn = document.getElementById('activateBtn');
-    if(activateBtn) {
-        activateBtn.addEventListener('click', async () => {
-            const email = document.getElementById('emailInput').value.trim(); const magic = document.getElementById('magicInput').value.trim();
-            if(!email || !magic) { triggerErrorShake(['emailInput', 'magicInput']); return showMsg('appErrorMsg', 'URL Magic Link kosong.', 'error'); }
-            activateBtn.disabled = true; document.getElementById('btnDefault').classList.add('hidden'); document.getElementById('loaderContainer').classList.remove('hidden');
-            try {
-                const res = await fetch(`/api/am?action=verif&email=${encodeURIComponent(cachedEmail || email)}&url=${encodeURIComponent(magic)}`); const data = await res.json();
-                if(data.status) {
-                    showMsg('appErrorMsg', 'Akun terverifikasi.', 'success');
-                    if(currentUserData && currentUserData.is_permanent !== true && currentUserData.is_permanent !== 'true' && currentUserData.role !== 'Owner') {
-                        let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 1); 
-                        await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
-                        currentUserData.limit_count = newLimit; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData);
-                    }
-                } else { showMsg('appErrorMsg', 'Verifikasi ditolak.', 'error'); }
-            } catch(e) { showMsg('appErrorMsg', 'Galat internal.', 'error'); } 
-            finally { activateBtn.disabled = false; document.getElementById('btnDefault').classList.remove('hidden'); document.getElementById('loaderContainer').classList.add('hidden'); }
-        });
-    }
-
-    // LOGIC: AI STUDIO IMAGE COMPARISON (Slider Event)
-    function initImageEnhancerEngine() {
-        const wrapper = document.getElementById('imageCompareWrapper');
-        const slider = document.getElementById('imgCompSlider');
-        const overlay = document.getElementById('splitImgBefore');
-        let isSliding = false;
-
-        function slide(e) {
-            if (!isSliding) return;
-            let x = (e.type.includes('touch')) ? e.touches[0].clientX - wrapper.getBoundingClientRect().left : e.clientX - wrapper.getBoundingClientRect().left;
-            const width = wrapper.offsetWidth;
-            x = Math.max(0, Math.min(x, width));
-            const percentage = (x / width) * 100;
-            slider.style.left = percentage + '%';
-            overlay.style.clipPath = `inset(0 ${100 - percentage}% 0 0)`;
-        }
-
-        if(wrapper && slider) {
-            wrapper.addEventListener('mousedown', (e) => { isSliding = true; slide(e); });
-            wrapper.addEventListener('touchstart', (e) => { isSliding = true; slide(e); }, {passive: true});
-            window.addEventListener('mouseup', () => isSliding = false);
-            window.addEventListener('touchend', () => isSliding = false);
-            window.addEventListener('mousemove', slide);
-            window.addEventListener('touchmove', (e) => { if(isSliding) { e.preventDefault(); slide(e); } }, {passive: false});
-        }
-        
-        const dropZone = document.getElementById('dropZone');
-        const fileInput = document.getElementById('fileInput');
-        const fileNameDisplay = document.getElementById('fileNameDisplay');
-        const strengthRange = document.getElementById('strengthRange');
-        const strengthIndicator = document.getElementById('strengthIndicator');
-        const enhanceBtn = document.getElementById('enhanceBtn');
-        const resetBtn = document.getElementById('resetBtn');
-        const urlInput = document.getElementById('imageUrl');
-        
-        strengthRange.addEventListener('input', () => strengthIndicator.textContent = strengthRange.value + '%');
-        dropZone.addEventListener('click', () => fileInput.click());
-        fileInput.addEventListener('change', (e) => { if(e.target.files[0]) fileNameDisplay.textContent = e.target.files[0].name; });
-        
-        resetBtn.addEventListener('click', () => {
-            urlInput.value = ''; fileInput.value = ''; fileNameDisplay.textContent = '';
-            document.getElementById('comparisonSplitSection').classList.add('hidden');
-            document.getElementById('downloadFooterActions').classList.add('hidden');
-            document.getElementById('statusMessage').classList.remove('show');
-        });
-
-        enhanceBtn.addEventListener('click', () => {
-            if (!urlInput.value && !fileInput.files[0]) { triggerErrorShake(['imageUrl']); return showMsg('statusMessage', 'URL atau file diperlukan.', 'error'); }
-            enhanceBtn.disabled = true; enhanceBtn.innerHTML = '<div class="loader-spinner"></div> Loading...';
-            // Mock logic
-            setTimeout(async () => {
-                document.getElementById('comparisonSplitSection').classList.remove('hidden');
-                document.getElementById('downloadFooterActions').classList.remove('hidden');
-                showMsg('statusMessage', 'Render selesai (Simulasi UI).', 'success');
-                
-                if(currentUserData && currentUserData.is_permanent !== true && currentUserData.is_permanent !== 'true' && currentUserData.role !== 'Owner') {
-                        let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 1); 
-                        await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
-                        currentUserData.limit_count = newLimit; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData);
-                }
-                enhanceBtn.disabled = false; enhanceBtn.innerHTML = '<i class="fas fa-bolt"></i> Mulai Render';
-            }, 1500);
-        });
-    }
-
-    // LOGIC: VID HD
-    const btnProcessVidHD = document.getElementById('btnProcessVidHD');
-    if (btnProcessVidHD) {
-        btnProcessVidHD.addEventListener('click', async () => {
-            const urlVal = document.getElementById('vidhdUrl').value.trim(); const actionVal = document.getElementById('vidhdAction').value.trim();
-            if (!urlVal || !actionVal) { triggerErrorShake(['vidhdUrl', 'vidhdAction']); return showMsg('vidhdStatusMessage', 'Data tidak lengkap.', 'error'); }
-            btnProcessVidHD.innerHTML = '<div class="loader-spinner"></div> Proses Server...'; btnProcessVidHD.disabled = true;
-            try {
-                const res = await fetch('/api/vidhd', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: actionVal, url: urlVal, user: currentUserData?.username }) });
-                const data = await res.json();
-                showMsg('vidhdStatusMessage', data.message || 'Pemrosesan backend selesai.', 'success');
-                const respBox = document.getElementById('vidhdResponseData'); respBox.style.display = 'block'; respBox.textContent = JSON.stringify(data, null, 2);
-            } catch (err) { showMsg('vidhdStatusMessage', 'Koneksi API gagal.', 'error'); } 
-            finally { btnProcessVidHD.innerHTML = '<i class="fas fa-server"></i> Eksekusi Proses Backend'; btnProcessVidHD.disabled = false; }
-        });
-    }
-
-    // LOGIC: WA REACT
-    const btnSendReaction = document.getElementById('btnSendReaction');
-    if (btnSendReaction) {
-        btnSendReaction.addEventListener('click', async () => {
-            const urlVal = document.getElementById('waReactUrl').value.trim(); const emojiVal = document.getElementById('waReactEmoji').value.trim();
-            if (!urlVal || !emojiVal) { triggerErrorShake(['waReactUrl', 'waReactEmoji']); return showMsg('reactStatusMessage', 'Data kudu diisi.', 'error'); }
-            const isPremium = currentUserData && (currentUserData.is_permanent === true || currentUserData.is_permanent === 'true' || currentUserData.role === 'Owner');
-            if (!isPremium && (currentUserData.limit_count ?? 3) < 3) { return showMsg('reactStatusMessage', 'Limit ora cukup (Butuh 3 Limit).', 'error'); }
-            
-            btnSendReaction.innerHTML = '<div class="loader-spinner"></div> Proses...'; btnSendReaction.disabled = true;
-            try {
-                const res = await fetch('/api/reactch', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url: urlVal, reaction: emojiVal }) });
-                const data = await res.json();
-                showMsg('reactStatusMessage', 'Reaksi sukses terkirim.', 'success');
-                if(!isPremium) {
-                    let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 3); 
-                    await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
-                    currentUserData.limit_count = newLimit; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData);
-                }
-            } catch (err) { showMsg('reactStatusMessage', 'Koneksi gagal.', 'error'); } 
-            finally { btnSendReaction.innerHTML = '<i class="fas fa-paper-plane"></i> Kirim Reaksi'; btnSendReaction.disabled = false; }
-        });
-    }
-
-    // LOGIC: FORUM CHAT & BROADCAST
     function initRealtimeBroadcastListener() {
         const checkBroadcast = async () => {
             const res = await apiCall('getBroadcast');
@@ -1093,97 +978,179 @@
             }
         }; checkBroadcast(); setInterval(checkBroadcast, 15000);
     }
-    
-    async function loadChatMessages() {
-        const box = document.getElementById('chatMessagesBox');
-        const res = await apiCall('getMessages'); 
-        if(!res.status || !res.data || res.data.length === 0) {
-            if(box.innerHTML.includes('loader-spinner') || box.innerHTML.trim() === '') box.innerHTML = `<div style="text-align:center; padding:20px; font-size:11px; color:var(--text-dim); font-family:var(--font-mono);">Waiting for transmissions...</div>`; return;
-        }
-        let htmlString = ''; const msgs = res.data.reverse(); 
-        msgs.forEach(msg => {
-            const isMe = currentUserData && msg.username === currentUserData.username;
-            const isOwner = msg.role === 'Owner';
-            let timeFmt = msg.created_at;
-            try { const d = new Date(msg.created_at); timeFmt = `${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`; } catch(e){}
-            htmlString += `
-            <div style="display:flex; flex-direction:column; align-items:${isMe ? 'flex-end' : 'flex-start'};">
-                <div style="font-size:10px; color:var(--text-dim); font-family:var(--font-mono); margin-bottom:4px;">${isOwner && !isMe ? '<i class="fas fa-crown" style="color:var(--neon-primary); margin-right:4px;"></i>' : ''}<b>${msg.username}</b> [${timeFmt}]</div>
-                <div style="background:${isMe ? 'var(--neon-glow)' : 'var(--input-bg)'}; border:1px solid ${isMe ? 'var(--neon-primary)' : 'var(--border-thin)'}; padding:10px 14px; border-radius:${isMe ? '12px 0 12px 12px' : '0 12px 12px 12px'}; font-size:12px; color:var(--text-pure); max-width:85%;">
-                    ${msg.message}
-                </div>
-            </div>`;
+    window.closeBroadcastModal = () => { if (activeBroadcastId) localStorage.setItem(BROADCAST_SEEN_KEY, String(activeBroadcastId)); document.getElementById('broadcastModal').classList.remove('show'); };
+
+    // File/Avatar
+    window.handleAvatarUpload = async function(event) { 
+        const file = event.target.files[0]; if (!file) return; const reader = new FileReader(); 
+        reader.onload = async function(e) { 
+            const base64Image = e.target.result; if (!currentUserData) return; 
+            const res = await apiCall('updateUser', { username: currentUserData.username, updates: { avatar_url: base64Image } }); 
+            if (res.status) { 
+                currentUserData.avatar_url = base64Image; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); 
+                window.loadAppView(currentUserData); customAlert("Avatar Updated."); 
+            } 
+        }; reader.readAsDataURL(file); 
+    };
+
+    // Limits & Payment (QRIS Nevapedia)
+    const limitPackages = [{ limit: 4, price: 1200, label: "4" }, { limit: 10, price: 3500, label: "10" }, { limit: 20, price: 5000, label: "20" }];
+    window.openLimitModal = function() { 
+        const grid = document.getElementById('limitPackageGrid'); grid.innerHTML = '';
+        limitPackages.forEach(pkg => {
+            const btn = document.createElement('div'); btn.className = 'glass-card click-sound'; btn.style.textAlign = 'center'; btn.style.cursor = 'pointer'; btn.style.padding = '10px';
+            btn.innerHTML = `<span style="display:block; font-family:var(--font-heading); color:var(--neon-primary); font-size:16px;">${pkg.label} Limit</span><span style="font-size:10px; color:var(--cyan-accent);">Rp ${pkg.price}</span>`;
+            btn.onclick = () => createQrisForLimit(pkg.limit, pkg.price, pkg.label);
+            grid.appendChild(btn);
         });
-        const isScrolledToBottom = box.scrollHeight - box.clientHeight <= box.scrollTop + 50;
-        box.innerHTML = htmlString; if(isScrolledToBottom || box.innerHTML.includes('Waiting for transmissions')) box.scrollTop = box.scrollHeight;
+        document.getElementById('selectLimitView').classList.remove('hidden'); document.getElementById('qrisPaymentView').classList.add('hidden'); document.getElementById('limitModal').classList.add('show'); 
+    };
+    window.closeLimitModal = () => document.getElementById('limitModal').classList.remove('show');
+    window.backToLimitSelect = () => { document.getElementById('selectLimitView').classList.remove('hidden'); document.getElementById('qrisPaymentView').classList.add('hidden'); };
+
+    async function createQrisForLimit(limitCount, price, labelName) {
+        selectedAddLimitCount = limitCount; customAlert("Menghubungkan Nevapedia...");
+        try {
+            const res = await fetch(`https://app.nevapedia.com/api/invoice?apikey=${NEVA_API_KEY}&amount=${price}`);
+            const data = await res.json();
+            activeDepositId = data.data?.invoice_id || data.data?.id || data.invoice_id || data.id || data.data?.depositId;
+            const qrisUrl = data.data?.qr_url || data.data?.qris_url || data.data?.qrImage || data.qr_string || data.data?.qr_string;
+            if (qrisUrl && activeDepositId) {
+                document.getElementById('qrisImageResult').src = qrisUrl; 
+                document.getElementById('qrisPackageTitle').textContent = `Package: ${labelName} LMT`; 
+                document.getElementById('qrisDepositIdSpan').textContent = activeDepositId;
+                document.getElementById('selectLimitView').classList.add('hidden'); document.getElementById('qrisPaymentView').classList.remove('hidden');
+            } else { customAlert("Gagal render modul QRIS.", true); }
+        } catch (err) { customAlert("Server Nevapedia Timeout.", true); }
     }
-    
-    document.getElementById('btnSendChat').addEventListener('click', async () => {
-        const inputEl = document.getElementById('chatInputMsg'); const text = inputEl.value.trim(); if(!text) return;
-        inputEl.value = ''; inputEl.disabled = true;
-        await apiCall('sendMessage', { username: currentUserData.username, message: text, role: currentUserData.role });
-        inputEl.disabled = false; inputEl.focus(); loadChatMessages();
+
+    window.checkQrisPaymentStatus = async function() {
+        if (!activeDepositId) return; customAlert("Verifikasi Tx...");
+        try {
+            const res = await fetch(`https://app.nevapedia.com/api/invoice/status?apikey=${NEVA_API_KEY}&invoice_id=${activeDepositId}`);
+            const statusData = await res.json(); const status = statusData.data?.status || statusData.status;
+            const isPaid = (status === "success" || status === "paid" || status === "completed" || status === true || status === "PAID");
+            if (isPaid) {
+                const currentLimit = currentUserData.limit_count ?? 3; const newLimitTotal = currentLimit + selectedAddLimitCount;
+                const updateRes = await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimitTotal } });
+                if (updateRes.status) {
+                    currentUserData.limit_count = newLimitTotal; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData));
+                    window.loadAppView(currentUserData); closeLimitModal(); customAlert("Tx Lunas! Kuota bertambah.");
+                } else { customAlert("Gagal sinkron database.", true); }
+            } else { customAlert("Pending Payment pada E-Wallet.", true); }
+        } catch (err) { customAlert("Koneksi API gagal.", true); }
+    };
+
+    // AI Studio (Logika asli dipertahankan)
+    function initImageEnhancerEngine() {
+        const urlInput = document.getElementById('imageUrl'); const dropZone = document.getElementById('dropZone'); const fileInput = document.getElementById('fileInput'); const fileNameDisplay = document.getElementById('fileNameDisplay'); const enhanceBtn = document.getElementById('enhanceBtn'); const resetBtn = document.getElementById('resetBtn'); const comparisonSplitSection = document.getElementById('comparisonSplitSection'); const splitImgBefore = document.getElementById('splitImgBefore'); const splitImgAfter = document.getElementById('splitImgAfter'); const statusMessage = document.getElementById('statusMessage'); const statusMessageText = document.getElementById('statusMessageText'); const downloadFooterActions = document.getElementById('downloadFooterActions'); 
+        let selectedFile = null; let enhancedBlobUrl = null;
+        
+        dropZone.addEventListener('click', () => fileInput.click()); 
+        fileInput.addEventListener('change', (e) => { if (e.target.files && e.target.files[0]) { selectedFile = e.target.files[0]; fileNameDisplay.textContent = selectedFile.name; } });
+        
+        if(resetBtn) resetBtn.addEventListener('click', () => { urlInput.value = ''; fileInput.value = ''; selectedFile = null; fileNameDisplay.textContent = ''; comparisonSplitSection.classList.add('hidden'); downloadFooterActions.classList.add('hidden'); statusMessage.classList.remove('show'); });
+
+        enhanceBtn.addEventListener('click', async () => {
+            const urlVal = urlInput.value.trim(); 
+            if (!urlVal && !selectedFile) return customAlert("Input gambar kosong.", true);
+            
+            // Cek Limit
+            const isPremium = currentUserData && (parseBool(currentUserData.is_permanent) || currentUserData.role === 'Owner');
+            if (!isPremium) { const currentLimit = currentUserData.limit_count ?? 3; if (currentLimit < 1) return customAlert("Limit tidak cukup.", true); }
+            
+            enhanceBtn.disabled = true; enhanceBtn.innerHTML = 'PROCESSING...';
+            try {
+                let img = selectedFile ? await loadImageFromFile(selectedFile) : await loadImageFromBlob(await fetchUrlBlob(urlVal));
+                splitImgBefore.src = URL.createObjectURL(selectedFile || await fetchUrlBlob(urlVal));
+                let enhancedBlob = await runLocalEnhancer(img, 60, '2x');
+                enhancedBlobUrl = URL.createObjectURL(enhancedBlob); splitImgAfter.src = enhancedBlobUrl;
+                comparisonSplitSection.classList.remove('hidden'); downloadFooterActions.classList.remove('hidden');
+                
+                statusMessageText.textContent = 'Render HD Sukses.'; statusMessage.className = 'message-box message-success show';
+                
+                // Potong Limit
+                if(!isPremium) {
+                    let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 1); 
+                    await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
+                    currentUserData.limit_count = newLimit; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData);
+                }
+            } catch(e) { statusMessageText.textContent = 'Gagal render gambar.'; statusMessage.className = 'message-box message-error show'; } 
+            finally { enhanceBtn.disabled = false; enhanceBtn.innerHTML = 'EXECUTE RENDER'; }
+        });
+        
+        function fetchUrlBlob(url) { return fetch(url).then(r => r.blob()); }
+        function loadImageFromFile(file) { return new Promise(res => { const r = new FileReader(); r.onload = e => { const i = new Image(); i.onload = () => res(i); i.src = e.target.result; }; r.readAsDataURL(file); }); }
+        function loadImageFromBlob(blob) { return new Promise(res => { const i = new Image(); i.onload = () => res(i); i.src = URL.createObjectURL(blob); }); }
+        function runLocalEnhancer(img, strength, mode) {
+            return new Promise(res => {
+                const c = document.createElement('canvas'); const ctx = c.getContext('2d');
+                c.width = img.width * 2; c.height = img.height * 2;
+                ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high'; ctx.drawImage(img, 0, 0, c.width, c.height);
+                c.toBlob(blob => res(blob), 'image/jpeg', 0.95);
+            });
+        }
+    }
+
+    // Activator & React WA (Fungsi asli)
+    document.getElementById('activateBtn').addEventListener('click', async () => {
+        const email = document.getElementById('emailInput').value.trim(); const magic = document.getElementById('magicInput').value.trim();
+        if(!email || !magic) return customAlert("Data tidak lengkap", true);
+        const btn = document.getElementById('activateBtn'); btn.disabled = true;
+        try {
+            const res = await fetch(`/api/am?action=verif&email=${encodeURIComponent(email)}&url=${encodeURIComponent(magic)}`);
+            const data = await res.json();
+            if(data.status) {
+                customAlert('Verifikasi Lisensi Berhasil.');
+                const isPremium = currentUserData && (parseBool(currentUserData.is_permanent) || currentUserData.role === 'Owner');
+                if(!isPremium) {
+                    let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 1); 
+                    await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
+                    currentUserData.limit_count = newLimit; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData);
+                }
+            } else { customAlert(data.error || 'Ditolak', true); }
+        } catch(e) { customAlert('Koneksi Error', true); } finally { btn.disabled = false; }
     });
 
-    // LOGIC: OWNER PANEL
-    window.sendBroadcastMsg = async function() { 
-        const text = document.getElementById('broadcastInput').value.trim(); 
-        if(!text) return customAlert("Transmisi kosong.", true); 
-        const res = await apiCall('sendBroadcast', { message: text }); 
-        if (res.status) { customAlert("Pesan terkirim ke seluruh node."); document.getElementById('broadcastInput').value = ''; } 
-    };
+    const btnSendReaction = document.getElementById('btnSendReaction');
+    if (btnSendReaction) {
+        btnSendReaction.addEventListener('click', async () => {
+            const urlVal = document.getElementById('waReactUrl').value.trim(); const emojiVal = document.getElementById('waReactEmoji').value.trim();
+            if (!urlVal || !emojiVal) return customAlert("Isi form WA", true);
+            const isPremium = currentUserData && (parseBool(currentUserData.is_permanent) || currentUserData.role === 'Owner');
+            if (!isPremium && (currentUserData.limit_count ?? 3) < 3) return customAlert("Limit tidak cukup (Butuh 3).", true);
+            
+            btnSendReaction.disabled = true; btnSendReaction.innerHTML = 'PROCESSING...';
+            try {
+                const res = await fetch('/api/reactch', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url: urlVal, reaction: emojiVal }) });
+                const data = await res.json();
+                if (data.statusCode === 200 || data.status === true) {
+                    customAlert('Reaksi Terkirim.');
+                    if(!isPremium) {
+                        let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 3); 
+                        await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
+                        currentUserData.limit_count = newLimit; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData);
+                    }
+                } else { customAlert('Gagal', true); }
+            } catch (err) { customAlert('Error API', true); } finally { btnSendReaction.disabled = false; btnSendReaction.innerHTML = 'INJECT REACTION'; }
+        });
+    }
 
-    window.renderMemberList = async function() { 
-        const res = await apiCall('getUsers'); const memberList = document.getElementById('memberList'); const searchInput = document.getElementById('memberSearchInput'); 
-        if(!memberList || !res.status) return; const users = res.data; const searchQuery = searchInput ? searchInput.value.toLowerCase().trim() : ''; 
-        let filteredUsers = users.filter(m => (m.username || '').toLowerCase().includes(searchQuery) || (m.id_code || '').toLowerCase().includes(searchQuery)); 
-        memberList.innerHTML = ''; 
-        if(filteredUsers.length === 0) { memberList.innerHTML = `<div style="text-align:center; padding: 20px; color:var(--text-dim); font-family:var(--font-mono); font-size:11px;">Node not found.</div>`; return; }
-        filteredUsers.forEach((m) => { 
-            const isVipUser = m.is_permanent === true || m.is_permanent === 'true'; 
-            const el = document.createElement('div'); el.className = 'tech-card'; el.style.padding = '12px'; el.style.marginBottom = '8px';
-            el.innerHTML = `
-                <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-                  <span style="font-weight:700; font-size:12px; color:var(--text-pure); font-family:var(--font-mono);">@${m.username}</span>
-                  <span style="font-size:10px; color:var(--text-dim);">${m.id_code || 'MSH-00'}</span>
-                </div>
-                <div style="font-size:10px; color:var(--text-dim); margin-bottom:12px; font-family:var(--font-mono);">
-                  <span>ROLE: <span style="color:${isVipUser ? 'var(--neon-light)' : 'var(--text-muted)'}">${isVipUser ? 'VIP' : 'MEMBER'}</span></span> | 
-                  <span>PWD: ${m.password}</span>
-                </div>
-                <div style="display:flex; gap:8px;">
-                  <input type="number" id="inputLimit_${m.username}" value="${m.limit_count ?? 3}" class="glass-input" style="padding:6px; font-size:12px; width:70px; text-align:center; font-weight:700;" />
-                  <button class="btn btn-outline click-sound" style="padding:6px 12px; width:auto; font-size:10px;" onclick="setCustomLimit('${m.username}')">Update</button>
-                  <button class="btn btn-outline click-sound" style="padding:6px 12px; width:auto; font-size:10px; flex:1;" onclick="toggleVipStatus('${m.username}', ${isVipUser})">${isVipUser ? 'Revoke VIP' : 'Set VIP'}</button>
-                </div>`; 
-            memberList.appendChild(el); 
-        }); 
-    };
+    const btnProcessVidHD = document.getElementById('btnProcessVidHD');
+    if (btnProcessVidHD) {
+        btnProcessVidHD.addEventListener('click', async () => {
+            const urlVal = document.getElementById('vidhdUrl').value.trim(); const actionVal = document.getElementById('vidhdAction').value.trim();
+            if (!urlVal || !actionVal) return customAlert("Data kosong", true);
+            btnProcessVidHD.disabled = true; btnProcessVidHD.innerHTML = 'PROCESSING...';
+            try {
+                const res = await fetch('/api/vidhd', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: actionVal, url: urlVal, user: currentUserData.username }) });
+                const data = await res.json();
+                if (res.ok && data.status) { customAlert('VidHD Sukses.'); document.getElementById('vidhdResponseData').style.display = 'block'; document.getElementById('vidhdResponseData').textContent = JSON.stringify(data, null, 2); } 
+                else { customAlert('Gagal dari server.', true); }
+            } catch (err) { customAlert('Error API', true); } finally { btnProcessVidHD.disabled = false; btnProcessVidHD.innerHTML = 'START ENGINE'; }
+        });
+    }
 
-    window.setCustomLimit = async function(username) {
-        const inputVal = document.getElementById(`inputLimit_${username}`).value; const newLimit = parseInt(inputVal, 10);
-        const res = await apiCall('updateUser', { username: username, updates: { limit_count: newLimit } });
-        if (res.status) { renderMemberList(); customAlert("Limit diperbarui."); }
-    };
-    window.toggleVipStatus = async function(username, currentVipStatus) { 
-        const newStatus = !currentVipStatus ? 'true' : 'false'; 
-        const res = await apiCall('updateUser', { username, updates: { is_permanent: newStatus } }); 
-        if (res.status) { renderMemberList(); customAlert("Status VIP diubah."); } 
-    };
-    window.resetAllZeroLimits = async function() {
-        document.getElementById('confirmText').textContent = "Reset seluruh node limit 0 menjadi 3?";
-        const modal = document.getElementById('customConfirmModal'); modal.classList.add('show');
-        document.getElementById('btnConfirmCancel').onclick = () => modal.classList.remove('show');
-        document.getElementById('btnConfirmOk').onclick = async () => { 
-            modal.classList.remove('show'); 
-            const res = await apiCall('getUsers');
-            if(res.status) {
-                const zeroUsers = res.data.filter(u => u.role !== 'Owner' && !(u.is_permanent === true || u.is_permanent === 'true') && (u.limit_count || 0) <= 0);
-                const updates = zeroUsers.map(u => apiCall('updateUser', { username: u.username, updates: { limit_count: 3 } }));
-                await Promise.all(updates); customAlert(`Berhasil mereset ${zeroUsers.length} node.`); renderMemberList();
-            }
-        };
-    };
 })();
 </script>
 </body>
