@@ -1183,7 +1183,7 @@
         const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')} WIB`;
         
         logs.unshift({ title, desc, datetime: `${dayStr}, ${dateStr} - ${timeStr}`, statusText, statusColor });
-        if(logs.length > 30) logs.pop(); // Batasi 30 log terakhir untuk performa
+        if(logs.length > 30) logs.pop(); 
         
         localStorage.setItem(logKey, JSON.stringify(logs));
         renderActivityLogs();
@@ -1227,7 +1227,6 @@
         });
     }
 
-    // --- THEME SWITCHER LOGIC ---
     const THEME_KEY = 'am_exec_theme';
     function initTheme() {
         const savedTheme = localStorage.getItem(THEME_KEY) || 'dark';
@@ -1248,7 +1247,6 @@
         if (icon) icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
     }
 
-    // --- MICRO-INTERACTION: SHAKE ANIMATION ---
     function triggerErrorShake(inputIds) {
         inputIds.forEach(id => {
             const el = document.getElementById(id);
@@ -1261,7 +1259,6 @@
         });
     }
 
-    // --- SYNTHESIZER AUDIO FEEDBACK & HAPTIC ---
     let audioCtx = null;
     function playClickSound() {
         try {
@@ -1286,10 +1283,6 @@
     const OWNER_WA = _0x1a2b[2]; const SESSION_KEY = _0x1a2b[3]; const CACHE_KEY = _0x1a2b[4]; const BROADCAST_SEEN_KEY = _0x1a2b[5];
     const BIO_CRED_KEY = "am_exec_bio_cred"; 
 
-    // --- ENDPOINT BARU UNTUK AM LISENSI ---
-    const AM_API_BASE = 'https://skyp.isaaw.web.id';
-    const AM_API_KEY = 'ISAAW-matchalatte';
-
     async function apiCall(action, payload = {}) {
         try {
             const res = await fetch(`/api/hub?action=${action}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
@@ -1297,7 +1290,6 @@
         } catch (e) { return { status: false, error: 'Network Error' }; }
     }
 
-    // Modal Bantuan
     window.openHelpModal = function() { document.getElementById('helpModal').classList.add('show'); };
     window.closeHelpModal = function() { document.getElementById('helpModal').classList.remove('show'); };
 
@@ -1322,7 +1314,6 @@
     let currentCaptchaAnswer = 0; let currentUserData = null; let cachedEmail = ''; let activeDepositId = null; let selectedAddLimitCount = 0; let activeBroadcastId = null;
     let temporaryBioData = null; 
 
-    // --- BIOMETRIC LOGIC ---
     function checkBiometricAvailable() {
         if(localStorage.getItem(BIO_CRED_KEY)) { document.getElementById('bioLoginWrapper').classList.remove('hidden'); } 
         else { document.getElementById('bioLoginWrapper').classList.add('hidden'); }
@@ -1414,7 +1405,6 @@
     };
     window.skipBiometricSetup = function() { document.getElementById('bioSetupModal').classList.remove('show'); if(temporaryBioData) window.loadAppView(temporaryBioData.resData); };
 
-    // --- LIMIT PURCHASING LOGIC ---
     const limitPackages = [
         { limit: 4, price: 1200, label: "4" }, { limit: 10, price: 3500, label: "10" },
         { limit: 18, price: 4700, label: "18" }, { limit: 20, price: 5000, label: "20" },
@@ -1505,7 +1495,6 @@
         });
     }
 
-    // --- ZERO LIMIT FILTER LOGIC ---
     let isZeroLimitFilterActive = false;
     window.toggleZeroLimitFilter = function() {
         isZeroLimitFilterActive = !isZeroLimitFilterActive;
@@ -1520,7 +1509,6 @@
         renderMemberList(); 
     };
 
-    // --- MASS RESET ZERO LIMIT LOGIC ---
     window.resetAllZeroLimits = async function() {
         customConfirm("Apakah Anda yakin ingin mereset seluruh klien dengan limit 0 menjadi 3?", async () => {
             const btn = document.getElementById('resetMassalBtn');
@@ -1593,7 +1581,7 @@
                 const currentLimit = user.limit_count ?? 3; massUpdateText('.disp-limit-label', "Sisa Kuota Akses"); numDisplays.forEach(el => { el.textContent = currentLimit; el.classList.remove('vip'); });
             }
             
-            renderActivityLogs(); // Render logs upon login
+            renderActivityLogs();
             
             switchView('appView'); document.getElementById('mainBottomNav').classList.remove('hidden');
             if(!document.querySelector('.nav-item.active')) switchTab('activator');
@@ -2000,7 +1988,6 @@
 
     if(topLogoutBtn) { topLogoutBtn.addEventListener('click', () => { customConfirm("Anda yakin ingin memutus koneksi sesi eksklusif ini?", () => { addActivityLog("Otorisasi Sistem", "Mengakhiri sesi eksekutif (Logout)", "Selesai", "var(--text-muted)"); setTimeout(() => { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(CACHE_KEY); closeProfileSheet(); switchView('loginView'); }, 300); }); }); }
     
-    // --- INTEGRASI ENDPOINT BARU: SEND LINK ---
     if(sendBtn) {
         sendBtn.addEventListener('click', async () => {
             const email = document.getElementById('emailInput').value.trim(); 
@@ -2010,14 +1997,7 @@
             }
             sendBtn.innerHTML = 'Proses...'; sendBtn.disabled = true;
             try {
-                const target = `${AM_API_BASE}/api/am/sendlink?email=${encodeURIComponent(email)}`;
-                const res = await fetch(target, {
-                    method: 'GET',
-                    headers: {
-                        'X-API-Key': AM_API_KEY,
-                        'Accept': 'application/json'
-                    }
-                });
+                const res = await fetch(`/api/am?action=send&email=${encodeURIComponent(email)}`);
                 const data = await res.json();
                 if(data.status) { 
                     cachedEmail = email; 
@@ -2035,7 +2015,6 @@
         });
     }
 
-    // --- INTEGRASI ENDPOINT BARU: REQ PREM (VERIFIKASI) ---
     if(activateBtn) {
         activateBtn.addEventListener('click', async () => {
             const email = document.getElementById('emailInput').value.trim(); 
@@ -2049,14 +2028,7 @@
             document.getElementById('loaderContainer').classList.remove('hidden');
             
             try {
-                const target = `${AM_API_BASE}/api/amp/reqprem?email=${encodeURIComponent(cachedEmail || email)}&link=${encodeURIComponent(magic)}`;
-                const res = await fetch(target, {
-                    method: 'GET',
-                    headers: {
-                        'X-API-Key': AM_API_KEY,
-                        'Accept': 'application/json'
-                    }
-                });
+                const res = await fetch(`/api/am?action=verif&email=${encodeURIComponent(cachedEmail || email)}&url=${encodeURIComponent(magic)}`);
                 const data = await res.json();
                 if(data.status) {
                     showMsg('appErrorMsg', data.message || 'Berhasil! Akun Anda telah terverifikasi premium.', 'success');
@@ -2083,7 +2055,6 @@
         });
     }
 
-    // --- FORUM CHAT LOGIC ---
     let chatIntervalId = null;
 
     async function loadChatMessages() {
