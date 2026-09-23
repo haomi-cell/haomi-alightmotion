@@ -5,8 +5,57 @@ const supabaseUrl = process.env.SUPABASE_URL || '';
 const supabaseKey = process.env.SUPABASE_SERVICE_KEY || '';
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-const RAMASHOP_BASE_URL = "https://ramashop.my.id/api/public";
-const RAMASHOP_API_KEY = "rg_ea029ad8b5262570682db8bbc92a43";
+// ==========================================
+// --- CLASS GATEWAY NEVAPEDIA ---
+// ==========================================
+class NevapediaPay {
+    constructor() {
+        this.apiKey = 'SKY_45a18f8910ed4fb2';
+        this.baseURL = 'https://app.nevapedia.com/api';
+    }
+
+    async _get(endpoint, params = {}) {
+        params.apikey = this.apiKey;
+        try {
+            const response = await axios.get(`${this.baseURL}${endpoint}`, { params });
+            return response.data;
+        } catch (error) {
+            if (error.response) return { error: true, detail: error.response.data };
+            return { error: true, message: error.message };
+        }
+    }
+
+    async cekSaldo() {
+        return await this._get('/balance');
+    }
+
+    async buatInvoice(amount) {
+        return await this._get('/invoice', { amount: amount });
+    }
+
+    async cekStatusInvoice(invoiceId) {
+        return await this._get('/invoice/status', { invoice_id: invoiceId });
+    }
+
+    async metodeWithdraw() {
+        return await this._get('/withdraw/methods');
+    }
+
+    async withdraw(amount, method, accountNumber, instant = false) {
+        return await this._get('/withdraw', {
+            amount: amount,
+            method: method,
+            account_number: accountNumber,
+            instant: instant ? 'true' : 'false'
+        });
+    }
+
+    async cekStatusWithdraw(withdrawId) {
+        return await this._get('/withdraw/status', { id: withdrawId });
+    }
+}
+
+const pembayaran = new NevapediaPay();
 
 export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -193,30 +242,46 @@ export default async function handler(req, res) {
                 return res.status(200).json({ status: true });
             }
 
-            // --- ENDPOINT QRIS RAMASHOP ---
+            // ==========================================
+            // --- ENDPOINT QRIS NEVAPEDIA ---
+            // ==========================================
             case 'createQris': {
-                const response = await axios.post(`${RAMASHOP_BASE_URL}/deposit/create`, {
-                    amount: body.amount,
-                    method: "qris"
-                }, {
-                    headers: {
-                        "X-API-Key": RAMASHOP_API_KEY,
-                        "Content-Type": "application/json"
-                    },
-                    timeout: 20000
-                });
-                return res.status(200).json({ status: true, data: response.data });
+                if (!body.amount) {
+                    return res.status(200).json({ status: false, error: 'Amount tidak valid' });
+                }
+
+                const invoiceData = await pembayaran.buatInvoice(body.amount);
+                
+                // Jika Nevapedia mengembalikan error
+                if (invoiceData.error) {
+                    return res.status(200).json({ 
+                        status: false, 
+                        error: invoiceData.detail?.message || invoiceData.message || 'Gagal membuat invoice.' 
+                    });
+                }
+
+                return res.status(200).json({ status: true, data: invoiceData });
             }
 
             case 'checkQris': {
-                const response = await axios.get(`${RAMASHOP_BASE_URL}/deposit/status/${body.depositId}`, {
-                    headers: {
-                        "X-API-Key": RAMASHOP_API_KEY,
-                        "Content-Type": "application/json"
-                    },
-                    timeout: 20000
-                });
-                return res.status(200).json({ status: true, data: response.data });
+                // Client bisa mengirimkan invoiceId atau depositId
+                const targetId = body.invoiceId || body.depositId;
+                
+                if (!targetId) {
+                    return res.status(200).json({ status: false, error: 'Invoice ID tidak ditemukan' });
+                }
+
+                const statusData = await pembayaran.cekStatusInvoice(targetId);
+
+                // Jika Nevapedia mengembalikan error
+                if (statusData.error) {
+                    return res.status(200).json({ 
+                        status: false, 
+                        error: statusData.detail?.message || statusData.message || 'Gagal mengecek status pembayaran.' 
+                    });
+                }
+
+                return res.status(200).json({ status: true, data: statusData });
             }
 
             default:
