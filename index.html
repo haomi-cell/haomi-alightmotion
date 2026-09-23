@@ -1045,7 +1045,7 @@
   <div id="sectionReact" class="hidden">
     <div class="glass-card">
       <div class="title-lg">WA Channel Reactor</div>
-      <div class="text-sub" style="margin-bottom: 20px;">Kirim reaksi otomatis nang saluran WhatsApp.</div>
+      <div class="text-sub" style="margin-bottom: 20px;">Kirim reaksi otomatis nang saluran WhatsApp (Pakai 3 Limit).</div>
       
       <div class="form-group">
         <label>URL Saluran WhatsApp</label>
@@ -1067,11 +1067,14 @@
     </div>
   </div>
 
-  <!-- SECTION: VID HD (NEW) -->
+  <!-- SECTION: VID HD (FREE / TANPA LIMIT) -->
   <div id="sectionVidHD" class="hidden">
     <div class="glass-card">
-      <div class="title-lg">VidHD Server</div>
-      <div class="text-sub" style="margin-bottom: 20px;">Pemrosesan & peningkatan kualitas video via Backend.</div>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 6px;">
+        <div class="title-lg" style="margin: 0;">VidHD Server</div>
+        <span style="font-size: 9px; font-weight: 700; color: #111; background: var(--gold-gradient); padding: 2px 8px; border-radius: 6px; letter-spacing: 0.5px;">GRATIS / FREE</span>
+      </div>
+      <div class="text-sub" style="margin-bottom: 20px;">Pemrosesan & peningkatan kualitas video via Backend (Bebas Limit).</div>
 
       <div class="form-group">
         <label>URL Video / File ID</label>
@@ -2245,7 +2248,7 @@
         if (e.key === 'Enter') document.getElementById('btnSendChat').click();
     });
 
-    // Event listener untuk tombol WA React
+    // Event listener untuk tombol WA React (DIUBAH KE 3 LIMIT)
     const btnSendReaction = document.getElementById('btnSendReaction');
     if (btnSendReaction) {
         btnSendReaction.addEventListener('click', async () => {
@@ -2257,11 +2260,12 @@
                 return showMsg('reactStatusMessage', 'URL lan Emoji kudu diisi.', 'error');
             }
 
+            // Pengecekan 3 limit
             const isPremium = currentUserData && (parseBool(currentUserData.is_permanent) || currentUserData.role === 'Owner');
             if (!isPremium) {
                 const currentLimit = currentUserData.limit_count ?? 3;
-                if (currentLimit < 2) {
-                    return showMsg('reactStatusMessage', 'Sisa limit ora cukup. Fitur iki butuh 2 limit.', 'error');
+                if (currentLimit < 3) {
+                    return showMsg('reactStatusMessage', 'Sisa limit ora cukup. Fitur iki butuh 3 limit.', 'error');
                 }
             }
 
@@ -2278,10 +2282,10 @@
                 
                 if (data.statusCode === 200 || data.status === true) {
                     showMsg('reactStatusMessage', 'Mantap! Reaksi sukses mlebu antrean.', 'success');
-                    addActivityLog("WA Reactor", `Kirim reaksi ${emojiVal} nang saluran WA`, "-2 Limit", "var(--success-light)");
+                    addActivityLog("WA Reactor", `Kirim reaksi ${emojiVal} nang saluran WA`, "-3 Limit", "var(--success-light)");
                     
                     if(!isPremium) {
-                        let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 2); 
+                        let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 3); 
                         await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
                         currentUserData.limit_count = newLimit; 
                         localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); 
@@ -2299,7 +2303,7 @@
         });
     }
 
-    // --- EVENT LISTENER UNTUK TAB BARU: VID HD BACKEND ---
+    // --- EVENT LISTENER UNTUK TAB VID HD (FREE / TANPA POTONG LIMIT) ---
     const btnProcessVidHD = document.getElementById('btnProcessVidHD');
     if (btnProcessVidHD) {
         btnProcessVidHD.addEventListener('click', async () => {
@@ -2312,43 +2316,25 @@
                 return showMsg('vidhdStatusMessage', 'URL/ID Video dan Perintah wajib diisi.', 'error');
             }
 
-            // Membutuhkan 3 limit per proses
-            const isPremium = currentUserData && (parseBool(currentUserData.is_permanent) || currentUserData.role === 'Owner');
-            if (!isPremium) {
-                const currentLimit = currentUserData.limit_count ?? 3;
-                if (currentLimit < 3) {
-                    return showMsg('vidhdStatusMessage', 'Sisa limit tidak cukup. Fitur ini butuh 3 limit.', 'error');
-                }
-            }
-
+            // TIDAK ADA PENGECEKAN LIMIT (BEBAS/FREE)
             btnProcessVidHD.innerHTML = '<div class="loader-spinner" style="width:13px;height:13px; border-width:2px; border-top-color:#111;"></div> Memproses di Server...';
             btnProcessVidHD.disabled = true;
             respBox.style.display = 'none';
 
             try {
-                // Endpoint mengarah ke file API Backend /api/vidhd
                 const res = await fetch('/api/vidhd', { 
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: actionVal, url: urlVal, user: currentUserData.username })
+                    body: JSON.stringify({ action: actionVal, url: urlVal, user: currentUserData ? currentUserData.username : 'Guest' })
                 });
                 const data = await res.json();
                 
                 if (res.ok && data.status) {
                     showMsg('vidhdStatusMessage', data.message || 'Pemrosesan backend VidHD sukses.', 'success');
-                    addActivityLog("VidHD Backend", `Eksekusi video: ${actionVal}`, "-3 Limit", "var(--success-light)");
+                    addActivityLog("VidHD Backend", `Eksekusi video: ${actionVal}`, "FREE", "var(--success-light)");
                     
-                    // Menampilkan hasil kembalian (response raw dari backend vidhd.js)
                     respBox.style.display = 'block';
                     respBox.textContent = "Response API Server:\n" + JSON.stringify(data, null, 2);
-
-                    if(!isPremium) {
-                        let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 3); 
-                        await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
-                        currentUserData.limit_count = newLimit; 
-                        localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); 
-                        window.loadAppView(currentUserData);
-                    }
                 } else {
                     showMsg('vidhdStatusMessage', data.error || 'Server backend menolak atau gagal memproses.', 'error');
                 }
@@ -2361,14 +2347,14 @@
         });
     }
 
-    // Fungsi SwitchTab yang dimodifikasi untuk menampung Tab Vid HD
+    // Fungsi SwitchTab untuk menampung Tab Vid HD
     window.switchTab = function(tabName) { 
         const secAct = document.getElementById('sectionActivator'); 
         const secEnh = document.getElementById('sectionEnhancer'); 
         const secChat = document.getElementById('sectionChat');
         const secOwn = document.getElementById('ownerPanel');
         const secReact = document.getElementById('sectionReact');
-        const secVid = document.getElementById('sectionVidHD'); // Tab Baru VidHD
+        const secVid = document.getElementById('sectionVidHD');
         
         if(chatIntervalId) clearInterval(chatIntervalId);
 
