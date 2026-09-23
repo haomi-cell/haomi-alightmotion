@@ -3,630 +3,372 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>AM Executive — Premium Access</title>
+<title>Tools Pro</title>
 
-<!-- Fonts & Icons -->
+<!-- Fonts: Orbitron untuk Judul/Limit Keren, Rajdhani untuk Teks -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
   :root {
-    /* Blue/Slate Modern Professional Theme */
-    --bg-base: #0B0F19;
-    --bg-gradient: radial-gradient(circle at 50% -20%, rgba(14, 165, 233, 0.15) 0%, rgba(11, 15, 25, 0) 65%),
-                   radial-gradient(circle at 100% 100%, rgba(14, 165, 233, 0.05) 0%, transparent 45%);
-    --surface-dark: rgba(15, 23, 42, 0.72);
-    --surface-light: rgba(30, 41, 59, 0.6);
-    --surface-card: rgba(17, 24, 39, 0.8);
-    --input-bg: rgba(15, 23, 42, 0.7);
+    /* Tema Cyberpunk / Neon Tech (RAME & KEREN) */
+    --bg-base: #05050B;
+    --bg-gradient: radial-gradient(circle at top right, rgba(0, 243, 255, 0.15) 0%, transparent 40%),
+                   radial-gradient(circle at bottom left, rgba(255, 0, 234, 0.15) 0%, transparent 40%);
+    --surface-dark: rgba(10, 10, 20, 0.8);
+    --surface-light: rgba(20, 20, 35, 0.6);
+    --surface-card: rgba(15, 15, 25, 0.85);
+    --input-bg: rgba(5, 5, 12, 0.8);
     
-    /* Modern Accent Blue */
-    --accent-primary: #0EA5E9; /* Sky Blue */
-    --accent-light: #38BDF8;
-    --accent-dark: #0284C7;
-    --accent-glow: rgba(14, 165, 233, 0.25);
-    --accent-gradient: linear-gradient(135deg, #38BDF8 0%, #0EA5E9 50%, #0369A1 100%);
+    /* Warna Neon */
+    --neon-cyan: #00F3FF;
+    --neon-pink: #FF00EA;
+    --neon-gradient: linear-gradient(135deg, #00F3FF 0%, #0088FF 100%);
+    --neon-gradient-alt: linear-gradient(135deg, #FF00EA 0%, #7000FF 100%);
+    --accent-primary: var(--neon-cyan);
+    --accent-light: #80F9FF;
     
-    /* Typography Colors */
-    --text-pure: #F8FAFC;
-    --text-dim: #94A3B8;
-    --text-muted: #64748B;
+    --text-pure: #FFFFFF;
+    --text-dim: #A0A5B5;
+    --text-muted: #555A6E;
     
-    /* Subtle Borders & Glass */
-    --border-thin: rgba(255, 255, 255, 0.08);
-    --border-accent: rgba(14, 165, 233, 0.3);
-    --border-focus: rgba(14, 165, 233, 0.6);
-    --glass-bg: rgba(255, 255, 255, 0.03);
-    --glass-border-strong: rgba(255, 255, 255, 0.15);
+    /* Border Glow */
+    --border-thin: rgba(0, 243, 255, 0.15);
+    --border-accent: rgba(0, 243, 255, 0.4);
+    --border-focus: #00F3FF;
+    --glass-bg: rgba(255, 255, 255, 0.02);
     
-    /* Modals & Lighting */
-    --overlay-bg: rgba(2, 6, 23, 0.85);
-    --shadow-strong: 0 20px 45px rgba(0, 0, 0, 0.55);
-    --shadow-glow: 0 10px 30px -8px rgba(14, 165, 233, 0.3);
-    --avatar-bg: #1E293B;
-    --limit-bg-grad: linear-gradient(180deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.8) 100%);
-    --promo-bg1: rgba(12, 74, 110, 0.4);
-    --promo-bg2: rgba(8, 47, 73, 0.6);
+    --overlay-bg: rgba(2, 2, 5, 0.9);
+    --shadow-strong: 0 10px 40px rgba(0, 0, 0, 0.8);
+    --shadow-glow: 0 0 15px rgba(0, 243, 255, 0.4);
+    --shadow-glow-pink: 0 0 15px rgba(255, 0, 234, 0.4);
+    
+    --limit-bg-grad: linear-gradient(180deg, rgba(0, 243, 255, 0.05) 0%, rgba(10, 10, 20, 0.9) 100%);
     
     /* Status Colors */
-    --danger: #DC2626;
-    --danger-light: #F87171;
-    --success: #16A34A;
-    --success-light: #4ADE80;
+    --danger: #FF0055;
+    --danger-light: #FF4D88;
+    --success: #00FF88;
+    --success-light: #55FFAD;
     
-    --font-heading: 'Plus Jakarta Sans', sans-serif;
-    --font-body: 'Plus Jakarta Sans', sans-serif;
+    --font-heading: 'Orbitron', sans-serif;
+    --font-body: 'Rajdhani', sans-serif;
     --smooth-ease: cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  /* --- LIGHT MODE --- */
+  /* --- LIGHT MODE (Dipertahankan agar tetap bisa ganti tema, tapi tetap keren) --- */
   [data-theme="light"] {
-    --bg-base: #F1F5F9;
-    --bg-gradient: radial-gradient(circle at 50% -20%, rgba(14, 165, 233, 0.1) 0%, transparent 65%);
-    --surface-dark: rgba(255, 255, 255, 0.88);
-    --surface-light: rgba(248, 250, 252, 0.85);
+    --bg-base: #F0F4F8;
+    --bg-gradient: radial-gradient(circle at top right, rgba(0, 136, 255, 0.15) 0%, transparent 40%),
+                   radial-gradient(circle at bottom left, rgba(112, 0, 255, 0.15) 0%, transparent 40%);
+    --surface-dark: rgba(255, 255, 255, 0.9);
+    --surface-light: rgba(240, 244, 248, 0.8);
     --surface-card: rgba(255, 255, 255, 0.95);
-    --input-bg: rgba(241, 245, 249, 0.9);
+    --input-bg: #FFFFFF;
     
-    --accent-primary: #0284C7; 
-    --accent-light: #0EA5E9; 
-    --accent-dark: #0369A1;
-    --accent-glow: rgba(2, 132, 199, 0.2);
-    --accent-gradient: linear-gradient(135deg, #0EA5E9 0%, #0284C7 60%, #0369A1 100%);
+    --neon-cyan: #0088FF;
+    --neon-pink: #7000FF;
+    --neon-gradient: linear-gradient(135deg, #0088FF 0%, #00C3FF 100%);
+    --neon-gradient-alt: linear-gradient(135deg, #7000FF 0%, #B000FF 100%);
+    --accent-primary: var(--neon-cyan);
+    --accent-light: #0055FF;
     
-    --text-pure: #0F172A;
+    --text-pure: #0B1120;
     --text-dim: #475569;
-    --text-muted: #64748B;
+    --text-muted: #94A3B8;
     
     --border-thin: rgba(0, 0, 0, 0.08);
-    --border-accent: rgba(2, 132, 199, 0.25);
-    --border-focus: rgba(2, 132, 199, 0.7);
-    --glass-bg: rgba(0, 0, 0, 0.02);
-    --glass-border-strong: rgba(0, 0, 0, 0.12);
+    --border-accent: rgba(0, 136, 255, 0.3);
+    --border-focus: #0088FF;
     
-    --overlay-bg: rgba(241, 245, 249, 0.85);
-    --shadow-strong: 0 16px 36px rgba(0, 0, 0, 0.06);
-    --shadow-glow: 0 10px 25px -8px rgba(2, 132, 199, 0.25);
-    --avatar-bg: #E2E8F0;
-    --limit-bg-grad: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(241, 245, 249, 0.8) 100%);
-    --promo-bg1: rgba(224, 242, 254, 0.8);
-    --promo-bg2: rgba(186, 230, 253, 0.8);
+    --shadow-strong: 0 10px 30px rgba(0, 0, 0, 0.1);
+    --shadow-glow: 0 5px 15px rgba(0, 136, 255, 0.3);
+    --limit-bg-grad: linear-gradient(180deg, rgba(0, 136, 255, 0.05) 0%, rgba(255, 255, 255, 0.9) 100%);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   
   body { 
-    background-color: var(--bg-base); 
-    background-image: var(--bg-gradient);
-    font-family: var(--font-body); 
-    color: var(--text-pure); 
-    min-height: 100vh; 
-    overflow-x: hidden; 
-    position: relative;
-    letter-spacing: -0.01em;
-    transition: background-color 0.4s var(--smooth-ease), color 0.4s var(--smooth-ease);
+    background-color: var(--bg-base); background-image: var(--bg-gradient); background-attachment: fixed;
+    font-family: var(--font-body); color: var(--text-pure); min-height: 100vh; overflow-x: hidden; 
+    letter-spacing: 0.5px; transition: background-color 0.4s var(--smooth-ease), color 0.4s var(--smooth-ease);
   }
 
-  .container { 
-    width: 100%; 
-    max-width: 440px; 
-    margin: 0 auto; 
-    padding: 24px 18px 100px; 
-    animation: smoothFadeIn 0.6s var(--smooth-ease) forwards; 
-    min-height: 100vh;
-    position: relative;
-  }
-  @keyframes smoothFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  .container { width: 100%; max-width: 440px; margin: 0 auto; padding: 24px 18px 110px; animation: smoothFadeIn 0.6s var(--smooth-ease) forwards; min-height: 100vh; position: relative; }
+  @keyframes smoothFadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-  /* Desktop Preview Frame */
   @media (min-width: 768px) {
     body { display: flex; align-items: center; justify-content: center; padding: 28px 0; }
-    .container {
-      border-radius: 28px; border: 1px solid var(--border-thin);
-      box-shadow: 0 25px 70px -10px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.03);
-      min-height: 90vh; max-height: 92vh; overflow-y: auto;
-    }
+    .container { border-radius: 20px; border: 1px solid var(--border-thin); box-shadow: 0 0 50px rgba(0,243,255,0.05); min-height: 90vh; max-height: 92vh; overflow-y: auto; }
   }
 
-  /* --- LOADER --- */
-  #initialLoader { 
-    position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; 
-    background: var(--bg-base); flex-direction: column; transition: opacity 0.6s var(--smooth-ease); 
-  }
-  .luxury-loader { position: relative; width: 68px; height: 68px; }
-  .luxury-loader::before, .luxury-loader::after {
-    content: ''; position: absolute; inset: 0; border-radius: 50%;
-    border: 2px solid transparent; border-top-color: var(--accent-primary);
-    animation: spin-luxury 1.3s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
-  }
-  .luxury-loader::after {
-    inset: 10px; border-top-color: transparent; border-bottom-color: var(--accent-light);
-    animation-direction: reverse; animation-duration: 1.8s;
-  }
-  .loader-logo { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: var(--accent-primary); font-size: 20px; animation: pulse-glow 2s infinite; }
-  .loader-text { margin-top: 26px; font-size: 10px; font-weight: 600; color: var(--accent-dark); text-transform: uppercase; letter-spacing: 2px; }
-  @keyframes spin-luxury { to { transform: rotate(360deg); } }
-  @keyframes pulse-glow { 0%, 100% { opacity: 0.75; transform: translate(-50%, -50%) scale(1); } 50% { opacity: 1; transform: translate(-50%, -50%) scale(1.06); } }
+  /* --- LOADER KEREN --- */
+  #initialLoader { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; background: var(--bg-base); flex-direction: column; transition: opacity 0.5s; }
+  .cyber-loader { position: relative; width: 80px; height: 80px; }
+  .cyber-loader::before, .cyber-loader::after { content: ''; position: absolute; inset: 0; border-radius: 50%; border: 3px solid transparent; }
+  .cyber-loader::before { border-top-color: var(--neon-cyan); border-bottom-color: var(--neon-cyan); animation: spin-loader 1.5s linear infinite; box-shadow: 0 0 15px var(--neon-cyan) inset; }
+  .cyber-loader::after { inset: 10px; border-left-color: var(--neon-pink); border-right-color: var(--neon-pink); animation: spin-loader 1s ease-in-out infinite reverse; box-shadow: 0 0 10px var(--neon-pink); }
+  .loader-logo { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #fff; font-size: 20px; text-shadow: 0 0 10px var(--neon-cyan); animation: pulse-glow 2s infinite; }
+  .loader-text { margin-top: 24px; font-family: var(--font-heading); font-size: 12px; font-weight: 700; color: var(--neon-cyan); text-transform: uppercase; letter-spacing: 4px; text-shadow: 0 0 8px var(--neon-cyan); animation: pulse-glow 2s infinite; }
+  @keyframes spin-loader { to { transform: rotate(360deg); } }
+  @keyframes pulse-glow { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
 
-  .loader-spinner { width: 30px; height: 30px; border: 2px solid var(--glass-border-strong); border-top-color: var(--accent-primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
+  .loader-spinner { width: 24px; height: 24px; border: 3px solid rgba(255,255,255,0.2); border-top-color: #fff; border-radius: 50%; animation: spin 0.8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
   .hidden { display: none !important; }
 
-  /* --- GLASS CARDS --- */
+  /* --- GLASS CARDS KEREN --- */
   .glass-card { 
-    background: var(--surface-card); 
-    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--border-thin); 
-    border-radius: 18px; 
-    padding: 24px 20px; 
-    box-shadow: var(--shadow-strong); 
-    transition: all 0.35s var(--smooth-ease);
-    position: relative; 
-    overflow: hidden;
+    background: var(--surface-card); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+    border: 1px solid var(--border-thin); border-radius: 16px; padding: 22px 18px; box-shadow: var(--shadow-strong); 
+    transition: all 0.3s; position: relative; overflow: hidden; margin-bottom: 20px;
   }
-  .glass-card-hover:hover { 
-    border-color: var(--border-accent); 
-    transform: translateY(-2px); 
-    box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5); 
-    cursor: pointer; 
-  }
+  .glass-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: var(--neon-gradient); opacity: 0.5; }
+  .glass-card-hover:hover { border-color: var(--border-accent); transform: translateY(-3px); box-shadow: var(--shadow-glow); }
 
   /* TYPOGRAPHY */
-  .title-lg { 
-    font-family: var(--font-heading); 
-    font-size: 20px; 
-    font-weight: 700; 
-    background: var(--accent-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 6px; 
-  }
-  .title-md { 
-    font-family: var(--font-heading); 
-    font-size: 15px; 
-    font-weight: 700; 
-    color: var(--accent-light); 
-    margin-bottom: 4px; 
-  }
-  .text-sub { 
-    font-size: 12px; 
-    color: var(--text-dim); 
-    line-height: 1.55; 
-    font-weight: 400; 
-    margin-bottom: 16px;
-  }
-
-  /* INFO LIMIT BADGE (Simple & Clean) */
+  .title-lg { font-family: var(--font-heading); font-size: 19px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-pure); text-shadow: 0 0 8px rgba(255,255,255,0.3); margin-bottom: 6px; }
+  .text-sub { font-size: 13px; color: var(--text-dim); line-height: 1.6; font-weight: 500; margin-bottom: 16px; }
+  
+  /* BADGE LIMIT Keren */
   .limit-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    background: rgba(14, 165, 233, 0.1);
-    border: 1px solid var(--border-accent);
-    color: var(--accent-light);
-    font-size: 10px;
-    font-weight: 600;
-    padding: 4px 10px;
-    border-radius: 8px;
-    margin-bottom: 16px;
+    display: inline-flex; align-items: center; gap: 6px; background: rgba(0, 243, 255, 0.1); 
+    border: 1px solid var(--neon-cyan); color: var(--neon-cyan); font-family: var(--font-heading);
+    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; 
+    padding: 4px 10px; border-radius: 6px; margin-bottom: 16px; box-shadow: 0 0 10px rgba(0,243,255,0.2);
   }
+  .limit-badge.free { background: rgba(0, 255, 136, 0.1); border-color: var(--success); color: var(--success); box-shadow: 0 0 10px rgba(0,255,136,0.2); }
 
   /* FORMS & INPUTS */
   .form-group { margin-bottom: 18px; }
-  .form-group label { 
-    display: block; 
-    font-size: 11px; 
-    font-weight: 600; 
-    color: var(--text-muted); 
-    margin-bottom: 8px; 
-  }
+  .form-group label { display: block; font-family: var(--font-heading); font-size: 11px; font-weight: 600; color: var(--text-dim); letter-spacing: 1px; margin-bottom: 8px; }
   .input-wrapper { position: relative; display: flex; align-items: center; }
   .glass-input { 
-    width: 100%; 
-    background: var(--input-bg); 
-    border: 1px solid var(--glass-border); 
-    border-radius: 12px; 
-    color: var(--text-pure); 
-    font-family: var(--font-body); 
-    font-size: 13px; 
-    padding: 13px 15px; 
-    outline: none; 
-    transition: border-color 0.25s var(--smooth-ease), box-shadow 0.25s var(--smooth-ease); 
+    width: 100%; background: var(--input-bg); border: 1px solid var(--border-thin); border-radius: 10px; 
+    color: var(--text-pure); font-family: var(--font-body); font-size: 14px; font-weight: 600; padding: 14px 16px; 
+    outline: none; transition: all 0.3s; 
   }
-  .glass-input:focus { 
-    border-color: var(--border-focus); 
-    box-shadow: 0 0 0 3px var(--accent-glow); 
-  }
-  .glass-input::placeholder { color: var(--text-muted); opacity: 0.75; }
+  .glass-input:focus { border-color: var(--neon-cyan); box-shadow: 0 0 12px rgba(0,243,255,0.3); background: rgba(0,243,255,0.02); }
+  .glass-input::placeholder { color: var(--text-muted); font-weight: 500; }
   
   @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-5px); } }
-  .input-error { border-color: var(--danger-light) !important; box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.25) !important; animation: shake 0.35s ease-in-out; }
+  .input-error { border-color: var(--danger) !important; box-shadow: 0 0 12px rgba(255,0,85,0.4) !important; animation: shake 0.35s ease-in-out; }
 
-  .pwd-toggle { 
-    position: absolute; right: 14px; background: none; border: none; 
-    color: var(--text-muted); font-size: 14px; cursor: pointer; transition: color 0.2s; 
-  }
-  .pwd-toggle:hover { color: var(--accent-primary); }
+  .pwd-toggle { position: absolute; right: 14px; background: none; border: none; color: var(--text-muted); font-size: 16px; cursor: pointer; transition: 0.3s; }
+  .pwd-toggle:hover { color: var(--neon-cyan); text-shadow: 0 0 8px var(--neon-cyan); }
 
-  /* BUTTONS */
+  /* BUTTONS KEREN */
   .btn { 
-    width: 100%; padding: 13px 18px; border-radius: 12px; font-family: var(--font-body); 
-    font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; 
-    gap: 8px; cursor: pointer; transition: all 0.25s var(--smooth-ease); border: none; 
+    width: 100%; padding: 14px 18px; border-radius: 10px; font-family: var(--font-heading); 
+    font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; 
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; transition: all 0.3s; border: none; 
   }
-  .btn:active { transform: scale(0.98); }
-  .btn-primary { background: var(--accent-gradient); color: #fff; box-shadow: var(--shadow-glow); text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
-  .btn-primary:hover { box-shadow: 0 8px 20px -6px rgba(14, 165, 233, 0.5); filter: brightness(1.1); transform: translateY(-1px); }
-  .btn-primary:disabled { background: var(--surface-light); color: var(--text-muted); cursor: not-allowed; box-shadow: none; filter: none; transform: none; }
-  .btn-outline { background: var(--glass-bg); border: 1px solid var(--border-accent); color: var(--accent-light); }
-  .btn-outline:hover { background: rgba(14, 165, 233, 0.08); border-color: var(--accent-primary); transform: translateY(-1px); }
+  .btn:active { transform: scale(0.96); }
+  .btn-primary { background: var(--neon-gradient); color: #05050B; box-shadow: var(--shadow-glow); text-shadow: none; }
+  .btn-primary:hover { box-shadow: 0 0 25px rgba(0,243,255,0.6); filter: brightness(1.2); }
+  .btn-primary:disabled { background: var(--surface-light); color: var(--text-muted); cursor: not-allowed; box-shadow: none; }
+  .btn-outline { background: rgba(0,243,255,0.05); border: 1px solid var(--neon-cyan); color: var(--neon-cyan); text-shadow: 0 0 5px rgba(0,243,255,0.5); }
+  .btn-outline:hover { background: rgba(0,243,255,0.15); box-shadow: 0 0 15px rgba(0,243,255,0.3); }
 
   /* MESSAGE BOXES */
-  .message-box { 
-    padding: 12px 15px; border-radius: 10px; font-size: 11px; font-weight: 500; 
-    display: none; align-items: flex-start; gap: 10px; margin-bottom: 18px; line-height: 1.55; border: 1px solid transparent; 
-  }
-  .message-box i { font-size: 14px; margin-top: 2px; }
-  .message-box.show { display: flex; animation: smoothSlideIn 0.3s var(--smooth-ease); }
-  @keyframes smoothSlideIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
-  .message-error { background: rgba(153, 27, 27, 0.15); border-color: rgba(248, 113, 113, 0.25); color: var(--danger-light); }
-  .message-success { background: rgba(6, 95, 70, 0.18); border-color: rgba(52, 211, 153, 0.25); color: var(--success-light); }
+  .message-box { padding: 12px 16px; border-radius: 10px; font-size: 13px; font-weight: 600; display: none; align-items: flex-start; gap: 10px; margin-bottom: 18px; border: 1px solid transparent; }
+  .message-box i { font-size: 16px; margin-top: 2px; }
+  .message-box.show { display: flex; animation: smoothSlideIn 0.3s; }
+  .message-error { background: rgba(255, 0, 85, 0.1); border-color: var(--danger); color: var(--danger-light); box-shadow: 0 0 15px rgba(255,0,85,0.2); }
+  .message-success { background: rgba(0, 255, 136, 0.1); border-color: var(--success); color: var(--success-light); box-shadow: 0 0 15px rgba(0,255,136,0.2); }
 
   /* TOAST */
-  #globalToast { 
-    position: fixed; top: -70px; left: 50%; transform: translateX(-50%); opacity: 0; background: var(--surface-card); 
-    backdrop-filter: blur(16px); border: 1px solid var(--border-accent); color: var(--text-pure); padding: 12px 20px; 
-    border-radius: 30px; font-size: 11px; font-weight: 500; display: flex; align-items: center; gap: 10px; z-index: 9999; 
-    transition: all 0.4s var(--smooth-ease); box-shadow: var(--shadow-strong); pointer-events: none; white-space: nowrap;
-  }
-  #globalToast.show { top: 22px; opacity: 1; pointer-events: auto; }
+  #globalToast { position: fixed; top: -70px; left: 50%; transform: translateX(-50%); opacity: 0; background: var(--surface-card); border: 1px solid var(--neon-cyan); color: #fff; padding: 14px 22px; border-radius: 30px; font-family: var(--font-heading); font-size: 11px; font-weight: 700; display: flex; align-items: center; gap: 10px; z-index: 9999; transition: all 0.4s; box-shadow: var(--shadow-glow); text-transform: uppercase; letter-spacing: 1px;}
+  #globalToast.show { top: 22px; opacity: 1; }
 
   /* HEADER & TOP BAR */
-  .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-  .logo-wrapper { display: flex; align-items: center; gap: 10px; font-family: var(--font-heading); font-weight: 700; font-size: 18px; color: var(--text-pure); }
-  .logo-icon { 
-    width: 32px; height: 32px; border-radius: 9px; background: var(--accent-gradient); 
-    display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; box-shadow: var(--shadow-glow); 
-  }
+  .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+  .logo-wrapper { display: flex; align-items: center; gap: 10px; font-family: var(--font-heading); font-weight: 900; font-size: 20px; letter-spacing: 1px; color: var(--text-pure); text-shadow: 0 0 10px rgba(255,255,255,0.3); }
+  .logo-icon { width: 36px; height: 36px; border-radius: 10px; background: var(--neon-gradient); display: flex; align-items: center; justify-content: center; color: #05050B; font-size: 18px; box-shadow: var(--shadow-glow); }
   
-  .header-right-meta { display: flex; align-items: center; gap: 8px; }
-  .header-action-btn { 
-    background: var(--surface-light); border: 1px solid var(--border-thin); color: var(--text-pure); 
-    width: 34px; height: 34px; border-radius: 10px; font-size: 13px; cursor: pointer; transition: all 0.25s; display: flex; align-items: center; justify-content: center; 
-  }
-  .header-action-btn:hover { background: rgba(14, 165, 233, 0.1); border-color: var(--border-accent); color: var(--accent-light); transform: translateY(-1px); }
-  .header-logout-btn { 
-    background: rgba(153, 27, 27, 0.12); border: 1px solid rgba(248, 113, 113, 0.2); color: var(--danger-light); 
-    width: 34px; height: 34px; border-radius: 10px; font-size: 13px; cursor: pointer; transition: all 0.25s; display: flex; align-items: center; justify-content: center; 
-  }
-  .header-logout-btn:hover { background: var(--danger); color: #fff; transform: translateY(-1px); }
+  .header-right-meta { display: flex; align-items: center; gap: 10px; }
+  .header-action-btn, .header-logout-btn { width: 38px; height: 38px; border-radius: 10px; font-size: 16px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; }
+  .header-action-btn { background: var(--surface-light); border: 1px solid var(--border-thin); color: var(--text-pure); }
+  .header-action-btn:hover { border-color: var(--neon-cyan); color: var(--neon-cyan); box-shadow: 0 0 10px rgba(0,243,255,0.3); }
+  .header-logout-btn { background: rgba(255,0,85,0.1); border: 1px solid rgba(255,0,85,0.3); color: var(--danger-light); }
+  .header-logout-btn:hover { background: var(--danger); color: #fff; box-shadow: 0 0 15px rgba(255,0,85,0.5); }
 
-  .status-bar-strip { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; background: var(--surface-light); border: 1px solid var(--border-thin); padding: 10px 14px; border-radius: 12px; }
-  .live-dot { width: 6px; height: 6px; background: var(--accent-primary); border-radius: 50%; box-shadow: 0 0 8px var(--accent-primary); animation: pulse 2s infinite; }
-  @keyframes pulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
-  
+  .status-bar-strip { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: var(--surface-light); border: 1px solid var(--border-thin); padding: 12px 16px; border-radius: 12px; }
+  .live-dot { width: 8px; height: 8px; background: var(--neon-cyan); border-radius: 50%; box-shadow: 0 0 10px var(--neon-cyan); animation: pulse 1.5s infinite; }
+
   /* PROFILE WIDGET */
-  .profile-widget { 
-    background: var(--surface-card); backdrop-filter: blur(16px); display: flex; justify-content: space-between; align-items: center; 
-    padding: 16px 18px; margin-bottom: 16px; border: 1px solid var(--border-thin); cursor: pointer; border-radius: 16px; box-shadow: var(--shadow-strong); transition: all 0.3s; 
-  }
-  .profile-widget:hover { transform: translateY(-2px); border-color: var(--border-accent); }
-  .pw-left { display: flex; align-items: center; gap: 14px; }
-  .pw-avatar { 
-    width: 44px; height: 44px; border-radius: 50%; background: var(--avatar-bg); display: flex; align-items: center; justify-content: center; 
-    font-family: var(--font-heading); font-weight: 700; color: var(--accent-primary); font-size: 16px; overflow: hidden; border: 1px solid var(--border-accent); 
-  }
+  .profile-widget { background: var(--surface-light); display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; margin-bottom: 20px; border: 1px solid var(--border-thin); border-radius: 14px; cursor: pointer; transition: 0.3s; }
+  .profile-widget:hover { border-color: var(--neon-cyan); box-shadow: 0 0 20px rgba(0,243,255,0.15); }
+  .pw-avatar { width: 48px; height: 48px; border-radius: 10px; background: var(--input-bg); display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-weight: 700; color: var(--neon-cyan); font-size: 20px; border: 2px solid var(--neon-cyan); box-shadow: 0 0 10px rgba(0,243,255,0.3); overflow: hidden; }
   .pw-avatar img { width: 100%; height: 100%; object-fit: cover; }
-  .pw-info h4 { font-family: var(--font-heading); font-size: 15px; font-weight: 700; margin-bottom: 2px; color: var(--accent-light); }
-  .pw-info p { font-size: 10px; color: var(--text-dim); }
+  .pw-info h4 { font-family: var(--font-heading); font-size: 16px; font-weight: 700; color: var(--text-pure); margin-bottom: 4px; letter-spacing: 1px; }
 
   /* VIP BANNER */
-  .vip-promo { 
-    background: linear-gradient(135deg, var(--promo-bg1), var(--promo-bg2)); border: 1px solid var(--border-accent); 
-    padding: 15px 18px; border-radius: 14px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; cursor: pointer; transition: all 0.3s; 
-  }
-  .vip-promo:hover { box-shadow: var(--shadow-glow); transform: translateY(-2px); }
-  .vip-promo i { font-size: 20px; color: var(--accent-primary); }
+  .vip-promo { background: var(--neon-gradient-alt); padding: 16px 20px; border-radius: 14px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; cursor: pointer; box-shadow: var(--shadow-glow-pink); transition: 0.3s; }
+  .vip-promo:hover { filter: brightness(1.1); transform: scale(1.02); }
+  .vip-promo i { font-size: 24px; color: #fff; }
 
-  /* TOP UP CARD */
-  .topup-card { 
-    display: flex; justify-content: space-between; align-items: center; padding: 15px 18px; margin-bottom: 16px; 
-    background: var(--surface-light); border: 1px solid var(--border-thin); border-radius: 14px; transition: all 0.25s; 
-  }
-  .topup-card:hover { border-color: var(--border-accent); transform: translateY(-1px); }
-  .btn-topup { 
-    background: transparent; color: var(--accent-primary); border: 1px solid var(--accent-primary); 
-    padding: 6px 13px; border-radius: 8px; font-size: 11px; font-weight: 600; cursor: pointer; transition: all 0.25s; 
-  }
-  .btn-topup:hover { background: var(--accent-primary); color: #fff; }
-
-  /* LIMIT DISPLAY AREA */
-  .limit-display-area { 
-    text-align: center; margin-bottom: 20px; padding: 24px 18px; background: var(--limit-bg-grad); border-radius: 18px; 
-    border: 1px solid var(--border-thin); box-shadow: var(--shadow-strong); position: relative;
-  }
-  .limit-info-box { font-size: 11px; color: var(--text-muted); margin-bottom: 10px; display: inline-block; }
-  .big-limit-num { 
-    font-family: var(--font-heading); font-size: 48px; font-weight: 700; line-height: 1; margin-bottom: 6px; 
-    background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; transition: transform 0.3s; 
-  }
-  .big-limit-num.vip { filter: drop-shadow(0 2px 10px var(--accent-glow)); }
-  .limit-label { font-size: 11px; color: var(--text-dim); }
-
-  /* LEADERBOARD TOGGLE */
-  .leaderboard-toggle-btn { 
-    width: 100%; background: var(--surface-light); border: 1px solid var(--border-thin); border-radius: 12px; 
-    padding: 13px 16px; display: flex; justify-content: space-between; align-items: center; color: var(--text-pure); 
-    font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.25s; margin-bottom: 14px; 
-  }
-  .leaderboard-toggle-btn:hover { border-color: var(--border-accent); background: var(--glass-bg); color: var(--accent-light); }
-
-  /* NAVIGASI BAWAH YANG RAPI & PROPORSIONAL */
+  /* LIMIT DISPLAY HUD (KEREN) */
+  .limit-display-area { text-align: center; margin-bottom: 24px; padding: 30px 20px; background: var(--surface-card); border-radius: 16px; border: 1px solid var(--neon-cyan); box-shadow: inset 0 0 30px rgba(0,243,255,0.1), 0 0 20px rgba(0,243,255,0.2); position: relative; overflow: hidden; }
+  .limit-display-area::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,243,255,0.05) 3px, rgba(0,243,255,0.05) 4px); pointer-events: none; }
+  .limit-info-box { font-family: var(--font-heading); font-size: 10px; color: var(--neon-cyan); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; text-shadow: 0 0 5px var(--neon-cyan); }
+  .big-limit-num { font-family: var(--font-heading); font-size: 60px; font-weight: 900; line-height: 1; margin-bottom: 8px; color: #fff; text-shadow: 0 0 20px var(--neon-cyan), 0 0 40px var(--neon-cyan); }
+  
+  /* NAVIGASI BAWAH (GAK MAKSA) */
   .bottom-nav { 
-    position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); 
-    width: calc(100% - 30px); max-width: 440px; height: 60px; 
-    background: var(--surface-card); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+    position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); 
+    width: calc(100% - 30px); max-width: 440px; height: 65px; 
+    background: var(--surface-card); backdrop-filter: blur(20px);
     border: 1px solid var(--border-thin); border-radius: 20px; 
     display: flex; justify-content: space-between; align-items: center; 
-    z-index: 100; box-shadow: var(--shadow-strong), 0 0 0 1px rgba(255,255,255,0.03); 
-    padding: 0 6px; overflow: hidden;
+    z-index: 100; padding: 0 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.8);
   }
   .nav-item { 
     display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; 
-    color: var(--text-muted); font-size: 9.5px; font-weight: 600; 
-    cursor: pointer; transition: all 0.3s var(--smooth-ease); 
-    padding: 6px 2px; border-radius: 12px; flex: 1; min-width: 0;
+    color: var(--text-muted); font-size: 9px; font-family: var(--font-heading); font-weight: 700; 
+    letter-spacing: 0.5px; cursor: pointer; transition: 0.3s; padding: 6px 2px; border-radius: 12px; flex: 1; 
   }
-  .nav-item span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; text-align: center; }
-  .nav-item i { font-size: 18px; transition: transform 0.3s, color 0.3s; }
-  .nav-item.active { color: var(--accent-primary); background: rgba(14, 165, 233, 0.1); }
-  .nav-item.active i { transform: translateY(-2px); }
-  .nav-item:hover:not(.active) { color: var(--text-pure); }
+  .nav-item i { font-size: 18px; margin-bottom: 2px; transition: 0.3s; }
+  .nav-item.active { color: var(--neon-cyan); text-shadow: 0 0 8px var(--neon-cyan); }
+  .nav-item.active i { transform: translateY(-3px); filter: drop-shadow(0 0 5px var(--neon-cyan)); }
+  .nav-item:hover:not(.active) { color: #fff; }
 
-  /* MODALS & PANELS */
-  .overlay { 
-    position: fixed; inset: 0; background: var(--overlay-bg); backdrop-filter: blur(12px); 
-    z-index: 999; display: flex; align-items: center; justify-content: center; 
-    opacity: 0; pointer-events: none; transition: opacity 0.35s var(--smooth-ease); padding: 18px; 
-  }
+  /* OVERLAYS & MODALS */
+  .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 999; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: 0.3s; padding: 20px; }
   .overlay.show { opacity: 1; pointer-events: auto; }
+  .modal-glass { background: var(--surface-card); border: 1px solid var(--neon-cyan); border-radius: 16px; padding: 30px 24px; width: 100%; max-width: 380px; box-shadow: 0 0 40px rgba(0,243,255,0.15); transform: scale(0.95); opacity: 0; transition: 0.3s; position: relative; }
+  .overlay.show .modal-glass { transform: scale(1); opacity: 1; }
   
-  .modal-glass { 
-    background: var(--surface-card); border: 1px solid var(--border-thin); border-radius: 20px; 
-    padding: 30px 22px; width: 100%; max-width: 380px; box-shadow: var(--shadow-strong); 
-    transform: translateY(15px) scale(0.98); opacity: 0; transition: all 0.35s; position: relative; max-height: 85vh; overflow-y: auto; 
-  }
-  .overlay.show .modal-glass { transform: translateY(0) scale(1); opacity: 1; }
-  
-  .btn-close { 
-    position: absolute; top: 16px; right: 16px; width: 28px; height: 28px; border-radius: 50%; background: var(--surface-light); 
-    border: 1px solid var(--border-thin); color: var(--text-muted); display: flex; align-items: center; justify-content: center; 
-    font-size: 12px; cursor: pointer; transition: all 0.25s; 
-  }
-  .btn-close:hover { color: var(--accent-primary); border-color: var(--border-accent); transform: rotate(90deg); }
+  .btn-close { position: absolute; top: 15px; right: 15px; width: 30px; height: 30px; border-radius: 8px; background: rgba(255,0,85,0.1); border: 1px solid rgba(255,0,85,0.3); color: var(--danger-light); display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer; transition: 0.3s; }
+  .btn-close:hover { background: var(--danger); color: #fff; box-shadow: 0 0 15px var(--danger); }
 
-  .side-panel { 
-    position: absolute; top: 0; right: 0; width: 85%; max-width: 360px; height: 100%; background: var(--surface-card); 
-    backdrop-filter: blur(30px); border-left: 1px solid var(--border-thin); padding: 35px 20px; transform: translateX(100%); 
-    transition: transform 0.4s; overflow-y: auto; box-shadow: -15px 0 40px rgba(0,0,0,0.5); 
-  }
+  .side-panel { position: absolute; top: 0; right: 0; width: 85%; max-width: 360px; height: 100%; background: var(--surface-card); border-left: 2px solid var(--neon-cyan); padding: 35px 20px; transform: translateX(100%); transition: 0.4s; overflow-y: auto; box-shadow: -10px 0 30px rgba(0,243,255,0.2); }
   .overlay.show .side-panel { transform: translateX(0); }
-  
-  .bottom-sheet { 
-    position: absolute; bottom: 0; width: 100%; max-width: 440px; background: var(--surface-card); backdrop-filter: blur(25px); 
-    border-top: 1px solid var(--border-thin); border-radius: 24px 24px 0 0; padding: 26px 20px 35px; transform: translateY(100%); 
-    transition: transform 0.35s; max-height: 85vh; overflow-y: auto; 
-  }
-  .overlay.show .bottom-sheet { transform: translateY(0); }
 
-  .limit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
-  .limit-box { background: var(--surface-light); border: 1px solid var(--border-thin); border-radius: 14px; padding: 16px 12px; text-align: center; cursor: pointer; transition: all 0.25s; }
-  .limit-box:hover { border-color: var(--border-accent); background: rgba(14,165,233,0.06); transform: translateY(-2px); }
-  .limit-box .lmt { font-family: var(--font-heading); font-size: 17px; font-weight: 700; color: var(--accent-light); margin-bottom: 4px; display: block; }
-  .limit-box .prc { font-size: 11px; color: var(--text-dim); font-weight: 600; }
-
-  .data-list { display: flex; flex-direction: column; gap: 10px; }
-  .data-item { background: var(--surface-light); border: 1px solid var(--border-thin); border-radius: 12px; padding: 14px 16px; transition: all 0.25s; }
-  .data-item:hover { border-color: var(--glass-border-strong); }
-
-  /* BIOMETRIC SCANNER */
-  .fingerprint-btn {
-    width: 46px; height: 46px; border-radius: 12px; background: var(--surface-light); border: 1px solid var(--border-accent);
-    display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.25s; margin: 0 auto;
-  }
-  .fingerprint-btn:hover { background: rgba(14, 165, 233, 0.1); box-shadow: var(--shadow-glow); transform: scale(1.04); }
-  .fingerprint-btn i { font-size: 20px; color: var(--accent-primary); }
-
-  .biometric-scanner { position: relative; width: 100px; height: 100px; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; }
-  .fp-icon { font-size: 70px; color: var(--text-muted); transition: color 0.3s; }
-  .fp-icon.scanning { color: var(--accent-primary); opacity: 0.5; }
-  .fp-icon.success { color: var(--success-light); }
-  .fp-icon.error { color: var(--danger-light); }
-  
-  .scan-line {
-    position: absolute; top: 0; left: 10%; width: 80%; height: 2px; background: var(--accent-primary); box-shadow: 0 0 12px var(--accent-primary);
-    animation: scanningLine 1.4s ease-in-out infinite alternate; display: none;
-  }
-  .biometric-scanner.active .scan-line { display: block; }
-  @keyframes scanningLine { 0% { top: 10%; opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { top: 90%; opacity: 0; } }
-
-  /* IMAGE COMPARE SLIDER */
-  .image-compare-wrapper {
-    position: relative; width: 100%; height: 260px; border-radius: 14px; border: 1px solid var(--border-thin);
-    overflow: hidden; margin: 20px 0 12px; touch-action: none; user-select: none; box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-  }
-  .img-comp-base, .img-comp-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
-  .img-comp-overlay { clip-path: inset(0 50% 0 0); }
-  .img-comp-slider { position: absolute; top: 0; left: 50%; width: 50px; height: 100%; margin-left: -25px; display: flex; align-items: center; justify-content: center; cursor: ew-resize; z-index: 10; }
-  .img-comp-slider-line { position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; background: #fff; transform: translateX(-50%); box-shadow: 0 0 8px rgba(0,0,0,0.6); pointer-events: none; }
-  .img-comp-slider-button { width: 28px; height: 28px; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #111; font-size: 11px; box-shadow: 0 2px 10px rgba(0,0,0,0.5); pointer-events: none; transition: transform 0.2s, box-shadow 0.2s; }
-  .img-comp-slider:active .img-comp-slider-button { transform: scale(1.15); box-shadow: 0 0 15px var(--accent-primary); }
-
-  input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; height: 4px; background: var(--surface-light); border-radius: 2px; outline: none; }
-  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 16px; height: 16px; border-radius: 50%; background: var(--accent-primary); cursor: pointer; box-shadow: 0 0 8px var(--accent-glow); }
-
-  /* CUSTOM SCROLLBAR FOR CHAT */
-  .chat-box-scroll::-webkit-scrollbar { width: 4px; }
-  .chat-box-scroll::-webkit-scrollbar-track { background: transparent; }
-  .chat-box-scroll::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 4px; }
-  .chat-box-scroll::-webkit-scrollbar-thumb:hover { background: var(--accent-dark); }
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--neon-cyan); border-radius: 4px; }
 </style>
 </head>
 <body>
 
 <!-- LOADER -->
 <div id="initialLoader">
-  <div class="luxury-loader">
-    <i class="fas fa-crown loader-logo"></i>
+  <div class="cyber-loader">
+    <i class="fas fa-bolt loader-logo"></i>
   </div>
-  <div class="loader-text">Memuat Sistem Eksklusif...</div>
+  <div class="loader-text">INITIALIZING...</div>
 </div>
 
 <div id="globalToast"><i class="fas fa-info-circle"></i> <span id="toastMsg">Sistem Informasi</span></div>
 
-<!-- MODAL: HELP / FAQ -->
+<!-- MODAL: HELP -->
 <div id="helpModal" class="overlay">
   <div class="modal-glass">
     <button class="btn-close click-sound" onclick="closeHelpModal()"><i class="fas fa-times"></i></button>
-    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 18px;">
-      <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(14, 165, 233, 0.1); display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-accent);">
-        <i class="fas fa-book-open" style="font-size: 14px; color: var(--accent-primary);"></i>
-      </div>
-      <div class="title-lg" style="margin: 0; font-size: 17px;">Pusat Bantuan</div>
+    <div class="title-lg" style="margin-bottom: 20px; color: var(--neon-cyan);"><i class="fas fa-book-open"></i> PANDUAN TOOLS PRO</div>
+    <div style="font-size: 13px; line-height: 1.6; color: var(--text-pure); margin-bottom: 20px;">
+      <p style="margin-bottom: 12px;"><b style="color:var(--neon-cyan);">HD Foto:</b> Merestorasi dan menajamkan foto buram secara otomatis menjadi HD tanpa menggunakan limit (Gratis).</p>
+      <p style="margin-bottom: 12px;"><b style="color:var(--neon-cyan);">VidHD Tiktok:</b> Mengompresi video agar saat diupload ke TikTok tidak burik/pecah (Kualitas tetap HD).</p>
+      <p><b style="color:var(--neon-cyan);">Magic Link:</b> Tautan login instan otomatis tanpa password yang dikirim ke email.</p>
     </div>
-    
-    <div style="font-size: 12px; line-height: 1.65; color: var(--text-pure); margin-bottom: 22px;">
-      <p style="margin-bottom: 10px;"><b style="color:var(--accent-light);">Neural AI Studio:</b> Fitur otomatis untuk merestorasi dan meningkatkan resolusi citra menjadi resolusi tinggi (HD/Super Res).</p>
-      <p style="margin-bottom: 10px;"><b style="color:var(--accent-light);">Aktivasi Lisensi:</b> Sinkronisasi sesi otentikasi perangkat klien ke gerbang server utama.</p>
-      <p><b style="color:var(--accent-light);">Magic Link:</b> Tautan enkripsi sekali pakai yang diteruskan ke email terdaftar untuk otorisasi tanpa kata sandi.</p>
-    </div>
-    <button class="btn btn-outline click-sound" onclick="closeHelpModal()">Tutup Panduan</button>
+    <button class="btn btn-outline click-sound" onclick="closeHelpModal()">Tutup</button>
   </div>
 </div>
 
-<!-- MODAL: BIOMETRIC SCANNER -->
+<!-- MODAL: BIO -->
 <div id="biometricModal" class="overlay">
-  <div class="modal-glass" style="text-align: center; padding: 35px 20px; width: 300px;">
-    <div class="title-lg" style="font-size: 18px; margin-bottom: 24px;" id="bioModalTitle">Verifikasi Identitas</div>
-    <div class="biometric-scanner" id="bioScanner">
-      <i class="fas fa-fingerprint fp-icon" id="bioIcon"></i>
-      <div class="scan-line" id="bioScanLine"></div>
-    </div>
-    <div class="text-sub" id="bioStatusText" style="margin-bottom: 18px; font-weight: 500; color: var(--accent-primary);">Sentuh sensor sidik jari Anda...</div>
+  <div class="modal-glass" style="text-align: center;">
+    <div class="title-lg" style="margin-bottom: 20px; color: var(--neon-cyan);">Verifikasi Keamanan</div>
+    <i class="fas fa-fingerprint" style="font-size: 70px; color: var(--neon-cyan); text-shadow: 0 0 20px var(--neon-cyan); margin-bottom: 20px; animation: pulse-glow 2s infinite;"></i>
+    <div style="font-family: var(--font-heading); font-size: 12px; color: var(--text-pure); margin-bottom: 20px;">Pindai Sidik Jari Anda...</div>
     <button class="btn btn-outline click-sound hidden" id="bioCancelBtn" onclick="cancelBiometric()">Batal</button>
   </div>
 </div>
 
-<!-- MODAL: BIOMETRIC SETUP PROMPT -->
+<!-- MODAL: BIO SETUP -->
 <div id="bioSetupModal" class="overlay">
-  <div class="modal-glass" style="text-align: center; padding: 35px 22px;">
-    <i class="fas fa-fingerprint" style="font-size: 40px; color: var(--accent-primary); margin-bottom: 16px;"></i>
-    <div class="title-lg" style="font-size: 20px;">Akses Instan</div>
-    <div class="text-sub" style="margin-bottom: 25px;">Aktifkan otentikasi biometrik (Passkey / FaceID) untuk login lebih cepat dan terenkripsi pada sesi berikutnya.</div>
-    <button class="btn btn-primary click-sound" style="margin-bottom: 10px;" onclick="enableBiometric()">Aktifkan Biometrik</button>
+  <div class="modal-glass" style="text-align: center;">
+    <i class="fas fa-fingerprint" style="font-size: 50px; color: var(--neon-cyan); margin-bottom: 20px;"></i>
+    <div class="title-lg">Setup Biometrik</div>
+    <div class="text-sub">Aktifkan login instan dengan sidik jari/FaceID untuk sesi berikutnya agar lebih cepat.</div>
+    <button class="btn btn-primary click-sound" style="margin-bottom: 10px;" onclick="enableBiometric()">Aktifkan Sekarang</button>
     <button class="btn btn-outline click-sound" onclick="skipBiometricSetup()">Lain Kali</button>
   </div>
 </div>
 
-<!-- MODAL: TOP UP & QRIS -->
+<!-- MODAL: LIMIT QRIS -->
 <div id="limitModal" class="overlay">
   <div class="modal-glass">
     <button class="btn-close" onclick="closeLimitModal()"><i class="fas fa-times"></i></button>
-    <div class="title-lg" style="font-size: 20px;">Acquire Limits</div>
-    <div class="text-sub">Pilih paket kuota eksklusif untuk memperluas akses sistem.</div>
-    
-    <div id="selectLimitView">
-      <div class="limit-grid" id="limitPackageGrid"></div>
-    </div>
-
-    <div id="qrisPaymentView" class="hidden" style="text-align: center; margin-top: 24px;">
-      <div style="background: #fff; padding: 12px; border-radius: 12px; display: inline-block; margin-bottom: 16px; border: 1px solid var(--border-accent);">
-        <img id="qrisImageResult" src="" alt="QRIS" style="width: 170px; height: 170px; object-fit: contain;">
-      </div>
-      <div id="qrisPackageTitle" style="font-family: var(--font-heading); font-size: 17px; font-weight: 700; margin-bottom: 4px; color: var(--accent-light);"></div>
-      <div style="font-size: 11px; color: var(--text-dim); margin-bottom: 20px; text-transform: uppercase;">Tx ID: <span id="qrisDepositIdSpan" style="color:var(--text-pure); font-weight: 700;"></span></div>
-      
-      <button class="btn btn-primary click-sound" onclick="checkQrisPaymentStatus()" style="margin-bottom: 10px;">Verifikasi Pembayaran</button>
+    <div class="title-lg" style="color: var(--neon-cyan);">TOP UP LIMIT</div>
+    <div class="text-sub">Pilih paket limit otomatis via QRIS.</div>
+    <div id="selectLimitView"><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px;" id="limitPackageGrid"></div></div>
+    <div id="qrisPaymentView" class="hidden" style="text-align: center; margin-top: 20px;">
+      <div style="background: #fff; padding: 10px; border-radius: 10px; display: inline-block; margin-bottom: 15px;"><img id="qrisImageResult" src="" style="width: 160px; height: 160px;"></div>
+      <div id="qrisPackageTitle" style="font-family: var(--font-heading); font-size: 16px; color: var(--neon-cyan); margin-bottom: 5px;"></div>
+      <div style="font-size: 12px; margin-bottom: 20px;">Tx ID: <span id="qrisDepositIdSpan" style="color:#fff;"></span></div>
+      <button class="btn btn-primary click-sound" onclick="checkQrisPaymentStatus()" style="margin-bottom: 10px;">Verifikasi Lunas</button>
       <button class="btn btn-outline click-sound" onclick="backToLimitSelect()">Kembali</button>
     </div>
   </div>
 </div>
 
-<!-- MODAL: CONFIRM -->
 <div id="customConfirmModal" class="overlay">
-  <div class="modal-glass" style="text-align: center; padding: 35px 22px;">
-    <i class="fas fa-shield-alt" style="font-size: 32px; color: var(--accent-primary); margin-bottom: 16px;"></i>
-    <div class="title-lg" style="font-size: 19px;">Konfirmasi Tindakan</div>
-    <div id="confirmText" class="text-sub" style="margin-bottom: 25px;">Tindakan ini memerlukan otorisasi Anda. Lanjutkan proses?</div>
-    <button id="btnConfirmOk" class="btn btn-primary click-sound" style="margin-bottom: 10px;">Ya, Lanjutkan</button>
+  <div class="modal-glass" style="text-align: center;">
+    <i class="fas fa-exclamation-triangle" style="font-size: 40px; color: var(--neon-pink); margin-bottom: 15px;"></i>
+    <div class="title-lg">Konfirmasi</div>
+    <div id="confirmText" class="text-sub">Lanjutkan proses ini?</div>
+    <button id="btnConfirmOk" class="btn btn-primary click-sound" style="margin-bottom: 10px;">Ya, Lanjut</button>
     <button id="btnConfirmCancel" class="btn btn-outline click-sound">Batal</button>
   </div>
 </div>
 
-<!-- MODAL: WARNING KEAMANAN -->
 <div id="warningModal" class="overlay">
-  <div class="modal-glass" style="border-color: rgba(248, 113, 113, 0.35);">
-    <div style="text-align: center; margin-bottom: 16px;">
-      <i class="fas fa-shield-virus" style="font-size: 32px; color: var(--danger-light); margin-bottom: 12px;"></i>
-      <div class="title-lg" style="font-size: 18px; color: var(--danger-light); -webkit-text-fill-color: initial;">Protokol Keamanan Sistem</div>
-    </div>
-    <div style="background: rgba(153, 27, 27, 0.1); border: 1px solid rgba(248, 113, 113, 0.2); border-radius: 12px; padding: 16px; margin-bottom: 22px; font-size: 12px; line-height: 1.65; color: var(--text-pure); text-align: justify;">
-      Sistem ini diproteksi oleh pemantauan telemetri aktif. Segala bentuk manipulasi inspeksi, otomasi ilegal, atau upaya eksploitasi akan memicu penguncian identitas, pencatatan sidik jari perangkat, dan pemutusan akses permanen.
-    </div>
-    <button class="btn btn-primary click-sound" style="background: var(--danger); color: #fff; box-shadow: none;" onclick="closeWarningModal()">SAYA MENGERTI</button>
+  <div class="modal-glass" style="border-color: var(--danger);">
+    <div style="text-align: center; margin-bottom: 15px;"><i class="fas fa-shield-virus" style="font-size: 40px; color: var(--danger); margin-bottom: 10px;"></i><div class="title-lg" style="color: var(--danger); text-shadow:none;">SECURITY ALERT</div></div>
+    <div style="background: rgba(255,0,85,0.1); border: 1px solid var(--danger); border-radius: 10px; padding: 15px; font-size: 13px; margin-bottom: 20px;">Sistem mencatat IP dan device Anda. Dilarang melakukan spamming API atau eksploitasi bug. Melanggar = Banned Permanen.</div>
+    <button class="btn btn-primary click-sound" style="background: var(--danger); color: #fff;" onclick="closeWarningModal()">SAYA PAHAM</button>
   </div>
 </div>
 
-<!-- MODAL: BROADCAST -->
 <div id="broadcastModal" class="overlay">
   <div class="modal-glass">
-    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 18px;">
-      <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(14, 165, 233, 0.1); display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-accent);">
-        <i class="fas fa-satellite-dish" style="font-size: 14px; color: var(--accent-primary);"></i>
-      </div>
-      <div class="title-lg" style="margin: 0; font-size: 17px;">Transmisi Eksekutif</div>
-    </div>
-    <div id="broadcastContentText" style="background: var(--surface-light); border-left: 3px solid var(--accent-primary); padding: 16px; font-size: 12px; line-height: 1.7; color: var(--text-pure); margin-bottom: 22px; border-radius: 0 10px 10px 0;">Memuat transmisi...</div>
-    <button class="btn btn-outline click-sound" onclick="closeBroadcastModal()">Tandai Telah Dibaca</button>
+    <div class="title-lg" style="color: var(--neon-cyan); margin-bottom: 15px;"><i class="fas fa-bullhorn"></i> INFO SERVER</div>
+    <div id="broadcastContentText" style="background: var(--surface-light); border-left: 4px solid var(--neon-cyan); padding: 15px; font-size: 13px; margin-bottom: 20px;">Memuat info...</div>
+    <button class="btn btn-outline click-sound" onclick="closeBroadcastModal()">Tutup</button>
   </div>
 </div>
 
 <!-- VIEW: LOGIN -->
 <main id="loginView" class="container hidden" style="display: flex; flex-direction: column; justify-content: center; min-height: 100vh;">
-  <div class="glass-card" style="padding: 35px 25px;">
+  <div class="glass-card" style="padding: 40px 25px;">
     <div style="text-align: center; margin-bottom: 30px;">
-      <div style="width: 50px; height: 50px; border-radius: 14px; background: var(--accent-gradient); margin: 0 auto 14px; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-glow);">
-        <i class="fas fa-fingerprint" style="font-size: 20px; color: #fff;"></i>
-      </div>
-      <div class="title-lg">Otorisasi Akses</div>
-      <div class="text-sub">Masuk untuk mengakses instrumen eksekutif.</div>
+      <i class="fas fa-bolt" style="font-size: 40px; color: var(--neon-cyan); text-shadow: 0 0 20px var(--neon-cyan); margin-bottom: 10px;"></i>
+      <div class="title-lg" style="font-size: 26px;">TOOLS PRO</div>
+      <div class="text-sub">Login akses sistem eksklusif</div>
     </div>
-    
     <div id="loginErrorMsg" class="message-box message-error"></div>
-    
-    <div class="form-group"><label>Identitas (Username)</label><input type="text" id="loginUser" class="glass-input" autocomplete="off" placeholder="Masukkan username" /></div>
-    <div class="form-group" style="margin-bottom: 24px;">
-      <label>Kata Sandi</label>
+    <div class="form-group"><label>Username</label><input type="text" id="loginUser" class="glass-input" autocomplete="off" placeholder="Username" /></div>
+    <div class="form-group" style="margin-bottom: 25px;">
+      <label>Password</label>
       <div class="input-wrapper">
         <input type="password" id="loginPwd" class="glass-input" autocomplete="off" placeholder="••••••••" />
-        <button type="button" class="pwd-toggle" onclick="togglePwd('loginPwd', this)" aria-label="Lihat Sandi"><i class="far fa-eye"></i></button>
+        <button type="button" class="pwd-toggle" onclick="togglePwd('loginPwd', this)"><i class="far fa-eye"></i></button>
       </div>
     </div>
-    
-    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 26px;">
-      <button id="loginBtn" class="btn btn-primary click-sound" style="flex: 1;">Otorisasi Masuk</button>
+    <div style="display: flex; gap: 10px; margin-bottom: 25px;">
+      <button id="loginBtn" class="btn btn-primary click-sound" style="flex: 1;">LOGIN</button>
       <div id="bioLoginWrapper" class="hidden">
-        <div class="fingerprint-btn click-sound" onclick="startBiometricLogin()" title="Login dengan Biometrik">
-          <i class="fas fa-fingerprint"></i>
-        </div>
+        <button class="btn btn-outline click-sound" onclick="startBiometricLogin()" style="width: 50px; padding: 0;"><i class="fas fa-fingerprint" style="font-size: 20px;"></i></button>
       </div>
     </div>
-    
-    <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: 600; text-transform: uppercase;">
-      <span style="cursor:pointer; color: var(--text-muted); transition: 0.2s;" onmouseover="this.style.color='var(--text-pure)'" onmouseout="this.style.color='var(--text-muted)'" onclick="handleForgotClick()">Lupa Sandi?</span>
-      <span style="cursor:pointer; color: var(--accent-primary); transition: 0.2s;" onmouseover="this.style.color='var(--accent-light)'" onmouseout="this.style.color='var(--accent-primary)'" onclick="switchView('registerView')">Registrasi Klien</span>
+    <div style="display: flex; justify-content: space-between; font-family: var(--font-heading); font-size: 11px; font-weight: 700;">
+      <span style="cursor:pointer; color: var(--text-dim);" onclick="handleForgotClick()">LUPA SANDI?</span>
+      <span style="cursor:pointer; color: var(--neon-cyan);" onclick="switchView('registerView')">DAFTAR BARU</span>
     </div>
   </div>
 </main>
@@ -634,248 +376,161 @@
 <!-- VIEW: REGISTER -->
 <main id="registerView" class="container hidden" style="display: flex; flex-direction: column; justify-content: center; min-height: 100vh;">
   <div class="glass-card" style="padding: 35px 25px;">
-    <div style="text-align: center; margin-bottom: 26px;">
-      <div class="title-lg">Registrasi Klien</div>
-      <div class="text-sub">Daftarkan identitas Anda ke jaringan elit.</div>
+    <div style="text-align: center; margin-bottom: 25px;">
+      <div class="title-lg">REGISTRASI</div>
+      <div class="text-sub">Daftar akun Tools Pro.</div>
     </div>
-    
     <div id="regMsg" class="message-box"></div>
-    
     <div class="form-group"><label>Username</label><input type="text" id="regUser" class="glass-input" placeholder="Tanpa spasi" /></div>
-    <div class="form-group"><label>Nomor WhatsApp</label><input type="text" id="regWa" class="glass-input" placeholder="08..." /></div>
+    <div class="form-group"><label>No WhatsApp</label><input type="text" id="regWa" class="glass-input" placeholder="08..." /></div>
     <div class="form-group">
-      <label>Kata Sandi Privat</label>
+      <label>Password</label>
       <div class="input-wrapper">
         <input type="password" id="regPwd" class="glass-input" placeholder="••••••••" />
-        <button type="button" class="pwd-toggle" onclick="togglePwd('regPwd', this)" aria-label="Lihat Sandi"><i class="far fa-eye"></i></button>
+        <button type="button" class="pwd-toggle" onclick="togglePwd('regPwd', this)"><i class="far fa-eye"></i></button>
       </div>
     </div>
-    <div class="form-group" style="margin-bottom: 26px;">
-      <label id="captchaLabel">Protokol Anti-Bot</label>
-      <input type="text" id="regCaptcha" class="glass-input" placeholder="Hasil perhitungan" />
+    <div class="form-group" style="margin-bottom: 25px;">
+      <label id="captchaLabel">Anti-Bot</label>
+      <input type="text" id="regCaptcha" class="glass-input" placeholder="Jawaban" />
     </div>
-    
-    <button id="regBtn" class="btn btn-primary click-sound">Daftarkan Identitas</button>
-    <div style="margin-top: 22px; text-align: center; font-size: 11px; font-weight: 600; text-transform: uppercase; cursor:pointer; color: var(--text-muted);" onclick="switchView('loginView')">
-      Telah terdaftar? <span style="color:var(--accent-primary);">Masuk Disini</span>
+    <button id="regBtn" class="btn btn-primary click-sound">DAFTAR SEKARANG</button>
+    <div style="margin-top: 20px; text-align: center; font-family: var(--font-heading); font-size: 11px; font-weight: 700; cursor:pointer;" onclick="switchView('loginView')">
+      <span style="color:var(--text-dim)">SUDAH PUNYA AKUN? </span><span style="color:var(--neon-cyan);">LOGIN</span>
     </div>
   </div>
 </main>
 
 <!-- VIEW: MAIN DASHBOARD -->
 <main id="appView" class="container hidden">
-  
   <header class="top-header">
     <div class="logo-wrapper">
-      <div class="logo-icon"><i class="fas fa-crown"></i></div>
-      <span style="background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">AM Executive</span>
+      <i class="fas fa-bolt" style="color: var(--neon-cyan); text-shadow: 0 0 10px var(--neon-cyan);"></i> TOOLS PRO
     </div>
-    
     <div class="header-right-meta">
-      <button class="header-action-btn click-sound" aria-label="Bantuan" title="Pusat Bantuan" onclick="openHelpModal()">
-        <i class="fas fa-question"></i>
-      </button>
-      <button class="header-action-btn click-sound" id="themeToggleBtn" aria-label="Ganti Tema" title="Ganti Tema" onclick="toggleTheme()">
-        <i class="fas fa-moon"></i>
-      </button>
-      <button class="header-logout-btn click-sound" id="topLogoutBtn" aria-label="Keluar" title="Akhiri Sesi">
-        <i class="fas fa-sign-out-alt"></i>
-      </button>
+      <button class="header-action-btn click-sound" onclick="openHelpModal()"><i class="fas fa-question"></i></button>
+      <button class="header-action-btn click-sound" id="themeToggleBtn" onclick="toggleTheme()"><i class="fas fa-moon"></i></button>
+      <button class="header-logout-btn click-sound" id="topLogoutBtn"><i class="fas fa-sign-out-alt"></i></button>
     </div>
   </header>
 
-  <!-- STATUS STRIP -->
   <div class="status-bar-strip">
-    <div style="font-size: 11px; color: var(--accent-primary); font-weight: 700; display: flex; align-items: center; gap: 6px;">
-      <i class="far fa-clock"></i> <span id="realtimeClock">00:00 WIB</span>
-    </div>
-    <div style="font-size: 11px; color: var(--text-dim); display: flex; align-items: center; gap: 12px;">
-      <span style="display: flex; align-items: center; gap: 5px;"><i class="fas fa-users"></i> <strong id="globalTotalUsers" style="color:var(--text-pure)">0</strong></span>
-      <span style="display: flex; align-items: center; gap: 5px;"><div class="live-dot" style="background: var(--success-light); box-shadow: 0 0 6px var(--success-light);"></div> <strong id="networkPingText" style="color: var(--success-light);">14ms</strong></span>
+    <div style="font-family: var(--font-heading); font-size: 12px; font-weight: 700; color: var(--neon-cyan);"><i class="far fa-clock"></i> <span id="realtimeClock">00:00 WIB</span></div>
+    <div style="font-family: var(--font-heading); font-size: 12px; font-weight: 700; color: var(--text-dim); display: flex; gap: 10px;">
+      <span><i class="fas fa-users"></i> <strong id="globalTotalUsers" style="color:#fff;">0</strong></span>
+      <span style="display:flex; align-items:center; gap:5px;"><div class="live-dot"></div> <strong id="networkPingText" style="color:var(--neon-cyan);">14ms</strong></span>
     </div>
   </div>
 
-  <!-- PROFILE CARD WIDGET -->
   <div class="profile-widget click-sound" onclick="openProfileSheet()">
     <div class="pw-left">
       <div class="pw-avatar"><span class="disp-avatar-text">?</span></div>
       <div class="pw-info">
         <h4 class="disp-username">User</h4>
-        <p class="disp-userrole">Member</p>
+        <p class="disp-userrole" style="font-family: var(--font-heading);">Member</p>
       </div>
     </div>
-    <div style="width: 28px; height: 28px; border-radius: 50%; background: var(--surface-light); display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-thin);">
-      <i class="fas fa-chevron-right" style="color: var(--accent-primary); font-size: 11px;"></i>
-    </div>
+    <i class="fas fa-chevron-right" style="color: var(--neon-cyan);"></i>
   </div>
 
-  <!-- TOP UP CARD -->
-  <div id="topupCardContainer" class="topup-card hidden click-sound" onclick="openLimitModal()">
-     <div>
-        <div style="font-family: var(--font-heading); font-size: 15px; font-weight: 700; margin-bottom: 2px; color: var(--accent-light);">Acquire Limit</div>
-        <div style="font-size: 12px; color: var(--text-dim);">Top up kuota via QRIS otomatis.</div>
-     </div>
-     <button class="btn-topup">Isi Ulang</button>
-  </div>
-
-  <!-- VIP PROMO BANNER -->
   <div id="promoBannerContainer" class="vip-promo hidden click-sound" onclick="handleVipPromoClick()">
-     <div>
-       <div style="font-family: var(--font-heading); font-size: 15px; font-weight: 700; color: var(--accent-light); margin-bottom: 2px;">Upgrade VIP</div>
-       <div style="font-size: 12px; color: var(--text-muted);">Akses tak terbatas & previlege prioritas.</div>
-     </div>
-     <i class="fas fa-gem"></i>
+     <div><div style="font-family: var(--font-heading); font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 2px;">UPGRADE VIP</div><div style="font-size: 12px; color: rgba(255,255,255,0.7);">Akses premium tanpa batas limit.</div></div>
+     <i class="fas fa-gem" style="text-shadow: 0 0 10px rgba(255,255,255,0.5);"></i>
   </div>
 
-  <!-- LEADERBOARD -->
   <div style="margin-bottom: 20px;">
     <button class="leaderboard-toggle-btn click-sound" onclick="toggleLeaderboard()">
-      <span style="display:flex; align-items:center; gap:8px;"><i class="fas fa-trophy" style="color:var(--accent-primary); font-size: 14px;"></i> Peringkat Prestise</span>
-      <i class="fas fa-chevron-down" id="leaderboardChevron" style="transition: transform 0.3s var(--smooth-ease); font-size: 12px;"></i>
+      <span style="display:flex; align-items:center; gap:8px;"><i class="fas fa-trophy" style="color:var(--neon-cyan);"></i> TOP GLOBAL LIMIT</span>
+      <i class="fas fa-chevron-down" id="leaderboardChevron" style="transition: 0.3s;"></i>
     </button>
-    <div id="leaderboardCollapsible" class="hidden" style="margin-top: 10px;">
-      <div id="leaderboardListContainer" class="data-list"></div>
-    </div>
+    <div id="leaderboardCollapsible" class="hidden" style="margin-top: 10px;"><div id="leaderboardListContainer" class="data-list"></div></div>
   </div>
 
-  <!-- SECTION: ACTIVATOR -->
+  <!-- SECTION: LISENSI -->
   <div id="sectionActivator">
-    
-    <!-- LIMIT METRIC DISPLAY -->
     <div class="limit-display-area">
-       <div class="limit-info-box">Siklus Kuota Akses Aktif</div>
+       <div class="limit-info-box">SYSTEM LIMIT STATUS</div>
        <div class="big-limit-num disp-limit-value">0</div>
-       <div class="limit-label disp-limit-label">Sisa Kuota Akses</div>
+       <div class="limit-label disp-limit-label">SISA LIMIT</div>
+       <button class="btn btn-outline click-sound" style="margin-top: 15px; padding: 10px; font-size: 10px;" onclick="openLimitModal()"><i class="fas fa-plus"></i> TOP UP LIMIT QRIS</button>
     </div>
 
     <div class="glass-card">
-      <div class="title-lg">Aktivasi Lisensi</div>
-      <div class="limit-badge"><i class="fas fa-bolt"></i> Menggunakan 1 Limit</div>
-      <div class="text-sub">Otentikasi lisensi perangkat dengan basis server.</div>
+      <div class="title-lg">AKTIVASI MAGIC LINK</div>
+      <div class="limit-badge"><i class="fas fa-bolt"></i> Membutuhkan 1 Limit</div>
+      <div class="text-sub">Kirim link login tanpa password ke email Anda.</div>
       
-      <div style="background: var(--surface-light); border-radius: 12px; padding: 14px 16px; margin-bottom: 20px; border: 1px solid var(--border-thin);">
-         <ol style="padding-left: 14px; font-size: 12px; color: var(--text-dim); margin:0; line-height: 1.7;">
-            <li>Ketik alamat email Anda, lalu tekan <b>Kirim</b>.</li>
-            <li>Buka kotak masuk surel, lalu salin URL dari Magic Link.</li>
-            <li>Tempel URL tersebut pada kolom dan jalankan <b>Verifikasi</b>.</li>
-         </ol>
-      </div>
-      
-      <div id="appErrorMsg" class="message-box message-error">
-        <i class="fas fa-exclamation-circle"></i> <span id="appErrorText"></span>
-      </div>
+      <div id="appErrorMsg" class="message-box message-error"></div>
       
       <div class="form-group">
-          <label>Email Terdaftar</label>
+          <label>Email Anda</label>
           <div style="display: flex; gap: 8px;">
-              <input type="email" id="emailInput" class="glass-input" placeholder="nama@email.com" autocomplete="email" />
-              <button id="sendBtn" class="btn btn-outline click-sound" style="width: auto; padding: 0 16px;">Kirim</button>
+              <input type="email" id="emailInput" class="glass-input" placeholder="nama@email.com" />
+              <button id="sendBtn" class="btn btn-outline click-sound" style="width: auto; padding: 0 15px;">Kirim</button>
           </div>
       </div>
-      <div class="form-group" style="margin-bottom: 22px;">
+      <div class="form-group" style="margin-bottom: 20px;">
           <label>URL Magic Link</label>
-          <input type="url" id="magicInput" class="glass-input" placeholder="Tempel URL Magic Link di sini" autocomplete="off" />
+          <input type="url" id="magicInput" class="glass-input" placeholder="Paste URL disini" />
       </div>
-      
-      <button id="activateBtn" class="btn btn-primary click-sound">
-          <span id="btnDefault">Verifikasi Lisensi</span>
-          <div id="loaderContainer" class="hidden" style="display:flex; align-items:center; gap:8px;"><div class="loader-spinner" style="width:13px;height:13px; border-width:2px; border-top-color:#111;"></div> Memproses...</div>
-      </button>
+      <button id="activateBtn" class="btn btn-primary click-sound">Verifikasi Link</button>
     </div>
   </div>
 
-  <!-- SECTION: ENHANCER -->
+  <!-- SECTION: HD FOTO -->
   <div id="sectionEnhancer" class="hidden">
     <div class="glass-card">
-      <div class="title-lg">Neural AI Studio</div>
-      <div class="limit-badge"><i class="fas fa-bolt"></i> Menggunakan 1 Limit</div>
-      <div class="text-sub">Pemulihan resolusi citra dengan komputasi neural network.</div>
+      <div class="title-lg">HD FOTO AI</div>
+      <div class="limit-badge free"><i class="fas fa-unlock"></i> Free (Tanpa Limit)</div>
+      <div class="text-sub">Tingkatkan resolusi dan perjelas foto buram menggunakan AI.</div>
       
-      <div class="form-group">
-        <label>URL Sumber (Opsional)</label>
-        <input type="url" id="imageUrl" class="glass-input" placeholder="https://..." />
-      </div>
+      <div class="form-group"><label>URL Foto (Opsional)</label><input type="url" id="imageUrl" class="glass-input" placeholder="https://..." /></div>
 
-      <div id="dropZone" class="click-sound" style="border: 1px dashed var(--border-accent); border-radius: 14px; padding: 30px 18px; text-align: center; background: var(--surface-light); cursor: pointer; margin-bottom: 18px; transition: all 0.25s var(--smooth-ease);">
-        <i class="fas fa-cloud-upload-alt" style="font-size: 26px; color: var(--accent-primary); margin-bottom: 10px;"></i>
-        <div style="font-size: 13px; font-weight: 700; margin-bottom: 4px; color: var(--accent-light);">Unggah Berkas Citra</div>
-        <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase;">JPG, PNG, WEBP — Max 25MB</div>
-        <div id="fileNameDisplay" style="margin-top: 10px; font-size: 12px; color: var(--accent-primary); font-weight: 700;"></div>
+      <div id="dropZone" class="click-sound" style="border: 2px dashed var(--neon-cyan); border-radius: 12px; padding: 30px 15px; text-align: center; background: rgba(0,243,255,0.02); cursor: pointer; margin-bottom: 15px; transition: 0.3s;">
+        <i class="fas fa-upload" style="font-size: 30px; color: var(--neon-cyan); margin-bottom: 10px; text-shadow: 0 0 10px var(--neon-cyan);"></i>
+        <div style="font-family: var(--font-heading); font-size: 14px; font-weight: 700; color: #fff;">UPLOAD FOTO</div>
+        <div style="font-size: 11px; color: var(--text-dim); margin-top: 5px;">JPG/PNG Max 25MB</div>
+        <div id="fileNameDisplay" style="margin-top: 10px; font-size: 12px; color: var(--neon-pink); font-weight: 700;"></div>
         <input type="file" id="fileInput" accept="image/*" style="display: none;">
       </div>
       
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;">
-        <div style="background: var(--surface-light); border-radius: 12px; padding: 12px 14px; border: 1px solid var(--border-thin);">
-          <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--text-muted); text-transform:uppercase; margin-bottom:10px;"><span>Intensitas</span> <span id="strengthIndicator" style="color:var(--accent-primary); font-weight: 700;">Normal</span></div>
-          <input type="range" id="strengthRange" min="10" max="100" value="60">
-        </div>
-        <div onclick="document.getElementById('modeModalOverlay').classList.add('show')" class="click-sound" style="background: var(--surface-light); border-radius: 12px; padding: 12px 14px; border: 1px solid var(--border-thin); display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: border-color 0.25s;" onmouseover="this.style.borderColor='var(--accent-primary)'" onmouseout="this.style.borderColor='var(--border-thin)'">
-          <div>
-            <div style="font-size:10px; color:var(--text-muted); text-transform:uppercase; margin-bottom:4px;">Model AI</div>
-            <div id="currentModeLabel" style="font-size:12px; font-weight:700; color: var(--accent-light);">Super Res 2x</div>
-          </div>
-          <div style="width: 22px; height: 22px; border-radius: 6px; background: var(--glass-bg); border: 1px solid var(--border-thin); display: flex; align-items: center; justify-content: center;">
-             <i class="fas fa-sliders-h" style="color:var(--accent-primary); font-size:11px;"></i>
-          </div>
-        </div>
+      <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+        <button class="btn btn-primary click-sound" id="enhanceBtn" style="flex: 1;"><i class="fas fa-magic"></i> PROSES HD</button>
+        <button class="btn btn-outline click-sound" id="resetBtn" style="width: auto; padding: 0 15px;"><i class="fas fa-redo"></i></button>
       </div>
       
-      <div style="display: flex; gap: 8px; margin-bottom: 18px;">
-        <button class="btn btn-primary click-sound" id="enhanceBtn" style="flex: 1;"><i class="fas fa-wand-magic-sparkles"></i> Eksekusi Render</button>
-        <button class="btn btn-outline click-sound" id="resetBtn" style="width: auto; padding: 0 16px;"><i class="fas fa-redo"></i></button>
-      </div>
-      
-      <div id="statusMessage" class="message-box">
-        <i class="fas fa-info-circle"></i> <span id="statusMessageText"></span>
-      </div>
+      <div id="statusMessage" class="message-box"></div>
 
-      <!-- IMAGE COMPARE SLIDER -->
+      <!-- IMAGE COMPARE -->
       <div class="hidden" id="comparisonSplitSection" style="margin: 20px 0;">
         <div class="image-compare-wrapper" id="imageCompareWrapper">
           <img id="splitImgAfter" class="img-comp-base" src="">
           <img id="splitImgBefore" class="img-comp-overlay" src="">
-          
-          <div class="img-comp-slider" id="imgCompSlider">
-            <div class="img-comp-slider-line"></div>
-            <div class="img-comp-slider-button"><i class="fas fa-arrows-alt-h"></i></div>
-          </div>
-          
-          <div style="position:absolute; top:10px; left:10px; background:var(--overlay-bg); backdrop-filter: blur(8px); padding:4px 8px; border-radius:6px; font-size:10px; font-weight:700; color:var(--text-pure); border:1px solid var(--border-thin); pointer-events:none; z-index:5;">ORIGINAL</div>
-          <div style="position:absolute; top:10px; right:10px; background:var(--accent-gradient); padding:4px 8px; border-radius:6px; font-size:10px; font-weight:700; color:#fff; pointer-events:none; z-index:5;">ENHANCED HD</div>
-        </div>
-        <div style="font-size:11px; color:var(--text-dim); text-align:center; margin-bottom: 16px;">
-           <i class="fas fa-arrows-alt-h" style="margin-right: 4px; color: var(--accent-primary);"></i> Geser tuas pembanding
+          <div class="img-comp-slider" id="imgCompSlider"><div class="img-comp-slider-line"></div><div class="img-comp-slider-button"><i class="fas fa-arrows-alt-h"></i></div></div>
+          <div style="position:absolute; top:10px; left:10px; background:rgba(0,0,0,0.8); padding:4px 8px; border-radius:5px; font-family:var(--font-heading); font-size:10px; font-weight:700; color:#fff; border:1px solid var(--border-thin);">SEBELUM</div>
+          <div style="position:absolute; top:10px; right:10px; background:var(--neon-gradient); padding:4px 8px; border-radius:5px; font-family:var(--font-heading); font-size:10px; font-weight:700; color:#000;">SESUDAH</div>
         </div>
       </div>
       
-      <div class="hidden" id="downloadFooterActions" style="display: flex; gap: 8px;">
-        <button class="btn btn-outline click-sound" id="downloadBtn" style="flex: 1;"><i class="fas fa-download"></i> Simpan Citra</button>
-        <button class="btn btn-outline click-sound" id="copyUrlBtn" style="flex: 1;"><i class="fas fa-link"></i> Salin URL</button>
+      <div class="hidden" id="downloadFooterActions" style="display: flex; gap: 10px;">
+        <button class="btn btn-outline click-sound" id="downloadBtn" style="flex: 1;"><i class="fas fa-download"></i> Simpan</button>
+        <button class="btn btn-outline click-sound" id="copyUrlBtn" style="flex: 1;"><i class="fas fa-link"></i> Copy Link</button>
       </div>
     </div>
   </div>
 
   <!-- SECTION: FORUM CHAT -->
   <div id="sectionChat" class="hidden">
-    <div class="glass-card" style="display:flex; flex-direction:column; height: 75vh; padding: 22px 18px;">
-      <div class="title-lg">Forum Komunikasi</div>
-      <div class="text-sub" style="margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border-thin);">
-        Umpan balik langsung & interaksi antar klien eksekutif.
-      </div>
+    <div class="glass-card" style="display:flex; flex-direction:column; height: 75vh;">
+      <div class="title-lg">FORUM CHAT</div>
+      <div class="limit-badge free"><i class="fas fa-unlock"></i> Free Chat</div>
+      <div class="text-sub" style="margin-bottom: 10px; border-bottom: 1px solid var(--border-thin); padding-bottom: 10px;">Ngobrol santai bareng user lain disini.</div>
       
-      <!-- Area Pesan -->
-      <div id="chatMessagesBox" class="chat-box-scroll" style="flex: 1; overflow-y: auto; display:flex; flex-direction:column; gap:14px; margin-bottom: 16px; padding-right:8px;">
-        <div style="text-align:center; padding: 20px;">
-          <div class="loader-spinner" style="margin: 0 auto; width: 18px; height: 18px;"></div>
-        </div>
-      </div>
+      <div id="chatMessagesBox" class="chat-box-scroll" style="flex: 1; overflow-y: auto; display:flex; flex-direction:column; gap:12px; margin-bottom: 15px; padding-right:5px;"></div>
       
-      <!-- Input Pesan -->
       <div style="display: flex; gap: 8px;">
-        <input type="text" id="chatInputMsg" class="glass-input" placeholder="Tulis transmisi..." autocomplete="off">
-        <button class="btn btn-primary click-sound" id="btnSendChat" style="width: auto; padding: 0 16px; font-size: 15px;">
-          <i class="fas fa-paper-plane"></i>
-        </button>
+        <input type="text" id="chatInputMsg" class="glass-input" placeholder="Ketik pesan..." autocomplete="off">
+        <button class="btn btn-primary click-sound" id="btnSendChat" style="width: auto; padding: 0 16px;"><i class="fas fa-paper-plane"></i></button>
       </div>
     </div>
   </div>
@@ -883,187 +538,114 @@
   <!-- SECTION: WA REACTION -->
   <div id="sectionReact" class="hidden">
     <div class="glass-card">
-      <div class="title-lg">WA Channel Reactor</div>
+      <div class="title-lg">WA REACTOR</div>
       <div class="limit-badge"><i class="fas fa-bolt"></i> Membutuhkan 3 Limit</div>
-      <div class="text-sub">Kirim reaksi otomatis nang saluran WhatsApp.</div>
+      <div class="text-sub">Kirim reaksi otomatis ke Channel WA (WhatsApp).</div>
       
-      <div class="form-group">
-        <label>URL Saluran WhatsApp</label>
-        <input type="url" id="waReactUrl" class="glass-input" placeholder="https://whatsapp.com/channel/..." />
-      </div>
+      <div class="form-group"><label>URL Saluran WA</label><input type="url" id="waReactUrl" class="glass-input" placeholder="https://whatsapp.com/channel/..." /></div>
+      <div class="form-group" style="margin-bottom: 20px;"><label>Emoji Reaksi</label><input type="text" id="waReactEmoji" class="glass-input" placeholder="Contoh: 🙏🏻🙂🤧" /></div>
       
-      <div class="form-group" style="margin-bottom: 22px;">
-        <label>Emoji Reaksi</label>
-        <input type="text" id="waReactEmoji" class="glass-input" placeholder="Contoh: 🙏🏻🙂🤧" />
-      </div>
-      
-      <button id="btnSendReaction" class="btn btn-primary click-sound">
-        <i class="fab fa-whatsapp"></i> Eksekusi Reaksi
-      </button>
-
-      <div id="reactStatusMessage" class="message-box" style="margin-top: 18px;">
-        <i class="fas fa-info-circle"></i> <span id="reactStatusText"></span>
-      </div>
+      <button id="btnSendReaction" class="btn btn-primary click-sound"><i class="fab fa-whatsapp"></i> KIRIM REAKSI</button>
+      <div id="reactStatusMessage" class="message-box" style="margin-top: 15px;"></div>
     </div>
   </div>
 
-  <!-- SECTION: VID HD -->
+  <!-- SECTION: VID HD (KEMBALI KE ASLI) -->
   <div id="sectionVidHD" class="hidden">
     <div class="glass-card">
-      <div class="title-lg">VidHD Server</div>
+      <div class="title-lg">VIDHD TIKTOK</div>
       <div class="limit-badge"><i class="fas fa-bolt"></i> Membutuhkan 3 Limit</div>
-      <div class="text-sub">Pemrosesan & peningkatan kualitas video via Backend.</div>
+      <div class="text-sub">Kompres video agar saat diupload ke TikTok tidak buram/pecah (Kualitas tetap HD sesuai API).</div>
 
-      <div class="form-group">
+      <div class="form-group" style="margin-bottom: 25px;">
         <label>URL Video / File ID</label>
-        <input type="text" id="vidhdUrl" class="glass-input" placeholder="Masukkan URL atau ID Video" />
+        <input type="text" id="vidhdUrl" class="glass-input" placeholder="Masukkan URL / ID Video" />
       </div>
 
-      <div class="form-group" style="margin-bottom: 22px;">
-        <label>Perintah Eksekusi</label>
-        <input type="text" id="vidhdAction" class="glass-input" placeholder="Contoh: render, upscale" value="upscale" />
+      <div style="display: flex; gap: 10px;">
+        <button id="btnVidInstan" class="btn btn-primary click-sound" style="flex: 1;"><i class="fas fa-bolt"></i> INSTAN</button>
+        <button id="btnVid60fps" class="btn btn-outline click-sound" style="flex: 1; background: rgba(255,0,234,0.1); border-color: var(--neon-pink); color: #fff; text-shadow:0 0 5px var(--neon-pink);"><i class="fas fa-film"></i> 60 FPS</button>
       </div>
 
-      <button id="btnProcessVidHD" class="btn btn-primary click-sound">
-        <i class="fas fa-video"></i> Eksekusi Proses Backend
-      </button>
-
-      <div id="vidhdStatusMessage" class="message-box" style="margin-top: 18px;">
-        <i class="fas fa-info-circle"></i> <span id="vidhdStatusText"></span>
-      </div>
-      
-      <div id="vidhdResponseData" style="margin-top: 15px; font-size: 11px; color: var(--accent-primary); line-height: 1.5; white-space: pre-wrap; background: var(--surface-light); padding: 12px; border-radius: 8px; display: none; border: 1px solid var(--border-thin);">
-      </div>
+      <div id="vidhdStatusMessage" class="message-box" style="margin-top: 20px;"></div>
+      <div id="vidhdResponseData" style="margin-top: 15px; font-family: monospace; font-size: 11px; color: var(--neon-cyan); background: var(--input-bg); padding: 10px; border-radius: 8px; display: none; border: 1px solid var(--border-thin); word-break: break-all;"></div>
     </div>
   </div>
 
-  <!-- SECTION: OWNER PANEL -->
+  <!-- SECTION: ADMIN PANEL -->
   <div id="ownerPanel" class="hidden">
     <div class="glass-card">
-      <div class="title-lg">Database Eksekutif</div>
-      <div class="text-sub">Kontrol penuh tata kelola akun dan otorisasi klien.</div>
+      <div class="title-lg" style="color: var(--neon-pink); text-shadow: 0 0 10px var(--neon-pink);">ADMIN PANEL</div>
+      <div class="text-sub">Manajemen User & Sistem</div>
       
-      <div style="background: var(--surface-light); border-radius: 12px; padding: 16px; margin-bottom: 20px; border: 1px solid var(--border-thin);">
-        <label style="font-size: 11px; font-weight: 700; color: var(--accent-primary); text-transform: uppercase; margin-bottom: 10px; display:flex; align-items: center; gap: 6px;"><i class="fas fa-broadcast-tower"></i> Transmisi Global</label>
-        <textarea id="broadcastInput" class="glass-input" placeholder="Tulis instruksi transmisi kepada klien..." style="min-height: 75px; resize: none; margin-bottom: 12px; font-size: 12px;"></textarea>
-        <button class="btn btn-primary click-sound" onclick="sendBroadcastMsg()"><i class="fas fa-paper-plane"></i> Siarkan Transmisi</button>
+      <div style="background: var(--surface-light); border-radius: 10px; padding: 15px; margin-bottom: 20px; border: 1px solid var(--border-thin);">
+        <label style="font-family: var(--font-heading); font-size: 11px; color: var(--neon-cyan); margin-bottom: 8px; display:block;"><i class="fas fa-bullhorn"></i> PENGUMUMAN GLOBAL</label>
+        <textarea id="broadcastInput" class="glass-input" placeholder="Tulis pengumuman..." style="min-height: 60px; resize: none; margin-bottom: 10px; font-size: 12px;"></textarea>
+        <button class="btn btn-primary click-sound" onclick="sendBroadcastMsg()"><i class="fas fa-paper-plane"></i> KIRIM PENGUMUMAN</button>
       </div>
       
-      <!-- FILTER ROW -->
-      <div style="display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap;">
-        <div class="input-wrapper" style="flex: 1; min-width: 160px;">
-            <input type="text" id="memberSearchInput" class="glass-input" placeholder="Cari klien..." oninput="renderMemberList()" />
-        </div>
-        <button id="filterZeroLimitBtn" class="btn btn-outline click-sound" style="width: auto; padding: 0 12px; border-radius: 10px;" onclick="toggleZeroLimitFilter()" title="Filter Limit 0">
-            <i class="fas fa-filter"></i> 0 Limit
-        </button>
-        <button id="resetMassalBtn" class="btn btn-primary click-sound" style="width: auto; padding: 0 12px; border-radius: 10px;" onclick="resetAllZeroLimits()" title="Reset Massal">
-            <i class="fas fa-sync-alt"></i> Reset (0&rarr;3)
-        </button>
+      <div style="display: flex; gap: 8px; margin-bottom: 15px; flex-wrap: wrap;">
+        <div class="input-wrapper" style="flex: 1; min-width: 150px;"><input type="text" id="memberSearchInput" class="glass-input" placeholder="Cari user..." oninput="renderMemberList()" /></div>
+        <button id="filterZeroLimitBtn" class="btn btn-outline click-sound" style="width: auto; padding: 0 12px;" onclick="toggleZeroLimitFilter()"><i class="fas fa-filter"></i> 0 Limit</button>
+        <button id="resetMassalBtn" class="btn btn-primary click-sound" style="width: auto; padding: 0 12px; background: var(--danger); box-shadow: 0 0 10px var(--danger);" onclick="resetAllZeroLimits()"><i class="fas fa-sync-alt"></i> Reset All (3)</button>
       </div>
-
       <div id="memberList" class="data-list"></div>
     </div>
   </div>
+
+  <!-- CREATOR CREDIT -->
+  <div style="text-align: center; margin-top: 30px; font-family: 'Orbitron', sans-serif; font-size: 14px; color: var(--neon-cyan); text-transform: uppercase; letter-spacing: 3px; text-shadow: 0 0 10px var(--neon-cyan);">
+      <span style="color:var(--text-dim); font-size:9px; font-family:'Rajdhani', sans-serif; letter-spacing: 1px;">CREATED BY</span><br>
+      𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞
+  </div>
 </main>
 
-<!-- FLOATING DOCK BOTTOM NAV -->
-<nav class="bottom-nav hidden" id="mainBottomNav" aria-label="Navigasi Utama">
-  <div class="nav-item active click-sound" id="btnTabActivator" onclick="switchTab('activator')">
-    <i class="fas fa-key"></i><span>Lisensi</span>
-  </div>
-  <div class="nav-item click-sound" id="btnTabEnhancer" onclick="switchTab('enhancer')">
-    <i class="fas fa-wand-magic-sparkles"></i><span>Studio</span>
-  </div>
-  <div class="nav-item click-sound" id="btnTabVidHD" onclick="switchTab('vidhd')">
-    <i class="fas fa-video"></i><span>Vid HD</span>
-  </div>
-  <div class="nav-item click-sound" id="btnTabChat" onclick="switchTab('chat')">
-    <i class="fas fa-comments"></i><span>Forum</span>
-  </div>
-  <div class="nav-item click-sound" id="btnTabReact" onclick="switchTab('react')">
-    <i class="fab fa-whatsapp"></i><span>React</span>
-  </div>
-  <div class="nav-item hidden click-sound" id="toggleOwnerDashBtn" onclick="switchTab('admin')">
-    <i class="fas fa-shield-halved"></i><span>Admin</span>
-  </div>
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav hidden" id="mainBottomNav">
+  <div class="nav-item active click-sound" id="btnTabActivator" onclick="switchTab('activator')"><i class="fas fa-key"></i><span>LISENSI</span></div>
+  <div class="nav-item click-sound" id="btnTabEnhancer" onclick="switchTab('enhancer')"><i class="fas fa-camera"></i><span>HD FOTO</span></div>
+  <div class="nav-item click-sound" id="btnTabVidHD" onclick="switchTab('vidhd')"><i class="fas fa-video"></i><span>VIDHD</span></div>
+  <div class="nav-item click-sound" id="btnTabChat" onclick="switchTab('chat')"><i class="fas fa-comments"></i><span>FORUM</span></div>
+  <div class="nav-item click-sound" id="btnTabReact" onclick="switchTab('react')"><i class="fab fa-whatsapp"></i><span>REACT</span></div>
+  <div class="nav-item hidden click-sound" id="toggleOwnerDashBtn" onclick="switchTab('admin')"><i class="fas fa-shield-alt"></i><span>ADMIN</span></div>
 </nav>
 
-<!-- PROFILE SIDE PANEL -->
+<!-- PROFILE PANEL -->
 <div id="profileSheet" class="overlay" style="justify-content: flex-end; padding: 0;">
   <div class="side-panel">
-    <button class="btn-close click-sound" onclick="closeProfileSheet()" style="position: absolute; top: 20px; left: -14px; right: auto; background: var(--surface-card);"><i class="fas fa-times"></i></button>
+    <button class="btn-close click-sound" onclick="closeProfileSheet()" style="position: absolute; top: 15px; left: -15px; background: var(--surface-card);"><i class="fas fa-times"></i></button>
     
-    <div style="text-align: center; margin: 25px 0 20px;">
-      <div class="pw-avatar click-sound" style="width: 65px; height: 65px; margin: 0 auto 10px; font-size: 22px; border: 1px solid var(--accent-primary); cursor:pointer;" onclick="document.getElementById('avatarFileInput').click()" title="Ganti Foto">
-        <span class="disp-avatar-text">?</span>
-      </div>
-      <div style="display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; color: var(--accent-primary); margin-bottom: 10px; cursor: pointer;" onclick="document.getElementById('avatarFileInput').click()">
-        <i class="fas fa-camera"></i> Ubah Potret
-      </div>
+    <div style="text-align: center; margin: 20px 0;">
+      <div class="pw-avatar click-sound" style="width: 70px; height: 70px; margin: 0 auto 10px; font-size: 26px; cursor:pointer;" onclick="document.getElementById('avatarFileInput').click()"><span class="disp-avatar-text">?</span></div>
+      <div style="font-family: var(--font-heading); font-size: 10px; color: var(--neon-cyan); margin-bottom: 10px; cursor: pointer;" onclick="document.getElementById('avatarFileInput').click()"><i class="fas fa-camera"></i> UBAH FOTO</div>
       <input type="file" id="avatarFileInput" accept="image/*" style="display: none;" onchange="handleAvatarUpload(event)">
-      
-      <div class="title-lg disp-username" style="font-size: 20px; margin-bottom: 2px;">Username</div>
-      <div class="disp-userrole" style="font-size: 10px; font-weight: 700; text-transform: uppercase; color: var(--accent-primary);">Role</div>
+      <div class="title-lg disp-username" style="font-size: 22px; margin-bottom: 2px; text-transform:none;">Username</div>
+      <div class="disp-userrole" style="font-family: var(--font-heading); font-size: 11px; color: var(--neon-pink); text-shadow: 0 0 5px var(--neon-pink);">Role</div>
     </div>
 
-    <!-- ACTIVITY LOG -->
-    <div style="background: var(--surface-light); border-radius: 12px; border: 1px solid var(--border-thin); padding: 15px; margin-bottom: 16px;">
+    <div style="background: var(--surface-light); border-radius: 12px; border: 1px solid var(--border-thin); padding: 15px; margin-bottom: 15px;">
        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-         <div style="font-size: 11px; color: var(--text-muted); font-weight:600; display: flex; align-items: center; gap: 6px;">
-           <i class="fas fa-history"></i> Riwayat Aktivitas
-         </div>
-         <button onclick="clearActivityLogs()" style="background:none; border:none; color:var(--danger-light); font-size:10px; cursor:pointer; font-weight:700;"><i class="fas fa-trash"></i> Bersihkan</button>
+         <div style="font-family: var(--font-heading); font-size: 11px; color: var(--text-pure);"><i class="fas fa-history" style="color:var(--neon-cyan);"></i> RIWAYAT LOG</div>
+         <button onclick="clearActivityLogs()" style="background:none; border:none; color:var(--danger-light); font-size:10px; cursor:pointer; font-weight:700;"><i class="fas fa-trash"></i> CLEAR</button>
        </div>
-       <div class="data-list" id="activityLogList" style="max-height: 250px; overflow-y: auto; padding-right: 4px;">
-          <!-- Log akan di-render di sini oleh JavaScript -->
-       </div>
+       <div class="data-list" id="activityLogList" style="max-height: 200px; overflow-y: auto;"></div>
     </div>
 
-    <div style="background: var(--surface-light); border-radius: 12px; border: 1px solid var(--border-thin); padding: 15px; margin-bottom: 16px;">
-       <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px; font-weight:600; display: flex; align-items: center; gap: 6px;"><i class="fas fa-id-card"></i> Identitas Klien</div>
-       <div style="display:flex; justify-content:space-between; margin-bottom: 10px; border-bottom: 1px solid var(--border-thin); padding-bottom: 8px;"><span style="font-size:11px; color:var(--text-dim);">ID Klien</span><span class="disp-userid" style="font-size:12px; font-weight: 700; color: var(--accent-light);">MSH-00</span></div>
-       <div style="display:flex; justify-content:space-between; margin-bottom: 10px; border-bottom: 1px solid var(--border-thin); padding-bottom: 8px;"><span style="font-size:11px; color:var(--text-dim);">Kontak Terhubung</span><span class="disp-userwa" style="font-size:12px; font-weight: 700; color: var(--text-pure);">08...</span></div>
-       <div style="display:flex; justify-content:space-between;"><span style="font-size:11px; color:var(--text-dim);">IP Terekam</span><span class="disp-userip" style="font-size:12px; font-weight: 700; color: var(--text-pure);">...</span></div>
+    <div style="background: var(--surface-light); border-radius: 12px; border: 1px solid var(--border-thin); padding: 15px; margin-bottom: 15px;">
+       <div style="font-family: var(--font-heading); font-size: 11px; color: var(--text-pure); margin-bottom: 12px;"><i class="fas fa-id-card" style="color:var(--neon-cyan);"></i> INFO AKUN</div>
+       <div style="display:flex; justify-content:space-between; margin-bottom: 8px; border-bottom: 1px solid var(--border-thin); padding-bottom: 8px;"><span style="font-size:12px; color:var(--text-dim);">ID</span><span class="disp-userid" style="font-size:12px; font-weight: 700; color: #fff;">MSH-00</span></div>
+       <div style="display:flex; justify-content:space-between; margin-bottom: 8px; border-bottom: 1px solid var(--border-thin); padding-bottom: 8px;"><span style="font-size:12px; color:var(--text-dim);">WA</span><span class="disp-userwa" style="font-size:12px; font-weight: 700; color: #fff;">08...</span></div>
+       <div style="display:flex; justify-content:space-between;"><span style="font-size:12px; color:var(--text-dim);">IP</span><span class="disp-userip" style="font-size:12px; font-weight: 700; color: #fff;">...</span></div>
     </div>
 
     <div style="background: var(--surface-light); border-radius: 12px; border: 1px solid var(--border-thin); padding: 15px; margin-bottom: 30px;">
-      <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px; font-weight:600; display: flex; align-items: center; gap: 6px;"><i class="fas fa-lock"></i> Kredensial</div>
-      <div style="background: rgba(14, 165, 233, 0.1); border-left: 2px solid var(--accent-primary); padding: 10px; border-radius: 0 4px 4px 0; font-size: 10px; color: var(--accent-light); line-height: 1.5; margin-bottom: 14px;">
-        Username hanya dapat diubah <b>satu (1) kali</b> untuk integritas akun.
-      </div>
-      
-      <div id="editProfileMsg" class="message-box"><i class="fas fa-info-circle"></i> <span id="editProfileText"></span></div>
+      <div style="font-family: var(--font-heading); font-size: 11px; color: var(--text-pure); margin-bottom: 12px;"><i class="fas fa-lock" style="color:var(--neon-cyan);"></i> GANTI PASSWORD / USERNAME</div>
+      <div style="font-size: 11px; color: var(--danger-light); margin-bottom: 10px;">*Username hanya bisa diubah 1x selamanya!</div>
+      <div id="editProfileMsg" class="message-box"></div>
       <div class="form-group"><input type="text" id="editUsernameInput" class="glass-input" placeholder="Username Baru"></div>
-      <div class="form-group mb-0"><input type="password" id="editPasswordInput" class="glass-input" placeholder="Kata Sandi Baru"></div>
-      <button id="saveProfileChangesBtn" class="btn btn-outline click-sound" style="margin-top: 16px;">Simpan Perubahan</button>
+      <div class="form-group mb-0"><input type="password" id="editPasswordInput" class="glass-input" placeholder="Password Baru"></div>
+      <button id="saveProfileChangesBtn" class="btn btn-primary click-sound" style="margin-top: 15px;">SIMPAN</button>
     </div>
-  </div>
-</div>
-
-<!-- BOTTOM SHEET: MODE AI -->
-<div class="overlay" id="modeModalOverlay" style="align-items: flex-end; padding: 0;">
-  <div class="bottom-sheet" id="modeModalSheet">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-      <div class="title-lg" style="margin: 0; font-size: 17px;">Model Render AI</div>
-      <i class="fas fa-times click-sound" id="closeModeModal" style="cursor: pointer; color: var(--text-muted); font-size: 14px; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-thin); border-radius: 50%;"></i>
-    </div>
-    
-    <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
-      <div class="glass-card glass-card-hover mode-option-item selected click-sound" data-mode="2x" style="display:flex; align-items:center; gap:12px; padding: 14px; border-color: var(--border-accent); background: rgba(14,165,233,0.1);">
-        <i class="fas fa-expand" style="font-size: 18px; color: var(--accent-primary);"></i>
-        <div><div style="font-family: var(--font-heading); font-weight: 700; font-size: 14px; margin-bottom: 2px; color: var(--accent-light);">Super Resolution 2x</div><div style="font-size: 11px; color: var(--text-dim);">Menggandakan matriks piksel dengan presisi tinggi.</div></div>
-      </div>
-      <div class="glass-card glass-card-hover mode-option-item click-sound" data-mode="1x" style="display:flex; align-items:center; gap:12px; padding: 14px;">
-        <i class="fas fa-magic" style="font-size: 18px; color: var(--text-muted);"></i>
-        <div><div style="font-family: var(--font-heading); font-weight: 700; font-size: 14px; margin-bottom: 2px; color: var(--text-pure);">Clean & Sharpen</div><div style="font-size: 11px; color: var(--text-dim);">Reduksi noise dan optimalisasi ketajaman visual.</div></div>
-      </div>
-      <div class="glass-card glass-card-hover mode-option-item click-sound" data-mode="hdr" style="display:flex; align-items:center; gap:12px; padding: 14px;">
-        <i class="fas fa-sun" style="font-size: 18px; color: var(--text-muted);"></i>
-        <div><div style="font-family: var(--font-heading); font-weight: 700; font-size: 14px; margin-bottom: 2px; color: var(--text-pure);">Dynamic HDR Boost</div><div style="font-size: 11px; color: var(--text-dim);">Peningkatan kontras dan pencahayaan dinamis.</div></div>
-      </div>
-    </div>
-    <button class="btn btn-primary click-sound" id="applyModeBtn">Terapkan Pilihan</button>
   </div>
 </div>
 
@@ -1100,33 +682,31 @@
         container.innerHTML = '';
         
         if(logs.length === 0) {
-            container.innerHTML = `<div style="font-size:11px; color:var(--text-dim); text-align:center; padding:15px;">Riwayat aktivitas kosong.</div>`;
+            container.innerHTML = `<div style="font-size:12px; color:var(--text-dim); text-align:center; padding:15px;">Belum ada history.</div>`;
             return;
         }
         
         logs.forEach((log, index) => {
             const isLast = index === logs.length - 1;
             container.innerHTML += `
-            <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:12px; border-bottom:${isLast ? 'none' : '1px solid var(--border-thin)'}; margin-bottom:${isLast ? '0' : '12px'};">
+            <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:10px; border-bottom:${isLast ? 'none' : '1px solid var(--border-thin)'}; margin-bottom:${isLast ? '0' : '10px'};">
                <div style="flex: 1; padding-right: 10px;">
-                 <div style="font-size:12px; color:var(--text-pure); font-weight:700; margin-bottom:4px;">${log.title}</div>
-                 <div style="font-size:10px; color:var(--text-dim); line-height: 1.5;">
-                   <i class="far fa-clock" style="margin-right:4px;"></i> ${log.datetime}<br>
+                 <div style="font-family:var(--font-heading); font-size:11px; color:#fff; margin-bottom:2px;">${log.title}</div>
+                 <div style="font-size:11px; color:var(--text-dim);">
                    ${log.desc}
                  </div>
                </div>
-               <div style="font-size:11px; font-weight:700; color:${log.statusColor}; white-space: nowrap;">${log.statusText}</div>
+               <div style="font-family:var(--font-heading); font-size:10px; font-weight:700; color:${log.statusColor};">${log.statusText}</div>
             </div>`;
         });
     }
 
     window.clearActivityLogs = function() {
         if(!currentUserData) return;
-        customConfirm("Apakah Anda yakin ingin menghapus seluruh riwayat aktivitas lokal?", () => {
+        customConfirm("Hapus semua riwayat aktivitas?", () => {
             localStorage.removeItem('am_log_' + currentUserData.username);
             renderActivityLogs();
-            customAlert("Log aktivitas berhasil dibersihkan.");
-            addActivityLog("Pembersihan Sistem", "Klien menghapus riwayat log aktivitas", "Selesai", "var(--text-muted)");
+            customAlert("Log dibersihkan.");
         });
     }
 
@@ -1143,7 +723,6 @@
         localStorage.setItem(THEME_KEY, next);
         updateThemeIcon(next);
         playClickSound();
-        addActivityLog("Preferensi UI", `Mengubah tema sistem ke mode ${next.toUpperCase()}`, "Info", "var(--accent-primary)");
     };
     function updateThemeIcon(theme) {
         const icon = document.querySelector('#themeToggleBtn i');
@@ -1198,9 +777,9 @@
 
     window.customAlert = function(msg, isError = false) {
         const toast = document.getElementById('globalToast'); document.getElementById('toastMsg').textContent = msg;
-        toast.style.border = isError ? '1px solid var(--danger)' : '1px solid var(--border-accent)';
+        toast.style.border = isError ? '1px solid var(--danger)' : '1px solid var(--neon-cyan)';
         toast.querySelector('i').className = isError ? 'fas fa-exclamation-triangle' : 'fas fa-check-circle';
-        toast.querySelector('i').style.color = isError ? '#f87171' : 'var(--accent-primary)';
+        toast.querySelector('i').style.color = isError ? 'var(--danger)' : 'var(--neon-cyan)';
         toast.classList.add('show'); setTimeout(() => { toast.classList.remove('show'); }, 3500);
     };
 
@@ -1224,7 +803,7 @@
 
     window.startBiometricLogin = async function() {
         const bioData = JSON.parse(localStorage.getItem(BIO_CRED_KEY));
-        if(!bioData) return customAlert("Biometrik belum dikonfigurasi.", true);
+        if(!bioData) return customAlert("Biometrik belum disetup.", true);
 
         const modal = document.getElementById('biometricModal');
         const scanner = document.getElementById('bioScanner');
@@ -1233,7 +812,7 @@
         
         modal.classList.add('show'); scanner.classList.add('active');
         icon.className = 'fas fa-fingerprint fp-icon scanning';
-        statusTxt.textContent = "Memindai Biometrik..."; statusTxt.style.color = "var(--accent-primary)";
+        statusTxt.textContent = "Memindai..."; statusTxt.style.color = "var(--neon-cyan)";
         triggerVibrate([30, 50, 30]);
 
         try {
@@ -1255,31 +834,26 @@
         const statusTxt = document.getElementById('bioStatusText');
         
         scanner.classList.remove('active'); icon.className = 'fas fa-fingerprint fp-icon success';
-        statusTxt.textContent = "Verifikasi Berhasil"; statusTxt.style.color = "var(--success-light)";
+        statusTxt.textContent = "Berhasil!"; statusTxt.style.color = "var(--success)";
         triggerVibrate([100, 50, 100]);
         
         setTimeout(async () => {
             document.getElementById('biometricModal').classList.remove('show');
             const loginBtn = document.getElementById('loginBtn');
-            loginBtn.innerHTML = '<div class="loader-spinner" style="width:15px;height:15px; border-width:2px; border-top-color:#fff;"></div> Memvalidasi...'; loginBtn.disabled = true; 
+            loginBtn.innerHTML = '<div class="loader-spinner" style="border-top-color:#05050B;"></div>'; loginBtn.disabled = true; 
             const res = await apiCall('login', { username: bioData.u, password: atob(bioData.p) }); 
-            loginBtn.textContent = 'Otorisasi Masuk'; loginBtn.disabled = false; 
-            if(!res.status) {
-                triggerErrorShake(['loginUser', 'loginPwd']);
-                return customAlert(`Biometrik Ditolak: ${res.error}`, true);
-            }
+            loginBtn.textContent = 'LOGIN'; loginBtn.disabled = false; 
+            if(!res.status) { triggerErrorShake(['loginUser', 'loginPwd']); return customAlert(`Gagal: ${res.error}`, true); }
             
-            localStorage.setItem(SESSION_KEY, bioData.u); 
-            localStorage.setItem(CACHE_KEY, JSON.stringify(res.data)); 
-            window.loadAppView(res.data); 
-            addActivityLog("Otorisasi Sistem", "Login melalui sensor Biometrik", "Sukses", "var(--success-light)");
+            localStorage.setItem(SESSION_KEY, bioData.u); localStorage.setItem(CACHE_KEY, JSON.stringify(res.data)); 
+            window.loadAppView(res.data); addActivityLog("Login", "Login dengan Biometrik", "Sukses", "var(--success)");
         }, 800);
     }
 
     function handleBioError() {
         const scanner = document.getElementById('bioScanner'); const icon = document.getElementById('bioIcon'); const statusTxt = document.getElementById('bioStatusText');
         scanner.classList.remove('active'); icon.className = 'fas fa-fingerprint fp-icon error';
-        statusTxt.textContent = "Biometrik Ditolak"; statusTxt.style.color = "var(--danger-light)";
+        statusTxt.textContent = "Ditolak!"; statusTxt.style.color = "var(--danger)";
         triggerVibrate([200]); document.getElementById('bioCancelBtn').classList.remove('hidden');
     }
 
@@ -1294,17 +868,16 @@
                 const userId = new Uint8Array(16); window.crypto.getRandomValues(userId);
                 try {
                     await navigator.credentials.create({
-                        publicKey: { challenge: challenge, rp: { name: "AM Executive" }, user: { id: userId, name: temporaryBioData.u, displayName: temporaryBioData.u }, pubKeyCredParams: [{ type: "public-key", alg: -7 }, { type: "public-key", alg: -257 }], authenticatorSelection: { authenticatorAttachment: "platform", userVerification: "discouraged" }, timeout: 60000, attestation: "none" }
+                        publicKey: { challenge: challenge, rp: { name: "Tools Pro" }, user: { id: userId, name: temporaryBioData.u, displayName: temporaryBioData.u }, pubKeyCredParams: [{ type: "public-key", alg: -7 }, { type: "public-key", alg: -257 }], authenticatorSelection: { authenticatorAttachment: "platform", userVerification: "discouraged" }, timeout: 60000, attestation: "none" }
                     });
                 } catch (e) { }
             }
             localStorage.setItem(BIO_CRED_KEY, JSON.stringify({u: temporaryBioData.u, p: btoa(temporaryBioData.p)}));
-            customAlert("Biometrik berhasil didaftarkan pada perangkat ini.");
+            customAlert("Biometrik diaktifkan.");
             document.getElementById('bioSetupModal').classList.remove('show'); checkBiometricAvailable();
             window.loadAppView(temporaryBioData.resData);
-            addActivityLog("Keamanan Akun", "Kredensial biometrik ditambahkan ke perangkat", "Aman", "var(--success-light)");
-        } catch(e) { customAlert("Gagal mendaftarkan biometrik.", true);
-        } finally { btn.textContent = 'Aktifkan Biometrik'; btn.disabled = false; }
+        } catch(e) { customAlert("Gagal set up biometrik.", true);
+        } finally { btn.textContent = 'Aktifkan Sekarang'; btn.disabled = false; }
     };
     window.skipBiometricSetup = function() { document.getElementById('bioSetupModal').classList.remove('show'); if(temporaryBioData) window.loadAppView(temporaryBioData.resData); };
 
@@ -1331,8 +904,7 @@
 
     async function createQrisForLimit(limitCount, price, labelName) {
         selectedAddLimitCount = limitCount; 
-        customAlert("Menginisialisasi gateway Nevapedia...");
-        
+        customAlert("Membuat QRIS Nevapedia...");
         try {
             const res = await fetch(`https://app.nevapedia.com/api/invoice?apikey=${NEVA_API_KEY}&amount=${price}`);
             const data = await res.json();
@@ -1344,52 +916,33 @@
                 document.getElementById('qrisImageResult').src = qrisUrl; 
                 document.getElementById('qrisPackageTitle').textContent = `Paket ${labelName} Limit`; 
                 document.getElementById('qrisDepositIdSpan').textContent = activeDepositId;
-                
                 document.getElementById('selectLimitView').classList.add('hidden'); 
                 document.getElementById('qrisPaymentView').classList.remove('hidden');
-                addActivityLog("Acquire Kuota", `Inisialisasi Invoice Nevapedia paket ${labelName} Limit`, "Pending", "var(--accent-primary)");
-            } else { 
-                customAlert("Gagal merender modul QRIS Nevapedia.", true); 
-            }
-        } catch (err) {
-            customAlert("Gagal terhubung ke server Nevapedia.", true);
-        }
+            } else { customAlert("Gagal buat QRIS.", true); }
+        } catch (err) { customAlert("Server QRIS Error.", true); }
     }
 
     window.checkQrisPaymentStatus = async function() {
         if (!activeDepositId) return; 
-        customAlert("Mensinkronisasi status transaksi Nevapedia...");
-        
+        customAlert("Cek status pembayaran...");
         try {
             const res = await fetch(`https://app.nevapedia.com/api/invoice/status?apikey=${NEVA_API_KEY}&invoice_id=${activeDepositId}`);
             const statusData = await res.json();
-            
             const status = statusData.data?.status || statusData.status;
             const isPaid = (status === "success" || status === "paid" || status === "completed" || status === true || status === "PAID");
             
             if (isPaid) {
                 const currentLimit = currentUserData.limit_count ?? 3; 
                 const newLimitTotal = currentLimit + selectedAddLimitCount;
-                
                 const updateRes = await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimitTotal } });
                 
                 if (updateRes.status) {
-                    currentUserData.limit_count = newLimitTotal; 
-                    localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData));
-                    window.loadAppView(currentUserData); 
-                    
-                    closeLimitModal(); 
-                    customAlert("Transaksi Disetujui! Kuota diperbarui.");
-                    addActivityLog("Acquire Kuota", `Invoice Nevapedia telah dilunasi (+${selectedAddLimitCount} Limit)`, "Sukses", "var(--success-light)");
-                } else { 
-                    customAlert("Dana diterima, namun gagal sinkronisasi database server.", true); 
-                }
-            } else { 
-                customAlert("Pembayaran belum diselesaikan pada dompet digital Anda.", true); 
-            }
-        } catch (err) {
-            customAlert("Gangguan koneksi jaringan ke Nevapedia. Coba kembali.", true);
-        }
+                    currentUserData.limit_count = newLimitTotal; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData); 
+                    closeLimitModal(); customAlert("Top Up Sukses!");
+                    addActivityLog("Top Up", `Beli ${selectedAddLimitCount} Limit via QRIS`, "Sukses", "var(--success)");
+                } else { customAlert("Gagal update database.", true); }
+            } else { customAlert("Belum dibayar.", true); }
+        } catch (err) { customAlert("Cek koneksi.", true); }
     };
 
     window.toggleLeaderboard = function() {
@@ -1400,33 +953,18 @@
 
     async function fetchLeaderboard() {
         const container = document.getElementById('leaderboardListContainer'); if(!container) return;
-        container.innerHTML = `<div style="text-align:center; padding: 20px;"><div class="loader-spinner" style="margin: 0 auto; width: 18px; height: 18px;"></div></div>`;
+        container.innerHTML = `<div style="text-align:center; padding: 10px;"><div class="loader-spinner" style="margin: 0 auto;"></div></div>`;
         const res = await apiCall('getUsers');
-        if(!res.status || !res.data) { container.innerHTML = `<div style="font-size:11px; color:var(--text-dim); text-align:center; padding: 14px;">Gagal memuat data peringkat.</div>`; return; }
-        const users = res.data;
-        const regularUsers = users.filter(u => u.role !== 'Owner' && !parseBool(u.is_permanent));
-        regularUsers.sort((a, b) => (b.limit_count || 0) - (a.limit_count || 0));
-        const topUsers = regularUsers.slice(0, 5);
+        if(!res.status || !res.data) { container.innerHTML = `<div style="text-align:center; padding: 10px;">Gagal memuat.</div>`; return; }
+        const users = res.data.filter(u => u.role !== 'Owner' && !parseBool(u.is_permanent)).sort((a, b) => (b.limit_count || 0) - (a.limit_count || 0)).slice(0, 5);
         
         container.innerHTML = '';
-        if (topUsers.length === 0) { 
-            container.innerHTML = `
-              <div style="text-align:center; padding: 25px 10px;">
-                 <i class="fas fa-trophy" style="font-size: 28px; color: var(--text-muted); margin-bottom: 10px; opacity: 0.5;"></i>
-                 <div style="font-size:12px; color:var(--text-dim);">Belum ada riwayat peringkat klien.</div>
-              </div>`; 
-            return; 
-        }
-        
-        topUsers.forEach((u, index) => {
-            let rankColor = 'var(--text-muted)'; let medalIcon = '';
-            if (index === 0) { rankColor = 'var(--accent-primary)'; medalIcon = '<i class="fas fa-crown" style="color:var(--accent-primary); margin-right:6px;"></i>'; }
-            else if (index === 1) { rankColor = '#E0E0E0'; medalIcon = '<i class="fas fa-award" style="color:#E0E0E0; margin-right:6px;"></i>'; }
-            else if (index === 2) { rankColor = '#CD7F32'; medalIcon = '<i class="fas fa-award" style="color:#CD7F32; margin-right:6px;"></i>'; }
-
+        if (users.length === 0) { container.innerHTML = `<div style="text-align:center; padding:10px;">Data kosong.</div>`; return; }
+        users.forEach((u, index) => {
+            let color = 'var(--text-dim)'; if(index===0) color='var(--neon-cyan)'; else if(index===1) color='#ccc'; else if(index===2) color='#CD7F32';
             const item = document.createElement('div'); item.className = 'data-item';
             item.style.display = 'flex'; item.style.justifyContent = 'space-between'; item.style.alignItems = 'center';
-            item.innerHTML = `<div style="font-size:12px; font-weight:700; display:flex; align-items:center;"><span style="color:${rankColor}; width:22px;">#${index+1}</span>${medalIcon} @${u.username}</div><span style="font-size:12px; font-weight:700; color:var(--accent-light);">${u.limit_count ?? 3} Limit</span>`;
+            item.innerHTML = `<div style="font-weight:700; display:flex; align-items:center;"><span style="color:${color}; width:20px;">#${index+1}</span> @${u.username}</div><span style="font-family:var(--font-heading); font-weight:700; color:var(--neon-cyan);">${u.limit_count ?? 3}</span>`;
             container.appendChild(item);
         });
     }
@@ -1435,51 +973,23 @@
     window.toggleZeroLimitFilter = function() {
         isZeroLimitFilterActive = !isZeroLimitFilterActive;
         const btn = document.getElementById('filterZeroLimitBtn');
-        if(isZeroLimitFilterActive) {
-            btn.classList.add('btn-primary'); btn.classList.remove('btn-outline');
-        } else {
-            btn.classList.add('btn-outline'); btn.classList.remove('btn-primary');
-        }
+        if(isZeroLimitFilterActive) { btn.classList.add('btn-primary'); btn.classList.remove('btn-outline'); } 
+        else { btn.classList.add('btn-outline'); btn.classList.remove('btn-primary'); }
         renderMemberList(); 
     };
 
     window.resetAllZeroLimits = async function() {
-        customConfirm("Apakah Anda yakin ingin mereset seluruh klien dengan limit 0 menjadi 3?", async () => {
+        customConfirm("Reset semua limit 0 menjadi 3?", async () => {
             const btn = document.getElementById('resetMassalBtn');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
-            btn.disabled = true;
-
+            const ori = btn.innerHTML; btn.innerHTML = 'Proses...'; btn.disabled = true;
             try {
                 const res = await apiCall('getUsers');
-                if(!res.status) throw new Error("Gagal mengambil data.");
-                
-                const users = res.data;
-                const zeroLimitUsers = users.filter(u => 
-                    u.role !== 'Owner' && 
-                    !parseBool(u.is_permanent) && 
-                    (u.limit_count || 0) <= 0
-                );
-                
-                if(zeroLimitUsers.length === 0) {
-                    customAlert("Tidak ada klien dengan limit 0 yang perlu direset.");
-                    return;
-                }
-
-                const updatePromises = zeroLimitUsers.map(u => 
-                    apiCall('updateUser', { username: u.username, updates: { limit_count: 3 } })
-                );
-
-                await Promise.all(updatePromises);
-                customAlert(`Berhasil mereset kuota ${zeroLimitUsers.length} klien.`);
-                renderMemberList();
-                addActivityLog("Tindakan Admin", `Melakukan reset limit (0->3) untuk ${zeroLimitUsers.length} klien`, "Selesai", "var(--success-light)");
-            } catch(e) {
-                customAlert("Terjadi galat saat memproses reset massal.", true);
-            } finally {
-                btn.innerHTML = originalText;
-                btn.disabled = false;
-            }
+                if(!res.status) throw new Error();
+                const zeroUsers = res.data.filter(u => u.role !== 'Owner' && !parseBool(u.is_permanent) && (u.limit_count || 0) <= 0);
+                if(zeroUsers.length === 0) { customAlert("Tidak ada limit 0."); return; }
+                await Promise.all(zeroUsers.map(u => apiCall('updateUser', { username: u.username, updates: { limit_count: 3 } })));
+                customAlert(`Sukses reset ${zeroUsers.length} user.`); renderMemberList();
+            } catch(e) { customAlert("Gagal reset.", true); } finally { btn.innerHTML = ori; btn.disabled = false; }
         });
     };
 
@@ -1495,28 +1005,27 @@
             const promoBanner = document.getElementById('promoBannerContainer'); const topupCard = document.getElementById('topupCardContainer'); const ownerDashBtn = document.getElementById('toggleOwnerDashBtn'); const roleBadges = document.querySelectorAll('.disp-userrole');
 
             if (user.role === 'Owner') {
-                roleBadges.forEach(rb => { rb.textContent = 'SYSTEM OWNER'; rb.style.color = 'var(--text-pure)'; });
+                roleBadges.forEach(rb => { rb.textContent = 'SYSTEM OWNER'; rb.style.color = '#fff'; });
                 if(ownerDashBtn) ownerDashBtn.classList.remove('hidden'); if(promoBanner) promoBanner.classList.add('hidden'); if(topupCard) topupCard.classList.add('hidden');
             } else {
                 if(ownerDashBtn) ownerDashBtn.classList.add('hidden'); 
                 if (isVip) { 
-                    roleBadges.forEach(rb => { rb.textContent = 'VIP EXCLUSIVE'; rb.style.color = 'var(--accent-primary)'; }); 
+                    roleBadges.forEach(rb => { rb.textContent = 'VIP MEMBER'; rb.style.color = 'var(--neon-pink)'; }); 
                     if(promoBanner) promoBanner.classList.add('hidden'); if(topupCard) topupCard.classList.add('hidden');
                 } else { 
-                    roleBadges.forEach(rb => { rb.textContent = 'REGULAR CLIENT'; rb.style.color = 'var(--text-muted)'; }); 
+                    roleBadges.forEach(rb => { rb.textContent = 'REGULAR'; rb.style.color = 'var(--text-dim)'; }); 
                     if(promoBanner) promoBanner.classList.remove('hidden'); if(topupCard) topupCard.classList.remove('hidden');
                 }
             }
             
             const numDisplays = document.querySelectorAll('.big-limit-num');
             if (user.role === 'Owner' || isVip) {
-                massUpdateText('.disp-limit-label', "Status Lisensi"); numDisplays.forEach(el => { el.textContent = "∞"; el.classList.add('vip'); });
+                massUpdateText('.disp-limit-label', "UNLIMITED"); numDisplays.forEach(el => { el.textContent = "∞"; el.classList.add('vip'); });
             } else {
-                const currentLimit = user.limit_count ?? 3; massUpdateText('.disp-limit-label', "Sisa Kuota Akses"); numDisplays.forEach(el => { el.textContent = currentLimit; el.classList.remove('vip'); });
+                const currentLimit = user.limit_count ?? 3; massUpdateText('.disp-limit-label', "SISA LIMIT"); numDisplays.forEach(el => { el.textContent = currentLimit; el.classList.remove('vip'); });
             }
             
             renderActivityLogs();
-            
             switchView('appView'); document.getElementById('mainBottomNav').classList.remove('hidden');
             if(!document.querySelector('.nav-item.active')) switchTab('activator');
         } catch (e) { }
@@ -1528,54 +1037,44 @@
             checkBiometricAvailable();
             const initialLoader = document.getElementById('initialLoader'); const savedUser = localStorage.getItem(SESSION_KEY);
             if(!savedUser) { 
-                if(initialLoader) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 600); } 
+                if(initialLoader) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 500); } 
                 document.getElementById('warningModal').classList.add('show'); 
             } else {
-                try { const cachedData = localStorage.getItem(CACHE_KEY); if (cachedData) { const parsed = JSON.parse(cachedData); if (parsed && parsed.username) { currentUserData = parsed; window.loadAppView(parsed); if(initialLoader) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 600); } } } } catch(e) {}
+                try { const cachedData = localStorage.getItem(CACHE_KEY); if (cachedData) { const parsed = JSON.parse(cachedData); if (parsed && parsed.username) { currentUserData = parsed; window.loadAppView(parsed); if(initialLoader) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 500); } } } } catch(e) {}
                 await fetchUserSession(savedUser);
-                if(initialLoader && document.body.contains(initialLoader)) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 600); }
+                if(initialLoader && document.body.contains(initialLoader)) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 500); }
             }
             startClock(); startPingChecker(); fetchGlobalStats(); initRealtimeBroadcastListener(); initImageEnhancerEngine();
-        }, 1000);
+        }, 1200);
     };
 
     function startClock() { const clockEl = document.getElementById('realtimeClock'); if(!clockEl) return; setInterval(() => { const now = new Date(); clockEl.textContent = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' WIB'; }, 1000); }
     function startPingChecker() { const pingEl = document.getElementById('networkPingText'); if(!pingEl) return; setInterval(() => { const randomPing = Math.floor(Math.random() * 14) + 12; pingEl.textContent = randomPing + 'ms'; }, 4000); }
     async function fetchGlobalStats() { const res = apiCall ? await apiCall('fetchStats') : {status:false}; if (res.status) { const el = document.getElementById('globalTotalUsers'); if(el) el.textContent = res.count; } }
-    function generateCaptcha() { const num1 = Math.floor(Math.random() * 10) + 1; const num2 = Math.floor(Math.random() * 10) + 1; currentCaptchaAnswer = num1 + num2; const label = document.getElementById('captchaLabel'); if(label) label.innerHTML = `Selesaikan <span style="background:var(--surface-light); padding:2px 6px; border-radius:4px; font-weight:700; margin-left:4px; border: 1px solid var(--border-thin); color: var(--accent-primary);">${num1} + ${num2}</span>`; }
+    function generateCaptcha() { const num1 = Math.floor(Math.random() * 10) + 1; const num2 = Math.floor(Math.random() * 10) + 1; currentCaptchaAnswer = num1 + num2; const label = document.getElementById('captchaLabel'); if(label) label.innerHTML = `Berapa <span style="color:var(--neon-cyan);">${num1} + ${num2}</span>`; }
     function parseBool(val) { return val === true || val === 'true' || val === '1' || val === 't' || val === 'TRUE' || val === 'YES'; }
-    window.handleVipPromoClick = function() { const txt = currentUserData ? `Salam hormat, saya berminat untuk upgrade status ke VIP Eksklusif.\n\nIdentitas: @${currentUserData.username}\nID Klien: ${currentUserData.id_code || 'MSH-01'}` : "Salam hormat, saya berminat untuk upgrade status akun ke VIP."; window.open(`https://wa.me/`+OWNER_WA.replace('+','')+`?text=` + encodeURIComponent(txt), '_blank'); };
+    window.handleVipPromoClick = function() { const txt = currentUserData ? `Halo, mau upgrade VIP.\nUser: @${currentUserData.username}` : "Halo, mau upgrade VIP."; window.open(`https://wa.me/`+OWNER_WA.replace('+','')+`?text=` + encodeURIComponent(txt), '_blank'); };
     window.handleAvatarUpload = async function(event) { 
         const file = event.target.files[0]; if (!file) return; const reader = new FileReader(); 
         reader.onload = async function(e) { 
             const base64Image = e.target.result; if (!currentUserData) return; 
             const res = await apiCall('updateUser', { username: currentUserData.username, updates: { avatar_url: base64Image } }); 
-            if (res.status) { 
-                currentUserData.avatar_url = base64Image; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); 
-                updateAvatarUI(base64Image, currentUserData.username); customAlert("Potret profil telah diperbarui."); 
-                addActivityLog("Pembaruan Profil", "Potret avatar klien berhasil diunggah dan disimpan", "Selesai", "var(--success-light)");
-            } 
+            if (res.status) { currentUserData.avatar_url = base64Image; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); updateAvatarUI(base64Image, currentUserData.username); customAlert("Foto diganti."); } 
         }; reader.readAsDataURL(file); 
     };
-    function updateAvatarUI(avatarUrl, username) { const avatarContainers = document.querySelectorAll('.pw-avatar'); avatarContainers.forEach(container => { if (avatarUrl && avatarUrl.startsWith('data:image')) { container.innerHTML = `<img src="${avatarUrl}" alt="Avatar">`; } else { container.innerHTML = `<span class="disp-avatar-text">${username ? username.charAt(0).toUpperCase() : 'U'}</span>`; } }); }
+    function updateAvatarUI(avatarUrl, username) { const avatarContainers = document.querySelectorAll('.pw-avatar'); avatarContainers.forEach(container => { if (avatarUrl && avatarUrl.startsWith('data:image')) { container.innerHTML = `<img src="${avatarUrl}">`; } else { container.innerHTML = `<span class="disp-avatar-text">${username ? username.charAt(0).toUpperCase() : 'U'}</span>`; } }); }
     function massUpdateText(selector, text) { document.querySelectorAll(selector).forEach(el => el.textContent = text); }
     function updateEditProfileUIStatus(user) { 
         const userInput = document.getElementById('editUsernameInput'); const passInput = document.getElementById('editPasswordInput'); const saveBtn = document.getElementById('saveProfileChangesBtn'); 
         if(!userInput || !passInput || !saveBtn) return; 
-        if (parseBool(user.username_changed)) { userInput.disabled = true; passInput.disabled = true; saveBtn.disabled = true; saveBtn.innerHTML = '<i class="fas fa-lock"></i> Terkunci Permanen'; userInput.style.opacity = '0.4'; passInput.style.opacity = '0.4'; } 
-        else { userInput.disabled = false; passInput.disabled = false; saveBtn.disabled = false; saveBtn.innerHTML = 'Simpan Perubahan'; userInput.value = user.username || ''; passInput.value = user.password || ''; } 
+        if (parseBool(user.username_changed)) { userInput.disabled = true; passInput.disabled = true; saveBtn.disabled = true; saveBtn.innerHTML = 'TERKUNCI'; userInput.style.opacity = '0.4'; passInput.style.opacity = '0.4'; } 
+        else { userInput.disabled = false; passInput.disabled = false; saveBtn.disabled = false; saveBtn.innerHTML = 'SIMPAN'; userInput.value = user.username || ''; passInput.value = user.password || ''; } 
     }
     document.getElementById('saveProfileChangesBtn').addEventListener('click', async () => { 
         const newU = document.getElementById('editUsernameInput').value.trim(); const newP = document.getElementById('editPasswordInput').value.trim(); 
-        if (!newU || !newP) {
-             triggerErrorShake(['editUsernameInput', 'editPasswordInput']);
-             return showMsg('editProfileMsg', 'Data formulir tidak boleh dikosongkan.', 'error');
-        }
+        if (!newU || !newP) { triggerErrorShake(['editUsernameInput', 'editPasswordInput']); return showMsg('editProfileMsg', 'Isi semua!', 'error'); }
         const res = await apiCall('updateUser', { username: currentUserData.username, updates: { username: newU, password: newP, username_changed: true } }); 
-        if (res.status) { 
-            addActivityLog("Pembaruan Kredensial", `Username / Password diubah (Sistem Terkunci)`, "Kritis", "var(--danger-light)");
-            currentUserData.username = newU; currentUserData.password = newP; currentUserData.username_changed = true; localStorage.setItem(SESSION_KEY, newU); localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData); showMsg('editProfileMsg', 'Perubahan terekam. Kredensial telah dikunci permanen.', 'success'); 
-        } 
+        if (res.status) { currentUserData.username = newU; currentUserData.password = newP; currentUserData.username_changed = true; localStorage.setItem(SESSION_KEY, newU); localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData); showMsg('editProfileMsg', 'Tersimpan & Terkunci.', 'success'); } 
     });
     
     function initRealtimeBroadcastListener() {
@@ -1590,13 +1089,9 @@
     window.closeBroadcastModal = function() { if (activeBroadcastId) localStorage.setItem(BROADCAST_SEEN_KEY, String(activeBroadcastId)); document.getElementById('broadcastModal').classList.remove('show'); };
     window.sendBroadcastMsg = async function() { 
         const text = document.getElementById('broadcastInput').value.trim(); 
-        if(!text) return customAlert("Transmisi tidak boleh kosong.", true); 
+        if(!text) return customAlert("Isi pesan dulu.", true); 
         const res = await apiCall('sendBroadcast', { message: text }); 
-        if (res.status) { 
-            customAlert("Pesan eksekutif terkirim ke seluruh klien."); 
-            document.getElementById('broadcastInput').value = ''; 
-            addActivityLog("Transmisi Global", "Menyiarkan pesan popup ke seluruh klien", "Selesai", "var(--success-light)");
-        } 
+        if (res.status) { customAlert("Terkirim."); document.getElementById('broadcastInput').value = ''; } 
     };
     
     async function fetchUserSession(username) { 
@@ -1604,20 +1099,22 @@
             const res = await apiCall('fetchUser', { username }); 
             if (res.status && res.data) { 
                 const data = res.data; 
-                if (parseBool(data.is_banned)) { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(CACHE_KEY); switchView('loginView'); customAlert("Akses ditolak: Akun di-suspend.", true); return; } 
+                if (parseBool(data.is_banned)) { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(CACHE_KEY); switchView('loginView'); customAlert("Akun Banned.", true); return; } 
                 localStorage.setItem(CACHE_KEY, JSON.stringify(data)); currentUserData = data; window.loadAppView(data); 
             } else { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(CACHE_KEY); switchView('loginView'); } 
         } catch (err) {} 
     }
+    
     window.switchView = function(viewId) { 
         ['loginView', 'registerView', 'appView'].forEach(v => { const el = document.getElementById(v); if(el) el.classList.add('hidden'); }); 
         const targetView = document.getElementById(viewId); 
         if(targetView) { targetView.classList.remove('hidden'); targetView.style.animation = 'none'; targetView.offsetHeight; targetView.style.animation = null; }
         if(viewId === 'registerView') { generateCaptcha(); document.getElementById('regCaptcha').value = ''; } 
         clearFormMessages(); 
-        if(viewId !== 'appView') document.getElementById('mainBottomNav').classList.add('hidden');
+        if(viewId !== 'appView') { document.getElementById('mainBottomNav').classList.add('hidden'); }
         if(viewId === 'loginView') checkBiometricAvailable();
     };
+    
     function clearFormMessages() { document.querySelectorAll('.message-box').forEach(el => { el.classList.remove('show', 'message-success', 'message-error'); el.querySelector('span') && (el.querySelector('span').innerHTML = ''); }); }
     function showMsg(elId, text, type = 'error') { 
         const el = document.getElementById(elId); if(el) { const span = el.querySelector('span') || el; span.innerHTML = text; el.className = 'message-box show'; 
@@ -1625,18 +1122,16 @@
             if (type === 'success') { el.classList.add('message-success'); el.querySelector('i').className = 'fas fa-check-circle'; } 
         } 
     }
+    
     window.closeWarningModal = function() { document.getElementById('warningModal').classList.remove('show'); if(!localStorage.getItem(SESSION_KEY)) document.getElementById('loginView').classList.remove('hidden'); };
-    window.handleForgotClick = function() { window.open(`https://wa.me/${OWNER_WA.replace('+', '')}?text=` + encodeURIComponent("Salam hormat, saya membutuhkan bantuan pemulihan akses (lupa sandi)."), '_blank'); };
+    window.handleForgotClick = function() { window.open(`https://wa.me/${OWNER_WA.replace('+', '')}?text=` + encodeURIComponent("Halo Min, Lupa Sandi Akun Tools Pro."), '_blank'); };
     
     window.renderMemberList = async function() { 
         const res = await apiCall('getUsers'); const memberList = document.getElementById('memberList'); const searchInput = document.getElementById('memberSearchInput'); 
         if(!memberList || !res.status) return; const users = res.data; const searchQuery = searchInput ? searchInput.value.toLowerCase().trim() : ''; 
         
         let filteredUsers = users.filter(m => (m.username || '').toLowerCase().includes(searchQuery) || (m.id_code || '').toLowerCase().includes(searchQuery)); 
-        
-        if (isZeroLimitFilterActive) {
-            filteredUsers = filteredUsers.filter(m => (m.limit_count || 0) <= 0 && m.role !== 'Owner' && !parseBool(m.is_permanent));
-        }
+        if (isZeroLimitFilterActive) filteredUsers = filteredUsers.filter(m => (m.limit_count || 0) <= 0 && m.role !== 'Owner' && !parseBool(m.is_permanent));
 
         filteredUsers.sort((a, b) => { 
             const aVip = parseBool(a.is_permanent) || a.role === 'Owner' ? 1 : 0; const bVip = parseBool(b.is_permanent) || b.role === 'Owner' ? 1 : 0; 
@@ -1644,38 +1139,30 @@
         });
 
         memberList.innerHTML = ''; 
-        if(filteredUsers.length === 0) {
-             memberList.innerHTML = `
-             <div style="text-align:center; padding: 30px 10px;">
-                 <i class="fas fa-folder-open" style="font-size: 28px; color: var(--text-muted); margin-bottom: 10px; opacity: 0.5;"></i>
-                 <div style="font-size:12px; color:var(--text-dim);">Tidak ada klien yang cocok.</div>
-             </div>`;
-             return;
-        }
+        if(filteredUsers.length === 0) { memberList.innerHTML = `<div style="text-align:center; padding: 20px;">Kosong.</div>`; return; }
 
         filteredUsers.forEach((m) => { 
             const isVipUser = parseBool(m.is_permanent); const isBannedUser = parseBool(m.is_banned); 
-            let roleStr = 'Reguler'; if (m.role === 'Owner') roleStr = 'Eksekutif'; else if (isVipUser) roleStr = 'VIP';
+            let roleStr = 'Reguler'; if (m.role === 'Owner') roleStr = 'Owner'; else if (isVipUser) roleStr = 'VIP';
             
             const el = document.createElement('div'); el.className = 'data-item';
             el.innerHTML = `
-                <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-                  <span style="font-weight:700; font-size:13px; color:var(--text-pure);">@${m.username} ${isBannedUser ? '<span style="color:var(--danger-light); font-size:10px; background:rgba(153,27,27,0.4); padding: 2px 6px; border-radius:4px; margin-left:4px;">SUSPENDED</span>' : ''}</span>
-                  <span style="font-size:10px; color:var(--text-muted); background:var(--surface-light); border: 1px solid var(--border-thin); padding: 2px 6px; border-radius: 4px;">${m.id_code || 'MSH-00'}</span>
+                <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                  <span style="font-weight:700; font-size:13px;">@${m.username} ${isBannedUser ? '<span style="color:var(--danger); font-size:10px; background:rgba(255,0,0,0.2); padding: 2px 5px; border-radius:4px; margin-left:5px;">BANNED</span>' : ''}</span>
+                  <span style="font-family:var(--font-heading); font-size:10px; color:var(--text-muted); background:var(--input-bg); padding: 3px 6px; border-radius: 6px;">${m.id_code || 'MSH'}</span>
                 </div>
-                <div style="font-size:10px; color:var(--text-dim); margin-bottom:12px; display:flex; gap:10px; flex-wrap: wrap;">
-                  <span><b>ROLE:</b> <span style="color:${isVipUser ? 'var(--accent-primary)' : 'var(--text-muted)'}">${roleStr}</span></span> 
+                <div style="font-size:11px; color:var(--text-dim); margin-bottom:12px; display:flex; gap:10px; flex-wrap: wrap;">
+                  <span><b>ROLE:</b> <span style="color:${isVipUser ? 'var(--neon-pink)' : 'var(--text-muted)'}">${roleStr}</span></span> 
                   <span><b>PWD:</b> <span>${m.password}</span></span> 
                   <span><b>WA:</b> <span>${m.wa||'-'}</span></span>
                 </div>
-                <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px; background:var(--surface-dark); padding:8px 12px; border-radius:10px; border: 1px solid var(--border-thin);">
-                  <span style="font-size:10px; font-weight:600; color:var(--text-muted); text-transform:uppercase;">Limit:</span>
-                  <input type="number" id="inputLimit_${m.username}" value="${m.limit_count ?? 3}" class="glass-input" style="padding:6px 8px; font-size:12px; width:60px; text-align:center; font-weight:700; color:var(--accent-light);" />
-                  <button class="btn btn-outline click-sound" style="padding:6px 12px; width:auto; font-size:10px;" onclick="setCustomLimit('${m.username}')">Update</button>
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+                  <input type="number" id="inputLimit_${m.username}" value="${m.limit_count ?? 3}" class="glass-input" style="padding:6px; font-size:12px; width:70px; text-align:center;" />
+                  <button class="btn btn-outline click-sound" style="padding:6px 10px; width:auto; font-size:10px;" onclick="setCustomLimit('${m.username}')">Set</button>
                 </div>
                 <div style="display:flex; gap:8px;">
-                  <button class="btn btn-outline click-sound" style="padding:7px; font-size:10px; flex:1; border-color:${isVipUser ? 'var(--accent-dark)' : 'var(--border-thin)'}; color:${isVipUser ? 'var(--accent-primary)' : 'var(--text-pure)'};" onclick="toggleVipStatus('${m.username}', ${isVipUser})"><i class="fas fa-crown"></i> ${isVipUser ? 'Revoke VIP' : 'Grant VIP'}</button>
-                  <button class="btn btn-outline click-sound" style="padding:7px; font-size:10px; flex:1; color:${isBannedUser ? 'var(--accent-primary)' : 'var(--danger-light)'}; border-color:${isBannedUser ? 'var(--border-accent)' : 'rgba(248,113,113,0.3)'}; background: ${isBannedUser ? 'transparent' : 'rgba(153,27,27,0.1)'}" onclick="toggleSuspendStatus('${m.username}', ${isBannedUser})"><i class="fas ${isBannedUser ? 'fa-unlock' : 'fa-lock'}"></i> ${isBannedUser ? 'Lepas Suspend' : 'Suspend'}</button>
+                  <button class="btn btn-outline click-sound" style="padding:8px; font-size:10px; flex:1; color:${isVipUser ? 'var(--neon-pink)' : 'var(--text-pure)'};" onclick="toggleVipStatus('${m.username}', ${isVipUser})"><i class="fas fa-crown"></i> ${isVipUser ? 'Hapus VIP' : 'Set VIP'}</button>
+                  <button class="btn btn-outline click-sound" style="padding:8px; font-size:10px; flex:1; color:${isBannedUser ? 'var(--success)' : 'var(--danger)'};" onclick="toggleSuspendStatus('${m.username}', ${isBannedUser})"><i class="fas ${isBannedUser ? 'fa-unlock' : 'fa-lock'}"></i> ${isBannedUser ? 'Unban' : 'Ban'}</button>
                 </div>
             `; 
             memberList.appendChild(el); 
@@ -1684,33 +1171,28 @@
 
     window.setCustomLimit = async function(username) {
         const inputVal = document.getElementById(`inputLimit_${username}`).value; const newLimit = parseInt(inputVal, 10);
-        if(isNaN(newLimit)) return customAlert("Nilai limit tidak valid.", true);
+        if(isNaN(newLimit)) return customAlert("Input salah.", true);
         const res = await apiCall('updateUser', { username: username, updates: { limit_count: newLimit } });
         if (res.status) { 
-            renderMemberList(); customAlert("Konfigurasi limit diperbarui."); 
+            renderMemberList(); customAlert("Limit diupdate."); 
             if(currentUserData && currentUserData.username === username) { currentUserData.limit_count = newLimit; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData); }
-            addActivityLog("Tindakan Admin", `Mengubah kuota limit klien @${username} menjadi ${newLimit}`, "Selesai", "var(--success-light)");
-        } else { customAlert("Gagal terhubung ke database.", true); }
+        } else { customAlert("Gagal.", true); }
     };
 
     window.toggleVipStatus = async function(username, currentVipStatus) { 
         const newStatus = !currentVipStatus ? 'true' : 'false'; 
         const res = await apiCall('updateUser', { username, updates: { is_permanent: newStatus } }); 
         if (res.status) { 
-            renderMemberList(); customAlert("Status previlege VIP dimodifikasi."); 
+            renderMemberList(); customAlert("Status VIP diupdate."); 
             if(currentUserData && currentUserData.username === username) { currentUserData.is_permanent = newStatus; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData); }
-            addActivityLog("Tindakan Admin", `Mengubah akses VIP klien @${username} menjadi ${newStatus}`, "Selesai", "var(--success-light)");
         } 
     };
     
     window.toggleSuspendStatus = async function(username, currentBannedStatus) { 
-        customConfirm(currentBannedStatus ? `Konfirmasi pembukaan akses untuk klien ${username}?` : `Konfirmasi pemutusan akses (suspend) untuk klien ${username}?`, async () => { 
+        customConfirm(currentBannedStatus ? `Unban ${username}?` : `Banned ${username}?`, async () => { 
             const newStatus = currentBannedStatus ? 'false' : 'true'; 
             const res = await apiCall('updateUser', { username, updates: { is_banned: newStatus } }); 
-            if (res.status) { 
-                customAlert("Status keamanan dimodifikasi."); renderMemberList(); 
-                addActivityLog("Tindakan Admin", `Mengubah status SUSPEND klien @${username} menjadi ${newStatus}`, "Kritis", "var(--danger-light)");
-            } 
+            if (res.status) { customAlert("Status keamanan diupdate."); renderMemberList(); } 
         }); 
     };
     
@@ -1746,15 +1228,11 @@
         function slide(event) {
             if (!isSliding) return;
             let x = 0;
-            if (event.type.includes('touch')) {
-                x = event.touches[0].clientX - wrapper.getBoundingClientRect().left;
-            } else {
-                x = event.clientX - wrapper.getBoundingClientRect().left;
-            }
+            if (event.type.includes('touch')) { x = event.touches[0].clientX - wrapper.getBoundingClientRect().left; } 
+            else { x = event.clientX - wrapper.getBoundingClientRect().left; }
             
             const width = wrapper.offsetWidth;
-            if (x < 0) x = 0;
-            if (x > width) x = width;
+            if (x < 0) x = 0; if (x > width) x = width;
             
             const percentage = (x / width) * 100;
             slider.style.left = percentage + '%';
@@ -1764,47 +1242,28 @@
         if(wrapper && slider) {
             wrapper.addEventListener('mousedown', (e) => { isSliding = true; slide(e); });
             wrapper.addEventListener('touchstart', (e) => { isSliding = true; slide(e); }, {passive: true});
-            
             window.addEventListener('mouseup', () => isSliding = false);
             window.addEventListener('touchend', () => isSliding = false);
-            
             window.addEventListener('mousemove', slide);
-            window.addEventListener('touchmove', (e) => {
-                if(isSliding) {
-                    if (e.cancelable) e.preventDefault();
-                    slide(e);
-                }
-            }, {passive: false});
+            window.addEventListener('touchmove', (e) => { if(isSliding) { if (e.cancelable) e.preventDefault(); slide(e); } }, {passive: false});
         }
 
         document.getElementById('closeModeModal').addEventListener('click', () => modeModalOverlay.classList.remove('show'));
         if(!strengthRange) return; 
-        strengthRange.addEventListener('input', () => { const val = parseInt(strengthRange.value, 10); strengthIndicator.textContent = val <= 30 ? 'Ringan' : (val > 70 ? 'Maksimal' : 'Normal'); }); 
-        modeItems.forEach(item => { item.addEventListener('click', () => { modeItems.forEach(i => { i.classList.remove('selected'); i.style.borderColor = 'transparent'; i.style.background = 'transparent'; }); item.classList.add('selected'); item.style.borderColor = 'var(--border-accent)'; item.style.background = 'rgba(14,165,233,0.1)'; tempSelectedMode = item.getAttribute('data-mode'); }); }); 
+        strengthRange.addEventListener('input', () => { const val = parseInt(strengthRange.value, 10); strengthIndicator.textContent = val <= 30 ? 'Ringan' : (val > 70 ? 'Max' : 'Normal'); }); 
+        modeItems.forEach(item => { item.addEventListener('click', () => { modeItems.forEach(i => { i.classList.remove('selected'); i.style.borderColor = 'var(--border-thin)'; i.style.background = 'transparent'; }); item.classList.add('selected'); item.style.borderColor = 'var(--neon-cyan)'; item.style.background = 'rgba(0,243,255,0.1)'; tempSelectedMode = item.getAttribute('data-mode'); }); }); 
         applyModeBtn.addEventListener('click', () => { selectedMode = tempSelectedMode; currentModeLabel.textContent = selectedMode === '2x' ? 'Super Res 2x' : (selectedMode === '1x' ? 'Clean & Sharpen' : 'Dynamic HDR'); modeModalOverlay.classList.remove('show'); }); 
         dropZone.addEventListener('click', () => fileInput.click()); 
-        fileInput.addEventListener('change', (e) => { if (e.target.files && e.target.files[0]) { selectedFile = e.target.files[0]; fileNameDisplay.innerHTML = `<i class="fas fa-file-image"></i> ${selectedFile.name}`; } }); 
+        fileInput.addEventListener('change', (e) => { if (e.target.files && e.target.files[0]) { selectedFile = e.target.files[0]; fileNameDisplay.innerHTML = `<i class="fas fa-image"></i> ${selectedFile.name}`; } }); 
         
         if(resetBtn) {
-            resetBtn.addEventListener('click', () => {
-                urlInput.value = '';
-                fileInput.value = '';
-                selectedFile = null;
-                fileNameDisplay.textContent = '';
-                comparisonSplitSection.classList.add('hidden');
-                downloadFooterActions.classList.add('hidden');
-                statusMessage.classList.remove('show');
-                customAlert("Studio di-reset.");
-            });
+            resetBtn.addEventListener('click', () => { urlInput.value = ''; fileInput.value = ''; selectedFile = null; fileNameDisplay.textContent = ''; comparisonSplitSection.classList.add('hidden'); downloadFooterActions.classList.add('hidden'); statusMessage.classList.remove('show'); customAlert("Reset selesai."); });
         }
 
         enhanceBtn.addEventListener('click', async () => {
             const urlVal = urlInput.value.trim(); 
-            if (!urlVal && !selectedFile) {
-                triggerErrorShake(['imageUrl']);
-                return showMsg('statusMessage', 'Sematkan URL gambar atau pilih berkas lokal.', 'error');
-            }
-            enhanceBtn.disabled = true; enhanceBtn.innerHTML = '<div class="loader-spinner" style="width:13px;height:13px; border-width:2px; border-top-color:#fff;"></div> Memproses...';
+            if (!urlVal && !selectedFile) { triggerErrorShake(['imageUrl']); return showMsg('statusMessage', 'Masukkan URL atau upload gambar.', 'error'); }
+            enhanceBtn.disabled = true; enhanceBtn.innerHTML = '<div class="loader-spinner" style="border-top-color:#05050B;"></div>';
             try {
                 let img = selectedFile ? await loadImageFromFile(selectedFile) : await loadImageFromBlob(await fetchUrlBlob(urlVal));
                 originalBlobUrl = URL.createObjectURL(selectedFile || await fetchUrlBlob(urlVal));
@@ -1820,13 +1279,13 @@
 
                 comparisonSplitSection.classList.remove('hidden');
                 downloadFooterActions.classList.remove('hidden');
-                showMsg('statusMessage', 'Proses render selesai dengan resolusi optimal.', 'success');
+                showMsg('statusMessage', 'Sukses HD Foto!', 'success');
                 
-                let modeTxt = selectedMode === '2x' ? 'Super Res 2x' : (selectedMode === '1x' ? 'Clean & Sharpen' : 'Dynamic HDR');
-                addActivityLog("Neural AI Studio", `Eksekusi Render dengan mode ${modeTxt} (Kekuatan ${strengthRange.value}%)`, "-1 Limit", "var(--danger-light)");
+                // NO LIMIT DEDUCTION HERE (FREE)
+                addActivityLog("HD Foto AI", `Proses gambar mode ${selectedMode}`, "Free (Tanpa Limit)", "var(--success)");
                 
-            } catch(e) { showMsg('statusMessage', 'Mesin gagal memproses citra yang diberikan.', 'error'); } 
-            finally { enhanceBtn.disabled = false; enhanceBtn.innerHTML = '<i class="fas fa-wand-magic-sparkles"></i> Eksekusi Render'; }
+            } catch(e) { showMsg('statusMessage', 'Gagal memproses gambar.', 'error'); } 
+            finally { enhanceBtn.disabled = false; enhanceBtn.innerHTML = '<i class="fas fa-magic"></i> PROSES HD'; }
         });
         
         function fetchUrlBlob(url) { return fetch(url).then(r => r.blob()); }
@@ -1866,8 +1325,8 @@
             });
         }
         
-        downloadBtn.addEventListener('click', () => { if (enhancedBlobUrl) { const a = document.createElement('a'); a.href = enhancedBlobUrl; a.download = 'AM_Executive_Output.jpg'; a.click(); addActivityLog("Studio Ekspor", "Mengunduh hasil render citra ke perangkat", "Info", "var(--accent-primary)"); } });
-        copyUrlBtn.addEventListener('click', () => { if (enhancedBlobUrl) { navigator.clipboard.writeText(enhancedBlobUrl); customAlert("URL disalin ke clipboard."); } });
+        downloadBtn.addEventListener('click', () => { if (enhancedBlobUrl) { const a = document.createElement('a'); a.href = enhancedBlobUrl; a.download = 'ToolsPro_HD.jpg'; a.click(); } });
+        copyUrlBtn.addEventListener('click', () => { if (enhancedBlobUrl) { navigator.clipboard.writeText(enhancedBlobUrl); customAlert("Link Copy."); } });
     }
 
     const loginBtn = document.getElementById('loginBtn'); const regBtn = document.getElementById('regBtn'); const topLogoutBtn = document.getElementById('topLogoutBtn'); const sendBtn = document.getElementById('sendBtn'); const activateBtn = document.getElementById('activateBtn');
@@ -1875,117 +1334,69 @@
     if(loginBtn) { 
         loginBtn.addEventListener('click', async () => { 
             const u = document.getElementById('loginUser').value.trim(); const p = document.getElementById('loginPwd').value.trim(); 
-            if(!u || !p) {
-                triggerErrorShake(['loginUser', 'loginPwd']);
-                return showMsg('loginErrorMsg', 'Harap isi seluruh kredensial.', 'error'); 
-            }
-            loginBtn.innerHTML = '<div class="loader-spinner" style="width:13px;height:13px; border-width:2px; border-top-color:#fff;"></div> Memvalidasi...'; loginBtn.disabled = true; 
+            if(!u || !p) { triggerErrorShake(['loginUser', 'loginPwd']); return showMsg('loginErrorMsg', 'Isi Username & Password.', 'error'); }
+            loginBtn.innerHTML = '<div class="loader-spinner" style="border-top-color:#05050B;"></div>'; loginBtn.disabled = true; 
             const res = await apiCall('login', { username: u, password: p }); 
-            loginBtn.textContent = 'Otorisasi Masuk'; loginBtn.disabled = false; 
-            if(!res.status) {
-                triggerErrorShake(['loginUser', 'loginPwd']);
-                return showMsg('loginErrorMsg', `Akses Ditolak: ${res.error}`, 'error'); 
-            }
+            loginBtn.textContent = 'LOGIN'; loginBtn.disabled = false; 
+            if(!res.status) { triggerErrorShake(['loginUser', 'loginPwd']); return showMsg('loginErrorMsg', `Gagal: ${res.error}`, 'error'); }
             
             localStorage.setItem(SESSION_KEY, u); localStorage.setItem(CACHE_KEY, JSON.stringify(res.data)); 
             if(!localStorage.getItem(BIO_CRED_KEY)) { temporaryBioData = {u: u, p: p, resData: res.data}; document.getElementById('bioSetupModal').classList.add('show'); } 
             else { window.loadAppView(res.data); }
-            
-            addActivityLog("Otorisasi Sistem", "Klien berhasil melakukan login menggunakan sandi", "Sukses", "var(--success-light)");
+            addActivityLog("Akses Sistem", "Login Akun", "Sukses", "var(--success)");
         }); 
     }
 
     if(regBtn) { 
         regBtn.addEventListener('click', async () => { 
             const u = document.getElementById('regUser').value.trim(); const w = document.getElementById('regWa').value.trim(); const p = document.getElementById('regPwd').value.trim(); const cInput = parseInt(document.getElementById('regCaptcha').value.trim()); 
-            if (!u || !w || !p || isNaN(cInput)) {
-                triggerErrorShake(['regUser', 'regWa', 'regPwd', 'regCaptcha']);
-                return showMsg('regMsg', 'Data formulir tidak lengkap.', 'error'); 
-            }
-            if (cInput !== currentCaptchaAnswer) {
-                triggerErrorShake(['regCaptcha']);
-                return showMsg('regMsg', 'Verifikasi bot gagal.', 'error'); 
-            }
-            regBtn.innerHTML = '<div class="loader-spinner" style="width:13px;height:13px; border-width:2px; border-top-color:#fff;"></div> Mendaftarkan...'; regBtn.disabled = true; 
+            if (!u || !w || !p || isNaN(cInput)) { triggerErrorShake(['regUser', 'regWa', 'regPwd', 'regCaptcha']); return showMsg('regMsg', 'Lengkapi form.', 'error'); }
+            if (cInput !== currentCaptchaAnswer) { triggerErrorShake(['regCaptcha']); return showMsg('regMsg', 'Jawaban salah.', 'error'); }
+            regBtn.innerHTML = '<div class="loader-spinner" style="border-top-color:#05050B;"></div>'; regBtn.disabled = true; 
             try { 
                 const userIp = await getIPAddress(); const fp = await generateAdvancedFingerprint(); 
                 const res = await apiCall('register', { username: u, password: p, wa: w, ip_address: userIp, device_id: fp }); 
                 if(!res.status) throw new Error(res.error); 
                 localStorage.setItem(SESSION_KEY, u); localStorage.setItem(CACHE_KEY, JSON.stringify(res.data)); 
                 temporaryBioData = {u: u, p: p, resData: res.data}; document.getElementById('registerView').classList.add('hidden'); document.getElementById('bioSetupModal').classList.add('show');
-                addActivityLog("Registrasi Klien", "Identitas baru berhasil diregistrasikan ke server", "Sukses", "var(--success-light)");
-            } catch (err) { 
-                showMsg('regMsg', err.message, 'error'); 
-            } finally { regBtn.textContent = 'Daftarkan Identitas'; regBtn.disabled = false; } 
+                addActivityLog("Registrasi", "Daftar akun baru", "Sukses", "var(--success)");
+            } catch (err) { showMsg('regMsg', err.message, 'error'); } finally { regBtn.textContent = 'DAFTAR SEKARANG'; regBtn.disabled = false; } 
         }); 
     }
 
-    if(topLogoutBtn) { topLogoutBtn.addEventListener('click', () => { customConfirm("Anda yakin ingin memutus koneksi sesi eksklusif ini?", () => { addActivityLog("Otorisasi Sistem", "Mengakhiri sesi eksekutif (Logout)", "Selesai", "var(--text-muted)"); setTimeout(() => { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(CACHE_KEY); closeProfileSheet(); switchView('loginView'); }, 300); }); }); }
+    if(topLogoutBtn) { topLogoutBtn.addEventListener('click', () => { customConfirm("Keluar dari sistem?", () => { addActivityLog("Akses Sistem", "Logout Sesi", "Info", "var(--text-dim)"); setTimeout(() => { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(CACHE_KEY); closeProfileSheet(); switchView('loginView'); }, 300); }); }); }
     
     if(sendBtn) {
         sendBtn.addEventListener('click', async () => {
             const email = document.getElementById('emailInput').value.trim(); 
-            if(!email) {
-                triggerErrorShake(['emailInput']);
-                return showMsg('appErrorMsg', 'Alamat email wajib diisi.', 'error');
-            }
-            sendBtn.innerHTML = 'Proses...'; sendBtn.disabled = true;
+            if(!email) { triggerErrorShake(['emailInput']); return showMsg('appErrorMsg', 'Isi email Anda.', 'error'); }
+            sendBtn.innerHTML = 'Kirim...'; sendBtn.disabled = true;
             try {
                 const res = await fetch(`/api/am?action=send&email=${encodeURIComponent(email)}`);
                 const data = await res.json();
-                if(data.status) { 
-                    cachedEmail = email; 
-                    showMsg('appErrorMsg', data.message || 'Magic link berhasil dikirim. Cek surel Anda.', 'success'); 
-                    addActivityLog("Gateway Email", `Mengirim URL Magic Link ke alamat surel: ${email}`, "Terkirim", "var(--accent-primary)");
-                } else { 
-                    showMsg('appErrorMsg', data.error || 'Gateway pengiriman gagal.', 'error'); 
-                }
-            } catch(e) { 
-                showMsg('appErrorMsg', 'Koneksi ke gateway lisensi gagal.', 'error'); 
-            } finally { 
-                sendBtn.textContent = 'Kirim'; 
-                sendBtn.disabled = false; 
-            }
+                if(data.status) { cachedEmail = email; showMsg('appErrorMsg', data.message || 'Cek email Anda.', 'success'); } 
+                else { showMsg('appErrorMsg', data.error || 'Gagal kirim.', 'error'); }
+            } catch(e) { showMsg('appErrorMsg', 'Error server.', 'error'); } finally { sendBtn.textContent = 'Kirim'; sendBtn.disabled = false; }
         });
     }
 
     if(activateBtn) {
         activateBtn.addEventListener('click', async () => {
-            const email = document.getElementById('emailInput').value.trim(); 
-            const magic = document.getElementById('magicInput').value.trim();
-            if(!email || !magic) {
-                triggerErrorShake(['emailInput', 'magicInput']);
-                return showMsg('appErrorMsg', 'Email atau tautan Magic Link belum diisi.', 'error');
-            }
-            activateBtn.disabled = true; 
-            document.getElementById('btnDefault').classList.add('hidden'); 
-            document.getElementById('loaderContainer').classList.remove('hidden');
-            
+            const email = document.getElementById('emailInput').value.trim(); const magic = document.getElementById('magicInput').value.trim();
+            if(!email || !magic) { triggerErrorShake(['emailInput', 'magicInput']); return showMsg('appErrorMsg', 'Isi form dengan benar.', 'error'); }
+            activateBtn.disabled = true; activateBtn.innerHTML = 'Memproses...';
             try {
                 const res = await fetch(`/api/am?action=verif&email=${encodeURIComponent(cachedEmail || email)}&url=${encodeURIComponent(magic)}`);
                 const data = await res.json();
                 if(data.status) {
-                    showMsg('appErrorMsg', data.message || 'Berhasil! Akun Anda telah terverifikasi premium.', 'success');
-                    customAlert('Aktivasi Magic Link berhasil diverifikasi.');
-                    addActivityLog("Lisensi Perangkat", `Verifikasi sukses via URL Magic Link`, "Selesai", "var(--success-light)");
-                    
+                    showMsg('appErrorMsg', data.message || 'Aktivasi Berhasil!', 'success'); customAlert('Verifikasi Magic Link sukses.');
                     if(currentUserData && !parseBool(currentUserData.is_permanent) && currentUserData.role !== 'Owner') {
                         let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 1); 
                         await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
-                        currentUserData.limit_count = newLimit; 
-                        localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); 
-                        window.loadAppView(currentUserData);
+                        currentUserData.limit_count = newLimit; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData);
                     }
-                } else { 
-                    showMsg('appErrorMsg', data.error || 'Verifikasi lisensi ditolak sistem.', 'error'); 
-                }
-            } catch(e) { 
-                showMsg('appErrorMsg', 'Galat internal server saat sinkronisasi.', 'error'); 
-            } finally { 
-                activateBtn.disabled = false; 
-                document.getElementById('btnDefault').classList.remove('hidden'); 
-                document.getElementById('loaderContainer').classList.add('hidden'); 
-            }
+                } else { showMsg('appErrorMsg', data.error || 'Verifikasi gagal.', 'error'); }
+            } catch(e) { showMsg('appErrorMsg', 'Error jaringan.', 'error'); } finally { activateBtn.disabled = false; activateBtn.innerHTML = 'Verifikasi Link'; }
         });
     }
 
@@ -1996,9 +1407,7 @@
         const res = await apiCall('getMessages'); 
         
         if(!res.status || !res.data || res.data.length === 0) {
-            if(box.innerHTML.includes('loader-spinner') || box.innerHTML.trim() === '') {
-                box.innerHTML = `<div style="text-align:center; padding:30px; font-size:11px; color:var(--text-dim);">Belum ada transmisi. Jadilah yang pertama memulai topik diskusi.</div>`;
-            }
+            if(box.innerHTML.includes('loader-spinner') || box.innerHTML.trim() === '') { box.innerHTML = `<div style="text-align:center; padding:30px; font-size:12px; color:var(--text-dim);">Belum ada chat.</div>`; }
             return;
         }
 
@@ -2008,20 +1417,17 @@
         msgs.forEach(msg => {
             const isMe = currentUserData && msg.username === currentUserData.username;
             const isOwner = msg.role === 'Owner';
-            const badgeHtml = isOwner ? `<i class="fas fa-crown" style="color:var(--accent-primary); font-size:10px; margin-right:4px;"></i>` : '';
+            const badgeHtml = isOwner ? `<i class="fas fa-crown" style="color:var(--neon-cyan); margin-right:4px;"></i>` : '';
             
             let timeFmt = msg.created_at;
-            try { 
-                const d = new Date(msg.created_at); 
-                timeFmt = `${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
-            } catch(e){}
+            try { const d = new Date(msg.created_at); timeFmt = `${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`; } catch(e){}
 
             htmlString += `
             <div style="display:flex; flex-direction:column; align-items:${isMe ? 'flex-end' : 'flex-start'};">
-                <div style="font-size:10px; color:var(--text-muted); margin-bottom:4px; padding: 0 4px;">
-                    ${isMe ? '' : badgeHtml}<b style="${isOwner && !isMe ? 'color:var(--accent-light)' : ''}">${msg.username}</b> • ${timeFmt}
+                <div style="font-size:10px; font-family:var(--font-heading); color:var(--text-dim); margin-bottom:4px; padding: 0 4px;">
+                    ${isMe ? '' : badgeHtml}<b style="${isOwner && !isMe ? 'color:var(--neon-cyan)' : ''}">${msg.username}</b> • ${timeFmt}
                 </div>
-                <div style="background:${isMe ? 'var(--accent-gradient)' : 'var(--surface-light)'}; color:${isMe ? '#fff' : 'var(--text-pure)'}; border:1px solid ${isMe ? 'transparent' : 'var(--border-thin)'}; padding:10px 14px; border-radius: ${isMe ? '14px 14px 0 14px' : '14px 14px 14px 0'}; font-size:12px; line-height:1.5; max-width:85%; word-wrap:break-word;">
+                <div style="background:${isMe ? 'var(--neon-gradient)' : 'var(--surface-light)'}; color:${isMe ? '#05050B' : 'var(--text-pure)'}; border:1px solid ${isMe ? 'transparent' : 'var(--border-thin)'}; padding:10px 14px; border-radius: ${isMe ? '14px 14px 0 14px' : '14px 14px 14px 0'}; font-size:12px; font-weight: 500; max-width:85%; word-wrap:break-word; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
                     ${msg.message}
                 </div>
             </div>`;
@@ -2029,210 +1435,144 @@
         
         const isScrolledToBottom = box.scrollHeight - box.clientHeight <= box.scrollTop + 50;
         box.innerHTML = htmlString;
-        if(isScrolledToBottom || box.innerHTML.includes('loader-spinner')) {
-            box.scrollTop = box.scrollHeight;
-        }
+        if(isScrolledToBottom || box.innerHTML.includes('loader-spinner')) box.scrollTop = box.scrollHeight;
     }
 
     document.getElementById('btnSendChat').addEventListener('click', async () => {
-        const inputEl = document.getElementById('chatInputMsg');
-        const text = inputEl.value.trim();
-        if(!text) return;
-
-        inputEl.value = '';
-        inputEl.disabled = true;
+        const inputEl = document.getElementById('chatInputMsg'); const text = inputEl.value.trim();
+        if(!text) return; inputEl.value = ''; inputEl.disabled = true;
 
         const box = document.getElementById('chatMessagesBox');
-        if(box.innerHTML.includes('Belum ada transmisi')) box.innerHTML = '';
-        
-        const now = new Date();
-        const timeStr = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+        if(box.innerHTML.includes('Belum ada chat')) box.innerHTML = '';
         
         box.innerHTML += `
         <div style="display:flex; flex-direction:column; align-items:flex-end; opacity: 0.6;" id="optimisticMsg">
-            <div style="font-size:10px; color:var(--text-muted); margin-bottom:4px; padding: 0 4px;">
-                <b>${currentUserData.username}</b> • Mengirim...
-            </div>
-            <div style="background:var(--accent-gradient); color:#fff; border:1px solid transparent; padding:10px 14px; border-radius: 14px 14px 0 14px; font-size:12px; line-height:1.5; max-width:85%; word-wrap:break-word;">
-                ${text}
-            </div>
+            <div style="font-size:10px; font-family:var(--font-heading); color:var(--text-dim); margin-bottom:4px; padding: 0 4px;"><b>${currentUserData.username}</b> • Mengirim...</div>
+            <div style="background:var(--neon-gradient); color:#05050B; padding:10px 14px; border-radius: 14px 14px 0 14px; font-size:12px; font-weight:500; max-width:85%;">${text}</div>
         </div>`;
         box.scrollTop = box.scrollHeight;
 
         const res = await apiCall('sendMessage', { username: currentUserData.username, message: text, role: currentUserData.role });
-        
-        inputEl.disabled = false;
-        inputEl.focus();
-        
-        if(!res.status) {
-            customAlert("Gagal mengirim transmisi ke server.", true);
-            const optMsg = document.getElementById('optimisticMsg');
-            if(optMsg) optMsg.remove();
-        } else {
-            addActivityLog("Forum Interaksi", `Mengirim surat/pesan umpan balik global`, "Terkirim", "var(--success-light)");
-            loadChatMessages();
-        }
+        inputEl.disabled = false; inputEl.focus();
+        if(!res.status) { customAlert("Gagal kirim.", true); const optMsg = document.getElementById('optimisticMsg'); if(optMsg) optMsg.remove(); } 
+        else { loadChatMessages(); }
     });
-    
-    document.getElementById('chatInputMsg').addEventListener('keypress', function (e) {
-        if (e.key === 'Enter') document.getElementById('btnSendChat').click();
-    });
+    document.getElementById('chatInputMsg').addEventListener('keypress', function (e) { if (e.key === 'Enter') document.getElementById('btnSendChat').click(); });
 
+    // --- WA REACTOR ---
     const btnSendReaction = document.getElementById('btnSendReaction');
     if (btnSendReaction) {
         btnSendReaction.addEventListener('click', async () => {
             const urlVal = document.getElementById('waReactUrl').value.trim();
             const emojiVal = document.getElementById('waReactEmoji').value.trim();
 
-            if (!urlVal || !emojiVal) {
-                triggerErrorShake(['waReactUrl', 'waReactEmoji']);
-                return showMsg('reactStatusMessage', 'URL lan Emoji kudu diisi.', 'error');
-            }
+            if (!urlVal || !emojiVal) { triggerErrorShake(['waReactUrl', 'waReactEmoji']); return showMsg('reactStatusMessage', 'URL dan Emoji harus diisi.', 'error'); }
 
             const isPremium = currentUserData && (parseBool(currentUserData.is_permanent) || currentUserData.role === 'Owner');
             if (!isPremium) {
                 const currentLimit = currentUserData.limit_count ?? 3;
-                if (currentLimit < 3) {
-                    return showMsg('reactStatusMessage', 'Sisa limit ora cukup. Fitur iki butuh 3 limit.', 'error');
-                }
+                if (currentLimit < 3) return showMsg('reactStatusMessage', 'Limit tidak cukup. Butuh 3 limit.', 'error');
             }
 
-            btnSendReaction.innerHTML = '<div class="loader-spinner" style="width:13px;height:13px; border-width:2px; border-top-color:#fff;"></div> Memproses...';
-            btnSendReaction.disabled = true;
+            btnSendReaction.innerHTML = '<div class="loader-spinner" style="border-top-color:#05050B;"></div>'; btnSendReaction.disabled = true;
 
             try {
-                const res = await fetch('/api/reactch', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ url: urlVal, reaction: emojiVal })
-                });
+                const res = await fetch('/api/reactch', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url: urlVal, reaction: emojiVal }) });
                 const data = await res.json();
                 
                 if (data.statusCode === 200 || data.status === true) {
-                    showMsg('reactStatusMessage', 'Mantap! Reaksi sukses mlebu antrean.', 'success');
-                    addActivityLog("WA Reactor", `Kirim reaksi ${emojiVal} nang saluran WA`, "-3 Limit", "var(--success-light)");
+                    showMsg('reactStatusMessage', 'Berhasil! Reaksi dikirim.', 'success');
+                    addActivityLog("WA Reactor", `Reaksi ${emojiVal} di saluran WA`, "-3 Limit", "var(--success)");
                     
                     if(!isPremium) {
                         let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 3); 
                         await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
-                        currentUserData.limit_count = newLimit; 
-                        localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); 
-                        window.loadAppView(currentUserData);
+                        currentUserData.limit_count = newLimit; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData);
                     }
-                } else {
-                    showMsg('reactStatusMessage', data.message || 'Gagal ngirim reaksi. Limit aman.', 'error');
-                }
-            } catch (err) {
-                showMsg('reactStatusMessage', 'Koneksi API macet/putus. Limit tetep aman.', 'error');
-            } finally {
-                btnSendReaction.innerHTML = '<i class="fab fa-whatsapp"></i> Eksekusi Reaksi';
-                btnSendReaction.disabled = false;
-            }
+                } else { showMsg('reactStatusMessage', data.message || 'Gagal.', 'error'); }
+            } catch (err) { showMsg('reactStatusMessage', 'Koneksi error.', 'error'); } finally { btnSendReaction.innerHTML = '<i class="fab fa-whatsapp"></i> KIRIM REAKSI'; btnSendReaction.disabled = false; }
         });
     }
 
-    const btnProcessVidHD = document.getElementById('btnProcessVidHD');
-    if (btnProcessVidHD) {
-        btnProcessVidHD.addEventListener('click', async () => {
-            const urlVal = document.getElementById('vidhdUrl').value.trim();
-            const actionVal = document.getElementById('vidhdAction').value.trim();
-            const respBox = document.getElementById('vidhdResponseData');
+    // --- VIDHD TIKTOK KEMBALI ASLI (TOMBOL INSTAN & 60FPS) ---
+    async function processVidHD(actionType, btnEl) {
+        const urlVal = document.getElementById('vidhdUrl').value.trim();
+        const respBox = document.getElementById('vidhdResponseData');
 
-            if (!urlVal || !actionVal) {
-                triggerErrorShake(['vidhdUrl', 'vidhdAction']);
-                return showMsg('vidhdStatusMessage', 'URL/ID Video dan Perintah wajib diisi.', 'error');
+        if (!urlVal) {
+            triggerErrorShake(['vidhdUrl']);
+            return showMsg('vidhdStatusMessage', 'URL/ID Video wajib diisi.', 'error');
+        }
+
+        const isPremium = currentUserData && (parseBool(currentUserData.is_permanent) || currentUserData.role === 'Owner');
+        if (!isPremium) {
+            const currentLimit = currentUserData.limit_count ?? 3;
+            if (currentLimit < 3) {
+                return showMsg('vidhdStatusMessage', 'Sisa limit tidak cukup. Fitur ini butuh 3 limit.', 'error');
             }
+        }
 
-            const isPremium = currentUserData && (parseBool(currentUserData.is_permanent) || currentUserData.role === 'Owner');
-            if (!isPremium) {
-                const currentLimit = currentUserData.limit_count ?? 3;
-                if (currentLimit < 3) {
-                    return showMsg('vidhdStatusMessage', 'Sisa limit tidak cukup. Fitur ini butuh 3 limit.', 'error');
-                }
-            }
+        const originalText = btnEl.innerHTML;
+        btnEl.innerHTML = '<div class="loader-spinner" style="border-top-color:#fff;"></div>';
+        btnEl.disabled = true;
+        respBox.style.display = 'none';
 
-            btnProcessVidHD.innerHTML = '<div class="loader-spinner" style="width:13px;height:13px; border-width:2px; border-top-color:#fff;"></div> Memproses di Server...';
-            btnProcessVidHD.disabled = true;
-            respBox.style.display = 'none';
-
-            try {
-                const res = await fetch('/api/vidhd', { 
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: actionVal, url: urlVal, user: currentUserData.username })
-                });
-                const data = await res.json();
+        try {
+            const res = await fetch('/api/vidhd', { 
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: actionType, url: urlVal, user: currentUserData.username })
+            });
+            const data = await res.json();
+            
+            if (res.ok && data.status) {
+                showMsg('vidhdStatusMessage', data.message || 'Proses kompresi sukses.', 'success');
+                addActivityLog("VidHD TikTok", `Kompresi video (${actionType})`, "-3 Limit", "var(--success)");
                 
-                if (res.ok && data.status) {
-                    showMsg('vidhdStatusMessage', data.message || 'Pemrosesan backend VidHD sukses.', 'success');
-                    addActivityLog("VidHD Backend", `Eksekusi video: ${actionVal}`, "-3 Limit", "var(--success-light)");
-                    
-                    respBox.style.display = 'block';
-                    respBox.textContent = "Response API Server:\n" + JSON.stringify(data, null, 2);
+                respBox.style.display = 'block';
+                respBox.textContent = "Data Response:\n" + JSON.stringify(data, null, 2);
 
-                    if(!isPremium) {
-                        let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 3); 
-                        await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
-                        currentUserData.limit_count = newLimit; 
-                        localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); 
-                        window.loadAppView(currentUserData);
-                    }
-                } else {
-                    showMsg('vidhdStatusMessage', data.error || 'Server backend menolak atau gagal memproses.', 'error');
+                if(!isPremium) {
+                    let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 3); 
+                    await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
+                    currentUserData.limit_count = newLimit; 
+                    localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); 
+                    window.loadAppView(currentUserData);
                 }
-            } catch (err) {
-                showMsg('vidhdStatusMessage', 'Koneksi ke API vidhd putus/gagal.', 'error');
-            } finally {
-                btnProcessVidHD.innerHTML = '<i class="fas fa-video"></i> Eksekusi Proses Backend';
-                btnProcessVidHD.disabled = false;
+            } else {
+                showMsg('vidhdStatusMessage', data.error || 'Gagal memproses video.', 'error');
             }
-        });
+        } catch (err) {
+            showMsg('vidhdStatusMessage', 'Koneksi ke API VidHD gagal.', 'error');
+        } finally {
+            btnEl.innerHTML = originalText;
+            btnEl.disabled = false;
+        }
     }
+
+    document.getElementById('btnVidInstan')?.addEventListener('click', function() { processVidHD('instan', this); });
+    document.getElementById('btnVid60fps')?.addEventListener('click', function() { processVidHD('60fps', this); });
 
     window.switchTab = function(tabName) { 
-        const secAct = document.getElementById('sectionActivator'); 
-        const secEnh = document.getElementById('sectionEnhancer'); 
-        const secChat = document.getElementById('sectionChat');
-        const secOwn = document.getElementById('ownerPanel');
-        const secReact = document.getElementById('sectionReact');
-        const secVid = document.getElementById('sectionVidHD');
+        const secAct = document.getElementById('sectionActivator'); const secEnh = document.getElementById('sectionEnhancer'); 
+        const secChat = document.getElementById('sectionChat'); const secOwn = document.getElementById('ownerPanel');
+        const secReact = document.getElementById('sectionReact'); const secVid = document.getElementById('sectionVidHD');
         
         if(chatIntervalId) clearInterval(chatIntervalId);
-
-        [secAct, secEnh, secChat, secOwn, secReact, secVid].forEach(el => { 
-            if(el) { 
-                el.style.opacity = '0'; 
-                el.style.transform = 'translateY(6px)'; 
-                setTimeout(() => el.classList.add('hidden'), 180); 
-            } 
-        });
+        [secAct, secEnh, secChat, secOwn, secReact, secVid].forEach(el => { if(el) { el.style.opacity = '0'; el.style.transform = 'translateY(10px)'; setTimeout(() => el.classList.add('hidden'), 200); } });
         document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active')); 
         
         setTimeout(() => {
-            if(tabName === 'activator') { 
-                secAct.classList.remove('hidden'); document.getElementById('btnTabActivator').classList.add('active'); animateSectionIn(secAct); 
-            } 
-            else if(tabName === 'enhancer') { 
-                secEnh.classList.remove('hidden'); document.getElementById('btnTabEnhancer').classList.add('active'); animateSectionIn(secEnh); 
-            } 
-            else if(tabName === 'vidhd') { 
-                secVid.classList.remove('hidden'); document.getElementById('btnTabVidHD').classList.add('active'); animateSectionIn(secVid); 
-            }
-            else if(tabName === 'chat') { 
-                secChat.classList.remove('hidden'); document.getElementById('btnTabChat').classList.add('active'); animateSectionIn(secChat); 
-                loadChatMessages();
-                chatIntervalId = setInterval(loadChatMessages, 8000); 
-            }
-            else if(tabName === 'react') { 
-                secReact.classList.remove('hidden'); document.getElementById('btnTabReact').classList.add('active'); animateSectionIn(secReact); 
-            }
-            else if(tabName === 'admin') { 
-                secOwn.classList.remove('hidden'); document.getElementById('toggleOwnerDashBtn').classList.add('active'); renderMemberList(); animateSectionIn(secOwn); 
-            }
-        }, 180);
+            if(tabName === 'activator') { secAct.classList.remove('hidden'); document.getElementById('btnTabActivator').classList.add('active'); animateSectionIn(secAct); } 
+            else if(tabName === 'enhancer') { secEnh.classList.remove('hidden'); document.getElementById('btnTabEnhancer').classList.add('active'); animateSectionIn(secEnh); } 
+            else if(tabName === 'vidhd') { secVid.classList.remove('hidden'); document.getElementById('btnTabVidHD').classList.add('active'); animateSectionIn(secVid); }
+            else if(tabName === 'chat') { secChat.classList.remove('hidden'); document.getElementById('btnTabChat').classList.add('active'); animateSectionIn(secChat); loadChatMessages(); chatIntervalId = setInterval(loadChatMessages, 8000); }
+            else if(tabName === 'react') { secReact.classList.remove('hidden'); document.getElementById('btnTabReact').classList.add('active'); animateSectionIn(secReact); }
+            else if(tabName === 'admin') { secOwn.classList.remove('hidden'); document.getElementById('toggleOwnerDashBtn').classList.add('active'); renderMemberList(); animateSectionIn(secOwn); }
+        }, 200);
     };
 
-    function animateSectionIn(el) { el.style.opacity = '0'; el.style.transform = 'translateY(6px)'; requestAnimationFrame(() => { el.style.transition = 'all 0.35s cubic-bezier(0.16, 1, 0.3, 1)'; el.style.opacity = '1'; el.style.transform = 'translateY(0)'; }); }
+    function animateSectionIn(el) { el.style.opacity = '0'; el.style.transform = 'translateY(10px)'; requestAnimationFrame(() => { el.style.transition = 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)'; el.style.opacity = '1'; el.style.transform = 'translateY(0)'; }); }
 
     window.openProfileSheet = function() { document.getElementById('profileSheet').classList.add('show'); };
     window.closeProfileSheet = function() { document.getElementById('profileSheet').classList.remove('show'); };
