@@ -3,189 +3,239 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Tools Pro - Premium Dashboard</title>
+<title>Tools Pro - Executive Terminal</title>
 
-<!-- Fonts: Inter untuk kesan elegan dan mahal seperti Vercel/Supabase -->
+<!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
   :root {
-    /* Tema Premium Minimalis (Elegan & Mahal) */
-    --bg-base: #09090b; /* Zinc 950 */
-    --bg-gradient: radial-gradient(circle at 50% 0%, rgba(39, 39, 42, 0.5) 0%, transparent 60%);
-    --surface-dark: #000000;
-    --surface-light: #18181b; /* Zinc 900 */
-    --surface-card: #09090b;
-    --input-bg: #18181b;
+    /* Premium Executive Dark Theme - Mewah & Tidak Polos */
+    --bg-base: #07090F;
+    --surface-dark: rgba(13, 17, 28, 0.7);
+    --surface-light: rgba(22, 28, 45, 0.6);
+    --surface-card: rgba(18, 23, 38, 0.85);
+    --input-bg: rgba(10, 14, 23, 0.9);
     
-    --accent-primary: #ffffff;
-    --accent-light: #f4f4f5;
-    --accent-dark: #d4d4d8;
+    /* Warna Aksen - Sapphire Blue & Electric Purple */
+    --accent-primary: #00F0FF;
+    --accent-secondary: #7000FF;
+    --accent-gradient: linear-gradient(135deg, #00F0FF 0%, #0055FF 50%, #7000FF 100%);
+    --accent-glow: rgba(0, 240, 255, 0.3);
     
-    --text-pure: #ffffff;
-    --text-dim: #a1a1aa; /* Zinc 400 */
-    --text-muted: #52525b; /* Zinc 600 */
+    --text-pure: #FFFFFF;
+    --text-dim: #94A3B8;
+    --text-muted: #475569;
     
-    --border-thin: #27272a; /* Zinc 800 */
-    --border-focus: #ffffff;
+    --border-thin: rgba(255, 255, 255, 0.1);
+    --border-glow: rgba(0, 240, 255, 0.4);
     
-    --overlay-bg: rgba(9, 9, 11, 0.9);
-    --shadow-strong: 0 10px 40px rgba(0, 0, 0, 0.8);
-    --shadow-glow: 0 0 20px rgba(255, 255, 255, 0.05);
+    --overlay-bg: rgba(5, 7, 12, 0.9);
+    --shadow-strong: 0 20px 50px rgba(0, 0, 0, 0.8);
     
-    --danger: #ef4444;
-    --danger-light: #f87171;
-    --success: #10b981;
-    --success-light: #34d399;
+    --danger: #FF0055;
+    --success: #00FF88;
     
-    --font-body: 'Inter', sans-serif;
+    --font-body: 'Plus Jakarta Sans', sans-serif;
     --smooth-ease: cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  /* Light Theme untuk Opsi */
+  /* Light Theme (Dipertahankan agar toggle theme jalan, tapi dibuat elegan) */
   [data-theme="light"] {
-    --bg-base: #fafafa;
-    --bg-gradient: none;
-    --surface-dark: #ffffff;
-    --surface-light: #f4f4f5;
-    --surface-card: #ffffff;
-    --input-bg: #fafafa;
-    
-    --accent-primary: #09090b;
-    --text-pure: #09090b;
-    --text-dim: #52525b;
-    --text-muted: #a1a1aa;
-    
-    --border-thin: #e4e4e7;
-    --border-focus: #09090b;
+    --bg-base: #F1F5F9;
+    --surface-dark: rgba(255, 255, 255, 0.9);
+    --surface-light: rgba(241, 245, 249, 0.8);
+    --surface-card: rgba(255, 255, 255, 0.95);
+    --input-bg: #FFFFFF;
+    --accent-primary: #0055FF;
+    --accent-secondary: #7000FF;
+    --accent-gradient: linear-gradient(135deg, #0055FF 0%, #7000FF 100%);
+    --accent-glow: rgba(0, 85, 255, 0.2);
+    --text-pure: #0F172A;
+    --text-dim: #475569;
+    --text-muted: #94A3B8;
+    --border-thin: rgba(0, 0, 0, 0.1);
+    --border-glow: rgba(0, 85, 255, 0.4);
     --overlay-bg: rgba(255, 255, 255, 0.9);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   
   body { 
-    background-color: var(--bg-base); background-image: var(--bg-gradient); background-attachment: fixed;
+    background-color: var(--bg-base);
+    /* Latar belakang keren: Kombinasi Gradient & Pola Grid Halus */
+    background-image: 
+      radial-gradient(circle at 15% 50%, rgba(0, 240, 255, 0.08), transparent 25%),
+      radial-gradient(circle at 85% 30%, rgba(112, 0, 255, 0.08), transparent 25%),
+      linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 20px 20px, 20px 20px;
+    background-attachment: fixed;
     font-family: var(--font-body); color: var(--text-pure); min-height: 100vh; overflow-x: hidden; 
-    transition: background-color 0.4s var(--smooth-ease), color 0.4s var(--smooth-ease);
+    transition: background-color 0.4s, color 0.4s;
   }
 
-  .container { width: 100%; max-width: 460px; margin: 0 auto; padding: 20px 16px; animation: smoothFadeIn 0.6s var(--smooth-ease) forwards; min-height: 100vh; }
-  @keyframes smoothFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  .container { width: 100%; max-width: 440px; margin: 0 auto; padding: 20px 16px 40px; animation: smoothFadeIn 0.6s var(--smooth-ease) forwards; min-height: 100vh; }
+  @keyframes smoothFadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
   @media (min-width: 768px) {
-    body { display: flex; align-items: center; justify-content: center; padding: 20px 0; }
-    .container { border-radius: 16px; border: 1px solid var(--border-thin); box-shadow: var(--shadow-strong); min-height: 90vh; max-height: 94vh; overflow-y: auto; background: var(--surface-card); }
+    body { display: flex; align-items: center; justify-content: center; padding: 30px 0; }
+    .container { border-radius: 20px; border: 1px solid var(--border-thin); box-shadow: var(--shadow-strong); min-height: 90vh; max-height: 94vh; overflow-y: auto; background: rgba(7, 9, 15, 0.6); backdrop-filter: blur(20px); }
   }
 
   /* --- LOADER --- */
   #initialLoader { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; background: var(--bg-base); flex-direction: column; transition: opacity 0.4s; }
-  .luxury-loader { position: relative; width: 50px; height: 50px; border: 2px solid var(--border-thin); border-top-color: var(--accent-primary); border-radius: 50%; animation: spin 1s linear infinite; }
-  .loader-text { margin-top: 20px; font-size: 11px; font-weight: 500; color: var(--text-dim); letter-spacing: 2px; text-transform: uppercase; }
+  .spin-ring { width: 60px; height: 60px; border-radius: 50%; border: 3px solid transparent; border-top-color: var(--accent-primary); border-right-color: var(--accent-secondary); animation: spin 1s linear infinite; box-shadow: 0 0 20px var(--accent-glow); }
+  .loader-text { margin-top: 20px; font-size: 12px; font-weight: 700; color: var(--accent-primary); letter-spacing: 3px; text-transform: uppercase; animation: pulse 1.5s infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
-  .loader-spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.2); border-top-color: #fff; border-radius: 50%; animation: spin 0.8s linear infinite; display: inline-block; }
+  @keyframes pulse { 0%,100% { opacity: 0.6; } 50% { opacity: 1; } }
+  .loader-spinner { width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.2); border-top-color: #fff; border-radius: 50%; animation: spin 0.8s linear infinite; display: inline-block; }
   .hidden { display: none !important; }
 
-  /* --- GLASS CARDS (Minimalist) --- */
+  /* --- GLASS CARDS EKSKLUSIF --- */
   .glass-card { 
-    background: var(--surface-card); border: 1px solid var(--border-thin); border-radius: 12px; 
-    padding: 20px; transition: all 0.3s; margin-bottom: 16px;
+    background: var(--surface-card); border: 1px solid var(--border-thin); border-radius: 16px; 
+    padding: 22px; transition: all 0.3s; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    position: relative; overflow: hidden; backdrop-filter: blur(15px);
   }
+  .glass-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--accent-primary), transparent); opacity: 0.5; }
 
   /* TYPOGRAPHY */
-  .title-lg { font-size: 16px; font-weight: 600; color: var(--text-pure); margin-bottom: 6px; letter-spacing: -0.5px; }
-  .text-sub { font-size: 13px; color: var(--text-dim); line-height: 1.5; font-weight: 400; margin-bottom: 16px; }
+  .title-lg { font-size: 18px; font-weight: 800; color: var(--text-pure); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 0 10px rgba(255,255,255,0.2); }
+  .text-sub { font-size: 12px; color: var(--text-dim); line-height: 1.6; font-weight: 500; margin-bottom: 20px; }
   
   /* BADGE LIMIT */
   .limit-badge {
-    display: inline-flex; align-items: center; gap: 6px; background: var(--surface-light); 
-    border: 1px solid var(--border-thin); color: var(--text-pure); font-size: 10px; font-weight: 600; 
-    padding: 4px 10px; border-radius: 20px; margin-bottom: 16px;
+    display: inline-flex; align-items: center; gap: 6px; background: rgba(0, 240, 255, 0.1); 
+    border: 1px solid var(--accent-primary); color: var(--accent-primary); font-size: 10px; font-weight: 700; 
+    padding: 5px 12px; border-radius: 8px; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px;
+    box-shadow: 0 0 15px var(--accent-glow);
   }
 
   /* FORMS & INPUTS */
-  .form-group { margin-bottom: 16px; }
-  .form-group label { display: block; font-size: 12px; font-weight: 500; color: var(--text-dim); margin-bottom: 8px; }
+  .form-group { margin-bottom: 18px; }
+  .form-group label { display: block; font-size: 11px; font-weight: 700; color: var(--text-dim); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
   .input-wrapper { position: relative; display: flex; align-items: center; }
   .glass-input { 
-    width: 100%; background: var(--input-bg); border: 1px solid var(--border-thin); border-radius: 8px; 
-    color: var(--text-pure); font-family: var(--font-body); font-size: 13px; padding: 12px 14px; 
-    outline: none; transition: border-color 0.2s; 
+    width: 100%; background: var(--input-bg); border: 1px solid var(--border-thin); border-radius: 10px; 
+    color: var(--text-pure); font-family: var(--font-body); font-size: 14px; font-weight: 600; padding: 14px 16px; 
+    outline: none; transition: 0.3s; 
   }
-  .glass-input:focus { border-color: var(--border-focus); }
-  .glass-input::placeholder { color: var(--text-muted); }
-  .input-error { border-color: var(--danger) !important; animation: shake 0.3s ease-in-out; }
+  .glass-input:focus { border-color: var(--accent-primary); box-shadow: 0 0 15px var(--accent-glow); background: rgba(0,240,255,0.02); }
+  .glass-input::placeholder { color: var(--text-muted); font-weight: 500; }
+  .input-error { border-color: var(--danger) !important; box-shadow: 0 0 15px rgba(255,0,85,0.3) !important; animation: shake 0.35s ease-in-out; }
   @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-5px); } }
 
-  .pwd-toggle { position: absolute; right: 14px; background: none; border: none; color: var(--text-muted); font-size: 14px; cursor: pointer; transition: 0.2s; }
-  .pwd-toggle:hover { color: var(--text-pure); }
+  .pwd-toggle { position: absolute; right: 14px; background: none; border: none; color: var(--text-muted); font-size: 16px; cursor: pointer; transition: 0.2s; }
+  .pwd-toggle:hover { color: var(--accent-primary); }
 
   /* BUTTONS */
   .btn { 
-    width: 100%; padding: 12px 16px; border-radius: 8px; font-family: var(--font-body); 
-    font-size: 13px; font-weight: 500; display: inline-flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; transition: all 0.2s; border: none; 
+    width: 100%; padding: 15px 18px; border-radius: 12px; font-family: var(--font-body); 
+    font-size: 13px; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; gap: 8px; 
+    cursor: pointer; transition: all 0.3s; border: none; text-transform: uppercase; letter-spacing: 1.5px;
   }
-  .btn:active { transform: scale(0.98); }
-  .btn-primary { background: var(--accent-primary); color: var(--surface-dark); }
-  .btn-primary:hover { opacity: 0.9; }
-  .btn-primary:disabled { background: var(--border-thin); color: var(--text-muted); cursor: not-allowed; }
-  .btn-outline { background: transparent; border: 1px solid var(--border-thin); color: var(--text-pure); }
-  .btn-outline:hover { background: var(--surface-light); border-color: var(--text-dim); }
+  .btn:active { transform: scale(0.96); }
+  .btn-primary { background: var(--accent-gradient); color: #FFF; box-shadow: 0 5px 15px var(--accent-glow); text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+  .btn-primary:hover { box-shadow: 0 8px 25px rgba(0, 240, 255, 0.5); filter: brightness(1.1); transform: translateY(-2px); }
+  .btn-primary:disabled { background: var(--surface-light); color: var(--text-muted); cursor: not-allowed; box-shadow: none; transform: none; }
+  .btn-outline { background: rgba(0,240,255,0.05); border: 1px solid var(--accent-primary); color: var(--accent-primary); box-shadow: inset 0 0 10px rgba(0,240,255,0.1); }
+  .btn-outline:hover { background: rgba(0,240,255,0.1); box-shadow: 0 0 15px var(--accent-glow); transform: translateY(-1px); }
+
+  /* MENU TENGAH PANJANG */
+  .main-menu-btn {
+    width: 100%; background: var(--surface-light); border: 1px solid var(--border-thin); border-radius: 14px;
+    padding: 16px 20px; display: flex; justify-content: space-between; align-items: center;
+    color: var(--text-pure); font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px;
+    cursor: pointer; transition: 0.3s; margin-bottom: 20px; position: relative; overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+  }
+  .main-menu-btn::before { content:''; position:absolute; top:0; left:0; width:4px; height:100%; background:var(--accent-gradient); }
+  .main-menu-btn:hover { border-color: var(--accent-primary); background: rgba(0,240,255,0.05); box-shadow: 0 10px 25px var(--accent-glow); }
+  .main-menu-btn i { font-size: 16px; color: var(--accent-primary); transition: 0.3s; }
+
+  /* DROPDOWN GRID MENU */
+  .menu-dropdown {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;
+    animation: slideDown 0.3s ease-out; transform-origin: top;
+  }
+  @keyframes slideDown { from { opacity: 0; transform: scaleY(0.8) translateY(-10px); } to { opacity: 1; transform: scaleY(1) translateY(0); } }
+  .menu-item {
+    background: var(--surface-card); border: 1px solid var(--border-thin); border-radius: 12px; padding: 15px;
+    display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; transition: 0.3s;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3); text-align: center;
+  }
+  .menu-item:hover { border-color: var(--accent-primary); background: rgba(0,240,255,0.05); transform: translateY(-3px); box-shadow: 0 8px 20px var(--accent-glow); }
+  .menu-item i { font-size: 24px; color: var(--text-pure); transition: 0.3s; margin-bottom: 4px; }
+  .menu-item:hover i { color: var(--accent-primary); text-shadow: 0 0 10px var(--accent-primary); transform: scale(1.1); }
+  .menu-item span { font-size: 11px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; }
 
   /* TOGGLE SWITCH KEREN */
-  .toggle-switch { position: relative; display: inline-block; width: 44px; height: 24px; margin: 0 10px; }
+  .toggle-switch { position: relative; display: inline-block; width: 50px; height: 26px; }
   .toggle-switch input { opacity: 0; width: 0; height: 0; }
-  .toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--border-thin); transition: .3s; border-radius: 24px; }
-  .toggle-slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: var(--text-dim); transition: .3s; border-radius: 50%; }
-  input:checked + .toggle-slider { background-color: var(--accent-primary); }
-  input:checked + .toggle-slider:before { transform: translateX(20px); background-color: var(--surface-dark); }
+  .toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--surface-light); border: 1px solid var(--border-thin); transition: .4s; border-radius: 30px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); }
+  .toggle-slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: var(--text-dim); transition: .4s; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+  input:checked + .toggle-slider { background-color: rgba(0,240,255,0.2); border-color: var(--accent-primary); box-shadow: inset 0 0 10px rgba(0,240,255,0.2); }
+  input:checked + .toggle-slider:before { transform: translateX(24px); background-color: var(--accent-primary); box-shadow: 0 0 10px var(--accent-primary); }
 
   /* MESSAGE BOXES */
-  .message-box { padding: 12px 14px; border-radius: 8px; font-size: 12px; display: none; align-items: flex-start; gap: 10px; margin-bottom: 16px; border: 1px solid transparent; }
-  .message-box i { font-size: 14px; margin-top: 2px; }
+  .message-box { padding: 14px 16px; border-radius: 10px; font-size: 12px; font-weight: 600; display: none; align-items: flex-start; gap: 10px; margin-bottom: 20px; border: 1px solid transparent; }
+  .message-box i { font-size: 16px; margin-top: 2px; }
   .message-box.show { display: flex; animation: smoothFadeIn 0.3s; }
-  .message-error { background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.2); color: var(--danger-light); }
-  .message-success { background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.2); color: var(--success-light); }
+  .message-error { background: rgba(255, 0, 85, 0.1); border-color: var(--danger); color: #FF4D88; box-shadow: 0 0 15px rgba(255,0,85,0.2); }
+  .message-success { background: rgba(0, 255, 136, 0.1); border-color: var(--success); color: #55FFAD; box-shadow: 0 0 15px rgba(0,255,136,0.2); }
 
   /* TOAST */
-  #globalToast { position: fixed; top: -70px; left: 50%; transform: translateX(-50%); opacity: 0; background: var(--surface-light); border: 1px solid var(--border-thin); color: var(--text-pure); padding: 12px 20px; border-radius: 30px; font-size: 12px; font-weight: 500; display: flex; align-items: center; gap: 10px; z-index: 9999; transition: all 0.4s; box-shadow: var(--shadow-strong); }
+  #globalToast { position: fixed; top: -70px; left: 50%; transform: translateX(-50%); opacity: 0; background: var(--surface-card); border: 1px solid var(--accent-primary); color: var(--text-pure); padding: 14px 24px; border-radius: 30px; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 10px; z-index: 9999; transition: all 0.4s; box-shadow: 0 10px 30px var(--accent-glow); text-transform: uppercase; letter-spacing: 1px; }
   #globalToast.show { top: 20px; opacity: 1; }
 
-  /* SCROLLABLE TABS MENU */
-  .scroll-tabs {
-    display: flex; overflow-x: auto; gap: 8px; padding-bottom: 10px; margin-bottom: 16px; scrollbar-width: none;
-  }
-  .scroll-tabs::-webkit-scrollbar { display: none; }
-  .tab-chip {
-    padding: 8px 16px; background: var(--surface-light); border: 1px solid var(--border-thin); border-radius: 20px;
-    font-size: 12px; font-weight: 500; color: var(--text-dim); cursor: pointer; transition: 0.2s; white-space: nowrap;
-  }
-  .tab-chip.active { background: var(--accent-primary); color: var(--surface-dark); border-color: var(--accent-primary); }
-  .tab-content { transition: opacity 0.3s ease-in-out; }
+  /* PROFIL MAHAL EKSKLUSIF */
+  .profile-card { background: var(--surface-card); border: 1px solid var(--border-thin); border-radius: 16px; padding: 25px 20px; margin-bottom: 20px; text-align: center; position: relative; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
+  .profile-card::before { content:''; position:absolute; top:-50%; left:-50%; width:200%; height:200%; background: radial-gradient(circle, rgba(0,240,255,0.05) 0%, transparent 50%); animation: rotateBg 10s linear infinite; pointer-events: none; }
+  @keyframes rotateBg { to { transform: rotate(360deg); } }
+  
+  .pc-avatar-wrap { position: relative; width: 80px; height: 80px; margin: 0 auto 15px; cursor: pointer; }
+  .pc-avatar-ring { position: absolute; inset: -4px; border-radius: 50%; border: 2px dashed var(--accent-primary); animation: spin 8s linear infinite; opacity: 0.5; }
+  .pc-avatar { width: 100%; height: 100%; border-radius: 50%; background: var(--input-bg); border: 2px solid var(--border-thin); display: flex; align-items: center; justify-content: center; font-size: 30px; font-weight: 800; color: var(--accent-primary); overflow: hidden; position: relative; z-index: 2; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+  .pc-avatar img { width: 100%; height: 100%; object-fit: cover; }
+  
+  .pc-name { font-size: 22px; font-weight: 800; color: var(--text-pure); margin-bottom: 4px; letter-spacing: 1px; }
+  .pc-role { display: inline-block; background: rgba(112, 0, 255, 0.2); border: 1px solid var(--accent-secondary); color: #B080FF; font-size: 10px; font-weight: 700; padding: 4px 12px; border-radius: 20px; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 20px; }
+  
+  .pc-stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .pc-stat-box { background: var(--surface-light); border: 1px solid var(--border-thin); border-radius: 12px; padding: 12px; text-align: left; transition: 0.3s; }
+  .pc-stat-box:hover { border-color: var(--border-glow); background: rgba(0,240,255,0.03); transform: translateY(-2px); }
+  .pc-stat-label { font-size: 10px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+  .pc-stat-label i { color: var(--accent-primary); }
+  .pc-stat-val { font-size: 15px; font-weight: 800; color: var(--text-pure); text-shadow: 0 0 10px rgba(255,255,255,0.2); word-break: break-all; }
+
+  /* DYNAMIC CONTENT AREA */
+  .tab-content { transition: opacity 0.4s ease-in-out; animation: smoothFadeIn 0.4s; }
 
   /* OVERLAYS & MODALS */
-  .overlay { position: fixed; inset: 0; background: var(--overlay-bg); z-index: 999; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: 0.3s; padding: 20px; }
+  .overlay { position: fixed; inset: 0; background: var(--overlay-bg); backdrop-filter: blur(8px); z-index: 999; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: 0.3s; padding: 20px; }
   .overlay.show { opacity: 1; pointer-events: auto; }
-  .modal-glass { background: var(--surface-card); border: 1px solid var(--border-thin); border-radius: 12px; padding: 24px; width: 100%; max-width: 360px; transform: scale(0.98); opacity: 0; transition: 0.3s; position: relative; }
+  .modal-glass { background: var(--surface-card); border: 1px solid var(--accent-primary); border-radius: 16px; padding: 30px 24px; width: 100%; max-width: 380px; box-shadow: 0 0 40px var(--accent-glow); transform: scale(0.95); opacity: 0; transition: 0.3s; position: relative; }
   .overlay.show .modal-glass { transform: scale(1); opacity: 1; }
-  .btn-close { position: absolute; top: 12px; right: 12px; width: 28px; height: 28px; border-radius: 6px; background: transparent; border: none; color: var(--text-muted); display: flex; align-items: center; justify-content: center; font-size: 16px; cursor: pointer; transition: 0.2s; }
-  .btn-close:hover { color: var(--text-pure); background: var(--surface-light); }
+  .btn-close { position: absolute; top: 15px; right: 15px; width: 32px; height: 32px; border-radius: 8px; background: rgba(255,0,85,0.1); border: 1px solid rgba(255,0,85,0.3); color: var(--danger); display: flex; align-items: center; justify-content: center; font-size: 16px; cursor: pointer; transition: 0.2s; }
+  .btn-close:hover { background: var(--danger); color: #fff; box-shadow: 0 0 15px var(--danger); }
 
   /* SCROLLBAR */
   ::-webkit-scrollbar { width: 4px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--border-thin); border-radius: 4px; }
-  ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+  ::-webkit-scrollbar-thumb:hover { background: var(--accent-primary); }
 </style>
 </head>
 <body>
 
 <!-- LOADER -->
 <div id="initialLoader">
-  <div class="luxury-loader"></div>
-  <div class="loader-text">MEMUAT SISTEM</div>
+  <div class="spin-ring"></div>
+  <div class="loader-text">INITIALIZING...</div>
 </div>
 
 <div id="globalToast"><i class="fas fa-info-circle"></i> <span id="toastMsg">Info</span></div>
@@ -194,13 +244,13 @@
 <div id="helpModal" class="overlay">
   <div class="modal-glass">
     <button class="btn-close click-sound" onclick="closeHelpModal()"><i class="fas fa-times"></i></button>
-    <div class="title-lg"><i class="fas fa-book-open" style="margin-right:8px;"></i> Panduan Tools Pro</div>
-    <div style="font-size: 13px; line-height: 1.6; color: var(--text-dim); margin-bottom: 20px;">
-      <p style="margin-bottom: 8px;"><b style="color:var(--text-pure);">HD Foto:</b> Restorasi foto buram otomatis menjadi HD. (Tanpa Limit / Free).</p>
-      <p style="margin-bottom: 8px;"><b style="color:var(--text-pure);">VidHD Tiktok:</b> Kompresi video berkualitas tinggi agar tidak burik/pecah saat diupload ke algoritma TikTok.</p>
-      <p><b style="color:var(--text-pure);">Magic Link:</b> Login otomatis menggunakan tautan enkripsi email.</p>
+    <div class="title-lg"><i class="fas fa-book-open" style="margin-right:8px; color:var(--accent-primary);"></i> PANDUAN SISTEM</div>
+    <div style="font-size: 13px; line-height: 1.6; color: var(--text-dim); margin-bottom: 24px;">
+      <p style="margin-bottom: 12px;"><b style="color:var(--text-pure);">HD Foto:</b> Restorasi foto buram otomatis menjadi HD. (Tanpa Limit / Free).</p>
+      <p style="margin-bottom: 12px;"><b style="color:var(--text-pure);">VidHD Tiktok:</b> Kompresi video berkualitas tinggi agar tidak burik/pecah saat diupload ke algoritma TikTok.</p>
+      <p><b style="color:var(--text-pure);">Magic Link:</b> Login otomatis menggunakan tautan enkripsi email tanpa sandi konvensional.</p>
     </div>
-    <button class="btn btn-primary click-sound" onclick="closeHelpModal()">Tutup</button>
+    <button class="btn btn-primary click-sound" onclick="closeHelpModal()">MENGERTI</button>
   </div>
 </div>
 
@@ -208,305 +258,334 @@
 <div id="limitModal" class="overlay">
   <div class="modal-glass">
     <button class="btn-close" onclick="closeLimitModal()"><i class="fas fa-times"></i></button>
-    <div class="title-lg">Top Up Limit</div>
-    <div class="text-sub">Selesaikan pembayaran via QRIS untuk saldo instan.</div>
-    <div id="selectLimitView"><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 15px;" id="limitPackageGrid"></div></div>
-    <div id="qrisPaymentView" class="hidden" style="text-align: center; margin-top: 15px;">
-      <div style="background: #fff; padding: 10px; border-radius: 8px; display: inline-block; margin-bottom: 15px;"><img id="qrisImageResult" src="" style="width: 150px; height: 150px;"></div>
-      <div id="qrisPackageTitle" style="font-weight: 600; font-size: 14px; color: var(--text-pure); margin-bottom: 4px;"></div>
-      <div style="font-size: 12px; color:var(--text-dim); margin-bottom: 20px;">Tx ID: <span id="qrisDepositIdSpan" style="color:var(--text-pure);"></span></div>
-      <button class="btn btn-primary click-sound" onclick="checkQrisPaymentStatus()" style="margin-bottom: 8px;">Verifikasi Lunas</button>
-      <button class="btn btn-outline click-sound" onclick="backToLimitSelect()">Batal</button>
+    <div class="title-lg" style="color:var(--accent-primary); text-shadow:0 0 10px var(--accent-primary);">ACQUIRE LIMIT</div>
+    <div class="text-sub">Pilih paket injeksi kuota server via QRIS.</div>
+    <div id="selectLimitView"><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px;" id="limitPackageGrid"></div></div>
+    <div id="qrisPaymentView" class="hidden" style="text-align: center; margin-top: 20px;">
+      <div style="background: #fff; padding: 12px; border-radius: 12px; display: inline-block; margin-bottom: 15px; box-shadow: 0 0 20px rgba(255,255,255,0.2);"><img id="qrisImageResult" src="" style="width: 160px; height: 160px;"></div>
+      <div id="qrisPackageTitle" style="font-weight: 800; font-size: 16px; color: var(--accent-primary); margin-bottom: 4px; text-transform:uppercase; letter-spacing:1px;"></div>
+      <div style="font-size: 12px; color:var(--text-dim); margin-bottom: 24px; font-weight:600;">Tx ID: <span id="qrisDepositIdSpan" style="color:var(--text-pure);"></span></div>
+      <button class="btn btn-primary click-sound" onclick="checkQrisPaymentStatus()" style="margin-bottom: 10px;">VERIFIKASI PEMBAYARAN</button>
+      <button class="btn btn-outline click-sound" onclick="backToLimitSelect()">BATALKAN</button>
     </div>
   </div>
 </div>
 
 <div id="customConfirmModal" class="overlay">
   <div class="modal-glass" style="text-align: center;">
-    <i class="fas fa-exclamation-triangle" style="font-size: 32px; color: var(--text-pure); margin-bottom: 15px;"></i>
-    <div class="title-lg">Konfirmasi</div>
-    <div id="confirmText" class="text-sub">Lanjutkan proses ini?</div>
+    <i class="fas fa-exclamation-triangle" style="font-size: 45px; color: var(--danger); margin-bottom: 20px; text-shadow:0 0 20px var(--danger);"></i>
+    <div class="title-lg">OTORISASI TINDAKAN</div>
+    <div id="confirmText" class="text-sub" style="margin-bottom:25px;">Lanjutkan proses eksekusi ini?</div>
     <div style="display:flex; gap:10px;">
-      <button id="btnConfirmCancel" class="btn btn-outline click-sound">Batal</button>
-      <button id="btnConfirmOk" class="btn btn-primary click-sound">Ya, Lanjut</button>
+      <button id="btnConfirmCancel" class="btn btn-outline click-sound">BATAL</button>
+      <button id="btnConfirmOk" class="btn btn-primary click-sound">LANJUTKAN</button>
     </div>
   </div>
 </div>
 
 <div id="broadcastModal" class="overlay">
   <div class="modal-glass">
-    <div class="title-lg" style="margin-bottom: 15px;"><i class="fas fa-bell" style="margin-right:8px;"></i> Info Server</div>
-    <div id="broadcastContentText" style="background: var(--surface-light); padding: 15px; border-radius:8px; font-size: 13px; color:var(--text-dim); margin-bottom: 20px; line-height:1.5;">Memuat info...</div>
-    <button class="btn btn-primary click-sound" onclick="closeBroadcastModal()">Tutup</button>
+    <div class="title-lg" style="margin-bottom: 15px; color:var(--accent-primary);"><i class="fas fa-satellite-dish" style="margin-right:8px;"></i> TRANSMISI SERVER</div>
+    <div id="broadcastContentText" style="background: var(--surface-light); border-left: 4px solid var(--accent-primary); padding: 18px; border-radius: 0 8px 8px 0; font-size: 13px; font-weight:500; color:var(--text-pure); margin-bottom: 24px; line-height:1.6; box-shadow:inset 0 0 15px rgba(0,0,0,0.5);">Memuat info...</div>
+    <button class="btn btn-primary click-sound" onclick="closeBroadcastModal()">TANDAI TERBACA</button>
   </div>
 </div>
 
 <!-- VIEW: LOGIN -->
 <main id="loginView" class="container hidden" style="display: flex; flex-direction: column; justify-content: center; min-height: 100vh;">
-  <div style="text-align: center; margin-bottom: 30px;">
-    <div class="title-lg" style="font-size: 24px;">Tools Pro</div>
-    <div class="text-sub">Sign in to your account.</div>
+  <div style="text-align: center; margin-bottom: 35px;">
+    <i class="fas fa-bolt" style="font-size: 45px; color: var(--accent-primary); text-shadow: 0 0 20px var(--accent-primary); margin-bottom: 15px;"></i>
+    <div class="title-lg" style="font-size: 28px; letter-spacing: 2px;">TOOLS PRO</div>
+    <div class="text-sub" style="font-weight:600; text-transform:uppercase; letter-spacing:1px;">Executive Login Terminal</div>
   </div>
-  <div id="loginErrorMsg" class="message-box message-error"></div>
-  <div class="form-group"><label>Username</label><input type="text" id="loginUser" class="glass-input" autocomplete="off" placeholder="Enter username" /></div>
-  <div class="form-group" style="margin-bottom: 25px;">
-    <label>Password</label>
-    <div class="input-wrapper">
-      <input type="password" id="loginPwd" class="glass-input" autocomplete="off" placeholder="••••••••" />
-      <button type="button" class="pwd-toggle" onclick="togglePwd('loginPwd', this)"><i class="far fa-eye"></i></button>
-    </div>
-  </div>
-  <button id="loginBtn" class="btn btn-primary click-sound" style="margin-bottom: 20px;">Continue</button>
-  
-  <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 500;">
-    <span style="cursor:pointer; color: var(--text-dim);" onclick="handleForgotClick()">Forgot Password?</span>
-    <span style="cursor:pointer; color: var(--text-pure);" onclick="switchView('registerView')">Create Account</span>
+  <div class="glass-card" style="padding:30px 20px;">
+      <div id="loginErrorMsg" class="message-box message-error"></div>
+      <div class="form-group"><label>Identitas Klien</label><input type="text" id="loginUser" class="glass-input" autocomplete="off" placeholder="Username" /></div>
+      <div class="form-group" style="margin-bottom: 30px;">
+        <label>Sandi Keamanan</label>
+        <div class="input-wrapper">
+          <input type="password" id="loginPwd" class="glass-input" autocomplete="off" placeholder="••••••••" />
+          <button type="button" class="pwd-toggle" onclick="togglePwd('loginPwd', this)"><i class="far fa-eye"></i></button>
+        </div>
+      </div>
+      <button id="loginBtn" class="btn btn-primary click-sound" style="margin-bottom: 20px;">OTORISASI MASUK</button>
+      
+      <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; text-transform:uppercase; letter-spacing:1px;">
+        <span style="cursor:pointer; color: var(--text-dim); transition:0.3s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--text-dim)'" onclick="handleForgotClick()">LUPA SANDI?</span>
+        <span style="cursor:pointer; color: var(--accent-primary); transition:0.3s;" onmouseover="this.style.textShadow='0 0 10px var(--accent-primary)'" onmouseout="this.style.textShadow='none'" onclick="switchView('registerView')">REGISTRASI BARU</span>
+      </div>
   </div>
 </main>
 
 <!-- VIEW: REGISTER -->
 <main id="registerView" class="container hidden" style="display: flex; flex-direction: column; justify-content: center; min-height: 100vh;">
-  <div style="text-align: center; margin-bottom: 25px;">
-    <div class="title-lg" style="font-size: 24px;">Register</div>
-    <div class="text-sub">Create a new premium account.</div>
+  <div style="text-align: center; margin-bottom: 30px;">
+    <div class="title-lg" style="font-size: 26px;">REGISTRASI</div>
+    <div class="text-sub">Daftarkan identitas elit Anda.</div>
   </div>
-  <div id="regMsg" class="message-box"></div>
-  <div class="form-group"><label>Username</label><input type="text" id="regUser" class="glass-input" placeholder="No spaces" /></div>
-  <div class="form-group"><label>WhatsApp</label><input type="text" id="regWa" class="glass-input" placeholder="08..." /></div>
-  <div class="form-group">
-    <label>Password</label>
-    <div class="input-wrapper">
-      <input type="password" id="regPwd" class="glass-input" placeholder="••••••••" />
-      <button type="button" class="pwd-toggle" onclick="togglePwd('regPwd', this)"><i class="far fa-eye"></i></button>
-    </div>
-  </div>
-  <div class="form-group" style="margin-bottom: 25px;">
-    <label id="captchaLabel">Security Check</label>
-    <input type="text" id="regCaptcha" class="glass-input" placeholder="Answer" />
-  </div>
-  <button id="regBtn" class="btn btn-primary click-sound">Register Account</button>
-  <div style="margin-top: 20px; text-align: center; font-size: 12px; font-weight: 500; cursor:pointer;" onclick="switchView('loginView')">
-    <span style="color:var(--text-dim)">Already have an account? </span><span style="color:var(--text-pure);">Sign in</span>
+  <div class="glass-card" style="padding:30px 20px;">
+      <div id="regMsg" class="message-box"></div>
+      <div class="form-group"><label>Username</label><input type="text" id="regUser" class="glass-input" placeholder="Tanpa spasi" /></div>
+      <div class="form-group"><label>No WhatsApp</label><input type="text" id="regWa" class="glass-input" placeholder="08..." /></div>
+      <div class="form-group">
+        <label>Password</label>
+        <div class="input-wrapper">
+          <input type="password" id="regPwd" class="glass-input" placeholder="••••••••" />
+          <button type="button" class="pwd-toggle" onclick="togglePwd('regPwd', this)"><i class="far fa-eye"></i></button>
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom: 30px;">
+        <label id="captchaLabel">Protokol Anti-Bot</label>
+        <input type="text" id="regCaptcha" class="glass-input" placeholder="Jawaban" />
+      </div>
+      <button id="regBtn" class="btn btn-primary click-sound">DAFTAR SEKARANG</button>
+      <div style="margin-top: 20px; text-align: center; font-size: 11px; font-weight: 700; cursor:pointer; text-transform:uppercase; letter-spacing:1px;" onclick="switchView('loginView')">
+        <span style="color:var(--text-dim)">SUDAH TERDAFTAR? </span><span style="color:var(--accent-primary);">LOGIN</span>
+      </div>
   </div>
 </main>
 
 <!-- VIEW: MAIN DASHBOARD -->
-<main id="appView" class="container hidden" style="padding-top: 15px;">
+<main id="appView" class="container hidden">
   
-  <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-    <div style="font-size: 16px; font-weight: 700; color: var(--text-pure);">Tools Pro</div>
-    <div style="display: flex; gap: 8px;">
-      <button class="btn-outline click-sound" onclick="openHelpModal()" style="padding: 6px 10px; border-radius: 6px; border:1px solid var(--border-thin); background:transparent; color:var(--text-dim);"><i class="fas fa-question-circle"></i></button>
-      <button class="btn-outline click-sound" id="themeToggleBtn" onclick="toggleTheme()" style="padding: 6px 10px; border-radius: 6px; border:1px solid var(--border-thin); background:transparent; color:var(--text-dim);"><i class="fas fa-moon"></i></button>
-      <button class="btn-outline click-sound" id="topLogoutBtn" style="padding: 6px 10px; border-radius: 6px; border:1px solid var(--border-thin); background:transparent; color:var(--danger-light);"><i class="fas fa-power-off"></i></button>
+  <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+    <div style="display:flex; align-items:center; gap:10px;">
+        <div style="width:36px; height:36px; background:var(--accent-gradient); border-radius:10px; display:flex; align-items:center; justify-content:center; box-shadow:var(--shadow-glow);">
+            <i class="fas fa-bolt" style="color:#fff; font-size:16px;"></i>
+        </div>
+        <div>
+            <div style="font-size: 15px; font-weight: 800; color: var(--text-pure); letter-spacing:1px; line-height:1;">TOOLS PRO</div>
+            <div style="font-size: 9px; font-weight: 700; color: var(--accent-primary); letter-spacing:2px; text-transform:uppercase; margin-top:4px;">Executive</div>
+        </div>
+    </div>
+    <div style="display: flex; gap: 10px;">
+      <button class="btn-outline click-sound" onclick="openHelpModal()" style="width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; padding:0;"><i class="fas fa-question"></i></button>
+      <button class="btn-outline click-sound" id="themeToggleBtn" onclick="toggleTheme()" style="width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; padding:0;"><i class="fas fa-moon"></i></button>
+      <button class="click-sound" id="topLogoutBtn" style="width:36px; height:36px; border-radius:10px; background:rgba(255,0,85,0.1); border:1px solid rgba(255,0,85,0.3); color:var(--danger); display:flex; align-items:center; justify-content:center; cursor:pointer; transition:0.3s;" onmouseover="this.style.background='var(--danger)'; this.style.color='#fff';" onmouseout="this.style.background='rgba(255,0,85,0.1)'; this.style.color='var(--danger)';"><i class="fas fa-power-off"></i></button>
     </div>
   </header>
 
-  <!-- BIO PROFIL LENGKAP (DASBOR UTAMA SEPERTI SUPABASE) -->
-  <div class="glass-card" style="padding: 20px;">
-    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 20px;">
-       <div style="display:flex; align-items:center; gap: 15px;">
-          <div class="pw-avatar" style="width: 50px; height: 50px; border-radius: 50%; background: var(--surface-light); display:flex; align-items:center; justify-content:center; font-size: 20px; font-weight:600; color:var(--text-pure); overflow:hidden; border:1px solid var(--border-thin);" onclick="document.getElementById('avatarFileInput').click()">
-             <span class="disp-avatar-text">?</span>
-          </div>
-          <input type="file" id="avatarFileInput" accept="image/*" style="display: none;" onchange="handleAvatarUpload(event)">
-          <div>
-             <div class="disp-username" style="font-size: 16px; font-weight: 600; color: var(--text-pure); margin-bottom: 2px;">Username</div>
-             <div class="disp-userrole" style="font-size: 12px; color: var(--text-dim);">Member</div>
-          </div>
-       </div>
-       <button class="btn-outline click-sound" style="padding: 4px 10px; font-size: 11px; border-radius: 6px; border: 1px solid var(--border-thin); background:transparent; color:var(--text-pure);" onclick="openLimitModal()">Top Up</button>
-    </div>
-
-    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size:12px;">
-       <div style="background:var(--surface-light); padding:12px; border-radius:8px; border:1px solid var(--border-thin);">
-          <div style="color:var(--text-dim); margin-bottom:6px; font-size: 11px;">ID Klien</div>
-          <div class="disp-userid" style="color:var(--text-pure); font-weight:500;">MSH-00</div>
-       </div>
-       <div style="background:var(--surface-light); padding:12px; border-radius:8px; border:1px solid var(--border-thin);">
-          <div style="color:var(--text-dim); margin-bottom:6px; font-size: 11px;">Limit Akun</div>
-          <div class="disp-limit-value" style="color:var(--text-pure); font-weight:500;">0</div>
-       </div>
-       <div style="background:var(--surface-light); padding:12px; border-radius:8px; border:1px solid var(--border-thin);">
-          <div style="color:var(--text-dim); margin-bottom:6px; font-size: 11px;">WhatsApp</div>
-          <div class="disp-userwa" style="color:var(--text-pure); font-weight:500;">08...</div>
-       </div>
-       <div style="background:var(--surface-light); padding:12px; border-radius:8px; border:1px solid var(--border-thin);">
-          <div style="color:var(--text-dim); margin-bottom:6px; font-size: 11px;">IP Address</div>
-          <div class="disp-userip" style="color:var(--text-pure); font-weight:500;">...</div>
-       </div>
-    </div>
+  <!-- PROFIL MAHAL EKSKLUSIF -->
+  <div class="profile-card">
+     <div class="pc-avatar-wrap">
+        <div class="pc-avatar-ring"></div>
+        <div class="pc-avatar click-sound" onclick="document.getElementById('avatarFileInput').click()">
+            <span class="disp-avatar-text">?</span>
+        </div>
+        <input type="file" id="avatarFileInput" accept="image/*" style="display: none;" onchange="handleAvatarUpload(event)">
+     </div>
+     <div class="pc-name disp-username">Username</div>
+     <div class="pc-role disp-userrole">Member</div>
+     
+     <div class="pc-stats-grid">
+         <div class="pc-stat-box click-sound" onclick="openLimitModal()" style="cursor:pointer; border-color:var(--accent-primary); background:rgba(0,240,255,0.05); box-shadow:0 0 15px rgba(0,240,255,0.1);">
+             <div class="pc-stat-label"><i class="fas fa-bolt"></i> Kuota Limit</div>
+             <div class="pc-stat-val disp-limit-value" style="color:var(--accent-primary);">0</div>
+         </div>
+         <div class="pc-stat-box">
+             <div class="pc-stat-label"><i class="fas fa-id-badge"></i> ID Klien</div>
+             <div class="pc-stat-val disp-userid" style="font-size:13px;">MSH-00</div>
+         </div>
+         <div class="pc-stat-box">
+             <div class="pc-stat-label"><i class="fab fa-whatsapp"></i> Kontak WA</div>
+             <div class="pc-stat-val disp-userwa" style="font-size:13px;">08...</div>
+         </div>
+         <div class="pc-stat-box">
+             <div class="pc-stat-label"><i class="fas fa-globe"></i> IP Address</div>
+             <div class="pc-stat-val disp-userip" style="font-size:12px;">...</div>
+         </div>
+     </div>
   </div>
 
-  <!-- MENU NAVIGASI (TAB SCROLL) -->
-  <div class="scroll-tabs">
-     <div class="tab-chip active click-sound" onclick="switchMenu('log')">Activity Log</div>
-     <div class="tab-chip click-sound" onclick="switchMenu('activator')">Lisensi</div>
-     <div class="tab-chip click-sound" onclick="switchMenu('enhancer')">HD Foto</div>
-     <div class="tab-chip click-sound" onclick="switchMenu('vidhd')">VidHD</div>
-     <div class="tab-chip click-sound" onclick="switchMenu('chat')">Forum</div>
-     <div class="tab-chip click-sound" onclick="switchMenu('react')">WA React</div>
-     <div class="tab-chip hidden click-sound" id="adminTabBtn" onclick="switchMenu('admin')">Admin Panel</div>
+  <!-- MENU TENGAH PANJANG -->
+  <div style="position: relative; margin-bottom: 25px; z-index: 50;">
+      <button id="mainMenuBtn" class="main-menu-btn click-sound" onclick="toggleMainMenu()">
+          <span style="display:flex; align-items:center; gap:10px;"><i class="fas fa-layer-group"></i> <span id="mainMenuText">PILIH MENU FITUR</span></span>
+          <i class="fas fa-chevron-down" id="menuChevron"></i>
+      </button>
+      
+      <!-- DROPDOWN GRID FITUR -->
+      <div id="dropdownMenu" class="menu-dropdown hidden">
+          <div class="menu-item click-sound" onclick="switchMenu('log', 'Riwayat Log')">
+              <i class="fas fa-history"></i><span>Riwayat Log</span>
+          </div>
+          <div class="menu-item click-sound" onclick="switchMenu('activator', 'Lisensi Link')">
+              <i class="fas fa-key"></i><span>Lisensi Link</span>
+          </div>
+          <div class="menu-item click-sound" onclick="switchMenu('enhancer', 'HD Foto AI')">
+              <i class="fas fa-camera"></i><span>HD Foto AI</span>
+          </div>
+          <div class="menu-item click-sound" onclick="switchMenu('vidhd', 'VidHD TikTok')">
+              <i class="fas fa-video"></i><span>VidHD TikTok</span>
+          </div>
+          <div class="menu-item click-sound" onclick="switchMenu('chat', 'Forum Eksekutif')">
+              <i class="fas fa-comments"></i><span>Forum Global</span>
+          </div>
+          <div class="menu-item click-sound" onclick="switchMenu('react', 'WA Reactor')">
+              <i class="fab fa-whatsapp"></i><span>WA Reactor</span>
+          </div>
+          <div class="menu-item click-sound hidden" id="adminMenuBtn" onclick="switchMenu('admin', 'Admin Panel')">
+              <i class="fas fa-shield-alt" style="color:var(--danger);"></i><span style="color:var(--danger);">Admin Panel</span>
+          </div>
+      </div>
   </div>
 
-  <!-- CONTENT AREA (Menggantikan bagian bawah saat ditekan) -->
-  <div id="dynamicContentArea">
+  <!-- CONTENT AREA (Menggantikan bagian bawah saat fitur dipilih) -->
+  <div id="dynamicContentArea" style="position: relative; min-height: 250px;">
     
-    <!-- TAB 1: LOG (Default) -->
+    <!-- TAB 1: LOG (Default Awal) -->
     <div id="tab-log" class="tab-content">
-       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px; padding: 0 4px;">
-         <div style="font-size: 13px; font-weight: 500; color: var(--text-pure);">Activity History</div>
-         <button onclick="clearActivityLogs()" style="background:none; border:none; color:var(--text-dim); font-size:11px; cursor:pointer;">Clear All</button>
+       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 16px; padding: 0 4px;">
+         <div style="font-size: 14px; font-weight: 700; color: var(--text-pure); text-transform:uppercase; letter-spacing:1px;"><i class="fas fa-stream" style="color:var(--accent-primary); margin-right:8px;"></i> Terminal Log</div>
+         <button onclick="clearActivityLogs()" style="background:rgba(255,0,85,0.1); border:1px solid rgba(255,0,85,0.3); color:var(--danger); font-size:10px; font-weight:700; padding:6px 12px; border-radius:8px; cursor:pointer; text-transform:uppercase; letter-spacing:1px; transition:0.3s;" onmouseover="this.style.background='var(--danger)'; this.style.color='#fff';" onmouseout="this.style.background='rgba(255,0,85,0.1)'; this.style.color='var(--danger)';"><i class="fas fa-trash-alt"></i> Bersihkan</button>
        </div>
-       <div id="activityLogList" style="display: flex; flex-direction: column; gap: 10px;"></div>
+       <div id="activityLogList" style="display: flex; flex-direction: column; gap: 12px;"></div>
     </div>
 
     <!-- TAB 2: LISENSI -->
-    <div id="tab-activator" class="tab-content hidden" style="opacity: 0;">
+    <div id="tab-activator" class="tab-content hidden" style="position:absolute; top:0; left:0; width:100%;">
       <div class="glass-card">
         <div class="title-lg">Aktivasi Magic Link</div>
-        <div class="limit-badge"><i class="fas fa-bolt" style="color:var(--text-dim);"></i> 1 Limit</div>
-        <div class="text-sub">Kirim link login tanpa password ke email Anda.</div>
+        <div class="limit-badge"><i class="fas fa-bolt"></i> Konsumsi: 1 Limit</div>
+        <div class="text-sub">Sinkronisasi sesi perangkat via tautan enkripsi tanpa sandi konvensional.</div>
         
         <div id="appErrorMsg" class="message-box message-error"></div>
         <div class="form-group">
-            <label>Email Address</label>
-            <div style="display: flex; gap: 8px;">
+            <label>Alamat Surel (Email)</label>
+            <div style="display: flex; gap: 10px;">
                 <input type="email" id="emailInput" class="glass-input" placeholder="nama@email.com" />
-                <button id="sendBtn" class="btn btn-outline click-sound" style="width: auto; padding: 0 16px;">Kirim</button>
+                <button id="sendBtn" class="btn btn-outline click-sound" style="width: auto; padding: 0 20px;">KIRIM</button>
             </div>
         </div>
-        <div class="form-group" style="margin-bottom: 20px;">
-            <label>Token URL</label>
-            <input type="url" id="magicInput" class="glass-input" placeholder="Paste URL disini" />
+        <div class="form-group" style="margin-bottom: 25px;">
+            <label>Token URL Magic Link</label>
+            <input type="url" id="magicInput" class="glass-input" placeholder="Tempel URL validasi disini" />
         </div>
-        <button id="activateBtn" class="btn btn-primary click-sound">Verifikasi Link</button>
+        <button id="activateBtn" class="btn btn-primary click-sound"><i class="fas fa-link"></i> VERIFIKASI LINK</button>
       </div>
     </div>
 
     <!-- TAB 3: HD FOTO -->
-    <div id="tab-enhancer" class="tab-content hidden" style="opacity: 0;">
+    <div id="tab-enhancer" class="tab-content hidden" style="position:absolute; top:0; left:0; width:100%;">
       <div class="glass-card">
         <div class="title-lg">HD Foto AI</div>
-        <div class="limit-badge"><i class="fas fa-unlock" style="color:var(--text-dim);"></i> Free (Tanpa Limit)</div>
-        <div class="text-sub">Tingkatkan resolusi dan perjelas foto buram menggunakan AI.</div>
+        <div class="limit-badge" style="background:rgba(0,255,136,0.1); border-color:var(--success); color:var(--success); box-shadow:0 0 15px rgba(0,255,136,0.2);"><i class="fas fa-unlock"></i> Akses Free (Tanpa Limit)</div>
+        <div class="text-sub">Restorasi ketajaman matriks piksel foto buram secara otomatis menggunakan kecerdasan buatan.</div>
         
-        <div class="form-group"><label>URL Foto (Opsional)</label><input type="url" id="imageUrl" class="glass-input" placeholder="https://..." /></div>
-
-        <div id="dropZone" class="click-sound" style="border: 1px dashed var(--border-thin); border-radius: 8px; padding: 25px 15px; text-align: center; background: var(--surface-light); cursor: pointer; margin-bottom: 16px;">
-          <i class="fas fa-image" style="font-size: 24px; color: var(--text-dim); margin-bottom: 10px;"></i>
-          <div style="font-size: 13px; font-weight: 500; color: var(--text-pure);">Pilih Foto</div>
-          <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">JPG/PNG Max 25MB</div>
-          <div id="fileNameDisplay" style="margin-top: 10px; font-size: 12px; color: var(--text-pure); font-weight: 500;"></div>
+        <div id="dropZone" class="click-sound" style="border: 2px dashed var(--border-thin); border-radius: 12px; padding: 35px 20px; text-align: center; background: rgba(0,0,0,0.2); cursor: pointer; margin-bottom: 20px; transition: 0.3s;" onmouseover="this.style.borderColor='var(--accent-primary)'; this.style.background='rgba(0,240,255,0.05)';" onmouseout="this.style.borderColor='var(--border-thin)'; this.style.background='rgba(0,0,0,0.2)';">
+          <i class="fas fa-cloud-upload-alt" style="font-size: 36px; color: var(--text-dim); margin-bottom: 12px; transition:0.3s;"></i>
+          <div style="font-size: 14px; font-weight: 800; color: var(--text-pure); letter-spacing:1px;">PILIH BERKAS FOTO</div>
+          <div style="font-size: 11px; color: var(--text-muted); margin-top: 6px; font-weight:600;">Format JPG/PNG (Maks 25MB)</div>
+          <div id="fileNameDisplay" style="margin-top: 15px; font-size: 13px; color: var(--accent-primary); font-weight: 700;"></div>
           <input type="file" id="fileInput" accept="image/*" style="display: none;">
         </div>
         
-        <div style="display: flex; gap: 8px; margin-bottom: 20px;">
-          <button class="btn btn-primary click-sound" id="enhanceBtn" style="flex: 1;">Proses HD</button>
-          <button class="btn btn-outline click-sound" id="resetBtn" style="width: auto; padding: 0 16px;"><i class="fas fa-redo"></i></button>
+        <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+          <button class="btn btn-primary click-sound" id="enhanceBtn" style="flex: 1;"><i class="fas fa-magic"></i> PROSES HD AI</button>
+          <button class="btn btn-outline click-sound" id="resetBtn" style="width: auto; padding: 0 20px;" title="Reset Form"><i class="fas fa-redo"></i></button>
         </div>
         
         <div id="statusMessage" class="message-box"></div>
 
-        <div class="hidden" id="comparisonSplitSection" style="margin: 20px 0;">
-          <div style="position: relative; width: 100%; height: 260px; border-radius: 8px; border: 1px solid var(--border-thin); overflow: hidden; background: #000;">
+        <div class="hidden" id="comparisonSplitSection" style="margin: 25px 0;">
+          <div style="position: relative; width: 100%; height: 280px; border-radius: 12px; border: 1px solid var(--border-thin); overflow: hidden; background: #000; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
             <img id="splitImgAfter" style="position: absolute; top:0; left:0; width:100%; height:100%; object-fit:cover;" src="">
           </div>
         </div>
-        <div class="hidden" id="downloadFooterActions" style="display: flex; gap: 8px;">
-          <button class="btn btn-outline click-sound" id="downloadBtn" style="flex: 1;"><i class="fas fa-download"></i> Simpan</button>
+        <div class="hidden" id="downloadFooterActions" style="display: flex; gap: 10px;">
+          <button class="btn btn-outline click-sound" id="downloadBtn" style="flex: 1; border-color:var(--success); color:var(--success);"><i class="fas fa-download"></i> SIMPAN KE GALERI</button>
         </div>
       </div>
     </div>
 
-    <!-- TAB 4: VIDHD -->
-    <div id="tab-vidhd" class="tab-content hidden" style="opacity: 0;">
+    <!-- TAB 4: VIDHD (SESUAI REQUEST: TANPA URL, HANYA FILE + TOGGLE) -->
+    <div id="tab-vidhd" class="tab-content hidden" style="position:absolute; top:0; left:0; width:100%;">
       <div class="glass-card">
         <div class="title-lg">VidHD TikTok</div>
-        <div class="limit-badge"><i class="fas fa-bolt" style="color:var(--text-dim);"></i> 3 Limit</div>
-        <div class="text-sub">Kompresi video agar saat diupload ke algoritma TikTok tidak pecah/buram (Kualitas HD).</div>
+        <div class="limit-badge"><i class="fas fa-bolt"></i> Konsumsi: 3 Limit</div>
+        <div class="text-sub">Kompresi algoritma video khusus TikTok agar hasil unggahan tetap jernih dan tidak burik.</div>
 
         <!-- TOMBOL PILIH VIDEO -->
-        <div id="vidDropZone" class="click-sound" style="border: 1px dashed var(--border-thin); border-radius: 8px; padding: 20px; text-align: center; background: var(--surface-light); cursor: pointer; margin-bottom: 16px;">
-          <i class="fas fa-video" style="font-size: 20px; color: var(--text-dim); margin-bottom: 10px;"></i>
-          <div style="font-size: 13px; font-weight: 500; color: var(--text-pure);">Pilih Video File</div>
-          <div id="vidFileNameDisplay" style="margin-top: 10px; font-size: 12px; color: var(--text-pure);"></div>
+        <div id="vidDropZone" class="click-sound" style="border: 2px dashed var(--border-thin); border-radius: 12px; padding: 30px 20px; text-align: center; background: rgba(0,0,0,0.2); cursor: pointer; margin-bottom: 20px; transition: 0.3s;" onmouseover="this.style.borderColor='var(--accent-primary)'; this.style.background='rgba(0,240,255,0.05)';" onmouseout="this.style.borderColor='var(--border-thin)'; this.style.background='rgba(0,0,0,0.2)';">
+          <i class="fas fa-video" style="font-size: 32px; color: var(--text-dim); margin-bottom: 12px;"></i>
+          <div style="font-size: 14px; font-weight: 800; color: var(--text-pure); letter-spacing:1px;">PILIH BERKAS VIDEO</div>
+          <div id="vidFileNameDisplay" style="margin-top: 15px; font-size: 13px; color: var(--accent-primary); font-weight:700;"></div>
           <input type="file" id="vidFileInput" accept="video/*" style="display: none;">
         </div>
 
         <!-- TOGGLE CEPAT <-> 60FPS -->
-        <div style="display:flex; justify-content:space-between; align-items:center; background: var(--input-bg); border: 1px solid var(--border-thin); padding: 12px 16px; border-radius: 8px; margin-bottom: 20px;">
-           <span style="font-size: 12px; font-weight: 500; color:var(--text-dim);">Agak Cepat</span>
+        <div style="display:flex; justify-content:space-between; align-items:center; background: var(--surface-light); border: 1px solid var(--border-thin); padding: 15px 20px; border-radius: 12px; margin-bottom: 25px; box-shadow: inset 0 0 10px rgba(0,0,0,0.5);">
+           <span style="font-size: 13px; font-weight: 700; color:var(--text-dim); text-transform:uppercase; letter-spacing:1px;">Agak Cepat</span>
            <label class="toggle-switch">
              <input type="checkbox" id="vidQualityToggle">
              <span class="toggle-slider"></span>
            </label>
-           <span style="font-size: 12px; font-weight: 500; color:var(--text-pure);">Max 60FPS</span>
+           <span style="font-size: 13px; font-weight: 800; color:var(--accent-primary); text-transform:uppercase; letter-spacing:1px; text-shadow:0 0 10px var(--accent-glow);">Max 60FPS</span>
         </div>
 
-        <button id="btnProcessVidHD" class="btn btn-primary click-sound">Eksekusi Kompresi</button>
+        <button id="btnProcessVidHD" class="btn btn-primary click-sound"><i class="fas fa-cogs"></i> EKSEKUSI KOMPRESI</button>
         
-        <div id="vidhdStatusMessage" class="message-box" style="margin-top: 16px;"></div>
-        <div id="vidhdResponseData" style="margin-top: 15px; font-family: monospace; font-size: 11px; color: var(--text-dim); background: var(--input-bg); padding: 12px; border-radius: 8px; display: none; border: 1px solid var(--border-thin); word-break: break-all;"></div>
+        <div id="vidhdStatusMessage" class="message-box" style="margin-top: 20px;"></div>
+        <div id="vidhdResponseData" style="margin-top: 15px; font-family: monospace; font-size: 11px; color: var(--accent-primary); background: var(--input-bg); padding: 15px; border-radius: 10px; display: none; border: 1px solid var(--border-thin); word-break: break-all; box-shadow: inset 0 0 10px rgba(0,0,0,0.8);"></div>
       </div>
     </div>
 
     <!-- TAB 5: FORUM CHAT -->
-    <div id="tab-chat" class="tab-content hidden" style="opacity: 0;">
-      <div class="glass-card" style="display:flex; flex-direction:column; height: 65vh;">
+    <div id="tab-chat" class="tab-content hidden" style="position:absolute; top:0; left:0; width:100%;">
+      <div class="glass-card" style="display:flex; flex-direction:column; height: 60vh;">
         <div class="title-lg">Forum Komunikasi</div>
-        <div class="text-sub" style="margin-bottom: 10px; border-bottom: 1px solid var(--border-thin); padding-bottom: 10px;">Pusat diskusi klien eksekutif.</div>
+        <div class="text-sub" style="margin-bottom: 15px; border-bottom: 1px solid var(--border-thin); padding-bottom: 15px;">Pusat transmisi obrolan antar klien elit.</div>
         
-        <div id="chatMessagesBox" style="flex: 1; overflow-y: auto; display:flex; flex-direction:column; gap:12px; margin-bottom: 15px; padding-right:5px;"></div>
+        <div id="chatMessagesBox" style="flex: 1; overflow-y: auto; display:flex; flex-direction:column; gap:16px; margin-bottom: 20px; padding-right:5px;"></div>
         
-        <div style="display: flex; gap: 8px;">
-          <input type="text" id="chatInputMsg" class="glass-input" placeholder="Type a message..." autocomplete="off">
-          <button class="btn btn-primary click-sound" id="btnSendChat" style="width: auto; padding: 0 16px;"><i class="fas fa-paper-plane"></i></button>
+        <div style="display: flex; gap: 10px;">
+          <input type="text" id="chatInputMsg" class="glass-input" placeholder="Tulis baris pesan..." autocomplete="off">
+          <button class="btn btn-primary click-sound" id="btnSendChat" style="width: auto; padding: 0 20px; font-size:16px;"><i class="fas fa-paper-plane"></i></button>
         </div>
       </div>
     </div>
 
     <!-- TAB 6: WA REACT -->
-    <div id="tab-react" class="tab-content hidden" style="opacity: 0;">
+    <div id="tab-react" class="tab-content hidden" style="position:absolute; top:0; left:0; width:100%;">
       <div class="glass-card">
         <div class="title-lg">WA Reactor</div>
-        <div class="limit-badge"><i class="fas fa-bolt" style="color:var(--text-dim);"></i> 3 Limit</div>
-        <div class="text-sub">Kirim reaksi otomatis ke Channel WhatsApp.</div>
+        <div class="limit-badge"><i class="fas fa-bolt"></i> Konsumsi: 3 Limit</div>
+        <div class="text-sub">Eksekusi bot reaksi otomatis ke Channel WhatsApp spesifik.</div>
         
-        <div class="form-group"><label>URL Saluran WA</label><input type="url" id="waReactUrl" class="glass-input" placeholder="https://whatsapp.com/channel/..." /></div>
-        <div class="form-group" style="margin-bottom: 20px;"><label>Emoji Reaksi</label><input type="text" id="waReactEmoji" class="glass-input" placeholder="Contoh: 🙏🏻🙂🤧" /></div>
+        <div class="form-group"><label>URL Tautan Saluran WA</label><input type="url" id="waReactUrl" class="glass-input" placeholder="https://whatsapp.com/channel/..." /></div>
+        <div class="form-group" style="margin-bottom: 25px;"><label>Karakter Emoji Reaksi</label><input type="text" id="waReactEmoji" class="glass-input" placeholder="Contoh: 🙏🏻🙂🤧" /></div>
         
-        <button id="btnSendReaction" class="btn btn-primary click-sound">Kirim Reaksi</button>
-        <div id="reactStatusMessage" class="message-box" style="margin-top: 15px;"></div>
+        <button id="btnSendReaction" class="btn btn-primary click-sound"><i class="fab fa-whatsapp"></i> KIRIM REAKSI BOT</button>
+        <div id="reactStatusMessage" class="message-box" style="margin-top: 20px;"></div>
       </div>
     </div>
 
     <!-- TAB 7: ADMIN -->
-    <div id="tab-admin" class="tab-content hidden" style="opacity: 0;">
+    <div id="tab-admin" class="tab-content hidden" style="position:absolute; top:0; left:0; width:100%;">
       <div class="glass-card">
-        <div class="title-lg">Admin Console</div>
-        <div class="text-sub">Manajemen User & Sistem Database.</div>
+        <div class="title-lg" style="color:var(--danger); text-shadow:0 0 10px rgba(255,0,85,0.4);">Admin Console</div>
+        <div class="text-sub">Otoritas manajemen Database & Konfigurasi Entitas.</div>
         
-        <div style="background: var(--surface-light); border-radius: 8px; padding: 12px; margin-bottom: 16px; border: 1px solid var(--border-thin);">
-          <label style="font-size: 11px; font-weight: 600; color: var(--text-pure); margin-bottom: 8px; display:block;">Push Notification</label>
-          <textarea id="broadcastInput" class="glass-input" placeholder="Tulis pengumuman global..." style="min-height: 60px; resize: none; margin-bottom: 8px;"></textarea>
-          <button class="btn btn-primary click-sound" onclick="sendBroadcastMsg()">Siarkan Pesan</button>
+        <div style="background: var(--surface-light); border-radius: 12px; padding: 18px; margin-bottom: 20px; border: 1px solid var(--border-thin); box-shadow:inset 0 0 15px rgba(0,0,0,0.5);">
+          <label style="font-size: 11px; font-weight: 800; color: var(--accent-primary); margin-bottom: 10px; display:flex; align-items:center; gap:8px; text-transform:uppercase; letter-spacing:1px;"><i class="fas fa-satellite-dish"></i> Push Notification Server</label>
+          <textarea id="broadcastInput" class="glass-input" placeholder="Tulis instruksi global..." style="min-height: 70px; resize: none; margin-bottom: 12px;"></textarea>
+          <button class="btn btn-primary click-sound" onclick="sendBroadcastMsg()"><i class="fas fa-bullhorn"></i> SIARKAN PESAN</button>
         </div>
         
-        <div style="display: flex; gap: 8px; margin-bottom: 15px; flex-wrap: wrap;">
-          <div class="input-wrapper" style="flex: 1; min-width: 150px;"><input type="text" id="memberSearchInput" class="glass-input" placeholder="Search user..." oninput="renderMemberList()" /></div>
-          <button id="filterZeroLimitBtn" class="btn btn-outline click-sound" style="width: auto; padding: 0 12px;" onclick="toggleZeroLimitFilter()"><i class="fas fa-filter"></i> 0 Limit</button>
-          <button id="resetMassalBtn" class="btn btn-primary click-sound" style="width: auto; padding: 0 12px; background: var(--surface-light); border:1px solid var(--border-thin); color:var(--text-pure);" onclick="resetAllZeroLimits()"><i class="fas fa-sync"></i> Reset (3)</button>
+        <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+          <div class="input-wrapper" style="flex: 1; min-width: 150px;"><input type="text" id="memberSearchInput" class="glass-input" placeholder="Cari entitas..." oninput="renderMemberList()" /></div>
+          <button id="filterZeroLimitBtn" class="btn btn-outline click-sound" style="width: auto; padding: 0 16px;" onclick="toggleZeroLimitFilter()" title="Filter Defisit"><i class="fas fa-filter"></i> 0 LMT</button>
+          <button id="resetMassalBtn" class="btn btn-primary click-sound" style="width: auto; padding: 0 16px; background: rgba(255,0,85,0.1); border:1px solid var(--danger); color:var(--danger); text-shadow:none; box-shadow:none;" onclick="resetAllZeroLimits()" title="Reset paksa ke 3"><i class="fas fa-sync-alt"></i> RST (3)</button>
         </div>
-        <div id="memberList" style="display: flex; flex-direction: column; gap: 10px;"></div>
+        <div id="memberList" style="display: flex; flex-direction: column; gap: 12px;"></div>
       </div>
     </div>
 
   </div> <!-- End Dynamic Area -->
 
-  <!-- CREATOR CREDIT -->
-  <div style="text-align: center; margin-top: 30px; font-size: 11px; color: var(--text-dim); letter-spacing: 1px;">
-      CREATED BY <br><span style="color:var(--text-pure); font-weight:600; font-size: 13px;">𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞</span>
+  <!-- CREATOR CREDIT PENTING -->
+  <div style="text-align: center; margin-top: 40px; font-size: 11px; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase;">
+      CREATED BY <br><span style="color:var(--accent-primary); font-weight:800; font-size: 15px; letter-spacing: 3px; text-shadow: 0 0 15px var(--accent-glow); display:inline-block; margin-top:6px;">𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞</span>
   </div>
 </main>
 
@@ -515,26 +594,49 @@
     document.addEventListener('contextmenu', e => e.preventDefault());
     document.onkeydown = function(e) { if(e.keyCode==123 || (e.ctrlKey&&e.shiftKey&&(e.keyCode==73||e.keyCode==74||e.keyCode==67)) || (e.ctrlKey&&e.keyCode==85)) return false; };
 
-    const NEVA_API_KEY = 'SKY_45a18f8910ed4fb2';
+    const NEVA_API_KEY_LOCAL = 'SKY_45a18f8910ed4fb2';
+    const SESSION_KEY = "mshaomi_active_session_supabase"; 
+    const CACHE_KEY = "mshaomi_cached_user_data"; 
+    const BROADCAST_SEEN_KEY = "mshaomi_last_seen_broadcast_id";
 
-    // NAVIGASI MENU (Menyembunyikan log dan memunculkan fitur)
-    window.switchMenu = function(tabId) {
+    // MENU UTAMA (Tengah Panjang)
+    window.toggleMainMenu = function() {
+        const menu = document.getElementById('dropdownMenu');
+        const chevron = document.getElementById('menuChevron');
+        if(menu.classList.contains('hidden')) {
+            menu.classList.remove('hidden');
+            chevron.style.transform = 'rotate(180deg)';
+        } else {
+            menu.classList.add('hidden');
+            chevron.style.transform = 'rotate(0deg)';
+        }
+    };
+
+    // NAVIGASI MENU SWITCHER
+    window.switchMenu = function(tabId, tabName) {
+        // Sembunyikan semua tab content
         document.querySelectorAll('.tab-content').forEach(el => {
             el.classList.add('hidden');
             el.style.opacity = '0';
+            el.style.position = 'absolute'; // tumpuk
         });
-        document.querySelectorAll('.tab-chip').forEach(el => el.classList.remove('active'));
 
+        // Munculkan target
         const target = document.getElementById('tab-' + tabId);
-        const chip = document.querySelector(`.tab-chip[onclick*="${tabId}"]`);
-
         if(target) {
             target.classList.remove('hidden');
-            // Sedikit delay untuk efek fade in
+            target.style.position = 'relative'; // normalkan posisi
             setTimeout(() => { target.style.opacity = '1'; }, 20);
         }
-        if(chip) chip.classList.add('active');
 
+        // Update tulisan di tombol menu
+        document.getElementById('mainMenuText').textContent = 'FITUR: ' + tabName;
+        
+        // Tutup otomatis dropdown menu
+        document.getElementById('dropdownMenu').classList.add('hidden');
+        document.getElementById('menuChevron').style.transform = 'rotate(0deg)';
+
+        // Handle interval chat
         if(tabId === 'chat') { loadChatMessages(); chatIntervalId = setInterval(loadChatMessages, 8000); } 
         else { clearInterval(chatIntervalId); }
     };
@@ -565,27 +667,26 @@
         container.innerHTML = '';
         
         if(logs.length === 0) {
-            container.innerHTML = `<div style="font-size:12px; color:var(--text-dim); text-align:center; padding:20px; background:var(--surface-light); border-radius:8px;">Belum ada history aktivitas.</div>`;
+            container.innerHTML = `<div style="font-size:12px; color:var(--text-dim); text-align:center; padding:25px; background:var(--surface-light); border-radius:12px; border:1px solid var(--border-thin);">Terminal belum merekam aktivitas log operasional.</div>`;
             return;
         }
         
         logs.forEach((log, index) => {
             container.innerHTML += `
-            <div style="background:var(--surface-light); border:1px solid var(--border-thin); border-radius:8px; padding:12px; display:flex; justify-content:space-between; align-items:center;">
-               <div style="flex: 1; padding-right: 10px;">
-                 <div style="font-size:12px; font-weight:600; color:var(--text-pure); margin-bottom:2px;">${log.title}</div>
-                 <div style="font-size:11px; color:var(--text-dim);">
-                   ${log.desc}
-                 </div>
+            <div style="background:var(--surface-light); border:1px solid var(--border-thin); border-radius:12px; padding:16px; display:flex; justify-content:space-between; align-items:center; box-shadow:0 5px 15px rgba(0,0,0,0.2);">
+               <div style="flex: 1; padding-right: 12px;">
+                 <div style="font-size:13px; font-weight:800; color:var(--text-pure); margin-bottom:4px; letter-spacing:0.5px;">${log.title}</div>
+                 <div style="font-size:11px; font-weight:500; color:var(--text-dim); line-height:1.5;">${log.desc}</div>
+                 <div style="font-size:9px; color:var(--text-muted); margin-top:6px; font-weight:700;"><i class="far fa-clock"></i> ${log.datetime}</div>
                </div>
-               <div style="font-size:10px; font-weight:600; color:${log.statusColor}; padding:4px 8px; background:var(--surface-dark); border-radius:4px;">${log.statusText}</div>
+               <div style="font-size:10px; font-weight:800; color:${log.statusColor}; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid var(--border-thin); border-radius:6px; text-transform:uppercase; letter-spacing:1px; box-shadow:inset 0 0 10px rgba(0,0,0,0.5);">${log.statusText}</div>
             </div>`;
         });
     }
 
     window.clearActivityLogs = function() {
         if(!currentUserData) return;
-        customConfirm("Clear all log history?", () => {
+        customConfirm("Otorisasi pembersihan total data history aktivitas lokal?", () => {
             localStorage.removeItem('am_log_' + currentUserData.username);
             renderActivityLogs();
         });
@@ -637,14 +738,9 @@
     }
 
     document.addEventListener('click', (e) => {
-        const target = e.target.closest('.click-sound, button, .tab-chip');
+        const target = e.target.closest('.click-sound, button, .menu-item, .main-menu-btn');
         if (target) playClickSound(); 
     });
-
-    const NEVA_API_KEY_LOCAL = 'SKY_45a18f8910ed4fb2';
-    const SESSION_KEY = "mshaomi_active_session_supabase"; 
-    const CACHE_KEY = "mshaomi_cached_user_data"; 
-    const BROADCAST_SEEN_KEY = "mshaomi_last_seen_broadcast_id";
 
     async function apiCall(action, payload = {}) {
         try {
@@ -658,9 +754,9 @@
 
     window.customAlert = function(msg, isError = false) {
         const toast = document.getElementById('globalToast'); document.getElementById('toastMsg').textContent = msg;
-        toast.style.borderColor = isError ? 'var(--danger)' : 'var(--border-thin)';
+        toast.style.borderColor = isError ? 'var(--danger)' : 'var(--accent-primary)';
         toast.querySelector('i').className = isError ? 'fas fa-exclamation-triangle' : 'fas fa-check-circle';
-        toast.querySelector('i').style.color = isError ? 'var(--danger)' : 'var(--text-pure)';
+        toast.querySelector('i').style.color = isError ? 'var(--danger)' : 'var(--accent-primary)';
         toast.classList.add('show'); setTimeout(() => { toast.classList.remove('show'); }, 3500);
     };
 
@@ -687,8 +783,10 @@
         const grid = document.getElementById('limitPackageGrid'); if(!grid) return; grid.innerHTML = '';
         limitPackages.forEach(pkg => {
             const btn = document.createElement('div'); btn.className = 'click-sound';
-            btn.style.cssText = 'background:var(--surface-light); border:1px solid var(--border-thin); border-radius:8px; padding:12px; text-align:center; cursor:pointer;';
-            btn.innerHTML = `<span style="font-size:14px; font-weight:600; color:var(--text-pure); display:block; margin-bottom:4px;">${pkg.label} Limit</span><span style="font-size:11px; color:var(--text-dim);">Rp ${pkg.price.toLocaleString('id-ID')}</span>`;
+            btn.style.cssText = 'background:var(--surface-light); border:1px solid var(--border-thin); border-radius:12px; padding:15px; text-align:center; cursor:pointer; transition:0.3s; box-shadow:0 5px 15px rgba(0,0,0,0.3);';
+            btn.onmouseover = function() { this.style.borderColor = 'var(--accent-primary)'; this.style.transform = 'translateY(-2px)'; this.style.boxShadow = '0 8px 20px var(--accent-glow)'; };
+            btn.onmouseout = function() { this.style.borderColor = 'var(--border-thin)'; this.style.transform = 'translateY(0)'; this.style.boxShadow = '0 5px 15px rgba(0,0,0,0.3)'; };
+            btn.innerHTML = `<span style="font-size:16px; font-weight:800; color:var(--text-pure); display:block; margin-bottom:6px; letter-spacing:1px;">${pkg.label} LMT</span><span style="font-size:11px; font-weight:600; color:var(--accent-primary);">Rp ${pkg.price.toLocaleString('id-ID')}</span>`;
             btn.onclick = () => createQrisForLimit(pkg.limit, pkg.price, pkg.label);
             grid.appendChild(btn);
         });
@@ -700,7 +798,7 @@
 
     async function createQrisForLimit(limitCount, price, labelName) {
         selectedAddLimitCount = limitCount; 
-        customAlert("Membuat QRIS...");
+        customAlert("Sinkronisasi Gateway QRIS...");
         try {
             const res = await fetch(`https://app.nevapedia.com/api/invoice?apikey=${NEVA_API_KEY_LOCAL}&amount=${price}`);
             const data = await res.json();
@@ -710,17 +808,17 @@
             
             if (qrisUrl && activeDepositId) {
                 document.getElementById('qrisImageResult').src = qrisUrl; 
-                document.getElementById('qrisPackageTitle').textContent = `Paket ${labelName} Limit`; 
+                document.getElementById('qrisPackageTitle').textContent = `INJEKSI ${labelName} LIMIT`; 
                 document.getElementById('qrisDepositIdSpan').textContent = activeDepositId;
                 document.getElementById('selectLimitView').classList.add('hidden'); 
                 document.getElementById('qrisPaymentView').classList.remove('hidden');
-            } else { customAlert("Gagal memuat QRIS.", true); }
-        } catch (err) { customAlert("Server QRIS Error.", true); }
+            } else { customAlert("Kegagalan pembuatan struktur QRIS.", true); }
+        } catch (err) { customAlert("Kesalahan Jaringan Gateway.", true); }
     }
 
     window.checkQrisPaymentStatus = async function() {
         if (!activeDepositId) return; 
-        customAlert("Cek status...");
+        customAlert("Mengekstrak data transaksi...");
         try {
             const res = await fetch(`https://app.nevapedia.com/api/invoice/status?apikey=${NEVA_API_KEY_LOCAL}&invoice_id=${activeDepositId}`);
             const statusData = await res.json();
@@ -734,11 +832,11 @@
                 
                 if (updateRes.status) {
                     currentUserData.limit_count = newLimitTotal; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData); 
-                    closeLimitModal(); customAlert("Top Up Sukses!");
-                    addActivityLog("Top Up Limit", `Pembelian ${selectedAddLimitCount} Limit via QRIS`, "Sukses", "var(--text-pure)");
-                } else { customAlert("Gagal update database.", true); }
-            } else { customAlert("Belum terbayar.", true); }
-        } catch (err) { customAlert("Koneksi error.", true); }
+                    closeLimitModal(); customAlert("Otorisasi Lunas! Kuota bertambah.");
+                    addActivityLog("Acquire Limit", `Injeksi ${selectedAddLimitCount} Limit via QRIS selesai`, "Sukses", "var(--accent-primary)");
+                } else { customAlert("Gagal menimpa database.", true); }
+            } else { customAlert("Sistem perbankan belum mendeteksi pembayaran.", true); }
+        } catch (err) { customAlert("Gangguan koneksi pengecekan.", true); }
     };
 
     let isZeroLimitFilterActive = false;
@@ -751,17 +849,17 @@
     };
 
     window.resetAllZeroLimits = async function() {
-        customConfirm("Reset semua limit 0 menjadi 3?", async () => {
+        customConfirm("Override paksa seluruh entitas limit 0 ke set 3?", async () => {
             const btn = document.getElementById('resetMassalBtn');
-            const ori = btn.innerHTML; btn.innerHTML = 'Wait...'; btn.disabled = true;
+            const ori = btn.innerHTML; btn.innerHTML = 'Executing...'; btn.disabled = true;
             try {
                 const res = await apiCall('getUsers');
                 if(!res.status) throw new Error();
                 const zeroUsers = res.data.filter(u => u.role !== 'Owner' && !parseBool(u.is_permanent) && (u.limit_count || 0) <= 0);
-                if(zeroUsers.length === 0) { customAlert("Tidak ada limit 0."); return; }
+                if(zeroUsers.length === 0) { customAlert("Tidak ada defisit limit terdeteksi."); return; }
                 await Promise.all(zeroUsers.map(u => apiCall('updateUser', { username: u.username, updates: { limit_count: 3 } })));
-                customAlert(`Sukses reset ${zeroUsers.length} user.`); renderMemberList();
-            } catch(e) { customAlert("Gagal.", true); } finally { btn.innerHTML = ori; btn.disabled = false; }
+                customAlert(`Manipulasi sukses atas ${zeroUsers.length} entitas.`); renderMemberList();
+            } catch(e) { customAlert("Eksekusi gagal.", true); } finally { btn.innerHTML = ori; btn.disabled = false; }
         });
     };
 
@@ -774,15 +872,15 @@
             updateAvatarUI(user.avatar_url, user.username);
 
             const isVip = parseBool(user.is_permanent); 
-            const ownerDashBtn = document.getElementById('adminTabBtn'); const roleBadges = document.querySelectorAll('.disp-userrole');
+            const ownerDashBtn = document.getElementById('adminMenuBtn'); const roleBadges = document.querySelectorAll('.disp-userrole');
 
             if (user.role === 'Owner') {
-                roleBadges.forEach(rb => { rb.textContent = 'Admin (Owner)'; });
+                roleBadges.forEach(rb => { rb.textContent = 'Admin (Architect)'; rb.style.color = '#fff'; rb.style.background = 'rgba(255,255,255,0.2)'; rb.style.borderColor = '#fff'; });
                 if(ownerDashBtn) ownerDashBtn.classList.remove('hidden');
             } else {
                 if(ownerDashBtn) ownerDashBtn.classList.add('hidden'); 
-                if (isVip) { roleBadges.forEach(rb => { rb.textContent = 'VIP Member'; }); } 
-                else { roleBadges.forEach(rb => { rb.textContent = 'Regular'; }); }
+                if (isVip) { roleBadges.forEach(rb => { rb.textContent = 'VIP Exclusive'; rb.style.color = 'var(--accent-primary)'; rb.style.background = 'rgba(0,240,255,0.1)'; rb.style.borderColor = 'var(--accent-primary)'; }); } 
+                else { roleBadges.forEach(rb => { rb.textContent = 'Regular Entity'; rb.style.color = 'var(--text-dim)'; rb.style.background = 'rgba(255,255,255,0.05)'; rb.style.borderColor = 'var(--border-thin)'; }); }
             }
             
             const numDisplays = document.querySelectorAll('.disp-limit-value');
@@ -795,8 +893,8 @@
             renderActivityLogs();
             switchView('appView'); 
             
-            // Set default view ke tab log
-            if(!document.querySelector('.tab-chip.active')) switchMenu('log');
+            // Set default view ke tab log saat pertama load
+            switchMenu('log', 'Riwayat Log');
         } catch (e) { }
     };
 
@@ -813,20 +911,20 @@
                 if(initialLoader && document.body.contains(initialLoader)) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 400); }
             }
             initRealtimeBroadcastListener(); initImageEnhancerEngine();
-        }, 800);
+        }, 1000);
     };
 
-    function generateCaptcha() { const num1 = Math.floor(Math.random() * 10) + 1; const num2 = Math.floor(Math.random() * 10) + 1; currentCaptchaAnswer = num1 + num2; const label = document.getElementById('captchaLabel'); if(label) label.innerHTML = `What is ${num1} + ${num2}?`; }
+    function generateCaptcha() { const num1 = Math.floor(Math.random() * 10) + 1; const num2 = Math.floor(Math.random() * 10) + 1; currentCaptchaAnswer = num1 + num2; const label = document.getElementById('captchaLabel'); if(label) label.innerHTML = `Hitung <span style="color:var(--accent-primary); font-size:14px;">${num1} + ${num2}</span>`; }
     function parseBool(val) { return val === true || val === 'true' || val === '1' || val === 't' || val === 'TRUE' || val === 'YES'; }
     window.handleAvatarUpload = async function(event) { 
         const file = event.target.files[0]; if (!file) return; const reader = new FileReader(); 
         reader.onload = async function(e) { 
             const base64Image = e.target.result; if (!currentUserData) return; 
             const res = await apiCall('updateUser', { username: currentUserData.username, updates: { avatar_url: base64Image } }); 
-            if (res.status) { currentUserData.avatar_url = base64Image; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); updateAvatarUI(base64Image, currentUserData.username); customAlert("Foto tersimpan."); } 
+            if (res.status) { currentUserData.avatar_url = base64Image; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); updateAvatarUI(base64Image, currentUserData.username); customAlert("Pembaruan potret terekam."); } 
         }; reader.readAsDataURL(file); 
     };
-    function updateAvatarUI(avatarUrl, username) { const avatarContainers = document.querySelectorAll('.pw-avatar'); avatarContainers.forEach(container => { if (avatarUrl && avatarUrl.startsWith('data:image')) { container.innerHTML = `<img src="${avatarUrl}" style="width:100%; height:100%; object-fit:cover;">`; } else { container.innerHTML = `<span class="disp-avatar-text">${username ? username.charAt(0).toUpperCase() : 'U'}</span>`; } }); }
+    function updateAvatarUI(avatarUrl, username) { const avatarContainers = document.querySelectorAll('.pc-avatar'); avatarContainers.forEach(container => { if (avatarUrl && avatarUrl.startsWith('data:image')) { container.innerHTML = `<img src="${avatarUrl}">`; } else { container.innerHTML = `<span class="disp-avatar-text">${username ? username.charAt(0).toUpperCase() : 'U'}</span>`; } }); }
     function massUpdateText(selector, text) { document.querySelectorAll(selector).forEach(el => el.textContent = text); }
     
     function initRealtimeBroadcastListener() {
@@ -841,9 +939,9 @@
     window.closeBroadcastModal = function() { if (activeBroadcastId) localStorage.setItem(BROADCAST_SEEN_KEY, String(activeBroadcastId)); document.getElementById('broadcastModal').classList.remove('show'); };
     window.sendBroadcastMsg = async function() { 
         const text = document.getElementById('broadcastInput').value.trim(); 
-        if(!text) return customAlert("Input kosong.", true); 
+        if(!text) return customAlert("Blok transmisi kosong.", true); 
         const res = await apiCall('sendBroadcast', { message: text }); 
-        if (res.status) { customAlert("Terkirim."); document.getElementById('broadcastInput').value = ''; } 
+        if (res.status) { customAlert("Distribusi jaringan sukses."); document.getElementById('broadcastInput').value = ''; } 
     };
     
     async function fetchUserSession(username) { 
@@ -851,7 +949,7 @@
             const res = await apiCall('fetchUser', { username }); 
             if (res.status && res.data) { 
                 const data = res.data; 
-                if (parseBool(data.is_banned)) { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(CACHE_KEY); switchView('loginView'); customAlert("Akun Banned.", true); return; } 
+                if (parseBool(data.is_banned)) { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(CACHE_KEY); switchView('loginView'); customAlert("Akses Diblokir Permanen.", true); return; } 
                 localStorage.setItem(CACHE_KEY, JSON.stringify(data)); currentUserData = data; window.loadAppView(data); 
             } else { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(CACHE_KEY); switchView('loginView'); } 
         } catch (err) {} 
@@ -873,7 +971,7 @@
         } 
     }
     
-    window.handleForgotClick = function() { window.open(`https://wa.me/6282231669053?text=` + encodeURIComponent("Halo, saya lupa password akun Tools Pro."), '_blank'); };
+    window.handleForgotClick = function() { window.open(`https://wa.me/6282231669053?text=` + encodeURIComponent("Interupsi Admin, permohonan eksekusi bypass sandi akun Tools Pro."), '_blank'); };
     
     window.renderMemberList = async function() { 
         const res = await apiCall('getUsers'); const memberList = document.getElementById('memberList'); const searchInput = document.getElementById('memberSearchInput'); 
@@ -888,31 +986,32 @@
         });
 
         memberList.innerHTML = ''; 
-        if(filteredUsers.length === 0) { memberList.innerHTML = `<div style="text-align:center; padding: 20px; font-size:12px; color:var(--text-dim);">Kosong.</div>`; return; }
+        if(filteredUsers.length === 0) { memberList.innerHTML = `<div style="text-align:center; padding: 25px; font-size:12px; color:var(--text-dim); background:var(--surface-light); border-radius:12px;">Pencarian entitas tidak ditemukan.</div>`; return; }
 
         filteredUsers.forEach((m) => { 
             const isVipUser = parseBool(m.is_permanent); const isBannedUser = parseBool(m.is_banned); 
             let roleStr = 'Reguler'; if (m.role === 'Owner') roleStr = 'Owner'; else if (isVipUser) roleStr = 'VIP';
             
             const el = document.createElement('div');
-            el.style.cssText = "background:var(--surface-light); border:1px solid var(--border-thin); border-radius:8px; padding:12px;";
+            el.style.cssText = "background:var(--surface-light); border:1px solid var(--border-thin); border-radius:12px; padding:16px; box-shadow:0 5px 15px rgba(0,0,0,0.2);";
             el.innerHTML = `
-                <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-                  <span style="font-weight:600; font-size:13px;">@${m.username} ${isBannedUser ? '<span style="color:var(--danger-light); font-size:10px; background:rgba(239,68,68,0.1); padding: 2px 5px; border-radius:4px; margin-left:5px;">BANNED</span>' : ''}</span>
-                  <span style="font-size:11px; color:var(--text-dim); background:var(--input-bg); padding: 2px 6px; border-radius: 4px;">${m.id_code || 'MSH'}</span>
+                <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+                  <span style="font-weight:800; font-size:14px; color:var(--text-pure);">@${m.username} ${isBannedUser ? '<span style="color:var(--danger); font-size:9px; background:rgba(255,0,85,0.1); border:1px solid var(--danger); padding: 3px 6px; border-radius:20px; margin-left:8px; text-transform:uppercase;">Banned</span>' : ''}</span>
+                  <span style="font-size:10px; font-weight:700; color:var(--accent-primary); background:rgba(0,240,255,0.1); border:1px solid var(--accent-primary); padding: 3px 8px; border-radius: 6px;">${m.id_code || 'MSH'}</span>
                 </div>
-                <div style="font-size:11px; color:var(--text-dim); margin-bottom:12px; display:flex; gap:10px; flex-wrap: wrap;">
-                  <span><b>Role:</b> <span style="color:${isVipUser ? 'var(--text-pure)' : 'var(--text-dim)'}">${roleStr}</span></span> 
-                  <span><b>Pwd:</b> <span>${m.password}</span></span> 
-                  <span><b>WA:</b> <span>${m.wa||'-'}</span></span>
+                <div style="font-size:11px; font-weight:500; color:var(--text-dim); margin-bottom:16px; display:flex; gap:12px; flex-wrap: wrap;">
+                  <span><b style="color:var(--text-muted);">ROLE:</b> <span style="color:${isVipUser ? 'var(--text-pure)' : 'var(--text-dim)'}">${roleStr}</span></span> 
+                  <span><b style="color:var(--text-muted);">PWD:</b> <span>${m.password}</span></span> 
+                  <span><b style="color:var(--text-muted);">WA:</b> <span>${m.wa||'-'}</span></span>
                 </div>
-                <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
-                  <input type="number" id="inputLimit_${m.username}" value="${m.limit_count ?? 3}" class="glass-input" style="padding:6px 10px; font-size:12px; width:70px; text-align:center;" />
-                  <button class="btn btn-outline click-sound" style="padding:6px 12px; width:auto; font-size:11px;" onclick="setCustomLimit('${m.username}')">Set</button>
+                <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px; background:var(--surface-card); padding:8px 12px; border-radius:8px; border:1px solid var(--border-thin);">
+                  <span style="font-size:10px; font-weight:700; color:var(--text-dim); text-transform:uppercase;">Limit:</span>
+                  <input type="number" id="inputLimit_${m.username}" value="${m.limit_count ?? 3}" class="glass-input" style="padding:8px 12px; font-size:13px; font-weight:800; width:70px; text-align:center; background:var(--input-bg);" />
+                  <button class="btn btn-outline click-sound" style="padding:8px 15px; width:auto; font-size:10px;" onclick="setCustomLimit('${m.username}')">SET BARU</button>
                 </div>
-                <div style="display:flex; gap:8px;">
-                  <button class="btn btn-outline click-sound" style="padding:8px; font-size:11px; flex:1; color:${isVipUser ? 'var(--text-pure)' : 'var(--text-dim)'};" onclick="toggleVipStatus('${m.username}', ${isVipUser})"><i class="fas fa-crown"></i> ${isVipUser ? 'Hapus VIP' : 'Set VIP'}</button>
-                  <button class="btn btn-outline click-sound" style="padding:8px; font-size:11px; flex:1; color:${isBannedUser ? 'var(--success)' : 'var(--danger-light)'};" onclick="toggleSuspendStatus('${m.username}', ${isBannedUser})"><i class="fas ${isBannedUser ? 'fa-unlock' : 'fa-ban'}"></i> ${isBannedUser ? 'Unban' : 'Ban'}</button>
+                <div style="display:flex; gap:10px;">
+                  <button class="btn btn-outline click-sound" style="padding:10px; font-size:10px; flex:1; color:${isVipUser ? 'var(--text-pure)' : 'var(--accent-primary)'}; background:${isVipUser ? 'rgba(0,240,255,0.1)' : 'transparent'};" onclick="toggleVipStatus('${m.username}', ${isVipUser})"><i class="fas fa-crown"></i> ${isVipUser ? 'CABUT VIP' : 'SET VIP'}</button>
+                  <button class="btn btn-outline click-sound" style="padding:10px; font-size:10px; flex:1; color:${isBannedUser ? 'var(--success)' : 'var(--danger)'}; border-color:${isBannedUser ? 'var(--success)' : 'var(--danger)'};" onclick="toggleSuspendStatus('${m.username}', ${isBannedUser})"><i class="fas ${isBannedUser ? 'fa-unlock' : 'fa-ban'}"></i> ${isBannedUser ? 'UNBAN' : 'BANNED'}</button>
                 </div>
             `; 
             memberList.appendChild(el); 
@@ -921,28 +1020,28 @@
 
     window.setCustomLimit = async function(username) {
         const inputVal = document.getElementById(`inputLimit_${username}`).value; const newLimit = parseInt(inputVal, 10);
-        if(isNaN(newLimit)) return customAlert("Input salah.", true);
+        if(isNaN(newLimit)) return customAlert("Kalkulasi parameter cacat.", true);
         const res = await apiCall('updateUser', { username: username, updates: { limit_count: newLimit } });
         if (res.status) { 
-            renderMemberList(); customAlert("Limit diupdate."); 
+            renderMemberList(); customAlert("Mutasi batas eksekusi berhasil direkam."); 
             if(currentUserData && currentUserData.username === username) { currentUserData.limit_count = newLimit; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData); }
-        } else { customAlert("Gagal.", true); }
+        } else { customAlert("Intervensi database gagal.", true); }
     };
 
     window.toggleVipStatus = async function(username, currentVipStatus) { 
         const newStatus = !currentVipStatus ? 'true' : 'false'; 
         const res = await apiCall('updateUser', { username, updates: { is_permanent: newStatus } }); 
         if (res.status) { 
-            renderMemberList(); customAlert("Status VIP diupdate."); 
+            renderMemberList(); customAlert("Status akses prioritas diubah."); 
             if(currentUserData && currentUserData.username === username) { currentUserData.is_permanent = newStatus; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData); }
         } 
     };
     
     window.toggleSuspendStatus = async function(username, currentBannedStatus) { 
-        customConfirm(currentBannedStatus ? `Unban ${username}?` : `Banned ${username}?`, async () => { 
+        customConfirm(currentBannedStatus ? `Konfirmasi pemulihan (Unban) entitas ${username}?` : `Konfirmasi pemblokiran permanen (Banned) entitas ${username}?`, async () => { 
             const newStatus = currentBannedStatus ? 'false' : 'true'; 
             const res = await apiCall('updateUser', { username, updates: { is_banned: newStatus } }); 
-            if (res.status) { customAlert("Status keamanan diupdate."); renderMemberList(); } 
+            if (res.status) { customAlert("Rekayasa keamanan dieksekusi."); renderMemberList(); } 
         }); 
     };
     
@@ -962,14 +1061,14 @@
         let selectedFile = null; let enhancedBlobUrl = null; 
 
         dropZone.addEventListener('click', () => fileInput.click()); 
-        fileInput.addEventListener('change', (e) => { if (e.target.files && e.target.files[0]) { selectedFile = e.target.files[0]; fileNameDisplay.innerHTML = `<i class="fas fa-file-image"></i> ${selectedFile.name}`; } }); 
+        fileInput.addEventListener('change', (e) => { if (e.target.files && e.target.files[0]) { selectedFile = e.target.files[0]; fileNameDisplay.innerHTML = `<i class="fas fa-file-image" style="color:var(--accent-primary);"></i> ${selectedFile.name}`; } }); 
         
         if(resetBtn) {
-            resetBtn.addEventListener('click', () => { fileInput.value = ''; selectedFile = null; fileNameDisplay.textContent = ''; comparisonSplitSection.classList.add('hidden'); downloadFooterActions.classList.add('hidden'); statusMessage.classList.remove('show'); customAlert("Reset selesai."); });
+            resetBtn.addEventListener('click', () => { fileInput.value = ''; selectedFile = null; fileNameDisplay.textContent = ''; comparisonSplitSection.classList.add('hidden'); downloadFooterActions.classList.add('hidden'); statusMessage.classList.remove('show'); customAlert("Studio di-reset penuh."); });
         }
 
         enhanceBtn.addEventListener('click', async () => {
-            if (!selectedFile) { return showMsg('statusMessage', 'Upload gambar dulu.', 'error'); }
+            if (!selectedFile) { return showMsg('statusMessage', 'Lokasikan berkas gambar lokal sebelum kalkulasi.', 'error'); }
             enhanceBtn.disabled = true; enhanceBtn.innerHTML = '<div class="loader-spinner"></div>';
             try {
                 let img = await loadImageFromFile(selectedFile);
@@ -980,12 +1079,12 @@
                 
                 comparisonSplitSection.classList.remove('hidden');
                 downloadFooterActions.classList.remove('hidden');
-                showMsg('statusMessage', 'Sukses HD Foto!', 'success');
+                showMsg('statusMessage', 'Rendering HD Selesai Sempurna.', 'success');
                 
-                addActivityLog("HD Foto", `Proses gambar HD selesai`, "Free", "var(--success-light)");
+                addActivityLog("Neural HD Studio", `Melangsungkan komputasi peningkatan HD`, "Bebas Limit", "var(--success)");
                 
-            } catch(e) { showMsg('statusMessage', 'Gagal memproses gambar.', 'error'); } 
-            finally { enhanceBtn.disabled = false; enhanceBtn.innerHTML = 'Proses HD'; }
+            } catch(e) { showMsg('statusMessage', 'Mesin menolak variabel berkas.', 'error'); } 
+            finally { enhanceBtn.disabled = false; enhanceBtn.innerHTML = '<i class="fas fa-magic"></i> PROSES HD AI'; }
         });
         
         function loadImageFromFile(file) { return new Promise(res => { const r = new FileReader(); r.onload = e => { const i = new Image(); i.onload = () => res(i); i.src = e.target.result; }; r.readAsDataURL(file); }); }
@@ -999,10 +1098,10 @@
             });
         }
         
-        downloadBtn.addEventListener('click', () => { if (enhancedBlobUrl) { const a = document.createElement('a'); a.href = enhancedBlobUrl; a.download = 'ToolsPro_HD.jpg'; a.click(); } });
+        downloadBtn.addEventListener('click', () => { if (enhancedBlobUrl) { const a = document.createElement('a'); a.href = enhancedBlobUrl; a.download = 'ToolsPro_AI_HD.jpg'; a.click(); } });
     }
 
-    // --- VIDHD TIKTOK LOGIC (UBAH KE TOMBOL DAN TOGGLE) ---
+    // --- VIDHD TIKTOK LOGIC (MURNI FILE + TOGGLE) ---
     let selectedVidFile = null;
     const vidDropZone = document.getElementById('vidDropZone');
     const vidFileInput = document.getElementById('vidFileInput');
@@ -1015,7 +1114,7 @@
         vidFileInput.addEventListener('change', (e) => {
             if (e.target.files && e.target.files[0]) {
                 selectedVidFile = e.target.files[0];
-                vidFileNameDisplay.innerHTML = `<i class="fas fa-file-video"></i> ${selectedVidFile.name}`;
+                vidFileNameDisplay.innerHTML = `<i class="fas fa-file-video" style="color:var(--accent-primary);"></i> ${selectedVidFile.name}`;
             }
         });
     }
@@ -1025,25 +1124,25 @@
             const respBox = document.getElementById('vidhdResponseData');
 
             if (!selectedVidFile) {
-                return showMsg('vidhdStatusMessage', 'Anda harus memilih video terlebih dahulu.', 'error');
+                return showMsg('vidhdStatusMessage', 'Unggah berkas video lokal sebelum melangsungkan kompresi backend.', 'error');
             }
 
             const isPremium = currentUserData && (parseBool(currentUserData.is_permanent) || currentUserData.role === 'Owner');
             if (!isPremium) {
                 const currentLimit = currentUserData.limit_count ?? 3;
                 if (currentLimit < 3) {
-                    return showMsg('vidhdStatusMessage', 'Sisa limit tidak cukup. Fitur ini butuh 3 limit.', 'error');
+                    return showMsg('vidhdStatusMessage', 'Defisit kapasitas, operasi backend intensif ini membutuhkan 3 Limit minimum.', 'error');
                 }
             }
 
             const is60fps = vidQualityToggle.checked;
             const actionType = is60fps ? '60fps' : 'fast_render';
 
-            // Agar payload API sama persis seperti sebelumnya
-            const dummyUrlPayload = `local-file://${selectedVidFile.name}`;
+            // Agar payload API tetap berjalan sesuai parameter backend asli
+            const dummyUrlPayload = `local-upload://${selectedVidFile.name}`;
 
             const originalText = btnProcessVidHD.innerHTML;
-            btnProcessVidHD.innerHTML = '<div class="loader-spinner"></div>';
+            btnProcessVidHD.innerHTML = '<div class="loader-spinner"></div> Mengkoneksikan...';
             btnProcessVidHD.disabled = true;
             respBox.style.display = 'none';
 
@@ -1056,11 +1155,11 @@
                 const data = await res.json();
                 
                 if (res.ok && data.status) {
-                    showMsg('vidhdStatusMessage', data.message || 'Proses kompresi sukses.', 'success');
-                    addActivityLog("VidHD TikTok", `Kompresi video (${actionType})`, "-3 Limit", "var(--text-pure)");
+                    showMsg('vidhdStatusMessage', data.message || 'Sinkronisasi backend untuk kompresi berhasil dijembatani.', 'success');
+                    addActivityLog("Mesin VidHD Server", `Mendelegasikan beban kompresi video (${actionType})`, "-3 Limit", "var(--accent-primary)");
                     
                     respBox.style.display = 'block';
-                    respBox.textContent = "Data Response:\n" + JSON.stringify(data, null, 2);
+                    respBox.textContent = "Log Konsol Backend:\n" + JSON.stringify(data, null, 2);
 
                     if(!isPremium) {
                         let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 3); 
@@ -1070,10 +1169,10 @@
                         window.loadAppView(currentUserData);
                     }
                 } else {
-                    showMsg('vidhdStatusMessage', data.error || 'Gagal memproses video.', 'error');
+                    showMsg('vidhdStatusMessage', data.error || 'Server menolak beban render berlebih.', 'error');
                 }
             } catch (err) {
-                showMsg('vidhdStatusMessage', 'Koneksi ke API VidHD gagal.', 'error');
+                showMsg('vidhdStatusMessage', 'Anomali jaringan ke pusat API VidHD.', 'error');
             } finally {
                 btnProcessVidHD.innerHTML = originalText;
                 btnProcessVidHD.disabled = false;
@@ -1086,23 +1185,23 @@
     if(loginBtn) { 
         loginBtn.addEventListener('click', async () => { 
             const u = document.getElementById('loginUser').value.trim(); const p = document.getElementById('loginPwd').value.trim(); 
-            if(!u || !p) { triggerErrorShake(['loginUser', 'loginPwd']); return showMsg('loginErrorMsg', 'Isi Username & Password.', 'error'); }
+            if(!u || !p) { triggerErrorShake(['loginUser', 'loginPwd']); return showMsg('loginErrorMsg', 'Kredensial form berlubang.', 'error'); }
             loginBtn.innerHTML = '<div class="loader-spinner"></div>'; loginBtn.disabled = true; 
             const res = await apiCall('login', { username: u, password: p }); 
-            loginBtn.textContent = 'Continue'; loginBtn.disabled = false; 
-            if(!res.status) { triggerErrorShake(['loginUser', 'loginPwd']); return showMsg('loginErrorMsg', `Gagal: ${res.error}`, 'error'); }
+            loginBtn.textContent = 'OTORISASI MASUK'; loginBtn.disabled = false; 
+            if(!res.status) { triggerErrorShake(['loginUser', 'loginPwd']); return showMsg('loginErrorMsg', `Penolakan Server: ${res.error}`, 'error'); }
             
             localStorage.setItem(SESSION_KEY, u); localStorage.setItem(CACHE_KEY, JSON.stringify(res.data)); 
             window.loadAppView(res.data);
-            addActivityLog("Akses Sistem", "Login Akun", "Sukses", "var(--success-light)");
+            addActivityLog("Koneksi Ekosistem", "Lisensi akun divalidasi dan terhubung", "Sesi Aktif", "var(--success)");
         }); 
     }
 
     if(regBtn) { 
         regBtn.addEventListener('click', async () => { 
             const u = document.getElementById('regUser').value.trim(); const w = document.getElementById('regWa').value.trim(); const p = document.getElementById('regPwd').value.trim(); const cInput = parseInt(document.getElementById('regCaptcha').value.trim()); 
-            if (!u || !w || !p || isNaN(cInput)) { triggerErrorShake(['regUser', 'regWa', 'regPwd', 'regCaptcha']); return showMsg('regMsg', 'Lengkapi form.', 'error'); }
-            if (cInput !== currentCaptchaAnswer) { triggerErrorShake(['regCaptcha']); return showMsg('regMsg', 'Jawaban salah.', 'error'); }
+            if (!u || !w || !p || isNaN(cInput)) { triggerErrorShake(['regUser', 'regWa', 'regPwd', 'regCaptcha']); return showMsg('regMsg', 'Dimensi form tidak terpenuhi.', 'error'); }
+            if (cInput !== currentCaptchaAnswer) { triggerErrorShake(['regCaptcha']); return showMsg('regMsg', 'Sistem mengenali anomali bot.', 'error'); }
             regBtn.innerHTML = '<div class="loader-spinner"></div>'; regBtn.disabled = true; 
             try { 
                 const userIp = await getIPAddress(); const fp = await generateAdvancedFingerprint(); 
@@ -1110,44 +1209,44 @@
                 if(!res.status) throw new Error(res.error); 
                 localStorage.setItem(SESSION_KEY, u); localStorage.setItem(CACHE_KEY, JSON.stringify(res.data)); 
                 window.loadAppView(res.data);
-                addActivityLog("Registrasi", "Daftar akun baru", "Sukses", "var(--success-light)");
-            } catch (err) { showMsg('regMsg', err.message, 'error'); } finally { regBtn.textContent = 'Register Account'; regBtn.disabled = false; } 
+                addActivityLog("Alokasi Identitas", "Registrasi entitas baru tertanam di database", "Direkam", "var(--success)");
+            } catch (err) { showMsg('regMsg', err.message, 'error'); } finally { regBtn.textContent = 'DAFTAR SEKARANG'; regBtn.disabled = false; } 
         }); 
     }
 
-    if(topLogoutBtn) { topLogoutBtn.addEventListener('click', () => { customConfirm("Sign out from your account?", () => { addActivityLog("Akses Sistem", "Logout Sesi", "Info", "var(--text-dim)"); setTimeout(() => { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(CACHE_KEY); switchView('loginView'); }, 300); }); }); }
+    if(topLogoutBtn) { topLogoutBtn.addEventListener('click', () => { customConfirm("Cabut otoritas sesi dan hancurkan terowongan ke terminal lokal?", () => { addActivityLog("Pemutusan Jaringan", "Pemanggilan fungsi Logout berhasil dikunci", "Selesai", "var(--text-dim)"); setTimeout(() => { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(CACHE_KEY); switchView('loginView'); }, 300); }); }); }
     
     if(sendBtn) {
         sendBtn.addEventListener('click', async () => {
             const email = document.getElementById('emailInput').value.trim(); 
-            if(!email) { triggerErrorShake(['emailInput']); return showMsg('appErrorMsg', 'Isi email Anda.', 'error'); }
-            sendBtn.innerHTML = 'Kirim...'; sendBtn.disabled = true;
+            if(!email) { triggerErrorShake(['emailInput']); return showMsg('appErrorMsg', 'Sertakan target alamat yang valid.', 'error'); }
+            sendBtn.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i>'; sendBtn.disabled = true;
             try {
                 const res = await fetch(`/api/am?action=send&email=${encodeURIComponent(email)}`);
                 const data = await res.json();
-                if(data.status) { cachedEmail = email; showMsg('appErrorMsg', data.message || 'Cek email Anda.', 'success'); } 
-                else { showMsg('appErrorMsg', data.error || 'Gagal kirim.', 'error'); }
-            } catch(e) { showMsg('appErrorMsg', 'Error server.', 'error'); } finally { sendBtn.textContent = 'Kirim'; sendBtn.disabled = false; }
+                if(data.status) { cachedEmail = email; showMsg('appErrorMsg', data.message || 'Distribusi Magic Link sukses.', 'success'); } 
+                else { showMsg('appErrorMsg', data.error || 'Gateway penukaran pesan macet.', 'error'); }
+            } catch(e) { showMsg('appErrorMsg', 'Ping terputus dari mail server.', 'error'); } finally { sendBtn.innerHTML = 'KIRIM'; sendBtn.disabled = false; }
         });
     }
 
     if(activateBtn) {
         activateBtn.addEventListener('click', async () => {
             const email = document.getElementById('emailInput').value.trim(); const magic = document.getElementById('magicInput').value.trim();
-            if(!email || !magic) { triggerErrorShake(['emailInput', 'magicInput']); return showMsg('appErrorMsg', 'Isi form dengan benar.', 'error'); }
-            activateBtn.disabled = true; activateBtn.innerHTML = 'Memproses...';
+            if(!email || !magic) { triggerErrorShake(['emailInput', 'magicInput']); return showMsg('appErrorMsg', 'Cacat parameter pengenal surel.', 'error'); }
+            activateBtn.disabled = true; activateBtn.innerHTML = '<div class="loader-spinner"></div>';
             try {
                 const res = await fetch(`/api/am?action=verif&email=${encodeURIComponent(cachedEmail || email)}&url=${encodeURIComponent(magic)}`);
                 const data = await res.json();
                 if(data.status) {
-                    showMsg('appErrorMsg', data.message || 'Aktivasi Berhasil!', 'success'); customAlert('Verifikasi Magic Link sukses.');
+                    showMsg('appErrorMsg', data.message || 'Enkripsi tervalidasi!', 'success'); customAlert('Bypass Magic Link sah diregistrasi.');
                     if(currentUserData && !parseBool(currentUserData.is_permanent) && currentUserData.role !== 'Owner') {
                         let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 1); 
                         await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
                         currentUserData.limit_count = newLimit; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData);
                     }
-                } else { showMsg('appErrorMsg', data.error || 'Verifikasi gagal.', 'error'); }
-            } catch(e) { showMsg('appErrorMsg', 'Error jaringan.', 'error'); } finally { activateBtn.disabled = false; activateBtn.innerHTML = 'Verifikasi Link'; }
+                } else { showMsg('appErrorMsg', data.error || 'Tolakan otentikasi dari server pusat.', 'error'); }
+            } catch(e) { showMsg('appErrorMsg', 'Gagal memanggil gerbang verifikasi.', 'error'); } finally { activateBtn.disabled = false; activateBtn.innerHTML = '<i class="fas fa-link"></i> VERIFIKASI LINK'; }
         });
     }
 
@@ -1158,7 +1257,7 @@
         const res = await apiCall('getMessages'); 
         
         if(!res.status || !res.data || res.data.length === 0) {
-            if(box.innerHTML.includes('loader-spinner') || box.innerHTML.trim() === '') { box.innerHTML = `<div style="text-align:center; padding:30px; font-size:12px; color:var(--text-dim);">Belum ada chat.</div>`; }
+            if(box.innerHTML.includes('loader-spinner') || box.innerHTML.trim() === '') { box.innerHTML = `<div style="text-align:center; padding:40px; font-size:12px; color:var(--text-dim); background:var(--surface-light); border-radius:12px;">Forum vakum. Inisialisasi gelombang pesan pertama Anda.</div>`; }
             return;
         }
 
@@ -1168,17 +1267,17 @@
         msgs.forEach(msg => {
             const isMe = currentUserData && msg.username === currentUserData.username;
             const isOwner = msg.role === 'Owner';
-            const badgeHtml = isOwner ? `<i class="fas fa-crown" style="color:var(--text-pure); margin-right:4px;"></i>` : '';
+            const badgeHtml = isOwner ? `<i class="fas fa-crown" style="color:var(--accent-primary); margin-right:6px;"></i>` : '';
             
             let timeFmt = msg.created_at;
             try { const d = new Date(msg.created_at); timeFmt = `${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`; } catch(e){}
 
             htmlString += `
             <div style="display:flex; flex-direction:column; align-items:${isMe ? 'flex-end' : 'flex-start'};">
-                <div style="font-size:10px; color:var(--text-dim); margin-bottom:4px; padding: 0 4px;">
-                    ${isMe ? '' : badgeHtml}<b style="${isOwner && !isMe ? 'color:var(--text-pure)' : ''}">${msg.username}</b> • ${timeFmt}
+                <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--text-dim); margin-bottom:6px; padding: 0 4px;">
+                    ${isMe ? '' : badgeHtml}<b style="${isOwner && !isMe ? 'color:var(--accent-primary)' : ''}">${msg.username}</b> • ${timeFmt}
                 </div>
-                <div style="background:${isMe ? 'var(--accent-primary)' : 'var(--surface-light)'}; color:${isMe ? 'var(--surface-dark)' : 'var(--text-pure)'}; border:1px solid ${isMe ? 'transparent' : 'var(--border-thin)'}; padding:10px 14px; border-radius: ${isMe ? '12px 12px 0 12px' : '12px 12px 12px 0'}; font-size:12px; font-weight: 500; max-width:85%; word-wrap:break-word;">
+                <div style="background:${isMe ? 'var(--accent-gradient)' : 'var(--surface-light)'}; color:${isMe ? '#FFF' : 'var(--text-pure)'}; border:1px solid ${isMe ? 'transparent' : 'var(--border-thin)'}; padding:14px 18px; border-radius: ${isMe ? '16px 16px 0 16px' : '16px 16px 16px 0'}; font-size:13px; font-weight: 500; line-height:1.6; max-width:85%; word-wrap:break-word; box-shadow:0 5px 15px rgba(0,0,0,0.3);">
                     ${msg.message}
                 </div>
             </div>`;
@@ -1194,18 +1293,18 @@
         if(!text) return; inputEl.value = ''; inputEl.disabled = true;
 
         const box = document.getElementById('chatMessagesBox');
-        if(box.innerHTML.includes('Belum ada chat')) box.innerHTML = '';
+        if(box.innerHTML.includes('Forum vakum')) box.innerHTML = '';
         
         box.innerHTML += `
         <div style="display:flex; flex-direction:column; align-items:flex-end; opacity: 0.6;" id="optimisticMsg">
-            <div style="font-size:10px; color:var(--text-dim); margin-bottom:4px; padding: 0 4px;"><b>${currentUserData.username}</b> • Mengirim...</div>
-            <div style="background:var(--accent-primary); color:var(--surface-dark); padding:10px 14px; border-radius: 12px 12px 0 12px; font-size:12px; font-weight:500; max-width:85%;">${text}</div>
+            <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--text-dim); margin-bottom:6px; padding: 0 4px;"><b>${currentUserData.username}</b> • Mengirim Transmisi...</div>
+            <div style="background:var(--accent-gradient); color:#FFF; padding:14px 18px; border-radius: 16px 16px 0 16px; font-size:13px; font-weight:500; max-width:85%;">${text}</div>
         </div>`;
         box.scrollTop = box.scrollHeight;
 
         const res = await apiCall('sendMessage', { username: currentUserData.username, message: text, role: currentUserData.role });
         inputEl.disabled = false; inputEl.focus();
-        if(!res.status) { customAlert("Gagal kirim.", true); const optMsg = document.getElementById('optimisticMsg'); if(optMsg) optMsg.remove(); } 
+        if(!res.status) { customAlert("Penolakan distribusi ke jaringan pusat.", true); const optMsg = document.getElementById('optimisticMsg'); if(optMsg) optMsg.remove(); } 
         else { loadChatMessages(); }
     });
     document.getElementById('chatInputMsg').addEventListener('keypress', function (e) { if (e.key === 'Enter') document.getElementById('btnSendChat').click(); });
@@ -1216,12 +1315,12 @@
             const urlVal = document.getElementById('waReactUrl').value.trim();
             const emojiVal = document.getElementById('waReactEmoji').value.trim();
 
-            if (!urlVal || !emojiVal) { triggerErrorShake(['waReactUrl', 'waReactEmoji']); return showMsg('reactStatusMessage', 'URL dan Emoji harus diisi.', 'error'); }
+            if (!urlVal || !emojiVal) { triggerErrorShake(['waReactUrl', 'waReactEmoji']); return showMsg('reactStatusMessage', 'Celah variabel (URL/Emoji) terdeteksi kosong.', 'error'); }
 
             const isPremium = currentUserData && (parseBool(currentUserData.is_permanent) || currentUserData.role === 'Owner');
             if (!isPremium) {
                 const currentLimit = currentUserData.limit_count ?? 3;
-                if (currentLimit < 3) return showMsg('reactStatusMessage', 'Limit tidak cukup. Butuh 3 limit.', 'error');
+                if (currentLimit < 3) return showMsg('reactStatusMessage', 'Kurangnya daya komputasi. Anda defisit 3 Limit.', 'error');
             }
 
             btnSendReaction.innerHTML = '<div class="loader-spinner"></div>'; btnSendReaction.disabled = true;
@@ -1231,16 +1330,16 @@
                 const data = await res.json();
                 
                 if (data.statusCode === 200 || data.status === true) {
-                    showMsg('reactStatusMessage', 'Berhasil! Reaksi dikirim.', 'success');
-                    addActivityLog("WA Reactor", `Reaksi ${emojiVal} di saluran WA`, "-3 Limit", "var(--text-pure)");
+                    showMsg('reactStatusMessage', 'Bypass sempurna! Bot mengkonfirmasi injeksi reaksi.', 'success');
+                    addActivityLog("Mesin WA Reactor", `Injeksi paksa reaksi ${emojiVal} menembus saluran WA`, "-3 Limit", "var(--accent-primary)");
                     
                     if(!isPremium) {
                         let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 3); 
                         await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
                         currentUserData.limit_count = newLimit; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData);
                     }
-                } else { showMsg('reactStatusMessage', data.message || 'Gagal.', 'error'); }
-            } catch (err) { showMsg('reactStatusMessage', 'Koneksi error.', 'error'); } finally { btnSendReaction.innerHTML = 'Kirim Reaksi'; btnSendReaction.disabled = false; }
+                } else { showMsg('reactStatusMessage', data.message || 'Injeksi digagalkan API Whatsapp.', 'error'); }
+            } catch (err) { showMsg('reactStatusMessage', 'Gangguan port konektivitas bot.', 'error'); } finally { btnSendReaction.innerHTML = '<i class="fab fa-whatsapp"></i> KIRIM REAKSI BOT'; btnSendReaction.disabled = false; }
         });
     }
 })();
