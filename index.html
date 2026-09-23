@@ -1199,6 +1199,9 @@
     document.addEventListener('contextmenu', e => e.preventDefault());
     document.onkeydown = function(e) { if(e.keyCode==123 || (e.ctrlKey&&e.shiftKey&&(e.keyCode==73||e.keyCode==74||e.keyCode==67)) || (e.ctrlKey&&e.keyCode==85)) return false; };
 
+    // --- NEVAPEDIA API CONFIGURATION ---
+    const NEVA_API_KEY = 'SKY_45a18f8910ed4fb2';
+
     // --- ACTIVITY LOG SYSTEM ---
     function addActivityLog(title, desc, statusText, statusColor) {
         if(!currentUserData || !currentUserData.username) return;
@@ -1455,35 +1458,72 @@
     window.closeLimitModal = function() { document.getElementById('limitModal').classList.remove('show'); };
     window.backToLimitSelect = function() { document.getElementById('selectLimitView').classList.remove('hidden'); document.getElementById('qrisPaymentView').classList.add('hidden'); };
 
+    // ===== FUNGSI QRIS NEVAPEDIA =====
     async function createQrisForLimit(limitCount, price, labelName) {
-        selectedAddLimitCount = limitCount; customAlert("Menginisialisasi gateway QRIS...");
-        const res = await apiCall('createQris', { amount: price, limitAmount: limitCount, username: currentUserData.username });
-        if (!res.status) return customAlert("Gagal terhubung ke server finansial.", true);
-        const data = res.data; activeDepositId = data.data?.depositId || data.depositId || data.id;
-        const qrisUrl = data.data?.qrImage || data.data?.qrisUrl || data.data?.qris_url || data.qr_string;
-        if (qrisUrl) {
-            document.getElementById('qrisImageResult').src = qrisUrl; document.getElementById('qrisPackageTitle').textContent = `Paket ${labelName} Limit`; document.getElementById('qrisDepositIdSpan').textContent = activeDepositId;
-            document.getElementById('selectLimitView').classList.add('hidden'); document.getElementById('qrisPaymentView').classList.remove('hidden');
-            addActivityLog("Acquire Kuota", `Inisialisasi Invoice QRIS paket ${labelName} Limit`, "Pending", "var(--gold-primary)");
-        } else { customAlert("Gagal merender modul QRIS.", true); }
+        selectedAddLimitCount = limitCount; 
+        customAlert("Menginisialisasi gateway Nevapedia...");
+        
+        try {
+            const res = await fetch(`https://app.nevapedia.com/api/invoice?apikey=${NEVA_API_KEY}&amount=${price}`);
+            const data = await res.json();
+            
+            // Kompatibilitas respons data
+            activeDepositId = data.data?.invoice_id || data.data?.id || data.invoice_id || data.id || data.data?.depositId;
+            const qrisUrl = data.data?.qr_url || data.data?.qris_url || data.data?.qrImage || data.qr_string || data.data?.qr_string;
+            
+            if (qrisUrl && activeDepositId) {
+                document.getElementById('qrisImageResult').src = qrisUrl; 
+                document.getElementById('qrisPackageTitle').textContent = `Paket ${labelName} Limit`; 
+                document.getElementById('qrisDepositIdSpan').textContent = activeDepositId;
+                
+                document.getElementById('selectLimitView').classList.add('hidden'); 
+                document.getElementById('qrisPaymentView').classList.remove('hidden');
+                addActivityLog("Acquire Kuota", `Inisialisasi Invoice Nevapedia paket ${labelName} Limit`, "Pending", "var(--gold-primary)");
+            } else { 
+                customAlert("Gagal merender modul QRIS Nevapedia.", true); 
+            }
+        } catch (err) {
+            customAlert("Gagal terhubung ke server Nevapedia.", true);
+        }
     }
 
     window.checkQrisPaymentStatus = async function() {
-        if (!activeDepositId) return; customAlert("Mensinkronisasi status transaksi...");
-        const res = await apiCall('checkQris', { depositId: activeDepositId });
-        if (!res.status) return customAlert("Gangguan koneksi jaringan. Coba kembali.", true);
-        const statusData = res.data; const status = statusData.data?.status || statusData.status;
-        const isPaid = (status === "success" || status === "paid" || status === "completed" || status === true);
-        if (isPaid) {
-            const currentLimit = currentUserData.limit_count ?? 3; const newLimitTotal = currentLimit + selectedAddLimitCount;
-            const updateRes = await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimitTotal } });
-            if (updateRes.status) {
-                currentUserData.limit_count = newLimitTotal; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData));
-                window.loadAppView(currentUserData); closeLimitModal(); customAlert("Transaksi Disetujui! Kuota diperbarui.");
-                addActivityLog("Acquire Kuota", `Invoice QRIS telah dilunasi (+${selectedAddLimitCount} Limit)`, "Sukses", "var(--success-light)");
-            } else { customAlert("Dana diterima, namun gagal sinkronisasi database.", true); }
-        } else { customAlert("Pembayaran belum diselesaikan pada dompet digital Anda.", true); }
+        if (!activeDepositId) return; 
+        customAlert("Mensinkronisasi status transaksi Nevapedia...");
+        
+        try {
+            const res = await fetch(`https://app.nevapedia.com/api/invoice/status?apikey=${NEVA_API_KEY}&invoice_id=${activeDepositId}`);
+            const statusData = await res.json();
+            
+            const status = statusData.data?.status || statusData.status;
+            // Deteksi status lunas
+            const isPaid = (status === "success" || status === "paid" || status === "completed" || status === true || status === "PAID");
+            
+            if (isPaid) {
+                const currentLimit = currentUserData.limit_count ?? 3; 
+                const newLimitTotal = currentLimit + selectedAddLimitCount;
+                
+                const updateRes = await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimitTotal } });
+                
+                if (updateRes.status) {
+                    currentUserData.limit_count = newLimitTotal; 
+                    localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData));
+                    window.loadAppView(currentUserData); 
+                    
+                    closeLimitModal(); 
+                    customAlert("Transaksi Disetujui! Kuota diperbarui.");
+                    addActivityLog("Acquire Kuota", `Invoice Nevapedia telah dilunasi (+${selectedAddLimitCount} Limit)`, "Sukses", "var(--success-light)");
+                } else { 
+                    customAlert("Dana diterima, namun gagal sinkronisasi database server.", true); 
+                }
+            } else { 
+                customAlert("Pembayaran belum diselesaikan pada dompet digital Anda.", true); 
+            }
+        } catch (err) {
+            customAlert("Gangguan koneksi jaringan ke Nevapedia. Coba kembali.", true);
+        }
     };
+    // =================================
 
     window.toggleLeaderboard = function() {
         const coll = document.getElementById('leaderboardCollapsible'); const chev = document.getElementById('leaderboardChevron');
