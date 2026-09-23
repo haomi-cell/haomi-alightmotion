@@ -492,7 +492,7 @@
     color: var(--text-muted); font-size: 9px; font-weight: 600; 
     text-transform: uppercase; letter-spacing: 0.8px; 
     cursor: pointer; transition: all 0.3s var(--smooth-ease); 
-    padding: 7px 14px; border-radius: 20px;
+    padding: 7px 10px; border-radius: 20px;
   }
   .nav-item i { font-size: 15px; transition: transform 0.3s var(--smooth-ease), color 0.3s; }
   .nav-item.active { color: var(--gold-primary); background: rgba(212, 175, 55, 0.08); }
@@ -1067,6 +1067,35 @@
     </div>
   </div>
 
+  <!-- SECTION: VID HD (NEW) -->
+  <div id="sectionVidHD" class="hidden">
+    <div class="glass-card">
+      <div class="title-lg">VidHD Server</div>
+      <div class="text-sub" style="margin-bottom: 20px;">Pemrosesan & peningkatan kualitas video via Backend.</div>
+
+      <div class="form-group">
+        <label>URL Video / File ID</label>
+        <input type="text" id="vidhdUrl" class="glass-input" placeholder="Masukkan URL atau ID Video" />
+      </div>
+
+      <div class="form-group" style="margin-bottom: 22px;">
+        <label>Perintah Eksekusi</label>
+        <input type="text" id="vidhdAction" class="glass-input" placeholder="Contoh: render, upscale" value="upscale" />
+      </div>
+
+      <button id="btnProcessVidHD" class="btn btn-primary click-sound">
+        <i class="fas fa-video"></i> Eksekusi Proses Backend
+      </button>
+
+      <div id="vidhdStatusMessage" class="message-box" style="margin-top: 18px;">
+        <i class="fas fa-info-circle"></i> <span id="vidhdStatusText"></span>
+      </div>
+      
+      <div id="vidhdResponseData" style="margin-top: 15px; font-size: 10px; color: var(--gold-primary); line-height: 1.5; white-space: pre-wrap; background: var(--surface-light); padding: 10px; border-radius: 8px; display: none; border: 1px solid var(--border-thin);">
+      </div>
+    </div>
+  </div>
+
   <!-- SECTION: OWNER PANEL -->
   <div id="ownerPanel" class="hidden">
     <div class="glass-card">
@@ -1104,6 +1133,9 @@
   </div>
   <div class="nav-item click-sound" id="btnTabEnhancer" onclick="switchTab('enhancer')">
     <i class="fas fa-wand-magic-sparkles"></i><span>Studio</span>
+  </div>
+  <div class="nav-item click-sound" id="btnTabVidHD" onclick="switchTab('vidhd')">
+    <i class="fas fa-video"></i><span>Vid HD</span>
   </div>
   <div class="nav-item click-sound" id="btnTabChat" onclick="switchTab('chat')">
     <i class="fas fa-comments"></i><span>Forum</span>
@@ -1315,14 +1347,9 @@
     const OWNER_WA = _0x1a2b[2]; const SESSION_KEY = _0x1a2b[3]; const CACHE_KEY = _0x1a2b[4]; const BROADCAST_SEEN_KEY = _0x1a2b[5];
     const BIO_CRED_KEY = "am_exec_bio_cred"; 
 
-    // --- API CALL DIUBAH KE VIDHD.JS ---
     async function apiCall(action, payload = {}) {
         try {
-            const res = await fetch(`/api/vidhd?action=${action}`, { 
-                method: 'POST', 
-                headers: { 'Content-Type': 'application/json' }, 
-                body: JSON.stringify(payload) 
-            });
+            const res = await fetch(`/api/hub?action=${action}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
             return await res.json();
         } catch (e) { return { status: false, error: 'Network Error' }; }
     }
@@ -1612,7 +1639,7 @@
 
                 await Promise.all(updatePromises);
                 customAlert(`Berhasil mereset kuota ${zeroLimitUsers.length} klien.`);
-                renderMemberList(true);
+                renderMemberList();
                 addActivityLog("Tindakan Admin", `Melakukan reset limit (0->3) untuk ${zeroLimitUsers.length} klien`, "Selesai", "var(--success-light)");
             } catch(e) {
                 customAlert("Terjadi galat saat memproses reset massal.", true);
@@ -1768,22 +1795,9 @@
     window.closeWarningModal = function() { document.getElementById('warningModal').classList.remove('show'); if(!localStorage.getItem(SESSION_KEY)) document.getElementById('loginView').classList.remove('hidden'); };
     window.handleForgotClick = function() { window.open(`https://wa.me/${OWNER_WA.replace('+', '')}?text=` + encodeURIComponent("Salam hormat, saya membutuhkan bantuan pemulihan akses (lupa sandi)."), '_blank'); };
     
-    // --- OPTIMASI CACHE MEMBER LIST ---
-    let cachedAdminUsers = null;
-
-    window.renderMemberList = async function(forceFetch = false) { 
-        const memberList = document.getElementById('memberList'); 
-        const searchInput = document.getElementById('memberSearchInput'); 
-        if(!memberList) return; 
-
-        if (forceFetch || !cachedAdminUsers) {
-            const res = await apiCall('getUsers');
-            if(!res.status) return;
-            cachedAdminUsers = res.data;
-        }
-
-        const users = cachedAdminUsers; 
-        const searchQuery = searchInput ? searchInput.value.toLowerCase().trim() : ''; 
+    window.renderMemberList = async function() { 
+        const res = await apiCall('getUsers'); const memberList = document.getElementById('memberList'); const searchInput = document.getElementById('memberSearchInput'); 
+        if(!memberList || !res.status) return; const users = res.data; const searchQuery = searchInput ? searchInput.value.toLowerCase().trim() : ''; 
         
         let filteredUsers = users.filter(m => (m.username || '').toLowerCase().includes(searchQuery) || (m.id_code || '').toLowerCase().includes(searchQuery)); 
         
@@ -1840,7 +1854,7 @@
         if(isNaN(newLimit)) return customAlert("Nilai limit tidak valid.", true);
         const res = await apiCall('updateUser', { username: username, updates: { limit_count: newLimit } });
         if (res.status) { 
-            renderMemberList(true); customAlert("Konfigurasi limit diperbarui."); 
+            renderMemberList(); customAlert("Konfigurasi limit diperbarui."); 
             if(currentUserData && currentUserData.username === username) { currentUserData.limit_count = newLimit; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData); }
             addActivityLog("Tindakan Admin", `Mengubah kuota limit klien @${username} menjadi ${newLimit}`, "Selesai", "var(--success-light)");
         } else { customAlert("Gagal terhubung ke database.", true); }
@@ -1850,7 +1864,7 @@
         const newStatus = !currentVipStatus ? 'true' : 'false'; 
         const res = await apiCall('updateUser', { username, updates: { is_permanent: newStatus } }); 
         if (res.status) { 
-            renderMemberList(true); customAlert("Status previlege VIP dimodifikasi."); 
+            renderMemberList(); customAlert("Status previlege VIP dimodifikasi."); 
             if(currentUserData && currentUserData.username === username) { currentUserData.is_permanent = newStatus; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData); }
             addActivityLog("Tindakan Admin", `Mengubah akses VIP klien @${username} menjadi ${newStatus}`, "Selesai", "var(--success-light)");
         } 
@@ -1861,7 +1875,7 @@
             const newStatus = currentBannedStatus ? 'false' : 'true'; 
             const res = await apiCall('updateUser', { username, updates: { is_banned: newStatus } }); 
             if (res.status) { 
-                customAlert("Status keamanan dimodifikasi."); renderMemberList(true); 
+                customAlert("Status keamanan dimodifikasi."); renderMemberList(); 
                 addActivityLog("Tindakan Admin", `Mengubah status SUSPEND klien @${username} menjadi ${newStatus}`, "Kritis", "var(--danger-light)");
             } 
         }); 
@@ -2143,9 +2157,7 @@
     }
 
     let chatIntervalId = null;
-    let lastChatDataString = ""; // Cache untuk optimasi chat anti-kedip
 
-    // --- OPTIMASI RENDER CHAT ---
     async function loadChatMessages() {
         const box = document.getElementById('chatMessagesBox');
         const res = await apiCall('getMessages'); 
@@ -2156,12 +2168,6 @@
             }
             return;
         }
-
-        const currentDataString = JSON.stringify(res.data);
-        if (currentDataString === lastChatDataString) return; 
-        lastChatDataString = currentDataString;
-
-        const isScrolledToBottom = box.scrollHeight - box.clientHeight <= box.scrollTop + 50;
 
         let htmlString = '';
         const msgs = res.data.reverse(); 
@@ -2188,8 +2194,8 @@
             </div>`;
         });
         
+        const isScrolledToBottom = box.scrollHeight - box.clientHeight <= box.scrollTop + 50;
         box.innerHTML = htmlString;
-        
         if(isScrolledToBottom || box.innerHTML.includes('loader-spinner')) {
             box.scrollTop = box.scrollHeight;
         }
@@ -2239,7 +2245,7 @@
         if (e.key === 'Enter') document.getElementById('btnSendChat').click();
     });
 
-    // Menambah event listener kanggo tombol WA React
+    // Event listener untuk tombol WA React
     const btnSendReaction = document.getElementById('btnSendReaction');
     if (btnSendReaction) {
         btnSendReaction.addEventListener('click', async () => {
@@ -2251,7 +2257,6 @@
                 return showMsg('reactStatusMessage', 'URL lan Emoji kudu diisi.', 'error');
             }
 
-            // Pengecekan limit saderenge API call
             const isPremium = currentUserData && (parseBool(currentUserData.is_permanent) || currentUserData.role === 'Owner');
             if (!isPremium) {
                 const currentLimit = currentUserData.limit_count ?? 3;
@@ -2283,11 +2288,9 @@
                         window.loadAppView(currentUserData);
                     }
                 } else {
-                    // API returns false/error (limit ora dipotong)
                     showMsg('reactStatusMessage', data.message || 'Gagal ngirim reaksi. Limit aman.', 'error');
                 }
             } catch (err) {
-                // Koneksi macet (limit ora dipotong)
                 showMsg('reactStatusMessage', 'Koneksi API macet/putus. Limit tetep aman.', 'error');
             } finally {
                 btnSendReaction.innerHTML = '<i class="fab fa-whatsapp"></i> Eksekusi Reaksi';
@@ -2296,17 +2299,80 @@
         });
     }
 
-    // Fungsi SwitchTab sing wis dimodifikasi kanggo nampung Tab WA React
+    // --- EVENT LISTENER UNTUK TAB BARU: VID HD BACKEND ---
+    const btnProcessVidHD = document.getElementById('btnProcessVidHD');
+    if (btnProcessVidHD) {
+        btnProcessVidHD.addEventListener('click', async () => {
+            const urlVal = document.getElementById('vidhdUrl').value.trim();
+            const actionVal = document.getElementById('vidhdAction').value.trim();
+            const respBox = document.getElementById('vidhdResponseData');
+
+            if (!urlVal || !actionVal) {
+                triggerErrorShake(['vidhdUrl', 'vidhdAction']);
+                return showMsg('vidhdStatusMessage', 'URL/ID Video dan Perintah wajib diisi.', 'error');
+            }
+
+            // Membutuhkan 3 limit per proses
+            const isPremium = currentUserData && (parseBool(currentUserData.is_permanent) || currentUserData.role === 'Owner');
+            if (!isPremium) {
+                const currentLimit = currentUserData.limit_count ?? 3;
+                if (currentLimit < 3) {
+                    return showMsg('vidhdStatusMessage', 'Sisa limit tidak cukup. Fitur ini butuh 3 limit.', 'error');
+                }
+            }
+
+            btnProcessVidHD.innerHTML = '<div class="loader-spinner" style="width:13px;height:13px; border-width:2px; border-top-color:#111;"></div> Memproses di Server...';
+            btnProcessVidHD.disabled = true;
+            respBox.style.display = 'none';
+
+            try {
+                // Endpoint mengarah ke file API Backend /api/vidhd
+                const res = await fetch('/api/vidhd', { 
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: actionVal, url: urlVal, user: currentUserData.username })
+                });
+                const data = await res.json();
+                
+                if (res.ok && data.status) {
+                    showMsg('vidhdStatusMessage', data.message || 'Pemrosesan backend VidHD sukses.', 'success');
+                    addActivityLog("VidHD Backend", `Eksekusi video: ${actionVal}`, "-3 Limit", "var(--success-light)");
+                    
+                    // Menampilkan hasil kembalian (response raw dari backend vidhd.js)
+                    respBox.style.display = 'block';
+                    respBox.textContent = "Response API Server:\n" + JSON.stringify(data, null, 2);
+
+                    if(!isPremium) {
+                        let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 3); 
+                        await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
+                        currentUserData.limit_count = newLimit; 
+                        localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); 
+                        window.loadAppView(currentUserData);
+                    }
+                } else {
+                    showMsg('vidhdStatusMessage', data.error || 'Server backend menolak atau gagal memproses.', 'error');
+                }
+            } catch (err) {
+                showMsg('vidhdStatusMessage', 'Koneksi ke API vidhd putus/gagal.', 'error');
+            } finally {
+                btnProcessVidHD.innerHTML = '<i class="fas fa-video"></i> Eksekusi Proses Backend';
+                btnProcessVidHD.disabled = false;
+            }
+        });
+    }
+
+    // Fungsi SwitchTab yang dimodifikasi untuk menampung Tab Vid HD
     window.switchTab = function(tabName) { 
         const secAct = document.getElementById('sectionActivator'); 
         const secEnh = document.getElementById('sectionEnhancer'); 
         const secChat = document.getElementById('sectionChat');
         const secOwn = document.getElementById('ownerPanel');
         const secReact = document.getElementById('sectionReact');
+        const secVid = document.getElementById('sectionVidHD'); // Tab Baru VidHD
         
         if(chatIntervalId) clearInterval(chatIntervalId);
 
-        [secAct, secEnh, secChat, secOwn, secReact].forEach(el => { 
+        [secAct, secEnh, secChat, secOwn, secReact, secVid].forEach(el => { 
             if(el) { 
                 el.style.opacity = '0'; 
                 el.style.transform = 'translateY(6px)'; 
@@ -2322,11 +2388,13 @@
             else if(tabName === 'enhancer') { 
                 secEnh.classList.remove('hidden'); document.getElementById('btnTabEnhancer').classList.add('active'); animateSectionIn(secEnh); 
             } 
+            else if(tabName === 'vidhd') { 
+                secVid.classList.remove('hidden'); document.getElementById('btnTabVidHD').classList.add('active'); animateSectionIn(secVid); 
+            }
             else if(tabName === 'chat') { 
                 secChat.classList.remove('hidden'); document.getElementById('btnTabChat').classList.add('active'); animateSectionIn(secChat); 
                 loadChatMessages();
-                // --- CHAT INTERVAL DIPERCEPAT MENJADI 3 DETIK ---
-                chatIntervalId = setInterval(loadChatMessages, 3000); 
+                chatIntervalId = setInterval(loadChatMessages, 8000); 
             }
             else if(tabName === 'react') { 
                 secReact.classList.remove('hidden'); document.getElementById('btnTabReact').classList.add('active'); animateSectionIn(secReact); 
