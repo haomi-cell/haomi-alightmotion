@@ -1121,7 +1121,7 @@
       <!-- FILTER ROW -->
       <div style="display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap;">
         <div class="input-wrapper" style="flex: 1; min-width: 160px;">
-            <input type="text" id="memberSearchInput" class="glass-input" placeholder="Cari klien..." oninput="renderMemberList()" />
+            <input type="text" id="memberSearchInput" class="glass-input" placeholder="Cari klien..." oninput="renderMemberList(false)" />
         </div>
         <button id="filterZeroLimitBtn" class="btn btn-outline click-sound" style="width: auto; padding: 0 12px; border-radius: 10px;" onclick="toggleZeroLimitFilter()" title="Filter Limit 0">
             <i class="fas fa-filter"></i> 0 Limit
@@ -1136,7 +1136,7 @@
   </div>
 </main>
 
-<!-- FLOATING BOTTOM DOCK -->
+<!-- FLOATING DOCK BOTTOM NAV -->
 <nav class="bottom-nav hidden" id="mainBottomNav" aria-label="Navigasi Utama">
   <div class="nav-item active click-sound" id="btnTabActivator" onclick="switchTab('activator')">
     <i class="fas fa-key"></i><span>Lisensi</span>
@@ -2060,6 +2060,214 @@
 
     if(topLogoutBtn) { topLogoutBtn.addEventListener('click', () => { customConfirm("Akhiri sesi?", () => { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(CACHE_KEY); switchView('loginView'); }); }); }
     
+    // ==========================================
+    // --- FORUM KOMUNIKASI (CHAT) LOGIC ---
+    // ==========================================
+    let chatInterval = null;
+
+    async function loadForumMessages() {
+        const chatBox = document.getElementById('chatMessagesBox');
+        if(!chatBox) return;
+
+        const res = await apiCall('getMessages');
+        if(!res.status) {
+            chatBox.innerHTML = '<div style="text-align:center; padding: 20px; font-size: 11px; color: var(--text-dim);">Gagal memuat pesan dari server.</div>';
+            return;
+        }
+
+        const msgs = res.data || [];
+        if(msgs.length === 0) {
+            chatBox.innerHTML = '<div style="text-align:center; padding: 20px; font-size: 11px; color: var(--text-dim);">Belum ada transmisi. Jadilah yang pertama.</div>';
+            return;
+        }
+
+        let htmlContent = '';
+        msgs.forEach(m => {
+            const isMe = currentUserData && m.username === currentUserData.username;
+            const roleColor = m.role === 'Owner' ? 'var(--gold-primary)' : 'var(--text-pure)';
+            
+            htmlContent += `
+            <div style="display: flex; gap: 10px; flex-direction: ${isMe ? 'row-reverse' : 'row'}; margin-bottom: 12px;">
+                <div style="width: 28px; height: 28px; border-radius: 8px; background: var(--surface-light); border: 1px solid var(--border-thin); display: flex; align-items: center; justify-content: center; font-size: 10px; color: var(--gold-primary); font-weight: bold; flex-shrink: 0;">
+                    ${m.username ? m.username.charAt(0).toUpperCase() : '?'}
+                </div>
+                <div style="max-width: 75%; display: flex; flex-direction: column; align-items: ${isMe ? 'flex-end' : 'flex-start'};">
+                    <div style="font-size: 9px; color: var(--text-dim); margin-bottom: 4px; display: flex; gap: 6px; align-items: center;">
+                        <span style="color: ${roleColor}; font-weight: 700;">${m.username}</span> 
+                        <span style="opacity: 0.5;">${m.time || ''}</span>
+                    </div>
+                    <div style="background: ${isMe ? 'rgba(212, 175, 55, 0.15)' : 'var(--surface-light)'}; border: 1px solid ${isMe ? 'var(--border-gold)' : 'var(--border-thin)'}; padding: 10px 12px; border-radius: 12px; border-top-${isMe ? 'right' : 'left'}-radius: 2px; font-size: 11px; color: var(--text-pure); line-height: 1.5; word-break: break-word;">
+                        ${m.message}
+                    </div>
+                </div>
+            </div>`;
+        });
+
+        // Hanya update DOM jika ada pesan baru
+        if(chatBox.innerHTML !== htmlContent) {
+            chatBox.innerHTML = htmlContent;
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    }
+
+    document.getElementById('btnSendChat')?.addEventListener('click', async () => {
+        const input = document.getElementById('chatInputMsg');
+        const msg = input.value.trim();
+        if(!msg || !currentUserData) return;
+
+        input.value = '';
+        input.disabled = true;
+        
+        const now = new Date();
+        const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')} WIB`;
+
+        const res = await apiCall('sendMessage', {
+            username: currentUserData.username,
+            role: currentUserData.role,
+            message: msg,
+            time: timeStr
+        });
+
+        input.disabled = false;
+        input.focus();
+        
+        if(res.status) {
+            loadForumMessages();
+        } else {
+            customAlert("Gagal mengirim transmisi.", true);
+        }
+    });
+
+    document.getElementById('chatInputMsg')?.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') { document.getElementById('btnSendChat').click(); }
+    });
+
+    // ==========================================
+    // --- ADMIN PANEL (OWNER) LOGIC ---
+    // ==========================================
+    let allMembersData = [];
+    let isZeroLimitActive = false;
+
+    window.renderMemberList = async function(fetchData = true) {
+        const listEl = document.getElementById('memberList');
+        if(!listEl) return;
+
+        if(fetchData) {
+            listEl.innerHTML = '<div style="text-align:center; padding: 20px;"><div class="loader-spinner" style="margin: 0 auto; width: 18px; height: 18px;"></div></div>';
+            const res = await apiCall('getUsers');
+            if(res.status) allMembersData = res.data;
+        }
+
+        const searchKw = (document.getElementById('memberSearchInput')?.value || '').toLowerCase();
+        let filtered = allMembersData.filter(m => m.role !== 'Owner'); 
+        
+        if(searchKw) {
+            filtered = filtered.filter(m => m.username.toLowerCase().includes(searchKw) || (m.wa && m.wa.includes(searchKw)));
+        }
+
+        if(isZeroLimitActive) {
+            filtered = filtered.filter(m => (m.limit_count || 0) <= 0);
+        }
+
+        listEl.innerHTML = '';
+        if(filtered.length === 0) {
+            listEl.innerHTML = '<div style="text-align:center; padding: 20px; font-size: 11px; color: var(--text-dim);">Data klien tidak ditemukan.</div>';
+            return;
+        }
+
+        filtered.forEach(m => {
+            const limit = m.limit_count || 0;
+            const isVip = parseBool(m.is_permanent);
+            const isBanned = parseBool(m.is_banned);
+            const limitText = isVip ? 'VIP (∞)' : `${limit} Limit`;
+            const limitColor = limit <= 0 && !isVip ? 'var(--danger-light)' : 'var(--gold-light)';
+
+            listEl.innerHTML += `
+            <div class="data-item" style="display:flex; justify-content:space-between; align-items:center; opacity: ${isBanned ? '0.5' : '1'};">
+                <div>
+                    <div style="font-size: 12px; font-weight: 700; color: var(--text-pure); margin-bottom: 2px;">@${m.username} ${isBanned ? '<span style="color:var(--danger-light); font-size:9px;">(BANNED)</span>' : ''}</div>
+                    <div style="font-size: 9px; color: var(--text-dim);"><i class="fab fa-whatsapp"></i> ${m.wa || '-'}</div>
+                </div>
+                <div style="text-align: right;">
+                    <div style="font-size: 11px; font-weight: 700; color: ${limitColor}; margin-bottom: 6px;">${limitText}</div>
+                    <div style="display: flex; gap: 6px; justify-content: flex-end;">
+                        <button onclick="editLimit('${m.username}', ${limit})" title="Edit Limit" style="background:var(--surface-light); border:1px solid var(--border-thin); color:var(--gold-primary); border-radius:6px; padding:4px 8px; font-size:10px; cursor:pointer;"><i class="fas fa-edit"></i></button>
+                        <button onclick="banUser('${m.username}', ${isBanned})" title="${isBanned ? 'Buka Blokir' : 'Blokir Akun'}" style="background:var(--surface-light); border:1px solid var(--border-thin); color:${isBanned ? 'var(--success-light)' : 'var(--danger-light)'}; border-radius:6px; padding:4px 8px; font-size:10px; cursor:pointer;"><i class="fas fa-${isBanned ? 'check' : 'ban'}"></i></button>
+                    </div>
+                </div>
+            </div>`;
+        });
+    };
+
+    window.toggleZeroLimitFilter = function() {
+        isZeroLimitActive = !isZeroLimitActive;
+        const btn = document.getElementById('filterZeroLimitBtn');
+        if(isZeroLimitActive) {
+            btn.style.background = 'rgba(212, 175, 55, 0.15)';
+            btn.style.borderColor = 'var(--gold-primary)';
+            btn.style.color = 'var(--gold-light)';
+        } else {
+            btn.style.background = 'transparent';
+            btn.style.borderColor = 'var(--border-thin)';
+            btn.style.color = 'var(--text-pure)';
+        }
+        renderMemberList(false);
+    };
+
+    window.editLimit = function(username, currentLimit) {
+        const newVal = prompt(`Masukkan jumlah kuota baru untuk @${username}:`, currentLimit);
+        if(newVal !== null && !isNaN(newVal) && newVal.trim() !== '') {
+            apiCall('updateUser', { username, updates: { limit_count: parseInt(newVal) } }).then(res => {
+                if(res.status) { customAlert("Limit diperbarui."); renderMemberList(true); }
+            });
+        }
+    };
+
+    window.banUser = function(username, isCurrentlyBanned) {
+        const actionText = isCurrentlyBanned ? 'MEMBUKA BLOKIR' : 'MEMBLOKIR (Banned)';
+        customConfirm(`Yakin ingin ${actionText} akses untuk @${username}?`, () => {
+            apiCall('updateUser', { username, updates: { is_banned: !isCurrentlyBanned } }).then(res => {
+                if(res.status) { customAlert(`Status @${username} diperbarui.`); renderMemberList(true); }
+            });
+        });
+    };
+
+    window.resetAllZeroLimits = function() {
+        customConfirm("Yakin ingin me-reset (isi ulang) semua klien dengan 0 Limit menjadi 3 Limit secara massal?", async () => {
+            const zeroUsers = allMembersData.filter(m => (m.limit_count || 0) <= 0 && !parseBool(m.is_permanent) && m.role !== 'Owner');
+            if(zeroUsers.length === 0) return customAlert("Tidak ada klien dengan 0 Limit.", true);
+            
+            customAlert(`Memproses reset massal untuk ${zeroUsers.length} klien...`);
+            let success = 0;
+            for(let u of zeroUsers) {
+                const res = await apiCall('updateUser', { username: u.username, updates: { limit_count: 3 } });
+                if(res.status) success++;
+            }
+            customAlert(`Berhasil mereset ${success} klien.`);
+            renderMemberList(true);
+        });
+    };
+
+    window.sendBroadcastMsg = async function() {
+        const input = document.getElementById('broadcastInput');
+        const msg = input.value.trim();
+        if(!msg) return customAlert("Tulis instruksi transmisi terlebih dahulu.", true);
+
+        input.disabled = true;
+        const res = await apiCall('sendBroadcast', { message: msg });
+        input.disabled = false;
+        
+        if(res.status) {
+            input.value = '';
+            customAlert("Transmisi Global berhasil disiarkan ke semua klien.");
+        } else {
+            customAlert("Gagal mengirim transmisi.", true);
+        }
+    };
+
+    // ==========================================
+    // --- TAB SWITCHER LOGIC (UPDATED) ---
+    // ==========================================
     window.switchTab = function(tabName) { 
         const secAct = document.getElementById('sectionActivator'); 
         const secEnh = document.getElementById('sectionEnhancer'); 
@@ -2073,12 +2281,30 @@
         });
         document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active')); 
 
-        if(tabName === 'activator') { secAct.classList.remove('hidden'); document.getElementById('btnTabActivator').classList.add('active'); } 
-        else if(tabName === 'enhancer') { secEnh.classList.remove('hidden'); document.getElementById('btnTabEnhancer').classList.add('active'); } 
-        else if(tabName === 'videotool') { secVideo.classList.remove('hidden'); document.getElementById('btnTabVideoTool').classList.add('active'); }
-        else if(tabName === 'chat') { secChat.classList.remove('hidden'); document.getElementById('btnTabChat').classList.add('active'); } 
-        else if(tabName === 'react') { secReact.classList.remove('hidden'); document.getElementById('btnTabReact').classList.add('active'); }
-        else if(tabName === 'admin') { secOwn.classList.remove('hidden'); document.getElementById('toggleOwnerDashBtn').classList.add('active'); }
+        // Hentikan penarikan chat jika pindah tab agar menghemat kuota backend
+        if (chatInterval) clearInterval(chatInterval);
+
+        if(tabName === 'activator') { 
+            secAct.classList.remove('hidden'); document.getElementById('btnTabActivator').classList.add('active'); 
+        } 
+        else if(tabName === 'enhancer') { 
+            secEnh.classList.remove('hidden'); document.getElementById('btnTabEnhancer').classList.add('active'); 
+        } 
+        else if(tabName === 'videotool') { 
+            secVideo.classList.remove('hidden'); document.getElementById('btnTabVideoTool').classList.add('active'); 
+        }
+        else if(tabName === 'chat') { 
+            secChat.classList.remove('hidden'); document.getElementById('btnTabChat').classList.add('active'); 
+            loadForumMessages();
+            chatInterval = setInterval(loadForumMessages, 5000);
+        } 
+        else if(tabName === 'react') { 
+            secReact.classList.remove('hidden'); document.getElementById('btnTabReact').classList.add('active'); 
+        }
+        else if(tabName === 'admin') { 
+            secOwn.classList.remove('hidden'); document.getElementById('toggleOwnerDashBtn').classList.add('active'); 
+            renderMemberList(true);
+        }
     };
 
     window.openProfileSheet = function() { document.getElementById('profileSheet').classList.add('show'); };
