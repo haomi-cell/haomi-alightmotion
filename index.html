@@ -1024,9 +1024,9 @@
         Umpan balik langsung & interaksi antar klien eksekutif.
       </div>
       
-      <!-- Area Pesan -->
-      <div id="chatMessagesBox" class="chat-box-scroll" style="flex: 1; overflow-y: auto; display:flex; flex-direction:column; gap:14px; margin-bottom: 16px; padding-right:8px;">
-        <div style="text-align:center; padding: 20px;">
+      <!-- Area Pesan (Flex Direction Column Reverse membuat otomatis flow dari bawah ke atas) -->
+      <div id="chatMessagesBox" class="chat-box-scroll" style="flex: 1; overflow-y: auto; display:flex; flex-direction:column-reverse; gap:14px; margin-bottom: 16px; padding-right:8px;">
+        <div style="text-align:center; padding: 20px; margin-top: auto;">
           <div class="loader-spinner" style="margin: 0 auto; width: 18px; height: 18px;"></div>
         </div>
       </div>
@@ -1067,24 +1067,37 @@
     </div>
   </div>
 
-  <!-- SECTION: VID HD (NEW) -->
+  <!-- SECTION: VID HD (NEW PERMINTAAN KLIENT: 4 TOMBOL) -->
   <div id="sectionVidHD" class="hidden">
     <div class="glass-card">
       <div class="title-lg">VidHD Server</div>
       <div class="text-sub" style="margin-bottom: 20px;">Pemrosesan & peningkatan kualitas video via Backend.</div>
 
-      <div class="form-group">
-        <label>URL Video / File ID</label>
-        <input type="text" id="vidhdUrl" class="glass-input" placeholder="Masukkan URL atau ID Video" />
+      <div style="display: flex; flex-direction: column; gap: 14px; margin-bottom: 22px;">
+        <!-- Tombol 1: Masukkan Video -->
+        <div id="vidhdDropZone" class="click-sound" style="border: 1px dashed var(--border-gold); border-radius: 14px; padding: 20px 18px; text-align: center; background: var(--surface-light); cursor: pointer; transition: all 0.25s var(--smooth-ease);">
+          <i class="fas fa-video" style="font-size: 24px; color: var(--gold-primary); margin-bottom: 10px;"></i>
+          <div style="font-size: 12px; font-weight: 600; color: var(--gold-light);">Masukkan Video</div>
+          <div style="font-size: 9px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px;">Pilih berkas dari perangkat</div>
+          <div id="vidhdFileName" style="margin-top: 8px; font-size: 10px; color: var(--text-pure); font-weight: 600;"></div>
+          <input type="file" id="vidhdFileInput" accept="video/*" style="display: none;">
+        </div>
+
+        <!-- Tombol 2 & 3: Saklar Kiri (Medium) & Kanan (Max 60fps) -->
+        <div style="display: flex; background: var(--surface-dark); border-radius: 12px; border: 1px solid var(--border-thin); padding: 4px;">
+          <button id="btnVidMedium" class="click-sound" style="flex: 1; padding: 10px 0; border: none; border-radius: 10px; background: rgba(212, 175, 55, 0.15); color: var(--gold-primary); font-size: 11px; font-weight: 600; cursor: pointer; transition: 0.25s;">
+            Ekstrak Medium
+          </button>
+          <button id="btnVid60fps" class="click-sound" style="flex: 1; padding: 10px 0; border: none; border-radius: 10px; background: transparent; color: var(--text-muted); font-size: 11px; font-weight: 600; cursor: pointer; transition: 0.25s;">
+            Max 60fps
+          </button>
+        </div>
+        <input type="hidden" id="vidhdActionVal" value="ekstrak_medium">
       </div>
 
-      <div class="form-group" style="margin-bottom: 22px;">
-        <label>Perintah Eksekusi</label>
-        <input type="text" id="vidhdAction" class="glass-input" placeholder="Contoh: render, upscale" value="upscale" />
-      </div>
-
+      <!-- Tombol 4: Eksekusi -->
       <button id="btnProcessVidHD" class="btn btn-primary click-sound">
-        <i class="fas fa-video"></i> Eksekusi Proses Backend
+        <i class="fas fa-cogs"></i> Eksekusi Video
       </button>
 
       <div id="vidhdStatusMessage" class="message-box" style="margin-top: 18px;">
@@ -2164,15 +2177,17 @@
         
         if(!res.status || !res.data || res.data.length === 0) {
             if(box.innerHTML.includes('loader-spinner') || box.innerHTML.trim() === '') {
-                box.innerHTML = `<div style="text-align:center; padding:30px; font-size:11px; color:var(--text-dim);">Belum ada transmisi. Jadilah yang pertama memulai topik diskusi.</div>`;
+                // Diubah agar menempel di bawah (margin-top: auto;)
+                box.innerHTML = `<div style="text-align:center; padding:30px; font-size:11px; color:var(--text-dim); margin-top: auto;">Belum ada transmisi. Jadilah yang pertama memulai topik diskusi.</div>`;
             }
             return;
         }
 
         let htmlString = '';
-        const msgs = res.data.reverse(); 
+        // Hapus `.reverse()` agar DOM order menjadi terbaru duluan karena dirender di atas column-reverse
+        const msgs = res.data; 
         
-        msgs.forEach(msg => {
+        msgs.forEach((msg, index) => {
             const isMe = currentUserData && msg.username === currentUserData.username;
             const isOwner = msg.role === 'Owner';
             const badgeHtml = isOwner ? `<i class="fas fa-crown" style="color:var(--gold-primary); font-size:9px; margin-right:4px;"></i>` : '';
@@ -2183,8 +2198,11 @@
                 timeFmt = `${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
             } catch(e){}
 
+            // Pesan paling awal (index 0 / terbawah di UI) dikasih margin top auto supaya UI chat menempel di dasar bawah
+            const marginTop = (index === 0) ? 'margin-top: auto;' : '';
+
             htmlString += `
-            <div style="display:flex; flex-direction:column; align-items:${isMe ? 'flex-end' : 'flex-start'};">
+            <div style="display:flex; flex-direction:column; align-items:${isMe ? 'flex-end' : 'flex-start'}; ${marginTop}">
                 <div style="font-size:9px; color:var(--text-muted); margin-bottom:4px; padding: 0 4px;">
                     ${isMe ? '' : badgeHtml}<b style="${isOwner && !isMe ? 'color:var(--gold-light)' : ''}">${msg.username}</b> • ${timeFmt}
                 </div>
@@ -2210,13 +2228,14 @@
         inputEl.disabled = true;
 
         const box = document.getElementById('chatMessagesBox');
+        const isFirst = box.children.length === 0 || box.innerHTML.includes('Belum ada transmisi');
         if(box.innerHTML.includes('Belum ada transmisi')) box.innerHTML = '';
         
         const now = new Date();
         const timeStr = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
         
         box.innerHTML += `
-        <div style="display:flex; flex-direction:column; align-items:flex-end; opacity: 0.6;" id="optimisticMsg">
+        <div style="display:flex; flex-direction:column; align-items:flex-end; opacity: 0.6; ${isFirst ? 'margin-top: auto;' : ''}" id="optimisticMsg">
             <div style="font-size:9px; color:var(--text-muted); margin-bottom:4px; padding: 0 4px;">
                 <b>${currentUserData.username}</b> • Mengirim...
             </div>
@@ -2299,17 +2318,67 @@
         });
     }
 
-    // --- EVENT LISTENER UNTUK TAB BARU: VID HD BACKEND ---
+    // --- LOGIKA BARU VID HD BACKEND DENGAN 4 TOMBOL ---
+    const vidhdDropZone = document.getElementById('vidhdDropZone');
+    const vidhdFileInput = document.getElementById('vidhdFileInput');
+    const btnVidMedium = document.getElementById('btnVidMedium');
+    const btnVid60fps = document.getElementById('btnVid60fps');
+    const vidhdActionVal = document.getElementById('vidhdActionVal');
     const btnProcessVidHD = document.getElementById('btnProcessVidHD');
+    
+    let vidhdBase64Data = '';
+
+    if (vidhdDropZone) {
+        vidhdDropZone.addEventListener('click', () => vidhdFileInput.click());
+    }
+
+    if (vidhdFileInput) {
+        vidhdFileInput.addEventListener('change', (e) => {
+            if (e.target.files && e.target.files[0]) {
+                const file = e.target.files[0];
+                document.getElementById('vidhdFileName').innerHTML = `<i class="fas fa-file-video"></i> ${file.name}`;
+                
+                // Ubah video file menjadi string Base64 untuk dilempar ke Backend/API
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    vidhdBase64Data = evt.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+
+    if (btnVidMedium && btnVid60fps) {
+        // Toggle Saklar Ekstrak Medium
+        btnVidMedium.addEventListener('click', () => {
+            vidhdActionVal.value = 'ekstrak_medium';
+            btnVidMedium.style.background = 'rgba(212, 175, 55, 0.15)';
+            btnVidMedium.style.color = 'var(--gold-primary)';
+            btnVid60fps.style.background = 'transparent';
+            btnVid60fps.style.color = 'var(--text-muted)';
+        });
+        
+        // Toggle Saklar Max 60fps
+        btnVid60fps.addEventListener('click', () => {
+            vidhdActionVal.value = 'max_60fps';
+            btnVid60fps.style.background = 'rgba(212, 175, 55, 0.15)';
+            btnVid60fps.style.color = 'var(--gold-primary)';
+            btnVidMedium.style.background = 'transparent';
+            btnVidMedium.style.color = 'var(--text-muted)';
+        });
+    }
+
     if (btnProcessVidHD) {
         btnProcessVidHD.addEventListener('click', async () => {
-            const urlVal = document.getElementById('vidhdUrl').value.trim();
-            const actionVal = document.getElementById('vidhdAction').value.trim();
+            const actionVal = vidhdActionVal.value;
             const respBox = document.getElementById('vidhdResponseData');
 
-            if (!urlVal || !actionVal) {
-                triggerErrorShake(['vidhdUrl', 'vidhdAction']);
-                return showMsg('vidhdStatusMessage', 'URL/ID Video dan Perintah wajib diisi.', 'error');
+            if (!vidhdBase64Data) {
+                vidhdDropZone.classList.remove('input-error');
+                void vidhdDropZone.offsetWidth;
+                vidhdDropZone.classList.add('input-error');
+                setTimeout(() => vidhdDropZone.classList.remove('input-error'), 400);
+                return showMsg('vidhdStatusMessage', 'Harap pilih/masukkan video terlebih dahulu.', 'error');
             }
 
             // Membutuhkan 3 limit per proses
@@ -2326,11 +2395,11 @@
             respBox.style.display = 'none';
 
             try {
-                // Endpoint mengarah ke file API Backend /api/vidhd
+                // Endpoint mengarah ke file API Backend /api/vidhd sesuai aturan tetap
                 const res = await fetch('/api/vidhd', { 
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: actionVal, url: urlVal, user: currentUserData.username })
+                    body: JSON.stringify({ action: actionVal, url: vidhdBase64Data, user: currentUserData.username })
                 });
                 const data = await res.json();
                 
@@ -2355,20 +2424,20 @@
             } catch (err) {
                 showMsg('vidhdStatusMessage', 'Koneksi ke API vidhd putus/gagal.', 'error');
             } finally {
-                btnProcessVidHD.innerHTML = '<i class="fas fa-video"></i> Eksekusi Proses Backend';
+                btnProcessVidHD.innerHTML = '<i class="fas fa-cogs"></i> Eksekusi Video';
                 btnProcessVidHD.disabled = false;
             }
         });
     }
 
-    // Fungsi SwitchTab yang dimodifikasi untuk menampung Tab Vid HD
+    // Fungsi SwitchTab
     window.switchTab = function(tabName) { 
         const secAct = document.getElementById('sectionActivator'); 
         const secEnh = document.getElementById('sectionEnhancer'); 
         const secChat = document.getElementById('sectionChat');
         const secOwn = document.getElementById('ownerPanel');
         const secReact = document.getElementById('sectionReact');
-        const secVid = document.getElementById('sectionVidHD'); // Tab Baru VidHD
+        const secVid = document.getElementById('sectionVidHD'); 
         
         if(chatIntervalId) clearInterval(chatIntervalId);
 
