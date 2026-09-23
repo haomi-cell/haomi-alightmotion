@@ -1106,7 +1106,7 @@
     </div>
   </div>
 
-  <!-- SECTION: OWNER PANEL -->
+  <!-- SECTION: OWNER PANEL (REMASTERED DETAIL) -->
   <div id="ownerPanel" class="hidden">
     <div class="glass-card">
       <div class="title-lg">Database Eksekutif</div>
@@ -2166,7 +2166,7 @@
         }
 
         if(isZeroLimitActive) {
-            filtered = filtered.filter(m => (m.limit_count || 0) <= 0);
+            filtered = filtered.filter(m => (m.limit_count || 0) <= 0 && !parseBool(m.is_permanent));
         }
 
         listEl.innerHTML = '';
@@ -2181,21 +2181,48 @@
             const isBanned = parseBool(m.is_banned);
             const limitText = isVip ? 'VIP (∞)' : `${limit} Limit`;
             const limitColor = limit <= 0 && !isVip ? 'var(--danger-light)' : 'var(--gold-light)';
+            const joinDate = m.created_at ? new Date(m.created_at).toLocaleDateString('id-ID') : '-';
 
             listEl.innerHTML += `
-            <div class="data-item" style="display:flex; justify-content:space-between; align-items:center; opacity: ${isBanned ? '0.5' : '1'};">
-                <div>
-                    <div style="font-size: 12px; font-weight: 700; color: var(--text-pure); margin-bottom: 2px;">@${m.username} ${isBanned ? '<span style="color:var(--danger-light); font-size:9px;">(BANNED)</span>' : ''}</div>
-                    <div style="font-size: 9px; color: var(--text-dim);"><i class="fab fa-whatsapp"></i> ${m.wa || '-'}</div>
-                </div>
-                <div style="text-align: right;">
-                    <div style="font-size: 11px; font-weight: 700; color: ${limitColor}; margin-bottom: 6px;">${limitText}</div>
-                    <div style="display: flex; gap: 6px; justify-content: flex-end;">
-                        <button onclick="editLimit('${m.username}', ${limit})" title="Edit Limit" style="background:var(--surface-light); border:1px solid var(--border-thin); color:var(--gold-primary); border-radius:6px; padding:4px 8px; font-size:10px; cursor:pointer;"><i class="fas fa-edit"></i></button>
-                        <button onclick="banUser('${m.username}', ${isBanned})" title="${isBanned ? 'Buka Blokir' : 'Blokir Akun'}" style="background:var(--surface-light); border:1px solid var(--border-thin); color:${isBanned ? 'var(--success-light)' : 'var(--danger-light)'}; border-radius:6px; padding:4px 8px; font-size:10px; cursor:pointer;"><i class="fas fa-${isBanned ? 'check' : 'ban'}"></i></button>
+            <div class="data-item" style="display:flex; flex-direction:column; gap:10px; opacity: ${isBanned ? '0.5' : '1'}; padding: 16px;">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                    <div>
+                        <div style="font-size: 13px; font-weight: 700; color: var(--text-pure); margin-bottom: 4px; display:flex; align-items:center; gap:6px;">
+                            @${m.username} 
+                            ${isVip ? '<i class="fas fa-crown" style="color:var(--gold-primary); font-size:10px;" title="VIP"></i>' : ''}
+                            ${isBanned ? '<span style="background:var(--danger); color:#fff; padding:2px 4px; border-radius:4px; font-size:8px;">BANNED</span>' : ''}
+                        </div>
+                        <div style="font-size: 9px; color: var(--text-dim); margin-bottom: 3px;"><i class="fab fa-whatsapp" style="width:12px;"></i> ${m.wa || 'Belum diatur'}</div>
+                        <div style="font-size: 9px; color: var(--text-dim); margin-bottom: 3px;"><i class="fas fa-network-wired" style="width:12px;"></i> ${m.ip_address || 'Tidak ada IP'}</div>
+                        <div style="font-size: 9px; color: var(--text-dim);"><i class="fas fa-calendar-alt" style="width:12px;"></i> Tgl Gabung: ${joinDate}</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 11px; font-weight: 700; color: ${limitColor}; background: var(--surface-card); padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border-thin);">${limitText}</div>
                     </div>
                 </div>
+                
+                <!-- Tombol Aksi Admin Penuh -->
+                <div style="display: flex; gap: 6px; border-top: 1px solid var(--border-thin); padding-top: 10px; margin-top: 2px;">
+                    <button onclick="toggleVip('${m.username}', ${isVip})" style="flex:1; background:var(--surface-light); border:1px solid ${isVip ? 'rgba(248,113,113,0.3)' : 'var(--border-gold)'}; color:${isVip ? 'var(--danger-light)' : 'var(--gold-light)'}; border-radius:8px; padding:6px 0; font-size:9px; font-weight:600; cursor:pointer; transition:0.2s;">
+                        <i class="fas fa-gem"></i> ${isVip ? 'Cabut VIP' : 'Jadikan VIP'}
+                    </button>
+                    <button onclick="editLimit('${m.username}', ${limit})" style="flex:1; background:var(--surface-light); border:1px solid var(--border-thin); color:var(--text-pure); border-radius:8px; padding:6px 0; font-size:9px; font-weight:600; cursor:pointer; transition:0.2s;">
+                        <i class="fas fa-edit"></i> Edit Limit
+                    </button>
+                    <button onclick="banUser('${m.username}', ${isBanned})" style="flex:1; background:var(--surface-light); border:1px solid var(--border-thin); color:${isBanned ? 'var(--success-light)' : 'var(--danger-light)'}; border-radius:8px; padding:6px 0; font-size:9px; font-weight:600; cursor:pointer; transition:0.2s;">
+                        <i class="fas fa-${isBanned ? 'check' : 'ban'}"></i> ${isBanned ? 'Unban' : 'Banned'}
+                    </button>
+                </div>
             </div>`;
+        });
+    };
+
+    window.toggleVip = function(username, currentVipStatus) {
+        const actionText = currentVipStatus ? 'MENCABUT status VIP' : 'MEMBERIKAN status VIP';
+        customConfirm(`Yakin ingin ${actionText} untuk @${username}?`, () => {
+            apiCall('updateUser', { username, updates: { is_permanent: !currentVipStatus } }).then(res => {
+                if(res.status) { customAlert(`Status VIP @${username} diperbarui.`); renderMemberList(true); }
+            });
         });
     };
 
