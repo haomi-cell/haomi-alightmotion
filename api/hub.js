@@ -5,8 +5,9 @@ const supabaseUrl = process.env.SUPABASE_URL || '';
 const supabaseKey = process.env.SUPABASE_SERVICE_KEY || '';
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-const RAMASHOP_BASE_URL = "https://ramashop.my.id/api/public";
-const RAMASHOP_API_KEY = "rg_ea029ad8b5262570682db8bbc92a43";
+// --- CONFIGURASI NEVAPEDIA ---
+const NEVAPEDIA_BASE_URL = "https://app.nevapedia.com/api";
+const NEVAPEDIA_API_KEY = "SKY_45a18f8910ed4fb2";
 
 export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -193,29 +194,23 @@ export default async function handler(req, res) {
                 return res.status(200).json({ status: true });
             }
 
-            // --- ENDPOINT QRIS RAMASHOP ---
+            // ==========================================
+            // --- ENDPOINT PAYMENT GATEWAY NEVAPEDIA ---
+            // ==========================================
             case 'createQris': {
-                const response = await axios.post(`${RAMASHOP_BASE_URL}/deposit/create`, {
-                    amount: body.amount,
-                    method: "qris"
-                }, {
-                    headers: {
-                        "X-API-Key": RAMASHOP_API_KEY,
-                        "Content-Type": "application/json"
-                    },
-                    timeout: 20000
-                });
+                const response = await axios.get(
+                    `${NEVAPEDIA_BASE_URL}/invoice?apikey=${NEVAPEDIA_API_KEY}&amount=${body.amount}`,
+                    { timeout: 20000 }
+                );
                 return res.status(200).json({ status: true, data: response.data });
             }
 
             case 'checkQris': {
-                const response = await axios.get(`${RAMASHOP_BASE_URL}/deposit/status/${body.depositId}`, {
-                    headers: {
-                        "X-API-Key": RAMASHOP_API_KEY,
-                        "Content-Type": "application/json"
-                    },
-                    timeout: 20000
-                });
+                const invoiceId = body.depositId || body.invoiceId;
+                const response = await axios.get(
+                    `${NEVAPEDIA_BASE_URL}/invoice/status?apikey=${NEVAPEDIA_API_KEY}&invoice_id=${invoiceId}`,
+                    { timeout: 20000 }
+                );
                 return res.status(200).json({ status: true, data: response.data });
             }
 
