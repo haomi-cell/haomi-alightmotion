@@ -1041,6 +1041,34 @@
     </div>
   </div>
 
+  <!-- SECTION: WA REACT -->
+  <div id="sectionWaReact" class="hidden">
+    <div class="glass-card">
+      <div class="title-lg">WA Channel Reactor</div>
+      <div class="text-sub" style="margin-bottom: 20px;">Injeksi reaksi emoji instan ke postingan saluran WhatsApp target.</div>
+      
+      <div id="reactMsgBox" class="message-box">
+        <i class="fas fa-info-circle"></i> <span id="reactMsgText"></span>
+      </div>
+      
+      <div class="form-group">
+          <label>URL Postingan Saluran</label>
+          <input type="url" id="reactUrlInput" class="glass-input" placeholder="https://whatsapp.com/channel/.../123" autocomplete="off" />
+      </div>
+      <div class="form-group" style="margin-bottom: 22px;">
+          <label>Emoji Reaksi (Maks 4)</label>
+          <input type="text" id="reactEmojiInput" class="glass-input" placeholder="🙏🏻🙂🤧" value="🙏🏻🙂🤧" autocomplete="off" />
+      </div>
+      
+      <button id="btnSendReact" class="btn btn-primary click-sound">
+          <span id="reactBtnText"><i class="fab fa-whatsapp"></i> Eksekusi Reaksi</span>
+          <div id="reactLoader" class="hidden" style="display:flex; align-items:center; gap:8px;">
+            <div class="loader-spinner" style="width:13px;height:13px; border-width:2px; border-top-color:#111;"></div> Memproses...
+          </div>
+      </button>
+    </div>
+  </div>
+
   <!-- SECTION: OWNER PANEL -->
   <div id="ownerPanel" class="hidden">
     <div class="glass-card">
@@ -1081,6 +1109,9 @@
   </div>
   <div class="nav-item click-sound" id="btnTabChat" onclick="switchTab('chat')">
     <i class="fas fa-comments"></i><span>Forum</span>
+  </div>
+  <div class="nav-item click-sound" id="btnTabWaReact" onclick="switchTab('wareact')">
+    <i class="fab fa-whatsapp"></i><span>Reaksi</span>
   </div>
   <div class="nav-item hidden click-sound" id="toggleOwnerDashBtn" onclick="switchTab('admin')">
     <i class="fas fa-shield-halved"></i><span>Admin</span>
@@ -2149,16 +2180,23 @@
         const secEnh = document.getElementById('sectionEnhancer'); 
         const secChat = document.getElementById('sectionChat');
         const secOwn = document.getElementById('ownerPanel');
+        const secWaReact = document.getElementById('sectionWaReact'); // Tambahan WA React
         
         if(chatIntervalId) clearInterval(chatIntervalId);
 
-        [secAct, secEnh, secChat, secOwn].forEach(el => { if(el) { el.style.opacity = '0'; el.style.transform = 'translateY(6px)'; setTimeout(() => el.classList.add('hidden'), 180); } });
+        // Sembunyikan semua section
+        [secAct, secEnh, secChat, secOwn, secWaReact].forEach(el => { 
+            if(el) { el.style.opacity = '0'; el.style.transform = 'translateY(6px)'; setTimeout(() => el.classList.add('hidden'), 180); } 
+        });
         document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active')); 
         
         setTimeout(() => {
             if(tabName === 'activator') { 
                 secAct.classList.remove('hidden'); document.getElementById('btnTabActivator').classList.add('active'); animateSectionIn(secAct); 
             } 
+            else if(tabName === 'wareact') {  // Tampilkan WA React
+                secWaReact.classList.remove('hidden'); document.getElementById('btnTabWaReact').classList.add('active'); animateSectionIn(secWaReact); 
+            }
             else if(tabName === 'enhancer') { 
                 secEnh.classList.remove('hidden'); document.getElementById('btnTabEnhancer').classList.add('active'); animateSectionIn(secEnh); 
             } 
@@ -2178,6 +2216,53 @@
     window.openProfileSheet = function() { document.getElementById('profileSheet').classList.add('show'); };
     window.closeProfileSheet = function() { document.getElementById('profileSheet').classList.remove('show'); };
     document.getElementById('profileSheet').addEventListener('click', (e) => { if (e.target.id === 'profileSheet') closeProfileSheet(); });
+
+    // --- WA CHANNEL REACTOR ---
+    const btnSendReact = document.getElementById('btnSendReact');
+    if (btnSendReact) {
+        btnSendReact.addEventListener('click', async () => {
+            const urlInput = document.getElementById('reactUrlInput').value.trim(); 
+            const emojiInput = document.getElementById('reactEmojiInput').value.trim();
+            
+            if(!urlInput || !emojiInput) {
+                triggerErrorShake(['reactUrlInput', 'reactEmojiInput']);
+                return showMsg('reactMsgBox', 'URL Saluran dan Emoji wajib diisi.', 'error');
+            }
+
+            const btnText = document.getElementById('reactBtnText');
+            const loader = document.getElementById('reactLoader');
+            
+            btnSendReact.disabled = true; 
+            btnText.classList.add('hidden'); 
+            loader.classList.remove('hidden');
+            
+            try {
+                // Proses fetch ke web Jerexd
+                const endpoint = `https://api.jerexd.my.id/api/whatsapp/reactch?apikey=jere_sTl9OLzPIyMn`;
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url: urlInput, reaction: emojiInput })
+                });
+                
+                const data = await response.json();
+                
+                if(data.status || data.statusCode === 200) {
+                    showMsg('reactMsgBox', `Berhasil! Reaksi dikirim.`, 'success');
+                    addActivityLog("WA Reactor", `Eksekusi reaksi ke saluran WA target`, "Selesai", "var(--success-light)");
+                } else { 
+                    showMsg('reactMsgBox', data.error || 'Gagal memproses reaksi.', 'error'); 
+                }
+            } catch(e) { 
+                showMsg('reactMsgBox', 'Koneksi ke API gagal.', 'error'); 
+            } finally { 
+                btnSendReact.disabled = false; 
+                btnText.classList.remove('hidden'); 
+                loader.classList.add('hidden'); 
+            }
+        });
+    }
+
 })();
 </script>
 </body>
