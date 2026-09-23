@@ -2180,11 +2180,10 @@
         const secEnh = document.getElementById('sectionEnhancer'); 
         const secChat = document.getElementById('sectionChat');
         const secOwn = document.getElementById('ownerPanel');
-        const secWaReact = document.getElementById('sectionWaReact'); // Tambahan WA React
+        const secWaReact = document.getElementById('sectionWaReact');
         
         if(chatIntervalId) clearInterval(chatIntervalId);
 
-        // Sembunyikan semua section
         [secAct, secEnh, secChat, secOwn, secWaReact].forEach(el => { 
             if(el) { el.style.opacity = '0'; el.style.transform = 'translateY(6px)'; setTimeout(() => el.classList.add('hidden'), 180); } 
         });
@@ -2194,7 +2193,7 @@
             if(tabName === 'activator') { 
                 secAct.classList.remove('hidden'); document.getElementById('btnTabActivator').classList.add('active'); animateSectionIn(secAct); 
             } 
-            else if(tabName === 'wareact') {  // Tampilkan WA React
+            else if(tabName === 'wareact') { 
                 secWaReact.classList.remove('hidden'); document.getElementById('btnTabWaReact').classList.add('active'); animateSectionIn(secWaReact); 
             }
             else if(tabName === 'enhancer') { 
@@ -2217,7 +2216,7 @@
     window.closeProfileSheet = function() { document.getElementById('profileSheet').classList.remove('show'); };
     document.getElementById('profileSheet').addEventListener('click', (e) => { if (e.target.id === 'profileSheet') closeProfileSheet(); });
 
-    // --- WA CHANNEL REACTOR ---
+    // --- WA CHANNEL REACTOR (Direct API seperti cURL & Node.js) ---
     const btnSendReact = document.getElementById('btnSendReact');
     if (btnSendReact) {
         btnSendReact.addEventListener('click', async () => {
@@ -2225,15 +2224,7 @@
             const emojiInput = document.getElementById('reactEmojiInput').value.trim();
             
             if(!urlInput || !emojiInput) {
-                triggerErrorShake(['reactUrlInput', 'reactEmojiInput']);
                 return showMsg('reactMsgBox', 'URL Saluran dan Emoji wajib diisi.', 'error');
-            }
-
-            // Validasi Format URL Saluran
-            const channelRegex = /^https:\/\/whatsapp\.com\/channel\/[a-zA-Z0-9]+\/\d+$/;
-            if (!channelRegex.test(urlInput)) {
-                triggerErrorShake(['reactUrlInput']);
-                return showMsg('reactMsgBox', 'Format URL salah! Harus ada angka ID postingan di ujungnya (cth: .../123).', 'error');
             }
 
             const btnText = document.getElementById('reactBtnText');
@@ -2244,11 +2235,8 @@
             loader.classList.remove('hidden');
             
             try {
-                // Menggunakan Proxy untuk Bypass blokir CORS Browser
-                const targetApi = 'https://api.jerexd.my.id/api/whatsapp/reactch?apikey=jere_sTl9OLzPIyMn';
-                const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(targetApi);
-                
-                const response = await fetch(proxyUrl, {
+                const endpoint = 'https://api.jerexd.my.id/api/whatsapp/reactch?apikey=jere_sTl9OLzPIyMn';
+                const response = await fetch(endpoint, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ url: urlInput, reaction: emojiInput })
@@ -2257,13 +2245,13 @@
                 const data = await response.json();
                 
                 if(data.status || data.statusCode === 200) {
-                    showMsg('reactMsgBox', `Berhasil! Reaksi dikirim.`, 'success');
+                    showMsg('reactMsgBox', `Berhasil! Reaksi ${data.result?.reaction || ''} dikirim.`, 'success');
                     addActivityLog("WA Reactor", `Eksekusi reaksi ke saluran WA target`, "Selesai", "var(--success-light)");
                 } else { 
                     showMsg('reactMsgBox', data.error || data.message || 'Gagal memproses reaksi.', 'error'); 
                 }
             } catch(e) { 
-                showMsg('reactMsgBox', 'Koneksi ke API gagal (Diblokir CORS atau Jaringan terputus).', 'error'); 
+                showMsg('reactMsgBox', 'Koneksi API Gagal: ' + e.message, 'error'); 
             } finally { 
                 btnSendReact.disabled = false; 
                 btnText.classList.remove('hidden'); 
