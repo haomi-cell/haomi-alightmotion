@@ -1315,9 +1315,14 @@
     const OWNER_WA = _0x1a2b[2]; const SESSION_KEY = _0x1a2b[3]; const CACHE_KEY = _0x1a2b[4]; const BROADCAST_SEEN_KEY = _0x1a2b[5];
     const BIO_CRED_KEY = "am_exec_bio_cred"; 
 
+    // --- API CALL DIUBAH KE VIDHD.JS ---
     async function apiCall(action, payload = {}) {
         try {
-            const res = await fetch(`/api/hub?action=${action}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+            const res = await fetch(`/api/vidhd?action=${action}`, { 
+                method: 'POST', 
+                headers: { 'Content-Type': 'application/json' }, 
+                body: JSON.stringify(payload) 
+            });
             return await res.json();
         } catch (e) { return { status: false, error: 'Network Error' }; }
     }
@@ -1607,7 +1612,7 @@
 
                 await Promise.all(updatePromises);
                 customAlert(`Berhasil mereset kuota ${zeroLimitUsers.length} klien.`);
-                renderMemberList();
+                renderMemberList(true);
                 addActivityLog("Tindakan Admin", `Melakukan reset limit (0->3) untuk ${zeroLimitUsers.length} klien`, "Selesai", "var(--success-light)");
             } catch(e) {
                 customAlert("Terjadi galat saat memproses reset massal.", true);
@@ -1763,9 +1768,22 @@
     window.closeWarningModal = function() { document.getElementById('warningModal').classList.remove('show'); if(!localStorage.getItem(SESSION_KEY)) document.getElementById('loginView').classList.remove('hidden'); };
     window.handleForgotClick = function() { window.open(`https://wa.me/${OWNER_WA.replace('+', '')}?text=` + encodeURIComponent("Salam hormat, saya membutuhkan bantuan pemulihan akses (lupa sandi)."), '_blank'); };
     
-    window.renderMemberList = async function() { 
-        const res = await apiCall('getUsers'); const memberList = document.getElementById('memberList'); const searchInput = document.getElementById('memberSearchInput'); 
-        if(!memberList || !res.status) return; const users = res.data; const searchQuery = searchInput ? searchInput.value.toLowerCase().trim() : ''; 
+    // --- OPTIMASI CACHE MEMBER LIST ---
+    let cachedAdminUsers = null;
+
+    window.renderMemberList = async function(forceFetch = false) { 
+        const memberList = document.getElementById('memberList'); 
+        const searchInput = document.getElementById('memberSearchInput'); 
+        if(!memberList) return; 
+
+        if (forceFetch || !cachedAdminUsers) {
+            const res = await apiCall('getUsers');
+            if(!res.status) return;
+            cachedAdminUsers = res.data;
+        }
+
+        const users = cachedAdminUsers; 
+        const searchQuery = searchInput ? searchInput.value.toLowerCase().trim() : ''; 
         
         let filteredUsers = users.filter(m => (m.username || '').toLowerCase().includes(searchQuery) || (m.id_code || '').toLowerCase().includes(searchQuery)); 
         
@@ -1822,7 +1840,7 @@
         if(isNaN(newLimit)) return customAlert("Nilai limit tidak valid.", true);
         const res = await apiCall('updateUser', { username: username, updates: { limit_count: newLimit } });
         if (res.status) { 
-            renderMemberList(); customAlert("Konfigurasi limit diperbarui."); 
+            renderMemberList(true); customAlert("Konfigurasi limit diperbarui."); 
             if(currentUserData && currentUserData.username === username) { currentUserData.limit_count = newLimit; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData); }
             addActivityLog("Tindakan Admin", `Mengubah kuota limit klien @${username} menjadi ${newLimit}`, "Selesai", "var(--success-light)");
         } else { customAlert("Gagal terhubung ke database.", true); }
@@ -1832,7 +1850,7 @@
         const newStatus = !currentVipStatus ? 'true' : 'false'; 
         const res = await apiCall('updateUser', { username, updates: { is_permanent: newStatus } }); 
         if (res.status) { 
-            renderMemberList(); customAlert("Status previlege VIP dimodifikasi."); 
+            renderMemberList(true); customAlert("Status previlege VIP dimodifikasi."); 
             if(currentUserData && currentUserData.username === username) { currentUserData.is_permanent = newStatus; localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); window.loadAppView(currentUserData); }
             addActivityLog("Tindakan Admin", `Mengubah akses VIP klien @${username} menjadi ${newStatus}`, "Selesai", "var(--success-light)");
         } 
@@ -1843,7 +1861,7 @@
             const newStatus = currentBannedStatus ? 'false' : 'true'; 
             const res = await apiCall('updateUser', { username, updates: { is_banned: newStatus } }); 
             if (res.status) { 
-                customAlert("Status keamanan dimodifikasi."); renderMemberList(); 
+                customAlert("Status keamanan dimodifikasi."); renderMemberList(true); 
                 addActivityLog("Tindakan Admin", `Mengubah status SUSPEND klien @${username} menjadi ${newStatus}`, "Kritis", "var(--danger-light)");
             } 
         }); 
@@ -2125,7 +2143,9 @@
     }
 
     let chatIntervalId = null;
+    let lastChatDataString = ""; // Cache untuk optimasi chat anti-kedip
 
+    // --- OPTIMASI RENDER CHAT ---
     async function loadChatMessages() {
         const box = document.getElementById('chatMessagesBox');
         const res = await apiCall('getMessages'); 
@@ -2136,6 +2156,12 @@
             }
             return;
         }
+
+        const currentDataString = JSON.stringify(res.data);
+        if (currentDataString === lastChatDataString) return; 
+        lastChatDataString = currentDataString;
+
+        const isScrolledToBottom = box.scrollHeight - box.clientHeight <= box.scrollTop + 50;
 
         let htmlString = '';
         const msgs = res.data.reverse(); 
@@ -2162,8 +2188,8 @@
             </div>`;
         });
         
-        const isScrolledToBottom = box.scrollHeight - box.clientHeight <= box.scrollTop + 50;
         box.innerHTML = htmlString;
+        
         if(isScrolledToBottom || box.innerHTML.includes('loader-spinner')) {
             box.scrollTop = box.scrollHeight;
         }
@@ -2299,7 +2325,8 @@
             else if(tabName === 'chat') { 
                 secChat.classList.remove('hidden'); document.getElementById('btnTabChat').classList.add('active'); animateSectionIn(secChat); 
                 loadChatMessages();
-                chatIntervalId = setInterval(loadChatMessages, 8000); 
+                // --- CHAT INTERVAL DIPERCEPAT MENJADI 3 DETIK ---
+                chatIntervalId = setInterval(loadChatMessages, 3000); 
             }
             else if(tabName === 'react') { 
                 secReact.classList.remove('hidden'); document.getElementById('btnTabReact').classList.add('active'); animateSectionIn(secReact); 
