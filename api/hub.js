@@ -3,7 +3,16 @@ import axios from 'axios';
 
 const supabaseUrl = process.env.SUPABASE_URL || '';
 const supabaseKey = process.env.SUPABASE_SERVICE_KEY || '';
-const supabase = createClient(supabaseUrl, supabaseKey);
+
+// OPTIMASI SUPABASE: Matikan fitur manajemen sesi (auth) karena menggunakan Service Key
+// Ini akan memangkas waktu inisialisasi client secara signifikan di serverless (Vercel)
+const supabase = createClient(supabaseUrl, supabaseKey, {
+    auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+        detectSessionInUrl: false
+    }
+});
 
 // --- CONFIGURASI NEVAPEDIA ---
 const NEVAPEDIA_BASE_URL = "https://app.nevapedia.com/api";
@@ -41,6 +50,7 @@ export default async function handler(req, res) {
                     return res.status(200).json({ status: false, error: 'Username dan kata sandi wajib diisi.' });
                 }
 
+                // Query menggunakan single() karena kita mencari data unik
                 const { data, error } = await supabase.from('users').select('*').eq('username', username).single();
                 if (error || !data) {
                     return res.status(200).json({ status: false, error: 'Username tidak ditemukan.' });
@@ -73,8 +83,8 @@ export default async function handler(req, res) {
                     return res.status(200).json({ status: false, error: 'Semua kolom registrasi wajib diisi.' });
                 }
 
-                // Cek duplikasi username
-                const { data: existingUser } = await supabase.from('users').select('username').eq('username', username);
+                // Cek duplikasi username (optimasi: limit 1 untuk mempercepat pencarian)
+                const { data: existingUser } = await supabase.from('users').select('username').eq('username', username).limit(1);
                 if (existingUser && existingUser.length > 0) {
                     return res.status(200).json({ status: false, error: 'Username sudah digunakan.' });
                 }
@@ -198,9 +208,11 @@ export default async function handler(req, res) {
             // --- ENDPOINT PAYMENT GATEWAY NEVAPEDIA ---
             // ==========================================
             case 'createQris': {
+                // Timeout diubah ke 9500 (9.5 detik) agar sesuai dengan batas maksimal Vercel Hobby plan (10 detik)
+                // Ini mencegah Vercel memutus paksa koneksi sehingga frontend bisa menerima respon error yang rapi
                 const response = await axios.get(
                     `${NEVAPEDIA_BASE_URL}/invoice?apikey=${NEVAPEDIA_API_KEY}&amount=${body.amount}`,
-                    { timeout: 20000 }
+                    { timeout: 9500 }
                 );
                 return res.status(200).json({ status: true, data: response.data });
             }
@@ -209,7 +221,7 @@ export default async function handler(req, res) {
                 const invoiceId = body.depositId || body.invoiceId;
                 const response = await axios.get(
                     `${NEVAPEDIA_BASE_URL}/invoice/status?apikey=${NEVAPEDIA_API_KEY}&invoice_id=${invoiceId}`,
-                    { timeout: 20000 }
+                    { timeout: 9500 }
                 );
                 return res.status(200).json({ status: true, data: response.data });
             }
