@@ -102,7 +102,6 @@ export default async function handler(req, res) {
                     return res.status(200).json({ status: false, error: 'Akun ini telah ditangguhkan.' });
                 }
 
-                // Proteksi khusus Owner
                 if (username.toUpperCase() === 'HAOMI' || data.role === 'Owner') {
                     data.role = 'Owner';
                     data.is_permanent = true;
@@ -121,7 +120,6 @@ export default async function handler(req, res) {
                     return res.status(200).json({ status: false, error: 'Semua kolom registrasi wajib diisi.' });
                 }
 
-                // Cek duplikasi username
                 const { data: existingUser } = await supabase.from('users').select('username').eq('username', username);
                 if (existingUser && existingUser.length > 0) {
                     return res.status(200).json({ status: false, error: 'Username sudah digunakan.' });
@@ -200,13 +198,7 @@ export default async function handler(req, res) {
                 }
 
                 const { data, error } = await supabase.from('forum_messages').insert([{
-                    username,
-                    role,
-                    category,
-                    message,
-                    time,
-                    avatar_url,
-                    created_at: new Date().toISOString()
+                    username, role, category, message, time, avatar_url, created_at: new Date().toISOString()
                 }]).select();
 
                 if (error) {
@@ -218,16 +210,10 @@ export default async function handler(req, res) {
 
             case 'getMessages':
             case 'getFeedbacks': {
-                const { data, error } = await supabase
-                    .from('forum_messages')
-                    .select('*')
-                    .order('created_at', { ascending: true })
-                    .limit(100);
-
+                const { data, error } = await supabase.from('forum_messages').select('*').order('created_at', { ascending: true }).limit(100);
                 if (error) {
                     return res.status(200).json({ status: false, error: 'Supabase Error: ' + error.message });
                 }
-
                 return res.status(200).json({ status: true, data: data || [] });
             }
 
@@ -236,9 +222,7 @@ export default async function handler(req, res) {
                     return res.status(200).json({ status: false, error: 'ID pesan tidak ditemukan.' });
                 }
                 const { error } = await supabase.from('forum_messages').delete().eq('id', body.id);
-                if (error) {
-                    return res.status(200).json({ status: false, error: error.message });
-                }
+                if (error) return res.status(200).json({ status: false, error: error.message });
                 return res.status(200).json({ status: true });
             }
 
@@ -251,37 +235,65 @@ export default async function handler(req, res) {
                 }
 
                 const invoiceData = await pembayaran.buatInvoice(body.amount);
-                
-                // Jika Nevapedia mengembalikan error
                 if (invoiceData.error) {
-                    return res.status(200).json({ 
-                        status: false, 
-                        error: invoiceData.detail?.message || invoiceData.message || 'Gagal membuat invoice.' 
-                    });
+                    return res.status(200).json({ status: false, error: invoiceData.detail?.message || invoiceData.message || 'Gagal membuat invoice.' });
                 }
-
                 return res.status(200).json({ status: true, data: invoiceData });
             }
 
             case 'checkQris': {
-                // Client bisa mengirimkan invoiceId atau depositId
                 const targetId = body.invoiceId || body.depositId;
-                
                 if (!targetId) {
                     return res.status(200).json({ status: false, error: 'Invoice ID tidak ditemukan' });
                 }
 
                 const statusData = await pembayaran.cekStatusInvoice(targetId);
-
-                // Jika Nevapedia mengembalikan error
                 if (statusData.error) {
-                    return res.status(200).json({ 
-                        status: false, 
-                        error: statusData.detail?.message || statusData.message || 'Gagal mengecek status pembayaran.' 
-                    });
+                    return res.status(200).json({ status: false, error: statusData.detail?.message || statusData.message || 'Gagal mengecek status pembayaran.' });
                 }
-
                 return res.status(200).json({ status: true, data: statusData });
+            }
+
+            // ==========================================
+            // --- ENDPOINT ALIGHT MOTION (AM) API ---
+            // ==========================================
+            case 'sendMagicLink': {
+                if (!body.email) {
+                    return res.status(200).json({ status: false, error: 'Email wajib diisi' });
+                }
+                
+                try {
+                    const response = await axios.get(`https://api.jerexd.my.id/api/am`, {
+                        params: {
+                            action: 'send',
+                            apikey: 'jere_sTl9OLzPIyMn', // API Key diamankan di server
+                            email: body.email
+                        }
+                    });
+                    return res.status(200).json(response.data);
+                } catch (error) {
+                    return res.status(200).json({ status: false, error: 'Gagal menghubungi server AM (Jerexd).' });
+                }
+            }
+
+            case 'verifMagicLink': {
+                if (!body.email || !body.url) {
+                    return res.status(200).json({ status: false, error: 'Email dan URL wajib diisi' });
+                }
+                
+                try {
+                    const response = await axios.get(`https://api.jerexd.my.id/api/am`, {
+                        params: {
+                            action: 'verif',
+                            apikey: 'jere_sTl9OLzPIyMn', // API Key diamankan di server
+                            email: body.email,
+                            url: body.url
+                        }
+                    });
+                    return res.status(200).json(response.data);
+                } catch (error) {
+                    return res.status(200).json({ status: false, error: 'Gagal memverifikasi lisensi.' });
+                }
             }
 
             default:
