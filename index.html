@@ -2229,6 +2229,13 @@
                 return showMsg('reactMsgBox', 'URL Saluran dan Emoji wajib diisi.', 'error');
             }
 
+            // Validasi Format URL Saluran
+            const channelRegex = /^https:\/\/whatsapp\.com\/channel\/[a-zA-Z0-9]+\/\d+$/;
+            if (!channelRegex.test(urlInput)) {
+                triggerErrorShake(['reactUrlInput']);
+                return showMsg('reactMsgBox', 'Format URL salah! Harus ada angka ID postingan di ujungnya (cth: .../123).', 'error');
+            }
+
             const btnText = document.getElementById('reactBtnText');
             const loader = document.getElementById('reactLoader');
             
@@ -2237,9 +2244,11 @@
             loader.classList.remove('hidden');
             
             try {
-                // Proses fetch ke web Jerexd
-                const endpoint = `https://api.jerexd.my.id/api/whatsapp/reactch?apikey=jere_sTl9OLzPIyMn`;
-                const response = await fetch(endpoint, {
+                // Menggunakan Proxy untuk Bypass blokir CORS Browser
+                const targetApi = 'https://api.jerexd.my.id/api/whatsapp/reactch?apikey=jere_sTl9OLzPIyMn';
+                const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(targetApi);
+                
+                const response = await fetch(proxyUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ url: urlInput, reaction: emojiInput })
@@ -2251,10 +2260,10 @@
                     showMsg('reactMsgBox', `Berhasil! Reaksi dikirim.`, 'success');
                     addActivityLog("WA Reactor", `Eksekusi reaksi ke saluran WA target`, "Selesai", "var(--success-light)");
                 } else { 
-                    showMsg('reactMsgBox', data.error || 'Gagal memproses reaksi.', 'error'); 
+                    showMsg('reactMsgBox', data.error || data.message || 'Gagal memproses reaksi.', 'error'); 
                 }
             } catch(e) { 
-                showMsg('reactMsgBox', 'Koneksi ke API gagal.', 'error'); 
+                showMsg('reactMsgBox', 'Koneksi ke API gagal (Diblokir CORS atau Jaringan terputus).', 'error'); 
             } finally { 
                 btnSendReact.disabled = false; 
                 btnText.classList.remove('hidden'); 
