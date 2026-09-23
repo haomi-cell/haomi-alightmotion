@@ -1024,9 +1024,9 @@
         Umpan balik langsung & interaksi antar klien eksekutif.
       </div>
       
-      <!-- Area Pesan (Flex Direction Column Reverse membuat otomatis flow dari bawah ke atas) -->
-      <div id="chatMessagesBox" class="chat-box-scroll" style="flex: 1; overflow-y: auto; display:flex; flex-direction:column-reverse; gap:14px; margin-bottom: 16px; padding-right:8px;">
-        <div style="text-align:center; padding: 20px; margin-top: auto;">
+      <!-- Area Pesan (Flex Direction Column membuat urutan dari lama ke baru. Pesan menempel di bawah berkat trik margin-top: auto di JS) -->
+      <div id="chatMessagesBox" class="chat-box-scroll" style="flex: 1; overflow-y: auto; display:flex; flex-direction:column; gap:14px; margin-bottom: 16px; padding-right:8px;">
+        <div style="text-align:center; padding: 20px; margin-top: auto; margin-bottom: auto;">
           <div class="loader-spinner" style="margin: 0 auto; width: 18px; height: 18px;"></div>
         </div>
       </div>
@@ -1067,7 +1067,7 @@
     </div>
   </div>
 
-  <!-- SECTION: VID HD (NEW PERMINTAAN KLIENT: 4 TOMBOL) -->
+  <!-- SECTION: VID HD (4 TOMBOL) -->
   <div id="sectionVidHD" class="hidden">
     <div class="glass-card">
       <div class="title-lg">VidHD Server</div>
@@ -2177,15 +2177,14 @@
         
         if(!res.status || !res.data || res.data.length === 0) {
             if(box.innerHTML.includes('loader-spinner') || box.innerHTML.trim() === '') {
-                // Diubah agar menempel di bawah (margin-top: auto;)
                 box.innerHTML = `<div style="text-align:center; padding:30px; font-size:11px; color:var(--text-dim); margin-top: auto;">Belum ada transmisi. Jadilah yang pertama memulai topik diskusi.</div>`;
             }
             return;
         }
 
         let htmlString = '';
-        // Hapus `.reverse()` agar DOM order menjadi terbaru duluan karena dirender di atas column-reverse
-        const msgs = res.data; 
+        // Urutkan dengan benar: pesan terlama di-loop duluan, terbaru belakangan
+        const msgs = res.data.reverse(); 
         
         msgs.forEach((msg, index) => {
             const isMe = currentUserData && msg.username === currentUserData.username;
@@ -2198,11 +2197,12 @@
                 timeFmt = `${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
             } catch(e){}
 
-            // Pesan paling awal (index 0 / terbawah di UI) dikasih margin top auto supaya UI chat menempel di dasar bawah
-            const marginTop = (index === 0) ? 'margin-top: auto;' : '';
+            // KUNCI PERBAIKAN: Margin top auto HANYA pada elemen paling atas (index 0)
+            // Ini yang membuat sisa kotak di bawahnya rapat ke dasar
+            const marginTopStyle = (index === 0) ? 'margin-top: auto;' : '';
 
             htmlString += `
-            <div style="display:flex; flex-direction:column; align-items:${isMe ? 'flex-end' : 'flex-start'}; ${marginTop}">
+            <div style="display:flex; flex-direction:column; align-items:${isMe ? 'flex-end' : 'flex-start'}; ${marginTopStyle}">
                 <div style="font-size:9px; color:var(--text-muted); margin-bottom:4px; padding: 0 4px;">
                     ${isMe ? '' : badgeHtml}<b style="${isOwner && !isMe ? 'color:var(--gold-light)' : ''}">${msg.username}</b> • ${timeFmt}
                 </div>
@@ -2214,7 +2214,9 @@
         
         const isScrolledToBottom = box.scrollHeight - box.clientHeight <= box.scrollTop + 50;
         box.innerHTML = htmlString;
-        if(isScrolledToBottom || box.innerHTML.includes('loader-spinner')) {
+        
+        // Selalu posisikan scroll di bagian paling bawah
+        if(isScrolledToBottom || box.innerHTML.includes('loader-spinner') || true) {
             box.scrollTop = box.scrollHeight;
         }
     }
@@ -2234,6 +2236,7 @@
         const now = new Date();
         const timeStr = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
         
+        // Optimistic UI, tampilkan langsung sebelum server jawab
         box.innerHTML += `
         <div style="display:flex; flex-direction:column; align-items:flex-end; opacity: 0.6; ${isFirst ? 'margin-top: auto;' : ''}" id="optimisticMsg">
             <div style="font-size:9px; color:var(--text-muted); margin-bottom:4px; padding: 0 4px;">
