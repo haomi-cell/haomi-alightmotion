@@ -572,7 +572,7 @@
     z-index: 999; display: flex; align-items: center; justify-content: center; 
     opacity: 0; pointer-events: none; transition: opacity 0.25s var(--smooth-ease); padding: 16px; 
   }
-  .overlay.show .modal-glass { transform: translateY(0) scale(1); opacity: 1; }
+  .overlay.show { opacity: 1; pointer-events: auto; }
   
   .modal-glass { 
     background: var(--surface-card); border: 1px solid var(--border-thin); border-radius: 20px; 
@@ -1126,11 +1126,11 @@
     </div>
   </div>
 
-  <!-- SECTION: COMPRES TIKTOK SMOOUT -->
+  <!-- SECTION: VID HD -->
   <div id="sectionVidHD" class="hidden">
     <div class="glass-card">
       <div class="title-lg">Compres Tiktok Smoout</div>
-      <div class="text-sub" style="margin-bottom: 16px;">Peningkatan frame rate & kompresi halus TikTok via server backend.</div>
+      <div class="text-sub" style="margin-bottom: 16px;">Peningkatan frame rate & kejernihan video via server backend.</div>
 
       <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px;">
         <!-- Tombol 1: Masukkan Video -->
@@ -1163,7 +1163,8 @@
         <i class="fas fa-info-circle"></i> <span id="vidhdStatusText"></span>
       </div>
       
-      <div id="vidhdResponseData" style="display: none;"></div>
+      <div id="vidhdResponseData" style="margin-top: 12px; font-size: 10px; color: var(--text-pure); line-height: 1.5; white-space: pre-wrap; background: var(--surface-dark); padding: 12px; border-radius: 10px; display: none; border: 1px solid var(--border-thin);">
+      </div>
     </div>
   </div>
 
@@ -1206,7 +1207,7 @@
     <i class="fas fa-wand-magic-sparkles"></i><span>Studio</span>
   </div>
   <div class="nav-item click-sound" id="btnTabVidHD" onclick="switchTab('vidhd')">
-    <i class="fas fa-video"></i><span>Compres Tiktok Smoout</span>
+    <i class="fas fa-video"></i><span>Compres</span>
   </div>
   <div class="nav-item click-sound" id="btnTabChat" onclick="switchTab('chat')">
     <i class="fas fa-comments"></i><span>Forum</span>
@@ -2367,7 +2368,7 @@
         });
     }
 
-    // COMPRES TIKTOK SMOOUT Logic
+    // VID HD Processor Logic
     const vidhdDropZone = document.getElementById('vidhdDropZone');
     const vidhdFileInput = document.getElementById('vidhdFileInput');
     const btnVidMedium = document.getElementById('btnVidMedium');
@@ -2437,55 +2438,29 @@
 
             btnProcessVidHD.innerHTML = '<div class="loader-spinner" style="width:13px;height:13px; border-width:2px; border-top-color:#000;"></div> Memproses di Server...';
             btnProcessVidHD.disabled = true;
-            if (respBox) respBox.style.display = 'none';
+            respBox.style.display = 'none';
 
             try {
-                const res = await fetch(`/api/vidhd?action=${encodeURIComponent(actionVal)}`, { 
+                const res = await fetch('/api/vidhd', { 
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        action: actionVal, 
-                        url: vidhdBase64Data, 
-                        user: currentUserData ? currentUserData.username : 'User' 
-                    })
+                    body: JSON.stringify({ action: actionVal, url: vidhdBase64Data, user: currentUserData.username })
                 });
                 const data = await res.json();
                 
                 if (res.ok && data.status) {
-                    showMsg('vidhdStatusMessage', 'Video berhasil diproses! Mengunduh otomatis...', 'success');
+                    showMsg('vidhdStatusMessage', data.message || 'Pemrosesan backend selesai.', 'success');
                     addActivityLog("Compres Tiktok Smoout", `Eksekusi video: ${actionVal}`, "-3 Limit", "var(--success-light)");
                     
-                    // Trigger download video otomatis
-                    const downloadUrl = data.videoUrl || data.downloadUrl || data.resultUrl || (data.data && (data.data.videoUrl || data.data.url)) || vidhdBase64Data;
-                    if (downloadUrl) {
-                        try {
-                            if (downloadUrl.startsWith('http')) {
-                                const dlResponse = await fetch(downloadUrl);
-                                const dlBlob = await dlResponse.blob();
-                                const blobUrl = URL.createObjectURL(dlBlob);
-                                const a = document.createElement('a');
-                                a.href = blobUrl;
-                                a.download = `Tiktok_Smoout_${Date.now()}.mp4`;
-                                document.body.appendChild(a);
-                                a.click();
-                                document.body.removeChild(a);
-                                setTimeout(() => URL.revokeObjectURL(blobUrl), 10000);
-                            } else {
-                                const a = document.createElement('a');
-                                a.href = downloadUrl;
-                                a.download = `Tiktok_Smoout_${Date.now()}.mp4`;
-                                document.body.appendChild(a);
-                                a.click();
-                                document.body.removeChild(a);
-                            }
-                        } catch (e) {
-                            const a = document.createElement('a');
-                            a.href = downloadTarget;
-                            a.download = `Tiktok_Smoout_${Date.now()}.mp4`;
-                            document.body.appendChild(a);
-                            a.click();
-                            document.body.removeChild(a);
-                        }
+                    respBox.style.display = 'none';
+
+                    if (data.video_data) {
+                        const a = document.createElement('a');
+                        a.href = data.video_data;
+                        a.download = `Smoout_Tiktok_${Date.now()}.mp4`;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
                     }
 
                     if(!isPremium) {
@@ -2499,7 +2474,7 @@
                     showMsg('vidhdStatusMessage', data.error || 'Server menolak pemrosesan video.', 'error');
                 }
             } catch (err) {
-                showMsg('vidhdStatusMessage', 'Koneksi ke server terputus.', 'error');
+                showMsg('vidhdStatusMessage', 'Koneksi ke server VidHD terputus.', 'error');
             } finally {
                 btnProcessVidHD.innerHTML = '<i class="fas fa-cogs"></i> Eksekusi Video';
                 btnProcessVidHD.disabled = false;
