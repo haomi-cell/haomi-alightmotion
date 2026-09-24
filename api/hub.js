@@ -5,7 +5,6 @@ const supabaseUrl = process.env.SUPABASE_URL || '';
 const supabaseKey = process.env.SUPABASE_SERVICE_KEY || '';
 
 // OPTIMASI SUPABASE: Matikan fitur manajemen sesi (auth) karena menggunakan Service Key
-// Ini akan memangkas waktu inisialisasi client secara signifikan di serverless (Vercel)
 const supabase = createClient(supabaseUrl, supabaseKey, {
     auth: {
         persistSession: false,
@@ -14,9 +13,9 @@ const supabase = createClient(supabaseUrl, supabaseKey, {
     }
 });
 
-// --- CONFIGURASI NEVAPEDIA ---
-const NEVAPEDIA_BASE_URL = "https://app.nevapedia.com/api";
-const NEVAPEDIA_API_KEY = "SKY_45a18f8910ed4fb2";
+// --- CONFIGURASI SAIRIBOT ---
+const SAIRIN_BASE_URL = "https://api.sairibot.my.id/api";
+const SAIRIN_API_KEY = "SKY_39575737d3d744d8";
 
 export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -50,7 +49,6 @@ export default async function handler(req, res) {
                     return res.status(200).json({ status: false, error: 'Username dan kata sandi wajib diisi.' });
                 }
 
-                // Query menggunakan single() karena kita mencari data unik
                 const { data, error } = await supabase.from('users').select('*').eq('username', username).single();
                 if (error || !data) {
                     return res.status(200).json({ status: false, error: 'Username tidak ditemukan.' });
@@ -64,7 +62,6 @@ export default async function handler(req, res) {
                     return res.status(200).json({ status: false, error: 'Akun ini telah ditangguhkan.' });
                 }
 
-                // Proteksi khusus Owner
                 if (username.toUpperCase() === 'HAOMI' || data.role === 'Owner') {
                     data.role = 'Owner';
                     data.is_permanent = true;
@@ -83,7 +80,6 @@ export default async function handler(req, res) {
                     return res.status(200).json({ status: false, error: 'Semua kolom registrasi wajib diisi.' });
                 }
 
-                // Cek duplikasi username (optimasi: limit 1 untuk mempercepat pencarian)
                 const { data: existingUser } = await supabase.from('users').select('username').eq('username', username).limit(1);
                 if (existingUser && existingUser.length > 0) {
                     return res.status(200).json({ status: false, error: 'Username sudah digunakan.' });
@@ -145,9 +141,6 @@ export default async function handler(req, res) {
                 return res.status(200).json({ status: true });
             }
 
-            // ==========================================
-            // --- FITUR FORUM CHAT & SURAT DEVELOPER ---
-            // ==========================================
             case 'sendMessage':
             case 'sendFeedback': {
                 const username = body.username ? String(body.username).trim() : 'Anonim';
@@ -205,25 +198,62 @@ export default async function handler(req, res) {
             }
 
             // ==========================================
-            // --- ENDPOINT PAYMENT GATEWAY NEVAPEDIA ---
+            // --- ENDPOINT PAYMENT GATEWAY SAIRIBOT ---
             // ==========================================
             case 'createQris': {
-                // Timeout diubah ke 9500 (9.5 detik) agar sesuai dengan batas maksimal Vercel Hobby plan (10 detik)
-                // Ini mencegah Vercel memutus paksa koneksi sehingga frontend bisa menerima respon error yang rapi
-                const response = await axios.get(
-                    `${NEVAPEDIA_BASE_URL}/invoice?apikey=${NEVAPEDIA_API_KEY}&amount=${body.amount}`,
-                    { timeout: 9500 }
-                );
-                return res.status(200).json({ status: true, data: response.data });
+                try {
+                    const response = await axios.get(
+                        `${SAIRIN_BASE_URL}/invoice?apikey=${SAIRIN_API_KEY}&amount=${body.amount}`,
+                        { timeout: 9500 }
+                    );
+                    return res.status(200).json({ status: true, data: response.data });
+                } catch (err) {
+                    const detailError = err.response && err.response.data ? err.response.data : err.message;
+                    console.error("SairiBot Create Error:", detailError);
+                    return res.status(200).json({ 
+                        status: false, 
+                        error: 'SairiBot Gagal: ' + (typeof detailError === 'object' ? JSON.stringify(detailError) : detailError) 
+                    });
+                }
             }
 
             case 'checkQris': {
-                const invoiceId = body.depositId || body.invoiceId;
-                const response = await axios.get(
-                    `${NEVAPEDIA_BASE_URL}/invoice/status?apikey=${NEVAPEDIA_API_KEY}&invoice_id=${invoiceId}`,
-                    { timeout: 9500 }
-                );
-                return res.status(200).json({ status: true, data: response.data });
+                try {
+                    const invoiceId = body.depositId;
+                    const username = body.username;
+                    const limitAmount = parseInt(body.limitAmount) || 0;
+
+                    const response = await axios.get(
+                        `${SAIRIN_BASE_URL}/invoice/status?apikey=${SAIRIN_API_KEY}&invoice_id=${invoiceId}`,
+                        { timeout: 9500 }
+                    );
+                    
+                    const statusData = response.data;
+                    const isPaid = (statusData.status === "paid" || statusData.status === "success");
+
+                    // PROTEKSI: Jika lunas, update otomatis di database via backend
+                    if (isPaid && username && limitAmount > 0) {
+                        const { data: user, error: fetchErr } = await supabase
+                            .from('users')
+                            .select('limit_count')
+                            .eq('username', username)
+                            .single();
+                            
+                        if (!fetchErr && user) {
+                            const newLimit = (user.limit_count || 0) + limitAmount;
+                            await supabase.from('users').update({ limit_count: newLimit }).eq('username', username);
+                        }
+                    }
+
+                    return res.status(200).json({ status: true, data: statusData, isPaid: isPaid });
+                } catch (err) {
+                    const detailError = err.response && err.response.data ? err.response.data : err.message;
+                    console.error("SairiBot Check Error:", detailError);
+                    return res.status(200).json({ 
+                        status: false, 
+                        error: 'SairiBot Cek Gagal: ' + (typeof detailError === 'object' ? JSON.stringify(detailError) : detailError) 
+                    });
+                }
             }
 
             default:
