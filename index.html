@@ -1129,6 +1129,7 @@
   <!-- SECTION: VID HD -->
   <div id="sectionVidHD" class="hidden">
     <div class="glass-card">
+      <!-- PERUBAHAN NAMA FITUR DISINI -->
       <div class="title-lg">Compres Tiktok Smoout</div>
       <div class="text-sub" style="margin-bottom: 16px;">Peningkatan frame rate & kejernihan video via server backend.</div>
 
@@ -1206,8 +1207,9 @@
   <div class="nav-item click-sound" id="btnTabEnhancer" onclick="switchTab('enhancer')">
     <i class="fas fa-wand-magic-sparkles"></i><span>Studio</span>
   </div>
+  <!-- PERUBAHAN NAMA NAVIGASI DISINI -->
   <div class="nav-item click-sound" id="btnTabVidHD" onclick="switchTab('vidhd')">
-    <i class="fas fa-video"></i><span>Compres</span>
+    <i class="fas fa-video"></i><span>Smoout</span>
   </div>
   <div class="nav-item click-sound" id="btnTabChat" onclick="switchTab('chat')">
     <i class="fas fa-comments"></i><span>Forum</span>
@@ -2368,7 +2370,7 @@
         });
     }
 
-        // VID HD Processor Logic
+    // VID HD Processor Logic
     const vidhdDropZone = document.getElementById('vidhdDropZone');
     const vidhdFileInput = document.getElementById('vidhdFileInput');
     const btnVidMedium = document.getElementById('btnVidMedium');
@@ -2386,15 +2388,6 @@
         vidhdFileInput.addEventListener('change', (e) => {
             if (e.target.files && e.target.files[0]) {
                 const file = e.target.files[0];
-                
-                // Validasi ukuran video di frontend (Maksimal 25MB)
-                const maxSizeBytes = 25 * 1024 * 1024;
-                if (file.size > maxSizeBytes) {
-                    customAlert("Ukuran video terlalu besar. Maksimal 25MB.", true);
-                    vidhdFileInput.value = '';
-                    return;
-                }
-
                 document.getElementById('vidhdFileName').innerHTML = `<i class="fas fa-file-video"></i> ${file.name}`;
                 
                 const reader = new FileReader();
@@ -2427,6 +2420,8 @@
     if (btnProcessVidHD) {
         btnProcessVidHD.addEventListener('click', async () => {
             const actionVal = vidhdActionVal.value;
+            
+            // ELEMEN RESPONS TEKS DIHILANGKAN SECARA VISUAL
             const respBox = document.getElementById('vidhdResponseData');
 
             if (!vidhdBase64Data) {
@@ -2447,7 +2442,7 @@
 
             btnProcessVidHD.innerHTML = '<div class="loader-spinner" style="width:13px;height:13px; border-width:2px; border-top-color:#000;"></div> Memproses di Server...';
             btnProcessVidHD.disabled = true;
-            if(respBox) respBox.style.display = 'none'; // Sembunyikan JSON raw yang mengganggu
+            respBox.style.display = 'none';
 
             try {
                 const res = await fetch('/api/vidhd', { 
@@ -2455,29 +2450,23 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ action: actionVal, url: vidhdBase64Data, user: currentUserData.username })
                 });
-                
-                // Cegah crash jika Vercel mengembalikan HTML (Error 413 / Payload terlalu besar)
-                const contentType = res.headers.get("content-type");
-                if (!contentType || !contentType.includes("application/json")) {
-                    if (res.status === 413) throw new Error("Ukuran file ditolak server Vercel (Terlalu Besar).");
-                    throw new Error(`Server bermasalah. Status HTTP: ${res.status}`);
-                }
-
                 const data = await res.json();
                 
                 if (res.ok && data.status) {
-                    showMsg('vidhdStatusMessage', data.message || 'Pemrosesan backend selesai.', 'success');
+                    showMsg('vidhdStatusMessage', data.message || 'Pemrosesan selesai, mengunduh otomatis...', 'success');
                     addActivityLog("Compres Tiktok Smoout", `Eksekusi video: ${actionVal}`, "-3 Limit", "var(--success-light)");
                     
-                    // Fitur download video otomatis tanpa memunculkan teks
-                    if (data.video_data) {
-                        const a = document.createElement('a');
-                        a.href = data.video_data;
-                        a.download = `Smoout_Tiktok_${Date.now()}.mp4`;
-                        document.body.appendChild(a);
-                        a.click();
-                        document.body.removeChild(a);
-                    }
+                    // Sembunyikan pesan tulisan mentah / json
+                    respBox.style.display = 'none';
+
+                    // LOGIKA DOWNLOAD OTOMATIS
+                    const downloadLink = document.createElement('a');
+                    // Menggunakan data URL yang didapat dari payload asli yang dikembalikan backend atau fallback ke variabel lokal
+                    downloadLink.href = data.data && data.data.url ? data.data.url : vidhdBase64Data;
+                    downloadLink.download = `Smoout_${actionVal}_${Date.now()}.mp4`;
+                    document.body.appendChild(downloadLink);
+                    downloadLink.click();
+                    document.body.removeChild(downloadLink);
 
                     if(!isPremium) {
                         let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 3); 
@@ -2490,15 +2479,13 @@
                     showMsg('vidhdStatusMessage', data.error || 'Server menolak pemrosesan video.', 'error');
                 }
             } catch (err) {
-                const errMsg = err.message === 'Failed to fetch' ? 'Koneksi internet terputus.' : err.message;
-                showMsg('vidhdStatusMessage', errMsg, 'error');
+                showMsg('vidhdStatusMessage', 'Koneksi ke server API terputus.', 'error');
             } finally {
                 btnProcessVidHD.innerHTML = '<i class="fas fa-cogs"></i> Eksekusi Video';
                 btnProcessVidHD.disabled = false;
             }
         });
     }
-
 
     // Tab Navigation Logic
     window.switchTab = function(tabName) { 
