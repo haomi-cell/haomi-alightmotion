@@ -2434,7 +2434,7 @@
         }
     }
 
-    if (btnProcessVidHD) {
+        if (btnProcessVidHD) {
         btnProcessVidHD.addEventListener('click', async () => {
             const actionVal = vidhdActionVal.value;
             const respBox = document.getElementById('vidhdResponseData');
@@ -2465,16 +2465,21 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ action: actionVal, url: vidhdBase64Data, user: currentUserData.username })
                 });
+
+                // PERBAIKAN: Tangkap error HTTP asli dari Vercel (misal 413 atau 504)
+                if (!res.ok) {
+                    throw new Error(`Server Error ${res.status}: ${res.statusText}`);
+                }
+
                 const data = await res.json();
                 
-                if (res.ok && data.status) {
+                if (data.status) {
                     showMsg('vidhdStatusMessage', data.message || 'Pemrosesan Compres Tiktok Smooth selesai. Mengunduh otomatis...', 'success');
-                    addActivityLog("TikTok Compressor", `Compres Tiktok Smooth: ${actionVal}`, "-3 Limit", "var(--success-light)");
+                    if (typeof addActivityLog === 'function') addActivityLog("TikTok Compressor", `Compres Tiktok Smooth: ${actionVal}`, "-3 Limit", "var(--success-light)");
                     
                     respBox.style.display = 'block';
                     respBox.textContent = "Respon API:\n" + JSON.stringify(data, null, 2);
 
-                    // Auto download hasil pemrosesan video jika server mengembalikan url/video/base64
                     const downloadTarget = data.download_url || data.video_url || data.result_url || data.url || data.video || (typeof data.data === 'string' ? data.data : (data.data?.url || data.data?.video_url || vidhdBase64Data));
                     if (downloadTarget) {
                         const outName = selectedVidFile ? `Smooth_${selectedVidFile.name}` : 'Compres_Tiktok_Smooth.mp4';
@@ -2492,12 +2497,16 @@
                     showMsg('vidhdStatusMessage', data.error || 'Server menolak pemrosesan video.', 'error');
                 }
             } catch (err) {
-                showMsg('vidhdStatusMessage', 'Koneksi ke server VidHD terputus.', 'error');
+                // PERBAIKAN: Tampilkan pesan error detail ke layar
+                showMsg('vidhdStatusMessage', `Gagal: ${err.message}`, 'error');
+                console.error("Detail Error:", err);
             } finally {
                 btnProcessVidHD.innerHTML = '<i class="fas fa-cogs"></i> Eksekusi Compres Tiktok Smooth';
                 btnProcessVidHD.disabled = false;
             }
         });
+    }
+
     }
 
     // Tab Navigation Logic
