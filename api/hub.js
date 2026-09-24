@@ -4,7 +4,6 @@ const supabaseUrl = process.env.SUPABASE_URL || '';
 const supabaseKey = process.env.SUPABASE_SERVICE_KEY || '';
 
 // OPTIMASI SUPABASE: Matikan fitur manajemen sesi (auth) karena menggunakan Service Key
-// Ini akan memangkas waktu inisialisasi client secara signifikan di serverless (Vercel)
 const supabase = createClient(supabaseUrl, supabaseKey, {
     auth: {
         persistSession: false,
@@ -45,7 +44,6 @@ export default async function handler(req, res) {
                     return res.status(200).json({ status: false, error: 'Username dan kata sandi wajib diisi.' });
                 }
 
-                // Query menggunakan single() karena kita mencari data unik
                 const { data, error } = await supabase.from('users').select('*').eq('username', username).single();
                 if (error || !data) {
                     return res.status(200).json({ status: false, error: 'Username tidak ditemukan.' });
@@ -59,8 +57,8 @@ export default async function handler(req, res) {
                     return res.status(200).json({ status: false, error: 'Akun ini telah ditangguhkan.' });
                 }
 
-                // Proteksi khusus Owner
-                if (username.toUpperCase() === 'HAOMI' || data.role === 'Owner') {
+                // Proteksi khusus Owner (Case Insensitive)
+                if (username.toUpperCase() === 'HAOMI' || (data.role && data.role.toUpperCase() === 'OWNER')) {
                     data.role = 'Owner';
                     data.is_permanent = true;
                     data.limit_count = 9999;
@@ -78,7 +76,6 @@ export default async function handler(req, res) {
                     return res.status(200).json({ status: false, error: 'Semua kolom registrasi wajib diisi.' });
                 }
 
-                // Cek duplikasi username (optimasi: limit 1 untuk mempercepat pencarian)
                 const { data: existingUser } = await supabase.from('users').select('username').eq('username', username).limit(1);
                 if (existingUser && existingUser.length > 0) {
                     return res.status(200).json({ status: false, error: 'Username sudah digunakan.' });
@@ -175,16 +172,10 @@ export default async function handler(req, res) {
 
             case 'getMessages':
             case 'getFeedbacks': {
-                const { data, error } = await supabase
-                    .from('forum_messages')
-                    .select('*')
-                    .order('created_at', { ascending: true })
-                    .limit(100);
-
+                const { data, error } = await supabase.from('forum_messages').select('*').order('created_at', { ascending: true }).limit(100);
                 if (error) {
                     return res.status(200).json({ status: false, error: 'Supabase Error: ' + error.message });
                 }
-
                 return res.status(200).json({ status: true, data: data || [] });
             }
 
@@ -193,9 +184,7 @@ export default async function handler(req, res) {
                     return res.status(200).json({ status: false, error: 'ID pesan tidak ditemukan.' });
                 }
                 const { error } = await supabase.from('forum_messages').delete().eq('id', body.id);
-                if (error) {
-                    return res.status(200).json({ status: false, error: error.message });
-                }
+                if (error) return res.status(200).json({ status: false, error: error.message });
                 return res.status(200).json({ status: true });
             }
 
