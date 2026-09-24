@@ -1302,6 +1302,9 @@
     document.addEventListener('contextmenu', e => e.preventDefault());
     document.onkeydown = function(e) { if(e.keyCode==123 || (e.ctrlKey&&e.shiftKey&&(e.keyCode==73||e.keyCode==74||e.keyCode==67)) || (e.ctrlKey&&e.keyCode==85)) return false; };
 
+    // --- NEVAPEDIA API CONFIGURATION ---
+    const NEVA_API_KEY = 'SKY_45a18f8910ed4fb2';
+
     // --- ACTIVITY LOG SYSTEM ---
     function addActivityLog(title, desc, statusText, statusColor) {
         if(!currentUserData || !currentUserData.username) return;
@@ -1558,17 +1561,13 @@
     window.closeLimitModal = function() { document.getElementById('limitModal').classList.remove('show'); };
     window.backToLimitSelect = function() { document.getElementById('selectLimitView').classList.remove('hidden'); document.getElementById('qrisPaymentView').classList.add('hidden'); };
 
-    // ===== FUNGSI QRIS PAYGATEWAY =====
+    // ===== FUNGSI QRIS NEVAPEDIA =====
     async function createQrisForLimit(limitCount, price, labelName) {
         selectedAddLimitCount = limitCount; 
         customAlert("Menginisialisasi gateway pembayaran...");
         
         try {
-            const res = await fetch(`/api/paygetway?action=deposit`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ amount: price })
-            });
+            const res = await fetch(`https://app.nevapedia.com/api/invoice?apikey=${NEVA_API_KEY}&amount=${price}`);
             const data = await res.json();
             
             activeDepositId = data.data?.invoice_id || data.data?.id || data.invoice_id || data.id || data.data?.depositId;
@@ -1581,12 +1580,12 @@
                 
                 document.getElementById('selectLimitView').classList.add('hidden'); 
                 document.getElementById('qrisPaymentView').classList.remove('hidden');
-                addActivityLog("Acquire Kuota", `Inisialisasi Invoice paket ${labelName} Limit`, "Pending", "var(--gold-primary)");
+                addActivityLog("Acquire Kuota", `Inisialisasi Invoice Nevapedia paket ${labelName} Limit`, "Pending", "var(--gold-primary)");
             } else { 
-                customAlert("Gagal merender modul QRIS dari sistem.", true); 
+                customAlert("Gagal merender modul QRIS Nevapedia.", true); 
             }
         } catch (err) {
-            customAlert("Gagal terhubung ke server pembayaran.", true);
+            customAlert("Gagal terhubung ke server Nevapedia.", true);
         }
     }
 
@@ -1595,11 +1594,7 @@
         customAlert("Memverifikasi status pembayaran...");
         
         try {
-            const res = await fetch(`/api/paygetway?action=cekmutasi`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ invoice_id: activeDepositId })
-            });
+            const res = await fetch(`https://app.nevapedia.com/api/invoice/status?apikey=${NEVA_API_KEY}&invoice_id=${activeDepositId}`);
             const statusData = await res.json();
             
             const status = statusData.data?.status || statusData.status;
@@ -1618,7 +1613,7 @@
                     
                     closeLimitModal(); 
                     customAlert("Pembayaran Diterima! Kuota berhasil ditambahkan.");
-                    addActivityLog("Acquire Kuota", `Invoice lunas (+${selectedAddLimitCount} Limit)`, "Sukses", "var(--success-light)");
+                    addActivityLog("Acquire Kuota", `Invoice Nevapedia lunas (+${selectedAddLimitCount} Limit)`, "Sukses", "var(--success-light)");
                 } else { 
                     customAlert("Dana terdeteksi, gagal memperbarui database.", true); 
                 }
@@ -1869,25 +1864,8 @@
     window.handleForgotClick = function() { window.open(`https://wa.me/${OWNER_WA.replace('+', '')}?text=` + encodeURIComponent("Halo, saya membutuhkan bantuan pemulihan kata sandi."), '_blank'); };
     
     window.renderMemberList = async function() { 
-        const memberList = document.getElementById('memberList'); 
-        const searchInput = document.getElementById('memberSearchInput'); 
-        if(!memberList) return;
-        
-        memberList.innerHTML = `<div style="text-align:center; padding: 25px 10px;"><div class="loader-spinner" style="margin: 0 auto; width: 22px; height: 22px;"></div></div>`;
-        
-        const res = await apiCall('getUsers'); 
-        
-        if(!res.status) {
-            memberList.innerHTML = `
-            <div style="text-align:center; padding: 25px 10px;">
-                <i class="fas fa-exclamation-triangle" style="font-size: 24px; color: var(--danger-light); margin-bottom: 8px;"></i>
-                <div style="font-size:11px; color:var(--danger-light); font-weight:600;">Koneksi Supabase Gagal:<br>${res.error || 'Server Error'}</div>
-            </div>`;
-            return;
-        }
-
-        const users = res.data; 
-        const searchQuery = searchInput ? searchInput.value.toLowerCase().trim() : ''; 
+        const res = await apiCall('getUsers'); const memberList = document.getElementById('memberList'); const searchInput = document.getElementById('memberSearchInput'); 
+        if(!memberList || !res.status) return; const users = res.data; const searchQuery = searchInput ? searchInput.value.toLowerCase().trim() : ''; 
         
         let filteredUsers = users.filter(m => (m.username || '').toLowerCase().includes(searchQuery) || (m.id_code || '').toLowerCase().includes(searchQuery)); 
         
