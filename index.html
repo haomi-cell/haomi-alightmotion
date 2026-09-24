@@ -499,6 +499,53 @@
   .nav-item.active i { transform: translateY(-1px); }
   .nav-item:hover { color: var(--text-pure); }
 
+  /* FLOATING ACTION MENU */
+  .floating-action-menu {
+    position: fixed;
+    bottom: 95px; 
+    right: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 100;
+  }
+  
+  .fab-btn {
+    width: 46px; 
+    height: 46px;
+    border-radius: 50%;
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    font-size: 18px;
+    border: 1px solid var(--border-gold);
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.4), 0 0 15px var(--gold-glow);
+    transition: all 0.3s var(--smooth-ease);
+  }
+  
+  .fab-info {
+    background: var(--surface-card);
+    backdrop-filter: blur(10px);
+    color: var(--gold-primary);
+  }
+  .fab-info:hover { 
+    background: var(--gold-primary); 
+    color: #111; 
+    transform: scale(1.1) rotate(10deg); 
+  }
+  
+  .fab-wa {
+    background: #25D366; 
+    color: #fff;
+    border: 1px solid #1DA851;
+  }
+  .fab-wa:hover { 
+    background: #1DA851; 
+    transform: scale(1.1) rotate(-10deg); 
+    box-shadow: 0 10px 20px rgba(37, 211, 102, 0.4);
+  }
+
   /* MODALS & PANELS */
   .overlay { 
     position: fixed; inset: 0; background: var(--overlay-bg); backdrop-filter: blur(12px); 
@@ -657,15 +704,36 @@
       <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(212,175,55,0.08); display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-gold);">
         <i class="fas fa-book-open" style="font-size: 14px; color: var(--gold-primary);"></i>
       </div>
-      <div class="title-lg" style="margin: 0; font-size: 17px;">Pusat Bantuan</div>
+      <div class="title-lg" style="margin: 0; font-size: 17px;">Pusat Bantuan & Limit</div>
     </div>
     
-    <div style="font-size: 11px; line-height: 1.65; color: var(--text-pure); margin-bottom: 22px;">
-      <p style="margin-bottom: 10px;"><b style="color:var(--gold-light);">Neural AI Studio:</b> Fitur otomatis untuk merestorasi dan meningkatkan resolusi citra menjadi resolusi tinggi (HD/Super Res).</p>
-      <p style="margin-bottom: 10px;"><b style="color:var(--gold-light);">Aktivasi Lisensi:</b> Sinkronisasi sesi otentikasi perangkat klien ke gerbang server utama.</p>
-      <p><b style="color:var(--gold-light);">Magic Link:</b> Tautan enkripsi sekali pakai yang diteruskan ke email terdaftar untuk otorisasi tanpa kata sandi.</p>
+    <div style="font-size: 11px; line-height: 1.65; color: var(--text-pure); margin-bottom: 22px; max-height: 50vh; overflow-y: auto; padding-right: 5px;" class="chat-box-scroll">
+      
+      <p style="margin-bottom: 12px;">Beberapa fitur premium menggunakan <b>Kuota (Limit)</b>. Limit hanya terpotong jika instruksi berhasil dijalankan. Fitur <b>Gratis</b> dapat digunakan sepuasnya.</p>
+
+      <div style="background: var(--surface-light); border: 1px solid var(--border-thin); padding: 12px; border-radius: 10px; margin-bottom: 12px;">
+         <b style="color:var(--gold-light); display:block; margin-bottom:4px;"><i class="fab fa-whatsapp"></i> WA Channel Reactor (-2 Limit)</b>
+         Kirim reaksi otomatis ke saluran WA. <br>
+         <b style="color:var(--danger-light);">PENTING:</b> URL wajib berupa <b>Link Pesan</b> (contoh: <i>.../channel/XXX/123</i> harus ada angka di belakangnya). Gunakan maksimal <b>1 emoji standar</b> (contoh: 👍 atau ❤️).
+      </div>
+      
+      <div style="background: var(--surface-light); border: 1px solid var(--border-thin); padding: 12px; border-radius: 10px; margin-bottom: 12px;">
+         <b style="color:var(--gold-light); display:block; margin-bottom:4px;"><i class="fas fa-key"></i> Aktivasi Lisensi AM (-1 Limit)</b>
+         Otentikasi lisensi via URL Magic Link yang dikirim ke email.
+      </div>
+
+      <div style="background: var(--surface-light); border: 1px solid var(--border-thin); padding: 12px; border-radius: 10px; margin-bottom: 12px;">
+         <b style="color:var(--success-light); display:block; margin-bottom:4px;"><i class="fas fa-wand-magic-sparkles"></i> Neural AI Studio (Gratis)</b>
+         Restorasi dan tingkatkan resolusi foto menjadi kualitas HD. Fitur ini 100% gratis dan tidak akan memotong limit Anda.
+      </div>
+
+      <div style="background: var(--surface-light); border: 1px solid var(--border-thin); padding: 12px; border-radius: 10px; margin-bottom: 12px;">
+         <b style="color:var(--success-light); display:block; margin-bottom:4px;"><i class="fas fa-comments"></i> Forum Komunikasi (Gratis)</b>
+         Ruang transmisi interaktif antar sesama klien eksekutif secara real-time.
+      </div>
+
     </div>
-    <button class="btn btn-outline click-sound" onclick="closeHelpModal()">Tutup Panduan</button>
+    <button class="btn btn-outline click-sound" onclick="closeHelpModal()">Saya Mengerti</button>
   </div>
 </div>
 
@@ -753,6 +821,54 @@
     </div>
     <div id="broadcastContentText" style="background: var(--surface-light); border-left: 3px solid var(--gold-primary); padding: 16px; font-size: 12px; line-height: 1.7; color: var(--text-pure); margin-bottom: 22px; border-radius: 0 10px 10px 0;">Memuat transmisi...</div>
     <button class="btn btn-outline click-sound" onclick="closeBroadcastModal()">Tandai Telah Dibaca</button>
+  </div>
+</div>
+
+<!-- MODAL: PANDUAN WAJIB (DARI TOMBOL TANDA SERU) -->
+<div id="guideModal" class="overlay">
+  <div class="modal-glass" style="border-color: var(--gold-primary);">
+    <button class="btn-close click-sound" onclick="closeGuideModal()"><i class="fas fa-times"></i></button>
+    
+    <div style="text-align: center; margin-bottom: 20px;">
+      <div style="width: 50px; height: 50px; border-radius: 14px; background: rgba(212,175,55,0.1); border: 1px solid var(--gold-primary); display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; color: var(--gold-primary); font-size: 22px; box-shadow: var(--shadow-glow);">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      <div class="title-lg" style="font-size: 19px;">Panduan Wajib Klien</div>
+      <div class="text-sub">Deskripsi dan tata cara penggunaan fitur sistem yang wajib dipatuhi.</div>
+    </div>
+    
+    <div style="max-height: 50vh; overflow-y: auto; padding-right: 5px; margin-bottom: 20px;" class="chat-box-scroll">
+      
+      <!-- Aturan Limit -->
+      <div style="background: var(--surface-light); border-left: 3px solid var(--gold-primary); padding: 12px; border-radius: 0 10px 10px 0; margin-bottom: 12px; font-size: 11px; line-height: 1.6;">
+         <b>SISTEM KUOTA (LIMIT)</b><br>
+         Limit Anda hanya akan terpotong jika instruksi <b>berhasil</b> dieksekusi oleh server. Jika terjadi kegagalan atau salah input, limit Anda tidak akan berkurang (otomatis di-refund).
+      </div>
+
+      <!-- Panduan WA React -->
+      <div style="background: var(--surface-light); border: 1px solid var(--border-thin); padding: 12px; border-radius: 10px; margin-bottom: 12px; font-size: 11px; line-height: 1.6;">
+         <b style="color:var(--gold-light);"><i class="fab fa-whatsapp"></i> WA Channel Reactor (Butuh 2 Limit)</b><br>
+         <ul style="padding-left: 16px; margin-top: 6px; color: var(--text-pure);">
+           <li style="margin-bottom: 4px;"><b>URL Wajib:</b> Gunakan Tautan Pesan Spesifik (biasanya diakhiri dengan angka ID pesan seperti <i>.../123</i>), <b>bukan</b> tautan profil channel. Jika salah, sistem akan menolak otomatis.</li>
+           <li><b>Emoji:</b> Masukkan maksimal 1 emoji standar (contoh: 👍, ❤️, 🙏) tanpa modifikasi warna kulit.</li>
+         </ul>
+      </div>
+
+      <!-- Panduan AM Activator -->
+      <div style="background: var(--surface-light); border: 1px solid var(--border-thin); padding: 12px; border-radius: 10px; margin-bottom: 12px; font-size: 11px; line-height: 1.6;">
+         <b style="color:var(--gold-light);"><i class="fas fa-key"></i> Aktivasi Lisensi AM (Butuh 1 Limit)</b><br>
+         Pastikan alamat email valid. Anda harus menyalin URL lengkap dari email Magic Link yang masuk untuk memverifikasi otentikasi.
+      </div>
+
+      <!-- Panduan Studio AI -->
+      <div style="background: var(--surface-light); border: 1px solid var(--border-thin); padding: 12px; border-radius: 10px; margin-bottom: 12px; font-size: 11px; line-height: 1.6;">
+         <b style="color:var(--success-light);"><i class="fas fa-wand-magic-sparkles"></i> Neural AI Studio (Gratis Sepuasnya)</b><br>
+         Fitur peningkatan resolusi foto dan penjernihan ini 100% gratis tanpa memotong kuota.
+      </div>
+
+    </div>
+    
+    <button class="btn btn-primary click-sound" onclick="closeGuideModal()" style="font-weight: 700;">SAYA MENGERTI</button>
   </div>
 </div>
 
@@ -1049,12 +1165,12 @@
       
       <div class="form-group">
         <label>URL Saluran WhatsApp</label>
-        <input type="url" id="waReactUrl" class="glass-input" placeholder="https://whatsapp.com/channel/..." />
+        <input type="url" id="waReactUrl" class="glass-input" placeholder="https://whatsapp.com/channel/.../123" />
       </div>
       
       <div class="form-group" style="margin-bottom: 22px;">
         <label>Emoji Reaksi</label>
-        <input type="text" id="waReactEmoji" class="glass-input" placeholder="Conto: 🙏🏻🙂🤧" />
+        <input type="text" id="waReactEmoji" class="glass-input" placeholder="Conto: 👍 atau ❤️" />
       </div>
       
       <button id="btnSendReaction" class="btn btn-primary click-sound">
@@ -1097,7 +1213,7 @@
   </div>
 </main>
 
-<!-- FLOATING BOTTOM DOCK -->
+<!-- FLOATING DOCK BOTTOM NAV -->
 <nav class="bottom-nav hidden" id="mainBottomNav" aria-label="Navigasi Utama">
   <div class="nav-item active click-sound" id="btnTabActivator" onclick="switchTab('activator')">
     <i class="fas fa-key"></i><span>Lisensi</span>
@@ -1115,6 +1231,16 @@
     <i class="fas fa-shield-halved"></i><span>Admin</span>
   </div>
 </nav>
+
+<!-- FLOATING ACTION MENU -->
+<div class="floating-action-menu hidden" id="floatingMenuContainer">
+  <button class="fab-btn fab-wa click-sound" onclick="contactOwnerCS()" title="Hubungi Mas Hao">
+    <i class="fab fa-whatsapp" style="font-size: 22px;"></i>
+  </button>
+  <button class="fab-btn fab-info click-sound" onclick="openGuideModal()" title="Panduan Wajib">
+    <i class="fas fa-exclamation" style="font-size: 20px;"></i>
+  </button>
+</div>
 
 <!-- PROFILE SIDE PANEL -->
 <div id="profileSheet" class="overlay" style="justify-content: flex-end; padding: 0;">
@@ -1321,6 +1447,15 @@
 
     window.openHelpModal = function() { document.getElementById('helpModal').classList.add('show'); };
     window.closeHelpModal = function() { document.getElementById('helpModal').classList.remove('show'); };
+    
+    // NEW MODAL FUNCTIONS
+    window.openGuideModal = function() { document.getElementById('guideModal').classList.add('show'); };
+    window.closeGuideModal = function() { document.getElementById('guideModal').classList.remove('show'); };
+    window.contactOwnerCS = function() {
+        const text = "Halo Mas Hao🤓";
+        window.open(`https://wa.me/6282231669053?text=${encodeURIComponent(text)}`, '_blank');
+        addActivityLog("Customer Service", "Membuka sambungan chat ke Owner", "Info", "var(--gold-primary)");
+    };
 
     window.customAlert = function(msg, isError = false) {
         const toast = document.getElementById('globalToast'); document.getElementById('toastMsg').textContent = msg;
@@ -1727,15 +1862,31 @@
             } else { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(CACHE_KEY); switchView('loginView'); } 
         } catch (err) {} 
     }
+
+    // UPDATE PADA SWITCHVIEW: Untuk menahan tombol floating tampil di Login/Register
     window.switchView = function(viewId) { 
         ['loginView', 'registerView', 'appView'].forEach(v => { const el = document.getElementById(v); if(el) el.classList.add('hidden'); }); 
         const targetView = document.getElementById(viewId); 
         if(targetView) { targetView.classList.remove('hidden'); targetView.style.animation = 'none'; targetView.offsetHeight; targetView.style.animation = null; }
         if(viewId === 'registerView') { generateCaptcha(); document.getElementById('regCaptcha').value = ''; } 
         clearFormMessages(); 
-        if(viewId !== 'appView') document.getElementById('mainBottomNav').classList.add('hidden');
+        
+        if(viewId !== 'appView') {
+            document.getElementById('mainBottomNav').classList.add('hidden');
+        }
+        
+        const floatMenu = document.getElementById('floatingMenuContainer');
+        if(floatMenu) {
+            if(viewId === 'loginView' || viewId === 'registerView') {
+                floatMenu.classList.add('hidden');
+            } else {
+                floatMenu.classList.remove('hidden');
+            }
+        }
+
         if(viewId === 'loginView') checkBiometricAvailable();
     };
+    
     function clearFormMessages() { document.querySelectorAll('.message-box').forEach(el => { el.classList.remove('show', 'message-success', 'message-error'); el.querySelector('span') && (el.querySelector('span').innerHTML = ''); }); }
     function showMsg(elId, text, type = 'error') { 
         const el = document.getElementById(elId); if(el) { const span = el.querySelector('span') || el; span.innerHTML = text; el.className = 'message-box show'; 
@@ -1941,7 +2092,8 @@
                 showMsg('statusMessage', 'Proses render selesai dengan resolusi optimal.', 'success');
                 
                 let modeTxt = selectedMode === '2x' ? 'Super Res 2x' : (selectedMode === '1x' ? 'Clean & Sharpen' : 'Dynamic HDR');
-                addActivityLog("Neural AI Studio", `Eksekusi Render dengan mode ${modeTxt} (Kekuatan ${strengthRange.value}%)`, "-1 Limit", "var(--danger-light)");
+                // UPDATE LOG UNTUK AI GRATIS
+                addActivityLog("Neural AI Studio", `Eksekusi Render dengan mode ${modeTxt} (Kekuatan ${strengthRange.value}%)`, "Gratis", "var(--success-light)");
                 
             } catch(e) { showMsg('statusMessage', 'Mesin gagal memproses citra yang diberikan.', 'error'); } 
             finally { enhanceBtn.disabled = false; enhanceBtn.innerHTML = '<i class="fas fa-wand-magic-sparkles"></i> Eksekusi Render'; }
@@ -2075,6 +2227,16 @@
                 triggerErrorShake(['emailInput', 'magicInput']);
                 return showMsg('appErrorMsg', 'Email atau tautan Magic Link belum diisi.', 'error');
             }
+
+            // CEK LIMIT SEBELUM EKSEKUSI
+            const isPremium = currentUserData && (parseBool(currentUserData.is_permanent) || currentUserData.role === 'Owner');
+            if (!isPremium) {
+                const currentLimit = currentUserData.limit_count ?? 3;
+                if (currentLimit < 1) {
+                    return showMsg('appErrorMsg', 'Limit tidak cukup! Fitur ini membutuhkan 1 limit.', 'error');
+                }
+            }
+
             activateBtn.disabled = true; 
             document.getElementById('btnDefault').classList.add('hidden'); 
             document.getElementById('loaderContainer').classList.remove('hidden');
@@ -2082,23 +2244,25 @@
             try {
                 const res = await fetch(`/api/am?action=verif&email=${encodeURIComponent(cachedEmail || email)}&url=${encodeURIComponent(magic)}`);
                 const data = await res.json();
+                
                 if(data.status) {
                     showMsg('appErrorMsg', data.message || 'Berhasil! Akun Anda telah terverifikasi premium.', 'success');
                     customAlert('Aktivasi Magic Link berhasil diverifikasi.');
-                    addActivityLog("Lisensi Perangkat", `Verifikasi sukses via URL Magic Link`, "Selesai", "var(--success-light)");
                     
-                    if(currentUserData && !parseBool(currentUserData.is_permanent) && currentUserData.role !== 'Owner') {
+                    // POTONG 1 LIMIT JIKA SUKSES
+                    if(!isPremium) {
                         let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 1); 
                         await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
                         currentUserData.limit_count = newLimit; 
                         localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); 
                         window.loadAppView(currentUserData);
                     }
+                    addActivityLog("Lisensi Perangkat", `Verifikasi sukses via URL Magic Link`, "-1 Limit", "var(--success-light)");
                 } else { 
-                    showMsg('appErrorMsg', data.error || 'Verifikasi lisensi ditolak sistem.', 'error'); 
+                    showMsg('appErrorMsg', data.error || 'Verifikasi lisensi ditolak sistem. Limit dikembalikan.', 'error'); 
                 }
             } catch(e) { 
-                showMsg('appErrorMsg', 'Galat internal server saat sinkronisasi.', 'error'); 
+                showMsg('appErrorMsg', 'Galat internal server. Limit Anda aman (tidak dipotong).', 'error'); 
             } finally { 
                 activateBtn.disabled = false; 
                 document.getElementById('btnDefault').classList.remove('hidden'); 
@@ -2196,7 +2360,7 @@
         if (e.key === 'Enter') document.getElementById('btnSendChat').click();
     });
 
-    // Menambah event listener kanggo tombol WA React
+    // UPDATE: WA REACTOR DENGAN PROTEKSI LIMIT & VALIDASI REGEX
     const btnSendReaction = document.getElementById('btnSendReaction');
     if (btnSendReaction) {
         btnSendReaction.addEventListener('click', async () => {
@@ -2208,7 +2372,13 @@
                 return showMsg('reactStatusMessage', 'URL lan Emoji kudu diisi.', 'error');
             }
 
-            // Pengecekan limit saderenge API call
+            // VALIDASI LINK WA (Wajib diakhiri dengan angka ID pesan)
+            if (!/\d+\/?$/.test(urlVal)) {
+                triggerErrorShake(['waReactUrl']);
+                return showMsg('reactStatusMessage', 'URL DITOLAK: Wajib memakai Link Pesan (ada angka di akhir link), bukan link channel! Limit tidak dipotong.', 'error');
+            }
+
+            // PENGECEKAN LIMIT (BUTUH 2 LIMIT)
             const isPremium = currentUserData && (parseBool(currentUserData.is_permanent) || currentUserData.role === 'Owner');
             if (!isPremium) {
                 const currentLimit = currentUserData.limit_count ?? 3;
@@ -2230,8 +2400,8 @@
                 
                 if (data.statusCode === 200 || data.status === true) {
                     showMsg('reactStatusMessage', 'Mantap! Reaksi sukses mlebu antrean.', 'success');
-                    addActivityLog("WA Reactor", `Kirim reaksi ${emojiVal} nang saluran WA`, "-2 Limit", "var(--success-light)");
                     
+                    // POTONG 2 LIMIT HANYA JIKA SUKSES
                     if(!isPremium) {
                         let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 2); 
                         await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
@@ -2239,12 +2409,13 @@
                         localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); 
                         window.loadAppView(currentUserData);
                     }
+                    addActivityLog("WA Reactor", `Kirim reaksi ${emojiVal} nang saluran WA`, "-2 Limit", "var(--success-light)");
                 } else {
-                    // API returns false/error (limit ora dipotong)
-                    showMsg('reactStatusMessage', data.message || 'Gagal ngirim reaksi. Limit aman.', 'error');
+                    // API Jerex Gagal, Limit tidak dipotong
+                    showMsg('reactStatusMessage', data.message || 'Gagal ngirim reaksi. Limit aman (dikembalikan).', 'error');
                 }
             } catch (err) {
-                // Koneksi macet (limit ora dipotong)
+                // Koneksi error, Limit tidak dipotong
                 showMsg('reactStatusMessage', 'Koneksi API macet/putus. Limit tetep aman.', 'error');
             } finally {
                 btnSendReaction.innerHTML = '<i class="fab fa-whatsapp"></i> Eksekusi Reaksi';
@@ -2253,7 +2424,6 @@
         });
     }
 
-    // Fungsi SwitchTab sing wis dimodifikasi kanggo nampung Tab WA React
     window.switchTab = function(tabName) { 
         const secAct = document.getElementById('sectionActivator'); 
         const secEnh = document.getElementById('sectionEnhancer'); 
