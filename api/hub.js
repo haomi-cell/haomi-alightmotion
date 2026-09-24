@@ -18,17 +18,6 @@ const supabase = createClient(supabaseUrl, supabaseKey, {
 const NEVAPEDIA_BASE_URL = "https://app.nevapedia.com/api";
 const NEVAPEDIA_API_KEY = "SKY_45a18f8910ed4fb2";
 
-// SUNTIKAN FIX OWNER: Fungsi aman untuk mengunci hak akses Owner
-const applyOwnerAccess = (user) => {
-    if (!user) return user;
-    if ((user.username || '').toUpperCase() === 'HAOMI' || user.role === 'Owner') {
-        user.role = 'Owner';
-        user.is_permanent = true; 
-        user.limit_count = 9999;
-    }
-    return user;
-};
-
 export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
@@ -61,6 +50,7 @@ export default async function handler(req, res) {
                     return res.status(200).json({ status: false, error: 'Username dan kata sandi wajib diisi.' });
                 }
 
+                // Query menggunakan single() karena kita mencari data unik
                 const { data, error } = await supabase.from('users').select('*').eq('username', username).single();
                 if (error || !data) {
                     return res.status(200).json({ status: false, error: 'Username tidak ditemukan.' });
@@ -74,8 +64,14 @@ export default async function handler(req, res) {
                     return res.status(200).json({ status: false, error: 'Akun ini telah ditangguhkan.' });
                 }
 
-                // Override status sebelum dikirim ke frontend
-                return res.status(200).json({ status: true, data: applyOwnerAccess(data) });
+                // Proteksi khusus Owner
+                if (username.toUpperCase() === 'HAOMI' || data.role === 'Owner') {
+                    data.role = 'Owner';
+                    data.is_permanent = true;
+                    data.limit_count = 9999;
+                }
+
+                return res.status(200).json({ status: true, data });
             }
 
             case 'register': {
@@ -87,6 +83,7 @@ export default async function handler(req, res) {
                     return res.status(200).json({ status: false, error: 'Semua kolom registrasi wajib diisi.' });
                 }
 
+                // Cek duplikasi username (optimasi: limit 1 untuk mempercepat pencarian)
                 const { data: existingUser } = await supabase.from('users').select('username').eq('username', username).limit(1);
                 if (existingUser && existingUser.length > 0) {
                     return res.status(200).json({ status: false, error: 'Username sudah digunakan.' });
@@ -111,16 +108,13 @@ export default async function handler(req, res) {
                     return res.status(200).json({ status: false, error: 'Gagal menyimpan ke database: ' + insertError.message });
                 }
 
-                // Override status (jika daftar nama owner)
-                return res.status(200).json({ status: true, data: applyOwnerAccess(newUserData) });
+                return res.status(200).json({ status: true, data: newUserData });
             }
 
             case 'fetchUser': {
                 const { data, error } = await supabase.from('users').select('*').eq('username', body.username).single();
                 if (error || !data) return res.status(200).json({ status: false, error: 'User tidak ditemukan' });
-                
-                // Mencegah hak owner hilang setelah refresh halaman
-                return res.status(200).json({ status: true, data: applyOwnerAccess(data) });
+                return res.status(200).json({ status: true, data });
             }
 
             case 'fetchStats': {
@@ -137,10 +131,7 @@ export default async function handler(req, res) {
             case 'getUsers': {
                 const { data, error } = await supabase.from('users').select('*');
                 if (error) return res.status(200).json({ status: false, error: error.message });
-                
-                // Set data owner ke seluruh riwayat yang ditarik untuk Panel Admin
-                const mappedData = (data || []).map(applyOwnerAccess);
-                return res.status(200).json({ status: true, data: mappedData });
+                return res.status(200).json({ status: true, data });
             }
 
             case 'getBroadcast': {
@@ -217,6 +208,8 @@ export default async function handler(req, res) {
             // --- ENDPOINT PAYMENT GATEWAY NEVAPEDIA ---
             // ==========================================
             case 'createQris': {
+                // Timeout diubah ke 9500 (9.5 detik) agar sesuai dengan batas maksimal Vercel Hobby plan (10 detik)
+                // Ini mencegah Vercel memutus paksa koneksi sehingga frontend bisa menerima respon error yang rapi
                 const response = await axios.get(
                     `${NEVAPEDIA_BASE_URL}/invoice?apikey=${NEVAPEDIA_API_KEY}&amount=${body.amount}`,
                     { timeout: 9500 }
