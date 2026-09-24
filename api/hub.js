@@ -1,24 +1,33 @@
 import { createClient } from '@supabase/supabase-js';
+import axios from 'axios';
 
-// Fallback Env Variables untuk mendeteksi key di berbagai konfigurasi (Vercel/Lokal)
-const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const supabaseKey = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+const supabaseUrl = process.env.SUPABASE_URL || '';
+const supabaseKey = process.env.SUPABASE_SERVICE_KEY || '';
 
-const supabase = createClient(supabaseUrl, supabaseKey);
+// OPTIMASI SUPABASE: Matikan fitur manajemen sesi (auth) karena menggunakan Service Key
+// Ini akan memangkas waktu inisialisasi client secara signifikan di serverless (Vercel)
+const supabase = createClient(supabaseUrl, supabaseKey, {
+    auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+        detectSessionInUrl: false
+    }
+});
 
-// Helper agar status Owner (haomi) tidak hilang saat refresh halaman
-function applyOwnerOverride(user) {
+// --- CONFIGURASI NEVAPEDIA ---
+const NEVAPEDIA_BASE_URL = "https://app.nevapedia.com/api";
+const NEVAPEDIA_API_KEY = "SKY_45a18f8910ed4fb2";
+
+// SUNTIKAN FIX OWNER: Fungsi aman untuk mengunci hak akses Owner
+const applyOwnerAccess = (user) => {
     if (!user) return user;
-    const uName = String(user.username || '').toUpperCase();
-    const uRole = String(user.role || '').toUpperCase();
-    
-    if (uName === 'HAOMI' || uRole === 'OWNER') {
+    if ((user.username || '').toUpperCase() === 'HAOMI' || user.role === 'Owner') {
         user.role = 'Owner';
-        user.is_permanent = 'true';
+        user.is_permanent = true; 
         user.limit_count = 9999;
     }
     return user;
-}
+};
 
 export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -65,7 +74,8 @@ export default async function handler(req, res) {
                     return res.status(200).json({ status: false, error: 'Akun ini telah ditangguhkan.' });
                 }
 
-                return res.status(200).json({ status: true, data: applyOwnerOverride(data) });
+                // Override status sebelum dikirim ke frontend
+                return res.status(200).json({ status: true, data: applyOwnerAccess(data) });
             }
 
             case 'register': {
@@ -101,18 +111,20 @@ export default async function handler(req, res) {
                     return res.status(200).json({ status: false, error: 'Gagal menyimpan ke database: ' + insertError.message });
                 }
 
-                return res.status(200).json({ status: true, data: applyOwnerOverride(newUserData) });
+                // Override status (jika daftar nama owner)
+                return res.status(200).json({ status: true, data: applyOwnerAccess(newUserData) });
             }
 
             case 'fetchUser': {
                 const { data, error } = await supabase.from('users').select('*').eq('username', body.username).single();
                 if (error || !data) return res.status(200).json({ status: false, error: 'User tidak ditemukan' });
-                return res.status(200).json({ status: true, data: applyOwnerOverride(data) });
+                
+                // Mencegah hak owner hilang setelah refresh halaman
+                return res.status(200).json({ status: true, data: applyOwnerAccess(data) });
             }
 
             case 'fetchStats': {
-                const { count, error } = await supabase.from('users').select('*', { count: 'exact', head: true });
-                if (error) return res.status(200).json({ status: false, error: error.message });
+                const { count } = await supabase.from('users').select('*', { count: 'exact', head: true });
                 return res.status(200).json({ status: true, count: count || 0 });
             }
 
@@ -126,8 +138,8 @@ export default async function handler(req, res) {
                 const { data, error } = await supabase.from('users').select('*');
                 if (error) return res.status(200).json({ status: false, error: error.message });
                 
-                // Set data owner ke seluruh riwayat yang ditarik agar tidak bug di frontend
-                const mappedData = data.map(applyOwnerOverride);
+                // Set data owner ke seluruh riwayat yang ditarik untuk Panel Admin
+                const mappedData = (data || []).map(applyOwnerAccess);
                 return res.status(200).json({ status: true, data: mappedData });
             }
 
@@ -142,6 +154,9 @@ export default async function handler(req, res) {
                 return res.status(200).json({ status: true });
             }
 
+            // ==========================================
+            // --- FITUR FORUM CHAT & SURAT DEVELOPER ---
+            // ==========================================
             case 'sendMessage':
             case 'sendFeedback': {
                 const username = body.username ? String(body.username).trim() : 'Anonim';
@@ -156,7 +171,13 @@ export default async function handler(req, res) {
                 }
 
                 const { data, error } = await supabase.from('forum_messages').insert([{
-                    username, role, category, message, time, avatar_url, created_at: new Date().toISOString()
+                    username,
+                    role,
+                    category,
+                    message,
+                    time,
+                    avatar_url,
+                    created_at: new Date().toISOString()
                 }]).select();
 
                 if (error) {
@@ -168,10 +189,16 @@ export default async function handler(req, res) {
 
             case 'getMessages':
             case 'getFeedbacks': {
-                const { data, error } = await supabase.from('forum_messages').select('*').order('created_at', { ascending: true }).limit(100);
+                const { data, error } = await supabase
+                    .from('forum_messages')
+                    .select('*')
+                    .order('created_at', { ascending: true })
+                    .limit(100);
+
                 if (error) {
                     return res.status(200).json({ status: false, error: 'Supabase Error: ' + error.message });
                 }
+
                 return res.status(200).json({ status: true, data: data || [] });
             }
 
@@ -184,6 +211,26 @@ export default async function handler(req, res) {
                     return res.status(200).json({ status: false, error: error.message });
                 }
                 return res.status(200).json({ status: true });
+            }
+
+            // ==========================================
+            // --- ENDPOINT PAYMENT GATEWAY NEVAPEDIA ---
+            // ==========================================
+            case 'createQris': {
+                const response = await axios.get(
+                    `${NEVAPEDIA_BASE_URL}/invoice?apikey=${NEVAPEDIA_API_KEY}&amount=${body.amount}`,
+                    { timeout: 9500 }
+                );
+                return res.status(200).json({ status: true, data: response.data });
+            }
+
+            case 'checkQris': {
+                const invoiceId = body.depositId || body.invoiceId;
+                const response = await axios.get(
+                    `${NEVAPEDIA_BASE_URL}/invoice/status?apikey=${NEVAPEDIA_API_KEY}&invoice_id=${invoiceId}`,
+                    { timeout: 9500 }
+                );
+                return res.status(200).json({ status: true, data: response.data });
             }
 
             default:
