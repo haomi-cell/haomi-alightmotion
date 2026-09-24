@@ -86,7 +86,7 @@
   /* LUXURY LOADER */
   #initialLoader { 
     position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; 
-    background: var(--bg-base); flex-direction: column; transition: opacity 0.6s var(--fluid-ease); 
+    background: var(--bg-base); flex-direction: column; transition: opacity 0.5s var(--fluid-ease); 
   }
   .spinner-lux {
     width: 60px; height: 60px; border: 1px solid rgba(255,255,255,0.1); border-top-color: #fff;
@@ -217,6 +217,7 @@
   .limit-info-box { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; }
   .big-limit-num { font-size: 80px; font-weight: 800; line-height: 1; margin-bottom: 8px; color: var(--text-pure); letter-spacing: -3px; }
   .big-limit-num.vip { background: var(--gold-premium); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 10px 20px rgba(202, 138, 4, 0.3)); }
+  .limit-label { font-size: 12px; color: var(--text-pure); font-weight: 700; letter-spacing: 1px; }
 
   /* BOTTOM NAV DOCK (Floating Pill) */
   .bottom-nav { 
@@ -311,7 +312,7 @@
   .badge-vip { background: var(--gold-premium); color: #000; padding: 3px 8px; border-radius: 6px; font-size: 9px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; }
   .badge-member { background: rgba(255,255,255,0.1); color: #cbd5e1; padding: 3px 8px; border-radius: 6px; font-size: 9px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
 
-  /* MESSAGE BOXES (INFO/ERROR INSIDE CARDS) */
+  /* MESSAGE BOXES (INFO/ERROR) */
   .message-box { padding: 16px 20px; border-radius: 16px; font-size: 13px; font-weight: 600; display: none; align-items: flex-start; gap: 12px; margin-bottom: 24px; line-height: 1.5; border: 1px solid transparent; }
   .message-box i { font-size: 18px; margin-top: 2px; }
   .message-box.show { display: flex; animation: smoothSlideIn 0.4s var(--fluid-ease); }
@@ -373,7 +374,7 @@
   <div class="modal-glass text-center" style="padding: 50px 32px; max-width: 360px;">
     <div class="title-lg" style="margin-bottom: 40px;" id="bioModalTitle">Identifikasi Akses</div>
     <div style="width: 120px; height: 120px; margin: 0 auto 30px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.03); border-radius: 50%; border: 1px solid var(--border-thin);" id="bioScanner">
-      <i class="fas fa-fingerprint" style="font-size: 60px; color: var(--text-muted); transition: color 0.4s;" id="bioIcon"></i>
+      <i class="fas fa-fingerprint" style="font-size: 60px; color: #fff; transition: color 0.4s;" id="bioIcon"></i>
     </div>
     <div class="text-sub" id="bioStatusText" style="margin-bottom: 30px; font-weight: 600; color: #fff;">Sentuh sensor biometrik Anda...</div>
     <button class="btn btn-outline click-sound hidden" id="bioCancelBtn" onclick="cancelBiometric()">Batal</button>
@@ -427,6 +428,20 @@
     <div id="confirmText" class="text-sub" style="margin-bottom: 40px;">Tindakan ini memerlukan otorisasi Anda. Lanjutkan proses?</div>
     <button id="btnConfirmOk" class="btn btn-primary click-sound mb-4">Lanjutkan</button>
     <button id="btnConfirmCancel" class="btn btn-outline click-sound">Batal</button>
+  </div>
+</div>
+
+<!-- MODAL: WARNING KEAMANAN -->
+<div id="warningModal" class="overlay">
+  <div class="modal-glass text-center" style="border-color: rgba(239, 68, 68, 0.3);">
+    <div style="width: 70px; height: 70px; border-radius: 24px; background: rgba(239, 68, 68, 0.1); display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; color: var(--danger-light);">
+        <i class="fas fa-shield-virus" style="font-size: 30px;"></i>
+    </div>
+    <div class="title-lg" style="color: var(--danger-light);">Protokol Keamanan</div>
+    <div class="text-sub" style="margin-bottom: 40px; text-align: justify; line-height: 1.7;">
+      Sistem ini diproteksi oleh pemantauan telemetri aktif. Segala bentuk manipulasi inspeksi, otomasi ilegal, atau upaya eksploitasi akan memicu penguncian identitas, pencatatan sidik jari perangkat, dan pemutusan akses permanen.
+    </div>
+    <button class="btn btn-primary click-sound" style="background: var(--danger); color: #fff;" onclick="closeWarningModal()">SAYA MENGERTI</button>
   </div>
 </div>
 
@@ -487,7 +502,7 @@
       <label>Kata Sandi Privat</label>
       <div class="input-wrapper">
         <input type="password" id="loginPwd" class="glass-input" autocomplete="off" placeholder="••••••••" />
-        <button type="button" class="pwd-toggle" onclick="togglePwd('loginPwd', this)" aria-label="Lihat Sandi"><i class="far fa-eye"></i></button>
+        <button type="button" class="pwd-toggle" onclick="togglePwd('loginPwd', this)"><i class="far fa-eye"></i></button>
       </div>
     </div>
     
@@ -588,7 +603,7 @@
 
   <!-- LEADERBOARD TOGGLE -->
   <div class="mb-4">
-    <button class="leaderboard-toggle-btn click-sound" onclick="toggleLeaderboard()">
+    <button class="leaderboard-toggle-btn click-sound" onclick="toggleLeaderboard()" style="width: 100%; background: transparent; border: 1px solid var(--border-thin); border-radius: 20px; padding: 18px 24px; display: flex; justify-content: space-between; align-items: center; color: var(--text-pure); font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.4s var(--fluid-ease);">
       <span style="display:flex; align-items:center; gap:12px;"><i class="fas fa-trophy" style="color:#fff;"></i> Peringkat Prestise</span>
       <i class="fas fa-chevron-down" id="leaderboardChevron"></i>
     </button>
@@ -1343,21 +1358,38 @@
         } catch (e) { }
     };
 
-    window.onload = () => {
-        initTheme(); 
+    // INIT SUPER CEPAT (Tanpa nunggu font/gambar)
+    document.addEventListener('DOMContentLoaded', () => {
         setTimeout(async () => {
             checkBiometricAvailable();
-            const initialLoader = document.getElementById('initialLoader'); const savedUser = localStorage.getItem(SESSION_KEY);
+            const initialLoader = document.getElementById('initialLoader'); 
+            const savedUser = localStorage.getItem(SESSION_KEY);
+            
             if(!savedUser) { 
-                if(initialLoader) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 600); } 
+                if(initialLoader) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 400); } 
+                // Fix: Pastikan pop-up tampil saat belum login
+                document.getElementById('warningModal').classList.add('show'); 
             } else {
-                try { const cachedData = localStorage.getItem(CACHE_KEY); if (cachedData) { const parsed = JSON.parse(cachedData); if (parsed && parsed.username) { currentUserData = parsed; window.loadAppView(parsed); if(initialLoader) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 600); } } } } catch(e) {}
+                try { 
+                    const cachedData = localStorage.getItem(CACHE_KEY); 
+                    if (cachedData) { 
+                        const parsed = JSON.parse(cachedData); 
+                        if (parsed && parsed.username) { 
+                            currentUserData = parsed; 
+                            window.loadAppView(parsed); 
+                            if(initialLoader) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 400); } 
+                        } 
+                    } 
+                } catch(e) {}
+                
                 await fetchUserSession(savedUser);
-                if(initialLoader && document.body.contains(initialLoader)) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 600); }
+                if(initialLoader && document.body.contains(initialLoader)) { 
+                    initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 400); 
+                }
             }
             startClock(); startPingChecker(); fetchGlobalStats(); initRealtimeBroadcastListener(); initImageEnhancerEngine();
-        }, 1200);
-    };
+        }, 500); 
+    });
 
     function startClock() { const clockEl = document.getElementById('realtimeClock'); if(!clockEl) return; setInterval(() => { const now = new Date(); clockEl.textContent = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' WIB'; }, 1000); }
     function startPingChecker() { const pingEl = document.getElementById('networkPingText'); if(!pingEl) return; setInterval(() => { const randomPing = Math.floor(Math.random() * 14) + 12; pingEl.textContent = randomPing + 'ms'; }, 4000); }
@@ -1385,6 +1417,7 @@
                 container.style.border = '1px solid rgba(255,255,255,0.2)';
             } else { 
                 container.innerHTML = `<span class="disp-avatar-text">${username ? username.charAt(0).toUpperCase() : 'U'}</span>`; 
+                container.style.border = '1px solid var(--border-thin)'; 
             } 
         }); 
     }
@@ -1437,7 +1470,10 @@
                 if (parseBool(data.is_banned)) { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(CACHE_KEY); switchView('loginView'); customAlert("Akses ditolak: Akun di-suspend.", true); return; } 
                 localStorage.setItem(CACHE_KEY, JSON.stringify(data)); currentUserData = data; window.loadAppView(data); 
             } else { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(CACHE_KEY); switchView('loginView'); } 
-        } catch (err) {} 
+        } catch (err) {
+            // Anti-mentok kalau server lag
+            if(!currentUserData) switchView('loginView');
+        } 
     }
 
     window.switchView = function(viewId) { 
@@ -1453,16 +1489,21 @@
         
         const floatMenu = document.getElementById('floatingMenuContainer');
         if(floatMenu) {
-            if(viewId === 'loginView' || viewId === 'registerView') {
-                floatMenu.classList.add('hidden');
-            } else {
-                floatMenu.classList.remove('hidden');
-            }
+            if(viewId === 'loginView' || viewId === 'registerView') floatMenu.classList.add('hidden');
+            else floatMenu.classList.remove('hidden');
         }
 
         if(viewId === 'loginView') checkBiometricAvailable();
     };
     
+    // Fix: Peringatan tertutup langsung arahkan ke Login 
+    window.closeWarningModal = function() { 
+        document.getElementById('warningModal').classList.remove('show'); 
+        if(!localStorage.getItem(SESSION_KEY)) {
+            switchView('loginView');
+        } 
+    };
+
     function clearFormMessages() { document.querySelectorAll('.message-box').forEach(el => { el.classList.remove('show', 'message-success', 'message-error'); el.querySelector('span') && (el.querySelector('span').innerHTML = ''); }); }
     function showMsg(elId, text, type = 'error') { 
         const el = document.getElementById(elId); if(el) { const span = el.querySelector('span') || el; span.innerHTML = text; el.className = 'message-box show'; 
@@ -1845,7 +1886,6 @@
 
     let chatIntervalId = null;
 
-    // UPDATE: CHAT LOGIC (ORDER, AVATAR, & ROLE)
     async function loadChatMessages() {
         const box = document.getElementById('chatMessagesBox');
         const res = await apiCall('getMessages'); 
@@ -1859,21 +1899,17 @@
 
         let htmlString = '';
         
-        // Memastikan pesan lama di atas, pesan baru di bawah. 
-        // Data dari Supabase biasanya "newest first" (index 0 = pesan terbaru).
-        // Kita gunakan reverse() agar pesan tertua dirender lebih dulu (di atas).
+        // Memastikan pesan lama di atas, pesan baru di bawah.
         const msgs = res.data.reverse(); 
         
         msgs.forEach(msg => {
             const isMe = currentUserData && msg.username === currentUserData.username;
             
-            // Build Role Badge
             let roleBadge = '';
             if(msg.role === 'Owner') roleBadge = `<span class="badge-owner">OWNER</span>`;
             else if(msg.role === 'VIP') roleBadge = `<span class="badge-vip">VIP</span>`;
             else roleBadge = `<span class="badge-member">MEMBER</span>`;
             
-            // Build Avatar
             let avatarHtml = msg.avatar_url 
                 ? `<img src="${msg.avatar_url}" />` 
                 : `${msg.username.charAt(0).toUpperCase()}`;
@@ -1884,7 +1920,6 @@
                 timeFmt = `${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
             } catch(e){}
 
-            // HTML Structure for Chat Bubble
             htmlString += `
             <div class="chat-wrapper ${isMe ? 'me' : 'them'}">
                 <div class="chat-pp">${avatarHtml}</div>
@@ -1903,7 +1938,6 @@
         const isScrolledToBottom = box.scrollHeight - box.clientHeight <= box.scrollTop + 80;
         box.innerHTML = htmlString;
         
-        // Otomatis scroll ke paling bawah jika sedang berada di bawah, atau jika baru loading pertama kali
         if(isScrolledToBottom || box.innerHTML.includes('loader-spinner')) {
             box.scrollTop = box.scrollHeight;
         }
@@ -1923,7 +1957,6 @@
         const now = new Date();
         const timeStr = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
         
-        // Optimistic UI Render (Pesan Langsung Muncul)
         let myAvatar = currentUserData.avatar_url 
             ? `<img src="${currentUserData.avatar_url}" />` 
             : `${currentUserData.username.charAt(0).toUpperCase()}`;
@@ -1946,14 +1979,13 @@
             </div>
         </div>`;
         
-        // Auto scroll down
         box.scrollTop = box.scrollHeight;
 
         const res = await apiCall('sendMessage', { 
             username: currentUserData.username, 
             message: text, 
             role: currentUserData.role,
-            avatar_url: currentUserData.avatar_url // Kirim avatar url kalau didukung API backend
+            avatar_url: currentUserData.avatar_url 
         });
         
         inputEl.disabled = false;
@@ -1965,7 +1997,7 @@
             if(optMsg) optMsg.remove();
         } else {
             addActivityLog("Forum Interaksi", `Mengirim pesan diskusi`, "Terkirim", "var(--success-light)");
-            loadChatMessages(); // Refresh chat
+            loadChatMessages();
         }
     });
     
