@@ -1,22 +1,24 @@
 import { createClient } from '@supabase/supabase-js';
-import axios from 'axios';
 
-const supabaseUrl = process.env.SUPABASE_URL || '';
-const supabaseKey = process.env.SUPABASE_SERVICE_KEY || '';
+// Fallback Env Variables untuk mendeteksi key di berbagai konfigurasi (Vercel/Lokal)
+const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const supabaseKey = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
-// OPTIMASI SUPABASE: Matikan fitur manajemen sesi (auth) karena menggunakan Service Key
-// Ini akan memangkas waktu inisialisasi client secara signifikan di serverless (Vercel)
-const supabase = createClient(supabaseUrl, supabaseKey, {
-    auth: {
-        persistSession: false,
-        autoRefreshToken: false,
-        detectSessionInUrl: false
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+// Helper agar status Owner (haomi) tidak hilang saat refresh halaman
+function applyOwnerOverride(user) {
+    if (!user) return user;
+    const uName = String(user.username || '').toUpperCase();
+    const uRole = String(user.role || '').toUpperCase();
+    
+    if (uName === 'HAOMI' || uRole === 'OWNER') {
+        user.role = 'Owner';
+        user.is_permanent = 'true';
+        user.limit_count = 9999;
     }
-});
-
-// --- CONFIGURASI NEVAPEDIA ---
-const NEVAPEDIA_BASE_URL = "https://app.nevapedia.com/api";
-const NEVAPEDIA_API_KEY = "SKY_45a18f8910ed4fb2";
+    return user;
+}
 
 export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -50,7 +52,6 @@ export default async function handler(req, res) {
                     return res.status(200).json({ status: false, error: 'Username dan kata sandi wajib diisi.' });
                 }
 
-                // Query menggunakan single() karena kita mencari data unik
                 const { data, error } = await supabase.from('users').select('*').eq('username', username).single();
                 if (error || !data) {
                     return res.status(200).json({ status: false, error: 'Username tidak ditemukan.' });
@@ -64,14 +65,7 @@ export default async function handler(req, res) {
                     return res.status(200).json({ status: false, error: 'Akun ini telah ditangguhkan.' });
                 }
 
-                // Proteksi khusus Owner
-                if (username.toUpperCase() === 'HAOMI' || data.role === 'Owner') {
-                    data.role = 'Owner';
-                    data.is_permanent = true;
-                    data.limit_count = 9999;
-                }
-
-                return res.status(200).json({ status: true, data });
+                return res.status(200).json({ status: true, data: applyOwnerOverride(data) });
             }
 
             case 'register': {
@@ -83,7 +77,6 @@ export default async function handler(req, res) {
                     return res.status(200).json({ status: false, error: 'Semua kolom registrasi wajib diisi.' });
                 }
 
-                // Cek duplikasi username (optimasi: limit 1 untuk mempercepat pencarian)
                 const { data: existingUser } = await supabase.from('users').select('username').eq('username', username).limit(1);
                 if (existingUser && existingUser.length > 0) {
                     return res.status(200).json({ status: false, error: 'Username sudah digunakan.' });
@@ -108,17 +101,18 @@ export default async function handler(req, res) {
                     return res.status(200).json({ status: false, error: 'Gagal menyimpan ke database: ' + insertError.message });
                 }
 
-                return res.status(200).json({ status: true, data: newUserData });
+                return res.status(200).json({ status: true, data: applyOwnerOverride(newUserData) });
             }
 
             case 'fetchUser': {
                 const { data, error } = await supabase.from('users').select('*').eq('username', body.username).single();
                 if (error || !data) return res.status(200).json({ status: false, error: 'User tidak ditemukan' });
-                return res.status(200).json({ status: true, data });
+                return res.status(200).json({ status: true, data: applyOwnerOverride(data) });
             }
 
             case 'fetchStats': {
-                const { count } = await supabase.from('users').select('*', { count: 'exact', head: true });
+                const { count, error } = await supabase.from('users').select('*', { count: 'exact', head: true });
+                if (error) return res.status(200).json({ status: false, error: error.message });
                 return res.status(200).json({ status: true, count: count || 0 });
             }
 
@@ -131,7 +125,10 @@ export default async function handler(req, res) {
             case 'getUsers': {
                 const { data, error } = await supabase.from('users').select('*');
                 if (error) return res.status(200).json({ status: false, error: error.message });
-                return res.status(200).json({ status: true, data });
+                
+                // Set data owner ke seluruh riwayat yang ditarik agar tidak bug di frontend
+                const mappedData = data.map(applyOwnerOverride);
+                return res.status(200).json({ status: true, data: mappedData });
             }
 
             case 'getBroadcast': {
@@ -145,9 +142,6 @@ export default async function handler(req, res) {
                 return res.status(200).json({ status: true });
             }
 
-            // ==========================================
-            // --- FITUR FORUM CHAT & SURAT DEVELOPER ---
-            // ==========================================
             case 'sendMessage':
             case 'sendFeedback': {
                 const username = body.username ? String(body.username).trim() : 'Anonim';
@@ -162,13 +156,7 @@ export default async function handler(req, res) {
                 }
 
                 const { data, error } = await supabase.from('forum_messages').insert([{
-                    username,
-                    role,
-                    category,
-                    message,
-                    time,
-                    avatar_url,
-                    created_at: new Date().toISOString()
+                    username, role, category, message, time, avatar_url, created_at: new Date().toISOString()
                 }]).select();
 
                 if (error) {
@@ -180,16 +168,10 @@ export default async function handler(req, res) {
 
             case 'getMessages':
             case 'getFeedbacks': {
-                const { data, error } = await supabase
-                    .from('forum_messages')
-                    .select('*')
-                    .order('created_at', { ascending: true })
-                    .limit(100);
-
+                const { data, error } = await supabase.from('forum_messages').select('*').order('created_at', { ascending: true }).limit(100);
                 if (error) {
                     return res.status(200).json({ status: false, error: 'Supabase Error: ' + error.message });
                 }
-
                 return res.status(200).json({ status: true, data: data || [] });
             }
 
@@ -202,28 +184,6 @@ export default async function handler(req, res) {
                     return res.status(200).json({ status: false, error: error.message });
                 }
                 return res.status(200).json({ status: true });
-            }
-
-            // ==========================================
-            // --- ENDPOINT PAYMENT GATEWAY NEVAPEDIA ---
-            // ==========================================
-            case 'createQris': {
-                // Timeout diubah ke 9500 (9.5 detik) agar sesuai dengan batas maksimal Vercel Hobby plan (10 detik)
-                // Ini mencegah Vercel memutus paksa koneksi sehingga frontend bisa menerima respon error yang rapi
-                const response = await axios.get(
-                    `${NEVAPEDIA_BASE_URL}/invoice?apikey=${NEVAPEDIA_API_KEY}&amount=${body.amount}`,
-                    { timeout: 9500 }
-                );
-                return res.status(200).json({ status: true, data: response.data });
-            }
-
-            case 'checkQris': {
-                const invoiceId = body.depositId || body.invoiceId;
-                const response = await axios.get(
-                    `${NEVAPEDIA_BASE_URL}/invoice/status?apikey=${NEVAPEDIA_API_KEY}&invoice_id=${invoiceId}`,
-                    { timeout: 9500 }
-                );
-                return res.status(200).json({ status: true, data: response.data });
             }
 
             default:
