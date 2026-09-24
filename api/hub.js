@@ -1,5 +1,4 @@
 import { createClient } from '@supabase/supabase-js';
-import axios from 'axios';
 
 const supabaseUrl = process.env.SUPABASE_URL || '';
 const supabaseKey = process.env.SUPABASE_SERVICE_KEY || '';
@@ -13,10 +12,6 @@ const supabase = createClient(supabaseUrl, supabaseKey, {
         detectSessionInUrl: false
     }
 });
-
-// --- CONFIGURASI NEVAPEDIA ---
-const NEVAPEDIA_BASE_URL = "https://app.nevapedia.com/api";
-const NEVAPEDIA_API_KEY = "SKY_45a18f8910ed4fb2";
 
 export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -202,28 +197,6 @@ export default async function handler(req, res) {
                     return res.status(200).json({ status: false, error: error.message });
                 }
                 return res.status(200).json({ status: true });
-            }
-
-            // ==========================================
-            // --- ENDPOINT PAYMENT GATEWAY NEVAPEDIA ---
-            // ==========================================
-            case 'createQris': {
-                // Timeout diubah ke 9500 (9.5 detik) agar sesuai dengan batas maksimal Vercel Hobby plan (10 detik)
-                // Ini mencegah Vercel memutus paksa koneksi sehingga frontend bisa menerima respon error yang rapi
-                const response = await axios.get(
-                    `${NEVAPEDIA_BASE_URL}/invoice?apikey=${NEVAPEDIA_API_KEY}&amount=${body.amount}`,
-                    { timeout: 9500 }
-                );
-                return res.status(200).json({ status: true, data: response.data });
-            }
-
-            case 'checkQris': {
-                const invoiceId = body.depositId || body.invoiceId;
-                const response = await axios.get(
-                    `${NEVAPEDIA_BASE_URL}/invoice/status?apikey=${NEVAPEDIA_API_KEY}&invoice_id=${invoiceId}`,
-                    { timeout: 9500 }
-                );
-                return res.status(200).json({ status: true, data: response.data });
             }
 
             default:
