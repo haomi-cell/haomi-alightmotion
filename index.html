@@ -198,7 +198,7 @@
     width: 24px; height: 24px; border: 2px solid var(--glass-border-strong); 
     border-top-color: var(--gold-primary); border-radius: 50%; animation: spin 0.75s linear infinite; 
   }
-  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes spin { to { rotate(360deg); } }
   .hidden { display: none !important; }
 
   /* --- EXECUTIVE CARDS --- */
@@ -1126,11 +1126,11 @@
     </div>
   </div>
 
-  <!-- SECTION: VID HD -->
+  <!-- SECTION: VID HD (COMPRES TIKTOK SMOOTH) -->
   <div id="sectionVidHD" class="hidden">
     <div class="glass-card">
-      <div class="title-lg">VidHD Processor</div>
-      <div class="text-sub" style="margin-bottom: 16px;">Peningkatan frame rate & kejernihan video via server backend.</div>
+      <div class="title-lg">Compres Tiktok Smooth</div>
+      <div class="text-sub" style="margin-bottom: 16px;">Peningkatan frame rate & kompresi video smooth via server backend.</div>
 
       <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px;">
         <!-- Tombol 1: Masukkan Video -->
@@ -1145,10 +1145,10 @@
         <!-- Tombol 2 & 3: Segmented Switch -->
         <div style="display: flex; background: var(--surface-dark); border-radius: 12px; border: 1px solid var(--border-thin); padding: 3px; gap: 3px;">
           <button id="btnVidMedium" class="click-sound" style="flex: 1; padding: 9px 0; border: none; border-radius: 9px; background: rgba(212, 175, 55, 0.15); color: var(--gold-primary); font-size: 11px; font-weight: 700; cursor: pointer;">
-            Ekstrak Medium
+            Smooth Medium
           </button>
           <button id="btnVid60fps" class="click-sound" style="flex: 1; padding: 9px 0; border: none; border-radius: 9px; background: transparent; color: var(--text-muted); font-size: 11px; font-weight: 700; cursor: pointer;">
-            Max 60fps
+            Smooth 60fps
           </button>
         </div>
         <input type="hidden" id="vidhdActionVal" value="ekstrak_medium">
@@ -1156,7 +1156,7 @@
 
       <!-- Tombol 4: Eksekusi -->
       <button id="btnProcessVidHD" class="btn btn-primary click-sound">
-        <i class="fas fa-cogs"></i> Eksekusi Video
+        <i class="fas fa-cogs"></i> Eksekusi Compres Tiktok Smooth
       </button>
 
       <div id="vidhdStatusMessage" class="message-box" style="margin-top: 14px;">
@@ -1207,7 +1207,7 @@
     <i class="fas fa-wand-magic-sparkles"></i><span>Studio</span>
   </div>
   <div class="nav-item click-sound" id="btnTabVidHD" onclick="switchTab('vidhd')">
-    <i class="fas fa-video"></i><span>Vid HD</span>
+    <i class="fab fa-tiktok"></i><span>TikTok</span>
   </div>
   <div class="nav-item click-sound" id="btnTabChat" onclick="switchTab('chat')">
     <i class="fas fa-comments"></i><span>Forum</span>
@@ -2368,7 +2368,7 @@
         });
     }
 
-    // VID HD Processor Logic
+    // VID HD Processor Logic (Compres Tiktok Smooth + Auto Download)
     const vidhdDropZone = document.getElementById('vidhdDropZone');
     const vidhdFileInput = document.getElementById('vidhdFileInput');
     const btnVidMedium = document.getElementById('btnVidMedium');
@@ -2377,6 +2377,7 @@
     const btnProcessVidHD = document.getElementById('btnProcessVidHD');
     
     let vidhdBase64Data = '';
+    let selectedVidFile = null;
 
     if (vidhdDropZone) {
         vidhdDropZone.addEventListener('click', () => vidhdFileInput.click());
@@ -2386,6 +2387,7 @@
         vidhdFileInput.addEventListener('change', (e) => {
             if (e.target.files && e.target.files[0]) {
                 const file = e.target.files[0];
+                selectedVidFile = file;
                 document.getElementById('vidhdFileName').innerHTML = `<i class="fas fa-file-video"></i> ${file.name}`;
                 
                 const reader = new FileReader();
@@ -2413,6 +2415,23 @@
             btnVidMedium.style.background = 'transparent';
             btnVidMedium.style.color = 'var(--text-muted)';
         });
+    }
+
+    // Fungsi trigger unduhan file otomatis
+    function triggerAutoDownload(fileUrlOrBase64, filename = "Compres_Tiktok_Smooth.mp4") {
+        try {
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = fileUrlOrBase64;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(() => {
+                document.body.removeChild(a);
+            }, 300);
+        } catch (e) {
+            console.error("Gagal mendownload file video:", e);
+        }
     }
 
     if (btnProcessVidHD) {
@@ -2449,11 +2468,18 @@
                 const data = await res.json();
                 
                 if (res.ok && data.status) {
-                    showMsg('vidhdStatusMessage', data.message || 'Pemrosesan backend selesai.', 'success');
-                    addActivityLog("VidHD Backend", `Eksekusi video: ${actionVal}`, "-3 Limit", "var(--success-light)");
+                    showMsg('vidhdStatusMessage', data.message || 'Pemrosesan Compres Tiktok Smooth selesai. Mengunduh otomatis...', 'success');
+                    addActivityLog("TikTok Compressor", `Compres Tiktok Smooth: ${actionVal}`, "-3 Limit", "var(--success-light)");
                     
                     respBox.style.display = 'block';
                     respBox.textContent = "Respon API:\n" + JSON.stringify(data, null, 2);
+
+                    // Auto download hasil pemrosesan video jika server mengembalikan url/video/base64
+                    const downloadTarget = data.download_url || data.video_url || data.result_url || data.url || data.video || (typeof data.data === 'string' ? data.data : (data.data?.url || data.data?.video_url || vidhdBase64Data));
+                    if (downloadTarget) {
+                        const outName = selectedVidFile ? `Smooth_${selectedVidFile.name}` : 'Compres_Tiktok_Smooth.mp4';
+                        triggerAutoDownload(downloadTarget, outName);
+                    }
 
                     if(!isPremium) {
                         let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 3); 
@@ -2468,7 +2494,7 @@
             } catch (err) {
                 showMsg('vidhdStatusMessage', 'Koneksi ke server VidHD terputus.', 'error');
             } finally {
-                btnProcessVidHD.innerHTML = '<i class="fas fa-cogs"></i> Eksekusi Video';
+                btnProcessVidHD.innerHTML = '<i class="fas fa-cogs"></i> Eksekusi Compres Tiktok Smooth';
                 btnProcessVidHD.disabled = false;
             }
         });
