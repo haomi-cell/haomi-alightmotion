@@ -3,15 +3,6 @@
  * Dibuat khusus untuk menangani proses/request video di backend.
  */
 
-// WAJIB: Tingkatkan limit payload khusus Vercel agar file video Base64 tidak ditolak (Error 413)
-export const config = {
-    api: {
-        bodyParser: {
-            sizeLimit: '50mb', 
-        },
-    },
-};
-
 export default async function handler(req, res) {
     // Header CORS agar aman diakses dari frontend manapun
     res.setHeader('Access-Control-Allow-Credentials', true);
@@ -30,16 +21,16 @@ export default async function handler(req, res) {
     try {
         const { action } = req.query || req.body;
 
+        // Contoh penanganan aksi berdasarkan parameter/body
         if (req.method === 'POST') {
             const bodyData = req.body || {};
 
-            // Mengirimkan kembali video_data agar index.html bisa mendownloadnya otomatis
+            // Contoh logika pemrosesan video atau tugas terkait
             return res.status(200).json({
                 status: true,
-                message: "Proses backend Compres Tiktok Smoout berhasil dieksekusi.",
-                actionReceived: action || bodyData.action || "default",
+                message: "Proses backend vidhd berhasil dieksekusi.",
+                actionReceived: action || "default",
                 timestamp: new Date().toISOString(),
-                video_data: bodyData.url || "", 
                 data: bodyData
             });
         }
