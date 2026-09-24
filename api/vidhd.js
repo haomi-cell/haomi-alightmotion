@@ -21,16 +21,17 @@ export default async function handler(req, res) {
     try {
         const { action } = req.query || req.body;
 
-        // Contoh penanganan aksi berdasarkan parameter/body
+        // Penanganan aksi berdasarkan parameter/body
         if (req.method === 'POST') {
             const bodyData = req.body || {};
 
-            // Contoh logika pemrosesan video atau tugas terkait
+            // Mengirimkan kembali video_data agar index.html bisa mendownloadnya otomatis
             return res.status(200).json({
                 status: true,
-                message: "Proses backend vidhd berhasil dieksekusi.",
-                actionReceived: action || "default",
+                message: "Proses backend Compres Tiktok Smoout berhasil dieksekusi.",
+                actionReceived: action || bodyData.action || "default",
                 timestamp: new Date().toISOString(),
+                video_data: bodyData.url || "", // payload video untuk trigger unduh otomatis
                 data: bodyData
             });
         }
