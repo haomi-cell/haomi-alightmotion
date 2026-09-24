@@ -1564,7 +1564,6 @@
         customAlert("Menginisialisasi gateway pembayaran...");
         
         try {
-            // Memanggil endpoint baru /api/paygetway
             const res = await fetch(`/api/paygetway?action=deposit`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -1596,7 +1595,6 @@
         customAlert("Memverifikasi status pembayaran...");
         
         try {
-            // Memanggil endpoint baru /api/paygetway
             const res = await fetch(`/api/paygetway?action=cekmutasi`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -1871,8 +1869,25 @@
     window.handleForgotClick = function() { window.open(`https://wa.me/${OWNER_WA.replace('+', '')}?text=` + encodeURIComponent("Halo, saya membutuhkan bantuan pemulihan kata sandi."), '_blank'); };
     
     window.renderMemberList = async function() { 
-        const res = await apiCall('getUsers'); const memberList = document.getElementById('memberList'); const searchInput = document.getElementById('memberSearchInput'); 
-        if(!memberList || !res.status) return; const users = res.data; const searchQuery = searchInput ? searchInput.value.toLowerCase().trim() : ''; 
+        const memberList = document.getElementById('memberList'); 
+        const searchInput = document.getElementById('memberSearchInput'); 
+        if(!memberList) return;
+        
+        memberList.innerHTML = `<div style="text-align:center; padding: 25px 10px;"><div class="loader-spinner" style="margin: 0 auto; width: 22px; height: 22px;"></div></div>`;
+        
+        const res = await apiCall('getUsers'); 
+        
+        if(!res.status) {
+            memberList.innerHTML = `
+            <div style="text-align:center; padding: 25px 10px;">
+                <i class="fas fa-exclamation-triangle" style="font-size: 24px; color: var(--danger-light); margin-bottom: 8px;"></i>
+                <div style="font-size:11px; color:var(--danger-light); font-weight:600;">Koneksi Supabase Gagal:<br>${res.error || 'Server Error'}</div>
+            </div>`;
+            return;
+        }
+
+        const users = res.data; 
+        const searchQuery = searchInput ? searchInput.value.toLowerCase().trim() : ''; 
         
         let filteredUsers = users.filter(m => (m.username || '').toLowerCase().includes(searchQuery) || (m.id_code || '').toLowerCase().includes(searchQuery)); 
         
