@@ -1302,9 +1302,6 @@
     document.addEventListener('contextmenu', e => e.preventDefault());
     document.onkeydown = function(e) { if(e.keyCode==123 || (e.ctrlKey&&e.shiftKey&&(e.keyCode==73||e.keyCode==74||e.keyCode==67)) || (e.ctrlKey&&e.keyCode==85)) return false; };
 
-    // --- NEVAPEDIA API CONFIGURATION ---
-    const NEVA_API_KEY = 'SKY_45a18f8910ed4fb2';
-
     // --- ACTIVITY LOG SYSTEM ---
     function addActivityLog(title, desc, statusText, statusColor) {
         if(!currentUserData || !currentUserData.username) return;
@@ -1561,13 +1558,18 @@
     window.closeLimitModal = function() { document.getElementById('limitModal').classList.remove('show'); };
     window.backToLimitSelect = function() { document.getElementById('selectLimitView').classList.remove('hidden'); document.getElementById('qrisPaymentView').classList.add('hidden'); };
 
-    // ===== FUNGSI QRIS NEVAPEDIA =====
+    // ===== FUNGSI QRIS PAYGATEWAY =====
     async function createQrisForLimit(limitCount, price, labelName) {
         selectedAddLimitCount = limitCount; 
         customAlert("Menginisialisasi gateway pembayaran...");
         
         try {
-            const res = await fetch(`https://app.nevapedia.com/api/invoice?apikey=${NEVA_API_KEY}&amount=${price}`);
+            // Memanggil endpoint baru /api/paygetway
+            const res = await fetch(`/api/paygetway?action=deposit`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ amount: price })
+            });
             const data = await res.json();
             
             activeDepositId = data.data?.invoice_id || data.data?.id || data.invoice_id || data.id || data.data?.depositId;
@@ -1580,12 +1582,12 @@
                 
                 document.getElementById('selectLimitView').classList.add('hidden'); 
                 document.getElementById('qrisPaymentView').classList.remove('hidden');
-                addActivityLog("Acquire Kuota", `Inisialisasi Invoice Nevapedia paket ${labelName} Limit`, "Pending", "var(--gold-primary)");
+                addActivityLog("Acquire Kuota", `Inisialisasi Invoice paket ${labelName} Limit`, "Pending", "var(--gold-primary)");
             } else { 
-                customAlert("Gagal merender modul QRIS Nevapedia.", true); 
+                customAlert("Gagal merender modul QRIS dari sistem.", true); 
             }
         } catch (err) {
-            customAlert("Gagal terhubung ke server Nevapedia.", true);
+            customAlert("Gagal terhubung ke server pembayaran.", true);
         }
     }
 
@@ -1594,7 +1596,12 @@
         customAlert("Memverifikasi status pembayaran...");
         
         try {
-            const res = await fetch(`https://app.nevapedia.com/api/invoice/status?apikey=${NEVA_API_KEY}&invoice_id=${activeDepositId}`);
+            // Memanggil endpoint baru /api/paygetway
+            const res = await fetch(`/api/paygetway?action=cekmutasi`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ invoice_id: activeDepositId })
+            });
             const statusData = await res.json();
             
             const status = statusData.data?.status || statusData.status;
@@ -1613,7 +1620,7 @@
                     
                     closeLimitModal(); 
                     customAlert("Pembayaran Diterima! Kuota berhasil ditambahkan.");
-                    addActivityLog("Acquire Kuota", `Invoice Nevapedia lunas (+${selectedAddLimitCount} Limit)`, "Sukses", "var(--success-light)");
+                    addActivityLog("Acquire Kuota", `Invoice lunas (+${selectedAddLimitCount} Limit)`, "Sukses", "var(--success-light)");
                 } else { 
                     customAlert("Dana terdeteksi, gagal memperbarui database.", true); 
                 }
