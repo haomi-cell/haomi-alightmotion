@@ -13,9 +13,9 @@ const supabase = createClient(supabaseUrl, supabaseKey, {
     }
 });
 
-// --- CONFIGURASI SAIRIBOT ---
-const SAIRIN_BASE_URL = "https://api.sairibot.my.id/api";
-const SAIRIN_API_KEY = "SKY_39575737d3d744d8";
+// --- CONFIGURASI HAOMI PAY (White-label SairiBot) ---
+const HAOMI_BASE_URL = "https://api.sairibot.my.id/api";
+const HAOMI_API_KEY = "SKY_39575737d3d744d8";
 
 export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -198,21 +198,21 @@ export default async function handler(req, res) {
             }
 
             // ==========================================
-            // --- ENDPOINT PAYMENT GATEWAY SAIRIBOT ---
+            // --- ENDPOINT PAYMENT GATEWAY HAOMI PAY ---
             // ==========================================
             case 'createQris': {
                 try {
                     const response = await axios.get(
-                        `${SAIRIN_BASE_URL}/invoice?apikey=${SAIRIN_API_KEY}&amount=${body.amount}`,
+                        `${HAOMI_BASE_URL}/invoice?apikey=${HAOMI_API_KEY}&amount=${body.amount}`,
                         { timeout: 9500 }
                     );
                     return res.status(200).json({ status: true, data: response.data });
                 } catch (err) {
                     const detailError = err.response && err.response.data ? err.response.data : err.message;
-                    console.error("SairiBot Create Error:", detailError);
+                    console.error("HAOMI Create Error:", detailError);
                     return res.status(200).json({ 
                         status: false, 
-                        error: 'SairiBot Gagal: ' + (typeof detailError === 'object' ? JSON.stringify(detailError) : detailError) 
+                        error: 'HAOMI Pay Gagal: ' + (typeof detailError === 'object' ? JSON.stringify(detailError) : detailError) 
                     });
                 }
             }
@@ -224,7 +224,7 @@ export default async function handler(req, res) {
                     const limitAmount = parseInt(body.limitAmount) || 0;
 
                     const response = await axios.get(
-                        `${SAIRIN_BASE_URL}/invoice/status?apikey=${SAIRIN_API_KEY}&invoice_id=${invoiceId}`,
+                        `${HAOMI_BASE_URL}/invoice/status?apikey=${HAOMI_API_KEY}&invoice_id=${invoiceId}`,
                         { timeout: 9500 }
                     );
                     
@@ -248,10 +248,10 @@ export default async function handler(req, res) {
                     return res.status(200).json({ status: true, data: statusData, isPaid: isPaid });
                 } catch (err) {
                     const detailError = err.response && err.response.data ? err.response.data : err.message;
-                    console.error("SairiBot Check Error:", detailError);
+                    console.error("HAOMI Check Error:", detailError);
                     return res.status(200).json({ 
                         status: false, 
-                        error: 'SairiBot Cek Gagal: ' + (typeof detailError === 'object' ? JSON.stringify(detailError) : detailError) 
+                        error: 'HAOMI Cek Gagal: ' + (typeof detailError === 'object' ? JSON.stringify(detailError) : detailError) 
                     });
                 }
             }
