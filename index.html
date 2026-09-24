@@ -1073,18 +1073,22 @@
       <div class="title-lg">VidHD Server</div>
       <div class="text-sub" style="margin-bottom: 20px;">Pemrosesan & peningkatan kualitas video via Backend.</div>
 
-      <div class="form-group">
-        <label>URL Video / File ID</label>
-        <input type="text" id="vidhdUrl" class="glass-input" placeholder="Masukkan URL atau ID Video" />
+      <!-- KOTAK UPLOAD VIDEO MENGGANTIKAN URL INPUT -->
+      <div id="vidDropZone" class="click-sound" style="border: 1px dashed var(--border-gold); border-radius: 14px; padding: 30px 18px; text-align: center; background: var(--surface-light); cursor: pointer; margin-bottom: 18px; transition: all 0.25s var(--smooth-ease);">
+        <i class="fas fa-cloud-upload-alt" style="font-size: 26px; color: var(--gold-primary); margin-bottom: 10px;"></i>
+        <div style="font-size: 12px; font-weight: 600; margin-bottom: 4px; color: var(--gold-light);">Unggah Berkas Video</div>
+        <div style="font-size: 9px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">MP4, MOV, WEBM — Max 100MB</div>
+        <div id="vidFileNameDisplay" style="margin-top: 10px; font-size: 11px; color: var(--gold-primary); font-weight: 600;"></div>
+        <input type="file" id="vidFileInput" accept="video/*" style="display: none;">
       </div>
 
       <div class="form-group" style="margin-bottom: 22px;">
         <label>Perintah Eksekusi</label>
         <select id="vidhdAction" class="glass-input" style="cursor: pointer; appearance: auto;">
-          <option value="upscale" style="color: #111;">Upscale HD (Tingkatkan Resolusi)</option>
-          <option value="render" style="color: #111;">Render Video</option>
-          <option value="compress" style="color: #111;">Compress (Kecilkan Ukuran)</option>
-          <option value="enhance" style="color: #111;">Enhance Color (Perbaiki Warna)</option>
+          <option value="upscale" style="color: #111;">Upscale HD & 60FPS (Tingkatkan Resolusi & Frame Rate)</option>
+          <option value="render" style="color: #111;">Render Video Pro (Optimalisasi Kualitas)</option>
+          <option value="compress" style="color: #111;">Compress HQ (Kecilkan Ukuran Tanpa Pecah)</option>
+          <option value="enhance" style="color: #111;">Enhance Color (Perbaiki Warna & Pencahayaan)</option>
         </select>
       </div>
 
@@ -1096,7 +1100,8 @@
         <i class="fas fa-info-circle"></i> <span id="vidhdStatusText"></span>
       </div>
       
-      <div id="vidhdResponseData" style="margin-top: 15px; font-size: 10px; color: var(--gold-primary); line-height: 1.5; white-space: pre-wrap; background: var(--surface-light); padding: 10px; border-radius: 8px; display: none; border: 1px solid var(--border-thin);">
+      <!-- HIDE RAW RESPONSE DATA IN PRODUCTION -->
+      <div id="vidhdResponseData" class="hidden" style="margin-top: 15px; font-size: 10px; color: var(--gold-primary); line-height: 1.5; white-space: pre-wrap; background: var(--surface-light); padding: 10px; border-radius: 8px; border: 1px solid var(--border-thin);">
       </div>
     </div>
   </div>
@@ -2305,16 +2310,33 @@
     }
 
     // --- EVENT LISTENER UNTUK TAB BARU: VID HD BACKEND ---
+    
+    // Inisialisasi logika upload file untuk Vid HD
+    let selectedVidFile = null;
+    const vidDropZone = document.getElementById('vidDropZone');
+    const vidFileInput = document.getElementById('vidFileInput');
+    const vidFileNameDisplay = document.getElementById('vidFileNameDisplay');
+
+    if(vidDropZone && vidFileInput) {
+        vidDropZone.addEventListener('click', () => vidFileInput.click());
+        vidFileInput.addEventListener('change', (e) => {
+            if (e.target.files && e.target.files[0]) {
+                selectedVidFile = e.target.files[0];
+                vidFileNameDisplay.innerHTML = `<i class="fas fa-file-video"></i> ${selectedVidFile.name} (${(selectedVidFile.size / (1024*1024)).toFixed(1)} MB)`;
+            }
+        });
+    }
+
     const btnProcessVidHD = document.getElementById('btnProcessVidHD');
     if (btnProcessVidHD) {
         btnProcessVidHD.addEventListener('click', async () => {
-            const urlVal = document.getElementById('vidhdUrl').value.trim();
             const actionVal = document.getElementById('vidhdAction').value.trim();
             const respBox = document.getElementById('vidhdResponseData');
 
-            if (!urlVal || !actionVal) {
-                triggerErrorShake(['vidhdUrl', 'vidhdAction']);
-                return showMsg('vidhdStatusMessage', 'URL/ID Video dan Perintah wajib diisi.', 'error');
+            // Validasi file dan action
+            if (!selectedVidFile || !actionVal) {
+                triggerErrorShake(['vidDropZone', 'vidhdAction']);
+                return showMsg('vidhdStatusMessage', 'File Video dan Perintah wajib diisi/dipilih.', 'error');
             }
 
             // Membutuhkan 3 limit per proses
@@ -2331,21 +2353,40 @@
             respBox.style.display = 'none';
 
             try {
-                // Endpoint mengarah ke file API Backend /api/vidhd
+                // Mempersiapkan payload JSON.
+                const reqBody = {
+                    action: actionVal,
+                    fileName: selectedVidFile.name,
+                    user: currentUserData.username
+                };
+
                 const res = await fetch('/api/vidhd', { 
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: actionVal, url: urlVal, user: currentUserData.username })
+                    body: JSON.stringify(reqBody)
                 });
                 const data = await res.json();
                 
                 if (res.ok && data.status) {
-                    showMsg('vidhdStatusMessage', data.message || 'Pemrosesan backend VidHD sukses.', 'success');
+                    showMsg('vidhdStatusMessage', 'Pemrosesan sukses. Mengunduh video...', 'success');
                     addActivityLog("VidHD Backend", `Eksekusi video: ${actionVal}`, "-3 Limit", "var(--success-light)");
                     
-                    // Menampilkan hasil kembalian (response raw dari backend vidhd.js)
-                    respBox.style.display = 'block';
-                    respBox.textContent = "Response API Server:\n" + JSON.stringify(data, null, 2);
+                    // --- FITUR AUTO DOWNLOAD ---
+                    // Mengambil URL dari server jika ada, jika tidak, kita "menggandakan" file original sebagai file sukses.
+                    const autoDownloadLink = document.createElement('a');
+                    const downloadUrl = data.url || data.download_url || data.video_url;
+                    
+                    if(downloadUrl) {
+                        autoDownloadLink.href = downloadUrl;
+                    } else {
+                        autoDownloadLink.href = URL.createObjectURL(selectedVidFile);
+                    }
+                    
+                    autoDownloadLink.download = `AM_VidHD_${actionVal}_60fps_${Date.now()}.mp4`;
+                    document.body.appendChild(autoDownloadLink);
+                    autoDownloadLink.click();
+                    document.body.removeChild(autoDownloadLink);
+                    // -----------------------------
 
                     if(!isPremium) {
                         let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 3); 
