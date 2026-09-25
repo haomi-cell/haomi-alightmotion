@@ -8,7 +8,7 @@
 <!-- Fonts & Icons -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <style>
@@ -61,7 +61,6 @@
     --font-heading: 'Cinzel', serif;
     --font-body: 'Plus Jakarta Sans', sans-serif;
     --font-mono: 'Space Grotesk', sans-serif;
-    --font-code: 'JetBrains Mono', monospace;
     --ease-luxury: cubic-bezier(0.16, 1, 0.3, 1);
   }
 
@@ -223,142 +222,6 @@
   }
   #globalToast.show { transform: translateX(-50%) translateY(0) scale(1); opacity: 1; visibility: visible; pointer-events: auto; }
   #globalToast i { font-size: 14px; color: var(--gold-pure); }
-
-  /* HUD CODING & PROCESSING TERMINAL OVERLAY */
-  #processConsoleModal {
-    z-index: 100005;
-  }
-  .coding-terminal-box {
-    background: #080B10;
-    border: 1px solid rgba(212, 175, 55, 0.4);
-    border-radius: 20px;
-    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9), 0 0 35px rgba(212, 175, 55, 0.2);
-    overflow: hidden;
-    width: 100%;
-    max-width: 380px;
-    padding: 0;
-  }
-  .terminal-top-header {
-    background: rgba(18, 22, 32, 0.95);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    padding: 10px 14px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .terminal-dots {
-    display: flex;
-    gap: 6px;
-  }
-  .terminal-dot {
-    width: 8px; height: 8px; border-radius: 50%;
-  }
-  .t-dot-red { background: #FF5F56; }
-  .t-dot-yellow { background: #FFBD2E; }
-  .t-dot-green { background: #27C93F; }
-  .terminal-title-tag {
-    font-family: var(--font-code);
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    color: var(--gold-light);
-    text-transform: uppercase;
-  }
-  .terminal-body-content {
-    padding: 18px 16px 14px;
-  }
-  .terminal-progress-banner {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: 12px;
-  }
-  .terminal-action-title {
-    font-family: var(--font-heading);
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--text-primary);
-    letter-spacing: 0.5px;
-  }
-  .terminal-percent-counter {
-    font-family: var(--font-code);
-    font-size: 16px;
-    font-weight: 800;
-    color: var(--gold-pure);
-  }
-  .terminal-progress-track {
-    width: 100%;
-    height: 5px;
-    background: rgba(255, 255, 255, 0.07);
-    border-radius: 99px;
-    overflow: hidden;
-    margin-bottom: 14px;
-    position: relative;
-  }
-  .terminal-progress-bar {
-    width: 0%;
-    height: 100%;
-    background: var(--gold-gradient);
-    border-radius: 99px;
-    box-shadow: 0 0 10px var(--gold-pure);
-    transition: width 0.15s ease-out;
-  }
-  .code-stream-viewport {
-    background: #040507;
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 12px;
-    padding: 10px 12px;
-    height: 125px;
-    font-family: var(--font-code);
-    font-size: 10.5px;
-    line-height: 1.6;
-    color: #4ADE80;
-    overflow: hidden;
-    position: relative;
-    user-select: none;
-    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.7);
-  }
-  .code-stream-viewport::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background: linear-gradient(180deg, transparent 65%, rgba(4, 5, 7, 0.85) 100%);
-  }
-  .code-stream-line {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    opacity: 0.9;
-  }
-  .code-stream-line .c-hex { color: var(--gold-light); }
-  .code-stream-line .c-dim { color: #64748B; }
-  .code-stream-line .c-warn { color: var(--gold-pure); font-weight: 700; }
-  .code-stream-line .c-cyan { color: #38BDF8; }
-  .terminal-foot-status {
-    margin-top: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 10px;
-    color: var(--text-secondary);
-  }
-  .status-pulse-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    color: var(--gold-light);
-    font-family: var(--font-code);
-  }
-  .pulse-node {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--gold-pure);
-    box-shadow: 0 0 8px var(--gold-pure);
-    animation: nodeBlink 0.6s infinite alternate;
-  }
-  @keyframes nodeBlink { from { opacity: 0.3; } to { opacity: 1; } }
 
   /* CARDS */
   .vault-card {
@@ -723,7 +586,7 @@
 
   /* MODALS & OVERLAYS */
   .overlay {
-    position: fixed; inset: 0; background: rgba(4, 5, 8, 0.84);
+    position: fixed; inset: 0; background: rgba(4, 5, 8, 0.82);
     backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
     z-index: 10000; display: flex; align-items: center; justify-content: center;
     opacity: 0; visibility: hidden; pointer-events: none;
@@ -834,48 +697,6 @@
 <div id="globalToast">
   <i class="fas fa-circle-check"></i>
   <span id="toastMsg">Sistem Siap</span>
-</div>
-
-<!-- MODAL: KONSOL PROSES CODING & NUMERIK -->
-<div id="processConsoleModal" class="overlay">
-  <div class="coding-terminal-box">
-    <div class="terminal-top-header">
-      <div class="terminal-dots">
-        <div class="terminal-dot t-dot-red"></div>
-        <div class="terminal-dot t-dot-yellow"></div>
-        <div class="terminal-dot t-dot-green"></div>
-      </div>
-      <div class="terminal-title-tag"><i class="fas fa-microchip" style="color:var(--gold-pure); margin-right:4px;"></i> AM PROCESS ENGINE</div>
-      <div style="width: 24px;"></div>
-    </div>
-    
-    <div class="terminal-body-content">
-      <div class="terminal-progress-banner">
-        <div>
-          <div class="terminal-action-title" id="terminalTaskTitle">Memproses Instruksi...</div>
-          <div style="font-size: 9.5px; color: var(--text-tertiary); font-family: var(--font-code);" id="terminalSubState">Menginisialisasi pipeline enkripsi...</div>
-        </div>
-        <div class="terminal-percent-counter" id="terminalPercent">0%</div>
-      </div>
-
-      <div class="terminal-progress-track">
-        <div class="terminal-progress-bar" id="terminalProgressBar"></div>
-      </div>
-
-      <!-- STREAM ANGKA DAN KODE NUMERIK -->
-      <div class="code-stream-viewport" id="terminalCodeStream">
-        <div class="code-stream-line"><span class="c-dim">[0x0001]</span> <span class="c-hex">SYSTEM_READY</span> :: KONSOL INITIALIZED</div>
-      </div>
-
-      <div class="terminal-foot-status">
-        <div class="status-pulse-badge">
-          <div class="pulse-node"></div>
-          <span id="terminalPipelineTag">PIPELINE_ACTIVE</span>
-        </div>
-        <div style="font-family: var(--font-code); color: var(--gold-light); font-size: 9.5px;" id="terminalCycleTag">THREAD: 0x8F</div>
-      </div>
-    </div>
-  </div>
 </div>
 
 <!-- MODAL: HELP / FAQ -->
@@ -1543,7 +1364,6 @@
     document.querySelectorAll('.overlay').forEach(overlay => {
         overlay.addEventListener('click', (e) => {
             if (e.target === overlay) {
-                if (overlay.id === 'processConsoleModal') return; // Jangan tutup konsol jika sedang memproses
                 overlay.classList.remove('show');
                 if(!document.querySelector('.overlay.show')) {
                     document.body.classList.remove('modal-open');
@@ -1555,138 +1375,10 @@
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             const activeOverlays = document.querySelectorAll('.overlay.show');
-            activeOverlays.forEach(ov => {
-                if (ov.id !== 'processConsoleModal') ov.classList.remove('show');
-            });
-            if(!document.querySelector('.overlay.show')) {
-                document.body.classList.remove('modal-open');
-            }
+            activeOverlays.forEach(ov => ov.classList.remove('show'));
+            document.body.classList.remove('modal-open');
         }
     });
-
-    // --- ENGINE KONSOL CODING & NUMERIK (TIDAK MENAMPILKAN ISI SISTEM) ---
-    let processStreamInterval = null;
-    let processProgressInterval = null;
-    let currentProcessPercent = 0;
-
-    const pseudoOps = [
-        "PARSING_MATRIX_NODES", "CHECKSUM_VERIFY", "ALLOC_BUFFER_MEM",
-        "SYNC_SECURE_PAYLOAD", "OPTIMIZE_TENSOR_WEIGHTS", "HASH_CYCLIC_REDUNDANCY",
-        "EXECUTE_BYTE_STREAM", "TRANSPOSE_VECTOR_MAP", "VERIFY_BLOCK_INTEGRITY",
-        "RESOLVE_CRYPTO_TOKEN", "STREAM_PACKET_ENCLAVE", "DECODE_BIT_SEQUENCE",
-        "COMPILE_OUTPUT_STREAM", "PIPELINE_HANDSHAKE"
-    ];
-
-    function getRandomHex(len = 4) {
-        const chars = '0123456789ABCDEF';
-        let res = '';
-        for (let i = 0; i < len; i++) res += chars[Math.floor(Math.random() * chars.length)];
-        return res;
-    }
-
-    function getRandomBinary(bits = 8) {
-        let b = '';
-        for(let i=0; i<bits; i++) b += Math.random() > 0.5 ? '1' : '0';
-        return b;
-    }
-
-    window.startProcessingConsole = function(taskTitle, stageDescription = "Menginisialisasi pipeline instruksi...") {
-        clearInterval(processStreamInterval);
-        clearInterval(processProgressInterval);
-        
-        currentProcessPercent = 5;
-        const taskTitleEl = document.getElementById('terminalTaskTitle');
-        const subStateEl = document.getElementById('terminalSubState');
-        const percentEl = document.getElementById('terminalPercent');
-        const barEl = document.getElementById('terminalProgressBar');
-        const streamEl = document.getElementById('terminalCodeStream');
-        const threadTag = document.getElementById('terminalCycleTag');
-
-        if(taskTitleEl) taskTitleEl.textContent = taskTitle;
-        if(subStateEl) subStateEl.textContent = stageDescription;
-        if(percentEl) percentEl.textContent = "5%";
-        if(barEl) barEl.style.width = "5%";
-        if(threadTag) threadTag.textContent = `THREAD: 0x${getRandomHex(4)}`;
-        
-        if(streamEl) {
-            streamEl.innerHTML = `
-                <div class="code-stream-line"><span class="c-dim">[0x00A1]</span> <span class="c-hex">START_EXECUTION</span> :: ${escapeHtml(taskTitle.toUpperCase())}</div>
-                <div class="code-stream-line"><span class="c-dim">[0x00A2]</span> <span class="c-cyan">MEMORY_BLOCK:</span> 0x${getRandomHex(6)} -> 0x${getRandomHex(6)} [ALLOCATED]</div>
-            `;
-        }
-
-        window.openModal('processConsoleModal');
-
-        // Alur simulasi angka & kode bergerak
-        processStreamInterval = setInterval(() => {
-            if(!streamEl) return;
-            const op = pseudoOps[Math.floor(Math.random() * pseudoOps.length)];
-            const hexAddr = `0x${getRandomHex(4)}`;
-            const bin = getRandomBinary(8);
-            const valNum = (Math.random() * 999).toFixed(2);
-            
-            const line = document.createElement('div');
-            line.className = 'code-stream-line';
-            
-            const randType = Math.floor(Math.random() * 4);
-            if(randType === 0) {
-                line.innerHTML = `<span class="c-dim">[${hexAddr}]</span> <span class="c-hex">${op}</span> :: ${bin} [OK]`;
-            } else if(randType === 1) {
-                line.innerHTML = `<span class="c-dim">[${hexAddr}]</span> COMPUTE_NODE :: DELTA=${valNum}ms SPEED=${(Math.random() * 12 + 18).toFixed(1)}GB/s`;
-            } else if(randType === 2) {
-                line.innerHTML = `<span class="c-dim">[${hexAddr}]</span> <span class="c-warn">CYCLE_BLOCK</span> #0x${getRandomHex(3)}: SHA-${getRandomHex(8)}`;
-            } else {
-                line.innerHTML = `<span class="c-dim">[${hexAddr}]</span> <span class="c-cyan">STREAM_PACKET:</span> [0x${getRandomHex(2)}] 010110 -> SYNCHRONIZED`;
-            }
-
-            streamEl.appendChild(line);
-            if(streamEl.children.length > 15) streamEl.removeChild(streamEl.firstElementChild);
-            streamEl.scrollTop = streamEl.scrollHeight;
-        }, 120);
-
-        // Simulasi progres angka berjalan 5% -> ~92%
-        processProgressInterval = setInterval(() => {
-            if(currentProcessPercent < 92) {
-                currentProcessPercent += Math.floor(Math.random() * 6) + 3;
-                if(currentProcessPercent > 92) currentProcessPercent = 92;
-                if(percentEl) percentEl.textContent = `${currentProcessPercent}%`;
-                if(barEl) barEl.style.width = `${currentProcessPercent}%`;
-                
-                if(currentProcessPercent > 35 && currentProcessPercent < 70) {
-                    if(subStateEl) subStateEl.textContent = "Mengolah buffer komputasi terenkripsi...";
-                } else if(currentProcessPercent >= 70) {
-                    if(subStateEl) subStateEl.textContent = "Sinkronisasi hasil keluaran data...";
-                }
-            }
-        }, 180);
-    };
-
-    window.finishProcessingConsole = function(success = true, completionText = "Selesai", callback) {
-        clearInterval(processProgressInterval);
-        clearInterval(processStreamInterval);
-
-        const subStateEl = document.getElementById('terminalSubState');
-        const percentEl = document.getElementById('terminalPercent');
-        const barEl = document.getElementById('terminalProgressBar');
-        const streamEl = document.getElementById('terminalCodeStream');
-
-        if(percentEl) percentEl.textContent = "100%";
-        if(barEl) barEl.style.width = "100%";
-        if(subStateEl) subStateEl.textContent = completionText;
-
-        if(streamEl) {
-            const endLine = document.createElement('div');
-            endLine.className = 'code-stream-line';
-            endLine.innerHTML = `<span class="c-dim">[0x0FFF]</span> <span class="c-warn">[PIPELINE_COMPLETE]</span> :: STATUS_CODE: ${success ? '0x00_OK' : '0x01_ABORT'} [100%]`;
-            streamEl.appendChild(endLine);
-            streamEl.scrollTop = streamEl.scrollHeight;
-        }
-
-        setTimeout(() => {
-            window.closeModal('processConsoleModal');
-            if(typeof callback === 'function') callback();
-        }, 450);
-    };
 
     window.openProfileSheet = function() {
         if (currentUserData) {
@@ -2451,7 +2143,7 @@
             const savedUser = localStorage.getItem(SESSION_KEY);
             if(!savedUser) { 
                 if(initialLoader) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 350); } 
-                switchView('loginView'); 
+                switchView('loginView'); // FIX: Tampilkan loginView agar tidak gelap
                 window.openModal('warningModal'); 
             } else {
                 try { 
@@ -2671,7 +2363,7 @@
 
     window.togglePwd = function(inputId, btnEl) { const input = document.getElementById(inputId); const icon = btnEl.querySelector('i'); if (!input) return; if (input.type === 'password') { input.type = 'text'; icon.className = 'fas fa-eye-slash'; } else { input.type = 'password'; icon.className = 'far fa-eye'; } };
 
-    // --- STUDIO PENJERNIH FOTO (DENGAN TAMPILAN KONSOL CODING) ---
+    // --- STUDIO PENJERNIH FOTO ---
     function initImageEnhancerEngine() {
         const urlInput = document.getElementById('imageUrl'); 
         const dropZone = document.getElementById('dropZone'); 
@@ -2781,17 +2473,9 @@
                 triggerErrorShake(['imageUrl']);
                 return showMsg('statusMessage', 'Masukkan tautan gambar atau pilih foto dari galeri.', 'error');
             }
-            
             enhanceBtn.disabled = true; 
             enhanceBtn.innerHTML = '<div class="loader-spinner" style="width:12px;height:12px;margin-right:6px;"></div> Sedang memproses...';
-            
-            // Buka HUD Konsol Coding & Pemrosesan
-            startProcessingConsole("Rendering Citra HD", "Mengalokasikan matriks piksel & filter neural...");
-
             try {
-                // Jeda minimum agar animasi matriks terasa bekerja
-                const minWaitPromise = new Promise(r => setTimeout(r, 1400));
-                
                 let img = selectedFile ? await loadImageFromFile(selectedFile) : await loadImageFromBlob(await fetchUrlBlob(urlVal));
                 originalBlobUrl = URL.createObjectURL(selectedFile || await fetchUrlBlob(urlVal));
                 splitImgBefore.src = originalBlobUrl;
@@ -2800,23 +2484,17 @@
                 enhancedBlobUrl = URL.createObjectURL(enhancedBlob);
                 splitImgAfter.src = enhancedBlobUrl;
                 
-                await minWaitPromise;
+                slider.style.left = '50%';
+                splitImgBefore.style.clipPath = 'inset(0 50% 0 0)';
 
-                finishProcessingConsole(true, "Rendering Selesai", () => {
-                    slider.style.left = '50%';
-                    splitImgBefore.style.clipPath = 'inset(0 50% 0 0)';
-
-                    comparisonSplitSection.classList.remove('hidden');
-                    downloadFooterActions.classList.remove('hidden');
-                    showMsg('statusMessage', 'Foto berhasil diperjelas dan siap disimpan.', 'success');
-                    
-                    let modeTxt = selectedMode === '2x' ? 'Perjelas 2x' : (selectedMode === '1x' ? 'Pembersih Bintik' : 'Pencerah Warna');
-                    addActivityLog("Penjernih Foto", `Memproses foto (${modeTxt})`, "Gratis", "var(--success)");
-                });
+                comparisonSplitSection.classList.remove('hidden');
+                downloadFooterActions.classList.remove('hidden');
+                showMsg('statusMessage', 'Foto berhasil diperjelas dan siap disimpan.', 'success');
+                
+                let modeTxt = selectedMode === '2x' ? 'Perjelas 2x' : (selectedMode === '1x' ? 'Pembersih Bintik' : 'Pencerah Warna');
+                addActivityLog("Penjernih Foto", `Memproses foto (${modeTxt})`, "Gratis", "var(--success)");
             } catch(e) { 
-                finishProcessingConsole(false, "Gagal Memproses", () => {
-                    showMsg('statusMessage', 'Tidak dapat memproses foto ini. Coba gunakan foto lain.', 'error'); 
-                });
+                showMsg('statusMessage', 'Tidak dapat memproses foto ini. Coba gunakan foto lain.', 'error'); 
             } finally { 
                 enhanceBtn.disabled = false; 
                 enhanceBtn.innerHTML = '<i class="fas fa-wand-magic-sparkles"></i> Proses Gambar'; 
@@ -2903,7 +2581,7 @@
             
             localStorage.setItem(SESSION_KEY, u); 
             localStorage.setItem(CACHE_KEY, JSON.stringify(res.data)); 
-            window.loadAppView(res.data);
+            window.loadAppView(res.data); // FIX: Pastikan view siap
             if(!localStorage.getItem(BIO_CRED_KEY)) { 
                 temporaryBioData = {u: u, p: p, resData: res.data}; 
                 window.openModal('bioSetupModal'); 
@@ -2937,7 +2615,7 @@
                 localStorage.setItem(SESSION_KEY, u); 
                 localStorage.setItem(CACHE_KEY, JSON.stringify(res.data)); 
                 temporaryBioData = {u: u, p: p, resData: res.data}; 
-                window.loadAppView(res.data);
+                window.loadAppView(res.data); // FIX: Muat tampilan konsol & lisensi langsung
                 window.openModal('bioSetupModal');
                 addActivityLog("Pendaftaran", "Akun baru berhasil dibuat", "Sukses", "var(--success)");
             } catch (err) { 
@@ -2949,7 +2627,7 @@
         }); 
     }
 
-    // --- AKTIVASI LISENSI (DENGAN TAMPILAN KONSOL CODING) ---
+    // AKTIVASI LISENSI
     if(sendBtn) {
         sendBtn.addEventListener('click', async () => {
             const email = document.getElementById('emailInput').value.trim(); 
@@ -2999,38 +2677,27 @@
             document.getElementById('btnDefault').classList.add('hidden'); 
             document.getElementById('loaderContainer').classList.remove('hidden');
             
-            // Buka HUD Konsol Coding & Pemrosesan
-            startProcessingConsole("Verifikasi Lisensi AM", "Mengautentikasi tanda tangan token lisensi...");
-
             try {
-                const minWaitPromise = new Promise(r => setTimeout(r, 1500));
-                const resPromise = fetch(`/api/am?action=verif&email=${encodeURIComponent(cachedEmail || email)}&url=${encodeURIComponent(magic)}`).then(r => r.json());
-
-                const [_, data] = await Promise.all([minWaitPromise, resPromise]);
+                const res = await fetch(`/api/am?action=verif&email=${encodeURIComponent(cachedEmail || email)}&url=${encodeURIComponent(magic)}`);
+                const data = await res.json();
                 
                 if(data.status) {
-                    finishProcessingConsole(true, "Lisensi Terverifikasi", async () => {
-                        showMsg('appErrorMsg', data.message || 'Selamat! Lisensi berhasil dipasang ke perangkat.', 'success');
-                        customAlert('Aktivasi lisensi berhasil.');
-                        
-                        if(!isPremium && currentUserData) {
-                            let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 1); 
-                            await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
-                            currentUserData.limit_count = newLimit; 
-                            localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); 
-                            window.loadAppView(currentUserData);
-                        }
-                        addActivityLog("Lisensi", "Aktivasi lisensi berhasil", "-1 Kuota", "var(--success)");
-                    });
+                    showMsg('appErrorMsg', data.message || 'Selamat! Lisensi berhasil dipasang ke perangkat.', 'success');
+                    customAlert('Aktivasi lisensi berhasil.');
+                    
+                    if(!isPremium && currentUserData) {
+                        let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 1); 
+                        await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
+                        currentUserData.limit_count = newLimit; 
+                        localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); 
+                        window.loadAppView(currentUserData);
+                    }
+                    addActivityLog("Lisensi", "Aktivasi lisensi berhasil", "-1 Kuota", "var(--success)");
                 } else { 
-                    finishProcessingConsole(false, "Verifikasi Ditolak", () => {
-                        showMsg('appErrorMsg', data.error || 'Verifikasi ditolak. Kuota Anda tidak berkurang (tetap aman).', 'error'); 
-                    });
+                    showMsg('appErrorMsg', data.error || 'Verifikasi ditolak. Kuota Anda tidak berkurang (tetap aman).', 'error'); 
                 }
             } catch(e) { 
-                finishProcessingConsole(false, "Koneksi Terputus", () => {
-                    showMsg('appErrorMsg', 'Koneksi terganggu. Kuota Anda aman (tidak berkurang).', 'error'); 
-                });
+                showMsg('appErrorMsg', 'Koneksi terganggu. Kuota Anda aman (tidak berkurang).', 'error'); 
             } finally { 
                 activateBtn.disabled = false; 
                 document.getElementById('btnDefault').classList.remove('hidden'); 
@@ -3206,7 +2873,7 @@
         if (e.key === 'Enter') document.getElementById('btnSendChat').click();
     });
 
-    // --- REAKSI SALURAN WA (DENGAN TAMPILAN KONSOL CODING) ---
+    // --- REAKSI SALURAN WA ---
     const btnSendReaction = document.getElementById('btnSendReaction');
     if (btnSendReaction) {
         btnSendReaction.addEventListener('click', async () => {
@@ -3234,41 +2901,30 @@
             btnSendReaction.innerHTML = '<div class="loader-spinner" style="width:12px;height:12px;margin-right:6px;"></div> Mengirim reaksi...';
             btnSendReaction.disabled = true;
 
-            // Buka HUD Konsol Coding & Pemrosesan
-            startProcessingConsole("Reaksi Saluran WhatsApp", "Menyusun paket instruksi reaksi emosional...");
-
             try {
-                const minWaitPromise = new Promise(r => setTimeout(r, 1600));
-                const resPromise = fetch('/api/reactch', {
+                const res = await fetch('/api/reactch', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ url: urlVal, reaction: emojiVal })
-                }).then(r => r.json());
-
-                const [_, data] = await Promise.all([minWaitPromise, resPromise]);
+                });
+                const data = await res.json();
                 
                 if (data.statusCode === 200 || data.status === true) {
-                    finishProcessingConsole(true, "Reaksi Terkirim", async () => {
-                        showMsg('reactStatusMessage', 'Reaksi berhasil dikirimkan ke saluran WhatsApp.', 'success');
-                        
-                        if(!isPremium && currentUserData) {
-                            let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 2); 
-                            await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
-                            currentUserData.limit_count = newLimit; 
-                            localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); 
-                            window.loadAppView(currentUserData);
-                        }
-                        addActivityLog("Reaksi WhatsApp", `Mengirim reaksi ${emojiVal}`, "-2 Kuota", "var(--success)");
-                    });
+                    showMsg('reactStatusMessage', 'Reaksi berhasil dikirimkan ke saluran WhatsApp.', 'success');
+                    
+                    if(!isPremium && currentUserData) {
+                        let newLimit = Math.max(0, (currentUserData.limit_count ?? 3) - 2); 
+                        await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: newLimit } });
+                        currentUserData.limit_count = newLimit; 
+                        localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); 
+                        window.loadAppView(currentUserData);
+                    }
+                    addActivityLog("Reaksi WhatsApp", `Mengirim reaksi ${emojiVal}`, "-2 Kuota", "var(--success)");
                 } else {
-                    finishProcessingConsole(false, "Gagal Mengirim", () => {
-                        showMsg('reactStatusMessage', data.message || 'Gagal mengirim reaksi. Kuota Anda tidak berkurang (aman).', 'error');
-                    });
+                    showMsg('reactStatusMessage', data.message || 'Gagal mengirim reaksi. Kuota Anda tidak berkurang (aman).', 'error');
                 }
             } catch (err) {
-                finishProcessingConsole(false, "Koneksi Terputus", () => {
-                    showMsg('reactStatusMessage', 'Koneksi terputus. Kuota Anda aman (tidak berkurang).', 'error');
-                });
+                showMsg('reactStatusMessage', 'Koneksi terputus. Kuota Anda aman (tidak berkurang).', 'error');
             } finally {
                 btnSendReaction.innerHTML = '<i class="fab fa-whatsapp"></i> Beri Reaksi (-2 Kuota)';
                 btnSendReaction.disabled = false;
@@ -3292,8 +2948,6 @@
 
         if (floatMenu) {
             if (tabName === 'chat') {
-                floatMenu.classList.add('hidden');
-            } elseif (tabName === 'chat') {
                 floatMenu.classList.add('hidden');
             } else {
                 floatMenu.classList.remove('hidden');
