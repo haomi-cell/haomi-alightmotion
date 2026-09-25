@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="id" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>AM Executive — Elite Private Console</title>
+<title>AM Executive — Private Console</title>
 
 <!-- Fonts & Icons -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,17 +13,17 @@
 
 <style>
   :root {
-    --bg-base: #06070B;
-    --bg-mesh: radial-gradient(ellipse 85% 55% at 50% -12%, rgba(212, 175, 55, 0.16) 0%, transparent 68%),
-               radial-gradient(ellipse 70% 50% at 100% 100%, rgba(20, 28, 45, 0.35) 0%, transparent 65%),
-               radial-gradient(circle at 0% 50%, rgba(212, 175, 55, 0.05) 0%, transparent 50%),
-               linear-gradient(180deg, #07080C 0%, #050608 100%);
+    --bg-base: #07080C;
+    --bg-mesh: radial-gradient(ellipse 80% 55% at 50% -10%, rgba(212, 175, 55, 0.15) 0%, transparent 70%),
+               radial-gradient(ellipse 70% 50% at 100% 100%, rgba(22, 30, 48, 0.35) 0%, transparent 65%),
+               radial-gradient(circle at 0% 45%, rgba(212, 175, 55, 0.04) 0%, transparent 50%),
+               linear-gradient(180deg, #090A10 0%, #050608 100%);
     
-    --surface-glass: rgba(14, 17, 25, 0.82);
-    --surface-glass-card: rgba(17, 21, 32, 0.88);
-    --surface-glass-elevated: rgba(25, 30, 44, 0.94);
-    --surface-subtle: rgba(255, 255, 255, 0.035);
-    --surface-hover: rgba(255, 255, 255, 0.065);
+    --surface-glass: rgba(14, 18, 26, 0.85);
+    --surface-glass-card: rgba(17, 22, 34, 0.88);
+    --surface-glass-elevated: rgba(25, 31, 46, 0.94);
+    --surface-subtle: rgba(255, 255, 255, 0.038);
+    --surface-hover: rgba(255, 255, 255, 0.07);
     
     --gold-pure: #D4AF37;
     --gold-light: #F8E9C4;
@@ -32,7 +32,7 @@
     --gold-dark: #634C14;
     --gold-gradient: linear-gradient(135deg, #FFF6E0 0%, #E7C66B 35%, #D4AF37 60%, #8C6B1B 100%);
     --card-metal-bg: radial-gradient(circle at 15% 15%, #272C3B 0%, #12141C 50%, #07080B 100%);
-    --card-back-bg: radial-gradient(circle at 85% 15%, #2B2616 0%, #141310 45%, #080809 100%);
+    --card-back-bg: radial-gradient(circle at 85% 15%, #292415 0%, #141310 45%, #080809 100%);
     
     --gold-glow: rgba(212, 175, 55, 0.28);
     --gold-glow-soft: rgba(212, 175, 55, 0.10);
@@ -55,7 +55,7 @@
     
     --island-bg: rgba(12, 15, 22, 0.95);
     --shadow-vault: 0 20px 48px -12px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.05);
-    --shadow-card-metal: 0 28px 60px -14px rgba(0, 0, 0, 0.95), 0 0 35px rgba(212, 175, 55, 0.16);
+    --shadow-card-metal: 0 24px 55px -12px rgba(0, 0, 0, 0.95), 0 0 32px rgba(212, 175, 55, 0.15);
 
     --font-heading: 'Cinzel', serif;
     --font-body: 'Plus Jakarta Sans', sans-serif;
@@ -65,7 +65,7 @@
 
   [data-theme="light"] {
     --bg-base: #F4F6FB;
-    --bg-mesh: radial-gradient(ellipse 85% 55% at 50% -12%, rgba(184, 134, 11, 0.14) 0%, transparent 68%),
+    --bg-mesh: radial-gradient(ellipse 80% 55% at 50% -10%, rgba(184, 134, 11, 0.14) 0%, transparent 70%),
                radial-gradient(ellipse 70% 50% at 100% 100%, rgba(200, 210, 230, 0.4) 0%, transparent 65%),
                linear-gradient(180deg, #F8F9FC 0%, #EEF1F8 100%);
     --surface-glass: rgba(255, 255, 255, 0.92);
@@ -89,7 +89,7 @@
     --border-gold-subtle: rgba(184, 134, 11, 0.28);
     --island-bg: rgba(255, 255, 255, 0.96);
     --shadow-vault: 0 16px 40px -10px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.05);
-    --shadow-card-metal: 0 24px 50px -12px rgba(0, 0, 0, 0.35), 0 0 28px rgba(184, 134, 11, 0.18);
+    --shadow-card-metal: 0 20px 45px -12px rgba(0, 0, 0, 0.35), 0 0 25px rgba(184, 134, 11, 0.16);
   }
 
   * { 
@@ -106,7 +106,6 @@
     background-color: var(--bg-base);
   }
 
-  /* BESPOKE OBSIDIAN MATTE BACKGROUND */
   body {
     background-color: var(--bg-base);
     background-image: var(--bg-mesh);
@@ -206,7 +205,7 @@
   }
 
   /* ========================================================
-     3D FLIP CARD WITH TWO SIDES (FRONT & BACK)
+     3D FLIP CARD: FIXED INTERACTION & SEPARATE ACTION
   ======================================================== */
   .card-3d-scene {
     perspective: 1400px;
@@ -217,10 +216,9 @@
   .card-3d-flipper {
     position: relative;
     width: 100%;
-    min-height: 220px;
+    min-height: 225px;
     transition: transform 0.65s cubic-bezier(0.2, 0.85, 0.35, 1.15);
     transform-style: preserve-3d;
-    cursor: pointer;
   }
   .card-3d-flipper.is-flipped {
     transform: rotateY(180deg);
@@ -250,6 +248,7 @@
   /* FRONT SIDE */
   .card-front {
     background: var(--card-metal-bg);
+    cursor: pointer;
   }
   .card-top-row {
     display: flex; justify-content: space-between; align-items: center;
@@ -305,13 +304,13 @@
   }
   .flip-hint-pill {
     position: absolute; right: 18px; top: 50%; transform: translateY(-50%);
-    font-size: 8.5px; letter-spacing: 1px; text-transform: uppercase; font-weight: 700;
-    color: var(--gold-light); background: rgba(0,0,0,0.45); border: 1px solid var(--border-gold-subtle);
-    padding: 4px 8px; border-radius: 999px; display: flex; align-items: center; gap: 5px;
+    font-size: 8.5px; letter-spacing: 0.8px; text-transform: uppercase; font-weight: 700;
+    color: var(--gold-light); background: rgba(0,0,0,0.55); border: 1px solid var(--border-gold-subtle);
+    padding: 5px 9px; border-radius: 999px; display: flex; align-items: center; gap: 5px;
     z-index: 4;
   }
 
-  /* BACK SIDE OF THE CARD */
+  /* BACK SIDE OF CARD */
   .card-back {
     background: var(--card-back-bg);
     transform: rotateY(180deg);
@@ -323,17 +322,24 @@
     border-bottom: 1px solid rgba(212, 175, 55, 0.2);
   }
   .card-back-title {
-    font-size: 9.5px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase;
+    font-size: 9.5px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase;
     color: var(--gold-pure); display: flex; align-items: center; gap: 6px;
   }
+  .btn-flip-back {
+    background: rgba(212, 175, 55, 0.15); border: 1px solid var(--border-gold-subtle);
+    color: var(--gold-light); font-size: 8.5px; font-weight: 700; letter-spacing: 0.8px;
+    text-transform: uppercase; padding: 4px 10px; border-radius: 8px; cursor: pointer;
+  }
+  .btn-flip-back:active { transform: scale(0.95); }
+
   .card-back-body {
     display: flex; align-items: center; gap: 14px; position: relative; z-index: 2; margin: 8px 0;
   }
   .card-avatar-wrap {
-    width: 62px; height: 62px; border-radius: 50%;
-    border: 2px solid var(--gold-pure); box-shadow: 0 0 16px var(--gold-glow);
+    width: 64px; height: 64px; border-radius: 50%;
+    border: 2px solid var(--gold-pure); box-shadow: 0 0 12px var(--gold-glow);
     display: flex; align-items: center; justify-content: center; overflow: hidden;
-    background: #11141E; flex-shrink: 0; position: relative;
+    background: #11141E; flex-shrink: 0; position: relative; cursor: pointer;
   }
   .card-avatar-wrap img { width: 100%; height: 100%; object-fit: cover; }
   .card-avatar-btn-overlay {
@@ -342,23 +348,26 @@
     font-size: 13px; opacity: 0; transition: opacity 0.2s;
   }
   .card-avatar-wrap:hover .card-avatar-btn-overlay { opacity: 1; }
+  
   .card-back-details { flex: 1; min-width: 0; }
   .detail-row {
     display: flex; justify-content: space-between; font-size: 9.5px; margin-bottom: 3px;
   }
   .detail-label { color: var(--text-tertiary); text-transform: uppercase; font-weight: 700; letter-spacing: 0.8px; }
-  .detail-val { color: var(--text-primary); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px; }
+  .detail-val { color: var(--text-primary); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 135px; }
+
   .card-back-footer {
     display: flex; justify-content: space-between; align-items: center;
-    position: relative; z-index: 2; pt: 4px;
+    position: relative; z-index: 2;
   }
-  .btn-flip-back {
-    background: rgba(212, 175, 55, 0.15); border: 1px solid var(--border-gold-subtle);
-    color: var(--gold-light); font-size: 9px; font-weight: 700; letter-spacing: 0.8px;
-    text-transform: uppercase; padding: 4px 10px; border-radius: 8px; cursor: pointer;
+  .btn-card-action {
+    background: var(--surface-subtle); border: 1px solid var(--border-hairline);
+    color: var(--gold-light); font-size: 9px; font-weight: 700; padding: 5px 10px;
+    border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px;
   }
+  .btn-card-action:hover { border-color: var(--border-gold-subtle); color: var(--gold-pure); }
 
-  /* HUD QUOTA & QUICK ACTIONS */
+  /* HUD QUOTA BALANCE & QUICK ACTION */
   .hud-quota-grid { 
     display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; 
   }
@@ -513,6 +522,24 @@
     cursor: pointer; font-size: 13px;
   }
 
+  /* IMAGE COMPARISON SPLIT SLIDER */
+  .image-compare-wrapper {
+    position: relative; width: 100%; height: 250px; border-radius: 16px;
+    border: 1px solid var(--border-hairline); overflow: hidden; margin: 16px 0 10px;
+    touch-action: none; user-select: none;
+  }
+  .img-comp-base, .img-comp-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+  .img-comp-overlay { clip-path: inset(0 50% 0 0); }
+  .img-comp-slider {
+    position: absolute; top: 0; left: 50%; width: 40px; height: 100%; margin-left: -20px;
+    display: flex; align-items: center; justify-content: center; cursor: ew-resize; z-index: 10;
+  }
+  .img-comp-slider-line { position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; background: #FFF; transform: translateX(-50%); pointer-events: none; }
+  .img-comp-slider-button {
+    width: 26px; height: 26px; background: #FFF; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; color: #0A0C10; font-size: 10px; pointer-events: none;
+  }
+
   /* FLOATING DOCK BOTTOM */
   .bottom-dock {
     position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
@@ -540,44 +567,30 @@
   .fab-orb-info { background: var(--surface-glass-elevated); color: var(--gold-pure); border-color: var(--border-gold-subtle); }
 
   /* ========================================================
-     GLOWING CREATOR WATERMARK (MENYALA MENCOLOK)
+     CREATOR WATERMARK: ELEGANT & STABLE GOLD NEON GLOW
   ======================================================== */
   .luxury-watermark {
     text-align: center;
-    margin: 28px 0 12px;
+    margin: 26px 0 12px;
     font-size: 10px;
-    letter-spacing: 2px;
+    letter-spacing: 1.6px;
     text-transform: uppercase;
     font-family: var(--font-heading);
     user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
   }
-  .wm-text { color: var(--text-tertiary); margin-right: 4px; }
-  .creator-glow {
+  .luxury-watermark .wm-label {
+    color: var(--text-tertiary);
+  }
+  .luxury-watermark .creator-glow {
     font-family: var(--font-body);
     font-weight: 800;
-    color: #FFF9E6;
-    letter-spacing: 1.5px;
-    position: relative;
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 6px;
-    background: rgba(212, 175, 55, 0.08);
-    border: 1px solid rgba(212, 175, 55, 0.4);
-    text-shadow: 
-      0 0 6px rgba(212, 175, 55, 0.9),
-      0 0 16px rgba(255, 232, 158, 0.7),
-      0 0 28px rgba(212, 175, 55, 0.4);
-    animation: goldAuroraPulse 2.5s ease-in-out infinite alternate;
-  }
-  @keyframes goldAuroraPulse {
-    0% {
-      box-shadow: 0 0 10px rgba(212, 175, 55, 0.25), inset 0 0 6px rgba(212, 175, 55, 0.2);
-      filter: brightness(1);
-    }
-    100% {
-      box-shadow: 0 0 22px rgba(212, 175, 55, 0.65), 0 0 35px rgba(255, 236, 168, 0.35), inset 0 0 10px rgba(212, 175, 55, 0.4);
-      filter: brightness(1.25);
-    }
+    color: var(--gold-bright);
+    letter-spacing: 1.2px;
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.6), 0 0 20px rgba(212, 175, 55, 0.3);
   }
 
   /* MODALS & OVERLAYS */
@@ -642,26 +655,26 @@
         <i class="fas fa-book-open"></i>
       </div>
       <div>
-        <div class="title-lg" style="margin: 0; font-size: 17px;">Guidelines & Quota</div>
-        <div style="font-size: 9.5px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 1px;">Console Usage Policy</div>
+        <div class="title-lg" style="margin: 0; font-size: 17px;">Panduan & Limit</div>
+        <div style="font-size: 9.5px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 1px;">Petunjuk Penggunaan Fitur</div>
       </div>
     </div>
     <div style="font-size: 11.5px; line-height: 1.65; color: var(--text-primary); margin-bottom: 20px; max-height: 48vh; overflow-y: auto;">
-      <p style="margin-bottom: 12px; color: var(--text-secondary);">Premium features utilize protected balance. If any operation fails or encounters network timeout, your balance is automatically refunded without reduction.</p>
+      <p style="margin-bottom: 12px; color: var(--text-secondary);">Fitur premium menggunakan kuota terproteksi. Jika proses gagal atau koneksi terputus, kuota otomatis kembali utuh (auto-refund).</p>
       <div style="background: var(--surface-subtle); border: 1px solid var(--border-hairline); padding: 12px; border-radius: 13px; margin-bottom: 8px;">
-         <b style="color:var(--gold-light); display:flex; align-items:center; gap:6px; margin-bottom:4px;"><i class="fab fa-whatsapp"></i> WA Channel Reactor (-2 Quota)</b>
-         Dispatches automated reaction emoji to your WhatsApp channel post using official numeric post link.
+         <b style="color:var(--gold-light); display:flex; align-items:center; gap:6px; margin-bottom:4px;"><i class="fab fa-whatsapp"></i> WA Channel Reactor (-2 Limit)</b>
+         Kirim reaksi otomatis ke postingan saluran WhatsApp lewat tautan nomor pesan resmi.
       </div>
       <div style="background: var(--surface-subtle); border: 1px solid var(--border-hairline); padding: 12px; border-radius: 13px; margin-bottom: 8px;">
-         <b style="color:var(--gold-light); display:flex; align-items:center; gap:6px; margin-bottom:4px;"><i class="fas fa-key"></i> License Deployment (-1 Quota)</b>
-         Verifies and connects your client license via secure Magic Link URL.
+         <b style="color:var(--gold-light); display:flex; align-items:center; gap:6px; margin-bottom:4px;"><i class="fas fa-key"></i> License Activator (-1 Limit)</b>
+         Aktivasi dan verifikasi lisensi perangkat via tautan Magic Link di email Anda.
       </div>
       <div style="background: var(--surface-subtle); border: 1px solid var(--border-hairline); padding: 12px; border-radius: 13px;">
-         <b style="color:var(--success-light); display:flex; align-items:center; gap:6px; margin-bottom:4px;"><i class="fas fa-comments"></i> Public Lounge & AI Studio (Complimentary)</b>
-         Unlimited complimentary access with zero quota deduction.
+         <b style="color:var(--success-light); display:flex; align-items:center; gap:6px; margin-bottom:4px;"><i class="fas fa-comments"></i> Public Lounge & AI Studio (Free)</b>
+         Bebas digunakan sepuasnya tanpa memotong kuota limit Anda.
       </div>
     </div>
-    <button class="btn btn-outline click-sound" onclick="closeModal('helpModal')">Close</button>
+    <button class="btn btn-outline click-sound" onclick="closeModal('helpModal')">Tutup</button>
   </div>
 </div>
 
@@ -674,19 +687,19 @@
         <i class="fas fa-coins"></i>
       </div>
       <div>
-        <div class="title-lg" style="margin: 0; font-size: 17px;">Acquire Quota</div>
-        <div style="font-size: 9.5px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 1px;">Balance Expansion</div>
+        <div class="title-lg" style="margin: 0; font-size: 17px;">Acquire Limits</div>
+        <div style="font-size: 9.5px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 1px;">Tambah Kuota Akses</div>
       </div>
     </div>
     
     <div id="vipUnlimitedNotice" class="hidden" style="background: rgba(212,175,55,0.1); border: 1px solid var(--border-gold-subtle); border-radius: 14px; padding: 16px; text-align: center; margin-bottom: 14px;">
       <i class="fas fa-crown" style="font-size: 24px; color: var(--gold-pure); margin-bottom: 6px;"></i>
       <div style="font-family: var(--font-heading); font-size: 15px; font-weight: 800; color: var(--gold-light); margin-bottom: 3px;">UNLIMITED PRIVILEGE</div>
-      <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.5;">Your account holds permanent executive tier with unrestricted access.</div>
+      <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.5;">Akun Anda berstatus Eksekutif / VIP permanen tanpa batasan kuota.</div>
     </div>
 
     <div id="selectLimitView">
-      <div class="text-sub" style="margin-bottom: 10px;">Select desired quota package:</div>
+      <div class="text-sub" style="margin-bottom: 10px;">Pilih paket kuota limit yang diinginkan:</div>
       <div class="limit-grid" id="limitPackageGrid"></div>
     </div>
     <div id="qrisPaymentView" class="hidden" style="text-align: center; margin-top: 14px;">
@@ -694,9 +707,9 @@
         <img id="qrisImageResult" src="" alt="QRIS Code" style="width: 170px; height: 170px; object-fit: contain;">
       </div>
       <div id="qrisPackageTitle" style="font-family: var(--font-heading); font-size: 17px; font-weight: 700; margin-bottom: 2px; color: var(--gold-light);"></div>
-      <div style="font-size: 10px; color: var(--text-tertiary); margin-bottom: 18px; letter-spacing: 0.8px; text-transform: uppercase;">Invoice: <span id="qrisDepositIdSpan" style="color:var(--text-primary); font-weight: 700;"></span></div>
-      <button class="btn btn-primary click-sound" onclick="checkQrisPaymentStatus()" style="margin-bottom: 8px;">Check Payment Status</button>
-      <button class="btn btn-outline click-sound" onclick="backToLimitSelect()">Choose Other Tier</button>
+      <div style="font-size: 10px; color: var(--text-tertiary); margin-bottom: 18px; letter-spacing: 0.8px; text-transform: uppercase;">ID Transaksi: <span id="qrisDepositIdSpan" style="color:var(--text-primary); font-weight: 700;"></span></div>
+      <button class="btn btn-primary click-sound" onclick="checkQrisPaymentStatus()" style="margin-bottom: 8px;">Cek Status Pembayaran</button>
+      <button class="btn btn-outline click-sound" onclick="backToLimitSelect()">Pilih Paket Lain</button>
     </div>
   </div>
 </div>
@@ -707,10 +720,10 @@
     <div style="width: 48px; height: 48px; border-radius: 14px; background: rgba(212,175,55,0.12); border: 1px solid var(--border-gold-subtle); display:flex; align-items:center; justify-content:center; margin: 0 auto 14px; color: var(--gold-pure); font-size: 20px;">
       <i class="fas fa-shield-alt"></i>
     </div>
-    <div class="title-lg" style="font-size: 17px;">Authorization Check</div>
-    <div id="confirmText" class="text-sub" style="margin-bottom: 20px;">Do you wish to proceed?</div>
-    <button id="btnConfirmOk" class="btn btn-primary click-sound" style="margin-bottom: 8px;">Confirm</button>
-    <button id="btnConfirmCancel" class="btn btn-outline click-sound">Cancel</button>
+    <div class="title-lg" style="font-size: 17px;">Konfirmasi Tindakan</div>
+    <div id="confirmText" class="text-sub" style="margin-bottom: 20px;">Apakah Anda ingin melanjutkan?</div>
+    <button id="btnConfirmOk" class="btn btn-primary click-sound" style="margin-bottom: 8px;">Lanjutkan</button>
+    <button id="btnConfirmCancel" class="btn btn-outline click-sound">Batal</button>
   </div>
 </div>
 
@@ -722,12 +735,31 @@
         <i class="fas fa-bullhorn"></i>
       </div>
       <div>
-        <div class="title-lg" style="margin: 0; font-size: 17px;">Global Broadcast</div>
-        <div style="font-size: 9.5px; color: var(--text-tertiary); text-transform: uppercase;">Priority Dispatch</div>
+        <div class="title-lg" style="margin: 0; font-size: 17px;">Siaran Global</div>
+        <div style="font-size: 9.5px; color: var(--text-tertiary); text-transform: uppercase;">Pengumuman Owner</div>
       </div>
     </div>
-    <div id="broadcastContentText" style="background: var(--surface-subtle); border-left: 3px solid var(--gold-pure); padding: 14px; font-size: 11.5px; line-height: 1.6; color: var(--text-primary); margin-bottom: 18px; border-radius: 0 12px 12px 0;">Loading transmission...</div>
-    <button class="btn btn-outline click-sound" onclick="closeBroadcastModal()">Mark as Read</button>
+    <div id="broadcastContentText" style="background: var(--surface-subtle); border-left: 3px solid var(--gold-pure); padding: 14px; font-size: 11.5px; line-height: 1.6; color: var(--text-primary); margin-bottom: 18px; border-radius: 0 12px 12px 0;">Memuat pengumuman...</div>
+    <button class="btn btn-outline click-sound" onclick="closeBroadcastModal()">Tandai Sudah Dibaca</button>
+  </div>
+</div>
+
+<!-- MODAL: EDIT PROFIL / GANTI KATA SANDI -->
+<div id="editAccountModal" class="overlay">
+  <div class="modal-vault">
+    <button class="btn-close-modal click-sound" onclick="closeModal('editAccountModal')"><i class="fas fa-times"></i></button>
+    <div class="title-lg" style="margin-bottom: 4px;">Pengaturan Akun</div>
+    <div class="text-sub">Ubah username dan password akun Anda.</div>
+    <div id="editProfileMsg" class="message-box"></div>
+    <div class="form-group">
+      <label>Username Baru</label>
+      <input type="text" id="editUsernameInput" class="glass-input" placeholder="Masukkan username baru">
+    </div>
+    <div class="form-group" style="margin-bottom: 18px;">
+      <label>Password Baru</label>
+      <input type="password" id="editPasswordInput" class="glass-input" placeholder="Masukkan password baru">
+    </div>
+    <button id="saveProfileChangesBtn" class="btn btn-primary click-sound">Simpan Perubahan</button>
   </div>
 </div>
 
@@ -739,12 +771,12 @@
         <i class="fas fa-fingerprint" style="font-size: 22px; color: #060709;"></i>
       </div>
       <div class="title-lg" style="font-size: 20px;">Client Sign In</div>
-      <div class="text-sub">Authenticate to access AM Executive Suite.</div>
+      <div class="text-sub">Masuk untuk mengakses AM Executive Suite.</div>
     </div>
     <div id="loginErrorMsg" class="message-box message-error"></div>
-    <div class="form-group"><label>Client Username</label><input type="text" id="loginUser" class="glass-input" autocomplete="off" placeholder="Enter username" /></div>
+    <div class="form-group"><label>Client Username</label><input type="text" id="loginUser" class="glass-input" autocomplete="off" placeholder="Masukkan username" /></div>
     <div class="form-group" style="margin-bottom: 20px;">
-      <label>Access Key</label>
+      <label>Access Key (Password)</label>
       <div class="input-wrapper">
         <input type="password" id="loginPwd" class="glass-input" autocomplete="off" placeholder="••••••••" />
         <button type="button" class="pwd-toggle" onclick="togglePwd('loginPwd', this)"><i class="far fa-eye"></i></button>
@@ -752,8 +784,8 @@
     </div>
     <button id="loginBtn" class="btn btn-primary click-sound" style="margin-bottom: 16px;">Authorize Access</button>
     <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: 600;">
-      <span style="cursor:pointer; color: var(--text-tertiary);" onclick="handleForgotClick()">Forgot Key?</span>
-      <span style="cursor:pointer; color: var(--gold-pure);" onclick="switchView('registerView')">Register Account</span>
+      <span style="cursor:pointer; color: var(--text-tertiary);" onclick="handleForgotClick()">Lupa Password?</span>
+      <span style="cursor:pointer; color: var(--gold-pure);" onclick="switchView('registerView')">Daftar Akun Baru</span>
     </div>
   </div>
 </main>
@@ -763,13 +795,13 @@
   <div class="vault-card" style="padding: 32px 22px;">
     <div style="text-align: center; margin-bottom: 22px;">
       <div class="title-lg" style="font-size: 20px;">Client Registration</div>
-      <div class="text-sub">Create your private credentials.</div>
+      <div class="text-sub">Buat identitas akun eksekutif baru.</div>
     </div>
     <div id="regMsg" class="message-box"></div>
-    <div class="form-group"><label>Username</label><input type="text" id="regUser" class="glass-input" placeholder="No whitespace characters" /></div>
-    <div class="form-group"><label>WhatsApp Contact</label><input type="text" id="regWa" class="glass-input" placeholder="e.g. 08123456789" /></div>
+    <div class="form-group"><label>Username</label><input type="text" id="regUser" class="glass-input" placeholder="Tanpa karakter spasi" /></div>
+    <div class="form-group"><label>Nomor WhatsApp</label><input type="text" id="regWa" class="glass-input" placeholder="08..." /></div>
     <div class="form-group">
-      <label>Private Key</label>
+      <label>Password Akun</label>
       <div class="input-wrapper">
         <input type="password" id="regPwd" class="glass-input" placeholder="••••••••" />
         <button type="button" class="pwd-toggle" onclick="togglePwd('regPwd', this)"><i class="far fa-eye"></i></button>
@@ -777,11 +809,11 @@
     </div>
     <div class="form-group" style="margin-bottom: 20px;">
       <label id="captchaLabel">Security Check</label>
-      <input type="text" id="regCaptcha" class="glass-input" placeholder="Answer sum" />
+      <input type="text" id="regCaptcha" class="glass-input" placeholder="Hasil penjumlahan" />
     </div>
     <button id="regBtn" class="btn btn-primary click-sound">Register Identity</button>
     <div style="margin-top: 18px; text-align: center; font-size: 11px; font-weight: 600; cursor:pointer; color: var(--text-tertiary);" onclick="switchView('loginView')">
-      Existing account? <span style="color:var(--gold-pure);">Sign In</span>
+      Sudah punya akun? <span style="color:var(--gold-pure);">Masuk Sini</span>
     </div>
   </div>
 </main>
@@ -813,21 +845,21 @@
       </div>
     </div>
     <div class="header-actions">
-      <button class="circle-btn click-sound" aria-label="Help" title="Help & Policy" onclick="openModal('helpModal')"><i class="fas fa-question"></i></button>
-      <button class="circle-btn click-sound" id="themeToggleBtn" aria-label="Toggle Theme" title="Theme Mode" onclick="toggleTheme()"><i class="fas fa-moon"></i></button>
-      <button class="circle-btn circle-btn-danger click-sound" id="topLogoutBtn" aria-label="Sign Out" title="Sign Out" onclick="confirmLogout()"><i class="fas fa-power-off"></i></button>
+      <button class="circle-btn click-sound" aria-label="Help" title="Panduan & Limit" onclick="openModal('helpModal')"><i class="fas fa-question"></i></button>
+      <button class="circle-btn click-sound" id="themeToggleBtn" aria-label="Toggle Theme" title="Ganti Mode Tema" onclick="toggleTheme()"><i class="fas fa-moon"></i></button>
+      <button class="circle-btn circle-btn-danger click-sound" id="topLogoutBtn" aria-label="Sign Out" title="Keluar Akun" onclick="confirmLogout()"><i class="fas fa-power-off"></i></button>
     </div>
   </header>
 
   <!-- DASHBOARD HERO -->
   <div id="executiveDashboardHero">
     
-    <!-- 3D FLIP CARD: TAP CARD TO FLIP FOR PROFILE PHOTO & FULL SPECS -->
+    <!-- 3D FLIP CARD: SEPARATE FRONT & BACK CLICKS TO AVOID RE-FLIP ON AVATAR CHANGE -->
     <div class="card-3d-scene">
-      <div class="card-3d-flipper" id="executiveCardFlipper" onclick="toggleCardFlip(event)" title="Tap to flip card and view identity details">
+      <div class="card-3d-flipper" id="executiveCardFlipper">
         
-        <!-- SIDE A: METAL CENTURION FRONT -->
-        <div class="card-face card-front">
+        <!-- SIDE A: METAL FRONT (KLIK UNTUK MEMBALIK) -->
+        <div class="card-face card-front" onclick="flipCardForward()">
           <div class="flip-hint-pill">
             <i class="fas fa-rotate"></i> Flip Details
           </div>
@@ -867,17 +899,18 @@
           </div>
         </div>
 
-        <!-- SIDE B: EXCLUSIVE DOSSIER & PROFILE BACK -->
+        <!-- SIDE B: PROFIL LENGKAP & GANTI FOTO (BEBAS BUG RE-FLIP) -->
         <div class="card-face card-back">
           <div class="card-back-header">
             <div class="card-back-title">
               <i class="fas fa-id-badge"></i> EXECUTIVE CREDENTIALS
             </div>
-            <span style="font-size: 8px; color: var(--gold-burnished); font-weight: 700; text-transform: uppercase;">SIDE B</span>
+            <button type="button" class="btn-flip-back click-sound" onclick="flipCardBack()"><i class="fas fa-rotate-left"></i> Balik Depan</button>
           </div>
 
           <div class="card-back-body">
-            <div class="card-avatar-wrap click-sound" onclick="triggerAvatarUpload(event)" title="Click to Change Photo">
+            <!-- KLIK AVATAR TIDAK AKAN MEMICU KARTU MEMBALIK -->
+            <div class="card-avatar-wrap click-sound" onclick="triggerAvatarUpload(event)" title="Klik untuk Ganti Foto Profil">
               <div class="pw-avatar" style="width:100%; height:100%; display:flex; align-items:center; justify-content:center;">
                 <span class="disp-avatar-text" style="font-size:22px; font-weight:800; color:var(--gold-pure);">U</span>
               </div>
@@ -904,8 +937,8 @@
           </div>
 
           <div class="card-back-footer">
-            <button class="btn-flip-back click-sound" onclick="triggerAvatarUpload(event)"><i class="fas fa-camera"></i> Change Photo</button>
-            <span style="font-size: 8.5px; color: var(--text-tertiary);"><i class="fas fa-arrow-rotate-left"></i> Tap Card to Flip</span>
+            <button type="button" class="btn-card-action click-sound" onclick="triggerAvatarUpload(event)"><i class="fas fa-camera"></i> Ganti Foto</button>
+            <button type="button" class="btn-card-action click-sound" onclick="openModal('editAccountModal')"><i class="fas fa-key"></i> Edit Akun</button>
           </div>
         </div>
 
@@ -915,21 +948,21 @@
 
     <!-- HUD QUOTA BALANCE & QUICK ACTION -->
     <div class="hud-quota-grid">
-      <div class="hud-meter-box click-sound" onclick="openLimitModal()" title="View & Acquire Limits">
+      <div class="hud-meter-box click-sound" onclick="openLimitModal()" title="Kelola & Tambah Kuota">
         <div>
           <div class="hud-label-tag">
-            <span class="disp-limit-label">Balance Quota</span>
+            <span class="disp-limit-label">Balance Limit</span>
             <i class="fas fa-chevron-right"></i>
           </div>
           <div class="big-limit-num disp-limit-value">0</div>
         </div>
-        <div class="hud-subtext"><i class="fas fa-check-circle" style="color:var(--gold-pure); font-size:9px;"></i> Ready for execution</div>
+        <div class="hud-subtext"><i class="fas fa-check-circle" style="color:var(--gold-pure); font-size:9px;"></i> Ready to use</div>
       </div>
       <div class="hud-action-stack">
         <div id="topupCardContainer" class="hud-quick-btn click-sound" onclick="openLimitModal()">
           <div>
             <div style="font-size: 11px; font-weight: 700; color: var(--gold-light);">Acquire Limits</div>
-            <div style="font-size: 8.5px; color: var(--text-tertiary);">Direct QRIS Protocol</div>
+            <div style="font-size: 8.5px; color: var(--text-tertiary);">Top-up via QRIS</div>
           </div>
           <i class="fas fa-plus"></i>
         </div>
@@ -945,7 +978,7 @@
 
     <!-- LEADERBOARD / PRESTIGE ROSTER -->
     <div class="prestige-bar-trigger" onclick="toggleLeaderboard()" style="width: 100%; background: var(--surface-subtle); border: 1px solid var(--border-hairline); border-radius: 16px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; color: var(--text-primary); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; cursor: pointer; margin-bottom: 18px;">
-      <span style="display:flex; align-items:center; gap:7px;"><i class="fas fa-trophy" style="color:var(--gold-pure);"></i> Prestige Roster</span>
+      <span style="display:flex; align-items:center; gap:7px;"><i class="fas fa-trophy" style="color:var(--gold-pure);"></i> Prestige Leaderboard</span>
       <i class="fas fa-chevron-down" id="leaderboardChevron" style="transition: transform 0.25s var(--ease-luxury); font-size: 11px;"></i>
     </div>
     <div id="leaderboardCollapsible" class="hidden" style="margin-top: -10px; margin-bottom: 18px;">
@@ -956,34 +989,34 @@
   <!-- SECTION 1: LICENSE DEPLOYMENT -->
   <div id="sectionActivator">
     <div class="vault-card">
-      <div class="title-lg">License Deployment</div>
-      <div class="text-sub">Verify and bind your device license via registered Magic Link email.</div>
+      <div class="title-lg">License Activator</div>
+      <div class="text-sub">Verifikasi dan pasang lisensi aplikasi Anda via tautan Magic Link email.</div>
       <div style="background: var(--surface-subtle); border: 1px solid var(--border-hairline); border-radius: 14px; padding: 13px; margin-bottom: 16px;">
-        <div style="font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--gold-pure); margin-bottom: 6px;">Protocol Guide:</div>
+        <div style="font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--gold-pure); margin-bottom: 6px;">Petunjuk Verifikasi:</div>
         <ol style="padding-left: 15px; font-size: 11px; color: var(--text-secondary); line-height: 1.6;">
-          <li>Input registered email address and click <b>Send Token</b>.</li>
-          <li>Open your mailbox and copy the Magic Link URL.</li>
-          <li>Paste into the Token URL field below and click <b>Deploy License</b>.</li>
+          <li>Ketik email terdaftar Anda lalu klik <b>Send</b>.</li>
+          <li>Buka kotak masuk email, salin URL Magic Link.</li>
+          <li>Tempelkan ke kolom URL di bawah dan pilih <b>Deploy License</b>.</li>
         </ol>
       </div>
       <div id="appErrorMsg" class="message-box message-error">
         <i class="fas fa-circle-exclamation"></i> <span id="appErrorText"></span>
       </div>
       <div class="form-group">
-        <label>Registered Email</label>
+        <label>Alamat Email Terdaftar</label>
         <div style="display: flex; gap: 8px;">
-          <input type="email" id="emailInput" class="glass-input" placeholder="client@domain.com" autocomplete="email" />
+          <input type="email" id="emailInput" class="glass-input" placeholder="client@email.com" autocomplete="email" />
           <button id="sendBtn" class="btn btn-outline click-sound" style="width: auto; padding: 0 16px; font-size: 10.5px;">Send</button>
         </div>
       </div>
       <div class="form-group" style="margin-bottom: 20px;">
-        <label>Magic Link Token URL</label>
-        <input type="url" id="magicInput" class="glass-input" placeholder="Paste verification URL here" autocomplete="off" />
+        <label>Magic Link URL</label>
+        <input type="url" id="magicInput" class="glass-input" placeholder="Tempel URL Magic Link di sini" autocomplete="off" />
       </div>
       <button id="activateBtn" class="btn btn-primary click-sound">
-        <span id="btnDefault">Deploy License (-1 Quota)</span>
+        <span id="btnDefault">Deploy License (-1 Limit)</span>
         <div id="loaderContainer" class="hidden" style="display:flex; align-items:center; gap:7px;">
-          <div class="loader-spinner"></div> Validating...
+          <div class="loader-spinner"></div> Memvalidasi...
         </div>
       </button>
     </div>
@@ -993,15 +1026,15 @@
   <div id="sectionEnhancer" class="hidden">
     <div class="vault-card">
       <div class="title-lg">Neural AI Studio</div>
-      <div class="text-sub">Complimentary high-definition image enhancement and detail restoration.</div>
+      <div class="text-sub">Penjernih citra, pertajaman resolusi detail, dan restorasi foto tanpa memotong limit.</div>
       <div class="form-group">
-        <label>Image Source URL (Optional)</label>
+        <label>URL Gambar (Opsional)</label>
         <input type="url" id="imageUrl" class="glass-input" placeholder="https://..." />
       </div>
       <div id="dropZone" class="click-sound" style="border: 1px dashed var(--border-gold-subtle); border-radius: 16px; padding: 24px 16px; text-align: center; background: var(--surface-subtle); cursor: pointer; margin-bottom: 16px;">
         <i class="fas fa-cloud-arrow-up" style="font-size: 26px; color: var(--gold-pure); margin-bottom: 6px;"></i>
-        <div style="font-size: 12px; font-weight: 700; color: var(--gold-light); margin-bottom: 2px;">Select Local Media</div>
-        <div style="font-size: 9px; color: var(--text-tertiary); text-transform: uppercase;">Supports JPG, PNG, WEBP — Max 25MB</div>
+        <div style="font-size: 12px; font-weight: 700; color: var(--gold-light); margin-bottom: 2px;">Pilih Gambar dari Galeri</div>
+        <div style="font-size: 9px; color: var(--text-tertiary); text-transform: uppercase;">JPG, PNG, WEBP — Maksimal 25MB</div>
         <div id="fileNameDisplay" style="margin-top: 6px; font-size: 11px; color: var(--gold-pure); font-weight: 600;"></div>
         <input type="file" id="fileInput" accept="image/*" style="display: none;">
       </div>
@@ -1012,22 +1045,35 @@
       <div id="statusMessage" class="message-box">
         <i class="fas fa-circle-info"></i> <span id="statusMessageText"></span>
       </div>
+      
+      <!-- INTERACTIVE SPLIT SLIDER BEFORE & AFTER -->
       <div class="hidden" id="comparisonSplitSection" style="margin: 16px 0;">
-        <img id="splitImgAfter" style="width:100%; border-radius:14px; border:1px solid var(--border-hairline);" src="">
+        <div class="image-compare-wrapper" id="imageCompareWrapper">
+          <img id="splitImgAfter" class="img-comp-base" src="">
+          <img id="splitImgBefore" class="img-comp-overlay" src="">
+          <div class="img-comp-slider" id="imgCompSlider">
+            <div class="img-comp-slider-line"></div>
+            <div class="img-comp-slider-button"><i class="fas fa-arrows-left-right"></i></div>
+          </div>
+          <div style="position:absolute; top:8px; left:8px; background:rgba(0,0,0,0.65); padding:3px 7px; border-radius:5px; font-size:8px; font-weight:800; color:#fff; pointer-events:none;">ORIGINAL</div>
+          <div style="position:absolute; top:8px; right:8px; background:var(--gold-gradient); padding:3px 7px; border-radius:5px; font-size:8px; font-weight:800; color:#060709; pointer-events:none;">ENHANCED HD</div>
+        </div>
       </div>
+
       <div class="hidden" id="downloadFooterActions" style="display: flex; gap: 8px;">
         <button class="btn btn-outline click-sound" id="downloadBtn" style="flex: 1;"><i class="fas fa-download"></i> Save Image</button>
+        <button class="btn btn-outline click-sound" id="copyUrlBtn" style="flex: 1;"><i class="fas fa-link"></i> Salin URL</button>
       </div>
     </div>
   </div>
 
-  <!-- SECTION 3: EXECUTIVE LOUNGE (PUBLIC CHAT) -->
+  <!-- SECTION 3: EXECUTIVE LOUNGE (CHAT) -->
   <div id="sectionChat" class="hidden">
     <div class="chat-hub-card">
       <div class="chat-header-bar">
         <div>
           <div class="title-lg" style="margin: 0; font-size: 16px;">Executive Lounge</div>
-          <div style="font-size: 10px; color: var(--text-tertiary);">Direct member discussion channel.</div>
+          <div style="font-size: 10px; color: var(--text-tertiary);">Ruang obrolan langsung sesama klien eksekutif.</div>
         </div>
         <div style="display:flex; align-items:center; gap:6px;">
           <span style="font-size:9px; color:var(--success-light); font-weight:700;">LIVE</span>
@@ -1042,7 +1088,7 @@
       </div>
 
       <div class="chat-input-bar">
-        <input type="text" id="chatInputMsg" placeholder="Transmit transmission..." autocomplete="off">
+        <input type="text" id="chatInputMsg" placeholder="Ketik pesan Anda..." autocomplete="off">
         <button class="chat-send-btn click-sound" id="btnSendChat">
           <i class="fas fa-paper-plane"></i>
         </button>
@@ -1054,17 +1100,17 @@
   <div id="sectionReact" class="hidden">
     <div class="vault-card">
       <div class="title-lg">Channel Reactor</div>
-      <div class="text-sub">Automated emoji reaction dispatch to designated WhatsApp channel post.</div>
+      <div class="text-sub">Kirim reaksi ekspresif otomatis ke saluran WhatsApp publik Anda.</div>
       <div class="form-group">
-        <label>Message Target URL</label>
+        <label>URL Pesan Saluran WhatsApp</label>
         <input type="url" id="waReactUrl" class="glass-input" placeholder="https://whatsapp.com/channel/.../123" />
       </div>
       <div class="form-group" style="margin-bottom: 20px;">
-        <label>Emoji Symbol</label>
-        <input type="text" id="waReactEmoji" class="glass-input" placeholder="e.g. 👍 or ❤️" />
+        <label>Emoji Reaksi</label>
+        <input type="text" id="waReactEmoji" class="glass-input" placeholder="Contoh: 👍 atau ❤️" />
       </div>
       <button id="btnSendReaction" class="btn btn-primary click-sound">
-        <i class="fab fa-whatsapp"></i> Execute Reaction (-2 Quota)
+        <i class="fab fa-whatsapp"></i> Dispatch Reaction (-2 Limit)
       </button>
       <div id="reactStatusMessage" class="message-box" style="margin-top: 16px;">
         <i class="fas fa-circle-info"></i> <span id="reactStatusText"></span>
@@ -1072,39 +1118,43 @@
     </div>
   </div>
 
-  <!-- SECTION 5: GOVERNANCE SUITE (OWNER PANEL) -->
+  <!-- SECTION 5: GOVERNANCE SUITE (PANEL OWNER LENGKAP) -->
   <div id="ownerPanel" class="hidden">
     <div class="vault-card">
-      <div class="title-lg">Governance Suite</div>
-      <div class="text-sub">Client balance administration, quota reset, and broadcast dispatch.</div>
+      <div class="title-lg">Panel Owner & Tata Kelola</div>
+      <div class="text-sub">Kendali otorisasi user, reset limit, siaran pengumuman, dan status VIP.</div>
+      
+      <!-- SIARAN PENGUMUMAN -->
       <div style="background: var(--surface-subtle); border: 1px solid var(--border-hairline); border-radius: 14px; padding: 14px; margin-bottom: 18px;">
         <label style="font-size: 9.5px; font-weight: 700; color: var(--gold-pure); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px; display:flex; align-items:center; gap: 6px;">
-          <i class="fas fa-bullhorn"></i> Global Transmission
+          <i class="fas fa-bullhorn"></i> Global Broadcast Dispatch
         </label>
-        <textarea id="broadcastInput" class="glass-input" placeholder="Compose dispatch for all connected clients..." style="min-height: 70px; resize: none; margin-bottom: 10px; font-size: 11.5px;"></textarea>
-        <button class="btn btn-primary click-sound" onclick="sendBroadcastMsg()"><i class="fas fa-paper-plane"></i> Broadcast Message</button>
+        <textarea id="broadcastInput" class="glass-input" placeholder="Ketik pesan siaran untuk seluruh klien..." style="min-height: 70px; resize: none; margin-bottom: 10px; font-size: 11.5px;"></textarea>
+        <button class="btn btn-primary click-sound" onclick="sendBroadcastMsg()"><i class="fas fa-paper-plane"></i> Kirim Siaran</button>
       </div>
       
-      <!-- OWNER ACTIONS & INSTANT QUOTA RESET -->
+      <!-- TOOLBAR KONTROL USER & RESET LIMIT LENGKAP -->
       <div style="display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap;">
-        <div class="input-wrapper" style="flex: 1; min-width: 140px;">
-          <input type="text" id="memberSearchInput" class="glass-input" placeholder="Search client..." oninput="onMemberSearchInput()" />
+        <div class="input-wrapper" style="flex: 1; min-width: 130px;">
+          <input type="text" id="memberSearchInput" class="glass-input" placeholder="Cari user / ID..." oninput="onMemberSearchInput()" />
         </div>
         <button id="filterZeroLimitBtn" class="btn btn-outline click-sound" style="width: auto; padding: 0 12px; border-radius: 12px; font-size:10px;" onclick="toggleZeroLimitFilter()">
-          <i class="fas fa-filter"></i> 0 Quota
+          <i class="fas fa-filter"></i> Limit 0
         </button>
         <button id="resetMassalBtn" class="btn btn-primary click-sound" style="width: auto; padding: 0 12px; border-radius: 12px; font-size:10px;" onclick="resetAllZeroLimits()">
-          <i class="fas fa-sync-alt"></i> Batch Reset (0 &rarr; 3)
+          <i class="fas fa-sync-alt"></i> Reset (0 &rarr; 3)
         </button>
       </div>
+
+      <!-- DAFTAR MEMBER LENGKAP DENGAN SEMUA DATA & TOMBOL AKSI -->
       <div id="memberList" style="display:flex; flex-direction:column; gap:8px;"></div>
     </div>
   </div>
 
-  <!-- GLOWING LUMINOUS WATERMARK -->
+  <!-- WATERMARK CREATOR: ELEGANT & STABLE GLOW (TIDAK NORAK / BEBAS BUG) -->
   <div class="luxury-watermark">
-    <span class="wm-text">Creator By</span>
-    <span class="creator-glow">𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞</span>
+    <span class="wm-label">Creator By</span>
+    <strong class="creator-glow">𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞</strong>
   </div>
 
 </main>
@@ -1130,10 +1180,10 @@
 
 <!-- FLOATING SPEED DIAL -->
 <div class="dock-fab-stack hidden" id="floatingMenuContainer">
-  <button class="fab-orb fab-orb-wa click-sound" onclick="contactOwnerCS()" title="Contact Owner">
+  <button class="fab-orb fab-orb-wa click-sound" onclick="contactOwnerCS()" title="Hubungi Pemilik">
     <i class="fab fa-whatsapp"></i>
   </button>
-  <button class="fab-orb fab-orb-info click-sound" onclick="openModal('helpModal')" title="Guidelines">
+  <button class="fab-orb fab-orb-info click-sound" onclick="openModal('helpModal')" title="Panduan">
     <i class="fas fa-shield-halved"></i>
   </button>
 </div>
@@ -1150,21 +1200,26 @@
         });
     }
 
-    // 3D FLIP CARD HANDLER
-    window.toggleCardFlip = function(event) {
-        // Prevent flip if clicked on specific buttons inside back card
-        if (event && event.target && event.target.closest('.btn-flip-back, input[type="file"]')) {
-            return;
-        }
+    // ========================================================
+    // 3D FLIP CARD: FIXED LOGIC
+    // ========================================================
+    window.flipCardForward = function() {
         const flipper = document.getElementById('executiveCardFlipper');
-        if (flipper) {
-            flipper.classList.toggle('is-flipped');
-            playClickSound();
-        }
+        if (flipper) flipper.classList.add('is-flipped');
+        playClickSound();
+    };
+
+    window.flipCardBack = function() {
+        const flipper = document.getElementById('executiveCardFlipper');
+        if (flipper) flipper.classList.remove('is-flipped');
+        playClickSound();
     };
 
     window.triggerAvatarUpload = function(event) {
-        if (event) event.stopPropagation();
+        if (event) {
+            event.stopPropagation();
+            event.preventDefault();
+        }
         const input = document.getElementById('avatarFileInput');
         if (input) input.click();
     };
@@ -1293,7 +1348,7 @@
     }
 
     window.contactOwnerCS = function() {
-        const text = "Hello Mas Hao, I require executive concierge assistance.";
+        const text = "Halo Mas Hao, saya membutuhkan bantuan terkait AM Executive.";
         window.open(`https://wa.me/${OWNER_WA.replace('+','') }?text=${encodeURIComponent(text)}`, '_blank');
     };
 
@@ -1319,7 +1374,7 @@
     };
 
     window.confirmLogout = function() {
-        customConfirm("Confirm termination of active session?", () => { 
+        customConfirm("Apakah Anda yakin ingin keluar dari sesi ini?", () => { 
             localStorage.removeItem(SESSION_KEY); 
             localStorage.removeItem(CACHE_KEY); 
             switchView('loginView'); 
@@ -1337,7 +1392,7 @@
         const grid = document.getElementById('limitPackageGrid'); if(!grid) return; grid.innerHTML = '';
         limitPackages.forEach(pkg => {
             const btn = document.createElement('div'); btn.className = 'limit-box click-sound';
-            btn.innerHTML = `<span class="lmt">${pkg.label} Quota</span><span class="prc">Rp ${pkg.price.toLocaleString('id-ID')}</span>`;
+            btn.innerHTML = `<span class="lmt">${pkg.label} Limit</span><span class="prc">Rp ${pkg.price.toLocaleString('id-ID')}</span>`;
             btn.onclick = () => createQrisForLimit(pkg.limit, pkg.price, pkg.label);
             grid.appendChild(btn);
         });
@@ -1363,25 +1418,25 @@
 
     async function createQrisForLimit(limitCount, price, labelName) {
         selectedAddLimitCount = limitCount; 
-        customAlert("Generating QRIS Invoice...");
+        customAlert("Menyiapkan transaksi QRIS...");
         const res = await apiCall('createQris', { amount: price });
-        if (!res.status) return customAlert(res.error || "Invoice generation failed.", true);
+        if (!res.status) return customAlert(res.error || "Gagal membuat invoice.", true);
         
         activeDepositId = res.data.invoice_id; 
         if (res.data.qris_image) {
             document.getElementById('qrisImageResult').src = res.data.qris_image; 
-            document.getElementById('qrisPackageTitle').textContent = `Package ${labelName} Quota`; 
+            document.getElementById('qrisPackageTitle').textContent = `Paket ${labelName} Limit`; 
             document.getElementById('qrisDepositIdSpan').textContent = activeDepositId;
             document.getElementById('selectLimitView').classList.add('hidden'); 
             document.getElementById('qrisPaymentView').classList.remove('hidden');
         } else { 
-            customAlert("Unable to render QRIS.", true); 
+            customAlert("Gagal memuat QRIS.", true); 
         }
     }
 
     window.checkQrisPaymentStatus = async function() {
         if (!activeDepositId) return; 
-        customAlert("Verifying settlement...");
+        customAlert("Memeriksa status pembayaran...");
         const username = currentUserData ? currentUserData.username : '';
         const res = await apiCall('checkQris', { 
             depositId: activeDepositId,
@@ -1396,10 +1451,10 @@
                 localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData));
                 window.loadAppView(currentUserData); 
                 window.closeModal('limitModal'); 
-                customAlert("Payment Confirmed! Balance updated.");
+                customAlert("Pembayaran Berhasil! Limit telah ditambahkan.");
             }
         } else { 
-            customAlert("Payment pending. Please complete transaction.", true); 
+            customAlert("Pembayaran belum terdeteksi. Silakan selesaikan transaksi.", true); 
         }
     };
 
@@ -1434,13 +1489,15 @@
                     <span style="color:var(--gold-pure); width:20px; font-weight:800;">#${i+1}</span>
                     @${escapeHtml(u.username)}
                   </div>
-                  <span style="font-size:10.5px; font-weight:800; color:var(--gold-light);">${u.limit_count ?? 3} Quota</span>`;
+                  <span style="font-size:10.5px; font-weight:800; color:var(--gold-light);">${u.limit_count ?? 3} Limit</span>`;
                 container.appendChild(item);
             });
         }
     }
 
-    // OWNER MANAGEMENT & BATCH RESET
+    // ========================================================
+    // OWNER PANEL: PENGELOLAAN LENGKAP & BATCH RESET
+    // ========================================================
     let isZeroLimitFilterActive = false;
     window.toggleZeroLimitFilter = function() {
         isZeroLimitFilterActive = !isZeroLimitFilterActive;
@@ -1458,10 +1515,10 @@
     window.onMemberSearchInput = function() { renderMemberList(); };
 
     window.resetAllZeroLimits = async function() {
-        customConfirm("Execute instant batch reset for all zero-quota clients (0 -> 3)?", async () => {
+        customConfirm("Apakah Anda yakin ingin mereset semua user berlimit 0 menjadi 3 limit?", async () => {
             const btn = document.getElementById('resetMassalBtn');
             const originalText = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
             btn.disabled = true;
 
             try {
@@ -1471,7 +1528,7 @@
                 const zeroUsers = cachedMemberList.filter(u => u.role !== 'Owner' && !parseBool(u.is_permanent) && (u.limit_count || 0) <= 0);
                 
                 if(zeroUsers.length === 0) {
-                    customAlert("No zero-quota clients detected.");
+                    customAlert("Tidak ada user berlimit 0.");
                     return;
                 }
 
@@ -1486,10 +1543,10 @@
                     window.loadAppView(currentUserData);
                 }
 
-                customAlert(`Reset successful for ${zeroUsers.length} clients.`);
+                customAlert(`Berhasil mereset limit ${zeroUsers.length} user.`);
                 renderMemberList();
             } catch(e) {
-                customAlert("Failed to complete batch reset.", true);
+                customAlert("Gagal memproses reset massal.", true);
             } finally {
                 btn.innerHTML = originalText;
                 btn.disabled = false;
@@ -1515,25 +1572,46 @@
         }
 
         memberListEl.innerHTML = '';
+        if (list.length === 0) {
+            memberListEl.innerHTML = `<div style="text-align:center; padding:18px; font-size:11px; color:var(--text-tertiary);">Tidak ada data user yang sesuai.</div>`;
+            return;
+        }
+
         list.forEach((m, idx) => {
             const isVipUser = parseBool(m.is_permanent);
+            const isBannedUser = parseBool(m.is_banned);
+            let roleStr = 'Reguler';
+            if (m.role === 'Owner') roleStr = 'Owner';
+            else if (isVipUser) roleStr = 'VIP';
+
             const encodedUser = encodeURIComponent(m.username);
             const el = document.createElement('div');
-            el.style.cssText = 'background:var(--surface-subtle); border:1px solid var(--border-hairline); border-radius:12px; padding:10px;';
+            el.style.cssText = 'background:var(--surface-subtle); border:1px solid var(--border-hairline); border-radius:12px; padding:12px;';
             el.innerHTML = `
-                <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
-                  <span style="font-weight:700; font-size:11px; color:var(--text-primary);">@${escapeHtml(m.username)}</span>
-                  <span style="font-size:8px; color:var(--text-tertiary); padding: 2px 5px; border-radius: 4px; border: 1px solid var(--border-hairline);">${escapeHtml(m.id_code || 'MSH-01')}</span>
+                <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                  <span style="font-weight:700; font-size:11.5px; color:var(--text-primary);">
+                    @${escapeHtml(m.username)} ${isBannedUser ? '<span style="color:var(--danger); font-size:8px; background:var(--danger-soft); padding: 1px 5px; border-radius:4px; margin-left:4px;">SUSPENDED</span>' : ''}
+                  </span>
+                  <span style="font-size:8.5px; color:var(--text-tertiary); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border-hairline); background:var(--surface-glass);">${escapeHtml(m.id_code || 'MSH-01')}</span>
                 </div>
-                <div style="font-size:9px; color:var(--text-secondary); margin-bottom:6px; display:flex; gap:6px;">
-                  <span><b>Tier:</b> ${isVipUser ? 'VIP' : 'Regular'}</span> 
-                  <span><b>Key:</b> ${escapeHtml(m.password)}</span>
+                <div style="font-size:9.5px; color:var(--text-secondary); margin-bottom:8px; display:flex; gap:8px; flex-wrap:wrap;">
+                  <span><b>Peran:</b> <span style="color:${isVipUser ? 'var(--gold-pure)' : 'var(--text-tertiary)'}; font-weight:700;">${roleStr}</span></span> 
+                  <span><b>Password:</b> <span style="color:var(--text-primary); font-family:var(--font-mono);">${escapeHtml(m.password)}</span></span>
+                  <span><b>WhatsApp:</b> <span style="color:var(--text-primary);">${escapeHtml(m.wa || '-')}</span></span>
                 </div>
-                <div style="display:flex; align-items:center; gap:6px; margin-bottom:6px; background:var(--surface-glass); padding:4px 8px; border-radius:9px; border: 1px solid var(--border-hairline);">
-                  <span style="font-size:8px; font-weight:700; color:var(--text-tertiary);">QUOTA:</span>
-                  <input type="number" id="inputLimit_${idx}" value="${m.limit_count ?? 3}" class="glass-input" style="padding:3px 5px; font-size:10.5px; width:48px; text-align:center; font-weight:700; color:var(--gold-light);" />
-                  <button class="btn btn-outline click-sound" style="padding:3px 8px; width:auto; font-size:8px;" onclick="setCustomLimitDirect('${encodedUser}', 'inputLimit_${idx}')">Save</button>
-                  <button class="btn btn-outline click-sound" style="padding:3px 8px; width:auto; font-size:8px; border-color:var(--border-gold-subtle); color:var(--gold-pure);" onclick="quickResetUserLimit('${encodedUser}', 3)">Set 3</button>
+                
+                <!-- KONTROL LIMIT DENGAN TOMBOL UPDATE & TOMBOL CEPAT JADI 3 -->
+                <div style="display:flex; align-items:center; gap:6px; margin-bottom:8px; background:var(--surface-glass); padding:5px 8px; border-radius:10px; border: 1px solid var(--border-hairline);">
+                  <span style="font-size:8.5px; font-weight:700; color:var(--text-tertiary); text-transform:uppercase;">Limit:</span>
+                  <input type="number" id="inputLimit_${idx}" value="${m.limit_count ?? 3}" class="glass-input" style="padding:4px 6px; font-size:11px; width:52px; text-align:center; font-weight:700; color:var(--gold-light);" />
+                  <button class="btn btn-outline click-sound" style="padding:4px 9px; width:auto; font-size:8.5px;" onclick="setCustomLimitDirect('${encodedUser}', 'inputLimit_${idx}')">Simpan</button>
+                  <button class="btn btn-outline click-sound" style="padding:4px 9px; width:auto; font-size:8.5px; border-color:var(--border-gold-subtle); color:var(--gold-pure);" onclick="quickResetUserLimit('${encodedUser}', 3)"><i class="fas fa-rotate-left"></i> Jadi 3</button>
+                </div>
+
+                <!-- AKSI VIP & SUSPEND LENGKAP -->
+                <div style="display:flex; gap:6px;">
+                  <button class="btn btn-outline click-sound" style="padding:6px; font-size:9.5px; flex:1; border-color:${isVipUser ? 'var(--gold-burnished)' : 'var(--border-hairline)'}; color:${isVipUser ? 'var(--gold-pure)' : 'var(--text-primary)'};" onclick="toggleVipStatus('${encodedUser}', ${isVipUser})"><i class="fas fa-crown"></i> ${isVipUser ? 'Hapus VIP' : 'Jadikan VIP'}</button>
+                  <button class="btn btn-outline click-sound" style="padding:6px; font-size:9.5px; flex:1; color:${isBannedUser ? 'var(--gold-pure)' : 'var(--danger-light)'}; border-color:${isBannedUser ? 'var(--border-gold-subtle)' : 'rgba(239,68,68,0.3)'};" onclick="toggleSuspendStatus('${encodedUser}', ${isBannedUser})"><i class="fas ${isBannedUser ? 'fa-unlock' : 'fa-lock'}"></i> ${isBannedUser ? 'Buka Kunci' : 'Suspend'}</button>
                 </div>
             `;
             memberListEl.appendChild(el);
@@ -1545,7 +1623,7 @@
         const inputEl = document.getElementById(inputId);
         if(!inputEl) return;
         const newLimit = parseInt(inputEl.value, 10);
-        if(isNaN(newLimit) || newLimit < 0) return customAlert("Invalid quota amount.", true);
+        if(isNaN(newLimit) || newLimit < 0) return customAlert("Jumlah limit tidak valid.", true);
 
         const res = await apiCall('updateUser', { username, updates: { limit_count: newLimit } });
         if (res.status) {
@@ -1556,7 +1634,7 @@
                 localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData));
                 window.loadAppView(currentUserData);
             }
-            customAlert(`Quota for @${username} set to ${newLimit}.`);
+            customAlert(`Limit untuk @${username} berhasil diubah.`);
         }
     };
 
@@ -1571,10 +1649,93 @@
                 localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData));
                 window.loadAppView(currentUserData);
             }
-            customAlert(`Reset @${username} to ${amount} quota.`);
+            customAlert(`Limit @${username} berhasil di-reset ke ${amount}.`);
             renderMemberList();
         }
     };
+
+    window.toggleVipStatus = async function(encodedUsername, currentVipStatus) { 
+        const username = decodeURIComponent(encodedUsername);
+        const newStatus = !currentVipStatus ? 'true' : 'false'; 
+        const res = await apiCall('updateUser', { username, updates: { is_permanent: newStatus } }); 
+        if (res.status) { 
+            const target = cachedMemberList.find(u => u.username === username);
+            if(target) target.is_permanent = newStatus;
+            if(currentUserData && currentUserData.username === username) { 
+                currentUserData.is_permanent = newStatus; 
+                localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); 
+                window.loadAppView(currentUserData); 
+            }
+            renderMemberList(); 
+            customAlert(`Status VIP @${username} diperbarui.`); 
+        } 
+    };
+    
+    window.toggleSuspendStatus = async function(encodedUsername, currentBannedStatus) { 
+        const username = decodeURIComponent(encodedUsername);
+        customConfirm(currentBannedStatus ? `Aktifkan kembali akun @${username}?` : `Tangguhkan akun @${username}?`, async () => { 
+            const newStatus = currentBannedStatus ? 'false' : 'true'; 
+            const res = await apiCall('updateUser', { username, updates: { is_banned: newStatus } }); 
+            if (res.status) { 
+                const target = cachedMemberList.find(u => u.username === username);
+                if(target) target.is_banned = newStatus;
+                customAlert("Status akun diperbarui."); 
+                renderMemberList(); 
+            } 
+        }); 
+    };
+
+    // SIARAN BROADCAST
+    window.sendBroadcastMsg = async function() { 
+        const text = document.getElementById('broadcastInput').value.trim(); 
+        if(!text) return customAlert("Pesan siaran tidak boleh kosong.", true); 
+        const res = await apiCall('sendBroadcast', { message: text }); 
+        if (res.status) { 
+            customAlert("Pesan siaran berhasil dikirim."); 
+            document.getElementById('broadcastInput').value = ''; 
+        } 
+    };
+
+    function initRealtimeBroadcastListener() {
+        const checkBroadcast = async () => {
+            try {
+                const res = await apiCall('getBroadcast');
+                if (res.status && res.data) {
+                    const latest = res.data;
+                    const lastSeenId = localStorage.getItem(BROADCAST_SEEN_KEY);
+                    if (lastSeenId !== String(latest.id)) { 
+                        document.getElementById('broadcastContentText').textContent = latest.message; 
+                        window.openModal('broadcastModal'); 
+                    }
+                }
+            } catch(e){}
+        }; 
+        checkBroadcast(); 
+        setInterval(checkBroadcast, 20000);
+    }
+
+    window.closeBroadcastModal = function() { 
+        window.closeModal('broadcastModal'); 
+    };
+
+    // EDIT PROFIL USER
+    document.getElementById('saveProfileChangesBtn')?.addEventListener('click', async () => {
+        const newU = document.getElementById('editUsernameInput').value.trim();
+        const newP = document.getElementById('editPasswordInput').value.trim();
+        if(!newU || !newP) return showMsg('editProfileMsg', 'Data formulir tidak boleh kosong.', 'error');
+        const res = await apiCall('updateUser', { username: currentUserData.username, updates: { username: newU, password: newP } });
+        if(res.status) {
+            currentUserData.username = newU;
+            currentUserData.password = newP;
+            localStorage.setItem(SESSION_KEY, newU);
+            localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData));
+            window.loadAppView(currentUserData);
+            window.closeModal('editAccountModal');
+            customAlert("Data akun berhasil diperbarui.");
+        } else {
+            showMsg('editProfileMsg', res.error || 'Gagal menyimpan perubahan.', 'error');
+        }
+    });
 
     // AVATAR UPDATE
     window.handleAvatarUpload = async function(event) { 
@@ -1583,14 +1744,14 @@
         const reader = new FileReader(); 
         reader.onload = async function(e) { 
             const base64Image = e.target.result; 
-            customAlert("Uploading profile media...");
+            customAlert("Mengunggah foto profil...");
             const res = await apiCall('updateUser', { username: currentUserData.username, updates: { avatar_url: base64Image } }); 
             if (res.status) { 
                 currentUserData.avatar_url = base64Image; 
                 localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); 
                 updateAvatarUI(base64Image, currentUserData.username); 
                 userAvatarMap[currentUserData.username.toLowerCase()] = base64Image;
-                customAlert("Avatar profile updated."); 
+                customAlert("Foto profil berhasil diperbarui."); 
             }
         }; 
         reader.readAsDataURL(file); 
@@ -1607,7 +1768,7 @@
     }
 
     function massUpdateText(selector, text) { document.querySelectorAll(selector).forEach(el => el.textContent = text); }
-    function parseBool(val) { return val === true || val === 'true' || val === '1' || val === 't' || val === 'TRUE'; }
+    function parseBool(val) { return val === true || val === 'true' || val === '1' || val === 't' || val === 'TRUE' || val === 'YES'; }
 
     window.loadAppView = function(user) {
         currentUserData = user;
@@ -1616,6 +1777,11 @@
         massUpdateText('.disp-userid', user.id_code || 'MSH-01');
         massUpdateText('.disp-userwa', user.wa || '-'); 
         updateAvatarUI(user.avatar_url, user.username); 
+
+        const editUserIn = document.getElementById('editUsernameInput');
+        const editPassIn = document.getElementById('editPasswordInput');
+        if(editUserIn) editUserIn.value = user.username || '';
+        if(editPassIn) editPassIn.value = user.password || '';
 
         const isVip = parseBool(user.is_permanent); 
         const ownerDashBtn = document.getElementById('toggleOwnerDashBtn'); 
@@ -1629,21 +1795,21 @@
             if(promoBanner) promoBanner.classList.add('hidden'); 
             if(topupCard) topupCard.classList.add('hidden');
         } else if (isVip) {
-            roleBadges.forEach(rb => { rb.textContent = 'CENTURION VIP'; rb.style.color = 'var(--gold-pure)'; }); 
+            roleBadges.forEach(rb => { rb.textContent = 'VIP EXCLUSIVE'; rb.style.color = 'var(--gold-pure)'; }); 
             if(promoBanner) promoBanner.classList.add('hidden'); 
             if(topupCard) topupCard.classList.add('hidden');
         } else {
-            roleBadges.forEach(rb => { rb.textContent = 'STANDARD TIER'; rb.style.color = 'var(--text-tertiary)'; }); 
+            roleBadges.forEach(rb => { rb.textContent = 'REGULAR CLIENT'; rb.style.color = 'var(--text-tertiary)'; }); 
             if(promoBanner) promoBanner.classList.remove('hidden'); 
             if(topupCard) topupCard.classList.remove('hidden');
         }
         
         const numDisplays = document.querySelectorAll('.big-limit-num, .disp-limit-value');
         if (user.role === 'Owner' || isVip) {
-            massUpdateText('.disp-limit-label', "Privilege Quota"); 
+            massUpdateText('.disp-limit-label', "Status Limit"); 
             numDisplays.forEach(el => { el.textContent = "∞"; el.classList.add('vip'); });
         } else {
-            massUpdateText('.disp-limit-label', "Balance Quota"); 
+            massUpdateText('.disp-limit-label', "Sisa Kuota Limit"); 
             numDisplays.forEach(el => { el.textContent = user.limit_count ?? 3; el.classList.remove('vip'); });
         }
         
@@ -1681,8 +1847,10 @@
             setInterval(() => {
                 const now = new Date();
                 const clock = document.getElementById('realtimeClock');
-                if(clock) clock.textContent = now.toLocaleTimeString('en-GB') + ' WIB';
+                if(clock) clock.textContent = now.toLocaleTimeString('id-ID') + ' WIB';
             }, 1000);
+            initImageEnhancer();
+            initRealtimeBroadcastListener();
             syncUserProfiles();
         }, 300);
     };
@@ -1692,7 +1860,7 @@
         const b = Math.floor(Math.random() * 9) + 1; 
         currentCaptchaAnswer = a + b; 
         const label = document.getElementById('captchaLabel'); 
-        if(label) label.innerHTML = `Solve Check: <b style="color:var(--gold-pure);">${a} + ${b}</b>`; 
+        if(label) label.innerHTML = `Selesaikan: <b style="color:var(--gold-pure);">${a} + ${b}</b>`; 
     }
 
     window.switchView = function(viewId) { 
@@ -1718,7 +1886,7 @@
     }
 
     window.handleForgotClick = function() { 
-        window.open(`https://wa.me/${OWNER_WA.replace('+', '')}?text=` + encodeURIComponent("Hello Mas Hao, I need assistance recovering my access key."), '_blank'); 
+        window.open(`https://wa.me/${OWNER_WA.replace('+', '')}?text=` + encodeURIComponent("Halo Mas Hao, saya butuh bantuan reset password akun."), '_blank'); 
     };
 
     window.togglePwd = function(inputId, btnEl) { 
@@ -1728,18 +1896,18 @@
         else { input.type = 'password'; icon.className = 'far fa-eye'; } 
     };
 
-    // AUTH ACTION BUTTONS
+    // AUTH
     document.getElementById('loginBtn')?.addEventListener('click', async () => {
         const u = document.getElementById('loginUser').value.trim();
         const p = document.getElementById('loginPwd').value.trim();
-        if(!u || !p) return showMsg('loginErrorMsg', 'Please provide credentials.', 'error');
+        if(!u || !p) return showMsg('loginErrorMsg', 'Harap isi username dan password.', 'error');
         const res = await apiCall('login', { username: u, password: p });
         if(res.status) {
             localStorage.setItem(SESSION_KEY, u);
             localStorage.setItem(CACHE_KEY, JSON.stringify(res.data));
             window.loadAppView(res.data);
         } else {
-            showMsg('loginErrorMsg', `Access Denied: ${res.error}`, 'error');
+            showMsg('loginErrorMsg', `Akses Ditolak: ${res.error}`, 'error');
         }
     });
 
@@ -1748,8 +1916,8 @@
         const w = document.getElementById('regWa').value.trim();
         const p = document.getElementById('regPwd').value.trim();
         const c = parseInt(document.getElementById('regCaptcha').value.trim());
-        if(!u || !w || !p || isNaN(c)) return showMsg('regMsg', 'Complete all required fields.', 'error');
-        if(c !== currentCaptchaAnswer) return showMsg('regMsg', 'Security check answer incorrect.', 'error');
+        if(!u || !w || !p || isNaN(c)) return showMsg('regMsg', 'Semua kolom wajib diisi.', 'error');
+        if(c !== currentCaptchaAnswer) return showMsg('regMsg', 'Hasil penjumlahan keamanan salah.', 'error');
         const res = await apiCall('register', { username: u, password: p, wa: w });
         if(res.status) {
             localStorage.setItem(SESSION_KEY, u);
@@ -1760,10 +1928,10 @@
         }
     });
 
-    // ACTIVATOR
+    // ACTIVATOR LISENSI
     document.getElementById('sendBtn')?.addEventListener('click', async () => {
         const email = document.getElementById('emailInput').value.trim();
-        if(!email) return showMsg('appErrorMsg', 'Enter valid email address.', 'error');
+        if(!email) return showMsg('appErrorMsg', 'Masukkan alamat email Anda.', 'error');
         const btn = document.getElementById('sendBtn');
         btn.disabled = true;
         try {
@@ -1771,23 +1939,23 @@
             const data = await res.json();
             if(data.status) {
                 cachedEmail = email;
-                showMsg('appErrorMsg', 'Magic Link dispatched to mailbox.', 'success');
+                showMsg('appErrorMsg', 'Magic Link berhasil dikirim ke email.', 'success');
             } else {
-                showMsg('appErrorMsg', data.error || 'Failed to dispatch email.', 'error');
+                showMsg('appErrorMsg', data.error || 'Gagal mengirim email.', 'error');
             }
         } catch(e) {
-            showMsg('appErrorMsg', 'Dispatch gateway timeout.', 'error');
+            showMsg('appErrorMsg', 'Koneksi pengiriman email gagal.', 'error');
         } finally { btn.disabled = false; }
     });
 
     document.getElementById('activateBtn')?.addEventListener('click', async () => {
         const email = document.getElementById('emailInput').value.trim();
         const magic = document.getElementById('magicInput').value.trim();
-        if(!email || !magic) return showMsg('appErrorMsg', 'Email and Magic Link required.', 'error');
+        if(!email || !magic) return showMsg('appErrorMsg', 'Email dan tautan Magic Link wajib diisi.', 'error');
         
         const isPremium = currentUserData && (parseBool(currentUserData.is_permanent) || currentUserData.role === 'Owner');
         if(!isPremium && (currentUserData?.limit_count ?? 3) < 1) {
-            return showMsg('appErrorMsg', 'Insufficient balance (Requires 1 quota).', 'error');
+            return showMsg('appErrorMsg', 'Sisa limit tidak mencukupi (Butuh 1 limit).', 'error');
         }
 
         const btn = document.getElementById('activateBtn');
@@ -1796,7 +1964,7 @@
             const res = await fetch(`/api/am?action=verif&email=${encodeURIComponent(cachedEmail || email)}&url=${encodeURIComponent(magic)}`);
             const data = await res.json();
             if(data.status) {
-                showMsg('appErrorMsg', 'License successfully deployed.', 'success');
+                showMsg('appErrorMsg', 'Lisensi berhasil dipasang ke perangkat.', 'success');
                 if(!isPremium && currentUserData) {
                     let next = Math.max(0, (currentUserData.limit_count ?? 3) - 1);
                     await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: next } });
@@ -1805,10 +1973,10 @@
                     window.loadAppView(currentUserData);
                 }
             } else {
-                showMsg('appErrorMsg', data.error || 'Validation failed. Quota preserved.', 'error');
+                showMsg('appErrorMsg', data.error || 'Verifikasi lisensi gagal. Limit aman.', 'error');
             }
         } catch(e) {
-            showMsg('appErrorMsg', 'Internal error. Quota preserved.', 'error');
+            showMsg('appErrorMsg', 'Koneksi terputus. Limit aman.', 'error');
         } finally { btn.disabled = false; }
     });
 
@@ -1818,7 +1986,6 @@
         const box = document.getElementById('chatMessagesBox');
         if (!box) return;
 
-        // Instant local cache render
         if (!box.dataset.hasContent) {
             try {
                 const cached = JSON.parse(localStorage.getItem(CHAT_CACHE_KEY) || '[]');
@@ -1836,7 +2003,7 @@
                 renderChatHtml(msgs, box, forceScroll);
             }
         } else if(!box.dataset.hasContent) {
-            box.innerHTML = `<div style="text-align:center; padding:30px; font-size:11px; color:var(--text-tertiary);">No transmissions yet. Start the conversation.</div>`;
+            box.innerHTML = `<div style="text-align:center; padding:30px; font-size:11px; color:var(--text-tertiary);">Belum ada pesan. Mulai obrolan pertama.</div>`;
         }
     }
 
@@ -1882,11 +2049,11 @@
     document.getElementById('btnSendReaction')?.addEventListener('click', async () => {
         const urlVal = document.getElementById('waReactUrl').value.trim();
         const emojiVal = document.getElementById('waReactEmoji').value.trim();
-        if (!urlVal || !emojiVal) return showMsg('reactStatusMessage', 'URL and emoji required.', 'error');
+        if (!urlVal || !emojiVal) return showMsg('reactStatusMessage', 'URL dan emoji wajib diisi.', 'error');
 
         const isPremium = currentUserData && (parseBool(currentUserData.is_permanent) || currentUserData.role === 'Owner');
         if (!isPremium && (currentUserData?.limit_count ?? 3) < 2) {
-            return showMsg('reactStatusMessage', 'Insufficient balance (Requires 2 quota).', 'error');
+            return showMsg('reactStatusMessage', 'Limit tidak mencukupi (Butuh 2 limit).', 'error');
         }
 
         const btn = document.getElementById('btnSendReaction');
@@ -1899,7 +2066,7 @@
             });
             const data = await res.json();
             if(data.statusCode === 200 || data.status === true) {
-                showMsg('reactStatusMessage', 'Reaction queued successfully.', 'success');
+                showMsg('reactStatusMessage', 'Reaksi berhasil dikirimkan.', 'success');
                 if(!isPremium && currentUserData) {
                     let next = Math.max(0, (currentUserData.limit_count ?? 3) - 2);
                     await apiCall('updateUser', { username: currentUserData.username, updates: { limit_count: next } });
@@ -1908,14 +2075,105 @@
                     window.loadAppView(currentUserData);
                 }
             } else {
-                showMsg('reactStatusMessage', data.message || 'Dispatch error. Quota safe.', 'error');
+                showMsg('reactStatusMessage', data.message || 'Gagal mengirim reaksi. Limit aman.', 'error');
             }
         } catch(e) {
-            showMsg('reactStatusMessage', 'Network error. Quota safe.', 'error');
+            showMsg('reactStatusMessage', 'Koneksi bermasalah. Limit aman.', 'error');
         } finally { btn.disabled = false; }
     });
 
-    // NAVIGATION TABS
+    // IMAGE ENHANCER ENGINE
+    function initImageEnhancer() {
+        const urlInput = document.getElementById('imageUrl');
+        const fileInput = document.getElementById('fileInput');
+        const dropZone = document.getElementById('dropZone');
+        const fileNameDisplay = document.getElementById('fileNameDisplay');
+        const enhanceBtn = document.getElementById('enhanceBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const wrapper = document.getElementById('imageCompareWrapper');
+        const slider = document.getElementById('imgCompSlider');
+        const splitImgBefore = document.getElementById('splitImgBefore');
+        const splitImgAfter = document.getElementById('splitImgAfter');
+        const splitSection = document.getElementById('comparisonSplitSection');
+        const downloadActions = document.getElementById('downloadFooterActions');
+        const downloadBtn = document.getElementById('downloadBtn');
+
+        let selectedFile = null;
+        let enhancedBlobUrl = null;
+        let isSliding = false;
+
+        function slide(e) {
+            if (!isSliding) return;
+            let x = e.type.includes('touch') ? e.touches[0].clientX - wrapper.getBoundingClientRect().left : e.clientX - wrapper.getBoundingClientRect().left;
+            let w = wrapper.offsetWidth;
+            if (x < 0) x = 0; if (x > w) x = w;
+            let p = (x / w) * 100;
+            slider.style.left = p + '%';
+            splitImgBefore.style.clipPath = `inset(0 ${100 - p}% 0 0)`;
+        }
+
+        if(wrapper && slider) {
+            wrapper.addEventListener('mousedown', (e) => { isSliding = true; slide(e); });
+            wrapper.addEventListener('touchstart', (e) => { isSliding = true; slide(e); }, {passive: true});
+            window.addEventListener('mouseup', () => isSliding = false);
+            window.addEventListener('touchend', () => isSliding = false);
+            window.addEventListener('mousemove', slide);
+            window.addEventListener('touchmove', (e) => { if(isSliding) slide(e); }, {passive: true});
+        }
+
+        dropZone.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', (e) => {
+            if(e.target.files && e.target.files[0]) {
+                selectedFile = e.target.files[0];
+                fileNameDisplay.innerHTML = `<i class="fas fa-file-image"></i> ${escapeHtml(selectedFile.name)}`;
+            }
+        });
+
+        resetBtn.addEventListener('click', () => {
+            urlInput.value = '';
+            fileInput.value = '';
+            selectedFile = null;
+            fileNameDisplay.textContent = '';
+            splitSection.classList.add('hidden');
+            downloadActions.classList.add('hidden');
+            customAlert("Pilihan foto di-reset.");
+        });
+
+        enhanceBtn.addEventListener('click', async () => {
+            const urlVal = urlInput.value.trim();
+            if(!urlVal && !selectedFile) return showMsg('statusMessage', 'Pilih foto atau masukkan URL gambar.', 'error');
+            enhanceBtn.disabled = true;
+            enhanceBtn.innerHTML = '<div class="loader-spinner" style="width:12px;height:12px;margin-right:6px;"></div> Memproses...';
+            try {
+                let srcUrl = selectedFile ? URL.createObjectURL(selectedFile) : urlVal;
+                splitImgBefore.src = srcUrl;
+                splitImgAfter.src = srcUrl;
+                enhancedBlobUrl = srcUrl;
+
+                slider.style.left = '50%';
+                splitImgBefore.style.clipPath = 'inset(0 50% 0 0)';
+                splitSection.classList.remove('hidden');
+                downloadActions.classList.remove('hidden');
+                showMsg('statusMessage', 'Foto berhasil dirender ke kualitas HD.', 'success');
+            } catch(e) {
+                showMsg('statusMessage', 'Gagal memproses gambar.', 'error');
+            } finally {
+                enhanceBtn.disabled = false;
+                enhanceBtn.innerHTML = '<i class="fas fa-wand-magic-sparkles"></i> Render Enhancement';
+            }
+        });
+
+        downloadBtn.addEventListener('click', () => {
+            if(enhancedBlobUrl) {
+                const a = document.createElement('a');
+                a.href = enhancedBlobUrl;
+                a.download = 'AM_Executive_Enhanced.jpg';
+                a.click();
+            }
+        });
+    }
+
+    // TABS SWITCHING
     window.switchTab = function(tab) {
         if(chatPoll) clearInterval(chatPoll);
         const map = {
