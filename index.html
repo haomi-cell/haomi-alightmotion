@@ -699,7 +699,7 @@
   <span id="toastMsg">Sistem Siap</span>
 </div>
 
-<!-- MODAL: HELP / FAQ (DESKRIPSI JELAS & RAMAH ORANG AWAM) -->
+<!-- MODAL: HELP / FAQ -->
 <div id="helpModal" class="overlay">
   <div class="modal-vault">
     <button class="btn-close-modal click-sound" onclick="closeModal('helpModal')"><i class="fas fa-times"></i></button>
@@ -1800,7 +1800,6 @@
     async function fetchLeaderboard() {
         const container = document.getElementById('leaderboardListContainer'); if(!container) return;
         
-        // Gunakan cache jika sudah ada
         if (cachedMemberList.length > 0) {
             renderLeaderboardItems(cachedMemberList, container);
         } else {
@@ -1876,7 +1875,6 @@
             btn.disabled = true;
 
             try {
-                // Ambil data terbaru
                 const res = await apiCall('getUsers');
                 if(!res.status || !Array.isArray(res.data)) throw new Error("Gagal mengambil data pengguna.");
                 
@@ -1892,13 +1890,11 @@
                     return;
                 }
 
-                // Update satu per satu secara terkendali
                 for(let u of zeroUsers) {
                     await apiCall('updateUser', { username: u.username, updates: { limit_count: 3 } });
                     u.limit_count = 3;
                 }
 
-                // Jika akun sendiri ikut ter-update
                 if(currentUserData && (currentUserData.limit_count || 0) <= 0 && currentUserData.role !== 'Owner' && !parseBool(currentUserData.is_permanent)) {
                     currentUserData.limit_count = 3;
                     localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData));
@@ -2007,7 +2003,6 @@
 
         const res = await apiCall('updateUser', { username: username, updates: { limit_count: newLimit } });
         if (res.status) { 
-            // Update cache lokal
             const target = cachedMemberList.find(u => u.username === username);
             if(target) target.limit_count = newLimit;
 
@@ -2148,6 +2143,7 @@
             const savedUser = localStorage.getItem(SESSION_KEY);
             if(!savedUser) { 
                 if(initialLoader) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 350); } 
+                switchView('loginView'); // FIX: Tampilkan loginView agar tidak gelap
                 window.openModal('warningModal'); 
             } else {
                 try { 
@@ -2168,7 +2164,6 @@
             fetchGlobalStats(); 
             initRealtimeBroadcastListener(); 
             initImageEnhancerEngine();
-            // Sinkronisasi data di latar belakang
             syncUserProfiles();
         }, 300);
     };
@@ -2328,7 +2323,9 @@
                 localStorage.removeItem(CACHE_KEY); 
                 switchView('loginView'); 
             } 
-        } catch (err) {} 
+        } catch (err) {
+            if (!currentUserData) switchView('loginView');
+        } 
     }
 
     window.switchView = function(viewId) { 
@@ -2584,11 +2581,10 @@
             
             localStorage.setItem(SESSION_KEY, u); 
             localStorage.setItem(CACHE_KEY, JSON.stringify(res.data)); 
+            window.loadAppView(res.data); // FIX: Pastikan view siap
             if(!localStorage.getItem(BIO_CRED_KEY)) { 
                 temporaryBioData = {u: u, p: p, resData: res.data}; 
                 window.openModal('bioSetupModal'); 
-            } else { 
-                window.loadAppView(res.data); 
             }
             
             addActivityLog("Masuk Akun", "Berhasil masuk ke panel", "Sukses", "var(--success)");
@@ -2619,7 +2615,7 @@
                 localStorage.setItem(SESSION_KEY, u); 
                 localStorage.setItem(CACHE_KEY, JSON.stringify(res.data)); 
                 temporaryBioData = {u: u, p: p, resData: res.data}; 
-                document.getElementById('registerView').classList.add('hidden'); 
+                window.loadAppView(res.data); // FIX: Muat tampilan konsol & lisensi langsung
                 window.openModal('bioSetupModal');
                 addActivityLog("Pendaftaran", "Akun baru berhasil dibuat", "Sukses", "var(--success)");
             } catch (err) { 
@@ -2710,7 +2706,7 @@
         });
     }
 
-    // --- FORUM OBROLAN (CEPAT TERSAMBUNG & INSTANT LOAD) ---
+    // --- FORUM OBROLAN ---
     let chatIntervalId = null;
 
     function renderChatListHtml(msgs, box, forceScroll) {
@@ -2783,7 +2779,6 @@
         const box = document.getElementById('chatMessagesBox');
         if (!box) return;
 
-        // Tampilkan cache instan jika ada (0 detik menunggu)
         if (!box.dataset.hasContent) {
             try {
                 const cachedChats = JSON.parse(localStorage.getItem(CHAT_CACHE_KEY) || '[]');
@@ -2794,7 +2789,6 @@
             } catch(e){}
         }
 
-        // Ambil pesan langsung tanpa terblokir sync profile
         const res = await apiCall('getMessages'); 
         if(!res.status || !Array.isArray(res.data) || res.data.length === 0) {
             if(!box.dataset.hasContent) {
@@ -2803,7 +2797,6 @@
             return;
         }
 
-        // Simpan pesan ke cache lokal
         localStorage.setItem(CHAT_CACHE_KEY, JSON.stringify(res.data));
 
         res.data.forEach(m => {
@@ -2842,7 +2835,6 @@
             ? currentUserData.avatar_url
             : DEFAULT_USER_SILHOUETTE_SVG;
 
-        // Tampilan optimis seketika
         box.innerHTML += `
         <div class="chat-row chat-me" id="optimisticMsg" style="opacity: 0.8;">
             <div class="chat-bubble-container">
@@ -2940,7 +2932,7 @@
         });
     }
 
-    // --- TAB SWITCHING: SANGAT CEPAT TANPA KEDIP ---
+    // --- TAB SWITCHING ---
     window.switchTab = function(tabName) { 
         const secAct = document.getElementById('sectionActivator'); 
         const secEnh = document.getElementById('sectionEnhancer'); 
@@ -2980,13 +2972,10 @@
                     if (tabBtn) tabBtn.classList.add('active');
                     
                     if (tabName === 'chat') {
-                        // Memuat chat seketika
                         loadChatMessages(true);
                         chatIntervalId = setInterval(() => loadChatMessages(false), 3500);
-                        // Jalankan sinkronisasi profil secara asinkron tanpa memblokir tampilan
                         syncUserProfiles();
                     } else if (tabName === 'admin') {
-                        // Render daftar pengguna langsung
                         renderMemberList(true);
                     }
                 } else {
@@ -2996,7 +2985,7 @@
         });
     };
 
-    // --- 3D TILT EFFECT PADA KARTU (HANYA UNTUK MOUSE KOMPUTER) ---
+    // --- 3D TILT EFFECT PADA KARTU ---
     const cardEl = document.getElementById('executiveCardElement');
     if (cardEl && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
         cardEl.addEventListener('mousemove', (e) => {
