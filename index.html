@@ -14,12 +14,14 @@
 <style>
   :root {
     --bg-base: #060709;
-    --bg-radial: radial-gradient(circle at 50% -10%, rgba(212, 175, 55, 0.12) 0%, rgba(6, 7, 9, 0) 60%),
-                 radial-gradient(circle at 100% 100%, rgba(212, 175, 55, 0.05) 0%, transparent 50%),
-                 radial-gradient(circle at 0% 50%, rgba(255, 255, 255, 0.02) 0%, transparent 40%);
+    --pattern-color: rgba(212, 175, 55, 0.045);
+    --pattern-dot: rgba(255, 255, 255, 0.03);
+    --bg-radial: radial-gradient(circle at 50% -10%, rgba(212, 175, 55, 0.16) 0%, rgba(6, 7, 9, 0) 65%),
+                 radial-gradient(circle at 100% 100%, rgba(212, 175, 55, 0.06) 0%, transparent 50%),
+                 radial-gradient(circle at 0% 50%, rgba(255, 255, 255, 0.02) 0%, transparent 45%);
     
     --surface-glass: rgba(14, 16, 23, 0.78);
-    --surface-glass-card: rgba(18, 21, 30, 0.82);
+    --surface-glass-card: rgba(18, 21, 30, 0.84);
     --surface-glass-elevated: rgba(26, 30, 42, 0.88);
     --surface-subtle: rgba(255, 255, 255, 0.035);
     
@@ -27,7 +29,7 @@
     --gold-light: #F7E7BE;
     --gold-burnished: #9E7D28;
     --gold-gradient: linear-gradient(135deg, #FFF0D0 0%, #D4AF37 45%, #8F6F20 100%);
-    --card-metal-bg: linear-gradient(135deg, #171922 0%, #0d0f14 55%, #151821 100%);
+    --card-metal-bg: linear-gradient(145deg, #1c1f2a 0%, #0d0f15 52%, #171923 100%);
     --gold-glow: rgba(212, 175, 55, 0.22);
     --gold-glow-soft: rgba(212, 175, 55, 0.08);
 
@@ -47,9 +49,9 @@
     --success-soft: rgba(16, 185, 129, 0.15);
     --success-light: #6EE7B7;
     
-    --island-bg: rgba(12, 14, 20, 0.92);
+    --island-bg: rgba(12, 14, 20, 0.94);
     --shadow-vault: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05);
-    --shadow-card-metal: 0 22px 45px -10px rgba(0, 0, 0, 0.85), 0 0 25px rgba(212, 175, 55, 0.15);
+    --shadow-card-metal: 0 28px 60px -12px rgba(0, 0, 0, 0.9), 0 0 35px rgba(212, 175, 55, 0.2);
 
     --font-heading: 'Cinzel', serif;
     --font-body: 'Plus Jakarta Sans', sans-serif;
@@ -58,18 +60,20 @@
   }
 
   [data-theme="light"] {
-    --bg-base: #F3F4F8;
-    --bg-radial: radial-gradient(circle at 50% -10%, rgba(184, 134, 11, 0.08) 0%, transparent 60%);
-    --surface-glass: rgba(255, 255, 255, 0.85);
-    --surface-glass-card: rgba(255, 255, 255, 0.9);
-    --surface-glass-elevated: rgba(246, 247, 252, 0.95);
-    --surface-subtle: rgba(0, 0, 0, 0.035);
+    --bg-base: #F4F5F9;
+    --pattern-color: rgba(184, 134, 11, 0.04);
+    --pattern-dot: rgba(0, 0, 0, 0.03);
+    --bg-radial: radial-gradient(circle at 50% -10%, rgba(184, 134, 11, 0.1) 0%, transparent 65%);
+    --surface-glass: rgba(255, 255, 255, 0.88);
+    --surface-glass-card: rgba(255, 255, 255, 0.94);
+    --surface-glass-elevated: rgba(248, 249, 253, 0.96);
+    --surface-subtle: rgba(0, 0, 0, 0.04);
     
     --gold-pure: #B8860B;
-    --gold-light: #8C6600;
+    --gold-light: #7A5900;
     --gold-burnished: #5E4400;
     --gold-gradient: linear-gradient(135deg, #D4AF37 0%, #B8860B 60%, #805E00 100%);
-    --card-metal-bg: linear-gradient(135deg, #1C1E26 0%, #111218 60%, #1D202A 100%);
+    --card-metal-bg: linear-gradient(145deg, #222530 0%, #121319 55%, #1f222d 100%);
     --gold-glow: rgba(184, 134, 11, 0.18);
     --gold-glow-soft: rgba(184, 134, 11, 0.06);
 
@@ -82,26 +86,34 @@
     --border-gold-subtle: rgba(184, 134, 11, 0.3);
     --border-gold-active: rgba(184, 134, 11, 0.8);
     
-    --island-bg: rgba(255, 255, 255, 0.94);
-    --shadow-vault: 0 20px 45px -10px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.04);
+    --island-bg: rgba(255, 255, 255, 0.96);
+    --shadow-vault: 0 20px 45px -10px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.05);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
-  /* SMOOTH THEME ANIMATION TRANSITION */
-  body, .vault-card, .metal-black-card, .hud-meter-box, .hud-quick-btn,
+  /* TRANSISI TEMA HALUS TANPA CRASH/FLICKER PADA GRADIEN */
+  body, .vault-card, .hud-meter-box, .hud-quick-btn,
   .bottom-dock, .glass-input, .btn, .chat-hub-card, .chat-bubble,
   .top-telemetry-bar, .side-panel, .prestige-bar-trigger, .modal-vault {
-    transition: background-color 0.45s var(--ease-apple),
-                background 0.45s var(--ease-apple),
-                color 0.35s var(--ease-apple),
-                border-color 0.45s var(--ease-apple),
-                box-shadow 0.45s var(--ease-apple);
+    transition: background-color 0.35s ease,
+                color 0.3s ease,
+                border-color 0.35s ease,
+                box-shadow 0.35s ease;
   }
 
+  /* LATAR BELAKANG BERMOTIF GEOMETRIS EKSKLUSIF */
   body {
     background-color: var(--bg-base);
-    background-image: var(--bg-radial);
+    background-image: 
+      var(--bg-radial),
+      linear-gradient(45deg, var(--pattern-color) 25%, transparent 25%),
+      linear-gradient(-45deg, var(--pattern-color) 25%, transparent 25%),
+      linear-gradient(135deg, var(--pattern-color) 25%, transparent 25%),
+      linear-gradient(-135deg, var(--pattern-color) 25%, transparent 25%),
+      radial-gradient(circle, var(--pattern-dot) 1.2px, transparent 1.2px);
+    background-size: 100% 100%, 36px 36px, 36px 36px, 36px 36px, 36px 36px, 18px 18px;
+    background-position: 0 0, 0 18px, 18px 18px, 18px 0, 0 0, 0 0;
     font-family: var(--font-body);
     color: var(--text-primary);
     min-height: 100vh;
@@ -121,7 +133,7 @@
   }
 
   @keyframes fluidFadeIn {
-    from { opacity: 0; transform: translateY(10px); }
+    from { opacity: 0; transform: translateY(8px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
@@ -139,9 +151,13 @@
       min-height: 92vh;
       max-height: 94vh;
       overflow-y: auto;
-      background: rgba(8, 9, 13, 0.85);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
+      background: rgba(10, 12, 17, 0.88);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+    }
+    [data-theme="light"] .app-shell {
+      background: rgba(255, 255, 255, 0.9);
+      border-color: rgba(0, 0, 0, 0.08);
     }
   }
 
@@ -152,7 +168,7 @@
     position: fixed; inset: 0; z-index: 99999;
     background: var(--bg-base);
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    transition: opacity 0.55s var(--ease-apple);
+    transition: opacity 0.5s var(--ease-apple);
   }
   .luxury-crest {
     position: relative; width: 76px; height: 76px;
@@ -170,18 +186,18 @@
     letter-spacing: 4px; text-transform: uppercase; color: var(--gold-burnished); font-weight: 600;
   }
 
-  /* DYNAMIC ISLAND TOAST */
+  /* TOAST */
   #globalToast {
     position: fixed; top: 16px; left: 50%;
     transform: translateX(-50%) translateY(-140%) scale(0.9);
     opacity: 0; background: var(--island-bg);
     backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
     border: 1px solid var(--border-gold-subtle); color: var(--text-primary);
-    padding: 10px 22px; border-radius: 999px; font-size: 11.5px; font-weight: 600;
+    padding: 11px 24px; border-radius: 999px; font-size: 11.5px; font-weight: 600;
     display: flex; align-items: center; gap: 10px; z-index: 100000;
     box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
     pointer-events: none; white-space: nowrap;
-    transition: all 0.45s var(--ease-apple);
+    transition: all 0.4s var(--ease-apple);
   }
   #globalToast.show { top: 20px; transform: translateX(-50%) translateY(0) scale(1); opacity: 1; pointer-events: auto; }
   #globalToast i { font-size: 14px; color: var(--gold-pure); }
@@ -189,7 +205,7 @@
   /* GLASS CONTAINERS */
   .vault-card {
     background: var(--surface-glass-card);
-    backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
     border: 1px solid var(--border-hairline); border-radius: 22px;
     padding: 24px 20px; box-shadow: var(--shadow-vault);
     position: relative; overflow: hidden; margin-bottom: 22px;
@@ -200,74 +216,171 @@
     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.16), transparent);
   }
 
-  /* BLACK CARD (DIGITAL METAL CARD) + KILAU SETIAP 3 DETIK */
-  .black-card-wrapper { perspective: 1000px; margin-bottom: 20px; }
-  .metal-black-card {
-    background: var(--card-metal-bg); border-radius: 20px; padding: 22px 20px;
-    position: relative; border: 1px solid rgba(212, 175, 55, 0.35);
-    box-shadow: var(--shadow-card-metal); overflow: hidden;
-    transition: transform 0.3s var(--ease-apple);
+  /* --- KARTU EKSEKUTIF BESAR, TEGAP & MEWAH --- */
+  .black-card-wrapper {
+    perspective: 1200px;
+    margin-bottom: 22px;
   }
-  .metal-black-card:hover { transform: translateY(-2px); border-color: rgba(212, 175, 55, 0.6); }
+  .metal-black-card {
+    background: var(--card-metal-bg);
+    border-radius: 24px;
+    padding: 28px 24px;
+    min-height: 225px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    border: 1px solid rgba(212, 175, 55, 0.45);
+    box-shadow: var(--shadow-card-metal);
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.35s var(--ease-apple), border-color 0.35s ease;
+  }
+  .metal-black-card:hover {
+    transform: translateY(-3px) scale(1.01);
+    border-color: rgba(212, 175, 55, 0.85);
+  }
 
-  /* EFEK KILAU LOGAM SETIAP 3 DETIK */
+  /* TEKSTUR POLA GRAFIR DI BADAN KARTU */
+  .metal-black-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(212, 175, 55, 0.08) 1.2px, transparent 1.2px);
+    background-size: 14px 14px;
+    opacity: 0.7;
+    pointer-events: none;
+  }
+
+  /* SAPUAN KILAU LOGAM TENANG (INTERVAL 7.2 DETIK) */
   .metal-black-card::after {
     content: '';
     position: absolute;
-    top: -50%;
-    left: -150%;
-    width: 65%;
-    height: 200%;
+    top: -60%;
+    left: -160%;
+    width: 60%;
+    height: 220%;
     background: linear-gradient(
       105deg,
       transparent 20%,
-      rgba(255, 255, 255, 0.05) 35%,
-      rgba(255, 255, 255, 0.35) 50%,
-      rgba(212, 175, 55, 0.5) 55%,
-      rgba(255, 255, 255, 0.1) 65%,
+      rgba(255, 255, 255, 0.03) 38%,
+      rgba(255, 255, 255, 0.32) 50%,
+      rgba(212, 175, 55, 0.55) 54%,
+      rgba(255, 255, 255, 0.08) 64%,
       transparent 80%
     );
-    transform: rotate(25deg);
-    animation: metallicSheenSweep 3s infinite cubic-bezier(0.4, 0, 0.2, 1);
+    transform: rotate(26deg);
+    animation: metallicSheenSweep 7.2s infinite cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: none;
     z-index: 5;
   }
   @keyframes metallicSheenSweep {
     0% { left: -160%; opacity: 0; }
-    10% { opacity: 1; }
-    35% { left: 180%; opacity: 0.8; }
-    40% { left: 180%; opacity: 0; }
-    100% { left: 180%; opacity: 0; }
+    8% { opacity: 1; }
+    26% { left: 190%; opacity: 0.85; }
+    30% { left: 190%; opacity: 0; }
+    100% { left: 190%; opacity: 0; }
   }
 
-  .card-top-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+  .card-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* CHIP EMV REALISTIS DENGAN POLA SIRKUIT OTENTIK */
   .card-emv-chip {
-    width: 36px; height: 26px; border-radius: 6px;
-    background: linear-gradient(135deg, #dcd0a6 0%, #aa8f48 50%, #7e6931 100%);
-    border: 1px solid rgba(255, 255, 255, 0.25); position: relative;
-    box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.4), 0 2px 5px rgba(0, 0, 0, 0.4);
+    width: 50px;
+    height: 38px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #F5E8BE 0%, #D4AF37 50%, #9B7825 100%);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    position: relative;
+    box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.6), 0 3px 8px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
   }
-  .card-contactless { color: rgba(212, 175, 55, 0.85); font-size: 14px; margin-left: 8px; }
+  .card-emv-chip svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .card-contactless {
+    color: rgba(212, 175, 55, 0.9);
+    font-size: 16px;
+    margin-left: 10px;
+    filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.3));
+  }
   .card-brand {
-    font-family: var(--font-heading); font-size: 13px; letter-spacing: 2px;
-    background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 700;
+    font-family: var(--font-heading);
+    font-size: 15px;
+    letter-spacing: 2.4px;
+    background: var(--gold-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
   }
+
   .card-id-num {
-    font-family: var(--font-mono); font-size: 16px; letter-spacing: 2.8px; color: #F0F2F8;
-    margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 19.5px;
+    letter-spacing: 3.6px;
+    color: #F8F9FD;
+    margin: 20px 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.7);
+    position: relative;
+    z-index: 2;
   }
-  .card-bottom-row { display: flex; justify-content: space-between; align-items: flex-end; }
-  .card-holder-label { font-size: 8px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 2px; font-weight: 600; }
+  .card-bottom-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    position: relative;
+    z-index: 2;
+  }
+  .card-holder-label {
+    font-size: 8.5px;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 3px;
+    font-weight: 700;
+  }
   .card-holder-name {
-    font-family: var(--font-heading); font-size: 13.5px; font-weight: 700; letter-spacing: 1px;
-    color: var(--gold-light); max-width: 170px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    font-family: var(--font-heading);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    color: var(--gold-light);
+    max-width: 220px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .card-tier-badge {
-    background: rgba(212, 175, 55, 0.12); border: 1px solid var(--border-gold-subtle);
-    padding: 4px 10px; border-radius: 8px; text-align: right;
+    background: rgba(212, 175, 55, 0.14);
+    border: 1px solid var(--border-gold-subtle);
+    padding: 5px 12px;
+    border-radius: 9px;
+    text-align: right;
   }
-  .card-tier-title { font-size: 7.5px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--gold-burnished); font-weight: 700; }
-  .card-tier-val { font-family: var(--font-heading); font-size: 11px; color: var(--gold-pure); font-weight: 700; }
+  .card-tier-title {
+    font-size: 8px;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: var(--gold-burnished);
+    font-weight: 700;
+  }
+  .card-tier-val {
+    font-family: var(--font-heading);
+    font-size: 12px;
+    color: var(--gold-pure);
+    font-weight: 800;
+  }
 
   /* METRICS HUD */
   .hud-quota-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 12px; margin-bottom: 20px; }
@@ -329,11 +442,17 @@
   .circle-btn:hover { color: var(--gold-pure); border-color: var(--border-gold-subtle); transform: translateY(-1px); }
   .circle-btn-danger:hover { color: #fff; background: var(--danger); border-color: var(--danger); }
 
+  #themeToggleBtn i {
+    transition: transform 0.4s var(--ease-apple);
+  }
+
   /* FORMS & BUTTONS */
   .title-lg { font-family: var(--font-heading); font-size: 19px; font-weight: 600; color: var(--gold-light); margin-bottom: 4px; }
   .text-sub { font-size: 11.5px; color: var(--text-secondary); line-height: 1.55; margin-bottom: 18px; }
-  .form-group { margin-bottom: 16px; }
+  .form-group { margin-bottom: 16px; position: relative; }
   .form-group label { display: block; font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--text-tertiary); margin-bottom: 6px; }
+  .input-wrapper { position: relative; display: flex; align-items: center; width: 100%; }
+  
   .glass-input {
     width: 100%; background: rgba(10, 12, 17, 0.75); border: 1px solid var(--border-hairline);
     border-radius: 12px; color: var(--text-primary); font-family: var(--font-body); font-size: 13px;
@@ -343,6 +462,18 @@
   .glass-input:focus { border-color: var(--border-gold-active); box-shadow: 0 0 0 2px var(--gold-glow); }
   .glass-input::placeholder { color: var(--text-tertiary); }
   
+  /* ANIMASI GETAR INPUT SAAT KELIRU */
+  @keyframes inputShake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-6px); }
+    40%, 80% { transform: translateX(6px); }
+  }
+  .input-error {
+    animation: inputShake 0.35s var(--ease-apple);
+    border-color: var(--danger) !important;
+    box-shadow: 0 0 0 2px var(--danger-soft) !important;
+  }
+
   .pwd-toggle { position: absolute; right: 14px; background: none; border: none; color: var(--text-tertiary); cursor: pointer; font-size: 13px; }
   .pwd-toggle:hover { color: var(--gold-pure); }
 
@@ -361,7 +492,7 @@
   .message-error { background: var(--danger-soft); border-color: rgba(239, 68, 68, 0.3); color: var(--danger-light); }
   .message-success { background: var(--success-soft); border-color: rgba(16, 185, 129, 0.3); color: var(--success-light); }
 
-  /* --- FORUM CHAT PROTOKOL: SMOOTH DENGAN PP SILUET STANDAR / FOTO DATABASE --- */
+  /* FORUM CHAT */
   .chat-hub-card {
     display: flex; flex-direction: column;
     height: 520px; min-height: 480px; max-height: 600px;
@@ -369,7 +500,6 @@
     backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
     border: 1px solid var(--border-hairline); border-radius: 22px;
     box-shadow: var(--shadow-vault); position: relative; overflow: hidden;
-    transform: translateZ(0); will-change: transform;
   }
   .chat-header-bar {
     display: flex; align-items: center; justify-content: space-between;
@@ -379,19 +509,14 @@
     flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 12px;
     padding-right: 4px; margin-bottom: 12px; overscroll-behavior-y: contain;
     -webkit-overflow-scrolling: touch;
-    transform: translateZ(0); will-change: scroll-position;
   }
   .chat-stream-container::-webkit-scrollbar { width: 3px; }
   .chat-stream-container::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.12); border-radius: 3px; }
 
-  .chat-row {
-    display: flex; align-items: flex-end; gap: 8px; width: 100%;
-    contain: content;
-  }
+  .chat-row { display: flex; align-items: flex-end; gap: 8px; width: 100%; contain: content; }
   .chat-row.chat-me { justify-content: flex-end; }
   .chat-row.chat-other { justify-content: flex-start; }
 
-  /* AVATAR MELINGKAR: FOTO NYATA ATAU SILUET STANDAR */
   .chat-avatar {
     width: 34px; height: 34px; border-radius: 50%;
     background: #151821; border: 1.5px solid var(--gold-pure);
@@ -399,9 +524,7 @@
     overflow: hidden; flex-shrink: 0; box-shadow: 0 3px 8px rgba(0,0,0,0.5);
     color: var(--text-tertiary); font-size: 14px;
   }
-  .chat-avatar img {
-    width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%;
-  }
+  .chat-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%; }
 
   .chat-bubble-container { max-width: 80%; display: flex; flex-direction: column; }
   .chat-meta-header { display: flex; align-items: center; gap: 6px; margin-bottom: 3px; padding-left: 2px; }
@@ -445,7 +568,7 @@
   }
   .chat-send-btn:active { transform: scale(0.9); }
 
-  /* FLOATING DOCK BOTTOM NAVIGATION */
+  /* FLOATING DOCK BOTTOM */
   .bottom-dock {
     position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
     width: calc(100% - 36px); max-width: 390px; height: 60px;
@@ -460,7 +583,7 @@
     cursor: pointer; padding: 7px 12px; border-radius: 18px; transition: all 0.25s var(--ease-apple);
   }
   .dock-item i { font-size: 16px; }
-  .dock-item.active { color: var(--gold-pure); background: rgba(212, 175, 55, 0.1); }
+  .dock-item.active { color: var(--gold-pure); background: rgba(212, 175, 55, 0.12); }
 
   .dock-fab-stack {
     position: fixed; bottom: 94px; right: 18px; display: flex; flex-direction: column; gap: 10px; z-index: 998;
@@ -495,7 +618,7 @@
     text-shadow: 0 0 10px var(--gold-glow-soft);
   }
 
-  /* OVERLAYS & MODALS */
+  /* MODALS & OVERLAYS */
   .overlay {
     position: fixed; inset: 0; background: rgba(4, 5, 8, 0.85);
     backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
@@ -808,7 +931,7 @@
     </div>
   </div>
 
-  <!-- HEADER ELEGAN RAPI PROPORSIONAL -->
+  <!-- HEADER -->
   <header class="nav-header">
     <div class="nav-header-left">
       <div class="app-icon-orb"><i class="fas fa-crown"></i></div>
@@ -824,23 +947,34 @@
     </div>
   </header>
 
-  <!-- DASHBOARD HERO PERMANEN: TIDAK AKAN HILANG SAAT GANTI TAB AGAR SELALU RAME & EKSKLUSIF -->
+  <!-- DASHBOARD HERO -->
   <div id="executiveDashboardHero">
     
-    <!-- KARTU HITAM DENGAN EFEK SHEEN KILAU SETIAP 3 DETIK -->
+    <!-- KARTU LOGAM BESAR DENGAN POLA EMV REALISTIS & KILAU 7.2 DETIK -->
     <div class="black-card-wrapper click-sound" onclick="openProfileSheet()">
       <div class="metal-black-card">
         <div class="card-top-row">
           <div style="display: flex; align-items: center;">
-            <div class="card-emv-chip"></div>
+            <!-- EMV Smart Chip Berpola Sirkuit Nyata -->
+            <div class="card-emv-chip" title="EMV Smart Chip">
+              <svg viewBox="0 0 50 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="0.5" y="0.5" width="49" height="37" rx="7.5" stroke="rgba(100,75,15,0.4)" stroke-width="1"/>
+                <path d="M16 1V37M34 1V37M1 19H49" stroke="rgba(110,80,20,0.5)" stroke-width="1.2"/>
+                <rect x="16" y="10" width="18" height="18" rx="4" fill="rgba(245,230,170,0.45)" stroke="rgba(110,80,20,0.55)" stroke-width="1.2"/>
+                <circle cx="25" cy="19" r="3.4" fill="rgba(212,175,55,0.95)" stroke="rgba(100,75,15,0.65)" stroke-width="1"/>
+                <path d="M1 10H16M1 28H16M34 10H49M34 28H49" stroke="rgba(110,80,20,0.5)" stroke-width="1.2"/>
+              </svg>
+            </div>
             <i class="fas fa-wifi fa-rotate-90 card-contactless"></i>
           </div>
           <div class="card-brand">AM EXECUTIVE</div>
         </div>
+        
         <div class="card-id-num">
           <span class="disp-userid">MSH-00</span>
-          <span style="font-size: 10px; opacity: 0.6; letter-spacing: 1px;">ENCRYPTED</span>
+          <span style="font-size: 11px; opacity: 0.65; letter-spacing: 2px;">ENCRYPTED</span>
         </div>
+        
         <div class="card-bottom-row">
           <div>
             <div class="card-holder-label">CARDHOLDER / CLIENT</div>
@@ -948,7 +1082,7 @@
           <div style="display:flex; justify-content:space-between; font-size:9px; color:var(--text-tertiary); text-transform:uppercase; margin-bottom:8px;">
             <span>Intensitas</span> <span id="strengthIndicator" style="color:var(--gold-pure); font-weight: 700;">Normal</span>
           </div>
-          <input type="range" id="strengthRange" min="10" max="100" value="60">
+          <input type="range" id="strengthRange" min="10" max="100" value="60" style="width: 100%;">
         </div>
         <div onclick="document.getElementById('modeModalOverlay').classList.add('show')" class="click-sound" style="background: var(--surface-subtle); border: 1px solid var(--border-hairline); border-radius: 14px; padding: 12px 14px; display: flex; align-items: center; justify-content: space-between; cursor: pointer;">
           <div>
@@ -984,7 +1118,7 @@
     </div>
   </div>
 
-  <!-- SECTION 3: FORUM CHAT (WHATSAPP PROTOKOL DENGAN PP PENUH) -->
+  <!-- SECTION 3: FORUM CHAT -->
   <div id="sectionChat" class="hidden">
     <div class="chat-hub-card">
       <div class="chat-header-bar">
@@ -1059,7 +1193,7 @@
     </div>
   </div>
 
-  <!-- WATERMARK FOOTER RESMI -->
+  <!-- WATERMARK -->
   <div class="luxury-watermark">
     <span>Creator By <strong>𝐱𝙈𝙎𝙃𝙖𝙤𝙢𝙞</strong></span>
   </div>
@@ -1085,7 +1219,7 @@
   </div>
 </nav>
 
-<!-- FLOATING SPEED DIAL (HANYA DITAMPILKAN DI LUAR FORUM CHAT) -->
+<!-- FLOATING SPEED DIAL -->
 <div class="dock-fab-stack hidden" id="floatingMenuContainer">
   <button class="fab-orb fab-orb-wa click-sound" onclick="contactOwnerCS()" title="Hubungi Mas Hao">
     <i class="fab fa-whatsapp"></i>
@@ -1238,6 +1372,7 @@
         });
     };
 
+    // --- TRANSISI TEMA HALUS (BEBAS KAKU & BEBAS GLITCH) ---
     const THEME_KEY = 'am_exec_theme';
     function initTheme() {
         const savedTheme = localStorage.getItem(THEME_KEY) || 'dark';
@@ -1247,9 +1382,17 @@
     window.toggleTheme = function() {
         const current = document.documentElement.getAttribute('data-theme');
         const next = current === 'dark' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', next);
-        localStorage.setItem(THEME_KEY, next);
-        updateThemeIcon(next);
+        
+        const icon = document.querySelector('#themeToggleBtn i');
+        if (icon) icon.style.transform = 'rotate(180deg) scale(0.8)';
+        
+        setTimeout(() => {
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem(THEME_KEY, next);
+            updateThemeIcon(next);
+            if (icon) icon.style.transform = 'rotate(0deg) scale(1)';
+        }, 150);
+
         playClickSound();
         addActivityLog("Preferensi UI", `Beralih ke mode tema ${next.toUpperCase()}`, "Info", "var(--gold-pure)");
     };
@@ -1290,8 +1433,20 @@
         if (target) playClickSound(); 
     });
 
-    const _0x1a2b = ["\x68\x74\x74\x70\x73\x3a\x2f\x2f\x72\x65\x73\x74\x61\x70\x69\x64\x68\x61\x6e\x2e\x76\x65\x72\x63\x65\x6c\x2e\x61\x70\x70", "\x64\x72\x61\x76\x6e\x64\x65\x73\x61\x6d\x75\x65\x6c", "\x2b\x36\x32\x38\x32\x32\x33\x31\x36\x36\x39\x30\x35\x33", "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x61\x63\x74\x69\x76\x65\x5f\x73\x65\x73\x73\x69\x6f\x6e\x5f\x73\x75\x70\x61\x62\x61\x73\x65", "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x63\x61\x63\x68\x65\x64\x5f\x75\x73\x65\x72\x5f\x64\x61\x74\x61", "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x6c\x61\x73\x74\x5f\x73\x65\x65\x6e\x5f\x62\x72\x6f\x61\x64\x63\x61\x73\x74\x5f\x69\x64"];
-    const OWNER_WA = _0x1a2b; const SESSION_KEY = _0x1a2b; const CACHE_KEY = _0x1a2b[4]; const BROADCAST_SEEN_KEY = _0x1a2b[5];
+    // --- FIX BUG PADA DEKLARASI ARRAY HEX ---
+    const _0x1a2b = [
+        "\x68\x74\x74\x70\x73\x3a\x2f\x2f\x72\x65\x73\x74\x61\x70\x69\x64\x68\x61\x6e\x2e\x76\x65\x72\x63\x65\x6c\x2e\x61\x70\x70", // 0
+        "\x64\x72\x61\x76\x6e\x64\x65\x73\x61\x6d\x75\x65\x6c",                                                             // 1
+        "\x2b\x36\x32\x38\x32\x32\x33\x31\x36\x36\x39\x30\x35\x33",                                                         // 2: +6282231669053
+        "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x61\x63\x74\x69\x76\x65\x5f\x73\x65\x73\x73\x69\x6f\x6e\x5f\x73\x75\x70\x61\x62\x61\x73\x65", // 3: mshaomi_active_session_supabase
+        "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x63\x61\x63\x68\x65\x64\x5f\x75\x73\x65\x72\x5f\x64\x61\x74\x61",                 // 4: mshaomi_cached_user_data
+        "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x6c\x61\x73\x74\x5f\x73\x65\x65\x6e\x5f\x62\x72\x6f\x61\x64\x63\x61\x73\x74\x5f\x69\x64"  // 5: mshaomi_last_seen_broadcast_id
+    ];
+    // FIX KRITIS: sebelumnya variabel diisi array mentah tanpa indeks [2] dan [3]
+    const OWNER_WA = _0x1a2b[2]; 
+    const SESSION_KEY = _0x1a2b[3]; 
+    const CACHE_KEY = _0x1a2b[4]; 
+    const BROADCAST_SEEN_KEY = _0x1a2b[5];
     const BIO_CRED_KEY = "am_exec_bio_cred"; 
 
     // GLOBAL DATABASE MAP UNTUK FOTO PROFIL SUPABASE LENGKAP
@@ -1300,7 +1455,6 @@
     let userVipMap = {};
     let lastRenderedChatSignature = '';
 
-    // AVATAR STANDAR SILUET USER (DEFAULT JIKA BELUM ADA FOTO PROFIL)
     const DEFAULT_USER_SILHOUETTE_SVG = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23D4AF37'><path d='M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z'/></svg>";
 
     async function syncUserProfiles() {
@@ -1335,7 +1489,7 @@
     
     window.contactOwnerCS = function() {
         const text = "Halo Mas Hao🤓";
-        window.open(`https://wa.me/6282231669053?text=${encodeURIComponent(text)}`, '_blank');
+        window.open(`https://wa.me/${OWNER_WA.replace('+','') }?text=${encodeURIComponent(text)}`, '_blank');
         addActivityLog("Customer Service", "Membuka transmisi ke WhatsApp Owner", "Info", "var(--gold-pure)");
     };
 
@@ -1717,10 +1871,10 @@
 
     function startClock() { const clockEl = document.getElementById('realtimeClock'); if(!clockEl) return; setInterval(() => { const now = new Date(); clockEl.textContent = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' WIB'; }, 1000); }
     function startPingChecker() { const pingEl = document.getElementById('networkPingText'); if(!pingEl) return; setInterval(() => { const randomPing = Math.floor(Math.random() * 8) + 12; pingEl.textContent = randomPing + 'ms'; }, 6000); }
-    async function fetchGlobalStats() { const res = apiCall ? await apiCall('fetchStats') : {status:false}; if (res.status) { const el = document.getElementById('globalTotalUsers'); if(el) el.textContent = res.count; } }
+    async function fetchGlobalStats() { const res = apiCall ? await apiCall('fetchStats') : {status:false}; if (res.status) { const el = document.getElementById('globalTotalUsers'); if(el) el.textContent = res.count ?? res.data ?? 0; } }
     function generateCaptcha() { const num1 = Math.floor(Math.random() * 9) + 1; const num2 = Math.floor(Math.random() * 9) + 1; currentCaptchaAnswer = num1 + num2; const label = document.getElementById('captchaLabel'); if(label) label.innerHTML = `Selesaikan <span style="background:var(--surface-subtle); padding:2px 6px; border-radius:4px; font-weight:800; margin-left:4px; border: 1px solid var(--border-hairline); color: var(--gold-pure);">${num1} + ${num2}</span>`; }
     function parseBool(val) { return val === true || val === 'true' || val === '1' || val === 't' || val === 'TRUE' || val === 'YES'; }
-    window.handleVipPromoClick = function() { const txt = currentUserData ? `Salam hormat, saya berminat untuk upgrade status ke VIP Eksklusif.\n\nIdentitas: @${currentUserData.username}\nID Klien: ${currentUserData.id_code || 'MSH-01'}` : "Salam hormat, saya berminat untuk upgrade status akun ke VIP."; window.open(`https://wa.me/`+OWNER_WA.replace('+','')+`?text=` + encodeURIComponent(txt), '_blank'); };
+    window.handleVipPromoClick = function() { const txt = currentUserData ? `Salam hormat, saya berminat untuk upgrade status ke VIP Eksklusif.\n\nIdentitas: @${currentUserData.username}\nID Klien: ${currentUserData.id_code || 'MSH-01'}` : "Salam hormat, saya berminat untuk upgrade status akun ke VIP."; window.open(`https://wa.me/${OWNER_WA.replace('+','') }?text=` + encodeURIComponent(txt), '_blank'); };
     
     window.handleAvatarUpload = async function(event) { 
         const file = event.target.files[0]; if (!file) return; const reader = new FileReader(); 
@@ -2206,7 +2360,6 @@
 
     let chatIntervalId = null;
 
-    // --- FORUM CHAT: FOTO PROFIL LENGKAP & ANTI-GLITCH MEMORY DIFFING ---
     async function loadChatMessages(forceScroll = false) {
         const box = document.getElementById('chatMessagesBox');
         if (!box) return;
@@ -2223,7 +2376,6 @@
             return;
         }
 
-        // Pindai semua avatar yang ada di pesan untuk melengkapi userAvatarMap
         res.data.forEach(m => {
             if (m.username && m.avatar_url && (m.avatar_url.startsWith('http') || m.avatar_url.startsWith('data:image'))) {
                 userAvatarMap[m.username.toLowerCase()] = m.avatar_url;
@@ -2231,11 +2383,8 @@
         });
 
         const msgs = [...res.data].sort((a, b) => new Date(a.created_at || 0) - new Date(b.created_at || 0));
-
-        // Buat tanda unik pesan saat ini
         const currentSignature = msgs.map(m => (m.id || '') + '_' + m.username + '_' + (m.message || '').length + '_' + (m.created_at || '')).join('|');
 
-        // HENTIKAN RENDER JIKA TIDAK ADA PERUBAHAN
         if (currentSignature === lastRenderedChatSignature && !forceScroll) {
             return;
         }
@@ -2270,7 +2419,6 @@
                 timeFmt = `${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
             } catch(e){ timeFmt = '00:00'; }
 
-            // AVATAR STANDAR SILUET USER ELEGAN BILA BELUM MEMASANG FOTO PROFIL
             let avatarMarkup = '';
             if (avatarUrl && (avatarUrl.startsWith('data:image') || avatarUrl.startsWith('http'))) {
                 avatarMarkup = `<img src="${avatarUrl}" alt="${escapeHtml(msg.username)}" onerror="this.onerror=null; this.src='${DEFAULT_USER_SILHOUETTE_SVG}';">`;
@@ -2423,7 +2571,7 @@
         });
     }
 
-    // --- TAB SWITCHING: INSTRUMEN ATAS TETAP MUNCUL DI SEMUA TAB SESUAI PERMINTAAN USER ---
+    // --- TAB SWITCHING: INSTRUMEN ATAS TETAP MUNCUL DI SEMUA TAB TANPA RACE CONDITION ---
     window.switchTab = function(tabName) { 
         const secAct = document.getElementById('sectionActivator'); 
         const secEnh = document.getElementById('sectionEnhancer'); 
@@ -2435,10 +2583,8 @@
         
         if(chatIntervalId) clearInterval(chatIntervalId);
 
-        // DASHBOARD HERO (KARTU, LIMIT, VIP, LEADERBOARD) TETAP MUNCUL DI SEMUA TAB
         dashHero.classList.remove('hidden');
 
-        // Floating action menu (WhatsApp & Info) disembunyikan di tab chat agar tidak tumpang tindih
         if (floatMenu) {
             if (tabName === 'chat') {
                 floatMenu.classList.add('hidden');
@@ -2447,42 +2593,44 @@
             }
         }
 
-        [secAct, secEnh, secChat, secOwn, secReact].forEach(el => { 
-            if(el) { 
-                el.style.opacity = '0'; 
-                el.style.transform = 'translateY(6px)'; 
-                setTimeout(() => el.classList.add('hidden'), 120); 
-            } 
+        const sections = [
+            { id: 'activator', el: secAct, btnId: 'btnTabActivator' },
+            { id: 'enhancer', el: secEnh, btnId: 'btnTabEnhancer' },
+            { id: 'chat', el: secChat, btnId: 'btnTabChat' },
+            { id: 'react', el: secReact, btnId: 'btnTabReact' },
+            { id: 'admin', el: secOwn, btnId: 'toggleOwnerDashBtn' }
+        ];
+
+        document.querySelectorAll('.dock-item').forEach(btn => btn.classList.remove('active'));
+
+        sections.forEach(s => {
+            if(s.el) {
+                if (s.id === tabName) {
+                    s.el.classList.remove('hidden');
+                    const tabBtn = document.getElementById(s.btnId);
+                    if (tabBtn) tabBtn.classList.add('active');
+                    animateSectionIn(s.el);
+                    
+                    if (tabName === 'chat') {
+                        syncUserProfiles().then(() => {
+                            loadChatMessages(true);
+                            chatIntervalId = setInterval(() => loadChatMessages(false), 4500);
+                        });
+                    } else if (tabName === 'admin') {
+                        renderMemberList();
+                    }
+                } else {
+                    s.el.classList.add('hidden');
+                }
+            }
         });
-        document.querySelectorAll('.dock-item').forEach(btn => btn.classList.remove('active')); 
-        
-        setTimeout(async () => {
-            if(tabName === 'activator') { 
-                secAct.classList.remove('hidden'); document.getElementById('btnTabActivator').classList.add('active'); animateSectionIn(secAct); 
-            } 
-            else if(tabName === 'enhancer') { 
-                secEnh.classList.remove('hidden'); document.getElementById('btnTabEnhancer').classList.add('active'); animateSectionIn(secEnh); 
-            } 
-            else if(tabName === 'chat') { 
-                secChat.classList.remove('hidden'); document.getElementById('btnTabChat').classList.add('active'); animateSectionIn(secChat); 
-                await syncUserProfiles();
-                loadChatMessages(true);
-                chatIntervalId = setInterval(() => loadChatMessages(false), 4500); 
-            }
-            else if(tabName === 'react') { 
-                secReact.classList.remove('hidden'); document.getElementById('btnTabReact').classList.add('active'); animateSectionIn(secReact); 
-            }
-            else if(tabName === 'admin') { 
-                secOwn.classList.remove('hidden'); document.getElementById('toggleOwnerDashBtn').classList.add('active'); renderMemberList(); animateSectionIn(secOwn); 
-            }
-        }, 120);
     };
 
     function animateSectionIn(el) { 
         el.style.opacity = '0'; 
         el.style.transform = 'translateY(6px)'; 
         requestAnimationFrame(() => { 
-            el.style.transition = 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)'; 
+            el.style.transition = 'opacity 0.25s ease, transform 0.25s var(--ease-apple)'; 
             el.style.opacity = '1'; 
             el.style.transform = 'translateY(0)'; 
         }); 
