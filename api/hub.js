@@ -1,17 +1,19 @@
-import { createClient } from '@supabase/supabase-js';
+import { Client, Databases, Query, ID } from 'node-appwrite';
 import axios from 'axios';
 
-const supabaseUrl = process.env.SUPABASE_URL || '';
-const supabaseKey = process.env.SUPABASE_SERVICE_KEY || '';
+// --- CONFIGURASI APPWRITE ---
+const client = new Client()
+    .setEndpoint(process.env.REACT_APP_APPWRITE_ENDPOINT || process.env.APPWRITE_ENDPOINT || '')
+    .setProject(process.env.REACT_APP_APPWRITE_PROJECT_ID || process.env.APPWRITE_PROJECT_ID || '')
+    .setKey(process.env.APPWRITE_API_KEY || ''); // Gunakan Appwrite API Key (Server) di environment variables
 
-// OPTIMASI SUPABASE: Matikan fitur manajemen sesi (auth) karena menggunakan Service Key
-const supabase = createClient(supabaseUrl, supabaseKey, {
-    auth: {
-        persistSession: false,
-        autoRefreshToken: false,
-        detectSessionInUrl: false
-    }
-});
+const databases = new Databases(client);
+
+// Ganti dengan ID Database dan Collection Anda di Appwrite
+const DATABASE_ID = process.env.APPWRITE_DATABASE_ID || 'YOUR_DATABASE_ID';
+const USERS_COLLECTION = process.env.APPWRITE_USERS_COLLECTION_ID || 'users';
+const FORUM_COLLECTION = process.env.APPWRITE_FORUM_COLLECTION_ID || 'forum_messages';
+const BROADCASTS_COLLECTION = process.env.APPWRITE_BROADCASTS_COLLECTION_ID || 'broadcasts';
 
 // --- CONFIGURASI HAOMI PAY (White-label SairiBot) ---
 const HAOMI_BASE_URL = "https://api.sairibot.my.id/api";
@@ -49,10 +51,16 @@ export default async function handler(req, res) {
                     return res.status(200).json({ status: false, error: 'Username dan kata sandi wajib diisi.' });
                 }
 
-                const { data, error } = await supabase.from('users').select('*').eq('username', username).single();
-                if (error || !data) {
+                const userReq = await databases.listDocuments(DATABASE_ID, USERS_COLLECTION, [
+                    Query.equal('username', username),
+                    Query.limit(1)
+                ]);
+
+                if (userReq.documents.length === 0) {
                     return res.status(200).json({ status: false, error: 'Username tidak ditemukan.' });
                 }
+
+                const data = userReq.documents[0];
 
                 if (String(data.password).trim() !== password) {
                     return res.status(200).json({ status: false, error: 'Kata sandi salah.' });
@@ -80,8 +88,12 @@ export default async function handler(req, res) {
                     return res.status(200).json({ status: false, error: 'Semua kolom registrasi wajib diisi.' });
                 }
 
-                const { data: existingUser } = await supabase.from('users').select('username').eq('username', username).limit(1);
-                if (existingUser && existingUser.length > 0) {
+                const checkExist = await databases.listDocuments(DATABASE_ID, USERS_COLLECTION, [
+                    Query.equal('username', username),
+                    Query.limit(1)
+                ]);
+
+                if (checkExist.documents.length > 0) {
                     return res.status(200).json({ status: false, error: 'Username sudah digunakan.' });
                 }
 
@@ -93,52 +105,88 @@ export default async function handler(req, res) {
                     device_id: body.device_id || 'WEB-CLIENT',
                     id_code: 'MSH-' + Math.floor(1000 + Math.random() * 9000),
                     limit_count: 3,
-                    is_permanent: 'false',
-                    is_banned: 'false',
+                    is_permanent: false,
+                    is_banned: false,
                     role: 'Member',
                     created_at: new Date().toISOString()
                 };
 
-                const { error: insertError } = await supabase.from('users').insert([newUserData]);
-                if (insertError) {
+                try {
+                    const result = await databases.createDocument(DATABASE_ID, USERS_COLLECTION, ID.unique(), newUserData);
+                    return res.status(200).json({ status: true, data: result });
+                } catch (insertError) {
                     return res.status(200).json({ status: false, error: 'Gagal menyimpan ke database: ' + insertError.message });
                 }
-
-                return res.status(200).json({ status: true, data: newUserData });
             }
 
             case 'fetchUser': {
-                const { data, error } = await supabase.from('users').select('*').eq('username', body.username).single();
-                if (error || !data) return res.status(200).json({ status: false, error: 'User tidak ditemukan' });
-                return res.status(200).json({ status: true, data });
+                const userReq = await databases.listDocuments(DATABASE_ID, USERS_COLLECTION, [
+                    Query.equal('username', body.username),
+                    Query.limit(1)
+                ]);
+                
+                if (userReq.documents.length === 0) {
+                    return res.status(200).json({ status: false, error: 'User tidak ditemukan' });
+                }
+                return res.status(200).json({ status: true, data: userReq.documents[0] });
             }
 
             case 'fetchStats': {
-                const { count } = await supabase.from('users').select('*', { count: 'exact', head: true });
-                return res.status(200).json({ status: true, count: count || 0 });
+                const users = await databases.listDocuments(DATABASE_ID, USERS_COLLECTION, [
+                    Query.limit(1) // Hanya ambil metadata total
+                ]);
+                return res.status(200).json({ status: true, count: users.total || 0 });
             }
 
             case 'updateUser': {
-                const { error } = await supabase.from('users').update(body.updates).eq('username', body.username);
-                if (error) return res.status(200).json({ status: false, error: error.message });
-                return res.status(200).json({ status: true });
+                try {
+                    const userReq = await databases.listDocuments(DATABASE_ID, USERS_COLLECTION, [
+                        Query.equal('username', body.username),
+                        Query.limit(1)
+                    ]);
+                    
+                    if (userReq.documents.length > 0) {
+                        const docId = userReq.documents[0].$id;
+                        await databases.updateDocument(DATABASE_ID, USERS_COLLECTION, docId, body.updates);
+                        return res.status(200).json({ status: true });
+                    }
+                    return res.status(200).json({ status: false, error: 'User tidak ditemukan' });
+                } catch (error) {
+                    return res.status(200).json({ status: false, error: error.message });
+                }
             }
 
             case 'getUsers': {
-                const { data, error } = await supabase.from('users').select('*');
-                if (error) return res.status(200).json({ status: false, error: error.message });
-                return res.status(200).json({ status: true, data });
+                try {
+                    const users = await databases.listDocuments(DATABASE_ID, USERS_COLLECTION);
+                    return res.status(200).json({ status: true, data: users.documents });
+                } catch (error) {
+                    return res.status(200).json({ status: false, error: error.message });
+                }
             }
 
             case 'getBroadcast': {
-                const { data } = await supabase.from('broadcasts').select('*').order('created_at', { ascending: false }).limit(1);
-                return res.status(200).json({ status: true, data: data && data.length > 0 ? data[0] : null });
+                try {
+                    const broadcasts = await databases.listDocuments(DATABASE_ID, BROADCASTS_COLLECTION, [
+                        Query.orderDesc('created_at'),
+                        Query.limit(1)
+                    ]);
+                    return res.status(200).json({ status: true, data: broadcasts.documents.length > 0 ? broadcasts.documents[0] : null });
+                } catch (error) {
+                    return res.status(200).json({ status: false, error: error.message });
+                }
             }
 
             case 'sendBroadcast': {
-                const { error } = await supabase.from('broadcasts').insert([{ message: body.message, created_at: new Date().toISOString() }]);
-                if (error) return res.status(200).json({ status: false, error: error.message });
-                return res.status(200).json({ status: true });
+                try {
+                    await databases.createDocument(DATABASE_ID, BROADCASTS_COLLECTION, ID.unique(), { 
+                        message: body.message, 
+                        created_at: new Date().toISOString() 
+                    });
+                    return res.status(200).json({ status: true });
+                } catch (error) {
+                    return res.status(200).json({ status: false, error: error.message });
+                }
             }
 
             case 'sendMessage':
@@ -154,47 +202,45 @@ export default async function handler(req, res) {
                     return res.status(200).json({ status: false, error: 'Pesan tidak boleh kosong.' });
                 }
 
-                const { data, error } = await supabase.from('forum_messages').insert([{
-                    username,
-                    role,
-                    category,
-                    message,
-                    time,
-                    avatar_url,
-                    created_at: new Date().toISOString()
-                }]).select();
-
-                if (error) {
-                    return res.status(200).json({ status: false, error: 'Supabase Error: ' + error.message });
+                try {
+                    const data = await databases.createDocument(DATABASE_ID, FORUM_COLLECTION, ID.unique(), {
+                        username,
+                        role,
+                        category,
+                        message,
+                        time,
+                        avatar_url,
+                        created_at: new Date().toISOString()
+                    });
+                    return res.status(200).json({ status: true, data });
+                } catch (error) {
+                    return res.status(200).json({ status: false, error: 'Appwrite Error: ' + error.message });
                 }
-
-                return res.status(200).json({ status: true, data: data && data.length > 0 ? data[0] : null });
             }
 
             case 'getMessages':
             case 'getFeedbacks': {
-                const { data, error } = await supabase
-                    .from('forum_messages')
-                    .select('*')
-                    .order('created_at', { ascending: true })
-                    .limit(100);
-
-                if (error) {
-                    return res.status(200).json({ status: false, error: 'Supabase Error: ' + error.message });
+                try {
+                    const messages = await databases.listDocuments(DATABASE_ID, FORUM_COLLECTION, [
+                        Query.orderAsc('created_at'),
+                        Query.limit(100)
+                    ]);
+                    return res.status(200).json({ status: true, data: messages.documents || [] });
+                } catch (error) {
+                    return res.status(200).json({ status: false, error: 'Appwrite Error: ' + error.message });
                 }
-
-                return res.status(200).json({ status: true, data: data || [] });
             }
 
             case 'deleteMessage': {
                 if (!body.id) {
                     return res.status(200).json({ status: false, error: 'ID pesan tidak ditemukan.' });
                 }
-                const { error } = await supabase.from('forum_messages').delete().eq('id', body.id);
-                if (error) {
+                try {
+                    await databases.deleteDocument(DATABASE_ID, FORUM_COLLECTION, body.id);
+                    return res.status(200).json({ status: true });
+                } catch (error) {
                     return res.status(200).json({ status: false, error: error.message });
                 }
-                return res.status(200).json({ status: true });
             }
 
             // ==========================================
@@ -233,15 +279,15 @@ export default async function handler(req, res) {
 
                     // PROTEKSI: Jika lunas, update otomatis di database via backend
                     if (isPaid && username && limitAmount > 0) {
-                        const { data: user, error: fetchErr } = await supabase
-                            .from('users')
-                            .select('limit_count')
-                            .eq('username', username)
-                            .single();
+                        const userReq = await databases.listDocuments(DATABASE_ID, USERS_COLLECTION, [
+                            Query.equal('username', username),
+                            Query.limit(1)
+                        ]);
                             
-                        if (!fetchErr && user) {
+                        if (userReq.documents.length > 0) {
+                            const user = userReq.documents[0];
                             const newLimit = (user.limit_count || 0) + limitAmount;
-                            await supabase.from('users').update({ limit_count: newLimit }).eq('username', username);
+                            await databases.updateDocument(DATABASE_ID, USERS_COLLECTION, user.$id, { limit_count: newLimit });
                         }
                     }
 
