@@ -102,6 +102,22 @@
     --shadow-card-metal: 0 24px 50px -12px rgba(0, 0, 0, 0.35), 0 0 28px rgba(184, 134, 11, 0.18);
   }
 
+  /* CEGAH LOGO & BADGE NETLIFY MENUTUPI MENU */
+  .netlify-badge,
+  [data-netlify-deploy-id],
+  netlify-drawer-root,
+  div[class*="netlify-drawer"],
+  div[id*="netlify-drawer"],
+  div[id^="netlify-identity"],
+  iframe#netlify-identity-widget,
+  iframe[src*="netlify"] {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    opacity: 0 !important;
+    z-index: -9999 !important;
+  }
+
   * { 
     box-sizing: border-box; 
     margin: 0; 
@@ -143,7 +159,7 @@
     width: 100%;
     max-width: 440px;
     margin: 0 auto;
-    padding: 16px 16px 115px;
+    padding: 16px 16px calc(130px + env(safe-area-inset-bottom, 0px));
     min-height: 100vh;
     position: relative;
     animation: luxuryReveal 0.35s var(--ease-luxury) forwards;
@@ -486,6 +502,7 @@
   .chat-row.chat-me { justify-content: flex-end; }
   .chat-row.chat-other { justify-content: flex-start; }
 
+  /* AVATAR DENGAN STANDAR ELEGAN */
   .chat-avatar {
     width: 34px; height: 34px; border-radius: 50%;
     background: #151821; border: 1.5px solid var(--gold-pure);
@@ -494,6 +511,11 @@
     color: var(--text-tertiary); font-size: 13px;
   }
   .chat-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%; }
+  .chat-avatar.default-avatar {
+    background: radial-gradient(circle, #222634 0%, #10121a 100%);
+    border: 1.5px solid rgba(212, 175, 55, 0.4);
+    color: var(--gold-light);
+  }
 
   .chat-bubble-container { max-width: 82%; display: flex; flex-direction: column; }
   .chat-meta-header { display: flex; align-items: center; gap: 6px; margin-bottom: 2px; padding-left: 2px; }
@@ -537,13 +559,25 @@
   }
   .chat-send-btn:active { transform: scale(0.9); }
 
-  /* FLOATING DOCK BOTTOM */
+  /* FLOATING DOCK BOTTOM — DITINGGIKAN & BEBAS DARI OVERLAY */
   .bottom-dock {
-    position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
-    width: calc(100% - 32px); max-width: 395px; height: 58px;
-    background: var(--island-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-    border: 1px solid var(--border-hairline-bright); border-radius: 28px;
-    display: flex; align-items: center; justify-content: space-around; padding: 0 4px; z-index: 999;
+    position: fixed;
+    bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 32px);
+    max-width: 395px;
+    height: 58px;
+    background: var(--island-bg);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid var(--border-hairline-bright);
+    border-radius: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 4px;
+    z-index: 99999; /* Posisi lebih tinggi dari elemen eksternal */
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7), 0 0 20px var(--gold-glow-soft);
   }
   .dock-item {
@@ -555,7 +589,13 @@
   .dock-item.active { color: var(--gold-pure); background: rgba(212, 175, 55, 0.12); }
 
   .dock-fab-stack {
-    position: fixed; bottom: 86px; right: 18px; display: flex; flex-direction: column; gap: 8px; z-index: 998;
+    position: fixed;
+    bottom: calc(90px + env(safe-area-inset-bottom, 0px));
+    right: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 99998;
   }
   .fab-orb {
     width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
@@ -588,7 +628,7 @@
   .overlay {
     position: fixed; inset: 0; background: rgba(4, 5, 8, 0.82);
     backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-    z-index: 10000; display: flex; align-items: center; justify-content: center;
+    z-index: 100000; display: flex; align-items: center; justify-content: center;
     opacity: 0; visibility: hidden; pointer-events: none;
     transition: opacity 0.25s ease, visibility 0.25s ease;
     padding: 16px;
@@ -1220,7 +1260,7 @@
 
 </main>
 
-<!-- FLOATING DOCK BOTTOM -->
+<!-- FLOATING DOCK BOTTOM — DITINGGIKAN AGAR TIDAK KETUTUP LOGO NETLIFY -->
 <nav class="bottom-dock hidden" id="mainBottomNav" aria-label="Navigasi Utama">
   <div class="dock-item active click-sound" id="btnTabActivator" onclick="switchTab('activator')">
     <i class="fas fa-key"></i><span>Lisensi</span>
@@ -1262,7 +1302,7 @@
 
     <div style="text-align: center; margin: 8px 0 18px;">
       <div class="pw-avatar click-sound" style="width: 68px; height: 68px; margin: 0 auto 10px; font-size: 22px; border: 2.5px solid var(--gold-pure); cursor:pointer; border-radius: 50%; display: flex; align-items: center; justify-content: center; overflow: hidden; background: var(--surface-subtle); box-shadow: 0 6px 20px var(--gold-glow-soft);" onclick="document.getElementById('avatarFileInput').click()" title="Ubah Foto Profil">
-        <span class="disp-avatar-text">?</span>
+        <i class="fas fa-user" style="font-size: 26px; color: var(--gold-pure);"></i>
       </div>
       <div style="display: inline-flex; align-items: center; gap: 5px; font-size: 9.5px; text-transform: uppercase; letter-spacing: 1px; color: var(--gold-pure); font-weight: 700; margin-bottom: 4px; cursor: pointer;" onclick="document.getElementById('avatarFileInput').click()">
         <i class="fas fa-camera"></i> Ganti Foto Profil
@@ -1511,13 +1551,15 @@
     });
 
     const _0x1a2b = [
-        "\x68\x74\x74\x70\x73\x3a\x2f\x2f\x72\x65\x73\x74\x61\x70\x69\x64\x68\x61\x6e\x2e\x76\x65\x72\x63\x65\x6c\x2e\x61\x70\x70",
-        "\x64\x72\x61\x76\x6e\x64\x65\x73\x61\x6d\x75\x65\x6c",
-        "\x2b\x36\x32\x38\x32\x32\x33\x31\x36\x36\x39\x30\x35\x33",
-        "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x61\x63\x74\x69\x76\x65\x5f\x73\x65\x73\x73\x69\x6f\x6e\x5f\x73\x75\x70\x61\x62\x61\x73\x65",
-        "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x63\x61\x63\x68\x65\x64\x5f\x75\x73\x65\x72\x5f\x64\x61\x74\x61",
-        "\x6d\x73\x68\x61\x6f\x6d\x69\x5f\x6c\x61\x73\x74\x5f\x73\x65\x65\x6e\x5f\x62\x72\x6f\x61\x64\x63\x61\x73\x74\x5f\x69\x64"
+        "https://restapidhan.vercel.app",
+        "dravndesamuel",
+        "+6282231669053",
+        "mshaomi_active_session_supabase",
+        "mshaomi_cached_user_data",
+        "mshaomi_last_seen_broadcast_id"
     ];
+    const API_BASE = _0x1a2b[0]; 
+    const API_KEY = _0x1a2b[1];  
     const OWNER_WA = _0x1a2b[2]; 
     const SESSION_KEY = _0x1a2b[3]; 
     const CACHE_KEY = _0x1a2b[4]; 
@@ -1530,8 +1572,6 @@
     let userVipMap = {};
     let lastRenderedChatSignature = '';
     let cachedMemberList = [];
-
-    const DEFAULT_USER_SILHOUETTE_SVG = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23D4AF37'><path d='M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z'/></svg>";
 
     async function syncUserProfiles() {
         try {
@@ -1554,13 +1594,31 @@
 
     async function apiCall(action, payload = {}) {
         try {
-            const res = await fetch(`/api/hub?action=${action}`, { 
+            let res = await fetch(`/api/hub?action=${action}`, { 
                 method: 'POST', 
                 headers: { 'Content-Type': 'application/json' }, 
                 body: JSON.stringify(payload) 
             });
+            if (!res.ok && res.status === 404) {
+                res = await fetch(`${API_BASE}/api/hub?action=${action}`, { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' }, 
+                    body: JSON.stringify(payload) 
+                });
+            }
             return await res.json();
-        } catch (e) { return { status: false, error: 'Koneksi terganggu' }; }
+        } catch (e) { 
+            try {
+                const fallbackRes = await fetch(`${API_BASE}/api/hub?action=${action}`, { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' }, 
+                    body: JSON.stringify(payload) 
+                });
+                return await fallbackRes.json();
+            } catch(err) {
+                return { status: false, error: 'Koneksi terganggu' }; 
+            }
+        }
     }
 
     window.contactOwnerCS = function() {
@@ -2143,7 +2201,7 @@
             const savedUser = localStorage.getItem(SESSION_KEY);
             if(!savedUser) { 
                 if(initialLoader) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 350); } 
-                switchView('loginView'); // FIX: Tampilkan loginView agar tidak gelap
+                switchView('loginView');
                 window.openModal('warningModal'); 
             } else {
                 try { 
@@ -2156,7 +2214,7 @@
                             if(initialLoader) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 350); } 
                         } 
                     } 
-                } catch(e) {}
+                } catch(e){}
                 await fetchUserSession(savedUser);
                 if(initialLoader && document.body.contains(initialLoader)) { initialLoader.style.opacity = '0'; setTimeout(() => initialLoader.remove(), 350); }
             }
@@ -2229,7 +2287,7 @@
             if (avatarUrl && (avatarUrl.startsWith('data:image') || avatarUrl.startsWith('http'))) { 
                 container.innerHTML = `<img src="${avatarUrl}" alt="Avatar" style="width:100%;height:100%;object-fit:cover;">`; 
             } else { 
-                container.innerHTML = `<span class="disp-avatar-text">${username ? username.charAt(0).toUpperCase() : 'U'}</span>`; 
+                container.innerHTML = `<i class="fas fa-user" style="font-size: 26px; color: var(--gold-pure);"></i>`; 
             } 
         }); 
     }
@@ -2268,25 +2326,39 @@
         }
     });
     
+    // FIX BROADCAST: VALIDASI KETAT & TIDAK AKAN MUNCUL KOSONG
     function initRealtimeBroadcastListener() {
         const checkBroadcast = async () => {
             try {
                 const res = await apiCall('getBroadcast');
-                if (res.status && res.data) {
-                    const latest = res.data; activeBroadcastId = latest.id; const lastSeenId = localStorage.getItem(BROADCAST_SEEN_KEY);
-                    if (lastSeenId !== String(latest.id)) { 
-                        document.getElementById('broadcastContentText').textContent = latest.message; 
-                        window.openModal('broadcastModal'); 
+                if (res && res.status && res.data && typeof res.data === 'object') {
+                    const latest = res.data;
+                    const bId = latest.id || latest.broadcast_id || latest._id;
+                    const msg = (latest.message || latest.text || latest.content || '').trim();
+
+                    // HANYA BUKA JIKA ADA ID DAN PESANNYA TIDAK KOSONG
+                    if (bId && msg) {
+                        activeBroadcastId = bId;
+                        const lastSeenId = localStorage.getItem(BROADCAST_SEEN_KEY);
+                        if (String(lastSeenId) !== String(bId)) { 
+                            const contentEl = document.getElementById('broadcastContentText');
+                            if (contentEl) contentEl.textContent = msg; 
+                            window.openModal('broadcastModal'); 
+                        }
                     }
                 }
             } catch(e){}
         }; 
         checkBroadcast(); 
-        setInterval(checkBroadcast, 20000);
+        setInterval(checkBroadcast, 25000);
     }
 
     window.closeBroadcastModal = function() { 
-        if (activeBroadcastId) localStorage.setItem(BROADCAST_SEEN_KEY, String(activeBroadcastId)); 
+        if (activeBroadcastId) {
+            localStorage.setItem(BROADCAST_SEEN_KEY, String(activeBroadcastId)); 
+        } else {
+            localStorage.setItem(BROADCAST_SEEN_KEY, 'seen_broadcast');
+        }
         window.closeModal('broadcastModal'); 
     };
 
@@ -2581,7 +2653,7 @@
             
             localStorage.setItem(SESSION_KEY, u); 
             localStorage.setItem(CACHE_KEY, JSON.stringify(res.data)); 
-            window.loadAppView(res.data); // FIX: Pastikan view siap
+            window.loadAppView(res.data);
             if(!localStorage.getItem(BIO_CRED_KEY)) { 
                 temporaryBioData = {u: u, p: p, resData: res.data}; 
                 window.openModal('bioSetupModal'); 
@@ -2615,7 +2687,7 @@
                 localStorage.setItem(SESSION_KEY, u); 
                 localStorage.setItem(CACHE_KEY, JSON.stringify(res.data)); 
                 temporaryBioData = {u: u, p: p, resData: res.data}; 
-                window.loadAppView(res.data); // FIX: Muat tampilan konsol & lisensi langsung
+                window.loadAppView(res.data);
                 window.openModal('bioSetupModal');
                 addActivityLog("Pendaftaran", "Akun baru berhasil dibuat", "Sukses", "var(--success)");
             } catch (err) { 
@@ -2627,25 +2699,34 @@
         }); 
     }
 
-    // AKTIVASI LISENSI
+    // AKTIVASI LISENSI AM — TERHUBUNG KE API_BASE & API_KEY DENGAN AMAN
     if(sendBtn) {
         sendBtn.addEventListener('click', async () => {
             const email = document.getElementById('emailInput').value.trim(); 
-            if(!email) {
+            if(!email || !email.includes('@')) {
                 triggerErrorShake(['emailInput']);
-                return showMsg('appErrorMsg', 'Masukkan alamat email Anda terlebih dahulu.', 'error');
+                return showMsg('appErrorMsg', 'Masukkan alamat email yang valid terlebih dahulu.', 'error');
             }
             sendBtn.innerHTML = '<div class="loader-spinner" style="width:11px;height:11px;display:inline-block;"></div>'; 
             sendBtn.disabled = true;
             try {
-                const res = await fetch(`/api/am?action=send&email=${encodeURIComponent(email)}`);
-                const data = await res.json();
-                if(data.status) { 
+                let data;
+                try {
+                    const targetUrl = `${API_BASE}/api/am?action=send&apikey=${API_KEY}&email=${encodeURIComponent(email)}`;
+                    const res = await fetch(targetUrl);
+                    data = await res.json();
+                } catch(netErr) {
+                    const fallbackUrl = `/api/am?action=send&apikey=${API_KEY}&email=${encodeURIComponent(email)}`;
+                    const res = await fetch(fallbackUrl);
+                    data = await res.json();
+                }
+
+                if(data && (data.status || data.success)) { 
                     cachedEmail = email; 
                     showMsg('appErrorMsg', data.message || 'Tautan aktivasi berhasil dikirim ke email Anda.', 'success'); 
                     addActivityLog("Email Lisensi", `Tautan dikirim ke ${email}`, "Terkirim", "var(--gold-pure)");
                 } else { 
-                    showMsg('appErrorMsg', data.error || 'Gagal mengirim email verifikasi.', 'error'); 
+                    showMsg('appErrorMsg', (data && (data.error || data.message)) || 'Gagal mengirim email verifikasi.', 'error'); 
                 }
             } catch(e) { 
                 showMsg('appErrorMsg', 'Koneksi ke pengiriman email gagal.', 'error'); 
@@ -2677,11 +2758,20 @@
             document.getElementById('btnDefault').classList.add('hidden'); 
             document.getElementById('loaderContainer').classList.remove('hidden');
             
+            const emailToUse = cachedEmail || email;
             try {
-                const res = await fetch(`/api/am?action=verif&email=${encodeURIComponent(cachedEmail || email)}&url=${encodeURIComponent(magic)}`);
-                const data = await res.json();
+                let data;
+                try {
+                    const targetUrl = `${API_BASE}/api/am?action=verif&apikey=${API_KEY}&email=${encodeURIComponent(emailToUse)}&url=${encodeURIComponent(magic)}`;
+                    const res = await fetch(targetUrl);
+                    data = await res.json();
+                } catch(netErr) {
+                    const fallbackUrl = `/api/am?action=verif&apikey=${API_KEY}&email=${encodeURIComponent(emailToUse)}&url=${encodeURIComponent(magic)}`;
+                    const res = await fetch(fallbackUrl);
+                    data = await res.json();
+                }
                 
-                if(data.status) {
+                if(data && (data.status || data.success)) {
                     showMsg('appErrorMsg', data.message || 'Selamat! Lisensi berhasil dipasang ke perangkat.', 'success');
                     customAlert('Aktivasi lisensi berhasil.');
                     
@@ -2692,9 +2782,9 @@
                         localStorage.setItem(CACHE_KEY, JSON.stringify(currentUserData)); 
                         window.loadAppView(currentUserData);
                     }
-                    addActivityLog("Lisensi", "Aktivasi lisensi berhasil", "-1 Kuota", "var(--success)");
+                    addActivityLog("Lisensi", "Aktivasi lisensi AM berhasil", "-1 Kuota", "var(--success)");
                 } else { 
-                    showMsg('appErrorMsg', data.error || 'Verifikasi ditolak. Kuota Anda tidak berkurang (tetap aman).', 'error'); 
+                    showMsg('appErrorMsg', (data && (data.error || data.message)) || 'Verifikasi ditolak. Kuota Anda tidak berkurang (tetap aman).', 'error'); 
                 }
             } catch(e) { 
                 showMsg('appErrorMsg', 'Koneksi terganggu. Kuota Anda aman (tidak berkurang).', 'error'); 
@@ -2706,7 +2796,7 @@
         });
     }
 
-    // --- FORUM OBROLAN ---
+    // --- FORUM OBROLAN (DENGAN SINKRONISASI FOTO PROFIL LENGKAP) ---
     let chatIntervalId = null;
 
     function renderChatListHtml(msgs, box, forceScroll) {
@@ -2717,7 +2807,11 @@
             const isMe = currentUserData && (msg.username || '').toLowerCase() === (currentUserData.username || '').toLowerCase();
             const userKey = (msg.username || '').toLowerCase();
             
-            let avatarUrl = msg.avatar_url || userAvatarMap[userKey] || (isMe ? currentUserData?.avatar_url : '');
+            // Sinkronkan PP dari database / state pengguna
+            let avatarUrl = msg.avatar_url;
+            if (!avatarUrl || avatarUrl.trim() === '') {
+                avatarUrl = userAvatarMap[userKey] || (isMe && currentUserData ? currentUserData.avatar_url : '');
+            }
 
             const role = msg.role || userRoleMap[userKey] || (userKey === 'haomi' ? 'Owner' : 'Member');
             const isOwner = role === 'Owner' || userKey === 'haomi';
@@ -2738,16 +2832,17 @@
                 timeFmt = `${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
             } catch(e){ timeFmt = '00:00'; }
 
+            // JIKA BELUM MENAMBAHKAN FOTO -> PAKAI STANDAR BIASA DENGAN IKON USER ELEGAN
             let avatarMarkup = '';
             if (avatarUrl && (avatarUrl.startsWith('data:image') || avatarUrl.startsWith('http'))) {
-                avatarMarkup = `<img src="${avatarUrl}" alt="${escapeHtml(msg.username)}" onerror="this.onerror=null; this.src='${DEFAULT_USER_SILHOUETTE_SVG}';">`;
+                avatarMarkup = `<div class="chat-avatar"><img src="${avatarUrl}" alt="${escapeHtml(msg.username)}" onerror="this.parentElement.className='chat-avatar default-avatar'; this.parentElement.innerHTML='<i class=\\'fas fa-user\\'></i>';"></div>`;
             } else {
-                avatarMarkup = `<img src="${DEFAULT_USER_SILHOUETTE_SVG}" alt="Foto Pengguna">`;
+                avatarMarkup = `<div class="chat-avatar default-avatar" title="${escapeHtml(msg.username)}"><i class="fas fa-user"></i></div>`;
             }
 
             htmlString += `
             <div class="chat-row ${isMe ? 'chat-me' : 'chat-other'}">
-                ${!isMe ? `<div class="chat-avatar">${avatarMarkup}</div>` : ''}
+                ${!isMe ? avatarMarkup : ''}
                 <div class="chat-bubble-container">
                     ${!isMe ? `
                     <div class="chat-meta-header">
@@ -2761,7 +2856,7 @@
                         </div>
                     </div>
                 </div>
-                ${isMe ? `<div class="chat-avatar">${avatarMarkup}</div>` : ''}
+                ${isMe ? avatarMarkup : ''}
             </div>`;
         });
         
@@ -2831,9 +2926,10 @@
         const now = new Date();
         const timeStr = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
         
-        const myAvatarUrl = (currentUserData && currentUserData.avatar_url && (currentUserData.avatar_url.startsWith('data:image') || currentUserData.avatar_url.startsWith('http')))
-            ? currentUserData.avatar_url
-            : DEFAULT_USER_SILHOUETTE_SVG;
+        const hasCustomAvatar = currentUserData && currentUserData.avatar_url && (currentUserData.avatar_url.startsWith('data:image') || currentUserData.avatar_url.startsWith('http'));
+        const myAvatarMarkup = hasCustomAvatar 
+            ? `<div class="chat-avatar"><img src="${currentUserData.avatar_url}" alt="Me"></div>` 
+            : `<div class="chat-avatar default-avatar"><i class="fas fa-user"></i></div>`;
 
         box.innerHTML += `
         <div class="chat-row chat-me" id="optimisticMsg" style="opacity: 0.8;">
@@ -2846,7 +2942,7 @@
                     </div>
                 </div>
             </div>
-            <div class="chat-avatar"><img src="${myAvatarUrl}" alt="Me"></div>
+            ${myAvatarMarkup}
         </div>`;
         box.scrollTop = box.scrollHeight;
 
@@ -2902,11 +2998,20 @@
             btnSendReaction.disabled = true;
 
             try {
-                const res = await fetch('/api/reactch', {
+                let res = await fetch('/api/reactch', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ url: urlVal, reaction: emojiVal })
                 });
+
+                if(!res.ok && res.status === 404) {
+                    res = await fetch(`${API_BASE}/api/reactch`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ url: urlVal, reaction: emojiVal })
+                    });
+                }
+
                 const data = await res.json();
                 
                 if (data.statusCode === 200 || data.status === true) {
